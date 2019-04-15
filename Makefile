@@ -18,7 +18,7 @@ CFLAGS			:=		-Wall -Wextra \
 						-I/Users/$(shell whoami)/.brew/include/SDL2
 #-Werror
 
-FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2
+FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf
 
 LIB				:=		-L libft/ -lft							
 
@@ -30,7 +30,8 @@ INCLUDE			:=		-I ./include							\
 SRCS			:=		srcs/wolf3d.c		 					\
 						srcs/sdl_manager.c						\
 						srcs/wolf_parseur.c						\
-						srcs/raycasting.c						\
+						srcs/init_btns.c						\
+		#				srcs/raycasting.c						\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 
