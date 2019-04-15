@@ -1,0 +1,66 @@
+#include "wolf3d.h"
+
+int				row_verif(t_wolf *wolf, char *row)
+{
+	int			i;
+
+	i = 0;
+	while(row[i])
+	{
+		if(row[i] == 'A')
+		{
+			wolf->position.x = i + 0.5;
+			wolf->position.y = (float)wolf->map_size.y + 0.5;
+		}
+		else if (row[i] != '.' && row[i] != '#')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int				map_verif(int fd, t_wolf *wolf)
+{
+	char		*line;
+	int			ret;
+	int			flag;
+
+	flag = 0;
+	wolf->map_size.x = 0;
+	wolf->map_size.y = 0;
+	while ((ret = get_next_line(fd, &line)) > 0 && flag == 0)
+	{
+		if (wolf->map_size.x == 0)
+		{
+			if (ft_strlen(line) < 100)
+				wolf->map_size.x = ft_strlen(line);
+			else
+				return (0);
+		}
+		if (ft_strcmp(line, "[Textures]") == 0)
+			flag = 1;
+		else if ((int)ft_strlen(line) == wolf->map_size.x)
+		{
+			if (row_verif(wolf, line))
+				ft_strcpy(wolf->map[wolf->map_size.y], line);
+			else
+				return (0);
+		}
+		else
+			return (0);
+		wolf->map_size.y++;
+	}
+	return (1);
+}
+
+int				wolf_parseur(int ac, char **av, t_wolf *wolf)
+{
+	int			fd;
+
+	if (ac != 2)
+		return (0);
+	fd = open(av[1], O_RDONLY);
+	if (map_verif(fd, wolf) == 0)
+		return (0);
+	return (1);
+}
