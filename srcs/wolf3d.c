@@ -33,12 +33,12 @@ int				main(int ac, char **av)
 	wolf = wolf_new();
 	if (!wolf)
 		return (0);
-	if (!wolf_parseur(ac, av, wolf))
-	{
-		ft_putendl("error");
-		return (0);
-	}
-	raythrowing(wolf, 1650);
+	//if (!wolf_parseur(ac, av, wolf))
+	//{
+		//ft_putendl("error");
+		//return (0);
+	//}
+	//raythrowing(wolf, 1650);
 	wolf_close(&wolf);
 	return (0);
 }

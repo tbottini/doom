@@ -3,7 +3,7 @@
 
 # include "libft.h"
 # include <fcntl.h>
-# include "SDL2/SDL.h"
+# include <SDL.h>
 
 typedef struct		s_vct2
 {
@@ -41,4 +41,5 @@ t_sdldata		*sdldata_start(char *title, uint32_t x, uint32_t y);
 void			sdl_showscreen(t_sdldata *sdl);
 int				wolf_parseur(int ac, char **av, t_wolf *wolf);
 int				raythrowing(t_wolf *wolf, int pixel_xi);
+
 #endif

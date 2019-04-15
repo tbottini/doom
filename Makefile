@@ -6,25 +6,26 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/15 18:16:57 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/15 18:29:11 by magrab           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			:=		Wolf3d
+NAME			:=		wolf3d
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -Werror
+CFLAGS			:=		-Wall -Wextra \
+						-I/Users/$(shell whoami)/.brew/include/SDL2
+#-Werror
 
-LIB				:=		-L libft/ -lft							\
-						-L sdl2/2.0.9/lib -lSDL2				\
-						-L sdl2_image/2.0.4/lib/ -lSDL2_image	\
+FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2
+
+LIB				:=		-L libft/ -lft							
+
 
 
 INCLUDE			:=		-I ./include							\
 						-I ./libft								\
-						-I ./sdl2/2.0.9/include					\
-						-I ./sdl2_image/2.0.4/include			\
 
 SRCS			:=		srcs/wolf3d.c		 					\
 						srcs/sdl_manager.c						\
@@ -54,7 +55,7 @@ all: $ $(NAME)
 
 $(NAME)	: $(OBJS)
 	@make -C ./libft
-	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
+	@$(CC) $(CFLAGS) $(FMLX) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@printf "\e[M\e[A\n\e[31m[--------$(NAME)--------]\n"
 
 clean:
