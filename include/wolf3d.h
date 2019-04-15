@@ -2,6 +2,7 @@
 # define WOLF3D_H
 
 # include "libft.h"
+# include <fcntl.h>
 # include "SDL2/SDL.h"
 
 typedef struct		s_vct2

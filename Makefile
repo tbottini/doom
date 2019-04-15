@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/01/15 18:09:49 by yberramd          #+#    #+#              #
-#    Updated: 2019/03/28 15:59:03 by tbottini         ###   ########.fr        #
+#    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
+#    Updated: 2019/04/15 18:16:57 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIB				:=		-L libft/ -lft							\
 
 
 INCLUDE			:=		-I ./include							\
-						-I ./libft/include						\
+						-I ./libft								\
 						-I ./sdl2/2.0.9/include					\
 						-I ./sdl2_image/2.0.4/include			\
 
