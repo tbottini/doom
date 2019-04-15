@@ -1,0 +1,7 @@
+.DS_Store
+a.out
+wolf3d
+*.o
+*.swp
+.vscode
+*.dSYM
