@@ -78,7 +78,7 @@ int sdl_start(t_wolf *wolf, const char *title)
 		return (-1);
 	if (!(wolf->sdl.font = TTF_OpenFont("wolfenstein.ttf", 128)))
 		return (-2);
-	SDL_SetWindowTitle(wolf->sdl.win, title);
+	//SDL_SetWindowTitle(wolf->sdl.win, title);
 	SDL_SetWindowMinimumSize(wolf->sdl.win, 640, 480);
 	wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
 			SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT); 				//todo quand la taille de la fenetre change

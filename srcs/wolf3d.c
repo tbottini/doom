@@ -25,7 +25,7 @@ t_wolf *wolf_init()
 	add_wolf_button(wolf, 1);
 	add_opt_button(wolf, 2);
 	add_quit_button(wolf, 3);
-	//wolf->sdl.btnarr[9].txture = NULL;
+	wolf->sdl.btnarr[4].txture = NULL;
 	wolf->pos.x = 0;
 	wolf->pos.y = 0;
 	return (wolf);
@@ -69,6 +69,8 @@ void	btn_click(t_wolf *wolf, int x, int y)
 		if (tmp.area.x <= x && x <= tmp.area.x + tmp.area.w
 			&& tmp.area.y <= y && y <= tmp.area.y + tmp.area.h)
 		{
+			if (i == 3)
+				prog_quit(wolf);
 			ft_printf("Click on btn %d\n", i);
 		}
 		i++;
@@ -78,7 +80,7 @@ void	btn_click(t_wolf *wolf, int x, int y)
 int main(int ac, char **av)
 {
 	t_wolf *wolf;
-	SDL_Event event;
+
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
@@ -97,67 +99,10 @@ int main(int ac, char **av)
 		ft_putendl("error");
 		return (0);
 	}
-	while (1)
+	while (0 == 0)
 	{
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
-			{
-				TTF_Quit();
-				SDL_DestroyRenderer(wolf->sdl.rend);
-				SDL_DestroyWindow(wolf->sdl.win);
-				SDL_Quit();
-				return (0);
-			}
-			if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
-			{
-				key_press(event.key.keysym.sym, wolf);
-			}
-			else if (event.type == SDL_KEYUP && event.key.repeat == 0)
-			{
-				key_release(event.key.keysym.sym, wolf);
-			}
-			else if (event.type == SDL_DROPBEGIN)
-			{
-				printf("Event DropBegin\n");
-			}
-			else if (event.type == SDL_DROPFILE)
-			{
-				printf("Event DropFile %s\n", event.drop.file);
-				SDL_free(event.drop.file);
-			}
-			else if (event.type == SDL_DROPCOMPLETE)
-			{
-				printf("Event DropComplete\n");
-			}
-			else if (event.type == SDL_WINDOWEVENT)
-			{
-				PrintEvent(&event);
-				if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-				{
-					SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
-				}
-			}
-			else if (event.type == SDL_MOUSEMOTION)
-			{
-				mouse_move(event.motion.x, event.motion.y, wolf);
-			}
-			else if (event.type == SDL_MOUSEBUTTONDOWN)
-			{
-				mouse_press(event.button.button, event.button.x, event.button.y, wolf);
-			}
-			else if (event.type == SDL_MOUSEBUTTONUP)
-			{
-				mouse_release(event.button.button, event.button.x, event.button.y, wolf);
-			}
-			else// if (event.type != 771 && event.type != 768)
-			{
-				ft_printf("Unknown Event %d\n", event.type);
-				PrintEvent(&event);
-			}
-			load_buttons(wolf);
-			//raycasting(wolf, atoi(av[2]));
-		}
+		if (!(event_handler(wolf)))
+			return (0);
 	}
 
 	return (0);
