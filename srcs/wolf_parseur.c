@@ -9,8 +9,8 @@ int				row_verif(t_wolf *wolf, char *row)
 	{
 		if(row[i] == 'A')
 		{
-			wolf->position.x = i + 0.5;
-			wolf->position.y = (float)wolf->map_size.y + 0.5;
+			wolf->pos.x = i + 0.5;
+			wolf->pos.y = (float)wolf->map_size.y + 0.5;
 		}
 		else if (row[i] != '.' && row[i] != '#')
 			return (0);
@@ -57,8 +57,6 @@ int				wolf_parseur(int ac, char **av, t_wolf *wolf)
 {
 	int			fd;
 
-	if (ac != 2)
-		return (0);
 	fd = open(av[1], O_RDONLY);
 	if (map_verif(fd, wolf) == 0)
 		return (0);

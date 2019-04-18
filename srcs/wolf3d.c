@@ -6,7 +6,7 @@
 /*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/16 00:18:53 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/18 17:29:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_wolf *wolf_init()
 {
 	t_wolf *wolf;
 
-	if (!(wolf = malloc(sizeof(t_wolf))))
+	if (!(wolf = (t_wolf *)malloc(sizeof(t_wolf))))
 		return (NULL);
 	if (sdl_start(wolf, "Wolf 3D"))
 		return (NULL);
@@ -44,8 +44,6 @@ int main(int ac, char **av)
 {
 	t_wolf *wolf;
 	SDL_Event event;
-	(void)ac;
-	(void)av;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
@@ -59,7 +57,11 @@ int main(int ac, char **av)
 	}
 	if (!(wolf = wolf_init()))
 		return (-1);
-
+	if (!wolf_parseur(ac, av, wolf))
+	{
+		ft_putendl("error");
+		return (0);
+	}
 	while (1)
 	{
 		while (SDL_PollEvent(&event))
@@ -110,6 +112,7 @@ int main(int ac, char **av)
 				printf("Event %d\n", event.type);
 			}
 			load_buttons(wolf);
+			//raycasting(wolf, atoi(av[2]));
 		}
 	}
 

@@ -8,8 +8,7 @@
 
 # define WIDTH 960
 # define HEIGHT 540
-
-
+# define PI 3.141592
 
 typedef struct		s_vct2
 {
@@ -49,8 +48,8 @@ typedef struct		s_sdl
 	t_btn			btnarr[50];
 	t_vct2			size;
 	SDL_Texture		*txture;
+	uint32_t		*screen;
 	int				open;
-
 }					t_sdl;
 
 typedef	struct		s_wolf
@@ -59,6 +58,8 @@ typedef	struct		s_wolf
 	char			map[100][100];
 	t_vct2			map_size;
 	t_fvct2			pos;
+	float			rot;
+	int				fov;
 }					t_wolf;
 
 
@@ -71,6 +72,7 @@ void			*sdldata_quit(t_sdl **data);
 int				sdl_start(t_wolf *wolf, const char *title);
 void			sdl_showscreen(t_sdl *sdl);
 int				wolf_parseur(int ac, char **av, t_wolf *wolf);
-int				raythrowing(t_wolf *wolf, int pixel_xi);
+void			raycasting(t_wolf *wolf, int ang);
+unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
 
 #endif

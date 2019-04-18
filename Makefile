@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/15 18:29:11 by magrab           ###   ########.fr        #
+#    Updated: 2019/04/18 17:22:45 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRCS			:=		srcs/wolf3d.c		 					\
 						srcs/sdl_manager.c						\
 						srcs/wolf_parseur.c						\
 						srcs/init_btns.c						\
-		#				srcs/raycasting.c						\
+						srcs/raycasting.c						\
+						srcs/color.c							\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 

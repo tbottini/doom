@@ -67,6 +67,9 @@ void PrintEvent(const SDL_Event *event)
 
 int sdl_start(t_wolf *wolf, const char *title)
 {
+	void	*tmp;
+	int		pitch;
+
 	wolf->sdl.size.x = WIDTH;
 	wolf->sdl.size.y = HEIGHT;
 	if (SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE, &(wolf->sdl.win), &(wolf->sdl.rend)))
@@ -75,5 +78,11 @@ int sdl_start(t_wolf *wolf, const char *title)
 		return (-2);
 	SDL_SetWindowTitle(wolf->sdl.win, title);
 	SDL_SetWindowMinimumSize(wolf->sdl.win, 640, 480);
+	wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
+			SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT); 				//todo quand la taille de la fenetre change
+	SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch);
+	if (!tmp)
+		return (-1);
+	wolf->sdl.screen = (uint32_t*)tmp;
 	return (0);
 }
