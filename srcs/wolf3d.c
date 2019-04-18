@@ -21,8 +21,11 @@ t_wolf *wolf_init()
 	if (sdl_start(wolf, "Wolf 3D"))
 		return (NULL);
 
-	add_start_button(wolf);
-	add_wolf_button(wolf);
+	add_start_button(wolf, 0);
+	add_wolf_button(wolf, 1);
+	add_opt_button(wolf, 2);
+	add_quit_button(wolf, 3);
+	//wolf->sdl.btnarr[9].txture = NULL;
 	wolf->pos.x = 0;
 	wolf->pos.y = 0;
 	return (wolf);
@@ -30,14 +33,46 @@ t_wolf *wolf_init()
 
 void load_buttons(t_wolf *wolf)
 {
+	int x;
+	t_btn tmp;
+
+	x = 0;
 	SDL_RenderClear(wolf->sdl.rend);
-	wolf->sdl.btnarr[0].area.x = wolf->sdl.size.x / 2 - 100; //controls the rect's x coordinate
-	wolf->sdl.btnarr[0].area.y = wolf->sdl.size.y / 2 - 75;
-	wolf->sdl.btnarr[1].area.x = wolf->sdl.size.x / 2 - 200; //controls the rect's x coordinate
-	wolf->sdl.btnarr[1].area.y = wolf->sdl.size.y / 5 - 100;
-	SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[0].txture, NULL, &(wolf->sdl.btnarr[0].area));
-	SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[1].txture, NULL, &(wolf->sdl.btnarr[1].area));
+	while (wolf->sdl.btnarr[x].txture)
+	{
+		tmp = wolf->sdl.btnarr[x];
+		wolf->sdl.btnarr[x].area.x = wolf->sdl.size.x * (tmp.pos.x / 100); //controls the rect's x coordinate
+		wolf->sdl.btnarr[x].area.y = wolf->sdl.size.y * (tmp.pos.y / 100);
+		if (tmp.snapx == 1)
+			wolf->sdl.btnarr[x].area.x -= tmp.area.w / 2;
+		else if (tmp.snapx == 2)
+			wolf->sdl.btnarr[x].area.x -= tmp.area.w;
+		if (tmp.snapy == 1)
+			wolf->sdl.btnarr[x].area.y -= tmp.area.h / 2;
+		else if (tmp.snapy == 2)
+			wolf->sdl.btnarr[x].area.y -= tmp.area.h;
+		SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[x].txture, NULL, &(wolf->sdl.btnarr[x].area));
+		x++;
+	}
 	SDL_RenderPresent(wolf->sdl.rend);
+}
+
+void	btn_click(t_wolf *wolf, int x, int y)
+{
+	int		i;
+	t_btn tmp;
+
+	i = 0;
+	while (wolf->sdl.btnarr[i].txture)
+	{
+		tmp = wolf->sdl.btnarr[i];
+		if (tmp.area.x <= x && x <= tmp.area.x + tmp.area.w
+			&& tmp.area.y <= y && y <= tmp.area.y + tmp.area.h)
+		{
+			ft_printf("Click on btn %d\n", i);
+		}
+		i++;
+	}
 }
 
 int main(int ac, char **av)
@@ -76,11 +111,11 @@ int main(int ac, char **av)
 			}
 			if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 			{
-				printf("Key %d : %s detected\n", event.key.keysym.scancode, SDL_GetKeyName(event.key.keysym.sym));
+				key_press(event.key.keysym.sym, wolf);
 			}
 			else if (event.type == SDL_KEYUP && event.key.repeat == 0)
 			{
-				printf("Key release detected\n");
+				key_release(event.key.keysym.sym, wolf);
 			}
 			else if (event.type == SDL_DROPBEGIN)
 			{
@@ -105,11 +140,20 @@ int main(int ac, char **av)
 			}
 			else if (event.type == SDL_MOUSEMOTION)
 			{
+				mouse_move(event.motion.x, event.motion.y, wolf);
 			}
-			else
+			else if (event.type == SDL_MOUSEBUTTONDOWN)
 			{
-
-				printf("Event %d\n", event.type);
+				mouse_press(event.button.button, event.button.x, event.button.y, wolf);
+			}
+			else if (event.type == SDL_MOUSEBUTTONUP)
+			{
+				mouse_release(event.button.button, event.button.x, event.button.y, wolf);
+			}
+			else// if (event.type != 771 && event.type != 768)
+			{
+				ft_printf("Unknown Event %d\n", event.type);
+				PrintEvent(&event);
 			}
 			load_buttons(wolf);
 			//raycasting(wolf, atoi(av[2]));

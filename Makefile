@@ -33,6 +33,7 @@ SRCS			:=		srcs/wolf3d.c		 					\
 						srcs/init_btns.c						\
 						srcs/raycasting.c						\
 						srcs/color.c							\
+						srcs/input_hook.c						\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 

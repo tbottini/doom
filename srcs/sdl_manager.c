@@ -72,7 +72,9 @@ int sdl_start(t_wolf *wolf, const char *title)
 
 	wolf->sdl.size.x = WIDTH;
 	wolf->sdl.size.y = HEIGHT;
-	if (SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE, &(wolf->sdl.win), &(wolf->sdl.rend)))
+	if (!(wolf->sdl.win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE)))
+		return (-1);
+	if (!(wolf->sdl.rend = SDL_CreateRenderer(wolf->sdl.win, -1, SDL_RENDERER_SOFTWARE)))
 		return (-1);
 	if (!(wolf->sdl.font = TTF_OpenFont("wolfenstein.ttf", 128)))
 		return (-2);

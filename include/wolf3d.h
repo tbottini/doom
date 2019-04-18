@@ -34,7 +34,7 @@ typedef struct		s_btn
 	SDL_Texture		*txture;
 	int				snapx; // See Snap var behaviour
 	int				snapy; // See Snap var behaviour
-	t_vct2			pos; // Will be percent of screen (0-100)
+	t_fvct2			pos; // Will be percent of screen (0-100)
 	SDL_Color		fgcolor;
 	SDL_Color		bgcolor;
 }					t_btn;
@@ -65,8 +65,19 @@ typedef	struct		s_wolf
 
 void			PrintEvent(const SDL_Event *event); // DEBUG
 
-t_btn			add_start_button(t_wolf *wolf);
-t_btn			add_wolf_button(t_wolf *wolf);
+void			btn_click(t_wolf *wolf, int x, int y);
+t_btn			add_start_button(t_wolf *wolf, int pos);
+t_btn			add_wolf_button(t_wolf *wolf, int pos);
+t_btn			add_opt_button(t_wolf *wolf, int pos);
+t_btn			add_quit_button(t_wolf *wolf, int pos);
+
+
+int				key_press(int key, t_wolf *wolf);
+int				key_release(int key, t_wolf *wolf);
+int				mouse_press(int button, int x, int y, t_wolf *wolf);
+int				mouse_release(int button, int x, int y, t_wolf *wolf);
+int				mouse_move(int x, int y, t_wolf *wolf);
+
 
 void			*sdldata_quit(t_sdl **data);
 int				sdl_start(t_wolf *wolf, const char *title);

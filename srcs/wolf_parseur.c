@@ -57,6 +57,7 @@ int				wolf_parseur(int ac, char **av, t_wolf *wolf)
 {
 	int			fd;
 
+	(void)ac;
 	fd = open(av[1], O_RDONLY);
 	if (map_verif(fd, wolf) == 0)
 		return (0);
