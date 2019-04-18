@@ -7,8 +7,8 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 
-# define WIDTH 960
-# define HEIGHT 540
+# define WIDTH 1920
+# define HEIGHT 1080
 # define PI 3.141592
 
 typedef struct		s_vct2
