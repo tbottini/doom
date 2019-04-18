@@ -34,6 +34,8 @@ SRCS			:=		srcs/wolf3d.c		 					\
 						srcs/raycasting.c						\
 						srcs/color.c							\
 						srcs/input_hook.c						\
+						srcs/event_handler.c					\
+						srcs/sdl_quit.c							\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 

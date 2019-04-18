@@ -70,6 +70,7 @@ t_btn			add_start_button(t_wolf *wolf, int pos);
 t_btn			add_wolf_button(t_wolf *wolf, int pos);
 t_btn			add_opt_button(t_wolf *wolf, int pos);
 t_btn			add_quit_button(t_wolf *wolf, int pos);
+void			load_buttons(t_wolf *wolf);
 
 
 int				key_press(int key, t_wolf *wolf);
@@ -85,5 +86,9 @@ void			sdl_showscreen(t_sdl *sdl);
 int				wolf_parseur(int ac, char **av, t_wolf *wolf);
 void			raycasting(t_wolf *wolf, int ang);
 unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
+
+int				event_handler(t_wolf *wolf);
+
+int				prog_quit(t_wolf *wolf);
 
 #endif
