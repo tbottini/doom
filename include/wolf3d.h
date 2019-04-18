@@ -48,6 +48,9 @@ typedef struct		s_sdl
 	SDL_Color		colorpal[10];
 	t_btn			btnarr[50];
 	t_vct2			size;
+	SDL_Texture		*txture;
+	int				open;
+
 }					t_sdl;
 
 typedef	struct		s_wolf
@@ -55,7 +58,7 @@ typedef	struct		s_wolf
 	t_sdl			sdl;
 	char			map[100][100];
 	t_vct2			map_size;
-	t_fvct2			position;
+	t_fvct2			pos;
 }					t_wolf;
 
 

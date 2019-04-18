@@ -23,8 +23,8 @@ t_wolf *wolf_init()
 
 	add_start_button(wolf);
 	add_wolf_button(wolf);
-	wolf->position.x = 0;
-	wolf->position.y = 0;
+	wolf->pos.x = 0;
+	wolf->pos.y = 0;
 	return (wolf);
 }
 
