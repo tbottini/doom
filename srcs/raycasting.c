@@ -7,7 +7,6 @@ float		iswall(t_wolf *wolf, t_fvct2 inter)
 	{
 		if (wolf->map[(int)inter.y][(int)inter.x] == '#')
 		{
-			wolf->map[(int)inter.y][(int)inter.x] = 'X';
 			return (sqrt(inter.x * inter.x + inter.y * inter.y));
 		}
 		return (0);
@@ -51,19 +50,23 @@ float		ver_detection(t_wolf *wolf, float angle)
 	return (dist);
 }
 
-void		draw_colomn(t_wolf *wolf, float dist, int num)
+void		draw_column(t_wolf *wolf, float dist, int num)
 {
 	float	column_size;
 	int		i;
 	int		iprint;
+	int		imax;
 
-	i = 0;
+	dist = (dist < 0.8) ? dist : 0.8;
 	column_size = (wolf->sdl.size.y * 0.8) / dist;
-	iprint = num;
-	while (i < wolf->sdl.size.y)
+	i = (wolf->sdl.size.y - column_size) / 2;
+	iprint = num + wolf->sdl.size.x * i;
+	imax = i + column_size;
+	while (i < imax - 1)
 	{
-		wolf->sdl.screen[iprint] = color_rgb(255, 255, 255);
-
+		wolf->sdl.screen[iprint] = color_rgb(255, 0, 0);
+		i++;
+		iprint += wolf->sdl.size.x;
 	}
 }
 
@@ -71,11 +74,23 @@ void		draw_colomn(t_wolf *wolf, float dist, int num)
 void		raycasting(t_wolf *wolf, int ang)
 {
 	float	iangle;
-	float	start_angle;
+	float	angle;
 	int		i;
+	float	dist;
 
 	(void)ang;
 	i = 0;
-	start_angle = wolf->rot + wolf->fov / 2.0;
+	angle = wolf->rot + wolf->fov / 2.0;
 	iangle = wolf->fov / (float)wolf->sdl.size.x;
+	while (i < wolf->sdl.size.x -1)
+	{
+		dist = hor_detection(wolf, angle);
+		angle -= iangle;
+		i++;
+		printf("i %d angle %f dist %f wolfpos %f %f\n", i, angle, dist, wolf->pos.x, wolf->pos.y);
+		//draw_column(wolf, dist, i);
+	}
+	draw_column(wolf, 5.0, 919);
+	SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.txture, NULL, NULL);
+	SDL_RenderPresent(wolf->sdl.rend);
 }
