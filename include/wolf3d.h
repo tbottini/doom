@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include <fcntl.h>
+# include <dirent.h>
 # include <SDL.h>
 # include <SDL_ttf.h>
 
@@ -27,6 +28,7 @@ snap var behaviour
 0 = center of object is its left;
 1 = center of object is its center;
 2 = center of object is its right;
+3 = under the object before + 10
 */
 typedef struct		s_btn
 {
@@ -44,8 +46,11 @@ typedef struct		s_sdl
 	SDL_Window		*win;
 	SDL_Renderer	*rend;
 	TTF_Font		*font;
+	TTF_Font		*font32;
+	TTF_Font		*font128;
 	SDL_Color		colorpal[10];
-	t_btn			btnarr[50];
+	t_btn			btnarr[10];
+	t_btn			btnmap[15];
 	t_vct2			size;
 	SDL_Texture		*txture;
 	uint32_t		*screen;
@@ -71,6 +76,7 @@ t_btn			add_wolf_button(t_wolf *wolf, int pos);
 t_btn			add_opt_button(t_wolf *wolf, int pos);
 t_btn			add_quit_button(t_wolf *wolf, int pos);
 void			load_buttons(t_wolf *wolf);
+void draw_buttons(t_wolf *wolf);
 
 
 int				key_press(int key, t_wolf *wolf);

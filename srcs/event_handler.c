@@ -35,9 +35,13 @@ int event_handler(t_wolf *wolf)
 			printf("Event DropComplete\n");
 		else if (event.type == SDL_WINDOWEVENT)
 		{
+			SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
 			//PrintEvent(&event);
-			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-				SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
+			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
+				load_buttons(wolf);
+				draw_buttons(wolf);
+			}
 		}
 		else if (event.type == SDL_MOUSEMOTION)
 			mouse_move(event.motion.x, event.motion.y, wolf);
@@ -47,10 +51,10 @@ int event_handler(t_wolf *wolf)
 			mouse_release(event.button.button, event.button.x, event.button.y, wolf);
 		else // if (event.type != 771 && event.type != 768)
 		{
-			ft_printf("Unknown Event %d\n", event.type);
+			//ft_printf("Unknown Event %d\n", event.type);
 			PrintEvent(&event);
 		}
-		load_buttons(wolf);
+
 		//raycasting(wolf, atoi(av[2]));
 	}
 	return (1);

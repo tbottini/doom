@@ -16,20 +16,26 @@ int		prog_quit(t_wolf *wolf)
 {
 	int x;
 
-	TTF_CloseFont(wolf->sdl.font);
-	TTF_Quit();
-	SDL_DestroyRenderer(wolf->sdl.rend);
-	SDL_DestroyWindow(wolf->sdl.win);
-	SDL_Quit();
 	x = -1;
 	while (wolf->sdl.btnarr[++x].txture)
 		SDL_DestroyTexture(wolf->sdl.btnarr[x].txture);
-	SDL_UnlockTexture(wolf->sdl.txture);
-	SDL_DestroyTexture(wolf->sdl.txture);
+	if (wolf->sdl.txture)
+		SDL_DestroyTexture(wolf->sdl.txture);
+	if (wolf->sdl.font)
+		TTF_CloseFont(wolf->sdl.font);
+	if (wolf->sdl.font32)
+		TTF_CloseFont(wolf->sdl.font32);
+	if (wolf->sdl.font128)
+		TTF_CloseFont(wolf->sdl.font128);
+	if (wolf->sdl.rend)
+		SDL_DestroyRenderer(wolf->sdl.rend);
+	if (wolf->sdl.win)
+		SDL_DestroyWindow(wolf->sdl.win);
+	TTF_Quit();
+	SDL_Quit();
 	free(wolf);
 	wolf = NULL;
-	while (1)
-		;
+	//while (1);
 	exit(0);
 	return (0);
 }
