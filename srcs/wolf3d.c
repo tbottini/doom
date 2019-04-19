@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/18 17:29:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/19 17:32:30 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_wolf *wolf_init()
 	wolf->sdl.btnarr[4].txture = NULL;
 	wolf->pos.x = 0;
 	wolf->pos.y = 0;
+	wolf->rot = 90;
+	wolf->fov = 90;
 	return (wolf);
 }
 
@@ -80,7 +82,7 @@ void	btn_click(t_wolf *wolf, int x, int y)
 int main(int ac, char **av)
 {
 	t_wolf *wolf;
-
+	int j;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
@@ -99,11 +101,17 @@ int main(int ac, char **av)
 		ft_putendl("error");
 		return (0);
 	}
+	j = wolf->map_size.y - 1;
 	while (0 == 0)
 	{
 		if (!(event_handler(wolf)))
 			return (0);
 	}
-
+	raycasting(wolf);
+	while (j != -1)
+	{
+		ft_putendl(wolf->map[j]);
+	j--;
+	}
 	return (0);
 }

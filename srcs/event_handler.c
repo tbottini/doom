@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/18 19:33:52 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/19 18:13:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,23 @@ int event_handler(t_wolf *wolf)
 	{
 		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
 			return (prog_quit(wolf));
-		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
+		if (event.type == SDL_KEYDOWN /*&& event.key.repeat == 0*/)
+		{
+			if (event.key.keysym.sym == SDLK_e)
+				wolf->rot -= 5;
+			else if (event.key.keysym.sym == SDLK_q)
+				wolf->rot += 5;
+			else if (event.key.keysym.sym == SDLK_w)
+				wolf->pos.x += 0.3;
+			else if (event.key.keysym.sym == SDLK_s)
+				wolf->pos.x -= 0.3;
+			else if (event.key.keysym.sym == SDLK_d)
+				wolf->pos.y += 0.3;
+			else if (event.key.keysym.sym == SDLK_a)
+				wolf->pos.y -= 0.3;
+			raycasting(wolf);
 			key_press(event.key.keysym.sym, wolf);
+		}
 		else if (event.type == SDL_KEYUP && event.key.repeat == 0)
 			key_release(event.key.keysym.sym, wolf);
 		else if (event.type == SDL_DROPBEGIN)
@@ -50,8 +65,8 @@ int event_handler(t_wolf *wolf)
 			ft_printf("Unknown Event %d\n", event.type);
 			PrintEvent(&event);
 		}
-		load_buttons(wolf);
-		//raycasting(wolf, atoi(av[2]));
+		//load_buttons(wolf);
+		//raycasting(wolf);
 	}
 	return (1);
 }
