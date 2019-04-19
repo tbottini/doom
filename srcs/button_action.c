@@ -60,7 +60,6 @@ void btn_click(t_wolf *wolf, int x, int y)
 					wolf->sdl.m_status = 0;
 					ft_printf("MapClick on btn %d : %s\tReussi : %d\n", i, tmp.data, wolf_parseur(wolf, tmp.data));
 					draw_menu(wolf);
-					ft_2dchar_print((char **)wolf->map);
 				}
 				/*	if (i == 1)
 					start_btn(wolf);
