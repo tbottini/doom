@@ -49,7 +49,9 @@ int				map_verif(int fd, t_wolf *wolf)
 		else
 			return (0);
 		wolf->map_size.y++;
+		free(line);
 	}
+	free(line);
 	return (1);
 }
 
