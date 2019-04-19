@@ -19,9 +19,9 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 
-# define WIDTH 720
-# define HEIGHT 720
-# define PI 3.141592
+# define WIDTH 1920
+# define HEIGHT 1080
+# define PI 3.14159265359
 
 typedef struct		s_vct2
 {
@@ -117,7 +117,7 @@ void			*sdldata_quit(t_sdl **data);
 int				sdl_start(t_wolf *wolf, const char *title);
 void			sdl_showscreen(t_sdl *sdl);
 int				wolf_parseur(t_wolf *wolf, char *filename);
-void			raycasting(t_wolf *wolf, int ang);
+void			raycasting(t_wolf *wolf);
 unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
 
 int				event_handler(t_wolf *wolf);
