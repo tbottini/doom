@@ -53,12 +53,11 @@ int				map_verif(int fd, t_wolf *wolf)
 	return (1);
 }
 
-int				wolf_parseur(int ac, char **av, t_wolf *wolf)
+int				wolf_parseur(t_wolf *wolf, char *filename)
 {
 	int			fd;
 
-	(void)ac;
-	fd = open(av[1], O_RDONLY);
+	fd = open(filename, O_RDONLY);
 	if (map_verif(fd, wolf) == 0)
 		return (0);
 	return (1);
