@@ -52,6 +52,7 @@ typedef struct		s_btn
 	t_fvct2			pos; // Will be percent of screen (0-100)
 	SDL_Color		fgcolor;
 	SDL_Color		bgcolor;
+	char			*data;
 }					t_btn;
 
 /*
@@ -89,6 +90,8 @@ typedef	struct		s_wolf
 }					t_wolf;
 
 
+t_wolf *wolf_init();
+
 void			PrintEvent(const SDL_Event *event); // DEBUG
 
 void			btn_click(t_wolf *wolf, int x, int y);
@@ -101,7 +104,7 @@ t_btn			add_quit_button(t_wolf *wolf, const char *str);
 
 void draw_menu(t_wolf *wolf);
 
-int load_maps(t_wolf *wolf);
+int load_map_btns(t_wolf *wolf);
 
 int				key_press(int key, t_wolf *wolf);
 int				key_release(int key, t_wolf *wolf);
@@ -113,7 +116,7 @@ int				mouse_move(int x, int y, t_wolf *wolf);
 void			*sdldata_quit(t_sdl **data);
 int				sdl_start(t_wolf *wolf, const char *title);
 void			sdl_showscreen(t_sdl *sdl);
-int				wolf_parseur(int ac, char **av, t_wolf *wolf);
+int				wolf_parseur(t_wolf *wolf, char *filename);
 void			raycasting(t_wolf *wolf, int ang);
 unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
 

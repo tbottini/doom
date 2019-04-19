@@ -12,12 +12,40 @@
 
 #include "wolf3d.h"
 
+static void window_event(t_wolf *wolf, SDL_Event event)
+{
+	void *tmp;
+	int pitch;
+
+	SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
+	PrintEvent(&event);
+	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)
+	{
+		if (wolf->sdl.txture)
+			SDL_DestroyTexture(wolf->sdl.txture);
+		wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
+											 SDL_TEXTUREACCESS_STREAMING, wolf->sdl.size.x, wolf->sdl.size.y);
+		if (SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch))
+			prog_quit(wolf);
+		wolf->sdl.screen = (uint32_t *)tmp;
+		draw_menu(wolf);
+	}
+	if (wolf->sdl.m_status == 2)
+	{
+		load_map_btns(wolf);
+		draw_menu(wolf);
+	}
+}
+
 int event_handler(t_wolf *wolf)
 {
 	SDL_Event event;
+	int didsomething;
 
+	didsomething = 0;
 	while (SDL_PollEvent(&event))
 	{
+		didsomething = 1;
 		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
 			return (prog_quit(wolf));
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
@@ -34,37 +62,18 @@ int event_handler(t_wolf *wolf)
 		else if (event.type == SDL_DROPCOMPLETE)
 			printf("Event DropComplete\n");
 		else if (event.type == SDL_WINDOWEVENT)
-		{
-			SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
-			//PrintEvent(&event);
-			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)
-			{
-				draw_menu(wolf);
-			}
-			if (wolf->sdl.m_status == 2)
-			{
-				if (load_maps(wolf) == -1)
-				{
-					ft_printf("Error loading folder 'map'\n");
-				}
-				else
-				{
-					draw_menu(wolf);
-				}
-			}
-		}
+			window_event(wolf, event);
 		else if (event.type == SDL_MOUSEMOTION)
 			mouse_move(event.motion.x, event.motion.y, wolf);
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
 			mouse_press(event.button.button, event.button.x, event.button.y, wolf);
 		else if (event.type == SDL_MOUSEBUTTONUP)
 			mouse_release(event.button.button, event.button.x, event.button.y, wolf);
-		else // if (event.type != 771 && event.type != 768)
-		{
-			//ft_printf("Unknown Event %d\n", event.type);
+		else
 			PrintEvent(&event);
-		}
-
+	}
+	if (didsomething)
+	{
 		//raycasting(wolf, atoi(av[2]));
 	}
 	return (1);

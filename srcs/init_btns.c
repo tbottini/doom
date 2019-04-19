@@ -29,6 +29,7 @@ t_btn add_map_button(t_wolf *wolf, const char *str)
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
 	tmp.pos.x = 50;
+	tmp.pos.y = 5;
 	tmp.snapx = 1;
 	tmp.snapy = 3;
 	btntext = TTF_RenderText_Shaded(wolf->sdl.font32, str, tmp.fgcolor, tmp.bgcolor);
