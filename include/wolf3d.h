@@ -7,8 +7,8 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 720
+# define HEIGHT 720
 # define PI 3.141592
 
 typedef struct		s_vct2
@@ -28,7 +28,7 @@ snap var behaviour
 0 = center of object is its left;
 1 = center of object is its center;
 2 = center of object is its right;
-3 = under the object before + 10
+3 = under the object before + 10px (ignore current pos)
 */
 typedef struct		s_btn
 {
@@ -40,6 +40,13 @@ typedef struct		s_btn
 	SDL_Color		fgcolor;
 	SDL_Color		bgcolor;
 }					t_btn;
+
+/*
+m_status behaviour
+0 = gamemode
+1 = Show main menu
+2 = show map menu
+*/
 
 typedef struct		s_sdl
 {
@@ -55,6 +62,7 @@ typedef struct		s_sdl
 	SDL_Texture		*txture;
 	uint32_t		*screen;
 	int				open;
+	int				m_status;
 }					t_sdl;
 
 typedef	struct		s_wolf
@@ -71,13 +79,15 @@ typedef	struct		s_wolf
 void			PrintEvent(const SDL_Event *event); // DEBUG
 
 void			btn_click(t_wolf *wolf, int x, int y);
-t_btn			add_start_button(t_wolf *wolf, int pos);
-t_btn			add_wolf_button(t_wolf *wolf, int pos);
-t_btn			add_opt_button(t_wolf *wolf, int pos);
-t_btn			add_quit_button(t_wolf *wolf, int pos);
-void			load_buttons(t_wolf *wolf);
-void draw_buttons(t_wolf *wolf);
+t_btn			add_start_button(t_wolf *wolf);
+t_btn add_mapmenu_button(t_wolf *wolf);
+t_btn			add_wolf_button(t_wolf *wolf);
+t_btn			add_opt_button(t_wolf *wolf);
+t_btn			add_quit_button(t_wolf *wolf);
 
+void draw_menu(t_wolf *wolf);
+
+int load_maps(t_wolf *wolf);
 
 int				key_press(int key, t_wolf *wolf);
 int				key_release(int key, t_wolf *wolf);

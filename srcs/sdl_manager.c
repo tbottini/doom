@@ -72,6 +72,7 @@ int sdl_start(t_wolf *wolf, const char *title)
 
 	wolf->sdl.size.x = WIDTH;
 	wolf->sdl.size.y = HEIGHT;
+	wolf->sdl.m_status = 1;
 	if (!(wolf->sdl.win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE)))
 		return (prog_quit(wolf));
 	if (!(wolf->sdl.rend = SDL_CreateRenderer(wolf->sdl.win, -1, SDL_RENDERER_SOFTWARE)))
