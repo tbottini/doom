@@ -19,6 +19,8 @@ int		prog_quit(t_wolf *wolf)
 	x = -1;
 	while (wolf->sdl.btnarr[++x].txture)
 		SDL_DestroyTexture(wolf->sdl.btnarr[x].txture);
+	while (wolf->sdl.btnmap[++x].txture)
+		SDL_DestroyTexture(wolf->sdl.btnmap[x].txture);
 	if (wolf->sdl.txture)
 		SDL_DestroyTexture(wolf->sdl.txture);
 	if (wolf->sdl.font)

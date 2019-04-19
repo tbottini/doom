@@ -36,6 +36,7 @@ SRCS			:=		srcs/wolf3d.c		 					\
 						srcs/input_hook.c						\
 						srcs/event_handler.c					\
 						srcs/sdl_quit.c							\
+						srcs/button_drawer.c					\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 

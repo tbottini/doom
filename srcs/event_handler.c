@@ -39,8 +39,18 @@ int event_handler(t_wolf *wolf)
 			//PrintEvent(&event);
 			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)
 			{
-				load_buttons(wolf);
-				draw_buttons(wolf);
+				draw_menu(wolf);
+			}
+			if (wolf->sdl.m_status == 2)
+			{
+				if (load_maps(wolf) == -1)
+				{
+					ft_printf("Error loading folder 'map'\n");
+				}
+				else
+				{
+					draw_menu(wolf);
+				}
 			}
 		}
 		else if (event.type == SDL_MOUSEMOTION)
