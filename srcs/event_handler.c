@@ -87,9 +87,9 @@ int event_handler(t_wolf *wolf)
 		else
 			PrintEvent(&event);
 	}
-	if (didsomething)
+	if (didsomething && wolf->sdl.m_status == 0)
 	{
-		//raycasting(wolf, atoi(av[2]));
+		raycasting(wolf);
 	}
 	return (1);
 }
