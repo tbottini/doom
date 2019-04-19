@@ -79,15 +79,12 @@ int main(int ac, char **av)
 	}
 	if (!(wolf = wolf_init()))
 		return (-1);
-	//if (!wolf_parseur(ac, av, wolf))
-	//{
-	//	ft_putendl("error");
-	//	return (0);
-	//}
 	while (0 == 0)
 	{
 		if (!(event_handler(wolf)))
 			return (0);
+		loop_hook(wolf);
+		printf("pos x : %d\t%d\t%c\t%f\n", (int)wolf->pos.x, (int)wolf->pos.y, wolf->map[(int)wolf->pos.y][(int)wolf->pos.x], wolf->rot);
 	}
 
 	return (0);

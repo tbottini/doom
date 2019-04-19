@@ -23,6 +23,8 @@ static void		void_wolf(t_wolf *wolf)
 	wolf->sdl.btnmap[0].txture = NULL;
 	wolf->sdl.btnmap[1].txture = NULL;
 	wolf->sdl.btnmap[2].txture = NULL;
+	wolf->sdl.btnmap[3].txture = NULL;
+	wolf->sdl.keys = NULL;
 }
 
 t_wolf			*wolf_init(void)

@@ -77,6 +77,7 @@ typedef struct		s_sdl
 	uint32_t		*screen;
 	int				open;
 	int				m_status;
+	t_tab			keys;
 }					t_sdl;
 
 typedef	struct		s_wolf
@@ -112,6 +113,7 @@ int				mouse_press(int button, int x, int y, t_wolf *wolf);
 int				mouse_release(int button, int x, int y, t_wolf *wolf);
 int				mouse_move(int x, int y, t_wolf *wolf);
 
+int loop_hook(t_wolf *wolf);
 
 void			*sdldata_quit(t_sdl **data);
 int				sdl_start(t_wolf *wolf, const char *title);

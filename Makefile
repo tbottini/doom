@@ -35,6 +35,7 @@ SRCS			:=		srcs/main.c			 					\
 						srcs/raycasting.c						\
 						srcs/color.c							\
 						srcs/input_hook.c						\
+						srcs/loop_hook.c						\
 						srcs/event_handler.c					\
 						srcs/sdl_quit.c							\
 						srcs/button_drawer.c					\
