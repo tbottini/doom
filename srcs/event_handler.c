@@ -55,14 +55,18 @@ int event_handler(t_wolf *wolf)
 			else if (event.key.keysym.sym == SDLK_q)
 				wolf->rot += 5;
 			else if (event.key.keysym.sym == SDLK_w)
-				wolf->pos.x += 0.3;
-			else if (event.key.keysym.sym == SDLK_s)
-				wolf->pos.x -= 0.3;
-			else if (event.key.keysym.sym == SDLK_d)
 				wolf->pos.y += 0.3;
-			else if (event.key.keysym.sym == SDLK_a)
+			else if (event.key.keysym.sym == SDLK_s)
 				wolf->pos.y -= 0.3;
-			raycasting(wolf);
+			else if (event.key.keysym.sym == SDLK_d)
+				wolf->pos.x += 0.3;
+			else if (event.key.keysym.sym == SDLK_a)
+				wolf->pos.x -= 0.3;
+			else if (event.key.keysym.sym == SDLK_BACKQUOTE)
+			{
+				wolf->sdl.m_status = 1;
+				draw_menu(wolf);
+			}
 			key_press(event.key.keysym.sym, wolf);
 		}
 		else if (event.type == SDL_KEYUP && event.key.repeat == 0)

@@ -112,8 +112,8 @@ void		raycasting(t_wolf *wolf)
 	iangle = wolf->fov / (float)wolf->sdl.size.x;
 	while (i < wolf->sdl.size.x - 1)
 	{
-		dist.x = hor_detection(wolf, angle % 360);
-		dist.y = ver_detection(wolf, angle % 360);
+		dist.x = hor_detection(wolf, angle);
+		dist.y = ver_detection(wolf, angle);
 		if (i % 10)
 			printf("i %d hor %f ver %f\n", i, dist.x, dist.y);
 		if ((int)dist.x != -1 && (int)dist.y != -1)
