@@ -72,10 +72,11 @@ void draw_menu(t_wolf *wolf)
 	if (status == 1)
 	{
 		update_loc_buttons(wolf, wolf->sdl.btnarr);
+		draw_buttons(wolf, status);
 	}
 	else if (status == 2)
 	{
 		update_loc_buttons(wolf, wolf->sdl.btnmap);
+		draw_buttons(wolf, status);
 	}
-	draw_buttons(wolf, status);
 }
