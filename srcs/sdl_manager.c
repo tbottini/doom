@@ -85,9 +85,8 @@ int sdl_start(t_wolf *wolf, const char *title)
 		return (prog_quit(wolf));
 	SDL_SetWindowMinimumSize(wolf->sdl.win, 640, 480);
 	wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
-			SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT); 				//todo quand la taille de la fenetre change
-	SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch);
-	if (!tmp)
+			SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
+	if (SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch))
 		return (prog_quit(wolf));
 	wolf->sdl.screen = (uint32_t*)tmp;
 	return (0);
