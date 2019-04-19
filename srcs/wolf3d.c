@@ -38,41 +38,13 @@ t_wolf *wolf_init()
 	wolf->sdl.btnarr[0] = add_wolf_button(wolf);
 	wolf->sdl.btnarr[1] = add_start_button(wolf);
 	wolf->sdl.btnarr[2] = add_opt_button(wolf);
-	wolf->sdl.btnarr[3] = add_quit_button(wolf);
+	wolf->sdl.btnarr[3] = add_quit_button(wolf, " Quit ");
 	wolf->sdl.btnarr[4].txture = NULL;
 	wolf->pos.x = 0;
 	wolf->pos.y = 0;
 	wolf->fov = 90;
 	wolf->rot = 90;
 	return (wolf);
-}
-
-
-
-
-
-t_btn add_map_button(t_wolf *wolf, char *str)
-{
-	SDL_Surface *btntext;
-	t_btn tmp;
-	SDL_Rect rect;
-
-	tmp.fgcolor.r = 150;
-	tmp.fgcolor.g = 150;
-	tmp.fgcolor.b = 150;
-	tmp.bgcolor.r = 255;
-	tmp.bgcolor.g = 255;
-	tmp.bgcolor.b = 255;
-	tmp.pos.x = 50;
-	tmp.snapx = 1;
-	tmp.snapy = 3;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.font32, str, tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &rect);
-	tmp.area.w = rect.w;
-	tmp.area.h = rect.h;
-	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
-	return (tmp);
 }
 
 int load_maps(t_wolf *wolf)
@@ -83,7 +55,7 @@ int load_maps(t_wolf *wolf)
 	int y;
 
 	if (!wolf->sdl.btnmap[0].txture)
-		wolf->sdl.btnmap[0] = add_quit_button(wolf);
+		wolf->sdl.btnmap[0] = add_quit_button(wolf, " Return ");
 	if (!wolf->sdl.btnmap[1].txture)
 		wolf->sdl.btnmap[1] = add_mapmenu_button(wolf);
 	y = 2;
@@ -117,8 +89,6 @@ void start_btn(t_wolf *wolf)
 	draw_menu(wolf);
 }
 
-
-
 void btn_click(t_wolf *wolf, int x, int y)
 {
 	int i;
@@ -150,11 +120,14 @@ void btn_click(t_wolf *wolf, int x, int y)
 			tmp = wolf->sdl.btnmap[i];
 			if (tmp.area.x <= x && x <= tmp.area.x + tmp.area.w && tmp.area.y <= y && y <= tmp.area.y + tmp.area.h)
 			{
-				ft_printf("MapClick on btn %d\n", i);
 				if (i == 0)
 				{
 					wolf->sdl.m_status = 1;
 					draw_menu(wolf);
+				}
+				else if (i > 1)
+				{
+					ft_printf("MapClick on btn %d\n", i);
 				}
 				/*	if (i == 1)
 					start_btn(wolf);

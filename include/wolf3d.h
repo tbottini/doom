@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf3d.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
+/*   Updated: 2019/04/19 17:57:55 by magrab           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef WOLF3D_H
 # define WOLF3D_H
 
@@ -24,12 +36,13 @@ typedef struct 		s_fvct2
 }					t_fvct2;
 
 /*
-snap var behaviour
+Snap var behaviour
 0 = center of object is its left;
 1 = center of object is its center;
 2 = center of object is its right;
-3 = under the object before + 10px (ignore current pos)
+3 = under the object before + (pos) px
 */
+
 typedef struct		s_btn
 {
 	SDL_Rect		area;
@@ -80,10 +93,11 @@ void			PrintEvent(const SDL_Event *event); // DEBUG
 
 void			btn_click(t_wolf *wolf, int x, int y);
 t_btn			add_start_button(t_wolf *wolf);
-t_btn add_mapmenu_button(t_wolf *wolf);
+t_btn			add_mapmenu_button(t_wolf *wolf);
+t_btn			add_map_button(t_wolf *wolf, const char *str);
 t_btn			add_wolf_button(t_wolf *wolf);
 t_btn			add_opt_button(t_wolf *wolf);
-t_btn			add_quit_button(t_wolf *wolf);
+t_btn			add_quit_button(t_wolf *wolf, const char *str);
 
 void draw_menu(t_wolf *wolf);
 

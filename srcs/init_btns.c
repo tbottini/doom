@@ -12,6 +12,38 @@
 
 #include "wolf3d.h"
 
+/*
+** Button for all maps
+*/
+
+t_btn add_map_button(t_wolf *wolf, const char *str)
+{
+	SDL_Surface *btntext;
+	t_btn tmp;
+	SDL_Rect rect;
+
+	tmp.fgcolor.r = 150;
+	tmp.fgcolor.g = 150;
+	tmp.fgcolor.b = 150;
+	tmp.bgcolor.r = 255;
+	tmp.bgcolor.g = 255;
+	tmp.bgcolor.b = 255;
+	tmp.pos.x = 50;
+	tmp.snapx = 1;
+	tmp.snapy = 3;
+	btntext = TTF_RenderText_Shaded(wolf->sdl.font32, str, tmp.fgcolor, tmp.bgcolor);
+	SDL_GetClipRect(btntext, &rect);
+	tmp.area.w = rect.w;
+	tmp.area.h = rect.h;
+	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
+	SDL_FreeSurface(btntext);
+	return (tmp);
+}
+
+/*
+** Wolf Logo (Not really a button)
+*/
+
 t_btn add_wolf_button(t_wolf *wolf)
 {
 	t_btn tmp;
@@ -36,6 +68,10 @@ t_btn add_wolf_button(t_wolf *wolf)
 	SDL_FreeSurface(btntext);
 	return (tmp);
 }
+
+/*
+** Map Menu button (Not really a button)
+*/
 
 t_btn add_mapmenu_button(t_wolf *wolf)
 {
@@ -62,6 +98,11 @@ t_btn add_mapmenu_button(t_wolf *wolf)
 	return (tmp);
 }
 
+/*
+** Start button (main menu)
+*/
+
+
 t_btn add_start_button(t_wolf *wolf)
 {
 	t_btn tmp;
@@ -69,6 +110,7 @@ t_btn add_start_button(t_wolf *wolf)
 	SDL_Rect rect;
 
 	tmp.pos.x = 50;
+	tmp.pos.y = 10;
 	tmp.snapx = 1;
 	tmp.snapy = 3;
 	tmp.fgcolor.r = 150;
@@ -85,6 +127,10 @@ t_btn add_start_button(t_wolf *wolf)
 	SDL_FreeSurface(btntext);
 	return (tmp);
 }
+
+/*
+** Option button Useless :( (main menu)
+*/
 
 t_btn add_opt_button(t_wolf *wolf)
 {
@@ -111,7 +157,11 @@ t_btn add_opt_button(t_wolf *wolf)
 	return (tmp);
 }
 
-t_btn add_quit_button(t_wolf *wolf)
+/*
+** Bottom Right button
+*/
+
+t_btn add_quit_button(t_wolf *wolf, const char *str)
 {
 	t_btn tmp;
 	SDL_Surface *btntext;
@@ -127,7 +177,7 @@ t_btn add_quit_button(t_wolf *wolf)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.font, " Quit ", tmp.fgcolor, tmp.bgcolor);
+	btntext = TTF_RenderText_Shaded(wolf->sdl.font, str, tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.area.w = rect.w;
 	tmp.area.h = rect.h;
