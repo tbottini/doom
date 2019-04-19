@@ -35,7 +35,7 @@ int load_map_btns(t_wolf *wolf)
 		ft_printf("Error loading folder 'map'\n");
 		return (0);
 	}
-	while ((mapdata = readdir(maps)))
+	while ((mapdata = readdir(maps)) && y < 9)
 	{
 		if (mapdata->d_reclen == 32)
 		{

@@ -71,7 +71,7 @@ typedef struct		s_sdl
 	TTF_Font		*font128;
 	SDL_Color		colorpal[10];
 	t_btn			btnarr[10];
-	t_btn			btnmap[15];
+	t_btn			btnmap[11];
 	t_vct2			size;
 	SDL_Texture		*txture;
 	uint32_t		*screen;

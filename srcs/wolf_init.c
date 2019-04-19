@@ -14,17 +14,7 @@
 
 static void		void_wolf(t_wolf *wolf)
 {
-	wolf->sdl.font = NULL;
-	wolf->sdl.font32 = NULL;
-	wolf->sdl.font128 = NULL;
-	wolf->sdl.txture = NULL;
-	wolf->sdl.rend = NULL;
-	wolf->sdl.win = NULL;
-	wolf->sdl.btnmap[0].txture = NULL;
-	wolf->sdl.btnmap[1].txture = NULL;
-	wolf->sdl.btnmap[2].txture = NULL;
-	wolf->sdl.btnmap[3].txture = NULL;
-	wolf->sdl.keys = NULL;
+	ft_bzero(wolf, sizeof(t_wolf));
 }
 
 t_wolf			*wolf_init(void)
