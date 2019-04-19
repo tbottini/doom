@@ -25,6 +25,7 @@ int				map_verif(int fd, t_wolf *wolf)
 	int			ret;
 	int			flag;
 
+	line = NULL;
 	flag = 0;
 	wolf->map_size.x = 0;
 	wolf->map_size.y = 0;
@@ -51,7 +52,8 @@ int				map_verif(int fd, t_wolf *wolf)
 		wolf->map_size.y++;
 		free(line);
 	}
-	free(line);
+	if (line)
+		free(line);
 	return (1);
 }
 

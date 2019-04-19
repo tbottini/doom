@@ -48,25 +48,8 @@ int event_handler(t_wolf *wolf)
 		didsomething = 1;
 		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
 			return (prog_quit(wolf));
-		if (event.type == SDL_KEYDOWN /*&& event.key.repeat == 0*/)
+		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 		{
-			if (event.key.keysym.sym == SDLK_e)
-				wolf->rot -= 5;
-			else if (event.key.keysym.sym == SDLK_q)
-				wolf->rot += 5;
-			else if (event.key.keysym.sym == SDLK_w)
-				wolf->pos.y += 0.3;
-			else if (event.key.keysym.sym == SDLK_s)
-				wolf->pos.y -= 0.3;
-			else if (event.key.keysym.sym == SDLK_d)
-				wolf->pos.x += 0.3;
-			else if (event.key.keysym.sym == SDLK_a)
-				wolf->pos.x -= 0.3;
-			else if (event.key.keysym.sym == SDLK_BACKQUOTE)
-			{
-				wolf->sdl.m_status = 1;
-				draw_menu(wolf);
-			}
 			key_press(event.key.keysym.sym, wolf);
 		}
 		else if (event.type == SDL_KEYUP && event.key.repeat == 0)
@@ -75,6 +58,12 @@ int event_handler(t_wolf *wolf)
 			printf("Event DropBegin\n");
 		else if (event.type == SDL_DROPFILE)
 		{
+			if (wolf_parseur(wolf, event.drop.file))
+			{
+				ft_printf("Load Reussi\n");
+				wolf->sdl.m_status = 0;
+				draw_menu(wolf);
+			}
 			printf("Event DropFile %s\n", event.drop.file);
 			SDL_free(event.drop.file);
 		}
@@ -91,7 +80,7 @@ int event_handler(t_wolf *wolf)
 		else
 			PrintEvent(&event);
 	}
-	if (didsomething && wolf->sdl.m_status == 0)
+	if (wolf->sdl.m_status == 0)
 	{
 		raycasting(wolf);
 	}
