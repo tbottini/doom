@@ -14,7 +14,7 @@ NAME			:=		wolf3d
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra \
+CFLAGS			:=		-g -Wall -Wextra \
 						-I/Users/$(shell whoami)/.brew/include/SDL2
 #-Werror
 
@@ -27,15 +27,18 @@ LIB				:=		-L libft/ -lft
 INCLUDE			:=		-I ./include							\
 						-I ./libft								\
 
-SRCS			:=		srcs/wolf3d.c		 					\
+SRCS			:=		srcs/main.c			 					\
 						srcs/sdl_manager.c						\
 						srcs/wolf_parseur.c						\
+						srcs/wolf_init.c						\
 						srcs/init_btns.c						\
 						srcs/raycasting.c						\
 						srcs/color.c							\
 						srcs/input_hook.c						\
 						srcs/event_handler.c					\
 						srcs/sdl_quit.c							\
+						srcs/button_drawer.c					\
+						srcs/button_action.c					\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 
