@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 20:45:20 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/20 18:40:46 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int loop_hook(t_wolf *wolf)
 		key = pos->data;
 		if (key == SDLK_e)
 		{
-			if (wolf->rot - 5.0 < -180.0)
+			if (wolf->rot - 5.0 < 0)
 				wolf->rot += 355.0;
 			else
 				wolf->rot -= 5;
 		}
 		else if (key == SDLK_q)
 		{
-			if (wolf->rot + 5.0 > 180.0)
+			if (wolf->rot + 5.0 > 360.0)
 				wolf->rot -= 355.0;
 			else
 				wolf->rot += 5;

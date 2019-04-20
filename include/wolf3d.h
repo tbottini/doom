@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 20:34:18 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/20 20:34:37 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,4 +126,6 @@ int				event_handler(t_wolf *wolf);
 
 int				prog_quit(t_wolf *wolf);
 void			raythrowing(t_wolf *wolf, int ag);
+float			float_modulo(float num);
+float			angle_adaptater(float angle);
 #endif
