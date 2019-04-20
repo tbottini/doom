@@ -40,22 +40,17 @@ static void window_event(t_wolf *wolf, SDL_Event event)
 int event_handler(t_wolf *wolf)
 {
 	SDL_Event event;
-	int didsomething;
 
-	didsomething = 0;
 	while (SDL_PollEvent(&event))
 	{
-		didsomething = 1;
 		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
 			return (prog_quit(wolf));
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
-		{
 			key_press(event.key.keysym.sym, wolf);
-		}
 		else if (event.type == SDL_KEYUP && event.key.repeat == 0)
 			key_release(event.key.keysym.sym, wolf);
-		else if (event.type == SDL_DROPBEGIN)
-			printf("Event DropBegin\n");
+		//else if (event.type == SDL_DROPBEGIN)
+		//	printf("Event DropBegin\n");
 		else if (event.type == SDL_DROPFILE)
 		{
 			if (wolf_parseur(wolf, event.drop.file))
@@ -67,8 +62,8 @@ int event_handler(t_wolf *wolf)
 			printf("Event DropFile %s\n", event.drop.file);
 			SDL_free(event.drop.file);
 		}
-		else if (event.type == SDL_DROPCOMPLETE)
-			printf("Event DropComplete\n");
+		//else if (event.type == SDL_DROPCOMPLETE)
+		//	printf("Event DropComplete\n");
 		else if (event.type == SDL_WINDOWEVENT)
 			window_event(wolf, event);
 		else if (event.type == SDL_MOUSEMOTION)
@@ -77,12 +72,8 @@ int event_handler(t_wolf *wolf)
 			mouse_press(event.button.button, event.button.x, event.button.y, wolf);
 		else if (event.type == SDL_MOUSEBUTTONUP)
 			mouse_release(event.button.button, event.button.x, event.button.y, wolf);
-		else
-			PrintEvent(&event);
-	}
-	if (wolf->sdl.m_status == 0)
-	{
-		raycasting(wolf);
+		//else
+		//	PrintEvent(&event);
 	}
 	return (1);
 }

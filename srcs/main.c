@@ -84,7 +84,7 @@ int main(int ac, char **av)
 		if (!(event_handler(wolf)))
 			return (0);
 		loop_hook(wolf);
-		printf("pos x : %d\t%d\t%c\t%f\n", (int)wolf->pos.x, (int)wolf->pos.y, wolf->map[(int)wolf->pos.y][(int)wolf->pos.x], wolf->rot);
+		//printf("pos x : %d\t%d\t%c\t%f\n", (int)wolf->pos.x, (int)wolf->pos.y, wolf->map[(int)wolf->pos.y][(int)wolf->pos.x], wolf->rot);
 	}
 
 	return (0);

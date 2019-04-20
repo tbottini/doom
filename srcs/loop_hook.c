@@ -57,5 +57,9 @@ int loop_hook(t_wolf *wolf)
 		}
 		pos = pos->next;
 	}
+	if (wolf->sdl.m_status == 0)
+	{
+		raycasting(wolf);
+	}
 	return (0);
 }
