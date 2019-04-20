@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/19 20:43:19 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/20 21:02:53 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ LIB				:=		-L libft/ -lft
 
 
 INCLUDE			:=		-I ./include							\
-						-I ./libft								\
+						-I ./libft/include						\
 
 SRCS			:=		srcs/main.c			 					\
 						srcs/sdl_manager.c						\
@@ -40,6 +40,7 @@ SRCS			:=		srcs/main.c			 					\
 						srcs/sdl_quit.c							\
 						srcs/button_drawer.c					\
 						srcs/button_action.c					\
+						srcs/num_tools.c						\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 
@@ -56,16 +57,16 @@ OBJS = $(SRCS:.c=.o)
 all: $ $(NAME)
 
 %.o		:		%.c
-	@printf '\rCompilation Libft\n'
-	@printf '[\e[31m%*s' $(FILL_BAR) | tr ' ' '#'
-	@printf '%*s\e[0m] \e[31m $<\e[0m' $(INV_FILL_BAR)
+	@printf '\rCompilation $(NAME)\n'
+	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
+	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
 $(NAME)	: $(OBJS)
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(FMLX) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
-	@printf "\e[M\e[A\n\e[31m[--------$(NAME)--------]\n"
+	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
 clean:
 	@make clean -C ./libft
@@ -80,5 +81,5 @@ start	:	all
 
 re: fclean all
 
-.PHONY: all clean fclean re a
+.PHONY: all clean fclean re
 
