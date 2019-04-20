@@ -14,14 +14,16 @@
 # define WOLF3D_H
 
 # include "libft.h"
-# include <fcntl.h>
-# include <dirent.h>
 # include <SDL.h>
 # include <SDL_ttf.h>
+# include <SDL_image.h>
+# include <fcntl.h>
+# include <dirent.h>
 
 # define WIDTH 1920
 # define HEIGHT 1080
 # define PI 3.14159265359
+# define PI180 3.14159265359 / 180.0000000000
 
 typedef struct		s_vct2
 {
@@ -121,6 +123,8 @@ void			sdl_showscreen(t_sdl *sdl);
 int				wolf_parseur(t_wolf *wolf, char *filename);
 void			raycasting(t_wolf *wolf);
 unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
+
+float			angle_adaptater(float angle);
 
 int				event_handler(t_wolf *wolf);
 

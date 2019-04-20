@@ -28,6 +28,11 @@ int			main(int ac, char **av)
 		ft_printf("TTF_Init: %s\n", TTF_GetError());
 		return (-1);
 	}
+	if (IMG_Init(IMG_INIT_PNG) == -1)
+	{
+		ft_printf("IMG: %s\n", IMG_GetError());
+		return (-1);
+	}
 	if (!(wolf = wolf_init()))
 		return (-1);
 	while (0 == 0)
