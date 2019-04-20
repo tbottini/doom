@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 21:02:26 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/20 17:50:02 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int load_map_btns(t_wolf *wolf)
 		ft_printf("Error loading folder 'map'\n");
 		return (0);
 	}
-	while ((mapdata = readdir(maps)))
+	while ((mapdata = readdir(maps)) && y < 9)
 	{
 		if (mapdata->d_reclen == 32)
 		{
@@ -88,6 +88,7 @@ int main(int ac, char **av)
 	{
 		if (!(event_handler(wolf)))
 			return (0);
+		loop_hook(wolf);
 	}
 	raythrowing(wolf, atoi(av[2]));
 	return (0);
