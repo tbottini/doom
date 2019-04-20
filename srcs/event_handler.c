@@ -76,6 +76,9 @@ int				event_handler(t_wolf *wolf)
 		else if (event.type == SDL_MOUSEBUTTONUP)
 			mouse_release(event.button.button,
 				event.button.x, event.button.y, wolf);
+		else if (event.type == SDL_MOUSEWHEEL)
+			mouse_press((event.wheel.y > 0 ? 4 : 5),
+				wolf->sdl.m_pos.x, wolf->sdl.m_pos.y, wolf);
 	}
 	return (1);
 }

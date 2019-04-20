@@ -14,8 +14,8 @@
 
 static void		lil_lil_loop(t_wolf *wolf, int key)
 {
-	float x_dir;
-	float y_dir;
+	double x_dir;
+	double y_dir;
 
 	x_dir = sin(wolf->rot * PI180) / 10;
 	y_dir = cos(wolf->rot * PI180) / 10;

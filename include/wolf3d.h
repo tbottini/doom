@@ -33,8 +33,8 @@ typedef struct		s_vct2
 
 typedef struct 		s_fvct2
 {
-	float			x;
-	float			y;
+	double			x;
+	double			y;
 }					t_fvct2;
 
 /*
@@ -62,20 +62,37 @@ m_status behaviour
 0 = gamemode
 1 = Show main menu
 2 = show map menu
+3 = show Option menu
 */
+
+/*
+coordtxt array
+0 : North
+1 : East
+2 : South
+3 : West
+*/
+
+typedef struct		s_font
+{
+	TTF_Font		*s32;
+	TTF_Font		*s64;
+	TTF_Font		*s128;
+}					t_font;
 
 typedef struct		s_sdl
 {
 	SDL_Window		*win;
 	SDL_Renderer	*rend;
-	TTF_Font		*font;
-	TTF_Font		*font32;
-	TTF_Font		*font128;
+	t_font			fonts;
 	SDL_Color		colorpal[10];
 	t_btn			btnarr[10];
 	t_btn			btnmap[11];
+	t_btn			btnopt[11];
 	t_vct2			size;
+	t_vct2			m_pos;
 	SDL_Texture		*txture;
+	SDL_Texture		*coordtxt[4];
 	uint32_t		*screen;
 	int				open;
 	int				m_status;
@@ -88,7 +105,7 @@ typedef	struct		s_wolf
 	char			map[100][100];
 	t_vct2			map_size;
 	t_fvct2			pos;
-	float			rot;
+	double			rot;
 	int				fov;
 }					t_wolf;
 
@@ -124,7 +141,7 @@ int				wolf_parseur(t_wolf *wolf, char *filename);
 void			raycasting(t_wolf *wolf);
 unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
 
-float			angle_adaptater(float angle);
+double			angle_adaptater(double angle);
 
 int				event_handler(t_wolf *wolf);
 
