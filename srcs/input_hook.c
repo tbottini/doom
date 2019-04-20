@@ -14,19 +14,23 @@
 
 int key_press(int key, t_wolf *wolf)
 {
-	if (key == SDLK_m)
+	if (key == SDLK_BACKQUOTE)
 	{
-		ft_2dchar_print((char **)wolf->map);
+		wolf->sdl.m_status = 1;
+		draw_menu(wolf);
 	}
-	//(void)wolf;
-	ft_printf("Key %d : %s pressed\n", key, SDL_GetKeyName(key));
+	else
+	{
+		ft_nodeadd_int(&(wolf->sdl.keys), key);
+	}
+	//ft_printf("Key %d : %s pressed\n", key, SDL_GetKeyName(key));
 	return (0);
 }
 
 int key_release(int key, t_wolf *wolf)
 {
-	(void)wolf;
-	ft_printf("Key %d : %s released\n", key, SDL_GetKeyName(key));
+	ft_noderm_int(&(wolf->sdl.keys), key);
+	//ft_printf("Key %d : %s released\n", key, SDL_GetKeyName(key));
 	return (0);
 }
 
