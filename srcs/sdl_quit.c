@@ -12,7 +12,7 @@
 
 #include "wolf3d.h"
 
-int		prog_quit(t_wolf *wolf)
+static void		free_textures(t_wolf *wolf)
 {
 	int x;
 
@@ -26,6 +26,11 @@ int		prog_quit(t_wolf *wolf)
 		if (x > 1)
 			free(wolf->sdl.btnmap[x].data);
 	}
+}
+
+int				prog_quit(t_wolf *wolf)
+{
+	free_textures(wolf);
 	if (wolf->sdl.txture)
 		SDL_DestroyTexture(wolf->sdl.txture);
 	if (wolf->sdl.font)
