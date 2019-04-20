@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/18 18:18:11 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/19 21:20:07 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int key_press(int key, t_wolf *wolf)
 		ft_2dchar_print((char **)wolf->map);
 	}
 	//(void)wolf;
-	ft_printf("Key %d : %s pressed\n", key, SDL_GetKeyName(key));
+	//ft_printf("Key %d : %s pressed\n", key, SDL_GetKeyName(key));
 	return (0);
 }
 
 int key_release(int key, t_wolf *wolf)
 {
 	(void)wolf;
-	ft_printf("Key %d : %s released\n", key, SDL_GetKeyName(key));
+	//ft_printf("Key %d : %s released\n", key, SDL_GetKeyName(key));
 	return (0);
 }
 

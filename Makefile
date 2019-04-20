@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/18 17:22:45 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/19 20:43:19 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CFLAGS			:=		-g -Wall -Wextra \
 
 FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf
 
-LIB				:=		-L libft/ -lft							
+LIB				:=		-L libft/ -lft
 
 
 

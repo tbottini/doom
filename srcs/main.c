@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/18 21:38:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/19 21:02:26 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,16 @@ int main(int ac, char **av)
 	}
 	if (!(wolf = wolf_init()))
 		return (-1);
-	//if (!wolf_parseur(ac, av, wolf))
-	//{
-	//	ft_putendl("error");
-	//	return (0);
-	//}
+	if (!wolf_parseur(wolf, av[1]))
+	{
+		ft_putendl("error");
+		return (0);
+	}
 	while (0 == 0)
 	{
 		if (!(event_handler(wolf)))
 			return (0);
 	}
-
+	raythrowing(wolf, atoi(av[2]));
 	return (0);
 }
