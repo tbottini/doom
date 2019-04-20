@@ -18,7 +18,7 @@ CFLAGS			:=		-g -Wall -Wextra \
 						-I/Users/$(shell whoami)/.brew/include/SDL2
 #-Werror
 
-FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf
+FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf -lSDL2_image
 
 LIB				:=		-L libft/ -lft							
 
@@ -42,6 +42,7 @@ SRCS			:=		srcs/main.c			 					\
 						srcs/button_drawer.c					\
 						srcs/button_action.c					\
 						srcs/button_loader.c					\
+						srcs/num_tools.c					\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 
