@@ -32,6 +32,7 @@ SRCS			:=		srcs/main.c			 					\
 						srcs/wolf_parseur.c						\
 						srcs/wolf_init.c						\
 						srcs/init_btns.c						\
+						srcs/init_btns2.c						\
 						srcs/raycasting.c						\
 						srcs/color.c							\
 						srcs/input_hook.c						\
@@ -40,6 +41,7 @@ SRCS			:=		srcs/main.c			 					\
 						srcs/sdl_quit.c							\
 						srcs/button_drawer.c					\
 						srcs/button_action.c					\
+						srcs/button_loader.c					\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 

@@ -12,19 +12,21 @@
 
 #include "wolf3d.h"
 
-static void window_event(t_wolf *wolf, SDL_Event event)
+static void		window_event(t_wolf *wolf, SDL_Event event)
 {
-	void *tmp;
-	int pitch;
+	void	*tmp;
+	int		pitch;
 
 	SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
 	PrintEvent(&event);
-	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)
+	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
+		|| event.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
 		if (wolf->sdl.txture)
 			SDL_DestroyTexture(wolf->sdl.txture);
-		wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
-											 SDL_TEXTUREACCESS_STREAMING, wolf->sdl.size.x, wolf->sdl.size.y);
+		wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend,
+			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
+			wolf->sdl.size.x, wolf->sdl.size.y);
 		if (SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch))
 			prog_quit(wolf);
 		wolf->sdl.screen = (uint32_t *)tmp;
@@ -37,43 +39,43 @@ static void window_event(t_wolf *wolf, SDL_Event event)
 	}
 }
 
-int event_handler(t_wolf *wolf)
+static void		dropfile_event(t_wolf *wolf, SDL_Event event)
+{
+	if (wolf_parseur(wolf, event.drop.file))
+	{
+		ft_printf("Load Reussi\n");
+		wolf->sdl.m_status = 0;
+		draw_menu(wolf);
+	}
+	ft_printf("Event DropFile %s\n", event.drop.file);
+	SDL_free(event.drop.file);
+}
+
+int				event_handler(t_wolf *wolf)
 {
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
+		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN
+									&& event.key.keysym.sym == SDLK_ESCAPE))
 			return (prog_quit(wolf));
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 			key_press(event.key.keysym.sym, wolf);
 		else if (event.type == SDL_KEYUP && event.key.repeat == 0)
 			key_release(event.key.keysym.sym, wolf);
-		//else if (event.type == SDL_DROPBEGIN)
-		//	printf("Event DropBegin\n");
 		else if (event.type == SDL_DROPFILE)
-		{
-			if (wolf_parseur(wolf, event.drop.file))
-			{
-				ft_printf("Load Reussi\n");
-				wolf->sdl.m_status = 0;
-				draw_menu(wolf);
-			}
-			printf("Event DropFile %s\n", event.drop.file);
-			SDL_free(event.drop.file);
-		}
-		//else if (event.type == SDL_DROPCOMPLETE)
-		//	printf("Event DropComplete\n");
+			dropfile_event(wolf, event);
 		else if (event.type == SDL_WINDOWEVENT)
 			window_event(wolf, event);
 		else if (event.type == SDL_MOUSEMOTION)
 			mouse_move(event.motion.x, event.motion.y, wolf);
 		else if (event.type == SDL_MOUSEBUTTONDOWN)
-			mouse_press(event.button.button, event.button.x, event.button.y, wolf);
+			mouse_press(event.button.button,
+				event.button.x, event.button.y, wolf);
 		else if (event.type == SDL_MOUSEBUTTONUP)
-			mouse_release(event.button.button, event.button.x, event.button.y, wolf);
-		//else
-		//	PrintEvent(&event);
+			mouse_release(event.button.button,
+				event.button.x, event.button.y, wolf);
 	}
 	return (1);
 }

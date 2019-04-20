@@ -12,49 +12,58 @@
 
 #include "wolf3d.h"
 
-int loop_hook(t_wolf *wolf)
+static void		lil_lil_loop(t_wolf *wolf, int key)
+{
+	if (key == SDLK_s)
+	{
+		if (wolf->map[(int)(wolf->pos.y - 0.1)][(int)wolf->pos.x] != '#')
+			wolf->pos.y -= 0.1;
+	}
+	else if (key == SDLK_d)
+	{
+		if (wolf->map[(int)wolf->pos.y][(int)(wolf->pos.x + 0.1)] != '#')
+			wolf->pos.x += 0.1;
+	}
+	else if (key == SDLK_a)
+	{
+		if (wolf->map[(int)wolf->pos.y][(int)(wolf->pos.x - 0.1)] != '#')
+			wolf->pos.x -= 0.1;
+	}
+}
+
+static void		lil_loop(t_wolf *wolf, int key)
+{
+	if (key == SDLK_e)
+	{
+		if (wolf->rot - 5.0 < -180.0)
+			wolf->rot += 355.0;
+		else
+			wolf->rot -= 5;
+	}
+	else if (key == SDLK_q)
+	{
+		if (wolf->rot + 5.0 > 180.0)
+			wolf->rot -= 355.0;
+		else
+			wolf->rot += 5;
+	}
+	else if (key == SDLK_w)
+	{
+		if (wolf->map[(int)(wolf->pos.y + 0.1)][(int)wolf->pos.x] != '#')
+			wolf->pos.y += 0.1;
+	}
+	else
+		lil_lil_loop(wolf, key);
+}
+
+int				loop_hook(t_wolf *wolf)
 {
 	t_tab pos;
-	int key;
 
 	pos = wolf->sdl.keys;
 	while (pos)
 	{
-		key = pos->data;
-		if (key == SDLK_e)
-		{
-			if (wolf->rot - 5.0 < -180.0)
-				wolf->rot += 355.0;
-			else
-				wolf->rot -= 5;
-		}
-		else if (key == SDLK_q)
-		{
-			if (wolf->rot + 5.0 > 180.0)
-				wolf->rot -= 355.0;
-			else
-				wolf->rot += 5;
-		}
-		else if (key == SDLK_w)
-		{
-			if (wolf->map[(int)(wolf->pos.y + 0.1)][(int)wolf->pos.x] != '#')
-				wolf->pos.y += 0.1;
-		}
-		else if (key == SDLK_s)
-		{
-			if (wolf->map[(int)(wolf->pos.y - 0.1)][(int)wolf->pos.x] != '#')
-				wolf->pos.y -= 0.1;
-		}
-		else if (key == SDLK_d)
-		{
-			if (wolf->map[(int)wolf->pos.y][(int)(wolf->pos.x + 0.1)] != '#')
-				wolf->pos.x += 0.1;
-		}
-		else if (key == SDLK_a)
-		{
-			if (wolf->map[(int)wolf->pos.y][(int)(wolf->pos.x - 0.1)] != '#')
-				wolf->pos.x -= 0.1;
-		}
+		lil_loop(wolf, pos->data);
 		pos = pos->next;
 	}
 	if (wolf->sdl.m_status == 0)
