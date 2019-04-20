@@ -57,9 +57,11 @@ void btn_click(t_wolf *wolf, int x, int y)
 				}
 				else if (i > 1)
 				{
-					wolf->sdl.m_status = 0;
-					ft_printf("MapClick on btn %d : %s\tReussi : %d\n", i, tmp.data, wolf_parseur(wolf, tmp.data));
-					draw_menu(wolf);
+					if (wolf_parseur(wolf, tmp.data))
+					{
+						wolf->sdl.m_status = 0;
+						draw_menu(wolf);
+					}
 				}
 				/*	if (i == 1)
 					start_btn(wolf);

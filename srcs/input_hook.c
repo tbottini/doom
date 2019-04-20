@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 21:20:07 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/20 17:53:41 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 int key_press(int key, t_wolf *wolf)
 {
-	if (key == SDLK_m)
+	if (key == SDLK_BACKQUOTE)
 	{
-		ft_2dchar_print((char **)wolf->map);
+		wolf->sdl.m_status = 1;
+		draw_menu(wolf);
 	}
-	//(void)wolf;
-	//ft_printf("Key %d : %s pressed\n", key, SDL_GetKeyName(key));
+	else
+	{
+		ft_nodeadd_int(&(wolf->sdl.keys), key);
+	}
 	return (0);
 }
 
 int key_release(int key, t_wolf *wolf)
 {
-	(void)wolf;
-	//ft_printf("Key %d : %s released\n", key, SDL_GetKeyName(key));
+	ft_noderm_int(&(wolf->sdl.keys), key);
 	return (0);
 }
 
