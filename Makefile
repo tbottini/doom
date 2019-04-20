@@ -15,7 +15,8 @@ NAME			:=		wolf3d
 CC				:=		gcc
 
 CFLAGS			:=		-g -Wall -Wextra \
-						-I/Users/$(shell whoami)/.brew/include/SDL2
+						-I/Users/$(shell whoami)/.brew/include/SDL2\
+						-Wconversion
 #-Werror
 
 FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf -lSDL2_image
@@ -60,15 +61,15 @@ all: $ $(NAME)
 
 %.o		:		%.c
 	@printf '\rCompilation Libft\n'
-	@printf '[\e[31m%*s' $(FILL_BAR) | tr ' ' '#'
-	@printf '%*s\e[0m] \e[31m $<\e[0m' $(INV_FILL_BAR)
+	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
+	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
 $(NAME)	: $(OBJS)
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(FMLX) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
-	@printf "\e[M\e[A\n\e[31m[--------$(NAME)--------]\n"
+	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n"
 
 clean:
 	@make clean -C ./libft

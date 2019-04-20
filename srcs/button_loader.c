@@ -19,10 +19,10 @@ int				load_map_btns(t_wolf *wolf)
 	char			tmp[512];
 	int				y;
 
-	if (!wolf->sdl.btnmap[0].txture)
-		wolf->sdl.btnmap[0] = add_quit_button(wolf, " Return ");
-	if (!wolf->sdl.btnmap[1].txture)
-		wolf->sdl.btnmap[1] = add_mapmenu_button(wolf);
+//	if (!wolf->sdl.btnmap[0].txture)
+//		wolf->sdl.btnmap[0] = add_quit_button(wolf, " Return ");
+//	if (!wolf->sdl.btnmap[1].txture)
+//		wolf->sdl.btnmap[1] = add_mapmenu_button(wolf);
 	y = 2;
 	if (!(maps = opendir("map")))
 	{

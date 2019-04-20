@@ -34,6 +34,14 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 					NULL, &(wolf->sdl.btnmap[x].area));
 		}
 	}
+	else if (arr == 3)
+	{
+		while (wolf->sdl.btnopt[++x].txture)
+		{
+			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnopt[x].txture,
+					NULL, &(wolf->sdl.btnopt[x].area));
+		}
+	}
 	SDL_RenderPresent(wolf->sdl.rend);
 }
 
@@ -48,8 +56,8 @@ static void		update_loc_buttons(t_wolf *wolf, t_btn *arr)
 	while (arr[++x].txture)
 	{
 		tmp = &(arr[x]);
-		arr[x].area.x = wolf->sdl.size.x * (tmp->pos.x / 100);
-		arr[x].area.y = wolf->sdl.size.y * (tmp->pos.y / 100);
+		arr[x].area.x = wolf->sdl.size.x * (tmp->pos.x / 100.0);
+		arr[x].area.y = wolf->sdl.size.y * (tmp->pos.y / 100.0);
 		if (tmp->snapx == 1)
 			arr[x].area.x -= tmp->area.w / 2;
 		else if (tmp->snapx == 2)
@@ -79,6 +87,11 @@ void			draw_menu(t_wolf *wolf)
 	else if (status == 2)
 	{
 		update_loc_buttons(wolf, wolf->sdl.btnmap);
+		draw_buttons(wolf, status);
+	}
+	else if (status == 3)
+	{
+		update_loc_buttons(wolf, wolf->sdl.btnopt);
 		draw_buttons(wolf, status);
 	}
 }
