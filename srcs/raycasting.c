@@ -2,6 +2,7 @@
 
 float		iswall(t_wolf *wolf, t_fvct2 inter)
 {
+	//printf("test wolf->map[.y%d][.x%d]\n", (int)inter.y, (int)inter.x);
 	if (inter.x < wolf->map_size.x && inter.y < wolf->map_size.y
 		&& inter.x > -1 && inter.y > -1)
 	{
@@ -26,6 +27,8 @@ float		hor_detection(t_wolf *wolf, float angle)
 	ratio.x = ratio.y / tan(angle * PI / 180);
 	inter.y = (int)wolf->pos.y + ((angle < 180) ? 1 : 0);
 	inter.x = wolf->pos.x + fabs(inter.y - wolf->pos.y) * ratio.x;
+	inter.y += ((angle > 180) ? -1: 0);
+	//printf("first inter hor .x %f .y %f\n", inter.x, inter.y);
 	while ((ret = iswall(wolf, inter)) == 0)
 	{
 		inter.y += ratio.y;
@@ -34,7 +37,7 @@ float		hor_detection(t_wolf *wolf, float angle)
 	if (ret == 1)
 	{
 		dist.x = inter.x - wolf->pos.x;
-		dist.y = inter.y - wolf->pos.y;
+		dist.y = inter.y - wolf->pos.y + ((angle > 180) ? 1 : 0);
 		ret = sqrt(dist.x * dist.x + dist.y * dist.y) * cos((wolf->rot - angle) * PI / 180);
 	}
 	return (ret);
@@ -125,7 +128,6 @@ void		raycasting(t_wolf *wolf)
 		angle -= iangle;
 		i++;
 	}
-	printf("wolfr %f\n", wolf->rot);
 	SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.txture, NULL, NULL);
 	SDL_RenderPresent(wolf->sdl.rend);
 }
@@ -137,7 +139,6 @@ void		raythrowing(t_wolf *wolf, int ag)
 
 	dist.x = hor_detection(wolf, (float)ag);
 	dist.y = ver_detection(wolf, (float)ag);
-	//printf("dist %f \n", dist.x);
 	printf("hor %f ver %f\n", dist.x, dist.y);
 	while (j != -1)
 	{
