@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/20 21:53:23 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/21 12:53:05 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_wolf			*wolf_init(void)
 	wolf->sdl.btnarr[4].txture = NULL;
 	wolf->pos.x = 0;
 	wolf->pos.y = 0;
-	wolf->fov = 60;
+	wolf->fov = 90;
 	wolf->rot = 270;
 	return (wolf);
 }
