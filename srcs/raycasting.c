@@ -2,7 +2,6 @@
 
 float		iswall(t_wolf *wolf, t_fvct2 inter)
 {
-	//printf("test wolf->map[.y%d][.x%d]\n", (int)inter.y, (int)inter.x);
 	if (inter.x < wolf->map_size.x && inter.y < wolf->map_size.y
 		&& inter.x > -1 && inter.y > -1)
 	{
@@ -83,20 +82,20 @@ void		draw_column(t_wolf *wolf, float dist, int num)
 	iprint = num;
 	while (i < imax)
 	{
-		wolf->sdl.screen[iprint] = color_rgb(0, 123, 255);
+		wolf->sdl.screen[iprint] = color_rgb(0, 0, 0);
 		i++;
 		iprint += wolf->sdl.size.x;
 	}
 	imax = i + column_size;
 	while (i < imax - 1)
 	{
-		wolf->sdl.screen[iprint] = color_rgb(255, 0, 0);
+		wolf->sdl.screen[iprint] = color_rgb(0, 0, 0);
 		i++;
 		iprint += wolf->sdl.size.x;
 	}
 	while (i < wolf->sdl.size.y)
 	{
-		wolf->sdl.screen[iprint] = color_rgb(100, 100, 100);
+		wolf->sdl.screen[iprint] = color_rgb(0, 100, 0);
 		i++;
 		iprint += wolf->sdl.size.x;
 	}
