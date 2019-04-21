@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/20 21:02:53 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/21 13:32:27 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ LIB				:=		-L libft/ -lft
 
 
 INCLUDE			:=		-I ./include							\
-						-I ./libft/include						\
+						-I ./libft								\
 
 SRCS			:=		srcs/main.c			 					\
 						srcs/sdl_manager.c						\
