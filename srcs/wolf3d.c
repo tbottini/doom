@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/18 21:38:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/21 13:29:33 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,8 @@ int main(int ac, char **av)
 	}
 	while (0 == 0)
 	{
-<<<<<<< HEAD
-=======
 		if (!(event_handler(wolf)))
 			return (0);
->>>>>>> 9b51ada1c12e3c3d81e3e973df18654462d19bd5
 	}
 
 	return (0);
