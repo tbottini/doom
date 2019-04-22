@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 20:40:26 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/21 15:16:51 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void window_event(t_wolf *wolf, SDL_Event event)
 	int pitch;
 
 	SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
-	PrintEvent(&event);
+	//PrintEvent(&event);
 	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
 		if (wolf->sdl.txture)
@@ -55,11 +55,11 @@ int event_handler(t_wolf *wolf)
 		{
 			if (wolf_parseur(wolf, event.drop.file))
 			{
-				ft_printf("Load Reussi\n");
+				//ft_printf("Load Reussi\n");
 				wolf->sdl.m_status = 0;
 				draw_menu(wolf);
 			}
-			printf("Event DropFile %s\n", event.drop.file);
+			//printf("Event DropFile %s\n", event.drop.file);
 			SDL_free(event.drop.file);
 		}
 		//else if (event.type == SDL_DROPCOMPLETE)

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/20 18:40:46 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/22 13:46:06 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ int loop_hook(t_wolf *wolf)
 		key = pos->data;
 		if (key == SDLK_e)
 		{
-			if (wolf->rot - 5.0 < 0)
+			if (wolf->rot - 30.0 < 0)
 				wolf->rot += 355.0;
 			else
-				wolf->rot -= 5;
+				wolf->rot -= 5.0;
 		}
 		else if (key == SDLK_q)
 		{
 			if (wolf->rot + 5.0 > 360.0)
 				wolf->rot -= 355.0;
 			else
-				wolf->rot += 5;
+				wolf->rot += 5.0;
 		}
 		else if (key == SDLK_w)
 		{
