@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   button_action.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 18:19:52 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/21 15:15:05 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void btn_click(t_wolf *wolf, int x, int y)
 			tmp = wolf->sdl.btnarr[i];
 			if (tmp.area.x <= x && x <= tmp.area.x + tmp.area.w && tmp.area.y <= y && y <= tmp.area.y + tmp.area.h)
 			{
-				ft_printf("Click on btn %d\n", i);
+				//ft_printf("Click on btn %d\n", i);
 				if (i == 1)
 				{
 					start_btn(wolf);
