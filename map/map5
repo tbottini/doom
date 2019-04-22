@@ -8,5 +8,7 @@
 .#...#....
 .#####....
 [Textures]
----
----
+ressources/textures/play.png
+ressources/textures/mini.png
+ressources/textures/wall.png
+ressources/textures/wall_blue.png
