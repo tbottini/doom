@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/20 21:52:12 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:55:01 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,10 @@ int main(int ac, char **av)
 	(void)ac;
 	(void)av;
 
-	float_modulo(360.550);
-	float_modulo(50.53);
-	float_modulo(-360.353);
-	float_modulo(-720.4);
-	float_modulo(7253.523234);
 
+	SDL_Surface *img;
+
+	img = NULL;
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
 		ft_printf("SDL_Init: %s\n", SDL_GetError());
@@ -85,11 +83,6 @@ int main(int ac, char **av)
 	}
 	if (!(wolf = wolf_init()))
 		return (-1);
-	if (!wolf_parseur(wolf, av[1]))
-	{
-		ft_putendl("error");
-		return (0);
-	}
 	while (0 == 0)
 	{
 		if (!(event_handler(wolf)))
