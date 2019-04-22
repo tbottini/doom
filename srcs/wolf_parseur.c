@@ -10,7 +10,7 @@ int				row_verif(t_wolf *wolf, char *row)
 		if(row[i] == 'A')
 		{
 			wolf->pos.x = i + 0.5;
-			wolf->pos.y = (float)wolf->map_size.y + 0.5;
+			wolf->pos.y = (double)wolf->map_size.y + 0.5;
 		}
 		else if (row[i] != '.' && row[i] != '#')
 			return (0);
@@ -25,6 +25,7 @@ int				map_verif(int fd, t_wolf *wolf)
 	int			ret;
 	int			flag;
 
+	line = NULL;
 	flag = 0;
 	wolf->map_size.x = 0;
 	wolf->map_size.y = 0;
@@ -33,7 +34,7 @@ int				map_verif(int fd, t_wolf *wolf)
 		if (wolf->map_size.x == 0)
 		{
 			if (ft_strlen(line) < 100)
-				wolf->map_size.x = ft_strlen(line);
+				wolf->map_size.x = (int)ft_strlen(line);
 			else
 				return (0);
 		}
@@ -49,16 +50,18 @@ int				map_verif(int fd, t_wolf *wolf)
 		else
 			return (0);
 		wolf->map_size.y++;
+		free(line);
 	}
+	if (line)
+		free(line);
 	return (1);
 }
 
-int				wolf_parseur(int ac, char **av, t_wolf *wolf)
+int				wolf_parseur(t_wolf *wolf, char *filename)
 {
 	int			fd;
 
-	(void)ac;
-	fd = open(av[1], O_RDONLY);
+	fd = open(filename, O_RDONLY);
 	if (map_verif(fd, wolf) == 0)
 		return (0);
 	return (1);

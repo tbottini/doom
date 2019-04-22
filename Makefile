@@ -14,11 +14,12 @@ NAME			:=		wolf3d
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra \
-						-I/Users/$(shell whoami)/.brew/include/SDL2
+CFLAGS			:=		-g -Wall -Wextra \
+						-I/Users/$(shell whoami)/.brew/include/SDL2\
+						-Wconversion
 #-Werror
 
-FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf
+FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf -lSDL2_image
 
 LIB				:=		-L libft/ -lft							
 
@@ -27,15 +28,22 @@ LIB				:=		-L libft/ -lft
 INCLUDE			:=		-I ./include							\
 						-I ./libft								\
 
-SRCS			:=		srcs/wolf3d.c		 					\
+SRCS			:=		srcs/main.c			 					\
 						srcs/sdl_manager.c						\
 						srcs/wolf_parseur.c						\
+						srcs/wolf_init.c						\
 						srcs/init_btns.c						\
+						srcs/init_btns2.c						\
 						srcs/raycasting.c						\
 						srcs/color.c							\
 						srcs/input_hook.c						\
+						srcs/loop_hook.c						\
 						srcs/event_handler.c					\
 						srcs/sdl_quit.c							\
+						srcs/button_drawer.c					\
+						srcs/button_action.c					\
+						srcs/button_loader.c					\
+						srcs/num_tools.c					\
 
 NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
 
@@ -53,15 +61,15 @@ all: $ $(NAME)
 
 %.o		:		%.c
 	@printf '\rCompilation Libft\n'
-	@printf '[\e[31m%*s' $(FILL_BAR) | tr ' ' '#'
-	@printf '%*s\e[0m] \e[31m $<\e[0m' $(INV_FILL_BAR)
+	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
+	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
 $(NAME)	: $(OBJS)
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(FMLX) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
-	@printf "\e[M\e[A\n\e[31m[--------$(NAME)--------]\n"
+	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n"
 
 clean:
 	@make clean -C ./libft
