@@ -72,19 +72,22 @@ int sdl_start(t_wolf *wolf, const char *title)
 
 	wolf->sdl.size.x = WIDTH;
 	wolf->sdl.size.y = HEIGHT;
+	wolf->sdl.m_status = 1;
 	if (!(wolf->sdl.win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE)))
-		return (-1);
+		return (prog_quit(wolf));
 	if (!(wolf->sdl.rend = SDL_CreateRenderer(wolf->sdl.win, -1, SDL_RENDERER_SOFTWARE)))
-		return (-1);
-	if (!(wolf->sdl.font = TTF_OpenFont("wolfenstein.ttf", 128)))
-		return (-2);
-	//SDL_SetWindowTitle(wolf->sdl.win, title);
+		return (prog_quit(wolf));
+	if (!(wolf->sdl.fonts.s64 = TTF_OpenFont("wolfenstein.ttf", 64)))
+		return (prog_quit(wolf));
+	if (!(wolf->sdl.fonts.s128 = TTF_OpenFont("wolfenstein.ttf", 128)))
+		return (prog_quit(wolf));
+	if (!(wolf->sdl.fonts.s32 = TTF_OpenFont("impact.ttf", 32)))
+		return (prog_quit(wolf));
 	SDL_SetWindowMinimumSize(wolf->sdl.win, 640, 480);
 	wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
-			SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT); 				//todo quand la taille de la fenetre change
-	SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch);
-	if (!tmp)
-		return (-1);
+			SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
+	if (SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch))
+		return (prog_quit(wolf));
 	wolf->sdl.screen = (uint32_t*)tmp;
 	return (0);
 }
