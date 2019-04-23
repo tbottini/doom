@@ -35,7 +35,7 @@ float		hor_detection(t_wolf *wolf, t_ray *ray)
 		if (ray->angle > 180)
 			dist.y++;
 		ray->hor = sqrt(dist.x * dist.x + dist.y * dist.y);
-		ray->hor *= cos((wolf->rot - ray->angle) * PI180);
+		//ray->hor = fabs(ray->inter_h.x - wolf->pos.x) / cos((wolf->rot - ray->angle) * PI180);
 	}
 	return (ray->hor);
 }

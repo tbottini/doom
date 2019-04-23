@@ -27,7 +27,7 @@ void		draw_column_texture(t_wolf *wolf, int *istart, int lenght)
 	}
 }
 
-void		draw_column(t_wolf *wolf, float dist, int num)
+void		draw_column(t_wolf *wolf, float dist, int num, float angle)
 {
 	float	column_size;
 	int		sky_size;
@@ -35,11 +35,13 @@ void		draw_column(t_wolf *wolf, float dist, int num)
 	int		iprint;
 
 	i = -1;
+	dist = dist * cos(fabs(wolf->rot - angle) * PI / 180.00);
+	//dist = dist * sin((180 - angle) / (360 / PI));
 	dist = (dist > 0.8) ? dist : 0.8;
 	column_size = (wolf->sdl.size.y * 0.8) / dist;
 	sky_size = (wolf->sdl.size.y - column_size) / 2;
 	iprint = num;
 	draw_part(wolf, &iprint, sky_size, BLUE_SKY);
 	draw_part(wolf, &iprint, column_size, RED_WALL);
-	draw_part(wolf, &iprint, wolf->sdl.size.y, PINK_FLOOR);
+	draw_part(wolf, &iprint, sky_size, PINK_FLOOR);
 }
