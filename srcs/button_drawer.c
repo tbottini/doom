@@ -12,7 +12,7 @@
 
 #include "wolf3d.h"
 
-static void draw_buttons(t_wolf *wolf, int arr)
+static void		draw_buttons(t_wolf *wolf, int arr)
 {
 	int x;
 
@@ -22,32 +22,42 @@ static void draw_buttons(t_wolf *wolf, int arr)
 	{
 		while (wolf->sdl.btnarr[++x].txture)
 		{
-			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[x].txture, NULL, &(wolf->sdl.btnarr[x].area));
+			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[x].txture,
+					NULL, &(wolf->sdl.btnarr[x].area));
 		}
 	}
 	else if (arr == 2)
 	{
 		while (wolf->sdl.btnmap[++x].txture)
 		{
-			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnmap[x].txture, NULL, &(wolf->sdl.btnmap[x].area));
+			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnmap[x].txture,
+					NULL, &(wolf->sdl.btnmap[x].area));
+		}
+	}
+	else if (arr == 3)
+	{
+		while (wolf->sdl.btnopt[++x].txture)
+		{
+			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnopt[x].txture,
+					NULL, &(wolf->sdl.btnopt[x].area));
 		}
 	}
 	SDL_RenderPresent(wolf->sdl.rend);
 }
 
-static void update_loc_buttons(t_wolf *wolf, t_btn *arr)
+static void		update_loc_buttons(t_wolf *wolf, t_btn *arr)
 {
-	t_btn *tmp;
-	int x;
-	int y;
+	t_btn	*tmp;
+	int		x;
+	int		y;
 
 	x = -1;
 	y = 0;
 	while (arr[++x].txture)
 	{
 		tmp = &(arr[x]);
-		arr[x].area.x = wolf->sdl.size.x * (tmp->pos.x / 100); //controls the rect's x coordinate
-		arr[x].area.y = wolf->sdl.size.y * (tmp->pos.y / 100);
+		arr[x].area.x = wolf->sdl.size.x * (tmp->pos.x / 100.0);
+		arr[x].area.y = wolf->sdl.size.y * (tmp->pos.y / 100.0);
 		if (tmp->snapx == 1)
 			arr[x].area.x -= tmp->area.w / 2;
 		else if (tmp->snapx == 2)
@@ -64,7 +74,7 @@ static void update_loc_buttons(t_wolf *wolf, t_btn *arr)
 	}
 }
 
-void draw_menu(t_wolf *wolf)
+void			draw_menu(t_wolf *wolf)
 {
 	int status;
 
@@ -77,6 +87,11 @@ void draw_menu(t_wolf *wolf)
 	else if (status == 2)
 	{
 		update_loc_buttons(wolf, wolf->sdl.btnmap);
+		draw_buttons(wolf, status);
+	}
+	else if (status == 3)
+	{
+		update_loc_buttons(wolf, wolf->sdl.btnopt);
 		draw_buttons(wolf, status);
 	}
 }

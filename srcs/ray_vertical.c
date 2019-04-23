@@ -35,7 +35,6 @@ float		ver_detection(t_wolf *wolf, t_ray *ray)
 		if (ray->angle > 90 && ray->angle < 270)
 			dist.x++;
 		ray->ver = sqrt(dist.x * dist.x + dist.y * dist.y);
-		ray->ver *= cos((wolf->rot - ray->angle) * PI180);
 	}
 	return (ray->ver);
 }

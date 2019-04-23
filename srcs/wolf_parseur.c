@@ -10,7 +10,7 @@ int				row_verif(t_wolf *wolf, char *row)
 		if(row[i] == 'A')
 		{
 			wolf->pos.x = i + 0.5;
-			wolf->pos.y = (float)wolf->map_size.y + 0.5;
+			wolf->pos.y = (double)wolf->map_size.y + 0.5;
 		}
 		else if (row[i] != '.' && row[i] != '#')
 			return (0);
@@ -34,7 +34,7 @@ int				map_verif(int fd, t_wolf *wolf)
 		if (wolf->map_size.x == 0)
 		{
 			if (ft_strlen(line) < 100)
-				wolf->map_size.x = ft_strlen(line);
+				wolf->map_size.x = (int)ft_strlen(line);
 			else
 				return (0);
 		}

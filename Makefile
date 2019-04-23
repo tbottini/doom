@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/22 18:27:41 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/22 20:47:01 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,8 @@ SRCS			:=		main.c			 						\
 						draw_tools.c							\
 						ray_vertical.c							\
 						ray_horizontal.c						\
+						init_btns2.c						\
+						button_loader.c					\
 
 OBJDIR			:=		objs
 
