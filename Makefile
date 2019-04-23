@@ -26,24 +26,26 @@ INCLUDE			=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
 
-SRCS			:=		main.c			 						\
-						sdl_manager.c							\
-						wolf_parseur.c							\
-						wolf_init.c								\
-						init_btns.c								\
-						raycasting.c							\
+SRCS			:=		button_action.c							\
+						button_drawer.c							\
+						button_loader.c							\
 						color.c									\
+						draw_tools.c							\
+						event_handler.c							\
+						image_tools.c							\
+						init_btns.c								\
+						init_btns2.c							\
 						input_hook.c							\
 						loop_hook.c								\
-						event_handler.c							\
-						sdl_quit.c								\
-						button_drawer.c							\
-						button_action.c							\
+						main.c			 						\
 						num_tools.c								\
-						image_tools.c							\
-						draw_tools.c							\
-						ray_vertical.c							\
 						ray_horizontal.c						\
+						ray_vertical.c							\
+						raycasting.c							\
+						sdl_manager.c							\
+						sdl_quit.c								\
+						wolf_init.c								\
+						wolf_parseur.c							\
 
 OBJDIR			:=		objs
 

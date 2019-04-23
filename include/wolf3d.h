@@ -169,11 +169,10 @@ int				event_handler(t_wolf *wolf);
 int				prog_quit(t_wolf *wolf);
 void			raythrowing(t_wolf *wolf, int ag);
 float			float_modulo(float num);
-float			angle_adaptater(float angle);
 void			print_image(SDL_Surface *png);
 void			draw_column(t_wolf *wolf, float dist, int num);
 
 float		ver_detection(t_wolf *wolf, t_ray *ray);
 float		hor_detection(t_wolf *wolf, t_ray *ray);
-float		iswall(t_wolf *wolf, t_fvct2 inter);
+double		iswall(t_wolf *wolf, t_fvct2 inter);
 #endif

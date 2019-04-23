@@ -6,7 +6,7 @@ float		float_modulo(float num)
 	return ((int)num % 360 + num - (int)num);
 }
 
-float		angle_adaptater(float angle)
+double		angle_adaptater(double angle)
 {
 	if (angle < 0.0)
 		angle += 360;
