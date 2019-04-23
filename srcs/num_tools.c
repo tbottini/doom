@@ -1,5 +1,6 @@
 #include "wolf3d.h"
 
+
 float		float_modulo(float num)
 {
 	return ((int)num % 360 + num - (int)num);

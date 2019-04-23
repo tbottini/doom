@@ -1,6 +1,6 @@
 #include "wolf3d.h"
 
-float		iswall(t_wolf *wolf, t_fvct2 inter)
+double		iswall(t_wolf *wolf, t_fvct2 inter)
 {
 	if (inter.x < wolf->map_size.x && inter.y < wolf->map_size.y
 		&& inter.x > -1 && inter.y > -1)
