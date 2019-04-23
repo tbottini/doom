@@ -24,9 +24,9 @@
 # define HEIGHT 1080
 # define PI 3.1415926535897932
 # define PI180 3.1415926535897932 / 180.00
-# define BLUE_SKY color_rgb(69, 89, 168)
-# define RED_WALL color_rgb(179, 0, 0)
-# define PINK_FLOOR color_rgb(255, 216, 213)
+# define BLUE_SKY color_rgb(60, 60, 60)
+# define RED_WALL color_rgb(5, 20, 150)
+# define PINK_FLOOR color_rgb(115, 115, 115)
 
 typedef struct		s_vct2
 {
@@ -48,13 +48,22 @@ Snap var behaviour
 3 = under the object before + (pos) px
 */
 
-typedef struct		s_btn
+typedef struct		s_sloc
 {
 	SDL_Rect		area;
+	int				snapx;
+	int				snapy;
+	t_fvct2			pos;
+}					t_sloc;
+
+typedef struct		s_btn
+{
+	t_sloc			loc;
+//	SDL_Rect		area;
 	SDL_Texture		*txture;
-	int				snapx; // See Snap var behaviour
-	int				snapy; // See Snap var behaviour
-	t_fvct2			pos; // Will be percent of screen (0-100)
+//	int				snapx; // See Snap var behaviour
+//	int				snapy; // See Snap var behaviour
+//	t_fvct2			pos; // Will be percent of screen (0-100)
 	SDL_Color		fgcolor;
 	SDL_Color		bgcolor;
 	char			*data;
@@ -131,6 +140,7 @@ typedef	struct		s_wolf
 	int				fov;
 	uint32_t		*wall[4];
 	SDL_Surface		*wl_txture[4];
+	unsigned long	timestamp;
 }					t_wolf;
 
 t_wolf *wolf_init();

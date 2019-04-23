@@ -34,8 +34,8 @@ static void		on_menu_one(t_wolf *wolf, int x, int y)
 	while (wolf->sdl.btnarr[++i].txture)
 	{
 		tmp = wolf->sdl.btnarr[i];
-		if (tmp.area.x <= x && x <= tmp.area.x + tmp.area.w
-			&& tmp.area.y <= y && y <= tmp.area.y + tmp.area.h)
+		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
+			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
 			ft_printf("Click on btn %d\n", i);
 			if (i == 1)
@@ -57,8 +57,8 @@ static void		on_menu_two(t_wolf *wolf, int x, int y)
 	while (wolf->sdl.btnmap[++i].txture)
 	{
 		tmp = wolf->sdl.btnmap[i];
-		if (tmp.area.x <= x && x <= tmp.area.x + tmp.area.w
-			&& tmp.area.y <= y && y <= tmp.area.y + tmp.area.h)
+		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
+			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
 			if (i == 0)
 			{
@@ -87,8 +87,8 @@ static void		on_menu_tree(t_wolf *wolf, int x, int y)
 	{
 		ft_printf("Found btn %d\n", i);
 		tmp = wolf->sdl.btnopt[i];
-		if (tmp.area.x <= x && x <= tmp.area.x + tmp.area.w
-			&& tmp.area.y <= y && y <= tmp.area.y + tmp.area.h)
+		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
+			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
 			ft_printf("Click on btn %d\n", i);
 			if (i == 0)
