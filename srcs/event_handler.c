@@ -43,7 +43,7 @@ static void		dropfile_event(t_wolf *wolf, SDL_Event event)
 {
 	if (wolf_parseur(wolf, event.drop.file))
 	{
-		ft_printf("Load Reussi\n");
+		ft_printf("val Reussi\n");
 		wolf->sdl.m_status = 0;
 		draw_menu(wolf);
 	}
