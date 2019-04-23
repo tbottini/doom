@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/20 18:44:08 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/23 14:43:46 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@ int key_press(int key, t_wolf *wolf)
 	}
 	if (key == SDLK_g)
 	{
-		j = wolf->map_size.x - 2;
+		j = wolf->map_size.x - 1;
 		while (j + 1)
 		{
 			ft_putendl(wolf->map[j]);
 			j--;
 		}
+	}
+	if (key == SDLK_h)
+	{
+		raythrowing_debug(wolf);
 	}
 	else
 	{
@@ -47,6 +51,10 @@ int mouse_press(int btn, int x, int y, t_wolf *wolf)
 {
 	if (btn == SDL_BUTTON_LEFT)
 		btn_click(wolf, x, y);
+	else if (btn == 4)
+		wolf->fov++;
+	else if (btn == 5)
+		wolf->fov--;
 	//ft_printf("Mouse p %d at %d : %d\n", btn, x, y);
 	return (0);
 }
@@ -63,8 +71,7 @@ int mouse_release(int btn, int x, int y, t_wolf *wolf)
 
 int mouse_move(int x, int y, t_wolf *wolf)
 {
-	(void)wolf;
-	(void)x;
-	(void)y;
+	wolf->sdl.m_pos.x = x;
+	wolf->sdl.m_pos.y = y;
 	return (0);
 }

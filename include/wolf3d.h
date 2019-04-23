@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/22 18:57:35 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/23 22:31:26 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@
 # define PINK_FLOOR color_rgb(255, 216, 213)
 
 
-typedef struct		s_vct2
+typedef struct			s_vct2
 {
-	int				x;
-	int				y;
-}					t_vct2;
+	int					x;
+	int					y;
+}						t_vct2;
 
-typedef struct 		s_fvct2
+typedef struct 			s_fvct2
 {
-	float			x;
-	float			y;
-}					t_fvct2;
+	float				x;
+	float				y;
+}						t_fvct2;
 
 /*
 Snap var behaviour
@@ -49,17 +49,17 @@ Snap var behaviour
 3 = under the object before + (pos) px
 */
 
-typedef struct		s_btn
+typedef struct			s_btn
 {
-	SDL_Rect		area;
-	SDL_Texture		*txture;
-	int				snapx; // See Snap var behaviour
-	int				snapy; // See Snap var behaviour
-	t_fvct2			pos; // Will be percent of screen (0-100)
-	SDL_Color		fgcolor;
-	SDL_Color		bgcolor;
-	char			*data;
-}					t_btn;
+	SDL_Rect			area;
+	SDL_Texture			*txture;
+	int					snapx; // See Snap var behaviour
+	int					snapy; // See Snap var behaviour
+	t_fvct2				pos; // Will be percent of screen (0-100)
+	SDL_Color			fgcolor;
+	SDL_Color			bgcolor;
+	char				*data;
+}						t_btn;
 
 /*
 m_status behaviour
@@ -75,88 +75,97 @@ m_status behaviour
 *	polar(ite)	polarite de la face du mur detecte (Nord O S E)
 */
 
-typedef struct 		s_ray
+typedef struct 			s_ray
 {
-	t_fvct2			inter_v;
-	t_fvct2			inter_h;
-	t_fvct2			ratio;
-	float			angle;
-	float			hor;
-	float			ver;
-	int				polar;
-}					t_ray;
+	t_fvct2				inter_v;
+	t_fvct2				inter_h;
+	t_fvct2				ratio;
+	float				angle;
+	float				hor;
+	float				ver;
+	int					polar;
+}						t_ray;
 
-typedef struct		s_sdl
+typedef struct          s_font
 {
-	SDL_Window		*win;
-	SDL_Renderer	*rend;
-	TTF_Font		*font;
-	TTF_Font		*font32;
-	TTF_Font		*font128;
-	SDL_Color		colorpal[10];
-	t_btn			btnarr[10];
-	t_btn			btnmap[11];
-	t_vct2			size;
-	SDL_Texture		*txture;
-	uint32_t		*screen;
-	int				open;
-	int				m_status;
-	t_tab			keys;
-}					t_sdl;
+        TTF_Font		*s32;
+        TTF_Font		*s64;
+        TTF_Font		*s128;
+}						t_font;
 
-typedef	struct		s_wolf
+typedef struct			s_sdl
 {
-	t_sdl			sdl;
-	char			map[100][100];
-	t_vct2			map_size;
-	t_fvct2			pos;
-	float			rot;
-	int				fov;
-	uint32_t		*wall[4];
-	SDL_Surface		*wl_txture[4];
-}					t_wolf;
+        SDL_Window		*win;
+        SDL_Renderer   	*rend;
+        t_font     		fonts;
+        SDL_Color  		colorpal[10];
+        t_btn      		btnarr[10];
+        t_btn      		btnmap[11];
+        t_btn      		btnopt[11];
+        t_vct2     		size;
+        t_vct2     		m_pos;
+        SDL_Texture		*txture;
+        SDL_Texture		*coordtxt[4];
+        uint32_t   		*screen;
+        int             open;
+        int             m_status;
+        t_tab           keys;
+}						t_sdl;
 
-t_wolf *wolf_init();
+typedef	struct			s_wolf
+{
+	t_sdl				sdl;
+	char				map[100][100];
+	t_vct2				map_size;
+	t_fvct2				pos;
+	float				rot;
+	int					fov;
+	uint32_t			*wall[4];
+	SDL_Surface			*wl_txture[4];
+	float				d_scrn;
+}						t_wolf;
 
-void			PrintEvent(const SDL_Event *event); // DEBUG
+//prog management
+t_wolf 					*wolf_init();
+void					*sdldata_quit(t_sdl **data);
+int						sdl_start(t_wolf *wolf, const char *title);
+void					sdl_showscreen(t_sdl *sdl);
+int						wolf_parseur(t_wolf *wolf, char *filename);
+int						prog_quit(t_wolf *wolf);
 
-void			btn_click(t_wolf *wolf, int x, int y);
-t_btn			add_start_button(t_wolf *wolf);
-t_btn			add_mapmenu_button(t_wolf *wolf);
-t_btn			add_map_button(t_wolf *wolf, const char *str);
-t_btn			add_wolf_button(t_wolf *wolf);
-t_btn			add_opt_button(t_wolf *wolf);
-t_btn			add_quit_button(t_wolf *wolf, const char *str);
+//ui
+void					btn_click(t_wolf *wolf, int x, int y);
+t_btn					add_start_button(t_wolf *wolf);
+t_btn					add_mapmenu_button(t_wolf *wolf);
+t_btn					add_map_button(t_wolf *wolf, const char *str);
+t_btn					add_wolf_button(t_wolf *wolf);
+t_btn					add_opt_button(t_wolf *wolf);
+t_btn					add_quit_button(t_wolf *wolf, const char *str);
+void					draw_menu(t_wolf *wolf);
+int 					load_map_btns(t_wolf *wolf);
 
-void draw_menu(t_wolf *wolf);
+//input
+int						event_handler(t_wolf *wolf);
+int						loop_hook(t_wolf *wolf);
+int						key_press(int key, t_wolf *wolf);
+int						key_release(int key, t_wolf *wolf);
+int						mouse_press(int button, int x, int y, t_wolf *wolf);
+int						mouse_release(int button, int x, int y, t_wolf *wolf);
+int						mouse_move(int x, int y, t_wolf *wolf);
 
-int load_map_btns(t_wolf *wolf);
 
-int				key_press(int key, t_wolf *wolf);
-int				key_release(int key, t_wolf *wolf);
-int				mouse_press(int button, int x, int y, t_wolf *wolf);
-int				mouse_release(int button, int x, int y, t_wolf *wolf);
-int				mouse_move(int x, int y, t_wolf *wolf);
+//raycasting
+void					raycasting(t_wolf *wolf);
+float					float_modulo(float num);
+double					angle_adaptater(double angle);
+void					print_image(SDL_Surface *png);
+float					ver_detection(t_wolf *wolf, t_ray *ray);
+float					hor_detection(t_wolf *wolf, t_ray *ray);
+double					iswall(t_wolf *wolf, t_fvct2 inter);
+void					draw_column(t_wolf *wolf, float dist, int num, float angle);
+unsigned int			color_rgb(unsigned char r, unsigned char g, unsigned char b);
 
-int loop_hook(t_wolf *wolf);
-
-void			*sdldata_quit(t_sdl **data);
-int				sdl_start(t_wolf *wolf, const char *title);
-void			sdl_showscreen(t_sdl *sdl);
-int				wolf_parseur(t_wolf *wolf, char *filename);
-void			raycasting(t_wolf *wolf);
-unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
-
-int				event_handler(t_wolf *wolf);
-
-int				prog_quit(t_wolf *wolf);
-void			raythrowing(t_wolf *wolf, int ag);
-float			float_modulo(float num);
-float			angle_adaptater(float angle);
-void			print_image(SDL_Surface *png);
-void			draw_column(t_wolf *wolf, float dist, int num);
-
-float		ver_detection(t_wolf *wolf, t_ray *ray);
-float		hor_detection(t_wolf *wolf, t_ray *ray);
-float		iswall(t_wolf *wolf, t_fvct2 inter);
+//debug
+void					raythrowing_debug(t_wolf *wolf);
+void					PrintEvent(const SDL_Event *event);
 #endif
