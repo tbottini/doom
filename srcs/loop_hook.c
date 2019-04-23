@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 20:45:20 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/22 13:46:06 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ static void		lil_loop(t_wolf *wolf, int key)
 {
 	if (key == SDLK_e)
 	{
-		if (wolf->rot - 5.0 < -180.0)
+		if (wolf->rot - 5.0 < 0.0)
 			wolf->rot += 355.0;
 		else
-			wolf->rot -= 5;
+			wolf->rot -= 5.0;
 	}
 	else if (key == SDLK_q)
 	{
-		if (wolf->rot + 5.0 > 180.0)
+		if (wolf->rot + 5.0 > 360.0)
 			wolf->rot -= 355.0;
 		else
-			wolf->rot += 5;
+			wolf->rot += 5.0;
 	}
 	else
 		lil_lil_loop(wolf, key);

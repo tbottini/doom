@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 17:57:55 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/22 18:57:35 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define PI 3.14159265359
-# define PI180 3.14159265359 / 180.0000000000
+# define PI 3.1415926535897932
+# define PI180 3.1415926535897932 / 180.00
+# define BLUE_SKY color_rgb(69, 89, 168)
+# define RED_WALL color_rgb(179, 0, 0)
+# define PINK_FLOOR color_rgb(255, 216, 213)
 
 typedef struct		s_vct2
 {
@@ -73,6 +76,23 @@ coordtxt array
 3 : West
 */
 
+/*
+*	dim_dist	detection de distance horizontale et verticale
+*	inter		inter variable pour le calcule des intersection
+*	polar(ite)	polarite de la face du mur detecte (Nord O S E)
+*/
+
+typedef struct 		s_ray
+{
+	t_fvct2			inter_v;
+	t_fvct2			inter_h;
+	t_fvct2			ratio;
+	float			angle;
+	float			hor;
+	float			ver;
+	int				polar;
+}					t_ray;
+
 typedef struct		s_font
 {
 	TTF_Font		*s32;
@@ -107,8 +127,9 @@ typedef	struct		s_wolf
 	t_fvct2			pos;
 	double			rot;
 	int				fov;
+	uint32_t		*wall[4];
+	SDL_Surface		*wl_txture[4];
 }					t_wolf;
-
 
 t_wolf *wolf_init();
 
@@ -146,5 +167,13 @@ double			angle_adaptater(double angle);
 int				event_handler(t_wolf *wolf);
 
 int				prog_quit(t_wolf *wolf);
+void			raythrowing(t_wolf *wolf, int ag);
+float			float_modulo(float num);
+float			angle_adaptater(float angle);
+void			print_image(SDL_Surface *png);
+void			draw_column(t_wolf *wolf, float dist, int num);
 
+float		ver_detection(t_wolf *wolf, t_ray *ray);
+float		hor_detection(t_wolf *wolf, t_ray *ray);
+float		iswall(t_wolf *wolf, t_fvct2 inter);
 #endif
