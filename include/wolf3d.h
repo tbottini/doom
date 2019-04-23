@@ -69,6 +69,22 @@ typedef struct		s_btn
 	char			*data;
 }					t_btn;
 
+typedef struct		s_slid
+{
+	t_sloc			loc;
+//	SDL_Rect		area;
+	SDL_Texture		*txture;
+	int				*val;
+	int				min;
+	int				max;
+	SDL_Rect		grip;
+//	int				snapx; // See Snap var behaviour
+//	int				snapy; // See Snap var behaviour
+//	t_fvct2			pos; // Will be percent of screen (0-100)
+	SDL_Color		fgcolor;
+	SDL_Color		bgcolor;
+}					t_slid;
+
 /*
 m_status behaviour
 0 = gamemode
@@ -76,8 +92,6 @@ m_status behaviour
 2 = show map menu
 3 = show Option menu
 */
-
-
 
 /*
 *	dim_dist	detection de distance horizontale et verticale
@@ -112,6 +126,8 @@ typedef struct		s_sdl
 	t_btn			btnarr[10];
 	t_btn			btnmap[11];
 	t_btn			btnopt[11];
+	t_slid			slidopt[5];
+	t_slid			*currslid;
 	t_vct2			size;
 	t_vct2			m_pos;
 	SDL_Texture		*txture;
@@ -155,7 +171,10 @@ t_btn			add_wolf_button(t_wolf *wolf);
 t_btn			add_opt_button(t_wolf *wolf);
 t_btn			add_quit_button(t_wolf *wolf, const char *str);
 
+t_slid	add_fov_slider(t_wolf *wolf);
+
 void draw_menu(t_wolf *wolf);
+void		draw_slid(t_wolf *wolf, t_slid *tmp);
 
 int load_map_btns(t_wolf *wolf);
 
