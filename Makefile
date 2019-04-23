@@ -1,4 +1,4 @@
-#**************************************************************************** #
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/18 17:22:45 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/22 18:27:41 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,39 +15,43 @@ NAME			:=		wolf3d
 CC				:=		gcc
 
 CFLAGS			:=		-g -Wall -Wextra \
-						-I/Users/$(shell whoami)/.brew/include/SDL2\
-						-Wconversion
 #-Werror
 
-FMLX		=	-L/Users/$(shell whoami)/.brew/lib -lSDL2 -lSDL2_ttf -lSDL2_image
+LIB				:=		-L libft/ -lft							\
+						-L ~/.brew/lib -lSDL2					\
+						-lSDL2_ttf								\
+						-lSDL2_image							\
 
-LIB				:=		-L libft/ -lft							
-
-
-
-INCLUDE			:=		-I ./include							\
+INCLUDE			=		-I ./include							\
 						-I ./libft								\
+						-I ~/.brew/include/SDL2					\
 
-SRCS			:=		srcs/main.c			 					\
-						srcs/sdl_manager.c						\
-						srcs/wolf_parseur.c						\
-						srcs/wolf_init.c						\
-						srcs/init_btns.c						\
-						srcs/init_btns2.c						\
-						srcs/raycasting.c						\
-						srcs/color.c							\
-						srcs/input_hook.c						\
-						srcs/loop_hook.c						\
-						srcs/event_handler.c					\
-						srcs/sdl_quit.c							\
-						srcs/button_drawer.c					\
-						srcs/button_action.c					\
-						srcs/button_loader.c					\
-						srcs/num_tools.c					\
+SRCS			:=		main.c			 						\
+						sdl_manager.c							\
+						wolf_parseur.c							\
+						wolf_init.c								\
+						init_btns.c								\
+						raycasting.c							\
+						color.c									\
+						input_hook.c							\
+						loop_hook.c								\
+						event_handler.c							\
+						sdl_quit.c								\
+						button_drawer.c							\
+						button_action.c							\
+						num_tools.c								\
+						image_tools.c							\
+						draw_tools.c							\
+						ray_vertical.c							\
+						ray_horizontal.c						\
 
-NB_SRCS			:=		$(shell ls srcs/*.c | wc -l)
+OBJDIR			:=		objs
 
-NB_OBJS			=		$(shell ls srcs | rev | grep "^o" | wc -l | sed -e 's/[^0-9]//g')
+SRCDIR			:=		srcs
+
+NB_SRCS			:=		$(shell ls srcs/ | wc -l)
+
+NB_OBJS			=		$(shell ls objs/ | wc -l | sed -e 's/[^0-9]//g')
 
 MAX_FILL		:=		$$(( $(NB_SRCS)))
 
@@ -55,12 +59,14 @@ FILL_BAR		=		$$(( $(NB_OBJS) * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
-OBJS = $(SRCS:.c=.o)
+OBJS    		:=		$(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
-all: $ $(NAME)
+SRCS	   		:=		$(patsubst %.c,srcs/%.c,$(SRCS))
 
-%.o		:		%.c
-	@printf '\rCompilation Libft\n'
+all: $(NAME)
+
+$(OBJDIR)/%.o		:		$(SRCDIR)/%.c
+	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
@@ -68,8 +74,8 @@ all: $ $(NAME)
 
 $(NAME)	: $(OBJS)
 	@make -C ./libft
-	@$(CC) $(CFLAGS) $(FMLX) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
-	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n"
+	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
+	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
 clean:
 	@make clean -C ./libft
@@ -84,5 +90,5 @@ start	:	all
 
 re: fclean all
 
-.PHONY: all clean fclean re a
+.PHONY: all clean fclean re
 
