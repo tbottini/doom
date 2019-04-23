@@ -35,6 +35,7 @@ SRCS			:=		button_action.c							\
 						image_tools.c							\
 						init_btns.c								\
 						init_btns2.c							\
+						init_slids.c							\
 						input_hook.c							\
 						loop_hook.c								\
 						main.c			 						\

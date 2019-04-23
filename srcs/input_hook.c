@@ -57,7 +57,7 @@ int mouse_press(int btn, int x, int y, t_wolf *wolf)
 
 int mouse_release(int btn, int x, int y, t_wolf *wolf)
 {
-	(void)wolf;
+	wolf->sdl.currslid = NULL;
 	(void)x;
 	(void)y;
 	(void)btn;
@@ -67,7 +67,23 @@ int mouse_release(int btn, int x, int y, t_wolf *wolf)
 
 int mouse_move(int x, int y, t_wolf *wolf)
 {
+	int xload;
+	int size;
+	t_slid *tmp;
+
 	wolf->sdl.m_pos.x = x;
 	wolf->sdl.m_pos.y = y;
+	if (wolf->sdl.currslid)
+	{
+		tmp = wolf->sdl.currslid;
+		size = tmp->loc.area.h;
+		xload = (((double)(x - size / 2) - (double)tmp->loc.area.x) / (double)(tmp->loc.area.w - size)) * (double)tmp->max;
+		if (0 < xload && xload <= tmp->max)
+		{
+			*tmp->val = xload;
+			draw_slid(wolf, tmp);
+		}
+		printf("Changing %d\t%d\n", x, xload);
+	}
 	return (0);
 }
