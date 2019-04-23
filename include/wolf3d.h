@@ -68,13 +68,7 @@ m_status behaviour
 3 = show Option menu
 */
 
-/*
-coordtxt array
-0 : North
-1 : East
-2 : South
-3 : West
-*/
+
 
 /*
 *	dim_dist	detection de distance horizontale et verticale
@@ -118,6 +112,14 @@ typedef struct		s_sdl
 	int				m_status;
 	t_tab			keys;
 }					t_sdl;
+
+/*
+coordtxt array
+0 : North
+1 : East
+2 : South
+3 : West
+*/
 
 typedef	struct		s_wolf
 {

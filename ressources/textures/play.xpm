@@ -1,0 +1,18 @@
+/* XPM */
+static char *cbn9u_bs0dr[] = {
+/* columns rows colors chars-per-pixel */
+"10 10 2 1 ",
+"  c None",
+". c gray43",
+/* pixels */
+"          ",
+"   .      ",
+"   ..     ",
+"   ...    ",
+"   ....   ",
+"   .....  ",
+"   ....   ",
+"   ...    ",
+"   ..     ",
+"   .      "
+};
