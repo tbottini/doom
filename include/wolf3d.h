@@ -14,11 +14,11 @@
 # define WOLF3D_H
 
 # include "libft.h"
-# include <fcntl.h>
-# include <dirent.h>
 # include <SDL.h>
 # include <SDL_ttf.h>
 # include <SDL_image.h>
+# include <fcntl.h>
+# include <dirent.h>
 
 # define WIDTH 1920
 # define HEIGHT 1080
@@ -28,7 +28,6 @@
 # define RED_WALL color_rgb(179, 0, 0)
 # define PINK_FLOOR color_rgb(255, 216, 213)
 
-
 typedef struct		s_vct2
 {
 	int				x;
@@ -37,8 +36,8 @@ typedef struct		s_vct2
 
 typedef struct 		s_fvct2
 {
-	float			x;
-	float			y;
+	double			x;
+	double			y;
 }					t_fvct2;
 
 /*
@@ -66,8 +65,16 @@ m_status behaviour
 0 = gamemode
 1 = Show main menu
 2 = show map menu
+3 = show Option menu
 */
 
+/*
+coordtxt array
+0 : North
+1 : East
+2 : South
+3 : West
+*/
 
 /*
 *	dim_dist	detection de distance horizontale et verticale
@@ -86,18 +93,26 @@ typedef struct 		s_ray
 	int				polar;
 }					t_ray;
 
+typedef struct		s_font
+{
+	TTF_Font		*s32;
+	TTF_Font		*s64;
+	TTF_Font		*s128;
+}					t_font;
+
 typedef struct		s_sdl
 {
 	SDL_Window		*win;
 	SDL_Renderer	*rend;
-	TTF_Font		*font;
-	TTF_Font		*font32;
-	TTF_Font		*font128;
+	t_font			fonts;
 	SDL_Color		colorpal[10];
 	t_btn			btnarr[10];
 	t_btn			btnmap[11];
+	t_btn			btnopt[11];
 	t_vct2			size;
+	t_vct2			m_pos;
 	SDL_Texture		*txture;
+	SDL_Texture		*coordtxt[4];
 	uint32_t		*screen;
 	int				open;
 	int				m_status;
@@ -110,7 +125,7 @@ typedef	struct		s_wolf
 	char			map[100][100];
 	t_vct2			map_size;
 	t_fvct2			pos;
-	float			rot;
+	double			rot;
 	int				fov;
 	uint32_t		*wall[4];
 	SDL_Surface		*wl_txture[4];
@@ -146,6 +161,8 @@ void			sdl_showscreen(t_sdl *sdl);
 int				wolf_parseur(t_wolf *wolf, char *filename);
 void			raycasting(t_wolf *wolf);
 unsigned int	color_rgb(unsigned char r, unsigned char g, unsigned char b);
+
+double			angle_adaptater(double angle);
 
 int				event_handler(t_wolf *wolf);
 
