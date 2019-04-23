@@ -23,7 +23,7 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 		while (wolf->sdl.btnarr[++x].txture)
 		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[x].txture,
-					NULL, &(wolf->sdl.btnarr[x].area));
+					NULL, &(wolf->sdl.btnarr[x].loc.area));
 		}
 	}
 	else if (arr == 2)
@@ -31,7 +31,7 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 		while (wolf->sdl.btnmap[++x].txture)
 		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnmap[x].txture,
-					NULL, &(wolf->sdl.btnmap[x].area));
+					NULL, &(wolf->sdl.btnmap[x].loc.area));
 		}
 	}
 	else if (arr == 3)
@@ -39,7 +39,7 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 		while (wolf->sdl.btnopt[++x].txture)
 		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnopt[x].txture,
-					NULL, &(wolf->sdl.btnopt[x].area));
+					NULL, &(wolf->sdl.btnopt[x].loc.area));
 		}
 	}
 	SDL_RenderPresent(wolf->sdl.rend);
@@ -56,21 +56,21 @@ static void		update_loc_buttons(t_wolf *wolf, t_btn *arr)
 	while (arr[++x].txture)
 	{
 		tmp = &(arr[x]);
-		arr[x].area.x = wolf->sdl.size.x * (tmp->pos.x / 100.0);
-		arr[x].area.y = wolf->sdl.size.y * (tmp->pos.y / 100.0);
-		if (tmp->snapx == 1)
-			arr[x].area.x -= tmp->area.w / 2;
-		else if (tmp->snapx == 2)
-			arr[x].area.x -= tmp->area.w;
-		else if (tmp->snapx == 3)
-			arr[x].area.x = x + tmp->pos.x;
-		if (tmp->snapy == 1)
-			arr[x].area.y -= tmp->area.h / 2;
-		else if (tmp->snapy == 2)
-			arr[x].area.y -= tmp->area.h;
-		else if (tmp->snapy == 3)
-			arr[x].area.y = y + tmp->pos.y;
-		y = tmp->area.y + tmp->area.h;
+		arr[x].loc.area.x = wolf->sdl.size.x * (tmp->loc.pos.x / 100.0);
+		arr[x].loc.area.y = wolf->sdl.size.y * (tmp->loc.pos.y / 100.0);
+		if (tmp->loc.snapx == 1)
+			arr[x].loc.area.x -= tmp->loc.area.w / 2;
+		else if (tmp->loc.snapx == 2)
+			arr[x].loc.area.x -= tmp->loc.area.w;
+		else if (tmp->loc.snapx == 3)
+			arr[x].loc.area.x = x + tmp->loc.pos.x;
+		if (tmp->loc.snapy == 1)
+			arr[x].loc.area.y -= tmp->loc.area.h / 2;
+		else if (tmp->loc.snapy == 2)
+			arr[x].loc.area.y -= tmp->loc.area.h;
+		else if (tmp->loc.snapy == 3)
+			arr[x].loc.area.y = y + tmp->loc.pos.y;
+		y = tmp->loc.area.y + tmp->loc.area.h;
 	}
 }
 
