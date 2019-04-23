@@ -28,15 +28,15 @@ t_btn	add_map_button(t_wolf *wolf, const char *str)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	tmp.pos.x = 50;
-	tmp.pos.y = 5;
-	tmp.snapx = 1;
-	tmp.snapy = 3;
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 5;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 3;
 	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s32, str,
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
-	tmp.area.w = rect.w;
-	tmp.area.h = rect.h;
+	tmp.loc.area.w = rect.w;
+	tmp.loc.area.h = rect.h;
 	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
@@ -52,10 +52,10 @@ t_btn	add_mapmenu_button(t_wolf *wolf)
 	t_btn			tmp;
 	SDL_Rect		rect;
 
-	tmp.pos.x = 50;
-	tmp.pos.y = 5;
-	tmp.snapx = 1;
-	tmp.snapy = 0;
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 5;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 0;
 	tmp.bgcolor.r = 191;
 	tmp.bgcolor.g = 35;
 	tmp.bgcolor.b = 44;
@@ -65,8 +65,8 @@ t_btn	add_mapmenu_button(t_wolf *wolf)
 	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, " Maps ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
-	tmp.area.w = rect.w;
-	tmp.area.h = rect.h;
+	tmp.loc.area.w = rect.w;
+	tmp.loc.area.h = rect.h;
 	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
