@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/18 18:18:11 by magrab           ###   ########.fr       */
+/*   Updated: 2019/04/20 18:44:08 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,32 @@
 
 int key_press(int key, t_wolf *wolf)
 {
+	int j;
 	if (key == SDLK_BACKQUOTE)
 	{
 		wolf->sdl.m_status = 1;
 		draw_menu(wolf);
 	}
+	if (key == SDLK_g)
+	{
+		j = wolf->map_size.x - 2;
+		while (j + 1)
+		{
+			ft_putendl(wolf->map[j]);
+			j--;
+		}
+	}
 	else
 	{
 		ft_nodeadd_int(&(wolf->sdl.keys), key);
 	}
-	//ft_printf("Key %d : %s pressed\n", key, SDL_GetKeyName(key));
+	//printf("wolfrot %f wolfpos .x %f .y %f\n", wolf->rot, wolf->pos.x, wolf->pos.y);
 	return (0);
 }
 
 int key_release(int key, t_wolf *wolf)
 {
 	ft_noderm_int(&(wolf->sdl.keys), key);
-	//ft_printf("Key %d : %s released\n", key, SDL_GetKeyName(key));
 	return (0);
 }
 

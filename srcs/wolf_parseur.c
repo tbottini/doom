@@ -29,7 +29,7 @@ int				map_verif(int fd, t_wolf *wolf)
 	flag = 0;
 	wolf->map_size.x = 0;
 	wolf->map_size.y = 0;
-	while ((ret = get_next_line(fd, &line)) > 0 && flag == 0)
+	while (flag == 0 && (ret = get_next_line(fd, &line)) > 0)
 	{
 		if (wolf->map_size.x == 0)
 		{
@@ -52,9 +52,25 @@ int				map_verif(int fd, t_wolf *wolf)
 		wolf->map_size.y++;
 		free(line);
 	}
-	if (line)
-		free(line);
 	return (1);
+}
+
+int				get_texture(int fd, t_wolf *wolf)
+{
+	int			i;
+	char		*path;
+
+	i = -1;
+	while (i++ != 4 && get_next_line(fd, &path) > 0)
+	{
+		wolf->wl_txture[i] = IMG_Load(path);
+		if (!wolf->wl_txture[i])
+			return (0);
+		free(path);
+	}
+	if (i == 4)
+		return (1);
+	return (0);
 }
 
 int				wolf_parseur(t_wolf *wolf, char *filename)
@@ -64,5 +80,37 @@ int				wolf_parseur(t_wolf *wolf, char *filename)
 	fd = open(filename, O_RDONLY);
 	if (map_verif(fd, wolf) == 0)
 		return (0);
+	if (get_texture(fd, wolf) == 0)
+		return (0);
 	return (1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

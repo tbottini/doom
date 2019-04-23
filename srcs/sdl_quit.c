@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:28:16 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/18 21:54:47 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/22 15:59:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ static void		free_textures(t_wolf *wolf)
 		if (x > 1)
 			free(wolf->sdl.btnmap[x].data);
 	}
+	x = -1;
+	while (x++ < 4)
+		if (wolf->wl_txture[x])
+			SDL_FreeSurface(wolf->wl_txture[x]);
 }
 
 int				prog_quit(t_wolf *wolf)
