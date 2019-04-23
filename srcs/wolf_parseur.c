@@ -63,9 +63,9 @@ int				get_texture(int fd, t_wolf *wolf)
 	i = -1;
 	while (i++ != 4 && get_next_line(fd, &path) > 0)
 	{
-		wolf->wl_txture[i] = IMG_Load(path);
-		if (!wolf->wl_txture[i])
-			return (0);
+		//wolf->wl_txture[i] = IMG_Load(path);
+		//if (!wolf->wl_txture[i])
+		//	return (0);
 		free(path);
 	}
 	if (i == 4)

@@ -26,7 +26,6 @@ static SDL_Surface	*load_texture(t_wolf *wolf, const char *file)
 	if(!(surf = IMG_LoadXPM_RW(rwop)))
 	{
 		ft_printf("IMG_LoadXPM_RW: %s\n", IMG_GetError());
-		SDL_RWclose(rwop);
 		prog_quit(wolf);
 		return (NULL);
 	}
@@ -56,6 +55,7 @@ t_wolf			*wolf_init(void)
 	wolf->wl_txture[1] = load_texture(wolf, "./ressources/textures/wall.xpm");
 	wolf->wl_txture[2] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
 	wolf->wl_txture[3] = load_texture(wolf, "./ressources/textures/wall.xpm");
+	wolf->sdl.slidopt[0] = add_fov_slider(wolf);
 	wolf->pos.x = 0;
 	wolf->pos.y = 0;
 	wolf->fov = 60;
