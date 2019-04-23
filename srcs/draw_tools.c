@@ -41,5 +41,5 @@ void		draw_column(t_wolf *wolf, float dist, int num)
 	iprint = num;
 	draw_part(wolf, &iprint, sky_size, BLUE_SKY);
 	draw_part(wolf, &iprint, column_size, RED_WALL);
-	draw_part(wolf, &iprint, wolf->sdl.size.y, PINK_FLOOR);
+	draw_part(wolf, &iprint, sky_size, PINK_FLOOR);
 }
