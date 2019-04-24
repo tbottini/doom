@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/22 19:16:06 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/24 21:23:20 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_wolf			*wolf_init(void)
 	wolf->sdl.slidopt[0] = add_fov_slider(wolf);
 	wolf->pos.x = 0;
 	wolf->pos.y = 0;
-	wolf->fov = 60;
+	wolf->fov = 90;
 	wolf->rot = 90;
 	return (wolf);
 }

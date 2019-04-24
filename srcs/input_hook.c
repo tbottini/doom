@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/20 18:44:08 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/24 21:08:31 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int key_press(int key, t_wolf *wolf)
 	}
 	if (key == SDLK_g)
 	{
-		j = wolf->map_size.x - 2;
+		j = wolf->map_size.x - 1;
 		while (j + 1)
 		{
 			ft_putendl(wolf->map[j]);
