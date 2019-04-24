@@ -26,27 +26,27 @@ INCLUDE			=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
 
-SRCS			:=		main.c			 						\
-						sdl_quit.c								\
-						sdl_manager.c							\
-						wolf_parseur.c							\
-						wolf_init.c								\
-						init_btns2.c							\
-						button_loader.c							\
+SRCS			:=		button_action.c							\
 						button_drawer.c							\
-						button_action.c							\
-						init_btns.c								\
-						raycasting.c							\
-						ray_vertical.c							\
-						ray_horizontal.c						\
-						num_tools.c								\
+						button_loader.c							\
 						color.c									\
-						image_tools.c							\
 						draw_tools.c							\
+						event_handler.c							\
+						image_tools.c							\
+						init_btns.c								\
+						init_btns2.c							\
+						init_slids.c							\
 						input_hook.c							\
 						loop_hook.c								\
-						event_handler.c							\
-
+						main.c			 						\
+						num_tools.c								\
+						ray_horizontal.c						\
+						ray_vertical.c							\
+						raycasting.c							\
+						sdl_manager.c							\
+						sdl_quit.c								\
+						wolf_init.c								\
+						wolf_parseur.c							\
 
 OBJDIR			:=		objs
 
@@ -78,6 +78,11 @@ $(OBJDIR)/%.o		:		$(SRCDIR)/%.c
 $(NAME)	: $(OBJS) include/wolf3d.h libft/libft.h
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
+	@sips -i icon.ico
+	@derez -only icns icon.ico > tmpicns.rsrc
+	@rez -append tmpicns.rsrc -o $(NAME)
+	@setfile -a C $(NAME)
+	@rm tmpicns.rsrc
 	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
 clean:

@@ -1,0 +1,24 @@
+/* XPM */
+static char *cbr9z_6ysdy[] = {
+/* columns rows colors chars-per-pixel */
+"10 10 8 1 ",
+"  c #0E354B",
+". c #E59131",
+"X c #F7B072",
+"o c #1279AE",
+"O c #31A2EE",
+"+ c #FCD78E",
+"@ c #88C7EA",
+"# c white",
+/* pixels */
+"..........",
+"......XX..",
+".XXXXX....",
+".......X..",
+"........XX",
+"...XXX....",
+"..X+++X...",
+"..X+#+X...",
+" oO@@OOo  ",
+"  oOOOo   "
+};

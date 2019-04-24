@@ -22,10 +22,10 @@ t_btn	add_wolf_button(t_wolf *wolf)
 	t_btn			tmp;
 	SDL_Rect		rect;
 
-	tmp.pos.x = 50;
-	tmp.pos.y = 5;
-	tmp.snapx = 1;
-	tmp.snapy = 0;
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 5;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 0;
 	tmp.bgcolor.r = 191;
 	tmp.bgcolor.g = 35;
 	tmp.bgcolor.b = 44;
@@ -35,8 +35,8 @@ t_btn	add_wolf_button(t_wolf *wolf)
 	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s128, " wolfenstein ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
-	tmp.area.w = rect.w;
-	tmp.area.h = rect.h;
+	tmp.loc.area.w = rect.w;
+	tmp.loc.area.h = rect.h;
 	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
@@ -52,10 +52,10 @@ t_btn	add_start_button(t_wolf *wolf)
 	t_btn			tmp;
 	SDL_Rect		rect;
 
-	tmp.pos.x = 50;
-	tmp.pos.y = 10;
-	tmp.snapx = 1;
-	tmp.snapy = 3;
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 10;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 3;
 	tmp.fgcolor.r = 150;
 	tmp.fgcolor.g = 150;
 	tmp.fgcolor.b = 150;
@@ -65,8 +65,8 @@ t_btn	add_start_button(t_wolf *wolf)
 	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, " START ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
-	tmp.area.w = rect.w;
-	tmp.area.h = rect.h;
+	tmp.loc.area.w = rect.w;
+	tmp.loc.area.h = rect.h;
 	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
@@ -82,21 +82,21 @@ t_btn	add_opt_button(t_wolf *wolf)
 	t_btn			tmp;
 	SDL_Rect		rect;
 
-	tmp.pos.x = 50;
-	tmp.pos.y = 20;
-	tmp.snapx = 1;
-	tmp.snapy = 3;
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 20;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 3;
 	tmp.fgcolor.r = 150;
 	tmp.fgcolor.g = 150;
 	tmp.fgcolor.b = 150;
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, " Options? ",
+	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, " Options ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
-	tmp.area.w = rect.w;
-	tmp.area.h = rect.h;
+	tmp.loc.area.w = rect.w;
+	tmp.loc.area.h = rect.h;
 	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
@@ -112,10 +112,10 @@ t_btn	add_quit_button(t_wolf *wolf, const char *str)
 	t_btn			tmp;
 	SDL_Rect		rect;
 
-	tmp.pos.x = 95;
-	tmp.pos.y = 95;
-	tmp.snapx = 2;
-	tmp.snapy = 2;
+	tmp.loc.pos.x = 95;
+	tmp.loc.pos.y = 95;
+	tmp.loc.snapx = 2;
+	tmp.loc.snapy = 2;
 	tmp.fgcolor.r = 191;
 	tmp.fgcolor.g = 35;
 	tmp.fgcolor.b = 44;
@@ -125,8 +125,8 @@ t_btn	add_quit_button(t_wolf *wolf, const char *str)
 	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, str,
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
-	tmp.area.w = rect.w;
-	tmp.area.h = rect.h;
+	tmp.loc.area.w = rect.w;
+	tmp.loc.area.h = rect.h;
 	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
