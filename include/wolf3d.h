@@ -171,6 +171,7 @@ t_btn			add_wolf_button(t_wolf *wolf);
 t_btn			add_opt_button(t_wolf *wolf);
 t_btn			add_quit_button(t_wolf *wolf, const char *str);
 
+void	update_slider_txt(t_wolf *wolf, t_slid *slid);
 t_slid	add_fov_slider(t_wolf *wolf);
 
 void draw_menu(t_wolf *wolf);
