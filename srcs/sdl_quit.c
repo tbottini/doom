@@ -27,7 +27,7 @@ static void		free_textures(t_wolf *wolf)
 			free(wolf->sdl.btnmap[x].data);
 	}
 	x = -1;
-	while (x++ < 4)
+	while (++x < 4)
 		if (wolf->wl_txture[x])
 			SDL_FreeSurface(wolf->wl_txture[x]);
 }

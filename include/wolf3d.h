@@ -51,31 +51,48 @@ Snap var behaviour
 3 = under the object before + (pos) px
 */
 
-typedef struct			s_btn
+typedef struct		s_sloc
 {
-	SDL_Rect			area;
-	SDL_Texture			*txture;
-	int					snapx; // See Snap var behaviour
-	int					snapy; // See Snap var behaviour
-	t_fvct2				pos; // Will be percent of screen (0-100)
-	SDL_Color			fgcolor;
-	SDL_Color			bgcolor;
-	char				*data;
-}						t_btn;
+	SDL_Rect		area;
+	int				snapx;
+	int				snapy;
+	t_fvct2			pos;
+}					t_sloc;
+
+typedef struct		s_btn
+{
+	t_sloc			loc;
+//	SDL_Rect		area;
+	SDL_Texture		*txture;
+//	int				snapx; // See Snap var behaviour
+//	int				snapy; // See Snap var behaviour
+//	t_fvct2			pos; // Will be percent of screen (0-100)
+	SDL_Color		fgcolor;
+	SDL_Color		bgcolor;
+	char			*data;
+}					t_btn;
+
+typedef struct		s_slid
+{
+	t_sloc			loc;
+//	SDL_Rect		area;
+	SDL_Texture		*txture;
+	int				*val;
+	int				min;
+	int				max;
+	SDL_Rect		grip;
+//	int				snapx; // See Snap var behaviour
+//	int				snapy; // See Snap var behaviour
+//	t_fvct2			pos; // Will be percent of screen (0-100)
+	SDL_Color		fgcolor;
+	SDL_Color		bgcolor;
+}					t_slid;
 
 /*
 m_status behaviour
 0 = gamemode
 1 = Show main menu
 2 = show map menu
-*/
-
-/*
-coordtxt array
-0 : North
-1 : East
-2 : South
-3 : West
 */
 
 /*
@@ -105,35 +122,46 @@ typedef struct          s_font
 
 typedef struct			s_sdl
 {
-   SDL_Window		*win;
-   SDL_Renderer   	*rend;
-   t_font     		fonts;
-   SDL_Color  		colorpal[10];
-   t_btn      		btnarr[10];
-   t_btn      		btnmap[11];
-   t_btn      		btnopt[11];
-   t_vct2     		size;
-   t_vct2     		m_pos;
-   SDL_Texture		*txture;
-   SDL_Texture		*coordtxt[4];
-   uint32_t   		*screen;
-   int             open;
-   int             m_status;
-   t_tab           keys;
-}						t_sdl;
+	SDL_Window		*win;
+	SDL_Renderer	*rend;
+	t_font			fonts;
+	SDL_Color		colorpal[10];
+	t_btn			btnarr[10];
+	t_btn			btnmap[11];
+	t_btn			btnopt[11];
+	t_slid			slidopt[5];
+	t_slid			*currslid;
+	t_vct2			size;
+	t_vct2			m_pos;
+	SDL_Texture		*txture;
+	SDL_Texture		*coordtxt[4];
+	uint32_t		*screen;
+	int				open;
+	int				m_status;
+	t_tab			keys;
+}					t_sdl;
 
-typedef	struct			s_wolf
+/*
+coordtxt array
+0 : North
+1 : East
+2 : South
+3 : West
+*/
+
+typedef	struct		s_wolf
 {
-	t_sdl				sdl;
-	char				map[100][100];
-	t_vct2				map_size;
-	t_fvct2				pos;
-	float				rot;
-	int					fov;
-	uint32_t			*wall[4];
-	SDL_Surface			*wl_txture[4];
-	float				d_scrn;
-}						t_wolf;
+	t_sdl			sdl;
+	char			map[100][100];
+	t_vct2			map_size;
+	t_fvct2			pos;
+	double			rot;
+	int				fov;
+	uint32_t		*wall[4];
+	SDL_Surface		*wl_txture[4];
+	unsigned long	timestamp;
+  float				d_scrn;
+}					t_wolf;
 
 //prog management
 t_wolf 					*wolf_init();
@@ -153,6 +181,10 @@ t_btn					add_opt_button(t_wolf *wolf);
 t_btn					add_quit_button(t_wolf *wolf, const char *str);
 void					draw_menu(t_wolf *wolf);
 int 					load_map_btns(t_wolf *wolf);
+
+void	update_slider_txt(t_wolf *wolf, t_slid *slid);
+t_slid	add_fov_slider(t_wolf *wolf);
+void		draw_slid(t_wolf *wolf, t_slid *tmp);
 
 //input
 int						event_handler(t_wolf *wolf);
@@ -177,4 +209,5 @@ unsigned int			color_rgb(unsigned char r, unsigned char g, unsigned char b);
 //debug
 void					raythrowing_debug(t_wolf *wolf);
 void					PrintEvent(const SDL_Event *event);
+
 #endif
