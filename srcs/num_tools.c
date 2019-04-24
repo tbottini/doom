@@ -16,4 +16,3 @@ double        angle_adaptater(double angle)
         angle = double_modulo(angle);
     return (angle);
 }
-

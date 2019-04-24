@@ -57,17 +57,17 @@ static void		lil_loop(t_wolf *wolf, int key)
 {
 	if (key == SDLK_e)
 	{
-		if (wolf->rot - 5.0 < -180.0)
+		if (wolf->rot - 5.0 < 0.0)
 			wolf->rot += 355.0;
 		else
-			wolf->rot -= 5;
+			wolf->rot -= 5.0;
 	}
 	else if (key == SDLK_q)
 	{
-		if (wolf->rot + 5.0 > 180.0)
+		if (wolf->rot + 5.0 > 360.0)
 			wolf->rot -= 355.0;
 		else
-			wolf->rot += 5;
+			wolf->rot += 5.0;
 	}
 	else
 		lil_lil_loop(wolf, key);
