@@ -59,13 +59,16 @@ int				get_texture(int fd, t_wolf *wolf)
 {
 	int			i;
 	char		*path;
+	int			j;
 
+	j = -1;
 	i = -1;
 	while (i++ != 4 && get_next_line(fd, &path) > 0)
 	{
-		//wolf->wl_txture[i] = IMG_Load(path);
-		//if (!wolf->wl_txture[i])
-		//	return (0);
+		wolf->wl_txture[i] = IMG_Load(path);
+		if (!wolf->wl_txture[i])
+			return (0);
+		wolf->wall[i] = (uint32_t*)wolf->wl_txture[i]->pixels;
 		free(path);
 	}
 	if (i == 4)
@@ -84,33 +87,3 @@ int				wolf_parseur(t_wolf *wolf, char *filename)
 		return (0);
 	return (1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
