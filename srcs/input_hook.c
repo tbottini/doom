@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/23 14:43:46 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/24 21:08:31 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,6 @@ int key_press(int key, t_wolf *wolf)
 			ft_putendl(wolf->map[j]);
 			j--;
 		}
-	}
-	if (key == SDLK_h)
-	{
-		raythrowing_debug(wolf);
 	}
 	else
 	{

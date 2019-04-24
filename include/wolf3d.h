@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/23 22:31:26 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/24 21:16:40 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 # include <SDL_ttf.h>
 # include <SDL_image.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 1000
+# define HEIGHT 1000
 # define PI 3.1415926535897932
-# define PI180 3.1415926535897932 / 180.00
+# define PI180 0.01745329251
+# define TOANGLE 57.2957795131
 # define BLUE_SKY color_rgb(69, 89, 168)
 # define RED_WALL color_rgb(179, 0, 0)
 # define PINK_FLOOR color_rgb(255, 216, 213)
@@ -77,6 +78,7 @@ m_status behaviour
 
 typedef struct 			s_ray
 {
+	t_fvct2				inter_f;
 	t_fvct2				inter_v;
 	t_fvct2				inter_h;
 	t_fvct2				ratio;
@@ -153,7 +155,6 @@ int						mouse_press(int button, int x, int y, t_wolf *wolf);
 int						mouse_release(int button, int x, int y, t_wolf *wolf);
 int						mouse_move(int x, int y, t_wolf *wolf);
 
-
 //raycasting
 void					raycasting(t_wolf *wolf);
 float					float_modulo(float num);
@@ -162,7 +163,7 @@ void					print_image(SDL_Surface *png);
 float					ver_detection(t_wolf *wolf, t_ray *ray);
 float					hor_detection(t_wolf *wolf, t_ray *ray);
 double					iswall(t_wolf *wolf, t_fvct2 inter);
-void					draw_column(t_wolf *wolf, float dist, int num, float angle);
+void					draw_column(t_wolf *wolf, t_ray ray, int num);
 unsigned int			color_rgb(unsigned char r, unsigned char g, unsigned char b);
 
 //debug
