@@ -12,11 +12,22 @@
 
 #include "wolf3d.h"
 
-t_slid	add_fov_slider(t_wolf *wolf)
+void	update_slider_txt(t_wolf *wolf, t_slid *slid)
 {
 	SDL_Surface		*btntext;
+	char *str;
+
+	str = ft_itoa(*slid->val);
+	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s32, str,
+		slid->fgcolor, slid->bgcolor);
+	slid->txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
+	SDL_FreeSurface(btntext);
+	free(str);
+}
+
+t_slid	add_fov_slider(t_wolf *wolf)
+{
 	t_slid			tmp;
-	SDL_Rect		rect;
 
 	tmp.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 200, 200);
 	tmp.loc.area.w = 500;
@@ -35,13 +46,9 @@ t_slid	add_fov_slider(t_wolf *wolf)
 	tmp.fgcolor.b = 255;
 	tmp.grip.w = tmp.loc.area.h;
 	tmp.grip.h = tmp.loc.area.h;
-	tmp.min = 1;
+	tmp.min = 30;
 	tmp.val = &wolf->fov;
-	tmp.max = 360;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s128, " O ",
-		tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &rect);
-	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	tmp.max = 180;
+	update_slider_txt(wolf, &tmp);
 	return (tmp);
 }

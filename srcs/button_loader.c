@@ -19,10 +19,6 @@ int				load_map_btns(t_wolf *wolf)
 	char			tmp[512];
 	int				y;
 
-//	if (!wolf->sdl.btnmap[0].txture)
-//		wolf->sdl.btnmap[0] = add_quit_button(wolf, " Return ");
-//	if (!wolf->sdl.btnmap[1].txture)
-//		wolf->sdl.btnmap[1] = add_mapmenu_button(wolf);
 	y = 2;
 	if (!(maps = opendir("map")))
 	{
@@ -36,10 +32,11 @@ int				load_map_btns(t_wolf *wolf)
 		return (0);
 	}
 	while ((mapdata = readdir(maps)) && y < 9)
-		if (mapdata->d_reclen == 32)
+	{
+		ft_strcpy(tmp, "map/");
+		ft_strcpy(&(tmp[4]), mapdata->d_name);
+		if (mapdata->d_reclen == 32 && wolf_parseur(wolf, tmp))
 		{
-			ft_strcpy(tmp, "map/");
-			ft_strcpy(&(tmp[4]), mapdata->d_name);
 			if (wolf->sdl.btnmap[y].txture)
 			{
 				SDL_DestroyTexture(wolf->sdl.btnmap[y].txture);
@@ -49,6 +46,7 @@ int				load_map_btns(t_wolf *wolf)
 			wolf->sdl.btnmap[y].data = ft_strdup(tmp);
 			y++;
 		}
+	}
 	closedir(maps);
 	if (wolf->sdl.btnmap[y].txture)
 	{
