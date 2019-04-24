@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/24 21:16:40 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/24 21:23:07 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 # include <SDL_image.h>
+# include <fcntl.h>
+# include <dirent.h>
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 1920
+# define HEIGHT 1080
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
 # define BLUE_SKY color_rgb(69, 89, 168)
 # define RED_WALL color_rgb(179, 0, 0)
 # define PINK_FLOOR color_rgb(255, 216, 213)
-
 
 typedef struct			s_vct2
 {
@@ -69,6 +70,13 @@ m_status behaviour
 2 = show map menu
 */
 
+/*
+coordtxt array
+0 : North
+1 : East
+2 : South
+3 : West
+*/
 
 /*
 *	dim_dist	detection de distance horizontale et verticale
@@ -90,28 +98,28 @@ typedef struct 			s_ray
 
 typedef struct          s_font
 {
-        TTF_Font		*s32;
-        TTF_Font		*s64;
-        TTF_Font		*s128;
+	TTF_Font			*s32;
+	TTF_Font			*s64;
+	TTF_Font			*s128;
 }						t_font;
 
 typedef struct			s_sdl
 {
-        SDL_Window		*win;
-        SDL_Renderer   	*rend;
-        t_font     		fonts;
-        SDL_Color  		colorpal[10];
-        t_btn      		btnarr[10];
-        t_btn      		btnmap[11];
-        t_btn      		btnopt[11];
-        t_vct2     		size;
-        t_vct2     		m_pos;
-        SDL_Texture		*txture;
-        SDL_Texture		*coordtxt[4];
-        uint32_t   		*screen;
-        int             open;
-        int             m_status;
-        t_tab           keys;
+   SDL_Window		*win;
+   SDL_Renderer   	*rend;
+   t_font     		fonts;
+   SDL_Color  		colorpal[10];
+   t_btn      		btnarr[10];
+   t_btn      		btnmap[11];
+   t_btn      		btnopt[11];
+   t_vct2     		size;
+   t_vct2     		m_pos;
+   SDL_Texture		*txture;
+   SDL_Texture		*coordtxt[4];
+   uint32_t   		*screen;
+   int             open;
+   int             m_status;
+   t_tab           keys;
 }						t_sdl;
 
 typedef	struct			s_wolf
