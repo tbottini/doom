@@ -12,6 +12,7 @@ double		iswall(t_wolf *wolf, t_fvct2 inter)
 	return (wolf->map_size.x + wolf->map_size.y);
 }
 
+
  void		raycasting(t_wolf *wolf)
  {
  	t_ray	ray;
