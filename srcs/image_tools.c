@@ -33,9 +33,7 @@ void		print_image(SDL_Surface *png)
 	while (i < png->w * png->h)
 	{
 		decomp(texture[i]);
-
 		i++;
 	}
 	printf("\n");
 }
-

@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/22 20:47:01 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/24 19:36:45 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,25 +27,26 @@ INCLUDE			=		-I ./include							\
 						-I ~/.brew/include/SDL2					\
 
 SRCS			:=		main.c			 						\
+						sdl_quit.c								\
 						sdl_manager.c							\
 						wolf_parseur.c							\
 						wolf_init.c								\
+						init_btns2.c							\
+						button_loader.c							\
+						button_drawer.c							\
+						button_action.c							\
 						init_btns.c								\
 						raycasting.c							\
+						ray_vertical.c							\
+						ray_horizontal.c						\
+						num_tools.c								\
 						color.c									\
+						image_tools.c							\
+						draw_tools.c							\
 						input_hook.c							\
 						loop_hook.c								\
 						event_handler.c							\
-						sdl_quit.c								\
-						button_drawer.c							\
-						button_action.c							\
-						num_tools.c								\
-						image_tools.c							\
-						draw_tools.c							\
-						ray_vertical.c							\
-						ray_horizontal.c						\
-						init_btns2.c						\
-						button_loader.c					\
+
 
 OBJDIR			:=		objs
 
@@ -74,7 +75,7 @@ $(OBJDIR)/%.o		:		$(SRCDIR)/%.c
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
-$(NAME)	: $(OBJS)
+$(NAME)	: $(OBJS) include/wolf3d.h libft/libft.h
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
