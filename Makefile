@@ -78,6 +78,11 @@ $(OBJDIR)/%.o		:		$(SRCDIR)/%.c
 $(NAME)	: $(OBJS)
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
+	@sips -i icon.ico
+	@derez -only icns icon.ico > tmpicns.rsrc
+	@rez -append tmpicns.rsrc -o $(NAME)
+	@setfile -a C $(NAME)
+	@rm tmpicns.rsrc
 	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
 clean:
