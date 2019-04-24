@@ -76,6 +76,7 @@ static void		lil_loop(t_wolf *wolf, int key)
 int				loop_hook(t_wolf *wolf)
 {
 	t_tab pos;
+	struct timespec spec;
 
 	pos = wolf->sdl.keys;
 	while (pos)
@@ -86,6 +87,11 @@ int				loop_hook(t_wolf *wolf)
 	if (wolf->sdl.m_status == 0)
 	{
 		raycasting(wolf);
+		clock_gettime(CLOCK_REALTIME, &spec);
+		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - wolf->timestamp < 40000)
+			clock_gettime(CLOCK_REALTIME, &spec);
+		//ft_printf("FPS : %d\n", (spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - wolf->timestamp);
+		wolf->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
 	}
 	return (0);
 }
