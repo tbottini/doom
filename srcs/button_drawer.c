@@ -23,7 +23,7 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 		while (wolf->sdl.btnarr[++x].txture)
 		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[x].txture,
-					NULL, &(wolf->sdl.btnarr[x].area));
+					NULL, &(wolf->sdl.btnarr[x].loc.area));
 		}
 	}
 	else if (arr == 2)
@@ -31,7 +31,7 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 		while (wolf->sdl.btnmap[++x].txture)
 		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnmap[x].txture,
-					NULL, &(wolf->sdl.btnmap[x].area));
+					NULL, &(wolf->sdl.btnmap[x].loc.area));
 		}
 	}
 	else if (arr == 3)
@@ -39,7 +39,7 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 		while (wolf->sdl.btnopt[++x].txture)
 		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnopt[x].txture,
-					NULL, &(wolf->sdl.btnopt[x].area));
+					NULL, &(wolf->sdl.btnopt[x].loc.area));
 		}
 	}
 	SDL_RenderPresent(wolf->sdl.rend);
@@ -56,22 +56,65 @@ static void		update_loc_buttons(t_wolf *wolf, t_btn *arr)
 	while (arr[++x].txture)
 	{
 		tmp = &(arr[x]);
-		arr[x].area.x = wolf->sdl.size.x * (tmp->pos.x / 100.0);
-		arr[x].area.y = wolf->sdl.size.y * (tmp->pos.y / 100.0);
-		if (tmp->snapx == 1)
-			arr[x].area.x -= tmp->area.w / 2;
-		else if (tmp->snapx == 2)
-			arr[x].area.x -= tmp->area.w;
-		else if (tmp->snapx == 3)
-			arr[x].area.x = x + tmp->pos.x;
-		if (tmp->snapy == 1)
-			arr[x].area.y -= tmp->area.h / 2;
-		else if (tmp->snapy == 2)
-			arr[x].area.y -= tmp->area.h;
-		else if (tmp->snapy == 3)
-			arr[x].area.y = y + tmp->pos.y;
-		y = tmp->area.y + tmp->area.h;
+		arr[x].loc.area.x = wolf->sdl.size.x * (tmp->loc.pos.x / 100.0);
+		arr[x].loc.area.y = wolf->sdl.size.y * (tmp->loc.pos.y / 100.0);
+		if (tmp->loc.snapx == 1)
+			arr[x].loc.area.x -= tmp->loc.area.w / 2;
+		else if (tmp->loc.snapx == 2)
+			arr[x].loc.area.x -= tmp->loc.area.w;
+		else if (tmp->loc.snapx == 3)
+			arr[x].loc.area.x = x + tmp->loc.pos.x;
+		if (tmp->loc.snapy == 1)
+			arr[x].loc.area.y -= tmp->loc.area.h / 2;
+		else if (tmp->loc.snapy == 2)
+			arr[x].loc.area.y -= tmp->loc.area.h;
+		else if (tmp->loc.snapy == 3)
+			arr[x].loc.area.y = y + tmp->loc.pos.y;
+		y = tmp->loc.area.y + tmp->loc.area.h;
 	}
+}
+
+static void		update_loc(t_wolf *wolf, t_sloc *loc, t_sloc *before)
+{
+	loc->area.x = wolf->sdl.size.x * (loc->pos.x / 100.0);
+	loc->area.y = wolf->sdl.size.y * (loc->pos.y / 100.0);
+	if (loc->snapx == 1)
+		loc->area.x -= loc->area.w / 2;
+	else if (loc->snapx == 2)
+		loc->area.x -= loc->area.w;
+	else if (loc->snapx == 3)
+		loc->area.x = before->pos.x + before->area.w + loc->pos.x;
+	if (loc->snapy == 1)
+		loc->area.y -= loc->area.h / 2;
+	else if (loc->snapy == 2)
+		loc->area.y -= loc->area.h;
+	else if (loc->snapy == 3)
+		loc->area.y = before->area.y + before->area.h + loc->pos.y;
+}
+
+/*
+m_status behaviour
+0 = gamemode
+1 = Show main menu
+2 = show map menu
+3 = show Option menu
+*/
+
+void		draw_slid(t_wolf *wolf, t_slid *tmp)
+{
+	int size;
+
+	size = tmp->loc.area.h;
+	update_loc(wolf, &tmp->loc, &(wolf->sdl.btnopt[1].loc));
+	update_slider_txt(wolf, tmp);
+	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size) * (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
+	tmp->grip.y = tmp->loc.area.y;
+	SDL_RenderFillRect(wolf->sdl.rend, &tmp->loc.area);
+	SDL_SetRenderDrawColor(wolf->sdl.rend, 191, 35, 54, 255);
+	SDL_RenderDrawRect(wolf->sdl.rend, &tmp->loc.area);
+	SDL_SetRenderDrawColor(wolf->sdl.rend, 0,0,0, 255);
+	SDL_RenderCopy(wolf->sdl.rend, tmp->txture, NULL, &tmp->grip);
+	SDL_RenderPresent(wolf->sdl.rend);
 }
 
 void			draw_menu(t_wolf *wolf)
@@ -93,5 +136,6 @@ void			draw_menu(t_wolf *wolf)
 	{
 		update_loc_buttons(wolf, wolf->sdl.btnopt);
 		draw_buttons(wolf, status);
+		draw_slid(wolf, &wolf->sdl.slidopt[0]);
 	}
 }

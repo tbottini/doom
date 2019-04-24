@@ -8,7 +8,7 @@ double        double_modulo(double num)
     return (num);
 }
 
-double        angle_adaptater(double angle)
+double		angle_adaptater(double angle)
 {
     if (angle < 0.0)
         angle += 360.0;
