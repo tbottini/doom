@@ -106,10 +106,11 @@ void		draw_slid(t_wolf *wolf, t_slid *tmp)
 
 	size = tmp->loc.area.h;
 	update_loc(wolf, &tmp->loc, &(wolf->sdl.btnopt[1].loc));
-	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size) * *tmp->val) / tmp->max;
+	update_slider_txt(wolf, tmp);
+	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size) * (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
 	tmp->grip.y = tmp->loc.area.y;
 	SDL_RenderFillRect(wolf->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(wolf->sdl.rend, 100,100,200, 255);
+	SDL_SetRenderDrawColor(wolf->sdl.rend, 191, 35, 54, 255);
 	SDL_RenderDrawRect(wolf->sdl.rend, &tmp->loc.area);
 	SDL_SetRenderDrawColor(wolf->sdl.rend, 0,0,0, 255);
 	SDL_RenderCopy(wolf->sdl.rend, tmp->txture, NULL, &tmp->grip);

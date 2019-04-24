@@ -77,13 +77,12 @@ int mouse_move(int x, int y, t_wolf *wolf)
 	{
 		tmp = wolf->sdl.currslid;
 		size = tmp->loc.area.h;
-		xload = (((double)(x - size / 2) - (double)tmp->loc.area.x) / (double)(tmp->loc.area.w - size)) * (double)tmp->max;
-		if (0 < xload && xload <= tmp->max)
+		xload = ((x - tmp->loc.area.x) / (double)tmp->loc.area.w * (tmp->max - tmp->min)) + tmp->min;
+		if (tmp->min <= xload && xload <= tmp->max)
 		{
 			*tmp->val = xload;
 			draw_slid(wolf, tmp);
 		}
-		printf("Changing %d\t%d\n", x, xload);
 	}
 	return (0);
 }
