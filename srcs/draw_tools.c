@@ -46,20 +46,20 @@ void		draw_part_texture(t_wolf *wolf, t_ray ray, int *istart, int length)
 
 	ray_polarity(&ray);
 	ctexture.x = (ray.hor < ray.ver) ? ray.inter_h.x : ray.inter_v.y;
-	ctexture.x = (ctexture.x - (int)ctexture.x) * (wolf->nwall[ray.polar].w);
+	ctexture.x = (ctexture.x - (int)ctexture.x) * (wolf->wall[ray.polar].w);
 	ctexture.y = 0;
-	dty = (wolf->nwall[ray.polar].h) / (float)length;
+	dty = (wolf->wall[ray.polar].h) / (float)length;
 	if (length > wolf->sdl.size.y)
 	{
 		ctexture.y = (((float)length - (float)wolf->sdl.size.y) / 2);
-		ctexture.y = ctexture.y / (float)length * wolf->nwall[ray.polar].h;
+		ctexture.y = ctexture.y / (float)length * wolf->wall[ray.polar].h;
 		length = wolf->sdl.size.y - 1;
 	}
 	i = 0;
 	while (i < length)
 	{
-		it = (int)ctexture.x + (int)ctexture.y * wolf->nwall[ray.polar].w;
-		wolf->sdl.screen[*istart] = wolf->nwall[ray.polar].txture[it];
+		it = (int)ctexture.x + (int)ctexture.y * wolf->wall[ray.polar].w;
+		wolf->sdl.screen[*istart] = wolf->wall[ray.polar].txture[it];
 		ctexture.y += dty;
 		*istart += wolf->sdl.size.x;
 		i++;

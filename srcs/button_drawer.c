@@ -12,7 +12,7 @@
 
 #include "wolf3d.h"
 
-static void		draw_buttons(t_wolf *wolf, int arr)
+static void	draw_buttons(t_wolf *wolf, int arr)
 {
 	int x;
 
@@ -21,31 +21,25 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 	if (arr == 1)
 	{
 		while (wolf->ui.btnarr[++x].txture)
-		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnarr[x].txture,
 					NULL, &(wolf->ui.btnarr[x].loc.area));
-		}
 	}
 	else if (arr == 2)
 	{
 		while (wolf->ui.btnmap[++x].txture)
-		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnmap[x].txture,
 					NULL, &(wolf->ui.btnmap[x].loc.area));
-		}
 	}
 	else if (arr == 3)
 	{
 		while (wolf->ui.btnopt[++x].txture)
-		{
 			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnopt[x].txture,
 					NULL, &(wolf->ui.btnopt[x].loc.area));
-		}
 	}
 	SDL_RenderPresent(wolf->sdl.rend);
 }
 
-static void		update_loc_buttons(t_wolf *wolf, t_btn *arr)
+static void	update_loc_buttons(t_wolf *wolf, t_btn *arr)
 {
 	t_btn	*tmp;
 	int		x;
@@ -74,7 +68,7 @@ static void		update_loc_buttons(t_wolf *wolf, t_btn *arr)
 	}
 }
 
-static void		update_loc(t_wolf *wolf, t_sloc *loc, t_sloc *before)
+static void	update_loc(t_wolf *wolf, t_sloc *loc, t_sloc *before)
 {
 	loc->area.x = wolf->sdl.size.x * (loc->pos.x / 100.0);
 	loc->area.y = wolf->sdl.size.y * (loc->pos.y / 100.0);
@@ -92,14 +86,6 @@ static void		update_loc(t_wolf *wolf, t_sloc *loc, t_sloc *before)
 		loc->area.y = before->area.y + before->area.h + loc->pos.y;
 }
 
-/*
-m_status behaviour
-0 = gamemode
-1 = Show main menu
-2 = show map menu
-3 = show Option menu
-*/
-
 void		draw_slid(t_wolf *wolf, t_slid *tmp)
 {
 	int size;
@@ -107,17 +93,18 @@ void		draw_slid(t_wolf *wolf, t_slid *tmp)
 	size = tmp->loc.area.h;
 	update_loc(wolf, &tmp->loc, &(wolf->ui.btnopt[1].loc));
 	update_slider_txt(wolf, tmp);
-	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size) * (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
+	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
+		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
 	tmp->grip.y = tmp->loc.area.y;
 	SDL_RenderFillRect(wolf->sdl.rend, &tmp->loc.area);
 	SDL_SetRenderDrawColor(wolf->sdl.rend, 191, 35, 54, 255);
 	SDL_RenderDrawRect(wolf->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(wolf->sdl.rend, 0,0,0, 255);
+	SDL_SetRenderDrawColor(wolf->sdl.rend, 0, 0, 0, 255);
 	SDL_RenderCopy(wolf->sdl.rend, tmp->txture, NULL, &tmp->grip);
 	SDL_RenderPresent(wolf->sdl.rend);
 }
 
-void			draw_menu(t_wolf *wolf)
+void		draw_menu(t_wolf *wolf)
 {
 	int status;
 
