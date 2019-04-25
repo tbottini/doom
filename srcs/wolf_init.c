@@ -17,20 +17,20 @@ static void		void_wolf(t_wolf *wolf)
 	ft_bzero(wolf, sizeof(t_wolf));
 }
 
-static t_wall	nload_texture(t_wolf *wolf, const char *file)
+static t_wall	load_texture(t_wolf *wolf, const char *file)
 {
-	SDL_RWops *rwop;
-	SDL_Surface *surf;
-	SDL_Surface *tmp;
+	SDL_RWops	*rwop;
+	SDL_Surface	*surf;
+	SDL_Surface	*tmp;
 	t_wall		wall;
 
 	rwop = SDL_RWFromFile(file, "rb");
-	if(!(tmp = IMG_LoadXPM_RW(rwop)))
+	if (!(tmp = IMG_LoadXPM_RW(rwop)))
 	{
 		ft_printf("IMG_LoadXPM_RW: %s\n", IMG_GetError());
 		prog_quit(wolf);
 	}
-	if(!(surf = SDL_ConvertSurface(tmp, wolf->sdl.format, 0)))
+	if (!(surf = SDL_ConvertSurface(tmp, wolf->sdl.format, 0)))
 	{
 		ft_printf("SDL_ConvertSurface: failed\n");
 		prog_quit(wolf);
@@ -46,10 +46,10 @@ static t_wall	nload_texture(t_wolf *wolf, const char *file)
 
 void			lil_wolf_init(t_wolf *wolf)
 {
-	wolf->nwall[0] = nload_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->nwall[1] = nload_texture(wolf, "./ressources/textures/wall.xpm");
-	wolf->nwall[2] = nload_texture(wolf, "./ressources/textures/plaqueor.xpm");
-	wolf->nwall[3] = nload_texture(wolf, "./ressources/textures/test.xpm");
+	wolf->wall[0] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
+	wolf->wall[1] = load_texture(wolf, "./ressources/textures/wall.xpm");
+	wolf->wall[2] = load_texture(wolf, "./ressources/textures/plaqueor.xpm");
+	wolf->wall[3] = load_texture(wolf, "./ressources/textures/test.xpm");
 }
 
 t_wolf			*wolf_init(void)
