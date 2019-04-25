@@ -21,7 +21,7 @@ void		draw_part_texture(t_wolf *wolf, t_ray ray, int *istart, int length)
 	int		it;
 	int		c;
 
-	c = 2;
+	c = 3;
 
 	ctexture.x = (ray.hor < ray.ver) ? ray.inter_h.x : ray.inter_v.y;
 	ctexture.x = (ctexture.x - (int)ctexture.x) * (wolf->wl_txture[c]->w);
