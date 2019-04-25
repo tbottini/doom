@@ -41,7 +41,7 @@ void		draw_part_texture(t_wolf *wolf, t_ray ray, int *istart, int length)
 	if (length > wolf->sdl.size.y)
 	{
 		ctexture.y = (((float)length - (float)wolf->sdl.size.y) / 2);
-		ctexture.y /= (float)length * wolf->wl_txture[ray.polar]->h;
+		ctexture.y = ctexture.y / (float)length * wolf->wl_txture[ray.polar]->h;
 		length = wolf->sdl.size.y - 1;
 	}
 	i = 0;
