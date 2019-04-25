@@ -17,7 +17,7 @@ int key_press(int key, t_wolf *wolf)
 	int j;
 	if (key == SDLK_BACKQUOTE)
 	{
-		wolf->sdl.m_status = 1;
+		wolf->ui.m_status = 1;
 		draw_menu(wolf);
 	}
 	if (key == SDLK_g)
@@ -57,7 +57,7 @@ int mouse_press(int btn, int x, int y, t_wolf *wolf)
 
 int mouse_release(int btn, int x, int y, t_wolf *wolf)
 {
-	wolf->sdl.currslid = NULL;
+	wolf->ui.currslid = NULL;
 	(void)x;
 	(void)y;
 	(void)btn;
@@ -73,9 +73,9 @@ int mouse_move(int x, int y, t_wolf *wolf)
 
 	wolf->sdl.m_pos.x = x;
 	wolf->sdl.m_pos.y = y;
-	if (wolf->sdl.currslid)
+	if (wolf->ui.currslid)
 	{
-		tmp = wolf->sdl.currslid;
+		tmp = wolf->ui.currslid;
 		size = tmp->loc.area.h;
 		xload = ((x - tmp->loc.area.x) / (double)tmp->loc.area.w * (tmp->max - tmp->min)) + tmp->min;
 		if (tmp->min <= xload && xload <= tmp->max)

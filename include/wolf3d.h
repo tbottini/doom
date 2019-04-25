@@ -62,11 +62,7 @@ typedef struct		s_sloc
 typedef struct		s_btn
 {
 	t_sloc			loc;
-//	SDL_Rect		area;
 	SDL_Texture		*txture;
-//	int				snapx; // See Snap var behaviour
-//	int				snapy; // See Snap var behaviour
-//	t_fvct2			pos; // Will be percent of screen (0-100)
 	SDL_Color		fgcolor;
 	SDL_Color		bgcolor;
 	char			*data;
@@ -76,18 +72,21 @@ typedef struct		s_btn
 typedef struct		s_slid
 {
 	t_sloc			loc;
-//	SDL_Rect		area;
 	SDL_Texture		*txture;
 	int				*val;
 	int				min;
 	int				max;
 	SDL_Rect		grip;
-//	int				snapx; // See Snap var behaviour
-//	int				snapy; // See Snap var behaviour
-//	t_fvct2			pos; // Will be percent of screen (0-100)
 	SDL_Color		fgcolor;
 	SDL_Color		bgcolor;
 }					t_slid;
+
+typedef struct          s_font
+{
+	TTF_Font			*s32;
+	TTF_Font			*s64;
+	TTF_Font			*s128;
+}						t_font;
 
 /*
 m_status behaviour
@@ -95,6 +94,17 @@ m_status behaviour
 1 = Show main menu
 2 = show map menu
 */
+
+typedef struct			s_ui
+{
+	t_font			fonts;
+	t_btn			btnarr[10];
+	t_btn			btnmap[11];
+	t_btn			btnopt[11];
+	t_slid			slidopt[5];
+	t_slid			*currslid;
+	int				m_status;
+}						t_ui;
 
 /*
 *	dim_dist	detection de distance horizontale et verticale
@@ -114,55 +124,48 @@ typedef struct 			s_ray
 	int					polar;
 }						t_ray;
 
-typedef struct          s_font
-{
-	TTF_Font			*s32;
-	TTF_Font			*s64;
-	TTF_Font			*s128;
-}						t_font;
-
 typedef struct			s_sdl
 {
 	SDL_Window		*win;
 	SDL_Renderer	*rend;
-	t_font			fonts;
-	SDL_Color		colorpal[10];
-	t_btn			btnarr[10];
-	t_btn			btnmap[11];
-	t_btn			btnopt[11];
-	t_slid			slidopt[5];
-	t_slid			*currslid;
 	t_vct2			size;
 	t_vct2			m_pos;
 	SDL_Texture		*txture;
-	SDL_Texture		*coordtxt[4];
 	uint32_t		*screen;
-	int				open;
-	int				m_status;
 	t_tab			keys;
 	SDL_PixelFormat	*format;
 }					t_sdl;
 
 /*
-coordtxt array
+wall_texture array
 0 : North
 1 : East
 2 : South
 3 : West
 */
 
+typedef struct		s_wall
+{
+	SDL_Surface		*surf;
+	uint32_t		*txture;
+	int				w;
+	int				h;
+}					t_wall;
+
 typedef	struct		s_wolf
 {
 	t_sdl			sdl;
+	t_ui			ui;
 	char			map[100][100];
 	t_vct2			map_size;
 	t_fvct2			pos;
 	double			rot;
 	int				fov;
+	t_wall			nwall[4];
 	uint32_t		*wall[4];
 	SDL_Surface		*wl_txture[4];
 	unsigned long	timestamp;
-  float				d_scrn;
+	float			d_scrn;
 }					t_wolf;
 
 //prog management

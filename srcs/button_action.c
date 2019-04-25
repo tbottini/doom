@@ -14,14 +14,14 @@
 
 static void		start_btn(t_wolf *wolf)
 {
-	wolf->sdl.m_status = 2;
+	wolf->ui.m_status = 2;
 	load_map_btns(wolf);
 	draw_menu(wolf);
 }
 
 static void		option_btn(t_wolf *wolf)
 {
-	wolf->sdl.m_status = 3;
+	wolf->ui.m_status = 3;
 	draw_menu(wolf);
 }
 
@@ -31,9 +31,9 @@ static void		on_menu_one(t_wolf *wolf, int x, int y)
 	int		i;
 
 	i = -1;
-	while (wolf->sdl.btnarr[++i].txture)
+	while (wolf->ui.btnarr[++i].txture)
 	{
-		tmp = wolf->sdl.btnarr[i];
+		tmp = wolf->ui.btnarr[i];
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
@@ -54,22 +54,22 @@ static void		on_menu_two(t_wolf *wolf, int x, int y)
 	int		i;
 
 	i = -1;
-	while (wolf->sdl.btnmap[++i].txture)
+	while (wolf->ui.btnmap[++i].txture)
 	{
-		tmp = wolf->sdl.btnmap[i];
+		tmp = wolf->ui.btnmap[i];
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
 			if (i == 0)
 			{
-				wolf->sdl.m_status = 1;
+				wolf->ui.m_status = 1;
 				draw_menu(wolf);
 			}
 			else if (i > 1)
 			{
 				if (wolf_parseur(wolf, tmp.data))
 				{
-					wolf->sdl.m_status = 0;
+					wolf->ui.m_status = 0;
 					draw_menu(wolf);
 				}
 			}
@@ -84,40 +84,40 @@ static void		on_menu_tree(t_wolf *wolf, int x, int y)
 	int		i;
 
 	i = -1;
-	while (wolf->sdl.btnopt[++i].txture)
+	while (wolf->ui.btnopt[++i].txture)
 	{
 		//ft_printf("Found btn %d\n", i);
-		tmp = wolf->sdl.btnopt[i];
+		tmp = wolf->ui.btnopt[i];
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
 			ft_printf("Click on btn %d\n", i);
 			if (i == 0)
 			{
-				wolf->sdl.m_status = 1;
+				wolf->ui.m_status = 1;
 				draw_menu(wolf);
 			}
 		}
 	}
 	i = -1;
-	while (wolf->sdl.slidopt[++i].txture)
+	while (wolf->ui.slidopt[++i].txture)
 	{
-		stmp = wolf->sdl.slidopt[i];
+		stmp = wolf->ui.slidopt[i];
 		if (stmp.grip.x <= x && x <= stmp.grip.x + stmp.grip.w
 			&& stmp.grip.y <= y && y <= stmp.grip.y + stmp.grip.h)
 		{
 			ft_printf("Click on slid %d\n", i);
-			wolf->sdl.currslid = &(wolf->sdl.slidopt[i]);
+			wolf->ui.currslid = &(wolf->ui.slidopt[i]);
 		}
 	}
 }
 
 void			btn_click(t_wolf *wolf, int x, int y)
 {
-	if (wolf->sdl.m_status == 1)
+	if (wolf->ui.m_status == 1)
 		on_menu_one(wolf, x, y);
-	else if (wolf->sdl.m_status == 2)
+	else if (wolf->ui.m_status == 2)
 		on_menu_two(wolf, x, y);
-	else if (wolf->sdl.m_status == 3)
+	else if (wolf->ui.m_status == 3)
 		on_menu_tree(wolf, x, y);
 }
