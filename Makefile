@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/24 19:36:45 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/25 19:04:48 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,8 +78,8 @@ $(OBJDIR)/%.o		:		$(SRCDIR)/%.c
 $(NAME)	: $(OBJS) include/wolf3d.h libft/libft.h
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
-	@sips -i icon.ico
-	@derez -only icns icon.ico > tmpicns.rsrc
+	@sips -i ressources/icon/icon.ico
+	@derez -only icns ressources/icon/icon.ico > tmpicns.rsrc
 	@rez -append tmpicns.rsrc -o $(NAME)
 	@setfile -a C $(NAME)
 	@rm tmpicns.rsrc
