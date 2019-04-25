@@ -1,11 +1,5 @@
 #include "wolf3d.h"
 
-void			print_a_srfc(SDL_Surface *surface)
-{
-	printf("surface pitch %d\nw %d h%d\n", surface->pitch, surface->w, surface->h);
-}
-
-
 int				row_verif(t_wolf *wolf, char *row)
 {
 	int			i;
@@ -79,12 +73,10 @@ int				get_texture(int fd, t_wolf *wolf)
 		if (!(wolf->wl_txture[i] = SDL_ConvertSurface(wolf->wl_txture[i],
 			wolf->sdl.format, 0)))
 		{
-			printf("FAIL");
 			return (0);
 		}
 		SDL_FreeSurface(tmp);
 		wolf->wall[i] = (uint32_t*)wolf->wl_txture[i]->pixels;
-		print_a_srfc(wolf->wl_txture[i]);
 		free(path);
 	}
 	if (i == 4)
