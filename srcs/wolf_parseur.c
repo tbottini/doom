@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf_parseur.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/25 20:53:30 by tbottini          #+#    #+#             */
+/*   Updated: 2019/04/25 20:55:19 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 int				row_verif(t_wolf *wolf, char *row)
@@ -5,9 +17,9 @@ int				row_verif(t_wolf *wolf, char *row)
 	int			i;
 
 	i = 0;
-	while(row[i])
+	while (row[i])
 	{
-		if(row[i] == 'A')
+		if (row[i] == 'A')
 		{
 			wolf->pos.x = i + 0.5;
 			wolf->pos.y = (double)wolf->map_size.y + 0.5;
@@ -62,7 +74,5 @@ int				wolf_parseur(t_wolf *wolf, char *filename)
 	fd = open(filename, O_RDONLY);
 	if (map_verif(fd, wolf) == 0)
 		return (0);
-	//if (get_texture(fd, wolf) == 0)
-	//	return (0);
 	return (1);
 }
