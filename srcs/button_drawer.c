@@ -20,26 +20,26 @@ static void		draw_buttons(t_wolf *wolf, int arr)
 	SDL_RenderClear(wolf->sdl.rend);
 	if (arr == 1)
 	{
-		while (wolf->sdl.btnarr[++x].txture)
+		while (wolf->ui.btnarr[++x].txture)
 		{
-			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnarr[x].txture,
-					NULL, &(wolf->sdl.btnarr[x].loc.area));
+			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnarr[x].txture,
+					NULL, &(wolf->ui.btnarr[x].loc.area));
 		}
 	}
 	else if (arr == 2)
 	{
-		while (wolf->sdl.btnmap[++x].txture)
+		while (wolf->ui.btnmap[++x].txture)
 		{
-			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnmap[x].txture,
-					NULL, &(wolf->sdl.btnmap[x].loc.area));
+			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnmap[x].txture,
+					NULL, &(wolf->ui.btnmap[x].loc.area));
 		}
 	}
 	else if (arr == 3)
 	{
-		while (wolf->sdl.btnopt[++x].txture)
+		while (wolf->ui.btnopt[++x].txture)
 		{
-			SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.btnopt[x].txture,
-					NULL, &(wolf->sdl.btnopt[x].loc.area));
+			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnopt[x].txture,
+					NULL, &(wolf->ui.btnopt[x].loc.area));
 		}
 	}
 	SDL_RenderPresent(wolf->sdl.rend);
@@ -105,7 +105,7 @@ void		draw_slid(t_wolf *wolf, t_slid *tmp)
 	int size;
 
 	size = tmp->loc.area.h;
-	update_loc(wolf, &tmp->loc, &(wolf->sdl.btnopt[1].loc));
+	update_loc(wolf, &tmp->loc, &(wolf->ui.btnopt[1].loc));
 	update_slider_txt(wolf, tmp);
 	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size) * (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
 	tmp->grip.y = tmp->loc.area.y;
@@ -121,21 +121,21 @@ void			draw_menu(t_wolf *wolf)
 {
 	int status;
 
-	status = wolf->sdl.m_status;
+	status = wolf->ui.m_status;
 	if (status == 1)
 	{
-		update_loc_buttons(wolf, wolf->sdl.btnarr);
+		update_loc_buttons(wolf, wolf->ui.btnarr);
 		draw_buttons(wolf, status);
 	}
 	else if (status == 2)
 	{
-		update_loc_buttons(wolf, wolf->sdl.btnmap);
+		update_loc_buttons(wolf, wolf->ui.btnmap);
 		draw_buttons(wolf, status);
 	}
 	else if (status == 3)
 	{
-		update_loc_buttons(wolf, wolf->sdl.btnopt);
+		update_loc_buttons(wolf, wolf->ui.btnopt);
 		draw_buttons(wolf, status);
-		draw_slid(wolf, &wolf->sdl.slidopt[0]);
+		draw_slid(wolf, &wolf->ui.slidopt[0]);
 	}
 }

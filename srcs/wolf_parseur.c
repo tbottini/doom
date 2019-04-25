@@ -68,7 +68,6 @@ int				get_texture(int fd, t_wolf *wolf)
 	int			j;
 	SDL_Surface	*tmp;
 
-
 	j = -1;
 	i = -1;
 	while (i++ != 4 && get_next_line(fd, &path) > 0)
@@ -100,7 +99,7 @@ int				wolf_parseur(t_wolf *wolf, char *filename)
 	fd = open(filename, O_RDONLY);
 	if (map_verif(fd, wolf) == 0)
 		return (0);
-	if (get_texture(fd, wolf) == 0)
-		return (0);
+	//if (get_texture(fd, wolf) == 0)
+	//	return (0);
 	return (1);
 }
