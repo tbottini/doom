@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/24 21:08:31 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 20:58:00 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int key_press(int key, t_wolf *wolf)
 	{
 		ft_nodeadd_int(&(wolf->sdl.keys), key);
 	}
-	//printf("wolfrot %f wolfpos .x %f .y %f\n", wolf->rot, wolf->pos.x, wolf->pos.y);
 	return (0);
 }
 
@@ -47,11 +46,6 @@ int mouse_press(int btn, int x, int y, t_wolf *wolf)
 {
 	if (btn == SDL_BUTTON_LEFT)
 		btn_click(wolf, x, y);
-	else if (btn == 4)
-		wolf->fov++;
-	else if (btn == 5)
-		wolf->fov--;
-	//ft_printf("Mouse p %d at %d : %d\n", btn, x, y);
 	return (0);
 }
 
@@ -61,7 +55,6 @@ int mouse_release(int btn, int x, int y, t_wolf *wolf)
 	(void)x;
 	(void)y;
 	(void)btn;
-	//ft_printf("Mouse r %d at %d : %d\n", btn, x, y);
 	return (0);
 }
 
