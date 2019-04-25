@@ -89,5 +89,8 @@ int sdl_start(t_wolf *wolf, const char *title)
 	if (SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch))
 		return (prog_quit(wolf));
 	wolf->sdl.screen = (uint32_t*)tmp;
+	wolf->sdl.format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
+	if (!wolf->sdl.format)
+		return (prog_quit(wolf));
 	return (0);
 }
