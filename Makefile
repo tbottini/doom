@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/25 19:04:48 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/25 20:58:52 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ SRCS			:=		button_action.c							\
 						color.c									\
 						draw_tools.c							\
 						event_handler.c							\
-						image_tools.c							\
 						init_btns.c								\
 						init_btns2.c							\
 						init_slids.c							\

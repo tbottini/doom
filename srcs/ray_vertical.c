@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_vertical.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:35:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/25 19:35:28 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 21:01:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@ void		init_ray_ver(t_wolf *w, t_ray *r)
 		r->ratio.y = r->ratio.x / tan((90 - r->angle) * PI180);
 		r->inter_v.x = (int)w->pos.x + 1;
 		r->inter_v.y = w->pos.y + fabs(r->inter_v.x - w->pos.x) * r->ratio.y;
+		return ;
 	}
-	else
-	{
-		r->ratio.x = -1;
-		r->ratio.y = r->ratio.x / tan((90 - r->angle) * PI180);
-		r->inter_v.x = (int)w->pos.x - 1;
-		r->inter_v.y = w->pos.y + fabs(r->inter_v.x - w->pos.x + 1) * r->ratio.y;
-	}
+	r->ratio.x = -1;
+	r->ratio.y = r->ratio.x / tan((90 - r->angle) * PI180);
+	r->inter_v.x = (int)w->pos.x - 1;
+	r->inter_v.y = w->pos.y + fabs(r->inter_v.x - w->pos.x + 1) * r->ratio.y;
 }
 
 float		ver_detection(t_wolf *wolf, t_ray *ray)
@@ -47,7 +45,6 @@ float		ver_detection(t_wolf *wolf, t_ray *ray)
 		if (ray->angle > 90 && ray->angle < 270)
 			dist.x++;
 		ray->ver = sqrt(dist.x * dist.x + dist.y * dist.y);
-		//ray->ver *= cos(fabs(wolf->rot - ray->angle) * PI / 180.00);
 	}
 	return (ray->ver);
 }
