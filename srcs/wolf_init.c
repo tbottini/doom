@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/25 19:14:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 19:37:49 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,6 @@
 static void		void_wolf(t_wolf *wolf)
 {
 	ft_bzero(wolf, sizeof(t_wolf));
-}
-
-static SDL_Surface	*load_texture(t_wolf *wolf, const char *file)
-{
-	SDL_RWops *rwop;
-	SDL_Surface *surf;
-	SDL_Surface *tmp;
-
-	rwop = SDL_RWFromFile(file, "rb");
-	if(!(tmp = IMG_LoadXPM_RW(rwop)))
-	{
-		ft_printf("IMG_LoadXPM_RW: %s\n", IMG_GetError());
-		prog_quit(wolf);
-		return (NULL);
-	}
-	if(!(surf = SDL_ConvertSurface(tmp, wolf->sdl.format, 0)))
-	{
-		prog_quit(wolf);
-		return (NULL);
-	}
-	SDL_FreeSurface(tmp);
-	SDL_RWclose(rwop);
-	return (surf);
 }
 
 static t_wall	nload_texture(t_wolf *wolf, const char *file)

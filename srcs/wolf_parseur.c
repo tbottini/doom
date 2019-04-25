@@ -55,35 +55,6 @@ int				map_verif(int fd, t_wolf *wolf)
 	return (1);
 }
 
-int				get_texture(int fd, t_wolf *wolf)
-{
-	int			i;
-	char		*path;
-	int			j;
-	SDL_Surface	*tmp;
-
-	j = -1;
-	i = -1;
-	while (i++ != 4 && get_next_line(fd, &path) > 0)
-	{
-		wolf->wl_txture[i] = IMG_Load(path);
-		if (!wolf->wl_txture[i])
-			return (0);
-		tmp = wolf->wl_txture[i];
-		if (!(wolf->wl_txture[i] = SDL_ConvertSurface(wolf->wl_txture[i],
-			wolf->sdl.format, 0)))
-		{
-			return (0);
-		}
-		SDL_FreeSurface(tmp);
-		wolf->nwall[i].txture = (uint32_t*)wolf->wl_txture[i]->pixels;
-		free(path);
-	}
-	if (i == 4)
-		return (1);
-	return (0);
-}
-
 int				wolf_parseur(t_wolf *wolf, char *filename)
 {
 	int			fd;
