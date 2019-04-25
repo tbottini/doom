@@ -32,7 +32,7 @@ t_btn	add_wolf_button(t_wolf *wolf)
 	tmp.fgcolor.r = 255;
 	tmp.fgcolor.g = 255;
 	tmp.fgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s128, " wolfenstein ",
+	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s128, " wolfenstein ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
@@ -62,7 +62,7 @@ t_btn	add_start_button(t_wolf *wolf)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, " START ",
+	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s64, " START ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
@@ -92,7 +92,7 @@ t_btn	add_opt_button(t_wolf *wolf)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, " Options ",
+	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s64, " Options ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
@@ -122,7 +122,7 @@ t_btn	add_quit_button(t_wolf *wolf, const char *str)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, str,
+	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s64, str,
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;

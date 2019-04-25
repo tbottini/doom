@@ -17,14 +17,14 @@ static void		free_textures(t_wolf *wolf)
 	int x;
 
 	x = -1;
-	while (wolf->sdl.btnarr[++x].txture)
-		SDL_DestroyTexture(wolf->sdl.btnarr[x].txture);
+	while (wolf->ui.btnarr[++x].txture)
+		SDL_DestroyTexture(wolf->ui.btnarr[x].txture);
 	x = -1;
-	while (wolf->sdl.btnmap[++x].txture)
+	while (wolf->ui.btnmap[++x].txture)
 	{
-		SDL_DestroyTexture(wolf->sdl.btnmap[x].txture);
+		SDL_DestroyTexture(wolf->ui.btnmap[x].txture);
 		if (x > 1)
-			free(wolf->sdl.btnmap[x].data);
+			free(wolf->ui.btnmap[x].data);
 	}
 	x = -1;
 	while (++x < 4)
@@ -37,16 +37,18 @@ int				prog_quit(t_wolf *wolf)
 	free_textures(wolf);
 	if (wolf->sdl.txture)
 		SDL_DestroyTexture(wolf->sdl.txture);
-	if (wolf->sdl.fonts.s64)
-		TTF_CloseFont(wolf->sdl.fonts.s64);
-	if (wolf->sdl.fonts.s32)
-		TTF_CloseFont(wolf->sdl.fonts.s32);
-	if (wolf->sdl.fonts.s128)
-		TTF_CloseFont(wolf->sdl.fonts.s128);
+	if (wolf->ui.fonts.s64)
+		TTF_CloseFont(wolf->ui.fonts.s64);
+	if (wolf->ui.fonts.s32)
+		TTF_CloseFont(wolf->ui.fonts.s32);
+	if (wolf->ui.fonts.s128)
+		TTF_CloseFont(wolf->ui.fonts.s128);
 	if (wolf->sdl.rend)
 		SDL_DestroyRenderer(wolf->sdl.rend);
 	if (wolf->sdl.win)
 		SDL_DestroyWindow(wolf->sdl.win);
+	if (wolf->sdl.format)
+		SDL_FreeFormat(wolf->sdl.format);
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();

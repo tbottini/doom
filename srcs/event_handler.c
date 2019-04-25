@@ -32,7 +32,7 @@ static void		window_event(t_wolf *wolf, SDL_Event event)
 		wolf->sdl.screen = (uint32_t *)tmp;
 		draw_menu(wolf);
 	}
-	if (wolf->sdl.m_status == 2)
+	if (wolf->ui.m_status == 2)
 	{
 		load_map_btns(wolf);
 		draw_menu(wolf);
@@ -44,7 +44,7 @@ static void		dropfile_event(t_wolf *wolf, SDL_Event event)
 	if (wolf_parseur(wolf, event.drop.file))
 	{
 		ft_printf("val Reussi\n");
-		wolf->sdl.m_status = 0;
+		wolf->ui.m_status = 0;
 		draw_menu(wolf);
 	}
 	ft_printf("Event DropFile %s\n", event.drop.file);

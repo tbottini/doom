@@ -32,7 +32,7 @@ t_btn	add_map_button(t_wolf *wolf, const char *str)
 	tmp.loc.pos.y = 5;
 	tmp.loc.snapx = 1;
 	tmp.loc.snapy = 3;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s32, str,
+	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s32, str,
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
@@ -62,7 +62,7 @@ t_btn	add_mapmenu_button(t_wolf *wolf)
 	tmp.fgcolor.r = 255;
 	tmp.fgcolor.g = 255;
 	tmp.fgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s64, " Maps ",
+	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s64, " Maps ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;

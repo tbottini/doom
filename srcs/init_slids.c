@@ -18,7 +18,7 @@ void	update_slider_txt(t_wolf *wolf, t_slid *slid)
 	char *str;
 
 	str = ft_itoa(*slid->val);
-	btntext = TTF_RenderText_Shaded(wolf->sdl.fonts.s32, str,
+	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s32, str,
 		slid->fgcolor, slid->bgcolor);
 	slid->txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
