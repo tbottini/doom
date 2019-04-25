@@ -76,7 +76,7 @@ int				get_texture(int fd, t_wolf *wolf)
 			return (0);
 		}
 		SDL_FreeSurface(tmp);
-		wolf->wall[i] = (uint32_t*)wolf->wl_txture[i]->pixels;
+		wolf->nwall[i].txture = (uint32_t*)wolf->wl_txture[i]->pixels;
 		free(path);
 	}
 	if (i == 4)
