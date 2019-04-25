@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/24 21:23:07 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 17:02:50 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct		s_btn
 	SDL_Color		fgcolor;
 	SDL_Color		bgcolor;
 	char			*data;
+	SDL_PixelFormat	*format;
 }					t_btn;
 
 typedef struct		s_slid
@@ -139,6 +140,7 @@ typedef struct			s_sdl
 	int				open;
 	int				m_status;
 	t_tab			keys;
+	SDL_PixelFormat	*format;
 }					t_sdl;
 
 /*
