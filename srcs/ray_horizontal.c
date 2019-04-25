@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_horizontal.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/25 19:35:12 by tbottini          #+#    #+#             */
+/*   Updated: 2019/04/25 19:43:19 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 void		init_ray_hor(t_wolf *w, t_ray *r)
@@ -35,8 +47,6 @@ float		hor_detection(t_wolf *wolf, t_ray *ray)
 		if (ray->angle > 180)
 			dist.y++;
 		ray->hor = sqrt(dist.x * dist.x + dist.y * dist.y);
-		//ray->hor *= cos(fabs(wolf->rot - ray->angle) * PI / 180.00);
-		//ray->hor = fabs(ray->inter_h.x - wolf->pos.x) / cos((wolf->rot - ray->angle) * PI180);
 	}
 	return (ray->hor);
 }
