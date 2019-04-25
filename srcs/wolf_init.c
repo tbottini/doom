@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/24 21:23:20 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 18:55:48 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,9 @@ static t_wall	nload_texture(t_wolf *wolf, const char *file)
 void			lil_wolf_init(t_wolf *wolf)
 {
 	wolf->nwall[0] = nload_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->wl_txture[0] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->wall[0] = (uint32_t *)wolf->wl_txture[0]->pixels;
 	wolf->nwall[1] = nload_texture(wolf, "./ressources/textures/wall.xpm");
-	wolf->wl_txture[1] = load_texture(wolf, "./ressources/textures/wall.xpm");
-	wolf->wall[1] = (uint32_t *)wolf->wl_txture[1]->pixels;
 	wolf->nwall[2] = nload_texture(wolf, "./ressources/textures/plaqueor.xpm");
-	wolf->wl_txture[2] = load_texture(wolf, "./ressources/textures/plaqueor.xpm");
-	wolf->wall[2] = (uint32_t *)wolf->wl_txture[2]->pixels;
 	wolf->nwall[3] = nload_texture(wolf, "./ressources/textures/test.xpm");
-	wolf->wl_txture[3] = load_texture(wolf, "./ressources/textures/test.xpm");
-	wolf->wall[3] = (uint32_t *)wolf->wl_txture[3]->pixels;
 }
 
 t_wolf			*wolf_init(void)
