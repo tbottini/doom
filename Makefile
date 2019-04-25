@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/25 20:58:52 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/25 22:04:51 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,7 @@ NAME			:=		wolf3d
 
 CC				:=		gcc
 
-CFLAGS			:=		-g -Wall -Wextra \
-#-Werror
+CFLAGS			:=		-g -Wall -Wextra -Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -65,16 +64,16 @@ OBJS    		:=		$(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
 
 SRCS	   		:=		$(patsubst %.c,srcs/%.c,$(SRCS))
 
-all: $(NAME)
+all				:		$(NAME)
 
-$(OBJDIR)/%.o		:		$(SRCDIR)/%.c
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
-$(NAME)	: $(OBJS) include/wolf3d.h libft/libft.h
+$(NAME)			:		$(OBJS) include/wolf3d.h libft/libft.h libft/libft.a
 	@make -C ./libft
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@sips -i ressources/icon/icon.ico
