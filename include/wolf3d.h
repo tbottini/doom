@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/25 18:48:54 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 19:38:03 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,6 @@ typedef	struct		s_wolf
 	double			rot;
 	int				fov;
 	t_wall			nwall[4];
-	//uint32_t		*wall[4];
-	SDL_Surface		*wl_txture[4];
 	unsigned long	timestamp;
 	float			d_scrn;
 }					t_wolf;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/25 19:35:34 by tbottini          #+#    #+#             */
+/*   Updated: 2019/04/25 19:37:52 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 double		iswall(t_wolf *wolf, t_fvct2 inter)
@@ -15,24 +27,21 @@ double		iswall(t_wolf *wolf, t_fvct2 inter)
 
  void		raycasting(t_wolf *wolf)
  {
- 	t_ray	ray;
- 	int		i;
+	t_ray	ray;
+	int		i;
 
- 	i = 0;
- 	//ray.angle = wolf->rot + wolf->fov / 2;
- 	//iangle = wolf->fov / (float)wolf->sdl.size.x;
- 	wolf->d_scrn = (wolf->sdl.size.x / 2.0) / tan(wolf->fov * PI180 / 2.0);
- 	while (i < wolf->sdl.size.x - 1)
- 	{
- 		ray.angle = atan(((wolf->sdl.size.x / 2.0) - i) / wolf->d_scrn) * TOANGLE;
- 		ray.angle += wolf->rot;
- 		ray.angle = angle_adaptater(ray.angle);
- 		hor_detection(wolf, &ray);
- 		ver_detection(wolf, &ray);
- 		draw_column(wolf, ray, i);
- 		//ray.angle -= iangle;
- 		i++;
- 	}
- 	SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.txture, NULL, NULL);
- 	SDL_RenderPresent(wolf->sdl.rend);
+	i = 0;
+	wolf->d_scrn = (wolf->sdl.size.x / 2.0) / tan(wolf->fov * PI180 / 2.0);
+	while (i < wolf->sdl.size.x - 1)
+	{
+		ray.angle = atan(((wolf->sdl.size.x / 2.0) - i) / wolf->d_scrn) * TOANGLE;
+		ray.angle += wolf->rot;
+		ray.angle = angle_adaptater(ray.angle);
+		hor_detection(wolf, &ray);
+		ver_detection(wolf, &ray);
+		draw_column(wolf, ray, i);
+		i++;
+	}
+	SDL_RenderCopy(wolf->sdl.rend, wolf->sdl.txture, NULL, NULL);
+	SDL_RenderPresent(wolf->sdl.rend);
 }
