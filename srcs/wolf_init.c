@@ -72,14 +72,14 @@ void			lil_wolf_init(t_wolf *wolf)
 	wolf->nwall[0] = nload_texture(wolf, "./ressources/textures/wall_blue.xpm");
 	wolf->wl_txture[0] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
 	wolf->wall[0] = (uint32_t *)wolf->wl_txture[0]->pixels;
-	wolf->nwall[1] = nload_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->wl_txture[1] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
+	wolf->nwall[1] = nload_texture(wolf, "./ressources/textures/wall.xpm");
+	wolf->wl_txture[1] = load_texture(wolf, "./ressources/textures/wall.xpm");
 	wolf->wall[1] = (uint32_t *)wolf->wl_txture[1]->pixels;
-	wolf->nwall[2] = nload_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->wl_txture[2] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
+	wolf->nwall[2] = nload_texture(wolf, "./ressources/textures/plaqueor.xpm");
+	wolf->wl_txture[2] = load_texture(wolf, "./ressources/textures/plaqueor.xpm");
 	wolf->wall[2] = (uint32_t *)wolf->wl_txture[2]->pixels;
-	wolf->nwall[3] = nload_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->wl_txture[3] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
+	wolf->nwall[3] = nload_texture(wolf, "./ressources/textures/test.xpm");
+	wolf->wl_txture[3] = load_texture(wolf, "./ressources/textures/test.xpm");
 	wolf->wall[3] = (uint32_t *)wolf->wl_txture[3]->pixels;
 }
 
