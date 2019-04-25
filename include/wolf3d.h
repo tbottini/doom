@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/25 17:02:50 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 18:48:54 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ typedef struct		s_slid
 	SDL_Color		bgcolor;
 }					t_slid;
 
-typedef struct          s_font
+typedef struct      s_font
 {
-	TTF_Font			*s32;
-	TTF_Font			*s64;
-	TTF_Font			*s128;
-}						t_font;
+	TTF_Font		*s32;
+	TTF_Font		*s64;
+	TTF_Font		*s128;
+}					t_font;
 
 /*
 m_status behaviour
@@ -114,7 +114,6 @@ typedef struct			s_ui
 
 typedef struct 			s_ray
 {
-	t_fvct2				inter_f;
 	t_fvct2				inter_v;
 	t_fvct2				inter_h;
 	t_fvct2				ratio;
@@ -136,14 +135,6 @@ typedef struct			s_sdl
 	SDL_PixelFormat	*format;
 }					t_sdl;
 
-/*
-wall_texture array
-0 : North
-1 : East
-2 : South
-3 : West
-*/
-
 typedef struct		s_wall
 {
 	SDL_Surface		*surf;
@@ -162,7 +153,7 @@ typedef	struct		s_wolf
 	double			rot;
 	int				fov;
 	t_wall			nwall[4];
-	uint32_t		*wall[4];
+	//uint32_t		*wall[4];
 	SDL_Surface		*wl_txture[4];
 	unsigned long	timestamp;
 	float			d_scrn;
@@ -187,9 +178,9 @@ t_btn					add_quit_button(t_wolf *wolf, const char *str);
 void					draw_menu(t_wolf *wolf);
 int 					load_map_btns(t_wolf *wolf);
 
-void	update_slider_txt(t_wolf *wolf, t_slid *slid);
-t_slid	add_fov_slider(t_wolf *wolf);
-void		draw_slid(t_wolf *wolf, t_slid *tmp);
+void					update_slider_txt(t_wolf *wolf, t_slid *slid);
+t_slid					add_fov_slider(t_wolf *wolf);
+void					draw_slid(t_wolf *wolf, t_slid *tmp);
 
 //input
 int						event_handler(t_wolf *wolf);
