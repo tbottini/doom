@@ -88,7 +88,7 @@ int				loop_hook(t_wolf *wolf)
 	{
 		raycasting(wolf);
 		clock_gettime(CLOCK_REALTIME, &spec);
-		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - wolf->timestamp < 20000)
+		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - wolf->timestamp < 25000)
 			clock_gettime(CLOCK_REALTIME, &spec);
 		//ft_printf("FPS : %d\n", (spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - wolf->timestamp);
 		wolf->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
