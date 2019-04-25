@@ -27,9 +27,11 @@
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
-# define BLUE_SKY color_rgb(69, 89, 168)
-# define RED_WALL color_rgb(179, 0, 0)
-# define PINK_FLOOR color_rgb(255, 216, 213)
+# define BLUE_SKY 0x4559a8ff
+# define RED_WALL 0xb30000ff
+# define PINK_FLOOR 0xdcc8c8ff
+# define TTFWOLF "ressources/font/wolfenstein.ttf"
+# define TTFIMPACT "ressources/font/impact.ttf"
 
 typedef struct			s_vct2
 {
@@ -146,7 +148,7 @@ typedef	struct			s_wolf
 	t_fvct2				pos;
 	double				rot;
 	int					fov;
-	t_wall				nwall[4];
+	t_wall				wall[4];
 	unsigned long		timestamp;
 	float				d_scrn;
 }						t_wolf;

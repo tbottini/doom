@@ -12,19 +12,6 @@
 
 #include "wolf3d.h"
 
-static void		start_btn(t_wolf *wolf)
-{
-	wolf->ui.m_status = 2;
-	load_map_btns(wolf);
-	draw_menu(wolf);
-}
-
-static void		option_btn(t_wolf *wolf)
-{
-	wolf->ui.m_status = 3;
-	draw_menu(wolf);
-}
-
 static void		on_menu_one(t_wolf *wolf, int x, int y)
 {
 	t_btn	tmp;
@@ -38,9 +25,16 @@ static void		on_menu_one(t_wolf *wolf, int x, int y)
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
 			if (i == 1)
-				start_btn(wolf);
+			{
+				wolf->ui.m_status = 2;
+				load_map_btns(wolf);
+				draw_menu(wolf);
+			}
 			else if (i == 2)
-				option_btn(wolf);
+			{
+				wolf->ui.m_status = 3;
+				draw_menu(wolf);
+			}
 			else if (i == 3)
 				prog_quit(wolf);
 		}
@@ -88,23 +82,19 @@ static void		on_menu_tree(t_wolf *wolf, int x, int y)
 		tmp = wolf->ui.btnopt[i];
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
-		{
 			if (i == 0)
 			{
 				wolf->ui.m_status = 1;
 				draw_menu(wolf);
 			}
-		}
 	}
 	i = -1;
 	while (wolf->ui.slidopt[++i].txture)
 	{
 		stmp = wolf->ui.slidopt[i];
 		if (stmp.grip.x <= x && x <= stmp.grip.x + stmp.grip.w
-			&& stmp.grip.y <= y && y <= stmp.grip.y + stmp.grip.h)
-		{
+				&& stmp.grip.y <= y && y <= stmp.grip.y + stmp.grip.h)
 			wolf->ui.currslid = &(wolf->ui.slidopt[i]);
-		}
 	}
 }
 
