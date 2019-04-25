@@ -77,11 +77,11 @@ int sdl_start(t_wolf *wolf, const char *title)
 		return (prog_quit(wolf));
 	if (!(wolf->sdl.rend = SDL_CreateRenderer(wolf->sdl.win, -1, SDL_RENDERER_SOFTWARE)))
 		return (prog_quit(wolf));
-	if (!(wolf->ui.fonts.s64 = TTF_OpenFont("wolfenstein.ttf", 64)))
+	if (!(wolf->ui.fonts.s64 = TTF_OpenFont("ressources/font/wolfenstein.ttf", 64)))
 		return (prog_quit(wolf));
-	if (!(wolf->ui.fonts.s128 = TTF_OpenFont("wolfenstein.ttf", 128)))
+	if (!(wolf->ui.fonts.s128 = TTF_OpenFont("ressources/font/wolfenstein.ttf", 128)))
 		return (prog_quit(wolf));
-	if (!(wolf->ui.fonts.s32 = TTF_OpenFont("impact.ttf", 32)))
+	if (!(wolf->ui.fonts.s32 = TTF_OpenFont("ressources/font/impact.ttf", 32)))
 		return (prog_quit(wolf));
 	SDL_SetWindowMinimumSize(wolf->sdl.win, 640, 480);
 	wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
