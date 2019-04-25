@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/22 20:24:39 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 21:00:22 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void		window_event(t_wolf *wolf, SDL_Event event)
 	int		pitch;
 
 	SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
-	PrintEvent(&event);
 	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
 		|| event.window.event == SDL_WINDOWEVENT_RESIZED)
 	{

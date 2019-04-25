@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/22 20:27:01 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 21:08:25 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void		on_menu_one(t_wolf *wolf, int x, int y)
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
-			ft_printf("Click on btn %d\n", i);
 			if (i == 1)
 				start_btn(wolf);
 			else if (i == 2)
@@ -86,12 +85,10 @@ static void		on_menu_tree(t_wolf *wolf, int x, int y)
 	i = -1;
 	while (wolf->ui.btnopt[++i].txture)
 	{
-		//ft_printf("Found btn %d\n", i);
 		tmp = wolf->ui.btnopt[i];
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
-			ft_printf("Click on btn %d\n", i);
 			if (i == 0)
 			{
 				wolf->ui.m_status = 1;
@@ -106,7 +103,6 @@ static void		on_menu_tree(t_wolf *wolf, int x, int y)
 		if (stmp.grip.x <= x && x <= stmp.grip.x + stmp.grip.w
 			&& stmp.grip.y <= y && y <= stmp.grip.y + stmp.grip.h)
 		{
-			ft_printf("Click on slid %d\n", i);
 			wolf->ui.currslid = &(wolf->ui.slidopt[i]);
 		}
 	}

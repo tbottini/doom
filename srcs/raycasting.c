@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:35:34 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/25 19:37:52 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 21:03:55 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ double		iswall(t_wolf *wolf, t_fvct2 inter)
 	return (wolf->map_size.x + wolf->map_size.y);
 }
 
-
- void		raycasting(t_wolf *wolf)
- {
+void		raycasting(t_wolf *wolf)
+{
 	t_ray	ray;
 	int		i;
 
@@ -34,9 +33,8 @@ double		iswall(t_wolf *wolf, t_fvct2 inter)
 	wolf->d_scrn = (wolf->sdl.size.x / 2.0) / tan(wolf->fov * PI180 / 2.0);
 	while (i < wolf->sdl.size.x - 1)
 	{
-		ray.angle = atan(((wolf->sdl.size.x / 2.0) - i) / wolf->d_scrn) * TOANGLE;
-		ray.angle += wolf->rot;
-		ray.angle = angle_adaptater(ray.angle);
+		ray.angle = atan(((wolf->sdl.size.x / 2.0) - i) / wolf->d_scrn);
+		ray.angle = angle_adaptater(ray.angle * TOANGLE + wolf->rot);
 		hor_detection(wolf, &ray);
 		ver_detection(wolf, &ray);
 		draw_column(wolf, ray, i);
