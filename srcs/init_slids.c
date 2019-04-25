@@ -12,10 +12,10 @@
 
 #include "wolf3d.h"
 
-void	update_slider_txt(t_wolf *wolf, t_slid *slid)
+void		update_slider_txt(t_wolf *wolf, t_slid *slid)
 {
 	SDL_Surface		*btntext;
-	char *str;
+	char			*str;
 
 	str = ft_itoa(*slid->val);
 	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s32, str,
@@ -25,11 +25,12 @@ void	update_slider_txt(t_wolf *wolf, t_slid *slid)
 	free(str);
 }
 
-t_slid	add_fov_slider(t_wolf *wolf)
+t_slid		add_fov_slider(t_wolf *wolf)
 {
 	t_slid			tmp;
 
-	tmp.txture = SDL_CreateTexture(wolf->sdl.rend, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 200, 200);
+	tmp.txture = SDL_CreateTexture(wolf->sdl.rend,
+		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 200, 200);
 	tmp.loc.area.w = 500;
 	tmp.loc.area.h = 50;
 	tmp.loc.area.x = 0;

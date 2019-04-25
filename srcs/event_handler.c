@@ -42,12 +42,26 @@ static void		dropfile_event(t_wolf *wolf, SDL_Event event)
 {
 	if (wolf_parseur(wolf, event.drop.file))
 	{
-		ft_printf("val Reussi\n");
+		ft_printf("Launch Reussi\n");
 		wolf->ui.m_status = 0;
 		draw_menu(wolf);
 	}
-	ft_printf("Event DropFile %s\n", event.drop.file);
 	SDL_free(event.drop.file);
+}
+
+void			lil_event_handler(t_wolf *wolf, SDL_Event event)
+{
+	if (event.type == SDL_MOUSEMOTION)
+		mouse_move(event.motion.x, event.motion.y, wolf);
+	else if (event.type == SDL_MOUSEBUTTONDOWN)
+		mouse_press(event.button.button,
+			event.button.x, event.button.y, wolf);
+	else if (event.type == SDL_MOUSEBUTTONUP)
+		mouse_release(event.button.button,
+			event.button.x, event.button.y, wolf);
+	else if (event.type == SDL_MOUSEWHEEL)
+		mouse_press((event.wheel.y > 0 ? 4 : 5),
+			wolf->sdl.m_pos.x, wolf->sdl.m_pos.y, wolf);
 }
 
 int				event_handler(t_wolf *wolf)
@@ -67,17 +81,8 @@ int				event_handler(t_wolf *wolf)
 			dropfile_event(wolf, event);
 		else if (event.type == SDL_WINDOWEVENT)
 			window_event(wolf, event);
-		else if (event.type == SDL_MOUSEMOTION)
-			mouse_move(event.motion.x, event.motion.y, wolf);
-		else if (event.type == SDL_MOUSEBUTTONDOWN)
-			mouse_press(event.button.button,
-				event.button.x, event.button.y, wolf);
-		else if (event.type == SDL_MOUSEBUTTONUP)
-			mouse_release(event.button.button,
-				event.button.x, event.button.y, wolf);
-		else if (event.type == SDL_MOUSEWHEEL)
-			mouse_press((event.wheel.y > 0 ? 4 : 5),
-				wolf->sdl.m_pos.x, wolf->sdl.m_pos.y, wolf);
+		else
+			lil_event_handler(wolf, event);
 	}
 	return (1);
 }

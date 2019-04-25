@@ -28,8 +28,8 @@ static void		free_textures(t_wolf *wolf)
 	}
 	x = -1;
 	while (++x < 4)
-		if (wolf->nwall[x].surf)
-			SDL_FreeSurface(wolf->nwall[x].surf);
+		if (wolf->wall[x].surf)
+			SDL_FreeSurface(wolf->wall[x].surf);
 }
 
 int				prog_quit(t_wolf *wolf)
