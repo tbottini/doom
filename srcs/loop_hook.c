@@ -14,42 +14,26 @@
 
 static void		lil_lil_loop(t_wolf *wolf, int key)
 {
-	double x_dir;
-	double y_dir;
+	double dx;
+	double dy;
 
-	x_dir = sin(wolf->rot * PI180) / 10;
-	y_dir = cos(wolf->rot * PI180) / 10;
-	if (key == SDLK_w)
+	dx = sin(wolf->rot * PI180) / 10;
+	dy = cos(wolf->rot * PI180) / 10;
+	if ((key == SDLK_w
+		&& wolf->map[(int)(wolf->pos.y + dx)][(int)(wolf->pos.x + dy)] != '#')
+		|| (key == SDLK_s
+		&& wolf->map[(int)(wolf->pos.y - dx)][(int)(wolf->pos.x - dy)] != '#'))
 	{
-		if (wolf->map[(int)(wolf->pos.y + x_dir)][(int)(wolf->pos.x + y_dir)] != '#')
-		{
-			wolf->pos.x += y_dir;
-			wolf->pos.y += x_dir;
-		}
+		wolf->pos.x += (key == SDLK_w ? dy : -dy);
+		wolf->pos.y += (key == SDLK_w ? dx : -dx);
 	}
-	else if (key == SDLK_a)
+	else if ((key == SDLK_a
+		&& wolf->map[(int)(wolf->pos.y + dy)][(int)(wolf->pos.x - dx)] != '#')
+		|| (key == SDLK_d
+		&& wolf->map[(int)(wolf->pos.y - dy)][(int)(wolf->pos.x + dx)] != '#'))
 	{
-		if (wolf->map[(int)(wolf->pos.y + y_dir)][(int)(wolf->pos.x - x_dir)] != '#')
-		{
-			wolf->pos.x -= x_dir;
-			wolf->pos.y += y_dir;
-		}
-	}
-	else if (key == SDLK_s)
-	{
-		if (wolf->map[(int)(wolf->pos.y - x_dir)][(int)(wolf->pos.x - y_dir)] != '#')
-		{
-			wolf->pos.x -= y_dir;
-			wolf->pos.y -= x_dir;
-		}
-	}
-	else if (key == SDLK_d)
-	{
-		if (wolf->map[(int)(wolf->pos.y - y_dir)][(int)(wolf->pos.x + x_dir)] != '#')
-		{
-			wolf->pos.x += x_dir;
-			wolf->pos.y -= y_dir;
-		}
+		wolf->pos.x += (key == SDLK_a ? -dx : dx);
+		wolf->pos.y += (key == SDLK_a ? dy : -dy);
 	}
 }
 
@@ -75,8 +59,8 @@ static void		lil_loop(t_wolf *wolf, int key)
 
 int				loop_hook(t_wolf *wolf)
 {
-	t_tab pos;
-	struct timespec spec;
+	t_tab			pos;
+	struct timespec	spec;
 
 	pos = wolf->sdl.keys;
 	while (pos)
@@ -88,9 +72,9 @@ int				loop_hook(t_wolf *wolf)
 	{
 		raycasting(wolf);
 		clock_gettime(CLOCK_REALTIME, &spec);
-		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - wolf->timestamp < 25000)
+		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000)
+									- wolf->timestamp < 25000)
 			clock_gettime(CLOCK_REALTIME, &spec);
-		//ft_printf("FPS : %d\n", (spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - wolf->timestamp);
 		wolf->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
 	}
 	return (0);
