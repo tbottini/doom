@@ -1,5 +1,18 @@
 #include "wolf3d.h"
 
+
+void		ray_polarity(t_ray *ray)
+{
+	if (ray->ver < ray->hor)
+	{
+		ray->polar = (ray->angle > 90 && ray->angle < 270) ? 3 : 2;
+	}
+	else
+	{
+		ray->polar = (ray->angle > 180) ? 1 : 0;
+	}
+}
+
 void		draw_part(t_wolf *wolf, int *istart, int length, uint32_t color)
 {
 	int		i;
@@ -19,24 +32,23 @@ void		draw_part_texture(t_wolf *wolf, t_ray ray, int *istart, int length)
 	t_fvct2	ctexture;
 	float	dty;
 	int		it;
-	int		c;
 
-	c = 3;
-
+	ray_polarity(&ray);
 	ctexture.x = (ray.hor < ray.ver) ? ray.inter_h.x : ray.inter_v.y;
-	ctexture.x = (ctexture.x - (int)ctexture.x) * (wolf->wl_txture[c]->w);
+	ctexture.x = (ctexture.x - (int)ctexture.x) * (wolf->wl_txture[ray.polar]->w);
 	ctexture.y = 0;
-	dty = (wolf->wl_txture[c]->h) / (float)length;
+	dty = (wolf->wl_txture[ray.polar]->h) / (float)length;
 	if (length > wolf->sdl.size.y)
 	{
-		ctexture.y = (((float)length - (float)wolf->sdl.size.y) / 2) / (float)length * wolf->wl_txture[c]->h;
+		ctexture.y = (((float)length - (float)wolf->sdl.size.y) / 2);
+		ctexture.y /= (float)length * wolf->wl_txture[ray.polar]->h;
 		length = wolf->sdl.size.y - 1;
 	}
 	i = 0;
 	while (i < length)
 	{
-		it = (int)ctexture.x + (int)ctexture.y * wolf->wl_txture[c]->w;
-		wolf->sdl.screen[*istart] = wolf->wall[c][it];
+		it = (int)ctexture.x + (int)ctexture.y * wolf->wl_txture[ray.polar]->w;
+		wolf->sdl.screen[*istart] = wolf->wall[ray.polar][it];
 		ctexture.y += dty;
 		*istart += wolf->sdl.size.x;
 		i++;
@@ -57,8 +69,6 @@ void		draw_column(t_wolf *wolf, t_ray ray, int num)
 	column_size = (wolf->sdl.size.y * 0.8) / dist;
 	sky_size = (wolf->sdl.size.y - column_size) / 2;
 	iprint = num;
-	// if (dist < 0.8)
-	 //	draw_part_texture(wolf, ray, &iprint, column_size);
 	draw_part(wolf, &iprint, sky_size, BLUE_SKY);
 	draw_part_texture(wolf, ray, &iprint, column_size);
 	draw_part(wolf, &iprint, sky_size, PINK_FLOOR);
