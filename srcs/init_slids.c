@@ -48,7 +48,7 @@ t_slid	add_fov_slider(t_wolf *wolf)
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 30;
 	tmp.val = &wolf->fov;
-	tmp.max = 180;
+	tmp.max = 175;
 	update_slider_txt(wolf, &tmp);
 	return (tmp);
 }
