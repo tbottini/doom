@@ -6,17 +6,30 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/23 11:50:18 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/26 14:54:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
+static void		limit_walk(t_wolf *wolf, t_fvct2 n)
+{
+	if (n.x < wolf->map_size.x - 0.1 && n.y < wolf->map_size.y - 0.1
+		&& n.x > 0.1 && n.y > 0.1)
+	{
+		wolf->pos.x = n.x;
+		wolf->pos.y = n.y;
+	}
+}
+
 static void		lil_lil_loop(t_wolf *wolf, int key)
 {
-	double dx;
-	double dy;
+	double 		dx;
+	double		dy;
+	t_fvct2		new_pos;
 
+	new_pos.x = 0.0;
+	new_pos.y = 0.0;
 	dx = sin(wolf->rot * PI180) / 10;
 	dy = cos(wolf->rot * PI180) / 10;
 	if ((key == SDLK_w
@@ -24,17 +37,18 @@ static void		lil_lil_loop(t_wolf *wolf, int key)
 		|| (key == SDLK_s
 		&& wolf->map[(int)(wolf->pos.y - dx)][(int)(wolf->pos.x - dy)] != '#'))
 	{
-		wolf->pos.x += (key == SDLK_w ? dy : -dy);
-		wolf->pos.y += (key == SDLK_w ? dx : -dx);
+		new_pos.x += (key == SDLK_w ? dy : -dy) + wolf->pos.x;
+		new_pos.y += (key == SDLK_w ? dx : -dx) + wolf->pos.y;
 	}
 	else if ((key == SDLK_a
 		&& wolf->map[(int)(wolf->pos.y + dy)][(int)(wolf->pos.x - dx)] != '#')
 		|| (key == SDLK_d
 		&& wolf->map[(int)(wolf->pos.y - dy)][(int)(wolf->pos.x + dx)] != '#'))
 	{
-		wolf->pos.x += (key == SDLK_a ? -dx : dx);
-		wolf->pos.y += (key == SDLK_a ? dy : -dy);
+		new_pos.x += (key == SDLK_a ? -dx : dx) + wolf->pos.x;
+		new_pos.y += (key == SDLK_a ? dy : -dy) + wolf->pos.y;
 	}
+	limit_walk(wolf, new_pos);
 }
 
 static void		lil_loop(t_wolf *wolf, int key)
