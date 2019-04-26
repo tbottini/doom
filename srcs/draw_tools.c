@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:35:42 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/25 19:35:47 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/26 14:07:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ void		draw_column(t_wolf *wolf, t_ray ray, int num)
 	float	dist;
 
 	i = -1;
-	dist = (ray.hor < ray.ver) ? ray.hor : ray.ver;
+	dist = (ray.hor < ray.ver && ray.hor > -0.1) ? ray.hor : ray.ver;
 	dist *= cos(fabs(wolf->rot - ray.angle) * PI / 180.00);
 	column_size = (wolf->sdl.size.y * 0.8) / dist;
-	sky_size = (wolf->sdl.size.y - column_size) / 2;
+	sky_size = (wolf->sdl.size.y - column_size) / 2.0;
 	iprint = num;
 	draw_part(wolf, &iprint, sky_size, BLUE_SKY);
 	draw_part_texture(wolf, ray, &iprint, column_size);
