@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/25 22:40:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/26 13:24:52 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define BLUE_SKY 0x4559a8ff
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
+# define INT_MAX 2147483647
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 
@@ -143,7 +144,7 @@ typedef	struct			s_wolf
 {
 	t_sdl				sdl;
 	t_ui				ui;
-	char				map[100][100];
+	char				**map;
 	t_vct2				map_size;
 	t_fvct2				pos;
 	double				rot;
