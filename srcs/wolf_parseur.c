@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 20:53:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/25 22:32:06 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/25 22:46:39 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int				row_verif(t_wolf *wolf, char *row)
 	i = 0;
 	while (row[i])
 	{
-		if (row[i] == 'A' && (int)wolf->pos.x == 0)
+		if (row[i] == 'A' && wolf->pos.x < 0.1)
 		{
 			wolf->pos.x = i + 0.5;
 			wolf->pos.y = (double)wolf->map_size.y + 0.5;
