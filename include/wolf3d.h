@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/26 13:24:52 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/27 12:58:22 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,11 @@ float					hor_detection(t_wolf *wolf, t_ray *ray);
 double					iswall(t_wolf *wolf, t_fvct2 inter);
 void					draw_column(t_wolf *wolf, t_ray ray, int num);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
-
+void					wolf_clear_map(t_wolf *wolf);
+int						map_check(t_wolf *wolf, char *filename);
+int						row_verif(t_wolf *wolf, char *row);
+void					*listdel(t_list **list);
+t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
+char					**tab_new(int y);
+void					lst_del_node(t_list **node);
 #endif
