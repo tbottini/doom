@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/26 14:54:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/27 13:12:31 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		limit_walk(t_wolf *wolf, t_fvct2 n)
 
 static void		lil_lil_loop(t_wolf *wolf, int key)
 {
-	double 		dx;
+	double		dx;
 	double		dy;
 	t_fvct2		new_pos;
 

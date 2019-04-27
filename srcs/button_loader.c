@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/25 19:19:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/26 18:21:55 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int		read_directory(t_wolf *wolf, DIR *maps, int y)
 	{
 		ft_strcpy(tmp, "ressources/map/");
 		ft_strcpy(&(tmp[15]), mapdata->d_name);
-		if (mapdata->d_reclen == 32 && wolf_parseur(wolf, tmp))
+		if (mapdata->d_reclen == 32 && map_check(wolf, tmp))
 		{
 			if (wolf->ui.btnmap[y].txture)
 				free_btnmap(wolf, y);
