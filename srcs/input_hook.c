@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/25 20:58:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/26 19:40:19 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int			key_press(int key, t_wolf *wolf)
 	if (key == SDLK_BACKQUOTE)
 	{
 		wolf->ui.m_status = 1;
+		wolf_clear_map(wolf);
 		draw_menu(wolf);
 	}
 	else

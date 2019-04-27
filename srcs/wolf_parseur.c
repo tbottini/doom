@@ -6,34 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 20:53:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/26 13:28:27 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/27 12:58:51 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-int				row_verif(t_wolf *wolf, char *row)
-{
-	int			i;
-
-	i = 0;
-	while (row[i])
-	{
-		if (row[i] == 'A' && wolf->pos.x < 0.1)
-		{
-			wolf->pos.x = i + 0.5;
-			wolf->pos.y = (double)wolf->map_size.y + 0.5;
-		}
-		else if (row[i] == 'A' || (row[i] != '.' && row[i] != '#'))
-			return (0);
-		i++;
-	}
-	if ((wolf->map_size.x != 0 && wolf->map_size.x != i) || !i)
-		return (0);
-	else
-		wolf->map_size.x = i;
-	return (1);
-}
 
 t_list			*get_file_lst(t_wolf *wolf, int fd)
 {
@@ -42,51 +19,61 @@ t_list			*get_file_lst(t_wolf *wolf, int fd)
 	t_list		*file;
 	t_list		*new;
 
-	wolf->map_size.y = 0;
-	wolf->map_size.x = 0;
+	vct2_value(&wolf->map_size, 0, 0);
 	wolf->pos.x = 0;
+	file = NULL;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		new = ft_lstnew(NULL, 0);
-		new->content = line;
-		if (!new)
-			return (NULL);
-		if (row_verif(wolf, line))
-			ft_lstadd(&file, new);
-		else
-			return (NULL);
+		if (!(new = ft_lstnew(line, sizeof(line))))
+		{
+			free(line);
+			return (listdel(&file));
+		}
+		(file == NULL) ? file = new : ft_lstadd(&file, new);
+		if (!row_verif(wolf, line))
+			return (listdel(&file));
 		wolf->map_size.y++;
 	}
-	if (wolf->pos.x == 0)
-		return (0);
-	return ((ret == 0) ? file : NULL);
+	ft_strdel(&line);
+	return ((ret == 0 || wolf->pos.x == 0) ? file : listdel(&file));
 }
 
-int			list_to_map(t_wolf *wolf, t_list **f)
+int				list_to_map(t_wolf *wolf, t_list **f)
 {
 	int			row;
 	t_list		*tmp;
 	t_list		*file;
 
 	file = *f;
-	wolf->map = (char **)malloc(sizeof(char *) * (wolf->map_size.y));
-	if (!wolf->map)
+	if (!(wolf->map = tab_new(wolf->map_size.y)))
 		return (0);
-	row = wolf->map_size.y - 1;
-	while (row > -1)
+	row = wolf->map_size.y;
+	while (--row > -1)
 	{
-		wolf->map[row] = (char *)malloc(sizeof(char *) * (wolf->map_size.x + 1));
+		wolf->map[row] = ft_strdup((char *)file->content);
 		if (!wolf->map[row])
 			return (0);
-		ft_putendl((char *)file->content);
-		ft_strcpy(wolf->map[row], (char *)file->content);
 		tmp = file;
 		file = file->next;
-		free(tmp->content);
-		free(tmp);
-		row--;
+		lst_del_node(&tmp);
 	}
 	return (1);
+}
+
+void			wolf_clear_map(t_wolf *wolf)
+{
+	int			i;
+
+	i = 0;
+	if (!wolf->map)
+		return ;
+	while (i < wolf->map_size.y)
+	{
+		free(wolf->map[i]);
+		i++;
+	}
+	free(wolf->map);
+	wolf->map = NULL;
 }
 
 int				wolf_parseur(t_wolf *wolf, char *filename)
@@ -94,23 +81,10 @@ int				wolf_parseur(t_wolf *wolf, char *filename)
 	int			fd;
 	t_list		*file;
 
-	printf("new_file\n");
 	fd = open(filename, O_RDONLY);
 	if (!(file = get_file_lst(wolf, fd)))
-	{
-		printf("mauvais fichier\n\n");
 		return (0);
-	}
 	if (!list_to_map(wolf, &file))
 		return (0);
-
-	int i;
-	i = 0;
-	printf("%s: bonne map\nmap size w %d h %d\njoueur pos .x %f .y %f\n", filename, wolf->map_size.x, wolf->map_size.y, wolf->pos.x, wolf->pos.y);
-	while (i < wolf->map_size.y)
-	{
-		ft_putendl(wolf->map[i]);
-		i++;
-	}
 	return (1);
 }

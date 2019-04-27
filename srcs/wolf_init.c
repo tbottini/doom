@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/26 13:45:20 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/26 18:26:36 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ t_wolf			*wolf_init(void)
 	wolf->pos.y = 0;
 	wolf->fov = 90;
 	wolf->rot = 90;
+	wolf->map = NULL;
 	return (wolf);
 }
