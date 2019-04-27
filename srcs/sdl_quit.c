@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:28:16 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/25 19:47:22 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/26 22:28:53 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ int				prog_quit(t_wolf *wolf)
 		SDL_DestroyWindow(wolf->sdl.win);
 	if (wolf->sdl.format)
 		SDL_FreeFormat(wolf->sdl.format);
+	wolf_clear_map(wolf);
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 	free(wolf);
-	wolf = NULL;
 	exit(0);
 	return (0);
 }
