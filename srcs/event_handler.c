@@ -40,10 +40,16 @@ static void		window_event(t_wolf *wolf, SDL_Event event)
 
 static void		dropfile_event(t_wolf *wolf, SDL_Event event)
 {
+	if (wolf->map)
+		wolf_clear_map(wolf);
 	if (wolf_parseur(wolf, event.drop.file))
 	{
-		ft_printf("Launch Reussi\n");
 		wolf->ui.m_status = 0;
+	}
+	else
+	{
+		ft_printf("Error Reading File Drop\n");
+		wolf->ui.m_status = 1;
 		draw_menu(wolf);
 	}
 	SDL_free(event.drop.file);
