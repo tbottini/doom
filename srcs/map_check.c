@@ -58,5 +58,7 @@ int				map_check(t_wolf *wolf, char *filename)
 	}
 	if (line)
 		free(line);
+	if ((int)wolf->pos.x == 0)
+		return (0);
 	return ((ret == 0) ? 1 : 0);
 }
