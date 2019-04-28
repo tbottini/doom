@@ -6,10 +6,12 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/27 11:41:38 by tbottini         ###   ########.fr        #
+#    Updated: 2019/04/28 16:50:49 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+include libft/include.mk
+include wolf.mk
 NAME			:=		wolf3d
 
 CC				:=		gcc
@@ -25,28 +27,7 @@ INCLUDE			=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
 
-SRCS			:=		button_action.c							\
-						button_drawer.c							\
-						button_loader.c							\
-						little_tools.c							\
-						draw_tools.c							\
-						event_handler.c							\
-						init_btns.c								\
-						init_btns2.c							\
-						init_slids.c							\
-						input_hook.c							\
-						loop_hook.c								\
-						main.c			 						\
-						num_tools.c								\
-						ray_horizontal.c						\
-						ray_vertical.c							\
-						raycasting.c							\
-						sdl_manager.c							\
-						sdl_quit.c								\
-						wolf_init.c								\
-						wolf_parseur.c							\
-						map_check.c								\
-
+COMPILE_LIB		:=		make -C libft/
 
 OBJDIR			:=		objs
 
@@ -62,20 +43,23 @@ FILL_BAR		=		$$(( $(NB_OBJS) * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
-OBJS    		:=		$(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
+OBJS    		:=		$(patsubst %.c,$(OBJDIR)/%.o,$(SRCS_WOLF))
 
-SRCS	   		:=		$(patsubst %.c,srcs/%.c,$(SRCS))
+SRCS_WOLF  		:=		$(patsubst %.c,srcs/%.c,$(SRCS_WOLF))
+
+SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))
 
 all				:		$(NAME)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c include/wolf3d.h libft/libft.h
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/wolf3d.h libft/libft.h
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
-$(NAME)			:		compile_lib $(OBJS)
+$(NAME)			:		$(OBJS)
+	@make -C libft/
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@sips -i ressources/icon/icon.ico
 	@derez -only icns ressources/icon/icon.ico > tmpicns.rsrc
@@ -84,9 +68,6 @@ $(NAME)			:		compile_lib $(OBJS)
 	@rm tmpicns.rsrc
 	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
-compile_lib		:
-	@make -C ./libft
-
 clean:
 	@make clean -C ./libft
 	@rm -f $(OBJS)
@@ -94,9 +75,6 @@ clean:
 fclean: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
-
-start	:	all
-	$(shell ./$(NAME))
 
 re: fclean all
 
