@@ -6,11 +6,24 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 20:53:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/27 12:58:51 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/28 15:36:27 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+t_list			*ft_lstn(void *mcontent)
+{
+	t_list		*new;
+
+	new = (t_list *)malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = mcontent;
+	new->content_size = sizeof(mcontent);
+	new->next = NULL;
+	return (new);
+}
 
 t_list			*get_file_lst(t_wolf *wolf, int fd)
 {
@@ -24,7 +37,7 @@ t_list			*get_file_lst(t_wolf *wolf, int fd)
 	file = NULL;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		if (!(new = ft_lstnew(line, sizeof(line))))
+		if (!(new = ft_lstn(line)))
 		{
 			free(line);
 			return (listdel(&file));
@@ -50,12 +63,12 @@ int				list_to_map(t_wolf *wolf, t_list **f)
 	row = wolf->map_size.y;
 	while (--row > -1)
 	{
-		wolf->map[row] = ft_strdup((char *)file->content);
+		wolf->map[row] = file->content;
 		if (!wolf->map[row])
 			return (0);
 		tmp = file;
 		file = file->next;
-		lst_del_node(&tmp);
+		free(tmp);
 	}
 	return (1);
 }
