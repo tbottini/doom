@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/27 13:12:31 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/28 15:16:10 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int				loop_hook(t_wolf *wolf)
 	struct timespec	spec;
 
 	pos = wolf->sdl.keys;
-	while (pos)
+	while (pos && wolf->map)
 	{
 		lil_loop(wolf, pos->data);
 		pos = pos->next;
