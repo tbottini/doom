@@ -28,20 +28,20 @@ void		init_ray_hor(t_wolf *w, t_ray *r)
 	r->inter_h.x = w->pos.x + r->ratio.x * fabs(r->inter_h.y - w->pos.y + 1);
 }
 
-float		hor_detection(t_wolf *wolf, t_ray *ray)
+float		hor_detection(t_wolf *doom, t_ray *ray)
 {
 	t_fvct2		dist;
 
-	init_ray_hor(wolf, ray);
-	while ((ray->hor = iswall(wolf, ray->inter_h)) == 0)
+	init_ray_hor(doom, ray);
+	while ((ray->hor = iswall(doom, ray->inter_h)) == 0)
 	{
 		ray->inter_h.y += ray->ratio.y;
 		ray->inter_h.x += ray->ratio.x;
 	}
 	if (ray->hor == 1)
 	{
-		dist.x = ray->inter_h.x - wolf->pos.x;
-		dist.y = ray->inter_h.y - wolf->pos.y;
+		dist.x = ray->inter_h.x - doom->pos.x;
+		dist.y = ray->inter_h.y - doom->pos.y;
 		if (ray->angle > 180)
 			dist.y++;
 		ray->hor = sqrt(dist.x * dist.x + dist.y * dist.y);
