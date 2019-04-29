@@ -12,48 +12,48 @@
 
 #include "wolf3d.h"
 
-static void		free_textures(t_wolf *wolf)
+static void		free_textures(t_wolf *doom)
 {
 	int x;
 
 	x = -1;
-	while (wolf->ui.btnarr[++x].txture)
-		SDL_DestroyTexture(wolf->ui.btnarr[x].txture);
+	while (doom->ui.btnarr[++x].txture)
+		SDL_DestroyTexture(doom->ui.btnarr[x].txture);
 	x = -1;
-	while (wolf->ui.btnmap[++x].txture)
+	while (doom->ui.btnmap[++x].txture)
 	{
-		SDL_DestroyTexture(wolf->ui.btnmap[x].txture);
+		SDL_DestroyTexture(doom->ui.btnmap[x].txture);
 		if (x > 1)
-			free(wolf->ui.btnmap[x].data);
+			free(doom->ui.btnmap[x].data);
 	}
 	x = -1;
 	while (++x < 4)
-		if (wolf->wall[x].surf)
-			SDL_FreeSurface(wolf->wall[x].surf);
+		if (doom->wall[x].surf)
+			SDL_FreeSurface(doom->wall[x].surf);
 }
 
-int				prog_quit(t_wolf *wolf)
+int				prog_quit(t_wolf *doom)
 {
-	free_textures(wolf);
-	if (wolf->sdl.txture)
-		SDL_DestroyTexture(wolf->sdl.txture);
-	if (wolf->ui.fonts.s64)
-		TTF_CloseFont(wolf->ui.fonts.s64);
-	if (wolf->ui.fonts.s32)
-		TTF_CloseFont(wolf->ui.fonts.s32);
-	if (wolf->ui.fonts.s128)
-		TTF_CloseFont(wolf->ui.fonts.s128);
-	if (wolf->sdl.rend)
-		SDL_DestroyRenderer(wolf->sdl.rend);
-	if (wolf->sdl.win)
-		SDL_DestroyWindow(wolf->sdl.win);
-	if (wolf->sdl.format)
-		SDL_FreeFormat(wolf->sdl.format);
-	wolf_clear_map(wolf);
+	free_textures(doom);
+	if (doom->sdl.txture)
+		SDL_DestroyTexture(doom->sdl.txture);
+	if (doom->ui.fonts.s64)
+		TTF_CloseFont(doom->ui.fonts.s64);
+	if (doom->ui.fonts.s32)
+		TTF_CloseFont(doom->ui.fonts.s32);
+	if (doom->ui.fonts.s128)
+		TTF_CloseFont(doom->ui.fonts.s128);
+	if (doom->sdl.rend)
+		SDL_DestroyRenderer(doom->sdl.rend);
+	if (doom->sdl.win)
+		SDL_DestroyWindow(doom->sdl.win);
+	if (doom->sdl.format)
+		SDL_FreeFormat(doom->sdl.format);
+	wolf_clear_map(doom);
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
-	free(wolf);
+	free(doom);
 	exit(0);
 	return (0);
 }

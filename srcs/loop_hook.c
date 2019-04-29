@@ -12,17 +12,17 @@
 
 #include "wolf3d.h"
 
-static void		limit_walk(t_wolf *wolf, t_fvct2 n)
+static void		limit_walk(t_wolf *doom, t_fvct2 n)
 {
-	if (n.x < wolf->map_size.x - 0.1 && n.y < wolf->map_size.y - 0.1
+	if (n.x < doom->map_size.x - 0.1 && n.y < doom->map_size.y - 0.1
 		&& n.x > 0.1 && n.y > 0.1)
 	{
-		wolf->pos.x = n.x;
-		wolf->pos.y = n.y;
+		doom->pos.x = n.x;
+		doom->pos.y = n.y;
 	}
 }
 
-static void		lil_lil_loop(t_wolf *wolf, int key)
+static void		lil_lil_loop(t_wolf *doom, int key)
 {
 	double		dx;
 	double		dy;
@@ -30,66 +30,66 @@ static void		lil_lil_loop(t_wolf *wolf, int key)
 
 	new_pos.x = 0.0;
 	new_pos.y = 0.0;
-	dx = sin(wolf->rot * PI180) / 10;
-	dy = cos(wolf->rot * PI180) / 10;
+	dx = sin(doom->rot * PI180) / 10;
+	dy = cos(doom->rot * PI180) / 10;
 	if ((key == SDLK_w
-		&& wolf->map[(int)(wolf->pos.y + dx)][(int)(wolf->pos.x + dy)] != '#')
+		&& doom->map[(int)(doom->pos.y + dx)][(int)(doom->pos.x + dy)] != '#')
 		|| (key == SDLK_s
-		&& wolf->map[(int)(wolf->pos.y - dx)][(int)(wolf->pos.x - dy)] != '#'))
+		&& doom->map[(int)(doom->pos.y - dx)][(int)(doom->pos.x - dy)] != '#'))
 	{
-		new_pos.x += (key == SDLK_w ? dy : -dy) + wolf->pos.x;
-		new_pos.y += (key == SDLK_w ? dx : -dx) + wolf->pos.y;
+		new_pos.x += (key == SDLK_w ? dy : -dy) + doom->pos.x;
+		new_pos.y += (key == SDLK_w ? dx : -dx) + doom->pos.y;
 	}
 	else if ((key == SDLK_a
-		&& wolf->map[(int)(wolf->pos.y + dy)][(int)(wolf->pos.x - dx)] != '#')
+		&& doom->map[(int)(doom->pos.y + dy)][(int)(doom->pos.x - dx)] != '#')
 		|| (key == SDLK_d
-		&& wolf->map[(int)(wolf->pos.y - dy)][(int)(wolf->pos.x + dx)] != '#'))
+		&& doom->map[(int)(doom->pos.y - dy)][(int)(doom->pos.x + dx)] != '#'))
 	{
-		new_pos.x += (key == SDLK_a ? -dx : dx) + wolf->pos.x;
-		new_pos.y += (key == SDLK_a ? dy : -dy) + wolf->pos.y;
+		new_pos.x += (key == SDLK_a ? -dx : dx) + doom->pos.x;
+		new_pos.y += (key == SDLK_a ? dy : -dy) + doom->pos.y;
 	}
-	limit_walk(wolf, new_pos);
+	limit_walk(doom, new_pos);
 }
 
-static void		lil_loop(t_wolf *wolf, int key)
+static void		lil_loop(t_wolf *doom, int key)
 {
 	if (key == SDLK_e)
 	{
-		if (wolf->rot - 5.0 < 0.0)
-			wolf->rot += 355.0;
+		if (doom->rot - 5.0 < 0.0)
+			doom->rot += 355.0;
 		else
-			wolf->rot -= 5.0;
+			doom->rot -= 5.0;
 	}
 	else if (key == SDLK_q)
 	{
-		if (wolf->rot + 5.0 > 360.0)
-			wolf->rot -= 355.0;
+		if (doom->rot + 5.0 > 360.0)
+			doom->rot -= 355.0;
 		else
-			wolf->rot += 5.0;
+			doom->rot += 5.0;
 	}
 	else
-		lil_lil_loop(wolf, key);
+		lil_lil_loop(doom, key);
 }
 
-int				loop_hook(t_wolf *wolf)
+int				loop_hook(t_wolf *doom)
 {
 	t_tab			pos;
 	struct timespec	spec;
 
-	pos = wolf->sdl.keys;
-	while (pos && wolf->map)
+	pos = doom->sdl.keys;
+	while (pos && doom->map)
 	{
-		lil_loop(wolf, pos->data);
+		lil_loop(doom, pos->data);
 		pos = pos->next;
 	}
-	if (wolf->ui.m_status == 0)
+	if (doom->ui.m_status == 0)
 	{
-		raycasting(wolf);
+		raycasting(doom);
 		clock_gettime(CLOCK_REALTIME, &spec);
 		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000)
-									- wolf->timestamp < 25000)
+									- doom->timestamp < 25000)
 			clock_gettime(CLOCK_REALTIME, &spec);
-		wolf->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
+		doom->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
 	}
 	return (0);
 }

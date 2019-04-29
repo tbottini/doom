@@ -28,20 +28,20 @@ void		init_ray_ver(t_wolf *w, t_ray *r)
 	r->inter_v.y = w->pos.y + fabs(r->inter_v.x - w->pos.x + 1) * r->ratio.y;
 }
 
-float		ver_detection(t_wolf *wolf, t_ray *ray)
+float		ver_detection(t_wolf *doom, t_ray *ray)
 {
 	t_fvct2		dist;
 
-	init_ray_ver(wolf, ray);
-	while ((ray->ver = iswall(wolf, ray->inter_v)) == 0)
+	init_ray_ver(doom, ray);
+	while ((ray->ver = iswall(doom, ray->inter_v)) == 0)
 	{
 		ray->inter_v.y += ray->ratio.y;
 		ray->inter_v.x += ray->ratio.x;
 	}
 	if (ray->ver == 1)
 	{
-		dist.y = ray->inter_v.y - wolf->pos.y;
-		dist.x = ray->inter_v.x - wolf->pos.x;
+		dist.y = ray->inter_v.y - doom->pos.y;
+		dist.x = ray->inter_v.x - doom->pos.x;
 		if (ray->angle > 90 && ray->angle < 270)
 			dist.x++;
 		ray->ver = sqrt(dist.x * dist.x + dist.y * dist.y);

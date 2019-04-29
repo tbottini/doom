@@ -12,12 +12,12 @@
 
 #include "wolf3d.h"
 
-static void		void_wolf(t_wolf *wolf)
+static void		void_wolf(t_wolf *doom)
 {
-	ft_bzero(wolf, sizeof(t_wolf));
+	ft_bzero(doom, sizeof(t_wolf));
 }
 
-static t_wall	load_texture(t_wolf *wolf, const char *file)
+static t_wall	load_texture(t_wolf *doom, const char *file)
 {
 	SDL_RWops	*rwop;
 	SDL_Surface	*surf;
@@ -28,12 +28,12 @@ static t_wall	load_texture(t_wolf *wolf, const char *file)
 	if (!(tmp = IMG_LoadXPM_RW(rwop)))
 	{
 		ft_printf("IMG_LoadXPM_RW: %s\n", IMG_GetError());
-		prog_quit(wolf);
+		prog_quit(doom);
 	}
-	if (!(surf = SDL_ConvertSurface(tmp, wolf->sdl.format, 0)))
+	if (!(surf = SDL_ConvertSurface(tmp, doom->sdl.format, 0)))
 	{
 		ft_printf("SDL_ConvertSurface: failed\n");
-		prog_quit(wolf);
+		prog_quit(doom);
 	}
 	SDL_FreeSurface(tmp);
 	SDL_RWclose(rwop);
@@ -44,37 +44,37 @@ static t_wall	load_texture(t_wolf *wolf, const char *file)
 	return (wall);
 }
 
-void			lil_wolf_init(t_wolf *wolf)
+void			lil_wolf_init(t_wolf *doom)
 {
-	wolf->wall[0] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->wall[1] = load_texture(wolf, "./ressources/textures/wall.xpm");
-	wolf->wall[2] = load_texture(wolf, "./ressources/textures/plaqueor.xpm");
-	wolf->wall[3] = load_texture(wolf, "./ressources/textures/test.xpm");
+	doom->wall[0] = load_texture(doom, "./ressources/textures/wall_blue.xpm");
+	doom->wall[1] = load_texture(doom, "./ressources/textures/wall.xpm");
+	doom->wall[2] = load_texture(doom, "./ressources/textures/plaqueor.xpm");
+	doom->wall[3] = load_texture(doom, "./ressources/textures/test.xpm");
 }
 
 t_wolf			*wolf_init(void)
 {
-	t_wolf *wolf;
+	t_wolf *doom;
 
-	if (!(wolf = (t_wolf *)malloc(sizeof(t_wolf))))
+	if (!(doom = (t_wolf *)malloc(sizeof(t_wolf))))
 		return (NULL);
-	void_wolf(wolf);
-	if (sdl_start(wolf, "Wolf 3D"))
+	void_wolf(doom);
+	if (sdl_start(doom, "Wolf 3D"))
 		return (NULL);
-	wolf->ui.btnarr[0] = add_wolf_button(wolf);
-	wolf->ui.btnarr[1] = add_start_button(wolf);
-	wolf->ui.btnarr[2] = add_opt_button(wolf);
-	wolf->ui.btnarr[3] = add_quit_button(wolf, " Quit ");
-	wolf->ui.btnmap[0] = add_quit_button(wolf, " Return ");
-	wolf->ui.btnmap[1] = add_mapmenu_button(wolf);
-	wolf->ui.btnopt[0] = wolf->ui.btnmap[0];
-	wolf->ui.btnopt[1] = wolf->ui.btnarr[0];
-	lil_wolf_init(wolf);
-	wolf->ui.slidopt[0] = add_fov_slider(wolf);
-	wolf->pos.x = 0;
-	wolf->pos.y = 0;
-	wolf->fov = 90;
-	wolf->rot = 90;
-	wolf->map = NULL;
-	return (wolf);
+	doom->ui.btnarr[0] = add_wolf_button(doom);
+	doom->ui.btnarr[1] = add_start_button(doom);
+	doom->ui.btnarr[2] = add_opt_button(doom);
+	doom->ui.btnarr[3] = add_quit_button(doom, " Quit ");
+	doom->ui.btnmap[0] = add_quit_button(doom, " Return ");
+	doom->ui.btnmap[1] = add_mapmenu_button(doom);
+	doom->ui.btnopt[0] = doom->ui.btnmap[0];
+	doom->ui.btnopt[1] = doom->ui.btnarr[0];
+	lil_wolf_init(doom);
+	doom->ui.slidopt[0] = add_fov_slider(doom);
+	doom->pos.x = 0;
+	doom->pos.y = 0;
+	doom->fov = 90;
+	doom->rot = 90;
+	doom->map = NULL;
+	return (doom);
 }

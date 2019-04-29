@@ -12,65 +12,65 @@
 
 #include "wolf3d.h"
 
-static void		window_event(t_wolf *wolf, SDL_Event event)
+static void		window_event(t_wolf *doom, SDL_Event event)
 {
 	void	*tmp;
 	int		pitch;
 
-	SDL_GetWindowSize(wolf->sdl.win, &(wolf->sdl.size.x), &(wolf->sdl.size.y));
+	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
 	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
 		|| event.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
-		if (wolf->sdl.txture)
-			SDL_DestroyTexture(wolf->sdl.txture);
-		wolf->sdl.txture = SDL_CreateTexture(wolf->sdl.rend,
+		if (doom->sdl.txture)
+			SDL_DestroyTexture(doom->sdl.txture);
+		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
 			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
-			wolf->sdl.size.x, wolf->sdl.size.y);
-		if (SDL_LockTexture(wolf->sdl.txture, NULL, &tmp, &pitch))
-			prog_quit(wolf);
-		wolf->sdl.screen = (uint32_t *)tmp;
-		draw_menu(wolf);
+			doom->sdl.size.x, doom->sdl.size.y);
+		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
+			prog_quit(doom);
+		doom->sdl.screen = (uint32_t *)tmp;
+		draw_menu(doom);
 	}
-	if (wolf->ui.m_status == 2)
+	if (doom->ui.m_status == 2)
 	{
-		load_map_btns(wolf);
-		draw_menu(wolf);
+		load_map_btns(doom);
+		draw_menu(doom);
 	}
 }
 
-static void		dropfile_event(t_wolf *wolf, SDL_Event event)
+static void		dropfile_event(t_wolf *doom, SDL_Event event)
 {
-	if (wolf->map)
-		wolf_clear_map(wolf);
-	if (wolf_parseur(wolf, event.drop.file))
+	if (doom->map)
+		wolf_clear_map(doom);
+	if (wolf_parseur(doom, event.drop.file))
 	{
-		wolf->ui.m_status = 0;
+		doom->ui.m_status = 0;
 	}
 	else
 	{
 		ft_printf("Error Reading File Drop\n");
-		wolf->ui.m_status = 1;
-		draw_menu(wolf);
+		doom->ui.m_status = 1;
+		draw_menu(doom);
 	}
 	SDL_free(event.drop.file);
 }
 
-void			lil_event_handler(t_wolf *wolf, SDL_Event event)
+void			lil_event_handler(t_wolf *doom, SDL_Event event)
 {
 	if (event.type == SDL_MOUSEMOTION)
-		mouse_move(event.motion.x, event.motion.y, wolf);
+		mouse_move(event.motion.x, event.motion.y, doom);
 	else if (event.type == SDL_MOUSEBUTTONDOWN)
 		mouse_press(event.button.button,
-			event.button.x, event.button.y, wolf);
+			event.button.x, event.button.y, doom);
 	else if (event.type == SDL_MOUSEBUTTONUP)
 		mouse_release(event.button.button,
-			event.button.x, event.button.y, wolf);
+			event.button.x, event.button.y, doom);
 	else if (event.type == SDL_MOUSEWHEEL)
 		mouse_press((event.wheel.y > 0 ? 4 : 5),
-			wolf->sdl.m_pos.x, wolf->sdl.m_pos.y, wolf);
+			doom->sdl.m_pos.x, doom->sdl.m_pos.y, doom);
 }
 
-int				event_handler(t_wolf *wolf)
+int				event_handler(t_wolf *doom)
 {
 	SDL_Event event;
 
@@ -78,17 +78,17 @@ int				event_handler(t_wolf *wolf)
 	{
 		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN
 									&& event.key.keysym.sym == SDLK_ESCAPE))
-			return (prog_quit(wolf));
+			return (prog_quit(doom));
 		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
-			key_press(event.key.keysym.sym, wolf);
+			key_press(event.key.keysym.sym, doom);
 		else if (event.type == SDL_KEYUP && event.key.repeat == 0)
-			key_release(event.key.keysym.sym, wolf);
+			key_release(event.key.keysym.sym, doom);
 		else if (event.type == SDL_DROPFILE)
-			dropfile_event(wolf, event);
+			dropfile_event(doom, event);
 		else if (event.type == SDL_WINDOWEVENT)
-			window_event(wolf, event);
+			window_event(doom, event);
 		else
-			lil_event_handler(wolf, event);
+			lil_event_handler(doom, event);
 	}
 	return (1);
 }
