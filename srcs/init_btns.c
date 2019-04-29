@@ -16,7 +16,7 @@
 ** Wolf Logo (Not really a button)
 */
 
-t_btn	add_wolf_button(t_wolf *wolf)
+t_btn	add_wolf_button(t_wolf *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -32,12 +32,12 @@ t_btn	add_wolf_button(t_wolf *wolf)
 	tmp.fgcolor.r = 255;
 	tmp.fgcolor.g = 255;
 	tmp.fgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s128, " wolfenstein ",
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s128, " wolfenstein ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
 	tmp.loc.area.h = rect.h;
-	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
+	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
 }
@@ -46,7 +46,7 @@ t_btn	add_wolf_button(t_wolf *wolf)
 ** Start button (main menu)
 */
 
-t_btn	add_start_button(t_wolf *wolf)
+t_btn	add_start_button(t_wolf *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -62,12 +62,12 @@ t_btn	add_start_button(t_wolf *wolf)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s64, " START ",
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " START ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
 	tmp.loc.area.h = rect.h;
-	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
+	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
 }
@@ -76,7 +76,7 @@ t_btn	add_start_button(t_wolf *wolf)
 ** Option button Useless :( (main menu)
 */
 
-t_btn	add_opt_button(t_wolf *wolf)
+t_btn	add_opt_button(t_wolf *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -92,12 +92,12 @@ t_btn	add_opt_button(t_wolf *wolf)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s64, " Options ",
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Options ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
 	tmp.loc.area.h = rect.h;
-	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
+	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
 }
@@ -106,7 +106,7 @@ t_btn	add_opt_button(t_wolf *wolf)
 ** Bottom Right button
 */
 
-t_btn	add_quit_button(t_wolf *wolf, const char *str)
+t_btn	add_quit_button(t_wolf *doom, const char *str)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -122,12 +122,12 @@ t_btn	add_quit_button(t_wolf *wolf, const char *str)
 	tmp.bgcolor.r = 255;
 	tmp.bgcolor.g = 255;
 	tmp.bgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s64, str,
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, str,
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
 	tmp.loc.area.h = rect.h;
-	tmp.txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
+	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	return (tmp);
 }

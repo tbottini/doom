@@ -34,17 +34,17 @@ static int	init(void)
 
 int			main(void)
 {
-	t_wolf *wolf;
+	t_wolf *doom;
 
 	if (!init())
 		return (0);
-	if (!(wolf = wolf_init()))
+	if (!(doom = wolf_init()))
 		return (-1);
 	while (0 == 0)
 	{
-		if (!(event_handler(wolf)))
+		if (!(event_handler(doom)))
 			return (0);
-		loop_hook(wolf);
+		loop_hook(doom);
 	}
 	return (0);
 }

@@ -12,14 +12,14 @@
 
 #include "wolf3d.h"
 
-static void		free_btnmap(t_wolf *wolf, int y)
+static void		free_btnmap(t_wolf *doom, int y)
 {
-	SDL_DestroyTexture(wolf->ui.btnmap[y].txture);
-	wolf->ui.btnmap[y].txture = NULL;
-	free(wolf->ui.btnmap[y].data);
+	SDL_DestroyTexture(doom->ui.btnmap[y].txture);
+	doom->ui.btnmap[y].txture = NULL;
+	free(doom->ui.btnmap[y].data);
 }
 
-static int		read_directory(t_wolf *wolf, DIR *maps, int y)
+static int		read_directory(t_wolf *doom, DIR *maps, int y)
 {
 	struct dirent	*mapdata;
 	char			tmp[512];
@@ -28,19 +28,19 @@ static int		read_directory(t_wolf *wolf, DIR *maps, int y)
 	{
 		ft_strcpy(tmp, "ressources/map/");
 		ft_strcpy(&(tmp[15]), mapdata->d_name);
-		if (mapdata->d_reclen == 32 && map_check(wolf, tmp))
+		if (mapdata->d_reclen == 32 && map_check(doom, tmp))
 		{
-			if (wolf->ui.btnmap[y].txture)
-				free_btnmap(wolf, y);
-			wolf->ui.btnmap[y] = add_map_button(wolf, &(tmp[15]));
-			wolf->ui.btnmap[y].data = ft_strdup(tmp);
+			if (doom->ui.btnmap[y].txture)
+				free_btnmap(doom, y);
+			doom->ui.btnmap[y] = add_map_button(doom, &(tmp[15]));
+			doom->ui.btnmap[y].data = ft_strdup(tmp);
 			y++;
 		}
 	}
 	return (y);
 }
 
-int				load_map_btns(t_wolf *wolf)
+int				load_map_btns(t_wolf *doom)
 {
 	DIR				*maps;
 	int				y;
@@ -48,14 +48,14 @@ int				load_map_btns(t_wolf *wolf)
 	y = 2;
 	if (!(maps = opendir("ressources/map")))
 	{
-		if (wolf->ui.btnmap[y].txture)
-			free_btnmap(wolf, y);
+		if (doom->ui.btnmap[y].txture)
+			free_btnmap(doom, y);
 		ft_printf("Error loading folder 'map'\n");
 		return (0);
 	}
-	y = read_directory(wolf, maps, y);
+	y = read_directory(doom, maps, y);
 	closedir(maps);
-	if (wolf->ui.btnmap[y].txture)
-		free_btnmap(wolf, y);
+	if (doom->ui.btnmap[y].txture)
+		free_btnmap(doom, y);
 	return (0);
 }
