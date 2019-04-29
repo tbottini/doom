@@ -1,4 +1,4 @@
-# wolf3d
+# Doom
 
 >brew install sdl2
 
