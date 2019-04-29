@@ -12,34 +12,34 @@
 
 #include "wolf3d.h"
 
-static void	draw_buttons(t_wolf *wolf, int arr)
+static void	draw_buttons(t_wolf *doom, int arr)
 {
 	int x;
 
 	x = -1;
-	SDL_RenderClear(wolf->sdl.rend);
+	SDL_RenderClear(doom->sdl.rend);
 	if (arr == 1)
 	{
-		while (wolf->ui.btnarr[++x].txture)
-			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnarr[x].txture,
-					NULL, &(wolf->ui.btnarr[x].loc.area));
+		while (doom->ui.btnarr[++x].txture)
+			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnarr[x].txture,
+					NULL, &(doom->ui.btnarr[x].loc.area));
 	}
 	else if (arr == 2)
 	{
-		while (wolf->ui.btnmap[++x].txture)
-			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnmap[x].txture,
-					NULL, &(wolf->ui.btnmap[x].loc.area));
+		while (doom->ui.btnmap[++x].txture)
+			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnmap[x].txture,
+					NULL, &(doom->ui.btnmap[x].loc.area));
 	}
 	else if (arr == 3)
 	{
-		while (wolf->ui.btnopt[++x].txture)
-			SDL_RenderCopy(wolf->sdl.rend, wolf->ui.btnopt[x].txture,
-					NULL, &(wolf->ui.btnopt[x].loc.area));
+		while (doom->ui.btnopt[++x].txture)
+			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnopt[x].txture,
+					NULL, &(doom->ui.btnopt[x].loc.area));
 	}
-	SDL_RenderPresent(wolf->sdl.rend);
+	SDL_RenderPresent(doom->sdl.rend);
 }
 
-static void	update_loc_buttons(t_wolf *wolf, t_btn *arr)
+static void	update_loc_buttons(t_wolf *doom, t_btn *arr)
 {
 	t_btn	*tmp;
 	int		x;
@@ -50,8 +50,8 @@ static void	update_loc_buttons(t_wolf *wolf, t_btn *arr)
 	while (arr[++x].txture)
 	{
 		tmp = &(arr[x]);
-		arr[x].loc.area.x = wolf->sdl.size.x * (tmp->loc.pos.x / 100.0);
-		arr[x].loc.area.y = wolf->sdl.size.y * (tmp->loc.pos.y / 100.0);
+		arr[x].loc.area.x = doom->sdl.size.x * (tmp->loc.pos.x / 100.0);
+		arr[x].loc.area.y = doom->sdl.size.y * (tmp->loc.pos.y / 100.0);
 		if (tmp->loc.snapx == 1)
 			arr[x].loc.area.x -= tmp->loc.area.w / 2;
 		else if (tmp->loc.snapx == 2)
@@ -68,10 +68,10 @@ static void	update_loc_buttons(t_wolf *wolf, t_btn *arr)
 	}
 }
 
-static void	update_loc(t_wolf *wolf, t_sloc *loc, t_sloc *before)
+static void	update_loc(t_wolf *doom, t_sloc *loc, t_sloc *before)
 {
-	loc->area.x = wolf->sdl.size.x * (loc->pos.x / 100.0);
-	loc->area.y = wolf->sdl.size.y * (loc->pos.y / 100.0);
+	loc->area.x = doom->sdl.size.x * (loc->pos.x / 100.0);
+	loc->area.y = doom->sdl.size.y * (loc->pos.y / 100.0);
 	if (loc->snapx == 1)
 		loc->area.x -= loc->area.w / 2;
 	else if (loc->snapx == 2)
@@ -86,43 +86,43 @@ static void	update_loc(t_wolf *wolf, t_sloc *loc, t_sloc *before)
 		loc->area.y = before->area.y + before->area.h + loc->pos.y;
 }
 
-void		draw_slid(t_wolf *wolf, t_slid *tmp)
+void		draw_slid(t_wolf *doom, t_slid *tmp)
 {
 	int size;
 
 	size = tmp->loc.area.h;
-	update_loc(wolf, &tmp->loc, &(wolf->ui.btnopt[1].loc));
-	update_slider_txt(wolf, tmp);
+	update_loc(doom, &tmp->loc, &(doom->ui.btnopt[1].loc));
+	update_slider_txt(doom, tmp);
 	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
 		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
 	tmp->grip.y = tmp->loc.area.y;
-	SDL_RenderFillRect(wolf->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(wolf->sdl.rend, 191, 35, 54, 255);
-	SDL_RenderDrawRect(wolf->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(wolf->sdl.rend, 0, 0, 0, 255);
-	SDL_RenderCopy(wolf->sdl.rend, tmp->txture, NULL, &tmp->grip);
-	SDL_RenderPresent(wolf->sdl.rend);
+	SDL_RenderFillRect(doom->sdl.rend, &tmp->loc.area);
+	SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
+	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
+	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
+	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
+	SDL_RenderPresent(doom->sdl.rend);
 }
 
-void		draw_menu(t_wolf *wolf)
+void		draw_menu(t_wolf *doom)
 {
 	int status;
 
-	status = wolf->ui.m_status;
+	status = doom->ui.m_status;
 	if (status == 1)
 	{
-		update_loc_buttons(wolf, wolf->ui.btnarr);
-		draw_buttons(wolf, status);
+		update_loc_buttons(doom, doom->ui.btnarr);
+		draw_buttons(doom, status);
 	}
 	else if (status == 2)
 	{
-		update_loc_buttons(wolf, wolf->ui.btnmap);
-		draw_buttons(wolf, status);
+		update_loc_buttons(doom, doom->ui.btnmap);
+		draw_buttons(doom, status);
 	}
 	else if (status == 3)
 	{
-		update_loc_buttons(wolf, wolf->ui.btnopt);
-		draw_buttons(wolf, status);
-		draw_slid(wolf, &wolf->ui.slidopt[0]);
+		update_loc_buttons(doom, doom->ui.btnopt);
+		draw_buttons(doom, status);
+		draw_slid(doom, &doom->ui.slidopt[0]);
 	}
 }

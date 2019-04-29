@@ -12,24 +12,24 @@
 
 #include "wolf3d.h"
 
-void		update_slider_txt(t_wolf *wolf, t_slid *slid)
+void		update_slider_txt(t_wolf *doom, t_slid *slid)
 {
 	SDL_Surface		*btntext;
 	char			*str;
 
 	str = ft_itoa(*slid->val);
-	btntext = TTF_RenderText_Shaded(wolf->ui.fonts.s32, str,
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s32, str,
 		slid->fgcolor, slid->bgcolor);
-	slid->txture = SDL_CreateTextureFromSurface(wolf->sdl.rend, btntext);
+	slid->txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
 	SDL_FreeSurface(btntext);
 	free(str);
 }
 
-t_slid		add_fov_slider(t_wolf *wolf)
+t_slid		add_fov_slider(t_wolf *doom)
 {
 	t_slid			tmp;
 
-	tmp.txture = SDL_CreateTexture(wolf->sdl.rend,
+	tmp.txture = SDL_CreateTexture(doom->sdl.rend,
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 200, 200);
 	tmp.loc.area.w = 500;
 	tmp.loc.area.h = 50;
@@ -48,8 +48,8 @@ t_slid		add_fov_slider(t_wolf *wolf)
 	tmp.grip.w = tmp.loc.area.h;
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 30;
-	tmp.val = &wolf->fov;
+	tmp.val = &doom->fov;
 	tmp.max = 175;
-	update_slider_txt(wolf, &tmp);
+	update_slider_txt(doom, &tmp);
 	return (tmp);
 }
