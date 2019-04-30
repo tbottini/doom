@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-void		init_ray_ver(t_wolf *w, t_ray *r)
+void		init_ray_ver(t_doom *w, t_ray *r)
 {
 	if (r->angle < 90 || r->angle > 270)
 	{
@@ -28,7 +28,7 @@ void		init_ray_ver(t_wolf *w, t_ray *r)
 	r->inter_v.y = w->pos.y + fabs(r->inter_v.x - w->pos.x + 1) * r->ratio.y;
 }
 
-float		ver_detection(t_wolf *doom, t_ray *ray)
+float		ver_detection(t_doom *doom, t_ray *ray)
 {
 	t_fvct2		dist;
 

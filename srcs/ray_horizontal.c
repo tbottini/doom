@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-void		init_ray_hor(t_wolf *w, t_ray *r)
+void		init_ray_hor(t_doom *w, t_ray *r)
 {
 	if (r->angle < 180)
 	{
@@ -28,7 +28,7 @@ void		init_ray_hor(t_wolf *w, t_ray *r)
 	r->inter_h.x = w->pos.x + r->ratio.x * fabs(r->inter_h.y - w->pos.y + 1);
 }
 
-float		hor_detection(t_wolf *doom, t_ray *ray)
+float		hor_detection(t_doom *doom, t_ray *ray)
 {
 	t_fvct2		dist;
 

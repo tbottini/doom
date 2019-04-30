@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-static void		limit_walk(t_wolf *doom, t_fvct2 n)
+static void		limit_walk(t_doom *doom, t_fvct2 n)
 {
 	if (n.x < doom->map_size.x - 0.1 && n.y < doom->map_size.y - 0.1
 		&& n.x > 0.1 && n.y > 0.1)
@@ -22,7 +22,7 @@ static void		limit_walk(t_wolf *doom, t_fvct2 n)
 	}
 }
 
-static void		lil_lil_loop(t_wolf *doom, int key)
+static void		lil_lil_loop(t_doom *doom, int key)
 {
 	double		dx;
 	double		dy;
@@ -51,7 +51,7 @@ static void		lil_lil_loop(t_wolf *doom, int key)
 	limit_walk(doom, new_pos);
 }
 
-static void		lil_loop(t_wolf *doom, int key)
+static void		lil_loop(t_doom *doom, int key)
 {
 	if (key == SDLK_e)
 	{
@@ -71,7 +71,7 @@ static void		lil_loop(t_wolf *doom, int key)
 		lil_lil_loop(doom, key);
 }
 
-int				loop_hook(t_wolf *doom)
+int				loop_hook(t_doom *doom)
 {
 	t_tab			pos;
 	struct timespec	spec;

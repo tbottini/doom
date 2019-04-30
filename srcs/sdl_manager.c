@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-int		sdl_start(t_wolf *doom, const char *title)
+int		sdl_start(t_doom *doom, const char *title)
 {
 	void	*tmp;
 	int		pitch;

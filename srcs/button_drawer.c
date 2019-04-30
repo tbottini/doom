@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-static void	draw_buttons(t_wolf *doom, int arr)
+static void	draw_buttons(t_doom *doom, int arr)
 {
 	int x;
 
@@ -39,7 +39,7 @@ static void	draw_buttons(t_wolf *doom, int arr)
 	SDL_RenderPresent(doom->sdl.rend);
 }
 
-static void	update_loc_buttons(t_wolf *doom, t_btn *arr)
+static void	update_loc_buttons(t_doom *doom, t_btn *arr)
 {
 	t_btn	*tmp;
 	int		x;
@@ -68,7 +68,7 @@ static void	update_loc_buttons(t_wolf *doom, t_btn *arr)
 	}
 }
 
-static void	update_loc(t_wolf *doom, t_sloc *loc, t_sloc *before)
+static void	update_loc(t_doom *doom, t_sloc *loc, t_sloc *before)
 {
 	loc->area.x = doom->sdl.size.x * (loc->pos.x / 100.0);
 	loc->area.y = doom->sdl.size.y * (loc->pos.y / 100.0);
@@ -86,7 +86,7 @@ static void	update_loc(t_wolf *doom, t_sloc *loc, t_sloc *before)
 		loc->area.y = before->area.y + before->area.h + loc->pos.y;
 }
 
-void		draw_slid(t_wolf *doom, t_slid *tmp)
+void		draw_slid(t_doom *doom, t_slid *tmp)
 {
 	int size;
 
@@ -104,7 +104,7 @@ void		draw_slid(t_wolf *doom, t_slid *tmp)
 	SDL_RenderPresent(doom->sdl.rend);
 }
 
-void		draw_menu(t_wolf *doom)
+void		draw_menu(t_doom *doom)
 {
 	int status;
 
