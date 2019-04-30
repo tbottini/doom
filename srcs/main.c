@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
 static int	init(void)
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMECONTROLLER) != 0)
 	{
 		ft_printf("SDL_Init: %s\n", SDL_GetError());
 		return (0);
@@ -29,12 +29,13 @@ static int	init(void)
 		ft_printf("IMG: %s\n", IMG_GetError());
 		return (0);
 	}
+	printf("%d\n", SDL_NumHaptics());
 	return (1);
 }
 
 int			main(void)
 {
-	t_wolf *doom;
+	t_doom *doom;
 
 	if (!init())
 		return (0);

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-void		update_slider_txt(t_wolf *doom, t_slid *slid)
+void		update_slider_txt(t_doom *doom, t_slid *slid)
 {
 	SDL_Surface		*btntext;
 	char			*str;
@@ -25,7 +25,7 @@ void		update_slider_txt(t_wolf *doom, t_slid *slid)
 	free(str);
 }
 
-t_slid		add_fov_slider(t_wolf *doom)
+t_slid		add_fov_slider(t_doom *doom)
 {
 	t_slid			tmp;
 

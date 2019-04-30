@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-static void		on_menu_one(t_wolf *doom, int x, int y)
+static void		on_menu_one(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
 	int		i;
@@ -41,7 +41,7 @@ static void		on_menu_one(t_wolf *doom, int x, int y)
 	}
 }
 
-static void		on_menu_two(t_wolf *doom, int x, int y)
+static void		on_menu_two(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
 	int		i;
@@ -70,7 +70,7 @@ static void		on_menu_two(t_wolf *doom, int x, int y)
 	}
 }
 
-static void		on_menu_tree(t_wolf *doom, int x, int y)
+static void		on_menu_tree(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
 	t_slid	stmp;
@@ -98,7 +98,7 @@ static void		on_menu_tree(t_wolf *doom, int x, int y)
 	}
 }
 
-void			btn_click(t_wolf *doom, int x, int y)
+void			btn_click(t_doom *doom, int x, int y)
 {
 	if (doom->ui.m_status == 1)
 		on_menu_one(doom, x, y);

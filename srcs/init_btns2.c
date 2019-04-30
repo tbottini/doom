@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
 /*
 ** Button for all maps
 */
 
-t_btn	add_map_button(t_wolf *doom, const char *str)
+t_btn	add_map_button(t_doom *doom, const char *str)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -46,7 +46,7 @@ t_btn	add_map_button(t_wolf *doom, const char *str)
 ** Map Menu button (Not really a button)
 */
 
-t_btn	add_mapmenu_button(t_wolf *doom)
+t_btn	add_mapmenu_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
