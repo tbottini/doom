@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
 /*
 ** Wolf Logo (Not really a button)
 */
 
-t_btn	add_wolf_button(t_wolf *doom)
+t_btn	add_wolf_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -32,7 +32,7 @@ t_btn	add_wolf_button(t_wolf *doom)
 	tmp.fgcolor.r = 255;
 	tmp.fgcolor.g = 255;
 	tmp.fgcolor.b = 255;
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s128, " wolfenstein ",
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s128, " Doom ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;
@@ -46,7 +46,7 @@ t_btn	add_wolf_button(t_wolf *doom)
 ** Start button (main menu)
 */
 
-t_btn	add_start_button(t_wolf *doom)
+t_btn	add_start_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -76,7 +76,7 @@ t_btn	add_start_button(t_wolf *doom)
 ** Option button Useless :( (main menu)
 */
 
-t_btn	add_opt_button(t_wolf *doom)
+t_btn	add_opt_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -106,7 +106,7 @@ t_btn	add_opt_button(t_wolf *doom)
 ** Bottom Right button
 */
 
-t_btn	add_quit_button(t_wolf *doom, const char *str)
+t_btn	add_quit_button(t_doom *doom, const char *str)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
 t_list			*ft_lstn(void *mcontent)
 {
@@ -25,7 +25,7 @@ t_list			*ft_lstn(void *mcontent)
 	return (new);
 }
 
-t_list			*get_file_lst(t_wolf *doom, int fd)
+t_list			*get_file_lst(t_doom *doom, int fd)
 {
 	int			ret;
 	char		*line;
@@ -51,7 +51,7 @@ t_list			*get_file_lst(t_wolf *doom, int fd)
 	return ((ret == 0 || doom->pos.x == 0) ? file : listdel(&file));
 }
 
-int				list_to_map(t_wolf *doom, t_list **f)
+int				list_to_map(t_doom *doom, t_list **f)
 {
 	int			row;
 	t_list		*tmp;
@@ -73,7 +73,7 @@ int				list_to_map(t_wolf *doom, t_list **f)
 	return (1);
 }
 
-void			wolf_clear_map(t_wolf *doom)
+void			wolf_clear_map(t_doom *doom)
 {
 	int			i;
 
@@ -89,7 +89,7 @@ void			wolf_clear_map(t_wolf *doom)
 	doom->map = NULL;
 }
 
-int				wolf_parseur(t_wolf *doom, char *filename)
+int				wolf_parseur(t_doom *doom, char *filename)
 {
 	int			fd;
 	t_list		*file;

@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-static void		free_btnmap(t_wolf *doom, int y)
+static void		free_btnmap(t_doom *doom, int y)
 {
 	SDL_DestroyTexture(doom->ui.btnmap[y].txture);
 	doom->ui.btnmap[y].txture = NULL;
 	free(doom->ui.btnmap[y].data);
 }
 
-static int		read_directory(t_wolf *doom, DIR *maps, int y)
+static int		read_directory(t_doom *doom, DIR *maps, int y)
 {
 	struct dirent	*mapdata;
 	char			tmp[512];
@@ -40,7 +40,7 @@ static int		read_directory(t_wolf *doom, DIR *maps, int y)
 	return (y);
 }
 
-int				load_map_btns(t_wolf *doom)
+int				load_map_btns(t_doom *doom)
 {
 	DIR				*maps;
 	int				y;

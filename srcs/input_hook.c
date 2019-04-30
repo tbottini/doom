@@ -10,15 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-int			key_press(int key, t_wolf *doom)
+int			key_press(int key, t_doom *doom)
 {
 	if (key == SDLK_BACKQUOTE)
 	{
 		doom->ui.m_status = 1;
 		wolf_clear_map(doom);
 		draw_menu(doom);
+	}
+	else if (key == SDLK_5)
+	{
+		ft_printf("controller : %d\n", SDL_GameControllerEventState(SDL_ENABLE));
 	}
 	else
 	{
@@ -27,20 +31,20 @@ int			key_press(int key, t_wolf *doom)
 	return (0);
 }
 
-int			key_release(int key, t_wolf *doom)
+int			key_release(int key, t_doom *doom)
 {
 	ft_noderm_int(&(doom->sdl.keys), key);
 	return (0);
 }
 
-int			mouse_press(int btn, int x, int y, t_wolf *doom)
+int			mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	if (btn == SDL_BUTTON_LEFT)
 		btn_click(doom, x, y);
 	return (0);
 }
 
-int			mouse_release(int btn, int x, int y, t_wolf *doom)
+int			mouse_release(int btn, int x, int y, t_doom *doom)
 {
 	doom->ui.currslid = NULL;
 	(void)x;
@@ -49,7 +53,7 @@ int			mouse_release(int btn, int x, int y, t_wolf *doom)
 	return (0);
 }
 
-int			mouse_move(int x, int y, t_wolf *doom)
+int			mouse_move(int x, int y, t_doom *doom)
 {
 	int		xload;
 	int		size;

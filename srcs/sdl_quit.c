@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-static void		free_textures(t_wolf *doom)
+static void		free_textures(t_doom *doom)
 {
 	int x;
 
@@ -32,7 +32,7 @@ static void		free_textures(t_wolf *doom)
 			SDL_FreeSurface(doom->wall[x].surf);
 }
 
-int				prog_quit(t_wolf *doom)
+int				prog_quit(t_doom *doom)
 {
 	free_textures(doom);
 	if (doom->sdl.txture)

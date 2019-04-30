@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
 unsigned int	color_rgb(uint8_t r, uint8_t g, uint8_t b)
 {
