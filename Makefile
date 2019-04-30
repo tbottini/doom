@@ -11,12 +11,13 @@
 # **************************************************************************** #
 
 include libft/include.mk
-include wolf.mk
-NAME			:=		wolf3d
+include doom.mk
+NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -Werror
+CFLAGS			:=		-Wall -Wextra\
+# -Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -51,7 +52,7 @@ SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))
 
 all				:		$(NAME)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/wolf3d.h libft/libft.h
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom.h libft/libft.h
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
@@ -79,4 +80,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-

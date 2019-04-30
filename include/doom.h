@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wolf3d.h                                           :+:      :+:    :+:   */
+/*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WOLF3D_H
-# define WOLF3D_H
+#ifndef DOOM_H
+# define DOOM_H
 
 # include "libft.h"
 # include <fcntl.h>
@@ -152,45 +152,46 @@ typedef	struct			s_wolf
 	t_wall				wall[4];
 	unsigned long		timestamp;
 	float				d_scrn;
-}						t_wolf;
+	SDL_GameController *controller;
+}						t_doom;
 
-t_wolf					*wolf_init();
+t_doom					*wolf_init();
 void					*sdldata_quit(t_sdl **data);
-int						sdl_start(t_wolf *doom, const char *title);
+int						sdl_start(t_doom *doom, const char *title);
 void					sdl_showscreen(t_sdl *sdl);
-int						wolf_parseur(t_wolf *doom, char *filename);
-int						prog_quit(t_wolf *doom);
-void					btn_click(t_wolf *doom, int x, int y);
-t_btn					add_start_button(t_wolf *doom);
-t_btn					add_mapmenu_button(t_wolf *doom);
-t_btn					add_map_button(t_wolf *doom, const char *str);
-t_btn					add_wolf_button(t_wolf *doom);
-t_btn					add_opt_button(t_wolf *doom);
-t_btn					add_quit_button(t_wolf *doom, const char *str);
-void					draw_menu(t_wolf *doom);
-int						load_map_btns(t_wolf *doom);
-void					update_slider_txt(t_wolf *doom, t_slid *slid);
-t_slid					add_fov_slider(t_wolf *doom);
-void					draw_slid(t_wolf *doom, t_slid *tmp);
-int						event_handler(t_wolf *doom);
-int						loop_hook(t_wolf *doom);
-int						key_press(int key, t_wolf *doom);
-int						key_release(int key, t_wolf *doom);
-int						mouse_press(int button, int x, int y, t_wolf *doom);
-int						mouse_release(int button, int x, int y, t_wolf *doom);
-int						mouse_move(int x, int y, t_wolf *doom);
-void					raycasting(t_wolf *doom);
+int						wolf_parseur(t_doom *doom, char *filename);
+int						prog_quit(t_doom *doom);
+void					btn_click(t_doom *doom, int x, int y);
+t_btn					add_start_button(t_doom *doom);
+t_btn					add_mapmenu_button(t_doom *doom);
+t_btn					add_map_button(t_doom *doom, const char *str);
+t_btn					add_wolf_button(t_doom *doom);
+t_btn					add_opt_button(t_doom *doom);
+t_btn					add_quit_button(t_doom *doom, const char *str);
+void					draw_menu(t_doom *doom);
+int						load_map_btns(t_doom *doom);
+void					update_slider_txt(t_doom *doom, t_slid *slid);
+t_slid					add_fov_slider(t_doom *doom);
+void					draw_slid(t_doom *doom, t_slid *tmp);
+int						event_handler(t_doom *doom);
+int						loop_hook(t_doom *doom);
+int						key_press(int key, t_doom *doom);
+int						key_release(int key, t_doom *doom);
+int						mouse_press(int button, int x, int y, t_doom *doom);
+int						mouse_release(int button, int x, int y, t_doom *doom);
+int						mouse_move(int x, int y, t_doom *doom);
+void					raycasting(t_doom *doom);
 float					float_modulo(float num);
 double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
-float					ver_detection(t_wolf *doom, t_ray *ray);
-float					hor_detection(t_wolf *doom, t_ray *ray);
-double					iswall(t_wolf *doom, t_fvct2 inter);
-void					draw_column(t_wolf *doom, t_ray ray, int num);
+float					ver_detection(t_doom *doom, t_ray *ray);
+float					hor_detection(t_doom *doom, t_ray *ray);
+double					iswall(t_doom *doom, t_fvct2 inter);
+void					draw_column(t_doom *doom, t_ray ray, int num);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
-void					wolf_clear_map(t_wolf *doom);
-int						map_check(t_wolf *doom, char *filename);
-int						row_verif(t_wolf *doom, char *row);
+void					wolf_clear_map(t_doom *doom);
+int						map_check(t_doom *doom, char *filename);
+int						row_verif(t_doom *doom, char *row);
 void					*listdel(t_list **list);
 t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
 char					**tab_new(int y);

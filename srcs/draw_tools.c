@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
 void		ray_polarity(t_ray *ray)
 {
@@ -24,7 +24,7 @@ void		ray_polarity(t_ray *ray)
 	}
 }
 
-void		draw_part(t_wolf *doom, int *istart, int length, uint32_t color)
+void		draw_part(t_doom *doom, int *istart, int length, uint32_t color)
 {
 	int		i;
 
@@ -37,7 +37,7 @@ void		draw_part(t_wolf *doom, int *istart, int length, uint32_t color)
 	}
 }
 
-void		draw_part_texture(t_wolf *doom, t_ray ray, int *istart, int length)
+void		draw_part_texture(t_doom *doom, t_ray ray, int *istart, int length)
 {
 	int		i;
 	t_fvct2	ctexture;
@@ -66,7 +66,7 @@ void		draw_part_texture(t_wolf *doom, t_ray ray, int *istart, int length)
 	}
 }
 
-void		draw_column(t_wolf *doom, t_ray ray, int num)
+void		draw_column(t_doom *doom, t_ray ray, int num)
 {
 	float	column_size;
 	int		sky_size;

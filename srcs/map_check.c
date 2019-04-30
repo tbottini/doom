@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-int				row_verif(t_wolf *doom, char *row)
+int				row_verif(t_doom *doom, char *row)
 {
 	int			i;
 
@@ -35,7 +35,7 @@ int				row_verif(t_wolf *doom, char *row)
 	return (1);
 }
 
-int				map_check(t_wolf *doom, char *filename)
+int				map_check(t_doom *doom, char *filename)
 {
 	int			fd;
 	int			ret;

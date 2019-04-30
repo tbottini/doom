@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-double		iswall(t_wolf *doom, t_fvct2 inter)
+double		iswall(t_doom *doom, t_fvct2 inter)
 {
 	if (inter.x < doom->map_size.x && inter.y < doom->map_size.y
 		&& inter.x >= 0.0 && inter.y >= 0.0)
@@ -24,7 +24,7 @@ double		iswall(t_wolf *doom, t_fvct2 inter)
 	return (INT_MAX);
 }
 
-void		raycasting(t_wolf *doom)
+void		raycasting(t_doom *doom)
 {
 	t_ray	ray;
 	int		i;

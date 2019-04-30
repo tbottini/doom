@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "doom.h"
 
-static void		void_wolf(t_wolf *doom)
+static void		void_wolf(t_doom *doom)
 {
-	ft_bzero(doom, sizeof(t_wolf));
+	ft_bzero(doom, sizeof(t_doom));
 }
 
-static t_wall	load_texture(t_wolf *doom, const char *file)
+static t_wall	load_texture(t_doom *doom, const char *file)
 {
 	SDL_RWops	*rwop;
 	SDL_Surface	*surf;
@@ -44,7 +44,7 @@ static t_wall	load_texture(t_wolf *doom, const char *file)
 	return (wall);
 }
 
-void			lil_wolf_init(t_wolf *doom)
+void			lil_wolf_init(t_doom *doom)
 {
 	doom->wall[0] = load_texture(doom, "./ressources/textures/wall_blue.xpm");
 	doom->wall[1] = load_texture(doom, "./ressources/textures/wall.xpm");
@@ -52,14 +52,14 @@ void			lil_wolf_init(t_wolf *doom)
 	doom->wall[3] = load_texture(doom, "./ressources/textures/test.xpm");
 }
 
-t_wolf			*wolf_init(void)
+t_doom			*wolf_init(void)
 {
-	t_wolf *doom;
+	t_doom *doom;
 
-	if (!(doom = (t_wolf *)malloc(sizeof(t_wolf))))
+	if (!(doom = (t_doom *)malloc(sizeof(t_doom))))
 		return (NULL);
 	void_wolf(doom);
-	if (sdl_start(doom, "Wolf 3D"))
+	if (sdl_start(doom, "Doom-Nukem"))
 		return (NULL);
 	doom->ui.btnarr[0] = add_wolf_button(doom);
 	doom->ui.btnarr[1] = add_start_button(doom);
