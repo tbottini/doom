@@ -3,7 +3,10 @@ SRCS_WOLF		:=		button_action.c							\
 						button_loader.c							\
 						little_tools.c							\
 						draw_tools.c							\
+						editor.c								\
 						event_handler.c							\
+						event_handler1.c						\
+						event_handler2.c						\
 						init_btns.c								\
 						init_btns2.c							\
 						init_slids.c							\
