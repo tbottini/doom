@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wolf_init.c                                        :+:      :+:    :+:   */
+/*   doom_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,9 +12,30 @@
 
 #include "doom.h"
 
-static void		void_wolf(t_doom *doom)
+static int		secure_doom(t_doom *doom)
 {
+	int fd;
+
+	if ((fd = open(TTFWOLF, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(TTFIMPACT, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(WALLBLUE, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(WALL, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(GOLD, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(TEST, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
 	ft_bzero(doom, sizeof(t_doom));
+	return (0);
 }
 
 static t_wall	load_texture(t_doom *doom, const char *file)
@@ -44,24 +65,25 @@ static t_wall	load_texture(t_doom *doom, const char *file)
 	return (wall);
 }
 
-void			lil_wolf_init(t_doom *doom)
+void			lil_doom_init(t_doom *doom)
 {
-	doom->wall[0] = load_texture(doom, "./ressources/textures/wall_blue.xpm");
-	doom->wall[1] = load_texture(doom, "./ressources/textures/wall.xpm");
-	doom->wall[2] = load_texture(doom, "./ressources/textures/plaqueor.xpm");
-	doom->wall[3] = load_texture(doom, "./ressources/textures/test.xpm");
+	doom->wall[0] = load_texture(doom, WALLBLUE);
+	doom->wall[1] = load_texture(doom, WALL);
+	doom->wall[2] = load_texture(doom, GOLD);
+	doom->wall[3] = load_texture(doom, TEST);
 }
 
-t_doom			*wolf_init(void)
+t_doom			*doom_init(void)
 {
 	t_doom *doom;
 
 	if (!(doom = (t_doom *)malloc(sizeof(t_doom))))
 		return (NULL);
-	void_wolf(doom);
+	if (secure_doom(doom))
+		return (NULL);
 	if (sdl_start(doom, "Doom-Nukem"))
 		return (NULL);
-	doom->ui.btnarr[0] = add_wolf_button(doom);
+	doom->ui.btnarr[0] = add_doom_button(doom);
 	doom->ui.btnarr[1] = add_start_button(doom);
 	doom->ui.btnarr[2] = add_opt_button(doom);
 	doom->ui.btnarr[3] = add_quit_button(doom, " Quit ");
@@ -69,7 +91,7 @@ t_doom			*wolf_init(void)
 	doom->ui.btnmap[1] = add_mapmenu_button(doom);
 	doom->ui.btnopt[0] = doom->ui.btnmap[0];
 	doom->ui.btnopt[1] = doom->ui.btnarr[0];
-	lil_wolf_init(doom);
+	lil_doom_init(doom);
 	doom->ui.slidopt[0] = add_fov_slider(doom);
 	doom->pos.x = 0;
 	doom->pos.y = 0;
