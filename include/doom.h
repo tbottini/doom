@@ -107,10 +107,10 @@ typedef struct			s_font
 typedef struct			s_ui
 {
 	t_font				fonts;
-	t_btn				btnarr[10];
-	t_btn				btnmap[11];
-	t_btn				btnopt[11];
-	t_slid				slidopt[5];
+	t_btn				btnarr[20];
+	t_btn				btnmap[20];
+	t_btn				btnopt[20];
+	t_slid				slidopt[10];
 	t_slid				*currslid;
 	int					m_status;
 }						t_ui;
@@ -129,6 +129,7 @@ typedef struct			s_ray
 typedef struct			s_sdl
 {
 	SDL_Window			*win;
+	SDL_Window			*edwin;
 	SDL_Renderer		*rend;
 	t_vct2				size;
 	t_vct2				m_pos;
@@ -137,6 +138,16 @@ typedef struct			s_sdl
 	t_tab				keys;
 	SDL_PixelFormat		*format;
 }						t_sdl;
+
+typedef struct			s_editor
+{
+	int					status;
+	SDL_Window			*win;
+	SDL_Renderer		*rend;
+	t_vct2				size;
+	SDL_Texture			*txture;
+	t_tab				keys;
+}						t_editor;
 
 typedef struct			s_wall
 {
@@ -149,6 +160,7 @@ typedef struct			s_wall
 typedef	struct			s_doom
 {
 	t_sdl				sdl;
+	t_editor			edit;
 	t_ui				ui;
 	char				**map;
 	t_vct2				map_size;
@@ -173,13 +185,17 @@ t_btn					add_mapmenu_button(t_doom *doom);
 t_btn					add_map_button(t_doom *doom, const char *str);
 t_btn					add_doom_button(t_doom *doom);
 t_btn					add_opt_button(t_doom *doom);
+t_btn					add_editor_button(t_doom *doom);
 t_btn					add_quit_button(t_doom *doom, const char *str);
 void					draw_menu(t_doom *doom);
 int						load_map_btns(t_doom *doom);
+void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
 t_slid					add_fov_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
+int						event_handler1(t_doom *doom, SDL_Event event);
+int						event_handler2(t_doom *doom, SDL_Event event);
 int						loop_hook(t_doom *doom);
 int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
@@ -202,4 +218,9 @@ void					*listdel(t_list **list);
 t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
 char					**tab_new(int y);
 void					lst_del_node(t_list **node);
+int						start_editor(t_doom *doom);
+int						close_editor(t_doom *doom);
+
+void PrintEvent(const SDL_Event *event);
+
 #endif
