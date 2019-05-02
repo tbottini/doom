@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wolf_parseur.c                                     :+:      :+:    :+:   */
+/*   doom_parseur.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -73,7 +73,7 @@ int				list_to_map(t_doom *doom, t_list **f)
 	return (1);
 }
 
-void			wolf_clear_map(t_doom *doom)
+void			doom_clear_map(t_doom *doom)
 {
 	int			i;
 
@@ -89,7 +89,7 @@ void			wolf_clear_map(t_doom *doom)
 	doom->map = NULL;
 }
 
-int				wolf_parseur(t_doom *doom, char *filename)
+int				doom_parseur(t_doom *doom, char *filename)
 {
 	int			fd;
 	t_list		*file;

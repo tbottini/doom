@@ -16,7 +16,7 @@
 ** Wolf Logo (Not really a button)
 */
 
-t_btn	add_wolf_button(t_doom *doom)
+t_btn	add_doom_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
