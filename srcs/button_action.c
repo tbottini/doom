@@ -36,6 +36,8 @@ static void		on_menu_one(t_doom *doom, int x, int y)
 				draw_menu(doom);
 			}
 			else if (i == 3)
+				start_editor(doom);
+			else if (i == 4)
 				prog_quit(doom);
 		}
 	}
