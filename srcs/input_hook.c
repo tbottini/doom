@@ -17,7 +17,7 @@ int			key_press(int key, t_doom *doom)
 	if (key == SDLK_BACKQUOTE)
 	{
 		doom->ui.m_status = 1;
-		wolf_clear_map(doom);
+		doom_clear_map(doom);
 		draw_menu(doom);
 	}
 	else if (key == SDLK_5)
