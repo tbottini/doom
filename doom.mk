@@ -16,6 +16,6 @@ SRCS_WOLF		:=		button_action.c							\
 						raycasting.c							\
 						sdl_manager.c							\
 						sdl_quit.c								\
-						wolf_init.c								\
-						wolf_parseur.c							\
+						doom_init.c								\
+						doom_parseur.c							\
 						map_check.c

@@ -33,6 +33,10 @@
 # define INT_MAX 2147483647
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
+# define WALLBLUE "ressources/textures/wall_blue.xpm"
+# define WALL "ressources/textures/wall.xpm"
+# define GOLD "ressources/textures/plaqueor.xpm"
+# define TEST "ressources/textures/test.xpm"
 
 typedef struct			s_vct2
 {
@@ -140,7 +144,7 @@ typedef struct			s_wall
 	int					h;
 }						t_wall;
 
-typedef	struct			s_wolf
+typedef	struct			s_doom
 {
 	t_sdl				sdl;
 	t_ui				ui;
@@ -155,17 +159,17 @@ typedef	struct			s_wolf
 	SDL_GameController *controller;
 }						t_doom;
 
-t_doom					*wolf_init();
+t_doom					*doom_init();
 void					*sdldata_quit(t_sdl **data);
 int						sdl_start(t_doom *doom, const char *title);
 void					sdl_showscreen(t_sdl *sdl);
-int						wolf_parseur(t_doom *doom, char *filename);
+int						doom_parseur(t_doom *doom, char *filename);
 int						prog_quit(t_doom *doom);
 void					btn_click(t_doom *doom, int x, int y);
 t_btn					add_start_button(t_doom *doom);
 t_btn					add_mapmenu_button(t_doom *doom);
 t_btn					add_map_button(t_doom *doom, const char *str);
-t_btn					add_wolf_button(t_doom *doom);
+t_btn					add_doom_button(t_doom *doom);
 t_btn					add_opt_button(t_doom *doom);
 t_btn					add_quit_button(t_doom *doom, const char *str);
 void					draw_menu(t_doom *doom);
@@ -189,7 +193,7 @@ float					hor_detection(t_doom *doom, t_ray *ray);
 double					iswall(t_doom *doom, t_fvct2 inter);
 void					draw_column(t_doom *doom, t_ray ray, int num);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
-void					wolf_clear_map(t_doom *doom);
+void					doom_clear_map(t_doom *doom);
 int						map_check(t_doom *doom, char *filename);
 int						row_verif(t_doom *doom, char *row);
 void					*listdel(t_list **list);
