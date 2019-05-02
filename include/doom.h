@@ -22,8 +22,10 @@
 # include <fcntl.h>
 # include <dirent.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define MINWIDTH 800
+# define MINHEIGHT 600
+# define WIDTH 1280
+# define HEIGHT 720
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131

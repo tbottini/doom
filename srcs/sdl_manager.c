@@ -30,7 +30,7 @@ int		sdl_start(t_doom *doom, const char *title)
 		return (prog_quit(doom));
 	if (!(doom->ui.fonts.s32 = TTF_OpenFont(TTFIMPACT, 32)))
 		return (prog_quit(doom));
-	SDL_SetWindowMinimumSize(doom->sdl.win, 640, 480);
+	SDL_SetWindowMinimumSize(doom->sdl.win, MINWIDTH, MINHEIGHT);
 	doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
 	if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
