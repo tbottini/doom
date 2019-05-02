@@ -49,7 +49,7 @@ int				prog_quit(t_doom *doom)
 		SDL_DestroyWindow(doom->sdl.win);
 	if (doom->sdl.format)
 		SDL_FreeFormat(doom->sdl.format);
-	wolf_clear_map(doom);
+	doom_clear_map(doom);
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();

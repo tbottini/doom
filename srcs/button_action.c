@@ -60,7 +60,7 @@ static void		on_menu_two(t_doom *doom, int x, int y)
 			}
 			else if (i > 1)
 			{
-				if (wolf_parseur(doom, tmp.data))
+				if (doom_parseur(doom, tmp.data))
 				{
 					doom->ui.m_status = 0;
 					draw_menu(doom);
