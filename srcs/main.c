@@ -39,7 +39,7 @@ int			main(void)
 
 	if (!init())
 		return (0);
-	if (!(doom = wolf_init()))
+	if (!(doom = doom_init()))
 		return (-1);
 	while (0 == 0)
 	{
