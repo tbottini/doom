@@ -22,7 +22,11 @@ int		sdl_start(t_doom *doom, const char *title)
 	doom->ui.m_status = 1;
 	if (!(doom->sdl.win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, 32)))
 		return (prog_quit(doom));
+	if (!(doom->edit.win = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN)))
+		return (prog_quit(doom));
 	if (!(doom->sdl.rend = SDL_CreateRenderer(doom->sdl.win, -1, 1)))
+		return (prog_quit(doom));
+	if (!(doom->edit.rend = SDL_CreateRenderer(doom->edit.win, -1, 1)))
 		return (prog_quit(doom));
 	if (!(doom->ui.fonts.s64 = TTF_OpenFont(TTFWOLF, 64)))
 		return (prog_quit(doom));
