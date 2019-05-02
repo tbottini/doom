@@ -77,10 +77,11 @@ void		draw_column(t_doom *doom, t_ray ray, int num)
 	i = -1;
 	dist = (ray.hor < ray.ver && ray.hor > -0.1) ? ray.hor : ray.ver;
 	dist *= cos(fabs(doom->rot - ray.angle) * PI / 180.00);
-	column_size = (doom->sdl.size.y * 0.8) / dist;
-	sky_size = (doom->sdl.size.y - column_size) / 2.0;
+	column_size = (1080.0 * 0.8 * (doom->sdl.size.x / 1920.0)) / dist;
+	sky_size = (doom->sdl.size.y - (int)column_size) / 2.0;
 	iprint = num;
 	draw_part(doom, &iprint, sky_size, BLUE_SKY);
 	draw_part_texture(doom, ray, &iprint, column_size);
+	sky_size += ((doom->sdl.size.y - (int)column_size) % 2);
 	draw_part(doom, &iprint, sky_size, PINK_FLOOR);
 }
