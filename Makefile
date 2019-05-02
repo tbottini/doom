@@ -12,6 +12,7 @@
 
 include libft/include.mk
 include doom.mk
+
 NAME			:=		doom-nukem
 
 CC				:=		gcc
