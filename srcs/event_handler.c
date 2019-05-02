@@ -105,8 +105,8 @@ static void		window_event(t_doom *doom, SDL_Event event)
 static void		dropfile_event(t_doom *doom, SDL_Event event)
 {
 	if (doom->map)
-		wolf_clear_map(doom);
-	if (wolf_parseur(doom, event.drop.file))
+		doom_clear_map(doom);
+	if (doom_parseur(doom, event.drop.file))
 	{
 		doom->ui.m_status = 0;
 	}
