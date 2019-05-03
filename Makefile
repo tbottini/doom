@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/28 16:50:49 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/03 12:15:50 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ NAME			:=		doom-nukem
 CC				:=		gcc
 
 CFLAGS			:=		-Wall -Wextra\
-# -Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -28,6 +27,11 @@ LIB				:=		-L libft/ -lft							\
 INCLUDE			=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
+
+FOLDER			:=		objs									\
+						objs/parsing							\
+						objs/render								\
+						objs/debug
 
 COMPILE_LIB		:=		make -C libft/
 
@@ -45,13 +49,11 @@ FILL_BAR		=		$$(( $(NB_OBJS) * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
-OBJS    		:=		$(patsubst %.c,$(OBJDIR)/%.o,$(SRCS_WOLF))
 
-SRCS_WOLF  		:=		$(patsubst %.c,srcs/%.c,$(SRCS_WOLF))
+all				:		directory $(NAME)
 
-SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))
-
-all				:		$(NAME)
+directory		:
+	@mkdir -p $(FOLDER)
 
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom.h libft/libft.h
 	@printf '\rCompilation $(NAME)\n'
@@ -62,7 +64,8 @@ $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom.h libft/libft.h
 
 $(NAME)			:		$(OBJS)
 	@make -C libft/
-	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c -o main/main.o main/main.c
+	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) main/main.o $(OBJS)
 	@sips -i ressources/icon/icon.ico
 	@derez -only icns ressources/icon/icon.ico > tmpicns.rsrc
 	@rez -append tmpicns.rsrc -o $(NAME)
@@ -70,14 +73,21 @@ $(NAME)			:		$(OBJS)
 	@rm tmpicns.rsrc
 	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
-clean:
+clean			:
 	@make clean -C ./libft
 	@rm -f $(OBJS)
+	@rm -rf $(FOLDER)
 
-fclean: clean
+fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
 
-re: fclean all
+parsing			:		directory $(OBJS)
+	@make -C libft/
+	@$(CC) $(CFLAGS) $(INCLUDE) -c -o main/main_parsing.o main/main_parsing.c
+	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o parsing $(OBJS) main/main_parsing.o
+	@printf "\e[M\e[A\n\e[93m[--------PARSING_TEST--------]\n\e[0m"
+
+re				: fclean all
 
 .PHONY: all clean fclean re

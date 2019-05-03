@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 static void lil_loop(t_doom *doom, int key)
 {
