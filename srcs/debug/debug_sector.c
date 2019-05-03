@@ -23,6 +23,14 @@ void		fvct2_print(t_fvct2 vct)
 	ft_putfloat(vct.y);
 }
 
+void		fvct2_msg(char *msg, t_fvct2 vct)
+{
+	ft_putstr(msg);
+	ft_putstr(" : ");
+	fvct2_print(vct);
+	ft_putchar('\n');
+}
+
 void		sector_describe(t_sector sector)
 {
 	t_wl	*wall;
