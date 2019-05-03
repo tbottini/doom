@@ -22,8 +22,10 @@
 # include <fcntl.h>
 # include <dirent.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define MINWIDTH 800
+# define MINHEIGHT 600
+# define WIDTH 1280
+# define HEIGHT 720
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
@@ -38,6 +40,8 @@
 # define GOLD "ressources/textures/plaqueor.xpm"
 # define TEST "ressources/textures/test.xpm"
 
+# define JOYSTICK_DEAD_ZONE 2500
+
 typedef struct			s_vct2
 {
 	int					x;
@@ -46,8 +50,8 @@ typedef struct			s_vct2
 
 typedef struct			s_fvct2
 {
-	float				x;
-	float				y;
+	double				x;
+	double				y;
 }						t_fvct2;
 
 /*
@@ -105,12 +109,13 @@ typedef struct			s_font
 typedef struct			s_ui
 {
 	t_font				fonts;
-	t_btn				btnarr[10];
-	t_btn				btnmap[11];
-	t_btn				btnopt[11];
-	t_slid				slidopt[5];
+	t_btn				btnarr[20];
+	t_btn				btnmap[20];
+	t_btn				btnopt[20];
+	t_slid				slidopt[10];
 	t_slid				*currslid;
 	int					m_status;
+	t_btn				*curr_btn;
 }						t_ui;
 
 typedef struct			s_ray
@@ -127,6 +132,7 @@ typedef struct			s_ray
 typedef struct			s_sdl
 {
 	SDL_Window			*win;
+	SDL_Window			*edwin;
 	SDL_Renderer		*rend;
 	t_vct2				size;
 	t_vct2				m_pos;
@@ -135,6 +141,16 @@ typedef struct			s_sdl
 	t_tab				keys;
 	SDL_PixelFormat		*format;
 }						t_sdl;
+
+typedef struct			s_editor
+{
+	int					status;
+	SDL_Window			*win;
+	SDL_Renderer		*rend;
+	t_vct2				size;
+	SDL_Texture			*txture;
+	t_tab				keys;
+}						t_editor;
 
 typedef struct			s_wall
 {
@@ -147,16 +163,19 @@ typedef struct			s_wall
 typedef	struct			s_doom
 {
 	t_sdl				sdl;
+	t_editor			edit;
 	t_ui				ui;
 	char				**map;
 	t_vct2				map_size;
 	t_fvct2				pos;
 	double				rot;
+	double				nrot;
 	int					fov;
 	t_wall				wall[4];
 	unsigned long		timestamp;
 	float				d_scrn;
-	SDL_GameController *controller;
+	SDL_GameController	*controller;
+	t_vct2				vel; // velocity
 }						t_doom;
 
 t_doom					*doom_init();
@@ -171,14 +190,22 @@ t_btn					add_mapmenu_button(t_doom *doom);
 t_btn					add_map_button(t_doom *doom, const char *str);
 t_btn					add_doom_button(t_doom *doom);
 t_btn					add_opt_button(t_doom *doom);
+t_btn					add_editor_button(t_doom *doom);
 t_btn					add_quit_button(t_doom *doom, const char *str);
+int						sdl_set_status(t_doom *doom, int status);
 void					draw_menu(t_doom *doom);
 int						load_map_btns(t_doom *doom);
+void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
 t_slid					add_fov_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
+int						event_handler1(t_doom *doom, SDL_Event event);
+int						event_handler2(t_doom *doom, SDL_Event event);
 int						loop_hook(t_doom *doom);
+t_btn					*btn_hover(t_doom *doom, int x, int y);
+void					draw_hover(t_doom *doom, t_btn *new, t_btn *old);
+void					move(t_doom *doom, int x, int y);
 int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
 int						mouse_press(int button, int x, int y, t_doom *doom);
@@ -199,5 +226,11 @@ int						row_verif(t_doom *doom, char *row);
 void					*listdel(t_list **list);
 t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
 char					**tab_new(int y);
+void					controller_handler(t_doom *doom, SDL_Event event);
 void					lst_del_node(t_list **node);
+int						start_editor(t_doom *doom);
+int						close_editor(t_doom *doom);
+
+void PrintEvent(const SDL_Event *event);
+
 #endif
