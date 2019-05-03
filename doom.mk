@@ -1,15 +1,21 @@
 SRCS_WOLF		:=		button_action.c							\
 						button_drawer.c							\
+						button_hover.c							\
 						button_loader.c							\
 						little_tools.c							\
 						draw_tools.c							\
+						editor.c								\
+						event_controller.c						\
 						event_handler.c							\
+						event_handler1.c						\
+						event_handler2.c						\
 						init_btns.c								\
 						init_btns2.c							\
 						init_slids.c							\
 						input_hook.c							\
 						loop_hook.c								\
 						main.c			 						\
+						movement.c		 						\
 						num_tools.c								\
 						ray_horizontal.c						\
 						ray_vertical.c							\
