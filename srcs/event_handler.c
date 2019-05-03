@@ -84,6 +84,21 @@ int				event_handler(t_doom *doom)
 			event_handler1(doom, event);
 		else if (event.window.windowID == 2)
 			event_handler2(doom, event);
+		if (event.type == SDL_CONTROLLERDEVICEADDED)
+		{
+			ft_printf("Controller Added\n");
+			doom->controller = SDL_GameControllerOpen(0);
+		}
+		else if (event.type == SDL_CONTROLLERDEVICEREMOVED)
+		{
+			ft_printf("Controller Removed\n");
+		}
+		else if (event.type == SDL_CONTROLLERAXISMOTION || event.type == SDL_CONTROLLERBUTTONDOWN || event.type == SDL_CONTROLLERBUTTONUP)
+			controller_handler(doom, event);
+		else
+		{
+			//ft_printf("Event %d\n", event.type);
+		}
 	}
 	return (1);
 }
