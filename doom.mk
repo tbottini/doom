@@ -25,7 +25,7 @@ SRCS_WOLF		:=		button_action.c							\
 						doom_init.c								\
 						doom_parseur.c							\
 						map_check.c								\
-						parsing/test.c
+						main.c
 
 SRCS_RENDER		:=		render.c
 

@@ -64,8 +64,7 @@ $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom.h libft/libft.h
 
 $(NAME)			:		$(OBJS)
 	@make -C libft/
-	@$(CC) $(CFLAGS) $(INCLUDE) -c -o main/main.o main/main.c
-	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) main/main.o $(OBJS)
+	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@sips -i ressources/icon/icon.ico
 	@derez -only icns ressources/icon/icon.ico > tmpicns.rsrc
 	@rez -append tmpicns.rsrc -o $(NAME)
@@ -81,12 +80,6 @@ clean			:
 fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
-
-parsing			:		directory $(OBJS)
-	@make -C libft/
-	@$(CC) $(CFLAGS) $(INCLUDE) -c -o main/main_parsing.o main/main_parsing.c
-	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o parsing $(OBJS) main/main_parsing.o
-	@printf "\e[M\e[A\n\e[93m[--------PARSING_TEST--------]\n\e[0m"
 
 re				: fclean all
 
