@@ -10,13 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom_nukem.h"
+##include "doom_nukem.h"
 
 int			key_press(int key, t_doom *doom)
 {
 	if (key == SDLK_BACKQUOTE)
 	{
-		sdl_set_status(doom, 1);
+		doom->ui.m_status = 1;
+		doom_clear_map(doom);
+		draw_menu(doom);
 	}
 	else if (key == SDLK_5)
 	{
@@ -32,18 +34,6 @@ int			key_press(int key, t_doom *doom)
 int			key_release(int key, t_doom *doom)
 {
 	ft_noderm_int(&(doom->sdl.keys), key);
-	if (key == SDLK_w || key == SDLK_s)
-	{
-		doom->vel.x = 0;
-	}
-	else if (key == SDLK_a || key == SDLK_d)
-	{
-		doom->vel.y = 0;
-	}
-	else if (key == SDLK_q || key == SDLK_e)
-	{
-		doom->nrot = 0;
-	}
 	return (0);
 }
 
@@ -67,15 +57,8 @@ int			mouse_move(int x, int y, t_doom *doom)
 {
 	int		xload;
 	int		size;
-	t_btn	*curr_btn;
 	t_slid	*tmp;
 
-	curr_btn = btn_hover(doom, x, y);
-	if (doom->ui.curr_btn != curr_btn)
-	{
-		draw_hover(doom, curr_btn, doom->ui.curr_btn);
-		doom->ui.curr_btn = curr_btn;
-	}
 	doom->sdl.m_pos.x = x;
 	doom->sdl.m_pos.y = y;
 	if (doom->ui.currslid)
