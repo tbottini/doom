@@ -6,11 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/03 12:18:16 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/04/27 13:13:13 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom_nukem.h"
+##include "doom_nukem.h"
 
 
 void PrintEvent(const SDL_Event *event)
@@ -80,7 +80,7 @@ static void		window_event(t_doom *doom, SDL_Event event)
 	void	*tmp;
 	int		pitch;
 
-	//PrintEvent(&event);
+	PrintEvent(&event);
 	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
 	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
 		|| event.window.event == SDL_WINDOWEVENT_RESIZED)
