@@ -12,21 +12,20 @@
 
 #include "doom.h"
 
-static void		window_event(t_doom *doom, SDL_Event e)
+static void window_event(t_doom *doom, SDL_Event e)
 {
-	void	*tmp;
-	int		pitch;
+	void *tmp;
+	int pitch;
 
 	PrintEvent(&e);
 	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
-	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
-		|| e.window.event == SDL_WINDOWEVENT_RESIZED)
+	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || e.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
 		if (doom->sdl.txture)
 			SDL_DestroyTexture(doom->sdl.txture);
 		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
-			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
-			doom->sdl.size.x, doom->sdl.size.y);
+											 SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
+											 doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			prog_quit(doom);
 		doom->sdl.screen = (uint32_t *)tmp;
@@ -41,19 +40,18 @@ static void		window_event(t_doom *doom, SDL_Event e)
 	}
 }
 
-static void		dropfile_event(t_doom *doom, SDL_Event e)
+static void dropfile_event(t_doom *doom, SDL_Event e)
 {
 	if (doom->map)
 		doom_clear_map(doom);
 	if (doom_parseur(doom, e.drop.file))
 	{
-		doom->ui.m_status = 0;
+		sdl_set_status(doom, 0);
 	}
 	else
 	{
 		ft_printf("Error Reading File Drop\n");
-		doom->ui.m_status = 1;
-		draw_menu(doom);
+		sdl_set_status(doom, 1);
 	}
 	SDL_free(e.drop.file);
 }
@@ -82,7 +80,7 @@ int event_handler1(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		mouse_press(e.button.button, e.button.x, e.button.y, doom);
 	else if (e.type == SDL_MOUSEBUTTONUP)
-		mouse_release(e.button.button,  e.button.x, e.button.y, doom);
+		mouse_release(e.button.button, e.button.x, e.button.y, doom);
 	else if (e.type == SDL_MOUSEWHEEL)
 		mouse_press((e.wheel.y > 0 ? 4 : 5), doom->sdl.m_pos.x, doom->sdl.m_pos.y, doom);
 	return (0);

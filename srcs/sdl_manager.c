@@ -12,6 +12,33 @@
 
 #include "doom.h"
 
+int		sdl_set_status(t_doom *doom, int status)
+{
+	if (status == 0)
+	{
+		doom->ui.m_status = 0;
+		draw_menu(doom);
+	}
+	else if (status == 1)
+	{
+		doom->ui.m_status = 1;
+		doom_clear_map(doom);
+		draw_menu(doom);
+	}
+	else if (status == 2)
+	{
+		doom->ui.m_status = 2;
+		load_map_btns(doom);
+		draw_menu(doom);
+	}
+	else if (status == 3)
+	{
+		doom->ui.m_status = 3;
+		draw_menu(doom);
+	}
+	return (status);
+}
+
 int		sdl_start(t_doom *doom, const char *title)
 {
 	void	*tmp;
