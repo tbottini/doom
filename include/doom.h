@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/27 12:58:22 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/03 17:47:56 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ int						mouse_press(int button, int x, int y, t_doom *doom);
 int						mouse_release(int button, int x, int y, t_doom *doom);
 int						mouse_move(int x, int y, t_doom *doom);
 void					raycasting(t_doom *doom);
-float					float_modulo(float num);
+double					double_modulo(double num);
 double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
 float					ver_detection(t_doom *doom, t_ray *ray);
