@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom_nukem.h"
+#include "doom.h"
 
-static void		on_menu_one(t_doom *doom, int x, int y)
+static t_btn	*on_menu_one(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
 	int		i;
@@ -24,23 +24,13 @@ static void		on_menu_one(t_doom *doom, int x, int y)
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
-			if (i == 1)
-			{
-				sdl_set_status(doom, 2);
-			}
-			else if (i == 2)
-			{
-				sdl_set_status(doom, 3);
-			}
-			else if (i == 3)
-				start_editor(doom);
-			else if (i == 4)
-				prog_quit(doom);
+			return (&(doom->ui.btnarr[i]));
 		}
 	}
+	return (NULL);
 }
 
-static void		on_menu_two(t_doom *doom, int x, int y)
+static t_btn	*on_menu_two(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
 	int		i;
@@ -52,22 +42,13 @@ static void		on_menu_two(t_doom *doom, int x, int y)
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
-			if (i == 0)
-			{
-				sdl_set_status(doom, 1);
-			}
-			else if (i > 1)
-			{
-				if (doom_parseur(doom, tmp.data))
-				{
-					sdl_set_status(doom, 0);
-				}
-			}
+			return (&(doom->ui.btnmap[i]));
 		}
 	}
+	return (NULL);
 }
 
-static void		on_menu_tree(t_doom *doom, int x, int y)
+static t_btn	*on_menu_tree(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
 	t_slid	stmp;
@@ -79,27 +60,47 @@ static void		on_menu_tree(t_doom *doom, int x, int y)
 		tmp = doom->ui.btnopt[i];
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
-			if (i == 0)
-			{
-				sdl_set_status(doom, 1);
-			}
+		{
+			return (&(doom->ui.btnopt[i]));
+		}
 	}
-	i = -1;
-	while (doom->ui.slidopt[++i].txture)
-	{
-		stmp = doom->ui.slidopt[i];
-		if (stmp.grip.x <= x && x <= stmp.grip.x + stmp.grip.w
-				&& stmp.grip.y <= y && y <= stmp.grip.y + stmp.grip.h)
-			doom->ui.currslid = &(doom->ui.slidopt[i]);
-	}
+	return (NULL);
 }
 
-void			btn_click(t_doom *doom, int x, int y)
+t_btn		*btn_hover(t_doom *doom, int x, int y)
 {
 	if (doom->ui.m_status == 1)
-		on_menu_one(doom, x, y);
+		return (on_menu_one(doom, x, y));
 	else if (doom->ui.m_status == 2)
-		on_menu_two(doom, x, y);
+		return(on_menu_two(doom, x, y));
 	else if (doom->ui.m_status == 3)
-		on_menu_tree(doom, x, y);
+		return(on_menu_tree(doom, x, y));
+	return(NULL);
+}
+
+void		draw_hover(t_doom *doom, t_btn *new, t_btn *old)
+{
+	SDL_Rect rect;
+
+	if (old)
+	{
+		rect = old->loc.area;
+		rect.x -= 5;
+		rect.y -= 5;
+		rect.w += 10;
+		rect.h += 10;
+		SDL_RenderDrawRect(doom->sdl.rend, &rect);
+	}
+	if (new)
+	{
+		rect = new->loc.area;
+		rect.x -= 5;
+		rect.y -= 5;
+		rect.w += 10;
+		rect.h += 10;
+		SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
+		SDL_RenderDrawRect(doom->sdl.rend, &rect);
+		SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
+	}
+	SDL_RenderPresent(doom->sdl.rend);
 }

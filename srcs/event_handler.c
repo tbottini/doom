@@ -6,12 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/03 12:18:16 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/03 13:07:09 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
 
 void PrintEvent(const SDL_Event *event)
 {
@@ -75,91 +74,93 @@ void PrintEvent(const SDL_Event *event)
 		}
 }
 
-static void		window_event(t_doom *doom, SDL_Event event)
-{
-	void	*tmp;
-	int		pitch;
-
-	//PrintEvent(&event);
-	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
-	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
-		|| event.window.event == SDL_WINDOWEVENT_RESIZED)
-	{
-		if (doom->sdl.txture)
-			SDL_DestroyTexture(doom->sdl.txture);
-		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
-			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
-			doom->sdl.size.x, doom->sdl.size.y);
-		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
-			prog_quit(doom);
-		doom->sdl.screen = (uint32_t *)tmp;
-		draw_menu(doom);
-	}
-	if (doom->ui.m_status == 2)
-	{
-		load_map_btns(doom);
-		draw_menu(doom);
-	}
-}
-
-static void		dropfile_event(t_doom *doom, SDL_Event event)
-{
-	if (doom->map)
-		doom_clear_map(doom);
-	if (doom_parseur(doom, event.drop.file))
-	{
-		doom->ui.m_status = 0;
-	}
-	else
-	{
-		ft_printf("Error Reading File Drop\n");
-		doom->ui.m_status = 1;
-		draw_menu(doom);
-	}
-	SDL_free(event.drop.file);
-}
-
-void			lil_event_handler(t_doom *doom, SDL_Event event)
-{
-	if (event.type == SDL_MOUSEMOTION)
-		mouse_move(event.motion.x, event.motion.y, doom);
-	else if (event.type == SDL_MOUSEBUTTONDOWN)
-		mouse_press(event.button.button,
-			event.button.x, event.button.y, doom);
-	else if (event.type == SDL_MOUSEBUTTONUP)
-		mouse_release(event.button.button,
-			event.button.x, event.button.y, doom);
-	else if (event.type == SDL_MOUSEWHEEL)
-		mouse_press((event.wheel.y > 0 ? 4 : 5),
-			doom->sdl.m_pos.x, doom->sdl.m_pos.y, doom);
-}
-
+//<<<<<<< HEAD
+//static void		window_event(t_doom *doom, SDL_Event event)
+//{
+//	void	*tmp;
+//	int		pitch;
+//
+//	//PrintEvent(&event);
+//	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
+//	if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
+//		|| event.window.event == SDL_WINDOWEVENT_RESIZED)
+//	{
+//		if (doom->sdl.txture)
+//			SDL_DestroyTexture(doom->sdl.txture);
+//		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
+//			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
+//			doom->sdl.size.x, doom->sdl.size.y);
+//		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
+//			prog_quit(doom);
+//		doom->sdl.screen = (uint32_t *)tmp;
+//		draw_menu(doom);
+//	}
+//	if (doom->ui.m_status == 2)
+//	{
+//		load_map_btns(doom);
+//		draw_menu(doom);
+//	}
+//}
+//
+//static void		dropfile_event(t_doom *doom, SDL_Event event)
+//{
+//	if (doom->map)
+//		doom_clear_map(doom);
+//	if (doom_parseur(doom, event.drop.file))
+//	{
+//		doom->ui.m_status = 0;
+//	}
+//	else
+//	{
+//		ft_printf("Error Reading File Drop\n");
+//		doom->ui.m_status = 1;
+//		draw_menu(doom);
+//	}
+//	SDL_free(event.drop.file);
+//}
+//
+//void			lil_event_handler(t_doom *doom, SDL_Event event)
+//{
+//	if (event.type == SDL_MOUSEMOTION)
+//		mouse_move(event.motion.x, event.motion.y, doom);
+//	else if (event.type == SDL_MOUSEBUTTONDOWN)
+//		mouse_press(event.button.button,
+//			event.button.x, event.button.y, doom);
+//	else if (event.type == SDL_MOUSEBUTTONUP)
+//		mouse_release(event.button.button,
+//			event.button.x, event.button.y, doom);
+//	else if (event.type == SDL_MOUSEWHEEL)
+//		mouse_press((event.wheel.y > 0 ? 4 : 5),
+//			doom->sdl.m_pos.x, doom->sdl.m_pos.y, doom);
+//}
+//
+//=======
+//>>>>>>> ba2b44c8345292dc33dcac0bb42d29312e70f85c
 int				event_handler(t_doom *doom)
 {
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN
-									&& event.key.keysym.sym == SDLK_ESCAPE))
-			return (prog_quit(doom));
-		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
-			key_press(event.key.keysym.sym, doom);
-		else if (event.type == SDL_KEYUP && event.key.repeat == 0)
-			key_release(event.key.keysym.sym, doom);
-		else if (event.type == SDL_DROPFILE)
-			dropfile_event(doom, event);
-		else if (event.type == SDL_WINDOWEVENT)
-			window_event(doom, event);
-		else if (event.type == SDL_CONTROLLERDEVICEADDED)
+		if (event.window.windowID == 1)
+			event_handler1(doom, event);
+		else if (event.window.windowID == 2)
+			event_handler2(doom, event);
+		if (event.type == SDL_CONTROLLERDEVICEADDED)
 		{
-			if (!doom->controller && SDL_NumJoysticks() && SDL_IsGameController(0))
-				doom->controller = SDL_GameControllerOpen(0);
+			ft_printf("Controller Added\n");
+			doom->controller = SDL_GameControllerOpen(0);
 		}
-		else if (event.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
-			SDL_GameControllerClose(doom->controller);
+		else if (event.type == SDL_CONTROLLERDEVICEREMOVED)
+		{
+			ft_printf("Controller Removed\n");
+		}
+		else if (event.type == SDL_CONTROLLERAXISMOTION || event.type == SDL_CONTROLLERBUTTONDOWN || event.type == SDL_CONTROLLERBUTTONUP)
+			controller_handler(doom, event);
 		else
-			lil_event_handler(doom, event);
+		{
+			//ft_printf("Event %d\n", event.type);
+		}
 	}
 	return (1);
 }
