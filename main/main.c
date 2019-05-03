@@ -29,7 +29,6 @@ static int	init(void)
 		ft_printf("IMG: %s\n", IMG_GetError());
 		return (0);
 	}
-	printf("%d\n", SDL_NumHaptics());
 	return (1);
 }
 
