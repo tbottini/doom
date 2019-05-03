@@ -24,4 +24,18 @@ SRCS_WOLF		:=		button_action.c							\
 						sdl_quit.c								\
 						doom_init.c								\
 						doom_parseur.c							\
-						map_check.c
+						map_check.c								\
+						parsing/test.c
+
+SRCS_RENDER		:=		render.c
+
+SRCS_PARSING	:=		parsing.c
+
+SRCS_DEBUG		:=		debug_sector.c
+
+OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_WOLF))			\
+						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
+						$(patsubst %.c,objs/parsing/%.o,$(SRCS_PARSING))\
+						$(patsubst %.c,objs/debug/%.o,$(SRCS_DEBUG))
+
+SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))

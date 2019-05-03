@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+##include "doom_nukem.h"
 
 static int	init(void)
 {
@@ -29,6 +29,7 @@ static int	init(void)
 		ft_printf("IMG: %s\n", IMG_GetError());
 		return (0);
 	}
+	printf("%d\n", SDL_NumHaptics());
 	return (1);
 }
 

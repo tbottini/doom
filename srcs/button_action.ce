@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom_nukem.h"
+##include "doom_nukem.h"
 
 static void		on_menu_one(t_doom *doom, int x, int y)
 {
@@ -26,15 +26,16 @@ static void		on_menu_one(t_doom *doom, int x, int y)
 		{
 			if (i == 1)
 			{
-				sdl_set_status(doom, 2);
+				doom->ui.m_status = 2;
+				load_map_btns(doom);
+				draw_menu(doom);
 			}
 			else if (i == 2)
 			{
-				sdl_set_status(doom, 3);
+				doom->ui.m_status = 3;
+				draw_menu(doom);
 			}
 			else if (i == 3)
-				start_editor(doom);
-			else if (i == 4)
 				prog_quit(doom);
 		}
 	}
@@ -54,13 +55,15 @@ static void		on_menu_two(t_doom *doom, int x, int y)
 		{
 			if (i == 0)
 			{
-				sdl_set_status(doom, 1);
+				doom->ui.m_status = 1;
+				draw_menu(doom);
 			}
 			else if (i > 1)
 			{
 				if (doom_parseur(doom, tmp.data))
 				{
-					sdl_set_status(doom, 0);
+					doom->ui.m_status = 0;
+					draw_menu(doom);
 				}
 			}
 		}
@@ -81,7 +84,8 @@ static void		on_menu_tree(t_doom *doom, int x, int y)
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 			if (i == 0)
 			{
-				sdl_set_status(doom, 1);
+				doom->ui.m_status = 1;
+				draw_menu(doom);
 			}
 	}
 	i = -1;
