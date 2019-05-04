@@ -13,43 +13,42 @@ typedef	uint32_t* t_texture;
 //over : indique si le mur depasse la vision mais et relier a un
 //mur dans la vision
 
-typedef struct 			s_wl
+typedef struct 		s_wl
 {
-	t_fvct2				pos;
-	struct s_wl			*next;
-	t_texture			*t_wall;
-	float				angle;
-	char				frust;
-}						t_wl;
+	t_fvct2			pos;
+	struct s_wl		*next;
+	t_texture		*t_wall;
+	float			angle;
+	char			frust;
+}					t_wl;
 
-typedef	struct 			s_ssector
+typedef	struct 		s_ssector
 {
-	t_fvct2				*root_wall;
-	int					len;
-	t_texture			t_ceil;
-	t_texture			t_floor;
-	float				h_ceil;
-	float				h_floor;
-}						t_ssector;
+	t_fvct2			*root_wall;
+	int				len;
+	t_texture		t_ceil;
+	t_texture		t_floor;
+	float			h_ceil;
+	float			h_floor;
+}					t_ssector;
 
-typedef	struct 			s_sector
+typedef	struct 		s_sector
 {
-	t_wl				*root_wall;
-	int					len;
-	t_texture			t_floor;
-	t_texture			t_ceil;
-	float				h_ceil;
-	float				h_floor;
-}						t_sector;
+	t_wl			*root_wall;
+	int				len;
+	t_texture		t_floor;
+	t_texture		t_ceil;
+	float			h_ceil;
+	float			h_floor;
+}					t_sector;
 
-typedef struct 			s_player
+typedef struct 		s_player
 {
-	t_fvct2				pos;
-	t_fvct2				rot;
-	int					fov;
-	t_fvct2				vel;
-	float				d_scrn;
-}						t_player;
+	t_fvct2			pos;
+	t_fvct2			rot;
+	int				fov;
+	float			d_scrn;
+}					t_player;
 
 typedef	struct			s_doom
 {
@@ -57,21 +56,18 @@ typedef	struct			s_doom
 	t_editor			edit;
 	t_ui				ui;
 	unsigned long		timestamp;
-	SDL_GameController *controller;
-	t_player			player;
-	t_sector			*sector;
 }						t_doom;
 
-float					ft_atof(char *str);
-float					ft_catof(char *str, char c);
-t_sector				*parsing(char *av);
-void					fvct2_print(t_fvct2 vct);
-void					sector_describe(t_sector sector);
+float		ft_atof(char *str);
+float		ft_catof(char *str, char c);
+t_sector	*parsing(char *av);
+void		fvct2_print(t_fvct2 vct);
+void		sector_describe(t_sector sector);
 //struct game_manager, player, sprite
-void					portal_engine(t_player player, t_sector *sector);
-void					fvct2_msg(char *msg, t_fvct2 vct);
-void					describe_bunch(t_wl **bunch);
-t_fvct2					wall_clipping(t_wl wall, t_fvct2 origin, float ang);
+void		portal_engine(t_player player, t_sector *sector);
+void		fvct2_msg(char *msg, t_fvct2 vct);
+void		describe_bunch(t_wl **bunch);
+t_fvct2		wall_clipping(t_wl wall, t_fvct2 origin, float ang);
 
 t_doom					*doom_init();
 void					*sdldata_quit(t_sdl **data);
