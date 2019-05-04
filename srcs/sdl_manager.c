@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sdl_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 21:00:34 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/25 21:00:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/04 22:12:41 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		sdl_set_status(t_doom *doom, int status)
 	else if (status == 1)
 	{
 		doom->ui.m_status = 1;
-		doom_clear_map(doom);
+		//doom_clear_map(doom);
 		draw_menu(doom);
 	}
 	else if (status == 2)

@@ -6,11 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:31:01 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/03 13:21:17 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom_nukem.h"
+#include "doom.h"
 
 static void		window_event(t_doom *doom, SDL_Event e)
 {
@@ -45,9 +45,8 @@ int event_handler2(t_doom *doom, SDL_Event e)
 		return (close_editor(doom));
 	else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
 		return (prog_quit(doom));
-	//else if (e.type == SDL_WINDOWEVENT)
-
-		//window_event(doom, e);
+	else if (e.type == SDL_WINDOWEVENT)
+		window_event(doom, e);
 	else if (e.type == SDL_CONTROLLERDEVICEADDED)
 	{
 		if (!(doom->controller) && SDL_NumJoysticks() && SDL_IsGameController(0))

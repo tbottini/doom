@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-##include "doom_nukem.h"
+#include "doom_nukem.h"
 
 /*
 ** Button for all maps
@@ -63,6 +63,36 @@ t_btn	add_mapmenu_button(t_doom *doom)
 	tmp.fgcolor.g = 255;
 	tmp.fgcolor.b = 255;
 	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Maps ",
+		tmp.fgcolor, tmp.bgcolor);
+	SDL_GetClipRect(btntext, &rect);
+	tmp.loc.area.w = rect.w;
+	tmp.loc.area.h = rect.h;
+	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
+	SDL_FreeSurface(btntext);
+	return (tmp);
+}
+
+/*
+** Editor button
+*/
+
+t_btn	add_editor_button(t_doom *doom)
+{
+	SDL_Surface		*btntext;
+	t_btn			tmp;
+	SDL_Rect		rect;
+
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 20;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 3;
+	tmp.fgcolor.r = 150;
+	tmp.fgcolor.g = 150;
+	tmp.fgcolor.b = 150;
+	tmp.bgcolor.r = 255;
+	tmp.bgcolor.g = 255;
+	tmp.bgcolor.b = 255;
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Editor ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &rect);
 	tmp.loc.area.w = rect.w;

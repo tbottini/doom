@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-##include "doom_nukem.h"
+#include "doom_nukem.h"
 
 static void	draw_buttons(t_doom *doom, int arr)
 {
@@ -41,34 +41,21 @@ static void	draw_buttons(t_doom *doom, int arr)
 
 static void	update_loc_buttons(t_doom *doom, t_btn *arr)
 {
-	t_btn	*tmp;
+	t_sloc	tmp;
 	int		x;
 	int		y;
 
 	x = -1;
 	y = 0;
+	ft_bzero(&tmp, sizeof(t_sloc));
 	while (arr[++x].txture)
 	{
-		tmp = &(arr[x]);
-		arr[x].loc.area.x = doom->sdl.size.x * (tmp->loc.pos.x / 100.0);
-		arr[x].loc.area.y = doom->sdl.size.y * (tmp->loc.pos.y / 100.0);
-		if (tmp->loc.snapx == 1)
-			arr[x].loc.area.x -= tmp->loc.area.w / 2;
-		else if (tmp->loc.snapx == 2)
-			arr[x].loc.area.x -= tmp->loc.area.w;
-		else if (tmp->loc.snapx == 3)
-			arr[x].loc.area.x = x + tmp->loc.pos.x;
-		if (tmp->loc.snapy == 1)
-			arr[x].loc.area.y -= tmp->loc.area.h / 2;
-		else if (tmp->loc.snapy == 2)
-			arr[x].loc.area.y -= tmp->loc.area.h;
-		else if (tmp->loc.snapy == 3)
-			arr[x].loc.area.y = y + tmp->loc.pos.y;
-		y = tmp->loc.area.y + tmp->loc.area.h;
+		update_loc(doom, &(arr[x].loc), tmp);
+		tmp = arr[x].loc;
 	}
 }
 
-static void	update_loc(t_doom *doom, t_sloc *loc, t_sloc *before)
+void		update_loc(t_doom *doom, t_sloc *loc, t_sloc before)
 {
 	loc->area.x = doom->sdl.size.x * (loc->pos.x / 100.0);
 	loc->area.y = doom->sdl.size.y * (loc->pos.y / 100.0);
@@ -77,13 +64,13 @@ static void	update_loc(t_doom *doom, t_sloc *loc, t_sloc *before)
 	else if (loc->snapx == 2)
 		loc->area.x -= loc->area.w;
 	else if (loc->snapx == 3)
-		loc->area.x = before->pos.x + before->area.w + loc->pos.x;
+		loc->area.x = before.pos.x + before.area.w + loc->pos.x;
 	if (loc->snapy == 1)
 		loc->area.y -= loc->area.h / 2;
 	else if (loc->snapy == 2)
 		loc->area.y -= loc->area.h;
 	else if (loc->snapy == 3)
-		loc->area.y = before->area.y + before->area.h + loc->pos.y;
+		loc->area.y = before.area.y + before.area.h + loc->pos.y;
 }
 
 void		draw_slid(t_doom *doom, t_slid *tmp)
@@ -91,7 +78,7 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 	int size;
 
 	size = tmp->loc.area.h;
-	update_loc(doom, &tmp->loc, &(doom->ui.btnopt[1].loc));
+	update_loc(doom, &tmp->loc, doom->ui.btnopt[1].loc);
 	update_slider_txt(doom, tmp);
 	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
 		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
