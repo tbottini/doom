@@ -18,6 +18,8 @@ typedef struct 		s_wl
 	t_fvct2			pos;
 	struct s_wl		*next;
 	t_texture		*t_wall;
+	float			angle;
+	char			frust;
 }					t_wl;
 
 typedef	struct 		s_ssector
@@ -57,4 +59,5 @@ void		sector_describe(t_sector sector);
 void		portal_engine(t_player player, t_sector *sector);
 void		fvct2_msg(char *msg, t_fvct2 vct);
 void		describe_bunch(t_wl **bunch);
+t_fvct2		wall_clipping(t_wl wall, t_fvct2 origin, float ang);
 #endif
