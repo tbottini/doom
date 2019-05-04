@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/27 13:13:45 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/04 22:13:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ static void		on_menu_two(t_doom *doom, int x, int y)
 			}
 			else if (i > 1)
 			{
-				if (doom_parseur(doom, tmp.data))
-				{
-					sdl_set_status(doom, 0);
-				}
+				//if (doom_parseur(doom, tmp.data))
+				//{
+				//	sdl_set_status(doom, 0);
+				//}
 			}
 		}
 	}
