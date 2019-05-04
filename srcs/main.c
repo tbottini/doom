@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 15:36:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/04 22:35:38 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int			main(int ac, char **av)
 {
 	t_sector	*sector;
 	t_player	player;
-
+	t_doom		*doom;
 	player.fov = 90;
 	player.rot.y = atof(av[4]);
 	player.rot.x = 90;
@@ -53,11 +53,18 @@ int			main(int ac, char **av)
 		printf("test\n");
 		return (0);
 	}
+	if (!(doom = doom_init()))
+		return (-1);
 	if (!(sector = parsing(av[1])))
 	{
 		printf("bad parsing\n");
 		return (0);
 	}
 	portal_engine(player, sector);
+
+	SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
+	SDL_RenderPresent(doom->sdl.rend);
+
+	SDL_Delay(2000);
 	return (0);
 }

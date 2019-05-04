@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:28:16 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/26 22:28:53 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/04 22:12:52 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ static void		free_textures(t_doom *doom)
 		if (x > 1)
 			free(doom->ui.btnmap[x].data);
 	}
-	x = -1;
-	while (++x < 4)
-		if (doom->wall[x].surf)
-			SDL_FreeSurface(doom->wall[x].surf);
 }
 
 int				prog_quit(t_doom *doom)
@@ -53,7 +49,7 @@ int				prog_quit(t_doom *doom)
 		SDL_DestroyWindow(doom->sdl.win);
 	if (doom->sdl.format)
 		SDL_FreeFormat(doom->sdl.format);
-	doom_clear_map(doom);
+	//doom_clear_map(doom);
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
