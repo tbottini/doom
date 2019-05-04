@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 static t_btn	*on_menu_one(t_doom *doom, int x, int y)
 {

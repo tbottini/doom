@@ -17,14 +17,9 @@ SRCS_WOLF		:=		button_action.c							\
 						main.c			 						\
 						movement.c		 						\
 						num_tools.c								\
-						ray_horizontal.c						\
-						ray_vertical.c							\
-						raycasting.c							\
 						sdl_manager.c							\
 						sdl_quit.c								\
 						doom_init.c								\
-						doom_parseur.c							\
-						map_check.c								\
 						main.c
 
 SRCS_RENDER		:=		render.c								\
