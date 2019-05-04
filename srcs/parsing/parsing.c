@@ -9,6 +9,7 @@ t_wl		*wall_by_line(char *line, t_wl *past)
 
 	wall->pos.x = ft_catof(line, ' ');
 	wall->pos.y = ft_atof(ft_strchr(line, ' ') + 1);
+	wall->frust = -1;
 	if (past)
 		past->next = wall;
 	return (wall);
@@ -41,7 +42,7 @@ t_sector	*chunck_sector(int fd)
 		i++;
 		free(line);
 	}
-	sector->len = 2;
+	sector->len = i - 2;
 	if (!ft_strcmp(line, "END"))
 		tmp_wl->next = sector->root_wall;
 	ft_strdel(&line);

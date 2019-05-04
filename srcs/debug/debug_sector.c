@@ -48,8 +48,19 @@ void		sector_describe(t_sector sector)
 			wall = wall->next;
 		ft_putchar('\n');
 		fvct2_print(wall->pos);
-		ft_putstr(" to ");
-		fvct2_print(wall->next->pos);
 	}
 	ft_putchar('\n');
+}
+
+void		describe_bunch(t_wl **bunch)
+{
+	int		i;
+
+	i = 0;
+	while (bunch[i] != NULL)
+	{
+		ft_putchar(bunch[i]->frust +'0');
+		fvct2_msg(" pt", bunch[i]->pos);
+		i++;
+	}
 }
