@@ -26,7 +26,8 @@ SRCS_WOLF		:=		button_action.c							\
 						map_check.c								\
 						main.c
 
-SRCS_RENDER		:=		render.c
+SRCS_RENDER		:=		render.c								\
+						wall.c
 
 SRCS_PARSING	:=		parsing.c
 
