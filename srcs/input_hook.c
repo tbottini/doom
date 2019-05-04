@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/26 19:40:19 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/04 21:56:17 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ int			key_release(int key, t_doom *doom)
 	ft_noderm_int(&(doom->sdl.keys), key);
 	if (key == SDLK_w || key == SDLK_s)
 	{
-		doom->vel.x = 0;
+		//doom->vel.x = 0;
 	}
 	else if (key == SDLK_a || key == SDLK_d)
 	{
-		doom->vel.y = 0;
+		//doom->vel.y = 0;
 	}
 	else if (key == SDLK_q || key == SDLK_e)
 	{
-		doom->nrot = 0;
+		//doom->nrot = 0;
 	}
 	return (0);
 }
