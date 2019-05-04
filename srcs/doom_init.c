@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/26 18:26:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/04 22:06:51 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,6 @@ static t_wall	load_texture(t_doom *doom, const char *file)
 	return (wall);
 }
 
-void			lil_doom_init(t_doom *doom)
-{
-	doom->wall[0] = load_texture(doom, WALL);
-	doom->wall[1] = load_texture(doom, WALL);
-	doom->wall[2] = load_texture(doom, WALL);
-	doom->wall[3] = load_texture(doom, WALL);
-}
-
 t_doom			*doom_init(void)
 {
 	t_doom *doom;
@@ -92,12 +84,6 @@ t_doom			*doom_init(void)
 	doom->ui.btnmap[1] = add_mapmenu_button(doom);
 	doom->ui.btnopt[0] = doom->ui.btnmap[0];
 	doom->ui.btnopt[1] = doom->ui.btnarr[0];
-	lil_doom_init(doom);
 	doom->ui.slidopt[0] = add_fov_slider(doom);
-	doom->pos.x = 0;
-	doom->pos.y = 0;
-	doom->fov = 90;
-	doom->rot = 90;
-	doom->map = NULL;
 	return (doom);
 }

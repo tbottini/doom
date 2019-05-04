@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-##include "doom_nukem.h"
+#include "doom_nukem.h"
 
 static void		free_textures(t_doom *doom)
 {
@@ -43,6 +43,10 @@ int				prog_quit(t_doom *doom)
 		TTF_CloseFont(doom->ui.fonts.s32);
 	if (doom->ui.fonts.s128)
 		TTF_CloseFont(doom->ui.fonts.s128);
+	if (doom->edit.rend)
+		SDL_DestroyRenderer(doom->edit.rend);
+	if (doom->edit.win)
+		SDL_DestroyWindow(doom->edit.win);
 	if (doom->sdl.rend)
 		SDL_DestroyRenderer(doom->sdl.rend);
 	if (doom->sdl.win)

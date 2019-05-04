@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-##include "doom_nukem.h"
+#include "doom_nukem.h"
 
 static int		secure_doom(t_doom *doom)
 {
@@ -67,10 +67,10 @@ static t_wall	load_texture(t_doom *doom, const char *file)
 
 void			lil_doom_init(t_doom *doom)
 {
-	doom->wall[0] = load_texture(doom, WALLBLUE);
+	doom->wall[0] = load_texture(doom, WALL);
 	doom->wall[1] = load_texture(doom, WALL);
-	doom->wall[2] = load_texture(doom, GOLD);
-	doom->wall[3] = load_texture(doom, TEST);
+	doom->wall[2] = load_texture(doom, WALL);
+	doom->wall[3] = load_texture(doom, WALL);
 }
 
 t_doom			*doom_init(void)
@@ -86,7 +86,8 @@ t_doom			*doom_init(void)
 	doom->ui.btnarr[0] = add_doom_button(doom);
 	doom->ui.btnarr[1] = add_start_button(doom);
 	doom->ui.btnarr[2] = add_opt_button(doom);
-	doom->ui.btnarr[3] = add_quit_button(doom, " Quit ");
+	doom->ui.btnarr[3] = add_editor_button(doom);
+	doom->ui.btnarr[4] = add_quit_button(doom, " Quit ");
 	doom->ui.btnmap[0] = add_quit_button(doom, " Return ");
 	doom->ui.btnmap[1] = add_mapmenu_button(doom);
 	doom->ui.btnopt[0] = doom->ui.btnmap[0];

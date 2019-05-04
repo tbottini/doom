@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-##include "doom_nukem.h"
+#include "doom_nukem.h"
 
 void		init_ray_hor(t_doom *w, t_ray *r)
 {

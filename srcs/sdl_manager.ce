@@ -10,7 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-##include "doom_nukem.h"
+#include "doom_nukem.h"
+
+int		sdl_set_status(t_doom *doom, int status)
+{
+	if (status == 0)
+	{
+		doom->ui.m_status = 0;
+		draw_menu(doom);
+	}
+	else if (status == 1)
+	{
+		doom->ui.m_status = 1;
+		doom_clear_map(doom);
+		draw_menu(doom);
+	}
+	else if (status == 2)
+	{
+		doom->ui.m_status = 2;
+		load_map_btns(doom);
+		draw_menu(doom);
+	}
+	else if (status == 3)
+	{
+		doom->ui.m_status = 3;
+		draw_menu(doom);
+	}
+	return (status);
+}
 
 int		sdl_start(t_doom *doom, const char *title)
 {
@@ -22,7 +49,11 @@ int		sdl_start(t_doom *doom, const char *title)
 	doom->ui.m_status = 1;
 	if (!(doom->sdl.win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, 32)))
 		return (prog_quit(doom));
+	if (!(doom->edit.win = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN)))
+		return (prog_quit(doom));
 	if (!(doom->sdl.rend = SDL_CreateRenderer(doom->sdl.win, -1, 1)))
+		return (prog_quit(doom));
+	if (!(doom->edit.rend = SDL_CreateRenderer(doom->edit.win, -1, 1)))
 		return (prog_quit(doom));
 	if (!(doom->ui.fonts.s64 = TTF_OpenFont(TTFWOLF, 64)))
 		return (prog_quit(doom));
@@ -30,7 +61,7 @@ int		sdl_start(t_doom *doom, const char *title)
 		return (prog_quit(doom));
 	if (!(doom->ui.fonts.s32 = TTF_OpenFont(TTFIMPACT, 32)))
 		return (prog_quit(doom));
-	SDL_SetWindowMinimumSize(doom->sdl.win, 640, 480);
+	SDL_SetWindowMinimumSize(doom->sdl.win, MINWIDTH, MINHEIGHT);
 	doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
 	if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
