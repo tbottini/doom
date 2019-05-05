@@ -42,13 +42,29 @@ typedef	struct 			s_sector
 	float				h_floor;
 }						t_sector;
 
+typedef	struct			s_weapon
+{
+	int					clip_max;
+	int					ammo;
+	int					clip;
+	int					rate;
+	int					dmg;
+	void				*sprites;
+}						t_weapon;
+
 typedef struct 			s_player
 {
 	t_fvct2				pos;
 	t_fvct2				rot;
+	double				height;
+	double				weight;
+	double				speed;
+	int					health;
 	int					fov;
 	t_fvct2				vel;
 	float				d_scrn;
+	int					hand;
+	t_weapon			*weapons;
 }						t_player;
 
 typedef	struct			s_doom
