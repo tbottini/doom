@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_slids.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/16 00:18:29 by magrab           ###   ########.fr       */
+/*   Updated: 2019/05/04 21:55:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 void		update_slider_txt(t_doom *doom, t_slid *slid)
 {
@@ -48,7 +48,7 @@ t_slid		add_fov_slider(t_doom *doom)
 	tmp.grip.w = tmp.loc.area.h;
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 30;
-	tmp.val = &doom->fov;
+	tmp.val = &doom->player.fov;
 	tmp.max = 175;
 	update_slider_txt(doom, &tmp);
 	return (tmp);
