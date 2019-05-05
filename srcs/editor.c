@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 int		close_editor(t_doom *doom)
 {
