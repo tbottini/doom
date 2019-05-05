@@ -93,7 +93,9 @@ int				event_handler(t_doom *doom)
 		{
 			ft_printf("Controller Removed\n");
 		}
-		else if (event.type == SDL_CONTROLLERAXISMOTION || event.type == SDL_CONTROLLERBUTTONDOWN || event.type == SDL_CONTROLLERBUTTONUP)
+		else if (event.type == SDL_CONTROLLERAXISMOTION
+			|| event.type == SDL_CONTROLLERBUTTONDOWN
+				|| event.type == SDL_CONTROLLERBUTTONUP)
 			controller_handler(doom, event);
 		else
 		{

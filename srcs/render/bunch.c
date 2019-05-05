@@ -5,18 +5,18 @@
 int			on_frustum(t_player player, t_wl *wall)
 {
 	t_fvct2	dist;
-	float	diff;
+	float	angle;
 
 	dist.x = wall->pos.x - player.pos.x;
 	dist.y = wall->pos.y - player.pos.y;
-	diff = atan2(dist.y, dist.x) * TOANGLE;
-	if (diff < 0)
-		diff = 360 + diff;
-	diff = (diff - player.rot.y);
-	diff = double_modulo(diff);
-	printf("diff %f\n", diff);
-	wall->angle = diff;
-	wall->frust = (diff >= -player.fov / 2.0 && diff <= player.fov / 2.0) ? 1 : 0;
+	angle = atan2(dist.y, dist.x) * TOANGLE;
+	if (angle < 0)
+		angle = 360 + angle;
+	angle = (angle - player.rot.y);
+	angle = double_modulo(angle);
+	printf("diff %f\n", angle);
+	wall->angle = angle;
+	wall->frust = (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0) ? 1 : 0;
 	return (wall->frust);
 }
 
@@ -38,17 +38,15 @@ void		wall_frustum(t_wl *root, t_player player)
 **i_wall correspond a l'index des mur parcourus
 **i_bunch est l'index dans le bunch
 */
-int			buncherisation(t_player player, t_sector sector, t_wl **bunch)
+int			buncherisation(t_sector sector, t_wl **bunch)
 {
 	int 	i_wall;
 	int		i_bunch;
 	t_wl	*wall;
-	t_vct2	ret;
 
 	i_bunch = 0;
 	i_wall = 0;
 	wall = sector.root_wall;
-	printf("sector len %d\n", sector.len);
 	while (i_wall < sector.len)
 	{
 		if (wall->next->frust)
@@ -74,7 +72,6 @@ int			buncherisation(t_player player, t_sector sector, t_wl **bunch)
 void		bunch_comsuption(t_player player, t_wl **bunch)
 {
 	int		px;
-	float	dist;
 	int		i;
 
 	i = 0;
@@ -98,7 +95,7 @@ void		portal_engine(t_player player, t_sector *sector)
 	t_wl	*bunch[50];
 
 	wall_frustum(sector->root_wall, player);
-	buncherisation(player, *sector, bunch);
+	buncherisation(*sector, bunch);
 	bunch_comsuption(player, bunch);
 	//wall_clipping(*bunch[0], player.pos, 180);
 	//player_to_point(player, sector->root_wall->next->next->pos);
