@@ -14,8 +14,15 @@ int			on_frustum(t_player player, t_wl *wall)
 		angle = 360 + angle;
 	angle = (angle - player.rot.y);
 	angle = double_modulo(angle);
-	printf("diff %f\n", angle);
+	if (angle < -180)
+		angle += 360;
+	else if (angle > 180)
+		angle -= 360;
+	printf("x %f y %f angle %f\n", wall->pos.x, wall->pos.y, angle);
+
 	wall->angle = angle;
+	//if (angle < -180)
+	//	angle = 360 + angle;
 	wall->frust = (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0) ? 1 : 0;
 	return (wall->frust);
 }
@@ -33,6 +40,21 @@ void		wall_frustum(t_wl *root, t_player player)
 	on_frustum(player, wall);
 }
 
+t_wl		*root_draw(t_sector *sector, t_player player)
+{
+	t_wl	*wall;
+	int		i;
+
+	i = 0;
+	wall = sector->root_wall;
+	while ((wall.frust || !wall->next.frust) && i < sector->len)
+	{
+		wall = wall->next;
+		i++;
+	}
+	return (wall);
+}
+
 /*
 **buncherisation mets les murs affichable d'un secteur dans une liste
 **i_wall correspond a l'index des mur parcourus
@@ -47,6 +69,7 @@ int			buncherisation(t_sector sector, t_wl **bunch)
 	i_bunch = 0;
 	i_wall = 0;
 	wall = sector.root_wall;
+
 	while (i_wall < sector.len)
 	{
 		if (wall->next->frust)
@@ -78,6 +101,8 @@ void		bunch_comsuption(t_player player, t_wl **bunch)
 	describe_bunch(bunch);
 	while (bunch[i] != NULL)
 	{
+		printf("bunch angle %f %d\n", bunch[i]->angle, bunch[i]->frust);
+
 		if (i == 0 && bunch[i]->frust == 0)
 			px = 1920;
 		else if (!bunch[i + 1] && bunch[i]->frust == 0)
@@ -90,13 +115,12 @@ void		bunch_comsuption(t_player player, t_wl **bunch)
 	}
 }
 
-void		portal_engine(t_player player, t_sector *sector)
+void		portal_engine(t_doom *doom)
 {
 	t_wl	*bunch[50];
 
-	wall_frustum(sector->root_wall, player);
-	buncherisation(*sector, bunch);
-	bunch_comsuption(player, bunch);
-	//wall_clipping(*bunch[0], player.pos, 180);
-	//player_to_point(player, sector->root_wall->next->next->pos);
+	wall_frustum(doom->sector->root_wall, doom->player);
+	buncherisation(*doom->sector, bunch);
+	bunch_comsuption(doom->player, bunch);
+	debug_up(doom);
 }

@@ -79,4 +79,5 @@ void		debug_player(t_player player)
 	fvct2_msg("pos", player.pos);
 	fvct2_msg("rot", player.rot);
 	ft_putnbr_msg("fov", player.fov);
+	ft_putendl("------------------");
 }
