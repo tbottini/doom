@@ -6,11 +6,31 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:13:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 13:29:12 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+int		sdl_set_status(t_doom *doom, int status)
+{
+	if (status == 0)
+		draw_menu(doom);
+	else if (status == 1)
+	{
+		//doom_clear_map(doom);
+		draw_menu(doom);
+	}
+	else if (status == 2)
+	{
+		load_map_btns(doom);
+		draw_menu(doom);
+	}
+	else if (status == 3)
+		draw_menu(doom);
+	doom->ui.m_status = status;
+	return (status);
+}
 
 static void		on_menu_one(t_doom *doom, int x, int y)
 {

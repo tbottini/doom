@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 09:22:34 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 11:52:12 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void window_event(t_doom *doom, SDL_Event e)
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			prog_quit(doom);
 		doom->sdl.screen = (uint32_t *)tmp;
+		printf("ok\n");
 		//draw_menu(doom);
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
