@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 16:54:29 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 17:13:39 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ int			main(int ac, char **av)
 		return (0);
 	}
 	if (!init())
-	{
-		printf("test\n");
 		return (0);
-	}
 	if (!(doom = doom_init()))
 		return (-1);
 	if (!(parsing(doom, av[1])))
@@ -55,6 +52,7 @@ int			main(int ac, char **av)
 		return (0);
 	}
 	debug_player(doom->player);
+	portal_engine(doom);
 	while (1)
 	{
 		SDL_WaitEvent(&event);
