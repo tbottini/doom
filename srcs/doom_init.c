@@ -6,37 +6,12 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 10:00:45 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 13:24:25 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-static int		secure_doom(t_doom *doom)
-{
-	int fd;
-
-	if ((fd = open(TTFWOLF, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(TTFIMPACT, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(WALLBLUE, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(WALL, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(GOLD, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(TEST, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	ft_bzero(doom, sizeof(t_doom));
-	return (0);
-}
 
 static t_wall	load_texture(t_doom *doom, const char *file)
 {
@@ -63,30 +38,4 @@ static t_wall	load_texture(t_doom *doom, const char *file)
 	wall.w = surf->w;
 	wall.h = surf->h;
 	return (wall);
-}
-
-t_doom			*doom_init(void)
-{
-	t_doom *doom;
-
-	if (!(doom = (t_doom *)malloc(sizeof(t_doom))))
-		return (NULL);
-	if (secure_doom(doom))
-		return (NULL);
-	if (sdl_start(doom, "Doom-Nukem"))
-		return (NULL);
-	doom->ui.btnarr[0] = add_doom_button(doom);
-	doom->ui.btnarr[1] = add_start_button(doom);
-	doom->ui.btnarr[2] = add_opt_button(doom);
-	doom->ui.btnarr[3] = add_editor_button(doom);
-	doom->ui.btnarr[4] = add_quit_button(doom, " Quit ");
-	doom->ui.btnmap[0] = add_quit_button(doom, " Return ");
-	doom->ui.btnmap[1] = add_mapmenu_button(doom);
-	doom->ui.btnopt[0] = doom->ui.btnmap[0];
-	doom->ui.btnopt[1] = doom->ui.btnarr[0];
-	doom->ui.slidopt[0] = add_fov_slider(doom);
-	//compilation warning
-	if (0)
-		load_texture(doom, "rien");
-	return (doom);
 }
