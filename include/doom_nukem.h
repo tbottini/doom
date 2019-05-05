@@ -127,6 +127,8 @@ int						close_editor(t_doom *doom);
 
 int						secure_doom(t_doom *doom);
 
+void					debug_player(t_player player);
+
 
 /*
 **	gestion
