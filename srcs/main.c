@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 15:51:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 16:31:10 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ int			main(int ac, char **av)
 	player.pos.y = 1.0;
 	player.d_scrn = (1920 / 2.0) / tan(player.fov * PI180 / 2.0);
 	if (!init())
-	{
-		printf("test\n");
 		return (0);
-	}
 	if (!(doom = doom_init()))
 		return (-1);
 	doom->player = player;

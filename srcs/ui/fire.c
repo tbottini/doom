@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 12:13:10 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/05 16:00:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/05 21:08:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void		fire_init(t_wolf *tab)
 void		spread(t_wolf *tab, int x)
 {
 	int			deg;
-	int			r;
 	int			p;
 	int			pix;
 
@@ -94,9 +93,8 @@ void		spread(t_wolf *tab, int x)
 	}
 	else if (pix)
 	{
-		r = lrint(random()) & 3;
 		p = lrint(random()) % (FIRE_HEIGHT);
-		deg = x - r + 1;
+		deg = x - (p & 3) + 1;
 		tab->fire.pixel[deg - WIDTH] = pix - (p ? 0 : 1);
 	}
 }
@@ -111,7 +109,7 @@ void		fire(t_wolf *tab)
 	while (i < WIDTH)
 	{
 		j = HEIGHT - 1;
-		while (j > 0)
+		while (j > 1)
 		{
 			ind = j * WIDTH + i;
 			spread(tab, ind);
