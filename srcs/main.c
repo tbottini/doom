@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:35:38 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 09:26:02 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int			main(int ac, char **av)
 	t_player	player;
 	t_doom		*doom;
 	player.fov = 90;
-	player.rot.y = atof(av[4]);
-	player.rot.x = 90;
-	player.pos.x = atof(av[2]);
-	player.pos.y = atof(av[3]);
+	player.rot.y = atof(av[2]);
+	player.rot.x = 1.0;
+	player.pos.x = 1.0;
+	player.pos.y = 1.0;
 	player.d_scrn = (1920 / 2.0) / tan(player.fov * PI180 / 2.0);
 	if (ac < 2)
 	{
@@ -59,6 +59,12 @@ int			main(int ac, char **av)
 	{
 		printf("bad parsing\n");
 		return (0);
+	}
+	while (1)
+	{
+		if (!(event_handler(doom)))
+			return (0);
+		loop_hook(doom);
 	}
 	portal_engine(player, sector);
 
