@@ -33,6 +33,7 @@
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
 # define INT_MAX 2147483647
+# define FIRE_HEIGHT HEIGHT / 48
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 # define WALLBLUE "ressources/textures/wall_blue.xpm"
@@ -160,6 +161,10 @@ typedef struct			s_wall
 	int					h;
 }						t_wall;
 
-
+typedef struct			s_fire
+{
+	int					pixel[WIDTH * HEIGHT];
+	int					pal[38];
+}						t_fire;
 
 #endif
