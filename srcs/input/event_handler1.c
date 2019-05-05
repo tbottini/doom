@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:22:58 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 09:22:34 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void window_event(t_doom *doom, SDL_Event e)
 
 static void dropfile_event(t_doom *doom, SDL_Event e)
 {
+	(void)doom;
 	//if (doom->map)
 	//	doom_clear_map(doom);
 	//if (doom_parseur(doom, e.drop.file))

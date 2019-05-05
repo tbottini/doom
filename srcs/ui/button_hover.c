@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   button_action.c                                    :+:      :+:    :+:   */
+/*   button_hover.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/27 13:13:45 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 09:21:21 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 static t_btn	*on_menu_one(t_doom *doom, int x, int y)
 {
@@ -54,6 +54,7 @@ static t_btn	*on_menu_tree(t_doom *doom, int x, int y)
 	t_slid	stmp;
 	int		i;
 
+	(void)stmp;
 	i = -1;
 	while (doom->ui.btnopt[++i].txture)
 	{
