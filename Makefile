@@ -6,14 +6,14 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/05 09:56:38 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/05 12:44:07 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 include libft/include.mk
 include doom.mk
 
-NAME			:=		doom-nukem
+NAME			:=		Doom-Nukem
 
 CC				:=		gcc
 
@@ -35,6 +35,7 @@ FOLDER			:=		objs									\
 						objs/tools								\
 						objs/ui									\
 						objs/input								\
+						objs/gestion
 
 COMPILE_LIB		:=		make -C libft/
 
