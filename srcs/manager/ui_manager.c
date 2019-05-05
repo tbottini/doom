@@ -34,6 +34,7 @@ int		ui_by_sdl(t_ui *ui, t_doom *doom)
 	ui->btnopt[0] = ui->btnmap[0];
 	ui->btnopt[1] = ui->btnarr[0];
 	ui->slidopt[0] = add_fov_slider(doom);
+	return (1);
 }
 
 
