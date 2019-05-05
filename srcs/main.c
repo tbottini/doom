@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 15:51:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 16:54:29 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int	init(void)
 
 int			main(int ac, char **av)
 {
-	t_player	player;
 	t_doom		*doom;
 	SDL_Event	event;
 
@@ -43,12 +42,6 @@ int			main(int ac, char **av)
 		printf("pas assez d'arg\n");
 		return (0);
 	}
-	player.fov = 90;
-	player.rot.y = atof(av[2]);
-	player.rot.x = 1.0;
-	player.pos.x = 1.0;
-	player.pos.y = 1.0;
-	player.d_scrn = (1920 / 2.0) / tan(player.fov * PI180 / 2.0);
 	if (!init())
 	{
 		printf("test\n");
@@ -56,12 +49,12 @@ int			main(int ac, char **av)
 	}
 	if (!(doom = doom_init()))
 		return (-1);
-	doom->player = player;
 	if (!(parsing(doom, av[1])))
 	{
 		printf("bad parsing\n");
 		return (0);
 	}
+	debug_player(doom->player);
 	while (1)
 	{
 		SDL_WaitEvent(&event);
