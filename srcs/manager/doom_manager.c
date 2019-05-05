@@ -45,7 +45,6 @@ t_doom	*doom_init()
 
 	if (!(doom = (t_doom *)malloc(sizeof(t_doom))))
 		return (NULL);
-
 	ft_bzero(doom, sizeof(t_doom));
 	if (secure_doom(doom))
 		return (NULL);

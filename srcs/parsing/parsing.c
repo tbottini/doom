@@ -53,8 +53,6 @@ int			parsing(t_doom *doom, char *filename)
 {
 	int			fd;
 	char		*line;
-	t_sector	*sector;
-
 
 	fd = open(filename, O_RDONLY | O_NOFOLLOW);
 	if (fd == -1)
