@@ -15,6 +15,33 @@ t_wl		*wall_by_line(char *line, t_wl *past)
 	return (wall);
 }
 
+t_fvct2		*double_atof(char *line, t_fvct2 *vct)
+{
+	vct->x = ft_catof(line, ' ');
+	vct->y = ft_atof(ft_strchr(line, ' ') + 1);
+	return (vct);
+}
+
+t_player	chunck_player(int fd)
+{
+	t_player	player;
+	int			i;
+	char		*line;
+
+	i = 0;
+	while (get_next_line(fd, &line) > 0 && ft_strcmp(line, "END"))
+	{
+		if (i == 0)
+			double_atof(line, &player.pos);
+		else if (i == 1)
+			double_atof(line, &player.rot);
+		else if (i == 2)
+			player.fov = ft_atoi(line);
+		i++;
+	}
+	return (player);
+}
+
 t_sector	*chunck_sector(int fd)
 {
 	t_sector	*sector;
@@ -61,6 +88,8 @@ int			parsing(t_doom *doom, char *filename)
 	{
 		if (!ft_strcmp(line, "SCTR"))
 			doom->sector = chunck_sector(fd);
+		else if (!ft_strcmp(line, "PERS"))
+			doom->player = chunck_player(fd);
 	}
 	return (1);
 }
