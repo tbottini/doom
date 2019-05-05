@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/05 12:44:07 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/05 16:00:16 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ FOLDER			:=		objs									\
 						objs/tools								\
 						objs/ui									\
 						objs/input								\
-						objs/gestion
+						objs/manager
 
 COMPILE_LIB		:=		make -C libft/
 
