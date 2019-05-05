@@ -49,19 +49,20 @@ t_sector	*chunck_sector(int fd)
 	return (sector);
 }
 
-t_sector	*parsing(char *av)
+int			parsing(t_doom *doom, char *filename)
 {
 	int			fd;
 	char		*line;
 	t_sector	*sector;
 
-	fd = open(av, O_RDONLY | O_NOFOLLOW);
+
+	fd = open(filename, O_RDONLY | O_NOFOLLOW);
 	if (fd == -1)
-		return (NULL);
+		return (0);
 	while (get_next_line(fd, &line) > 0)
 	{
 		if (!ft_strcmp(line, "SCTR"))
-			sector = chunck_sector(fd);
+			doom->sector = chunck_sector(fd);
 	}
-	return (sector);
+	return (1);
 }

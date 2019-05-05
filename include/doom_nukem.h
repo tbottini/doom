@@ -64,10 +64,9 @@ typedef	struct			s_doom
 
 float					ft_atof(char *str);
 float					ft_catof(char *str, char c);
-t_sector				*parsing(char *av);
+int						parsing(t_doom *doom, char *filename);
 void					fvct2_print(t_fvct2 vct);
 void					sector_describe(t_sector sector);
-//struct game_manager, player, sprite
 void					portal_engine(t_player player, t_sector *sector);
 void					fvct2_msg(char *msg, t_fvct2 vct);
 void					describe_bunch(t_wl **bunch);
@@ -126,7 +125,28 @@ void					lst_del_node(t_list **node);
 int						start_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 
-void PrintEvent(const SDL_Event *event);
+int						secure_doom(t_doom *doom);
+
+
+/*
+**	gestion
+*/
+void					doom_exit(t_doom *doom);
+t_doom					*doom_init();
+void					editor_free(t_editor *editor);
+int						editor_init(t_editor *editor);
+void					sdl_free(t_sdl *sdl);
+int						sdl_init(t_sdl *sdl, const char *title);
+void					ui_free(t_ui *ui);
+int						ui_init(t_ui *ui);
+int						ui_by_sdl(t_ui *ui, t_doom *doom);
+
+/*
+**	simple input
+*/
+int						keyboard_input(t_doom *doom, SDL_Event event);
+
+void					PrintEvent(const SDL_Event *event);
 
 
 
