@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 09:24:33 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 15:45:29 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int event_handler2(t_doom *doom, SDL_Event e)
 	if (e.type == SDL_QUIT)
 		return (close_editor(doom));
 	else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
-		return (prog_quit(doom));
+		doom_exit(doom);
 	else if (e.type == SDL_WINDOWEVENT)
 		window_event(doom, e);
 	else if (e.type == SDL_CONTROLLERDEVICEADDED)

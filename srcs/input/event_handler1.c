@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 11:52:12 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 15:45:10 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ static void window_event(t_doom *doom, SDL_Event e)
 											 SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
 											 doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
-			prog_quit(doom);
+			doom_exit(doom);
 		doom->sdl.screen = (uint32_t *)tmp;
 		printf("ok\n");
 		//draw_menu(doom);
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
-		prog_quit(doom);
+		doom_exit(doom);
 	if (doom->ui.m_status == 2)
 	{
 		load_map_btns(doom);
@@ -61,7 +61,7 @@ static void dropfile_event(t_doom *doom, SDL_Event e)
 int event_handler1(t_doom *doom, SDL_Event e)
 {
 	if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
-		return (prog_quit(doom));
+		doom_exit(doom);
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 		key_press(e.key.keysym.sym, doom);
 	else if (e.type == SDL_KEYUP && e.key.repeat == 0)

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 13:29:12 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 15:43:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void		on_menu_one(t_doom *doom, int x, int y)
 			else if (i == 3)
 				start_editor(doom);
 			else if (i == 4)
-				prog_quit(doom);
+				doom_exit(doom);
 		}
 	}
 }
