@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/03 12:15:50 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/05 09:56:38 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,10 @@ INCLUDE			=		-I ./include							\
 FOLDER			:=		objs									\
 						objs/parsing							\
 						objs/render								\
-						objs/debug
+						objs/debug								\
+						objs/tools								\
+						objs/ui									\
+						objs/input								\
 
 COMPILE_LIB		:=		make -C libft/
 
@@ -39,13 +42,13 @@ OBJDIR			:=		objs
 
 SRCDIR			:=		srcs
 
-NB_SRCS			:=		$(shell ls srcs/ | wc -l)
+NB_SRCS			:=		$(shell find srcs/ -type f | wc -l)
 
-NB_OBJS			=		$(shell ls objs/ | wc -l | sed -e 's/[^0-9]//g')
+NB_OBJS			=		$(shell find objs/ -type f | wc -l | sed -e 's/[^0-9]//g')
 
-MAX_FILL		:=		$$(( $(NB_SRCS)))
+MAX_FILL		:=		$$(( $(NB_SRCS) ))
 
-FILL_BAR		=		$$(( $(NB_OBJS) * $(MAX_FILL) / $(NB_SRCS)))
+FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
