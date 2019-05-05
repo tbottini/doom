@@ -1,7 +1,5 @@
 SRCS_DOOM		:=		editor.c										\
 						movement.c		 								\
-						sdl_manager.c									\
-						sdl_quit.c										\
 						doom_init.c										\
 						main.c
 
@@ -32,10 +30,10 @@ SRCS_DEBUG		:=		debug_sector.c
 SRCS_TOOLS		:=		num_tools.c										\
 						little_tools.c
 
-SRCS_GESTION	:=		doom_gestion.c									\
-						sdl_gestion.c									\
-						ui_gestion.c									\
-						editor_gestion.c
+SRCS_GESTION	:=		doom_manager.c									\
+						sdl_manager.c									\
+						ui_manager.c									\
+						editor_manager.c
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
@@ -44,6 +42,6 @@ OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/tools/%.o,$(SRCS_TOOLS))	\
 						$(patsubst %.c,objs/ui/%.o,$(SRCS_UI))			\
 						$(patsubst %.c,objs/input/%.o,$(SRCS_INPUT))	\
-						$(patsubst %.c,objs/gestion/%.o,$(SRCS_GESTION))
+						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))
 
 SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))
