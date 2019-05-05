@@ -6,18 +6,18 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/27 13:13:13 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 11:52:12 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 static void window_event(t_doom *doom, SDL_Event e)
 {
 	void *tmp;
 	int pitch;
 
-	PrintEvent(&e);
+	//PrintEvent(&e);
 	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
 	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || e.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
@@ -29,7 +29,8 @@ static void window_event(t_doom *doom, SDL_Event e)
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			prog_quit(doom);
 		doom->sdl.screen = (uint32_t *)tmp;
-		draw_menu(doom);
+		printf("ok\n");
+		//draw_menu(doom);
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 		prog_quit(doom);
@@ -42,17 +43,18 @@ static void window_event(t_doom *doom, SDL_Event e)
 
 static void dropfile_event(t_doom *doom, SDL_Event e)
 {
-	if (doom->map)
-		doom_clear_map(doom);
-	if (doom_parseur(doom, e.drop.file))
-	{
-		sdl_set_status(doom, 0);
-	}
-	else
-	{
-		ft_printf("Error Reading File Drop\n");
-		sdl_set_status(doom, 1);
-	}
+	(void)doom;
+	//if (doom->map)
+	//	doom_clear_map(doom);
+	//if (doom_parseur(doom, e.drop.file))
+	//{
+	//	sdl_set_status(doom, 0);
+	//}
+	//else
+	//{
+	//	ft_printf("Error Reading File Drop\n");
+	//	sdl_set_status(doom, 1);
+	//}
 	SDL_free(e.drop.file);
 }
 

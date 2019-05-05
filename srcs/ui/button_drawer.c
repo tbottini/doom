@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 static void	draw_buttons(t_doom *doom, int arr)
 {
