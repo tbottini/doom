@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:01:30 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:06:51 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/05 10:00:45 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,8 @@ t_doom			*doom_init(void)
 	doom->ui.btnopt[0] = doom->ui.btnmap[0];
 	doom->ui.btnopt[1] = doom->ui.btnarr[0];
 	doom->ui.slidopt[0] = add_fov_slider(doom);
+	//compilation warning
+	if (0)
+		load_texture(doom, "rien");
 	return (doom);
 }
