@@ -67,7 +67,7 @@ float					ft_catof(char *str, char c);
 int						parsing(t_doom *doom, char *filename);
 void					fvct2_print(t_fvct2 vct);
 void					sector_describe(t_sector sector);
-void					portal_engine(t_player player, t_sector *sector);
+void					portal_engine(t_doom *doom);
 void					fvct2_msg(char *msg, t_fvct2 vct);
 void					describe_bunch(t_wl **bunch);
 t_fvct2					wall_clipping(t_wl wall, t_fvct2 origin, float ang);
@@ -149,7 +149,9 @@ int						ui_by_sdl(t_ui *ui, t_doom *doom);
 int						keyboard_input(t_doom *doom, SDL_Event event);
 
 void					PrintEvent(const SDL_Event *event);
+void					debug_up(t_doom *doom);
+void	sdl_present(t_sdl *sdl);
 
-
-
+void		point_gras(t_vct2 cursor, uint32_t color, t_doom *doom);
+void			trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col);
 #endif
