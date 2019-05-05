@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   doom.h                                             :+:      :+:    :+:   */
+/*   doom_nukem.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/27 12:58:22 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/04 21:24:58 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,77 +160,6 @@ typedef struct			s_wall
 	int					h;
 }						t_wall;
 
-typedef	struct			s_doom
-{
-	t_sdl				sdl;
-	t_editor			edit;
-	t_ui				ui;
-	char				**map;
-	t_vct2				map_size;
-	t_fvct2				pos;
-	double				rot;
-	double				nrot;
-	int					fov;
-	t_wall				wall[4];
-	unsigned long		timestamp;
-	float				d_scrn;
-	SDL_GameController	*controller;
-	t_vct2				vel; // velocity
-}						t_doom;
 
-t_doom					*doom_init();
-void					*sdldata_quit(t_sdl **data);
-int						sdl_start(t_doom *doom, const char *title);
-void					sdl_showscreen(t_sdl *sdl);
-int						doom_parseur(t_doom *doom, char *filename);
-int						prog_quit(t_doom *doom);
-void					btn_click(t_doom *doom, int x, int y);
-t_btn					add_start_button(t_doom *doom);
-t_btn					add_mapmenu_button(t_doom *doom);
-t_btn					add_map_button(t_doom *doom, const char *str);
-t_btn					add_doom_button(t_doom *doom);
-t_btn					add_opt_button(t_doom *doom);
-t_btn					add_editor_button(t_doom *doom);
-t_btn					add_quit_button(t_doom *doom, const char *str);
-int						sdl_set_status(t_doom *doom, int status);
-void					draw_menu(t_doom *doom);
-int						load_map_btns(t_doom *doom);
-void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
-void					update_slider_txt(t_doom *doom, t_slid *slid);
-t_slid					add_fov_slider(t_doom *doom);
-void					draw_slid(t_doom *doom, t_slid *tmp);
-int						event_handler(t_doom *doom);
-int						event_handler1(t_doom *doom, SDL_Event event);
-int						event_handler2(t_doom *doom, SDL_Event event);
-int						loop_hook(t_doom *doom);
-t_btn					*btn_hover(t_doom *doom, int x, int y);
-void					draw_hover(t_doom *doom, t_btn *new, t_btn *old);
-void					move(t_doom *doom, int x, int y);
-int						key_press(int key, t_doom *doom);
-int						key_release(int key, t_doom *doom);
-int						mouse_press(int button, int x, int y, t_doom *doom);
-int						mouse_release(int button, int x, int y, t_doom *doom);
-int						mouse_move(int x, int y, t_doom *doom);
-void					raycasting(t_doom *doom);
-float					float_modulo(float num);
-double					angle_adaptater(double angle);
-void					print_image(SDL_Surface *png);
-float					ver_detection(t_doom *doom, t_ray *ray);
-float					hor_detection(t_doom *doom, t_ray *ray);
-double					iswall(t_doom *doom, t_fvct2 inter);
-void					draw_column(t_doom *doom, t_ray ray, int num);
-unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
-void					doom_clear_map(t_doom *doom);
-int						map_check(t_doom *doom, char *filename);
-int						row_verif(t_doom *doom, char *row);
-void					*listdel(t_list **list);
-t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
-char					**tab_new(int y);
-void					controller_handler(t_doom *doom, SDL_Event event);
-void					lst_del_node(t_list **node);
-int						start_editor(t_doom *doom);
-int						close_editor(t_doom *doom);
-
-void PrintEvent(const SDL_Event *event);
 
 #endif
