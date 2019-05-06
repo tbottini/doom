@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 17:13:39 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/06 16:23:25 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,8 @@ int			main(int ac, char **av)
 	t_doom		*doom;
 	SDL_Event	event;
 
-	if (ac < 3)
-	{
-		printf("pas assez d'arg\n");
-		return (0);
-	}
+	if (ac < 2)
+		return (-1);
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))
