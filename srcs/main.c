@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 16:31:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/06 18:24:55 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,22 @@ static int	init(void)
 
 int			main(int ac, char **av)
 {
-	t_player	player;
 	t_doom		*doom;
 	SDL_Event	event;
 
-	if (ac < 3)
-	{
-		printf("pas assez d'arg\n");
-		return (0);
-	}
-	player.fov = 90;
-	player.rot.y = atof(av[2]);
-	player.rot.x = 1.0;
-	player.pos.x = 1.0;
-	player.pos.y = 1.0;
-	player.d_scrn = (1920 / 2.0) / tan(player.fov * PI180 / 2.0);
+	if (ac < 2)
+		return (-1);
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))
 		return (-1);
-	doom->player = player;
 	if (!(parsing(doom, av[1])))
 	{
 		printf("bad parsing\n");
 		return (0);
 	}
+	debug_player(doom->player);
+	portal_engine(doom);
 	while (1)
 	{
 		SDL_WaitEvent(&event);
