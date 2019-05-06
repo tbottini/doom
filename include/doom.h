@@ -34,6 +34,7 @@
 # define PINK_FLOOR 0xdcc8c8ff
 # define INT_MAX 2147483647
 # define FIRE_HEIGHT HEIGHT / 48
+# define RANGE 1 //range max for kick and actions with objects
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 # define WALLBLUE "ressources/textures/wall_blue.xpm"
