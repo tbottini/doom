@@ -1,5 +1,7 @@
 #include "doom_nukem.h"
 
+
+
 int	keyboard_input(t_doom *doom, SDL_Event event)
 {
 	SDL_Keycode key;
@@ -13,7 +15,7 @@ int	keyboard_input(t_doom *doom, SDL_Event event)
 		portal_engine(doom);
 	else if (key == SDLK_ESCAPE)
 		doom_exit(doom);
-	printf("======%f======\n", doom->player.rot.y);
+	doom->player.rot.y = double_modulo(doom->player.rot.y);
 	portal_engine(doom);
 	return (1);
 }

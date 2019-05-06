@@ -4,7 +4,7 @@
 **trouve l'intersection entre le mur et un angle donne
 **pour ne pas afficher ce qui en dehors
 */
-t_fvct2			wall_clipping(t_wl wall, t_fvct2 origin, float ang)
+float			wall_clipping(t_wl wall, t_fvct2 origin, float ang)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;
@@ -27,12 +27,8 @@ t_fvct2			wall_clipping(t_wl wall, t_fvct2 origin, float ang)
 	{
 		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
 		b = diff.x * coef_wall + diff.y;
-		printf("coefwall %f * x + %f\n", coef_wall, b);
 		inter.x = b / (coef_ang - coef_wall);
 		inter.y = coef_wall * inter.x + b;
 	}
-	fvct2_msg("diff1", diff);
-	fvct2_msg("diff2", diff2);
-	fvct2_msg("inter", inter);
-	return (diff);
+	return (dist(diff, diff2));
 }
