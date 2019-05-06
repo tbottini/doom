@@ -6,41 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/05 21:35:08 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/06 15:45:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-void		crouch(t_doom *doom)
-{
-
-	if (!(tab->player->crouch))
-	{
-		tab->player->crouch = 1;
-		tab->player->speed >>= 1
-		tab->player->height >>= 1
-	}
-}
-
-void		crouch_release(t_doom *doom)
-{
-
-	tab->player->crouch = 0;
-	tab->player->speed >>= 1;
-	tab->player->height >>= 1;
-}
-
-void		sprint(t_doom *doom)
-{
-	if (doom->player->speed < MAX_SPEED)
-		doom->player->speed += 0.2;
-}
-
-void		action(t_doom *doom)
-{
-	;
-}
 
 void		reload(t_weapon *weapon)
 {
@@ -66,4 +36,10 @@ void		shoot(t_doom *doom)
 	}
 }
 
-void		send_bullet();
+void		kick(t_player *player, t_sector *sector)
+{
+	if (is_in_range(player, sector) && is_ennemy(sector))
+		sector->health -= player->dmg;
+}
+
+void		send_bullet(t_fvct2 pos, t_texture *tex);

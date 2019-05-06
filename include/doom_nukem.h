@@ -216,6 +216,7 @@ typedef struct 			s_player
 	double				weight;
 	double				speed;
 	int					health;
+	int					dmg;
 	int					fov;
 	t_fvct2				vel;
 	float				d_scrn;
