@@ -1,5 +1,13 @@
 #include "doom_nukem.h"
 
+void		ft_putnbr_msg(char *msg, int nb)
+{
+	ft_putstr(msg);
+	ft_putstr(" : ");
+	ft_putnbr(nb);
+	ft_putchar('\n');
+}
+
 void		ft_putfloat(float num)
 {
 	int		i;
@@ -63,4 +71,13 @@ void		describe_bunch(t_wl **bunch)
 		fvct2_msg(" pt", bunch[i]->pos);
 		i++;
 	}
+}
+
+void		debug_player(t_player player)
+{
+	ft_putendl("------player------");
+	fvct2_msg("pos", player.pos);
+	fvct2_msg("rot", player.rot);
+	ft_putnbr_msg("fov", player.fov);
+	ft_putendl("------------------");
 }
