@@ -140,6 +140,8 @@ typedef struct			s_sdl
 	uint32_t			*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
+	int					timp;
+	int					fps;
 }						t_sdl;
 
 typedef struct			s_editor
