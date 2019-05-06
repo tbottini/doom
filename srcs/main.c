@@ -37,11 +37,8 @@ int			main(int ac, char **av)
 	t_doom		*doom;
 	SDL_Event	event;
 
-	if (ac < 3)
-	{
-		printf("pas assez d'arg\n");
-		return (0);
-	}
+	if (ac < 2)
+		return (-1);
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))

@@ -1,6 +1,5 @@
 SRCS_DOOM		:=		editor.c										\
 						movement.c		 								\
-						doom_init.c										\
 						main.c
 
 SRCS_UI			:=		button_action.c									\
@@ -22,7 +21,8 @@ SRCS_INPUT		:=		event_controller.c								\
 
 SRCS_RENDER		:=		bunch.c											\
 						wall.c											\
-						bresenham.c
+						bresenham.c										\
+						draw_wall.c
 
 SRCS_PARSING	:=		parsing.c
 
