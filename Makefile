@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/05 16:00:16 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/06 17:46:38 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ all				:		directory $(NAME)
 directory		:
 	@mkdir -p $(FOLDER)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom.h libft/libft.h
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom_nukem.h libft/libft.h
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
