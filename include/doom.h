@@ -42,6 +42,8 @@
 
 # define JOYSTICK_DEAD_ZONE 2500
 
+typedef struct s_doom t_doom;
+
 typedef struct			s_vct2
 {
 	int					x;
@@ -66,6 +68,7 @@ typedef struct			s_sloc
 {
 	SDL_Rect			area;
 	int					snapx;
+	struct s_sloc		*parent;
 	int					snapy;
 	t_fvct2				pos;
 }						t_sloc;
@@ -78,6 +81,7 @@ typedef struct			s_btn
 	SDL_Color			bgcolor;
 	char				*data;
 	SDL_PixelFormat		*format;
+	void				(*func)(t_doom *doom);
 }						t_btn;
 
 typedef struct			s_slid
@@ -180,6 +184,18 @@ typedef	struct			s_doom
 	t_vct2				vel; // velocity
 }						t_doom;
 
+/*
+** Button Functions
+*/
+
+void					start_button(t_doom *doom);
+void					option_button(t_doom *doom);
+void 					return_button(t_doom *doom);
+
+/*
+** End Button Functions
+*/
+
 t_doom					*doom_init();
 void					*sdldata_quit(t_sdl **data);
 int						sdl_start(t_doom *doom, const char *title);
@@ -193,12 +209,13 @@ t_btn					add_map_button(t_doom *doom, const char *str);
 t_btn					add_doom_button(t_doom *doom);
 t_btn					add_opt_button(t_doom *doom);
 t_btn					add_editor_button(t_doom *doom);
-t_btn					add_quit_button(t_doom *doom, const char *str);
+t_btn					add_quit_button(t_doom *doom, const char *str, void *fc);
 int						sdl_set_status(t_doom *doom, int status);
 void					draw_menu(t_doom *doom);
 int						load_map_btns(t_doom *doom);
 void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
+void					update_slider_value(t_doom *doom, t_slid *slid, int value);
 t_slid					add_fov_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
