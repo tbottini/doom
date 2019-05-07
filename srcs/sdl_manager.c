@@ -14,9 +14,11 @@
 
 int		sdl_set_status(t_doom *doom, int status)
 {
+	SDL_SetRelativeMouseMode(SDL_FALSE);
 	if (status == 0)
 	{
 		doom->ui.m_status = 0;
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 		draw_menu(doom);
 	}
 	else if (status == 1)
