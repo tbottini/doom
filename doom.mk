@@ -1,5 +1,6 @@
 SRCS_WOLF		:=		button_action.c							\
 						button_drawer.c							\
+						button_function.c						\
 						button_hover.c							\
 						button_loader.c							\
 						little_tools.c							\
@@ -22,6 +23,7 @@ SRCS_WOLF		:=		button_action.c							\
 						raycasting.c							\
 						sdl_manager.c							\
 						sdl_quit.c								\
+						slider_function.c						\
 						doom_init.c								\
 						doom_parseur.c							\
 						map_check.c
