@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 21:56:17 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/08 18:57:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,21 @@
 int			key_press(int key, t_doom *doom)
 {
 	if (key == SDLK_BACKQUOTE)
-	{
 		sdl_set_status(doom, 1);
-	}
 	else if (key == SDLK_5)
-	{
 		ft_printf("controller : %d\n", SDL_GameControllerEventState(SDL_ENABLE));
-	}
+	else if (key == SDLK_5)
+		ft_printf("controller : %d\n", SDL_GameControllerEventState(SDL_ENABLE));
+	else if (key == SDLK_SPACE)
+		;//jump();
+	else if (key == SDLK_v)
+		;//kick(&(doom->player), /*sector*/);
+	else if (key == SDLK_r)
+		reload(&(doom->player.weapons[doom->player.hand]));
+	else if (key == SDLK_e)
+		action(doom);
 	else
-	{
 		ft_nodeadd_int(&(doom->sdl.keys), key);
-	}
 	return (0);
 }
 
@@ -44,13 +48,22 @@ int			key_release(int key, t_doom *doom)
 	{
 		//doom->nrot = 0;
 	}
+	else if (key == SDLK_LGUI)
+		crouch_release(t_doom *doom);
 	return (0);
 }
 
 int			mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	if (btn == SDL_BUTTON_LEFT)
-		btn_click(doom, x, y);
+	{
+		if (doom->ui.m_status != 0)
+			btn_click(doom, x, y);
+		else if (!(doom->player.weapons[doom->player.hand].rate))
+			shoot(doom);
+		else
+			ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
+	}
 	return (0);
 }
 
@@ -59,7 +72,8 @@ int			mouse_release(int btn, int x, int y, t_doom *doom)
 	doom->ui.currslid = NULL;
 	(void)x;
 	(void)y;
-	(void)btn;
+	if (btn == SDL_BUTTON_LEFT && doom->player.weapons[doom->player.hand].rate)
+		ft_noderm_int(&(doom->sdl.keys), btn);
 	return (0);
 }
 
