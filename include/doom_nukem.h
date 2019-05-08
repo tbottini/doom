@@ -159,16 +159,6 @@ typedef struct			s_editor
 	t_tab				keys;
 }						t_editor;
 
-typedef struct			s_wall
-{
-	SDL_Surface			*surf;
-	uint32_t			*txture;
-	int					w;
-	int					h;
-}						t_wall;
-
-
-
 typedef struct 			s_wl
 {
 	t_fvct2				pos;
@@ -177,16 +167,6 @@ typedef struct 			s_wl
 	float				angle;
 	char				frust;
 }						t_wl;
-
-typedef	struct 			s_ssector
-{
-	t_fvct2				*root_wall;
-	int					len;
-	t_texture			t_ceil;
-	t_texture			t_floor;
-	float				h_ceil;
-	float				h_floor;
-}						t_ssector;
 
 typedef	struct 			s_sector
 {
