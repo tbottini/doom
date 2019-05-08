@@ -77,13 +77,18 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 
 int		mouse_move(int x, int y, t_doom *doom)
 {
-	int		xload;
 	t_btn	*curr_btn;
 	t_slid	*tmp;
 
 	doom->sdl.m_pos.x = x;
 	doom->sdl.m_pos.y = y;
 	curr_btn = btn_hover(doom, x, y);
+	if (doom->ui.m_status == 0)
+	{
+		ft_printf("mouse : %d\t%d\t%d\n", x, y);
+		doom->rot -= x / SENSIBILITY;
+		return (0);
+	}
 	if (doom->ui.curr_btn != curr_btn)
 	{
 		if ((curr_btn && (curr_btn->func || curr_btn->data)) || !curr_btn)
@@ -93,13 +98,9 @@ int		mouse_move(int x, int y, t_doom *doom)
 	if (doom->ui.currslid)
 	{
 		tmp = doom->ui.currslid;
-		xload = ((x - tmp->loc.area.x) / (double)tmp->loc.area.w
-								* (tmp->max - tmp->min)) + tmp->min;
-		if (tmp->min <= xload && xload <= tmp->max)
-		{
-			update_slider_value(doom, tmp, xload);
-			draw_slid(doom, tmp);
-		}
+		update_slider_value(doom, tmp,
+			(((x - tmp->loc.area.x) / (double)tmp->loc.area.w
+								* (tmp->max - tmp->min)) + tmp->min));
 	}
 	return (0);
 }
