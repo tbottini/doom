@@ -6,14 +6,14 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/06 17:46:38 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/08 19:08:12 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 include libft/include.mk
 include doom.mk
 
-NAME			:=		Doom-Nukem
+NAME			:=		doom-nukem
 
 CC				:=		gcc
 
@@ -84,6 +84,10 @@ clean			:
 fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
+
+parsing			:
+	$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o parsing \
+		srcs/parsing/*.c main_parsing.c srcs/tools/*.c srcs/debug/*.c
 
 re				: fclean all
 
