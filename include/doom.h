@@ -41,6 +41,7 @@
 # define TEST "ressources/textures/test.xpm"
 
 # define JOYSTICK_DEAD_ZONE 2500
+# define SENSIBILITY 6.0
 
 typedef struct s_doom	t_doom;
 
