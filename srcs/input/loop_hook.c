@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:15:31 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/08 18:40:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ static void lil_loop(t_doom *doom, int key)
 		doom->player.vel.x = (key == SDLK_w ? -32700 : 32700);
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.vel.y = (key == SDLK_a ? 32700 : -32700);
+	else if (key == SDLK_LSHIFT)
+		sprint(doom);
+	else if (key == SDLK_R)
+		reload(&(doom->player.weapons[doom->player.hand]));
+	else if (key == SDL_BUTTON_LEFT)
+		shoot(doom);
+	else if (key == SDL_LGUI)
+		crouch(doom);
 	//else if (key == SDLK_q || key == SDLK_e)
 		//doom->nrot = (key == SDLK_q ? 5 : -5);
 }
