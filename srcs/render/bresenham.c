@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/05/05 20:18:29 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/08 21:23:52 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void			trait_id(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
 	while (vct1.x != vct2.x)
 	{
 		vct1.x++;
-		point_gras(vct1, col, doom);
+		bold_point(vct1, col, doom);
 		if (d > 0)
 		{
 			vct1.y += yi;
@@ -60,7 +60,7 @@ void			trait_iu(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
 	while (vct1.y != vct2.y)
 	{
 		vct1.y++;
-		point_gras(vct1, col, doom);
+		bold_point(vct1, col, doom);
 		if (d > 0)
 		{
 			vct1.x += xi;

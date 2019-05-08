@@ -22,9 +22,11 @@ SRCS_INPUT		:=		event_controller.c								\
 SRCS_RENDER		:=		bunch.c											\
 						wall.c											\
 						bresenham.c										\
-						draw_wall.c
+						draw_wall.c										\
+						sector.c
 
-SRCS_PARSING	:=		parsing.c
+SRCS_PARSING	:=		parsing.c										\
+						chunck.c
 
 SRCS_DEBUG		:=		debug_sector.c									\
 						debug_screen.c
