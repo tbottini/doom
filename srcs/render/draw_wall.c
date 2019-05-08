@@ -1,5 +1,15 @@
 #include "doom_nukem.h"
 
+/*
+**	1.on recupere la distance
+**	on determine la taille sol/plafond/mur
+**	2.on recupere la hauteur du mur et du joueur
+**	le mur et place au millieur la difference du joueur et du sol
+**	determine la hauteur suplementaire du mur
+**	ce qui est en dessous est le sol
+**	//les sous secteur
+*/
+
 void		draw_part(t_doom doom, int *istart, int length, uint32_t color)
 {
 	int		i;
@@ -13,16 +23,25 @@ void		draw_part(t_doom doom, int *istart, int length, uint32_t color)
 	}
 }
 
+/*	!!!!on commence le dessin en partant du bas
+**	on determine le coeficient pour la changement de taille du mur
+**	en fonction du prochain mur
+**	on augmente cette index pour chaque pixel
+*/
+
 void		draw_wall(t_doom doom, int px, float dist)
 {
 	float	column_size;
 	int		sky_size;
 	int		i;
+	int		cursor;
+	float	coef_mur;
 	int		iprint;
 
+	cursor = px;
+	//il faut recupere deux distance
 	i = -1;
-	//printf("dist =====%f=====\n", dist);
-	//printf("px   =====%d=====\n", px);
+
 	iprint = px;
 
 	draw_part(doom, &iprint, 100, INT_MAX);
