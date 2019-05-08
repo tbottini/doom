@@ -42,7 +42,7 @@
 
 # define JOYSTICK_DEAD_ZONE 2500
 
-typedef struct s_doom t_doom;
+typedef struct s_doom	t_doom;
 
 typedef struct			s_vct2
 {
@@ -166,7 +166,7 @@ typedef struct			s_wall
 	int					h;
 }						t_wall;
 
-typedef	struct			s_doom
+struct					s_doom
 {
 	t_sdl				sdl;
 	t_editor			edit;
@@ -181,8 +181,8 @@ typedef	struct			s_doom
 	unsigned long		timestamp;
 	float				d_scrn;
 	SDL_GameController	*controller;
-	t_vct2				vel; // velocity
-}						t_doom;
+	t_vct2				vel;
+};
 
 /*
 ** Button Functions
@@ -190,7 +190,7 @@ typedef	struct			s_doom
 
 void					start_button(t_doom *doom);
 void					option_button(t_doom *doom);
-void 					return_button(t_doom *doom);
+void					return_button(t_doom *doom);
 
 /*
 ** End Button Functions
@@ -209,13 +209,14 @@ t_btn					add_map_button(t_doom *doom, const char *str);
 t_btn					add_doom_button(t_doom *doom);
 t_btn					add_opt_button(t_doom *doom);
 t_btn					add_editor_button(t_doom *doom);
-t_btn					add_quit_button(t_doom *doom, const char *str, void *fc);
+t_btn					add_quit_button(t_doom *doom, const char *str,
+																void *fc);
 int						sdl_set_status(t_doom *doom, int status);
 void					draw_menu(t_doom *doom);
 int						load_map_btns(t_doom *doom);
 void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
-void					update_slider_value(t_doom *doom, t_slid *slid, int value);
+void					update_slider_value(t_doom *doom, t_slid *slid, int v);
 t_slid					add_fov_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
@@ -250,6 +251,6 @@ void					lst_del_node(t_list **node);
 int						start_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 
-void PrintEvent(const SDL_Event *event);
+void					PrintEvent(const SDL_Event *event);
 
 #endif
