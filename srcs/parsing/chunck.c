@@ -17,10 +17,14 @@ t_wall		*chunck_walls(t_list *chunck_line, size_t len)
 	{
 		node = chunck_line;
 		double_atof(node->content, &wall[i].pillar);
+		fvct2_msg("parsing vct", wall[i].pillar);
+		//if (i != 0)
+		//	wall[i - 1].next = &wall[i].pillar;
 		chunck_line = chunck_line->next;
 		free(node);
 		i++;
 	}
+	//wall[i].next = &wall[0].pillar;
 	return (wall);
 }
 
