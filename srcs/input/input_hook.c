@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/08 18:57:30 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/09 12:57:55 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			key_release(int key, t_doom *doom)
 		//doom->nrot = 0;
 	}
 	else if (key == SDLK_LGUI)
-		crouch_release(t_doom *doom);
+		crouch_release(doom);
 	return (0);
 }
 
@@ -64,6 +64,10 @@ int			mouse_press(int btn, int x, int y, t_doom *doom)
 		else
 			ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
 	}
+	else if (btn == SDL_BUTTON_X1)
+		next_weapon(&(doom->player));
+	else if (btn == SDL_BUTTON_X2)
+		prev_weapon(&(doom->player));
 	return (0);
 }
 

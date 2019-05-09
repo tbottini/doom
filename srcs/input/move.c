@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/08 18:47:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/08 19:12:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,30 @@
 void		crouch(t_doom *doom)
 {
 
-	if (!(doom->player->crouch))
+	if (!(doom->player.crouch))
 	{
-		doom->player->crouch = 1;
-		doom->player->speed >>= 1
-		doom->player->height >>= 1
+		doom->player.crouch = 1;
+		doom->player.speed >>= 1;
+		doom->player.height >>= 1;
 	}
 }
 
 void		crouch_release(t_doom *doom)
 {
-	doom->player->crouch = 0;
-	doom->player->speed >>= 1;
-	doom->player->height >>= 1;
+	doom->player.crouch = 0;
+	doom->player.speed >>= 1;
+	doom->player.height >>= 1;
 }
 
 void		sprint(t_doom *doom)
 {
-	if (doom->player->speed < MAX_SPEED)
-		doom->player->speed += 0.2;
+	if (doom->player.speed < MAX_SPEED)
+		doom->player.speed += 0.2;
 }
 
 void		sprint_release(t_doom *doom)
 {
-	doom->player->speed = 10;
+	doom->player.speed = 10;
 }
 
 void		move(t_doom *doom, int x, int y)
