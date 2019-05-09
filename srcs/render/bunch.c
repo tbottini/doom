@@ -68,7 +68,7 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
-		else if (wall->frust)
+		else if (wall[i_wall].frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			bunch[i_bunch + 1] = &wall[i_wall + 1];
@@ -77,10 +77,16 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 		}
 		i_wall++;
 	}
-	if (wall[i_wall].frust)
+	if (wall[0].frust)
 	{
-		bunch[i_bunch] = wall;
+		bunch[i_bunch] = &wall[i_wall];
 		i_bunch++;
+	}
+	else if (wall[i_wall].frust && i_wall < sector.len)
+	{
+		bunch[i_bunch] = &wall[i_wall];
+		bunch[i_bunch + 1] = &wall[0];
+		i_bunch += 2;
 	}
 	bunch[i_bunch] = NULL;
 	return (1);
@@ -93,26 +99,25 @@ void		bunch_comsuption(t_doom *doom, t_player player, t_wall **bunch)
 	float	dist;
 
 	i = 0;
-	//describe_bunch(bunch);
-	while (bunch[i] != NULL)
+	while (bunch[i + 1] != NULL)
 	{
-		//printf("bunch angle %f %d\n", bunch[i]->angle, bunch[i]->frust);
-		if (i == 0 && bunch[i]->frust == 0)
+		if (bunch[i]->frust && !bunch[i + 1]->frust)
 		{
 			px = doom->sdl.size.x - 1;
 			dist = wall_clipping(*bunch[i], *bunch[i + 1], player.pos, player.rot.y + player.fov / 2.0);
 		}
-		else if (!bunch[i + 1] && bunch[i]->frust == 0)
+		else if (bunch[i + 1]->frust && !bunch[i]->frust)
 		{
 			px = 0;
-			dist = wall_clipping(*bunch[i], *bunch[i + 1], player.pos, player.rot.y - player.fov / 2.0);
+			dist = wall_clipping(*bunch[i], *bunch[i + 1], player.pos, double_modulo(player.rot.y - player.fov / 2.0));
 		}
 		else
 		{
 			px = ((float)(doom->sdl.size.x - 1) / 2.0) - (float)(doom->sdl.size.x) / player.fov * bunch[i]->angle;
 			dist = distance(player.pos, bunch[i]->pillar);
 		}
-		draw_wall(*doom, px, dist);
+		//draw_wall(*doom, px, dist);
+		printf("px %d dist %f\n", px, dist);
 		i++;
 	}
 }
@@ -125,6 +130,6 @@ void		portal_engine(t_doom *doom)
 	sector_frustum(doom->sector, doom->player);
 	buncherisation(*doom->sector, bunch);
 	describe_bunch(bunch);
-	//bunch_comsuption(doom, doom->player, bunch);
+	bunch_comsuption(doom, doom->player, bunch);
 	sdl_present(&doom->sdl);
 }
