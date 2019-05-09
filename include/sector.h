@@ -20,6 +20,7 @@ typedef t_fvct2		t_pillar;
 typedef struct		s_wall
 {
 	t_pillar		pillar;
+	t_pillar		*next;
 	float			angle;
 	char			frust;
 	//texture
