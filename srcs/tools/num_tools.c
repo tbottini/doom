@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:36:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/05/05 21:23:14 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/09 16:51:06 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,11 @@ float		ft_catof(char *str, char c)
 	return (nb);
 }
 
-float		dist(t_fvct2 vct1, t_fvct2 vct2)
+float		distance(t_fvct2 vct1, t_fvct2 vct2)
 {
 	t_fvct2	dist;
 
 	dist.x = vct2.x - vct1.x;
 	dist.y = vct2.y - vct1.y;
-	fvct2_msg("dist calcul", dist);
 	return (sqrt((dist.x * dist.x) + (dist.y * dist.y)));
 }

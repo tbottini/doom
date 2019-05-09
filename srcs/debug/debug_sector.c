@@ -41,36 +41,38 @@ void		fvct2_msg(char *msg, t_fvct2 vct)
 
 void		sector_describe(t_sector sector)
 {
-	t_wl	*wall;
+	int		i;
+	t_wall	*wall;
 
+	i = 0;
+	ft_putendl("-------sector-------");
 	ft_putstr("height floor : ");
 	ft_putfloat(sector.h_floor);
 	ft_putstr("\nheight ceil : ");
 	ft_putfloat(sector.h_ceil);
-	wall = NULL;
-	while (!wall || wall->next != sector.root_wall)
+	wall = sector.wall;
+	while (i < sector.len)
 	{
-		if (wall == NULL)
-			wall = sector.root_wall;
-		else
-			wall = wall->next;
 		ft_putchar('\n');
-		fvct2_print(wall->pos);
+		fvct2_print(sector.wall[i].pillar);
+		i++;
 	}
-	ft_putchar('\n');
+	ft_putendl("\n--------------------");
 }
 
-void		describe_bunch(t_wl **bunch)
+void		describe_bunch(t_wall **bunch)
 {
 	int		i;
 
 	i = 0;
+	ft_putendl("----bunch----");
 	while (bunch[i] != NULL)
 	{
 		ft_putchar(bunch[i]->frust +'0');
-		fvct2_msg(" pt", bunch[i]->pos);
+		fvct2_msg(" pt", bunch[i]->pillar);
 		i++;
 	}
+	ft_putendl("------------");
 }
 
 void		debug_player(t_player player)
