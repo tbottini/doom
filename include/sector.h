@@ -6,17 +6,6 @@
 
 typedef t_fvct2		t_pillar;
 
-//definir une structure pillar avec un attribu frust plutot que dans le wall
-
-//typedef struct		s_pillar
-//{
-//
-//}					t_pillar;
-
-
-/*
-**	rajouter un pointeur sur le prochain pillier ? pour le mur
-*/
 typedef struct		s_wall
 {
 	t_pillar		pillar;
