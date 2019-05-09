@@ -17,12 +17,16 @@ SRCS_INPUT		:=		event_controller.c								\
 						event_handler2.c								\
 						input_hook.c									\
 						loop_hook.c										\
+						action.c										\
+						move.c											\
+						shoot.c											\
 						keyboard_input.c
 
 SRCS_RENDER		:=		bunch.c											\
 						wall.c											\
 						bresenham.c										\
-						draw_wall.c
+						draw_wall.c										\
+						minimap.c
 
 SRCS_PARSING	:=		parsing.c
 
