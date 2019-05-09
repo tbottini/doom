@@ -1,5 +1,18 @@
 #include "doom_nukem.h"
 
+
+/*
+print un wall il faut
+
+(px1, px2, dist1, dist2, sdl, texture1, texture2)
+
+-determiner la colonne du pillier 1
+-determiner la colomne du pillier 2
+-determiner la distance des deux pillier
+-determiner un coeficient
+-faire un degrader jusqu'au pillier
+*/
+
 void		draw_part(t_doom doom, int *istart, int length, uint32_t color)
 {
 	int		i;
@@ -13,16 +26,25 @@ void		draw_part(t_doom doom, int *istart, int length, uint32_t color)
 	}
 }
 
+/*	!!!!on commence le dessin en partant du bas
+**	on determine le coeficient pour la changement de taille du mur
+**	en fonction du prochain mur
+**	on augmente cette index pour chaque pixel
+*/
+
 void		draw_wall(t_doom doom, int px, float dist)
 {
 	float	column_size;
 	int		sky_size;
 	int		i;
+	int		cursor;
+	float	coef_mur;
 	int		iprint;
 
+	cursor = px;
+	//il faut recupere deux distance
 	i = -1;
-	//printf("dist =====%f=====\n", dist);
-	//printf("px   =====%d=====\n", px);
+
 	iprint = px;
 
 	draw_part(doom, &iprint, 100, INT_MAX);

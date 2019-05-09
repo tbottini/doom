@@ -2,13 +2,13 @@
 
 //on peut voir si un point est dans le frustum
 
-int			on_frustum(t_player player, t_wl *wall)
+int			on_frustum(t_player player, t_wall *wall)
 {
 	t_fvct2	dist;
 	float	angle;
 
-	dist.x = wall->pos.x - player.pos.x;
-	dist.y = wall->pos.y - player.pos.y;
+	dist.x = wall->pillar.x - player.pos.x;
+	dist.y = wall->pillar.y - player.pos.y;
 	angle = atan2(dist.y, dist.x) * TOANGLE;
 	if (angle < 0)
 		angle = 360 + angle;
@@ -18,108 +18,118 @@ int			on_frustum(t_player player, t_wl *wall)
 		angle += 360;
 	else if (angle > 180)
 		angle -= 360;
-	printf("x %f y %f angle %f\n", wall->pos.x, wall->pos.y, angle);
-
 	wall->angle = angle;
-	//if (angle < -180)
-	//	angle = 360 + angle;
 	wall->frust = (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0) ? 1 : 0;
 	return (wall->frust);
 }
 
-void		wall_frustum(t_wl *root, t_player player)
+void		sector_frustum(t_sector *sector, t_player player)
 {
-	t_wl	*wall;
-
-	wall = root->next;
-	while (wall != root)
-	{
-		on_frustum(player, wall);
-		wall = wall->next;
-	}
-	on_frustum(player, wall);
-}
-
-t_wl		*root_draw(t_sector sector)
-{
-	t_wl	*wall;
 	int		i;
 
 	i = 0;
-	wall = sector.root_wall;
-	while ((wall->frust || !wall->next->frust) && i < sector.len)
+	while (i < sector->len)
 	{
-		wall = wall->next;
+		on_frustum(player, &sector->wall[i]);
 		i++;
 	}
-	return (wall);
+}
+
+int			root_draw(t_sector sector)
+{
+	t_wall	*wall;
+	int		i;
+
+	i = 0;
+	wall = sector.wall;
+	while ((wall[i].frust || !wall[i + 1].frust) && i < sector.len)
+		i++;
+	return (i);
 }
 
 /*
-**buncherisation mets les murs affichable d'un secteur dans une liste
-**i_wall correspond a l'index des mur parcourus
-**i_bunch est l'index dans le bunch
+**	buncherisation mets les murs affichable d'un secteur dans une liste
+**	i_wall correspond a l'index des mur parcourus
+**	i_bunch est l'index dans le bunch
 */
-int			buncherisation(t_sector sector, t_wl **bunch)
+int			buncherisation(t_sector sector, t_wall **bunch)
 {
 	int 	i_wall;
 	int		i_bunch;
-	t_wl	*wall;
+	t_wall	*wall;
 
 	i_bunch = 0;
 	i_wall = 0;
-	wall = root_draw(sector);
-	while (i_wall < sector.len)
+	wall = sector.wall;
+	while (i_wall < sector.len - 1)
 	{
-		if (wall->next->frust)
+		if (wall[i_wall + 1].frust)
 		{
-			bunch[i_bunch] = wall;
+			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
-		else if (wall->frust)
+		else if (wall[i_wall].frust)
 		{
-			bunch[i_bunch] = wall;
-			bunch[i_bunch + 1] = wall->next;
+			bunch[i_bunch] = &wall[i_wall];
+			bunch[i_bunch + 1] = &wall[i_wall + 1];
 			i_bunch += 2;
 			i_wall++;
-			wall = wall->next;
 		}
 		i_wall++;
-		wall = wall->next;
+	}
+	if (wall[0].frust)
+	{
+		bunch[i_bunch] = &wall[i_wall];
+		i_bunch++;
+	}
+	else if (wall[i_wall].frust && i_wall < sector.len)
+	{
+		bunch[i_bunch] = &wall[i_wall];
+		bunch[i_bunch + 1] = &wall[0];
+		i_bunch += 2;
 	}
 	bunch[i_bunch] = NULL;
 	return (1);
 }
 
-void		bunch_comsuption(t_doom *doom, t_player player, t_wl **bunch)
+void		bunch_comsuption(t_doom *doom, t_player player, t_wall **bunch)
 {
 	int		px;
 	int		i;
+	float	dist;
 
 	i = 0;
-	describe_bunch(bunch);
-	while (bunch[i] != NULL)
+	while (bunch[i + 1] != NULL)
 	{
-		printf("bunch angle %f %d\n", bunch[i]->angle, bunch[i]->frust);
-
-		if (i == 0 && bunch[i]->frust == 0)
+		if (bunch[i]->frust && !bunch[i + 1]->frust)
+		{
 			px = doom->sdl.size.x - 1;
-		else if (!bunch[i + 1] && bunch[i]->frust == 0)
+			dist = wall_clipping(*bunch[i], *bunch[i + 1], player.pos, player.rot.y + player.fov / 2.0);
+		}
+		else if (bunch[i + 1]->frust && !bunch[i]->frust)
+		{
 			px = 0;
+			dist = wall_clipping(*bunch[i], *bunch[i + 1], player.pos, double_modulo(player.rot.y - player.fov / 2.0));
+		}
 		else
+		{
 			px = ((float)(doom->sdl.size.x - 1) / 2.0) - (float)(doom->sdl.size.x) / player.fov * bunch[i]->angle;
-		draw_wall(*doom, px, dist(player.pos, bunch[i]->pos));
+			dist = distance(player.pos, bunch[i]->pillar);
+		}
+		//draw_wall(*doom, px, dist);
+		printf("px %d dist %f\n", px, dist);
 		i++;
 	}
 }
 
 void		portal_engine(t_doom *doom)
 {
-	t_wl	*bunch[50];
+	t_wall	*bunch[50];
 
 	ft_bzero(doom->sdl.screen, doom->sdl.size.x * doom->sdl.size.y * 4);
-	wall_frustum(doom->sector->root_wall, doom->player);
+	sector_frustum(doom->sector, doom->player);
 	buncherisation(*doom->sector, bunch);
+	describe_bunch(bunch);
 	bunch_comsuption(doom, doom->player, bunch);
 	sdl_present(&doom->sdl);
 }

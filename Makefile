@@ -6,14 +6,14 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/06 17:46:38 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/09 13:33:03 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 include libft/include.mk
 include doom.mk
 
-NAME			:=		Doom-Nukem
+NAME			:=		doom-nukem
 
 CC				:=		gcc
 
@@ -24,9 +24,14 @@ LIB				:=		-L libft/ -lft							\
 						-lSDL2_ttf								\
 						-lSDL2_image							\
 
-INCLUDE			=		-I ./include							\
+INCLUDE			:=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
+
+INCLUDE_RES		:=		include/sector.h						\
+						include/vector.h						\
+						libft/libft.h							\
+						include/doom_nukem.h
 
 FOLDER			:=		objs									\
 						objs/parsing							\
@@ -59,7 +64,7 @@ all				:		directory $(NAME)
 directory		:
 	@mkdir -p $(FOLDER)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom_nukem.h libft/libft.h
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) $(INCLUDE_RES)
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
@@ -84,6 +89,10 @@ clean			:
 fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
+
+parsing			:
+	$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o parsing \
+		srcs/parsing/*.c main_parsing.c srcs/tools/*.c srcs/debug/*.c
 
 re				: fclean all
 
