@@ -1,0 +1,6 @@
+
+
+t_point			(t_fvct2 point)
+
+t_wall			(t_wall wall)
+	t_point		
