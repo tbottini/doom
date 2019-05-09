@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:02:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/08 19:22:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
+/*
 void move(t_doom *doom, int x, int y)
 {
 	t_fvct2 d;
@@ -31,3 +32,4 @@ void move(t_doom *doom, int x, int y)
 	// Check new pos
 	doom->player.pos = npos;
 }
+*/
