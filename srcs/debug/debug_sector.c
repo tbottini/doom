@@ -69,10 +69,14 @@ void		describe_bunch(t_wall **bunch)
 	while (bunch[i] != NULL)
 	{
 		ft_putchar(bunch[i]->frust +'0');
-		fvct2_msg(" pt", bunch[i]->pillar);
+		ft_putchar(' ');
+		fvct2_print(bunch[i]->pillar);
+		ft_putstr(" --> ");
+		fvct2_print(*bunch[i]->next);
+		ft_putchar('\n');
 		i++;
 	}
-	ft_putendl("------------");
+	ft_putendl("-------------");
 }
 
 void		debug_player(t_player player)
