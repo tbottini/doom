@@ -121,5 +121,6 @@ void		portal_engine(t_doom *doom)
 	wall_frustum(doom->sector->root_wall, doom->player);
 	buncherisation(*doom->sector, bunch);
 	bunch_comsuption(doom, doom->player, bunch);
+	minimap(doom);
 	sdl_present(&doom->sdl);
 }
