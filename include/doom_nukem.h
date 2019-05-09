@@ -22,6 +22,7 @@
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
 # define INT_MAX 2147483647
+# define MAX_SPEED 50
 # define FIRE_HEIGHT HEIGHT / 48
 # define RANGE 1 //range max for kick and actions with objects
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
@@ -102,6 +103,7 @@ typedef struct			s_font
 ** 0 = gamemode
 ** 1 = Show main menu
 ** 2 = show map menu
+** 3 = Pause menu
 */
 
 typedef struct			s_fire
@@ -121,17 +123,6 @@ typedef struct			s_ui
 	int					m_status;
 	t_btn				*curr_btn;
 }						t_ui;
-
-typedef struct			s_ray
-{
-	t_fvct2				inter_v;
-	t_fvct2				inter_h;
-	t_fvct2				ratio;
-	float				angle;
-	float				hor;
-	float				ver;
-	int					polar;
-}						t_ray;
 
 typedef struct			s_sdl
 {
@@ -189,9 +180,10 @@ typedef struct 			s_player
 {
 	t_fvct2				pos;
 	t_fvct2				rot;
-	double				height;
-	double				weight;
-	double				speed;
+	int					crouch;
+	int					height;
+	int					weight;
+	int					speed;
 	int					health;
 	int					dmg;
 	int					fov;
@@ -259,10 +251,7 @@ void					raycasting(t_doom *doom);
 double					double_modulo(double num);
 double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
-float					ver_detection(t_doom *doom, t_ray *ray);
-float					hor_detection(t_doom *doom, t_ray *ray);
 double					iswall(t_doom *doom, t_fvct2 inter);
-void					draw_column(t_doom *doom, t_ray ray, int num);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
 void					doom_clear_map(t_doom *doom);
 int						map_check(t_doom *doom, char *filename);
@@ -306,4 +295,20 @@ void					point_gras(t_vct2 cursor, uint32_t color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col);
 void					draw_wall(t_doom doom, int px, float dist);
 float					dist(t_fvct2 vct1, t_fvct2 vct2);
+
+/*
+** Gameplay
+*/
+
+void					action(t_doom *doom);
+void					crouch_release(t_doom *doom);
+void					crouch(t_doom *doom);
+void					sprint_release(t_doom *doom);
+void					sprint(t_doom *doom);
+void					next_weapon(t_player *player);
+void					prev_weapon(t_player *player);
+
+
+void					minimap(t_doom *d);
+
 #endif
