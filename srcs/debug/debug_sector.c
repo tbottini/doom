@@ -45,6 +45,7 @@ void		sector_describe(t_sector sector)
 	t_wall	*wall;
 
 	i = 0;
+	ft_putendl("-------sector-------");
 	ft_putstr("height floor : ");
 	ft_putfloat(sector.h_floor);
 	ft_putstr("\nheight ceil : ");
@@ -56,7 +57,7 @@ void		sector_describe(t_sector sector)
 		fvct2_print(sector.wall[i].pillar);
 		i++;
 	}
-	ft_putchar('\n');
+	ft_putendl("\n--------------------");
 }
 
 void		describe_bunch(t_wall **bunch)

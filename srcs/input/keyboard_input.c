@@ -16,6 +16,7 @@ int	keyboard_input(t_doom *doom, SDL_Event event)
 	else if (key == SDLK_ESCAPE)
 		doom_exit(doom);
 	doom->player.rot.y = double_modulo(doom->player.rot.y);
+	printf("rotation====%f====\n", doom->player.rot.y);
 	portal_engine(doom);
 	return (1);
 }

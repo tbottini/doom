@@ -50,6 +50,7 @@ int			main(int ac, char **av)
 	}
 	debug_player(doom->player);
 	portal_engine(doom);
+	sector_describe(*doom->sector);
 	while (1)
 	{
 		SDL_WaitEvent(&event);

@@ -1,13 +1,16 @@
 #include "doom_nukem.h"
 
+
 /*
-**	1.on recupere la distance
-**	on determine la taille sol/plafond/mur
-**	2.on recupere la hauteur du mur et du joueur
-**	le mur et place au millieur la difference du joueur et du sol
-**	determine la hauteur suplementaire du mur
-**	ce qui est en dessous est le sol
-**	//les sous secteur
+print un wall il faut
+
+(px1, px2, dist1, dist2, sdl, texture1, texture2)
+
+-determiner la colonne du pillier 1
+-determiner la colomne du pillier 2
+-determiner la distance des deux pillier
+-determiner un coeficient
+-faire un degrader jusqu'au pillier
 */
 
 void		draw_part(t_doom doom, int *istart, int length, uint32_t color)

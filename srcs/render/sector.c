@@ -9,4 +9,3 @@ t_sector		*sector_new()
 		return (NULL);
 	return (new);
 }
-
