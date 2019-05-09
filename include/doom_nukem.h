@@ -25,6 +25,9 @@
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
 # define INT_MAX 2147483647
+# define MAX_SPEED 50
+# define FIRE_HEIGHT HEIGHT / 48
+# define RANGE 1 //range max for kick and actions with objects
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 # define WALLBLUE "ressources/textures/wall_blue.xpm"
@@ -91,7 +94,14 @@ typedef struct			s_font
 ** 0 = gamemode
 ** 1 = Show main menu
 ** 2 = show map menu
+** 3 = Pause menu
 */
+
+typedef struct			s_fire
+{
+	int					pixel[WIDTH * HEIGHT];
+	int					pal[38];
+}						t_fire;
 
 typedef struct			s_ui
 {
@@ -104,17 +114,6 @@ typedef struct			s_ui
 	int					m_status;
 	t_btn				*curr_btn;
 }						t_ui;
-
-typedef struct			s_ray
-{
-	t_fvct2				inter_v;
-	t_fvct2				inter_h;
-	t_fvct2				ratio;
-	float				angle;
-	float				hor;
-	float				ver;
-	int					polar;
-}						t_ray;
 
 typedef struct			s_sdl
 {
@@ -139,13 +138,31 @@ typedef struct			s_editor
 	t_tab				keys;
 }						t_editor;
 
+typedef	struct			s_weapon
+{
+	int					clip_max;
+	int					ammo;
+	int					clip;
+	int					rate;
+	int					dmg;
+	void				*sprites;
+}						t_weapon;
+
 typedef struct 			s_player
 {
 	t_fvct2				pos;
 	t_fvct2				rot;
+	int					crouch;
+	int					height;
+	int					weight;
+	int					speed;
+	int					health;
+	int					dmg;
 	int					fov;
 	t_fvct2				vel;
 	float				d_scrn;
+	int					hand;
+	t_weapon			*weapons;
 }						t_player;
 
 typedef	struct			s_doom
@@ -198,7 +215,6 @@ int						mouse_move(int x, int y, t_doom *doom);
 double					double_modulo(double num);
 double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
-void					draw_column(t_doom *doom, t_ray ray, int num);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
 void					*listdel(t_list **list);
 
@@ -257,5 +273,21 @@ void					describe_bunch(t_wall **bunch);
 void					fvct2_print(t_fvct2 vct);
 void					sector_describe(t_sector sector);
 void					bold_point(t_vct2 cursor, uint32_t color, t_doom *doom);
+float					dist(t_fvct2 vct1, t_fvct2 vct2);
+
+/*
+** Gameplay
+*/
+
+void					action(t_doom *doom);
+void					crouch_release(t_doom *doom);
+void					crouch(t_doom *doom);
+void					sprint_release(t_doom *doom);
+void					sprint(t_doom *doom);
+void					next_weapon(t_player *player);
+void					prev_weapon(t_player *player);
+
+
+void					minimap(t_doom *d);
 
 #endif
