@@ -16,6 +16,8 @@ t_wall		*chunck_walls(t_list *chunck_line, size_t len)
 	while (chunck_line)
 	{
 		node = chunck_line;
+		if (i != 0)
+			wall[i].next = &wall[i - 1].pillar;
 		double_atof(node->content, &wall[i].pillar);
 		fvct2_msg("parsing vct", wall[i].pillar);
 		//if (i != 0)
@@ -24,6 +26,7 @@ t_wall		*chunck_walls(t_list *chunck_line, size_t len)
 		free(node);
 		i++;
 	}
+	wall[0].next = &wall[i - 1].pillar;
 	//wall[i].next = &wall[0].pillar;
 	return (wall);
 }
