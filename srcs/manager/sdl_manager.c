@@ -12,6 +12,35 @@ void	sdl_free(t_sdl *sdl)
 		SDL_FreeFormat(sdl->format);
 }
 
+int		sdl_set_status(t_doom *doom, int status)
+{
+	SDL_SetRelativeMouseMode(SDL_FALSE);
+	if (status == 0)
+	{
+		doom->ui.m_status = 0;
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		draw_menu(doom);
+	}
+	else if (status == 1)
+	{
+		doom->ui.m_status = 1;
+		//doom_clear_map(doom);
+		draw_menu(doom);
+	}
+	else if (status == 2)
+	{
+		doom->ui.m_status = 2;
+		load_map_btns(doom);
+		draw_menu(doom);
+	}
+	else if (status == 3)
+	{
+		doom->ui.m_status = 3;
+		draw_menu(doom);
+	}
+	return (status);
+}
+
 int		sdl_init(t_sdl *sdl, const char *title)
 {
 	void	*tmp;
