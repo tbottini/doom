@@ -78,7 +78,12 @@ int event_handler1(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
 		SDL_GameControllerClose(doom->controller);
 	else if (e.type == SDL_MOUSEMOTION)
-		mouse_move(e.motion.x, e.motion.y, doom);
+	{
+		if (doom->ui.m_status == 0)
+			mouse_move(e.motion.xrel, e.motion.yrel, doom);
+		else
+			mouse_move(e.motion.x, e.motion.y, doom);
+	}
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		mouse_press(e.button.button, e.button.x, e.button.y, doom);
 	else if (e.type == SDL_MOUSEBUTTONUP)

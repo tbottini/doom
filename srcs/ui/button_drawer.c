@@ -73,24 +73,6 @@ void		update_loc(t_doom *doom, t_sloc *loc, t_sloc before)
 		loc->area.y = before.area.y + before.area.h + loc->pos.y;
 }
 
-void		draw_slid(t_doom *doom, t_slid *tmp)
-{
-	int size;
-
-	size = tmp->loc.area.h;
-	update_loc(doom, &tmp->loc, doom->ui.btnopt[1].loc);
-	update_slider_txt(doom, tmp);
-	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
-		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
-	tmp->grip.y = tmp->loc.area.y;
-	SDL_RenderFillRect(doom->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
-	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
-	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
-	SDL_RenderPresent(doom->sdl.rend);
-}
-
 void		draw_menu(t_doom *doom)
 {
 	int status;
