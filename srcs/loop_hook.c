@@ -38,7 +38,15 @@ int loop_hook(t_doom *doom)
 		move(doom, doom->vel.x, doom->vel.y);
 		raycasting(doom);
 		clock_gettime(CLOCK_REALTIME, &spec);
-		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - doom->timestamp < 25000)
+		if (doom->sdl.timp == spec.tv_sec)
+			++doom->sdl.fps;
+		else
+		{
+			printf("FPS : %d\n", doom->sdl.fps);
+			doom->sdl.fps = 0;
+			doom->sdl.timp = spec.tv_sec;
+		}
+		while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - doom->timestamp < 17500)
 			clock_gettime(CLOCK_REALTIME, &spec);
 		doom->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
 	}

@@ -87,13 +87,14 @@ t_doom			*doom_init(void)
 	doom->ui.btnarr[1] = add_start_button(doom);
 	doom->ui.btnarr[2] = add_opt_button(doom);
 	doom->ui.btnarr[3] = add_editor_button(doom);
-	doom->ui.btnarr[4] = add_quit_button(doom, " Quit ");
-	doom->ui.btnmap[0] = add_quit_button(doom, " Return ");
+	doom->ui.btnarr[4] = add_quit_button(doom, " Quit ", &prog_quit);
+	doom->ui.btnmap[0] = add_quit_button(doom, " Return ", &return_button);
 	doom->ui.btnmap[1] = add_mapmenu_button(doom);
 	doom->ui.btnopt[0] = doom->ui.btnmap[0];
 	doom->ui.btnopt[1] = doom->ui.btnarr[0];
 	lil_doom_init(doom);
 	doom->ui.slidopt[0] = add_fov_slider(doom);
+	doom->ui.slidopt[0].loc.parent = &(doom->ui.btnopt[1].loc);
 	doom->pos.x = 0;
 	doom->pos.y = 0;
 	doom->fov = 90;
