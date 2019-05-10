@@ -4,7 +4,12 @@
 #include <stdlib.h>
 #include "vector.h"
 
-typedef t_fvct2		t_pillar;
+typedef struct		s_pillar
+{
+	float			x;
+	float			y;
+	char			frust;
+}					t_pillar;
 
 typedef struct		s_wall
 {
@@ -27,6 +32,10 @@ typedef struct		s_sector
 	//sector effector *fonction
 	//list things (shapes, objets, deco, enemis)
 }					t_sector;
+
+/*
+**	wall : draw, manipulation
+*/
 
 float			wall_clipping(t_wall wall1, t_wall wall2, t_fvct2 origin, float ang);
 
