@@ -50,6 +50,10 @@
 //pour organiser l'affichage
 //over : indique si le mur depasse la vision mais et relier a un
 //mur dans la vision
+# define JOYSTICK_DEAD_ZONE 2500
+# define SENSIBILITY 6.0
+
+typedef struct s_doom	t_doom;
 
 typedef	uint32_t* t_texture;
 
@@ -67,6 +71,7 @@ typedef struct			s_sloc
 {
 	SDL_Rect			area;
 	int					snapx;
+	struct s_sloc		*parent;
 	int					snapy;
 	t_fvct2				pos;
 }						t_sloc;
@@ -79,6 +84,7 @@ typedef struct			s_btn
 	SDL_Color			bgcolor;
 	char				*data;
 	SDL_PixelFormat		*format;
+	void				(*func)(t_doom *doom);
 }						t_btn;
 
 typedef struct			s_slid
@@ -137,6 +143,8 @@ typedef struct			s_sdl
 	uint32_t			*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
+	int					timp;
+	int					fps;
 }						t_sdl;
 
 typedef struct			s_editor
@@ -176,16 +184,30 @@ typedef struct 			s_player
 	t_weapon			*weapons;
 }						t_player;
 
-typedef	struct			s_doom
+struct					s_doom
 {
 	t_sdl				sdl;
 	t_editor			edit;
 	t_ui				ui;
 	unsigned long		timestamp;
-	SDL_GameController *controller;
+	float				d_scrn;
 	t_player			player;
+	SDL_GameController	*controller;
 	t_sector			*sector;
-}						t_doom;
+	t_vct2				vel;
+};
+
+/*
+** Button Functions
+*/
+
+void					start_button(t_doom *doom);
+void					option_button(t_doom *doom);
+void					return_button(t_doom *doom);
+
+/*
+** End Button Functions
+*/
 
 float					ft_atof(char *str);
 float					ft_catof(char *str, char c);
@@ -194,7 +216,6 @@ int						parsing(t_doom *doom, char *filename);
 void					portal_engine(t_doom *doom);
 
 void					sdl_showscreen(t_sdl *sdl);
-int						prog_quit(t_doom *doom);
 void					btn_click(t_doom *doom, int x, int y);
 t_btn					add_start_button(t_doom *doom);
 t_btn					add_mapmenu_button(t_doom *doom);
@@ -202,12 +223,14 @@ t_btn					add_map_button(t_doom *doom, const char *str);
 t_btn					add_doom_button(t_doom *doom);
 t_btn					add_opt_button(t_doom *doom);
 t_btn					add_editor_button(t_doom *doom);
-t_btn					add_quit_button(t_doom *doom, const char *str);
+t_btn					add_quit_button(t_doom *doom, const char *str,
+																void *fc);
 int						sdl_set_status(t_doom *doom, int status);
 void					draw_menu(t_doom *doom);
 int						load_map_btns(t_doom *doom);
 void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
+void					update_slider_value(t_doom *doom, t_slid *slid, int v);
 t_slid					add_fov_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
@@ -290,6 +313,8 @@ float					dist(t_fvct2 vct1, t_fvct2 vct2);
 */
 
 void					action(t_doom *doom);
+void					shoot(t_doom *doom);
+void					reload(t_weapon *weapon);
 void					crouch_release(t_doom *doom);
 void					crouch(t_doom *doom);
 void					sprint_release(t_doom *doom);
@@ -299,5 +324,6 @@ void					prev_weapon(t_player *player);
 
 
 void					minimap(t_doom *d);
+void					PrintEvent(const SDL_Event *event);
 
 #endif

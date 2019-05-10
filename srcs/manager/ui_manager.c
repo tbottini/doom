@@ -28,8 +28,8 @@ int		ui_by_sdl(t_ui *ui, t_doom *doom)
 	ui->btnarr[1] = add_start_button(doom);
 	ui->btnarr[2] = add_opt_button(doom);
 	ui->btnarr[3] = add_editor_button(doom);
-	ui->btnarr[4] = add_quit_button(doom, " Quit ");
-	ui->btnmap[0] = add_quit_button(doom, " Return ");
+	ui->btnarr[4] = add_quit_button(doom, " Quit ", &doom_exit);
+	ui->btnmap[0] = add_quit_button(doom, " Return ", &return_button);
 	ui->btnmap[1] = add_mapmenu_button(doom);
 	ui->btnopt[0] = ui->btnmap[0];
 	ui->btnopt[1] = ui->btnarr[0];
