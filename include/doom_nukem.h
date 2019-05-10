@@ -108,6 +108,12 @@ typedef struct			s_font
 ** 3 = Pause menu
 */
 
+typedef struct			s_fire
+{
+	int					pixel[WIDTH * HEIGHT];
+	int					pal[38];
+}						t_fire;
+
 typedef struct			s_ui
 {
 	t_font				fonts;
@@ -220,7 +226,6 @@ int						mouse_move(int x, int y, t_doom *doom);
 double					double_modulo(double num);
 double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
-double					iswall(t_doom *doom, t_fvct2 inter);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
 void					*listdel(t_list **list);
 
