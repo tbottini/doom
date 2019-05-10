@@ -251,7 +251,6 @@ void					sdl_present(t_sdl *sdl);
 
 void					point_gras(t_vct2 cursor, uint32_t color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col);
-void					draw_wall(t_doom doom, int px, float dist);
 float					distance(t_fvct2 vct1, t_fvct2 vct2);
 
 
@@ -286,6 +285,8 @@ void					sprint_release(t_doom *doom);
 void					sprint(t_doom *doom);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
+
+void					draw_wall(t_doom doom, t_wall wall);
 
 
 void					minimap(t_doom *d);

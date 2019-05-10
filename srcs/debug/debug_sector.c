@@ -43,36 +43,43 @@ void		sector_describe(t_sector sector)
 {
 	int		i;
 	t_wall	*wall;
-
+	t_pillar	a;
 	i = 0;
 	ft_putendl("-------sector-------");
 	ft_putstr("height floor : ");
 	ft_putfloat(sector.h_floor);
 	ft_putstr("\nheight ceil : ");
 	ft_putfloat(sector.h_ceil);
+	ft_putchar('\n');
 	wall = sector.wall;
 	while (i < sector.len)
 	{
+		fvct2_print(*(t_fvct2*)&sector.wall[i].pillar);
+		ft_putstr(" --> ");
+		a = *sector.wall[i].next;
+		fvct2_print(*(t_fvct2*)&a);
 		ft_putchar('\n');
-		fvct2_print(sector.wall[i].pillar);
 		i++;
 	}
-	ft_putendl("\n--------------------");
+	ft_putendl("--------------------");
 }
 
 void		describe_bunch(t_wall **bunch)
 {
 	int		i;
-
+	t_pillar	a;
 	i = 0;
 	ft_putendl("----bunch----");
 	while (bunch[i] != NULL)
 	{
-		ft_putchar(bunch[i]->frust +'0');
+		ft_putchar(bunch[i]->pillar.frust + '0');
 		ft_putchar(' ');
-		fvct2_print(bunch[i]->pillar);
+		fvct2_print(*(t_fvct2*)&bunch[i]->pillar);
 		ft_putstr(" --> ");
-		fvct2_print(*bunch[i]->next);
+		a = *bunch[i]->next;
+		fvct2_print(*(t_fvct2*)&a);
+		ft_putchar(' ');
+		ft_putchar(bunch[i]->next->frust + '0');
 		ft_putchar('\n');
 		i++;
 	}

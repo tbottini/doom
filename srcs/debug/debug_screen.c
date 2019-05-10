@@ -38,10 +38,10 @@ void		debug_up(t_doom *doom)
 	cursor = hot_point(doom->player.pos, doom->sdl.size);
 	bold_point(cursor, RED_WALL, doom);
 	i = 0;
-	cursor = hot_point(wall[0].pillar, doom->sdl.size);
+	cursor = hot_point(*(t_fvct2*)&wall[0].pillar, doom->sdl.size);
 	while (i < doom->sector->len)
 	{
-		cursor2 = hot_point(wall[i + 1].pillar, doom->sdl.size);
+		cursor2 = hot_point(*(t_fvct2*)&wall[i + 1].pillar, doom->sdl.size);
 		bold_point(cursor, INT_MAX, doom);
 		trait(doom, cursor, cursor2, INT_MAX);
 		i++;
