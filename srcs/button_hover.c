@@ -51,7 +51,6 @@ static t_btn	*on_menu_two(t_doom *doom, int x, int y)
 static t_btn	*on_menu_tree(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
-	t_slid	stmp;
 	int		i;
 
 	i = -1;
@@ -85,19 +84,19 @@ void		draw_hover(t_doom *doom, t_btn *new, t_btn *old)
 	if (old)
 	{
 		rect = old->loc.area;
-		rect.x -= 5;
-		rect.y -= 5;
-		rect.w += 10;
-		rect.h += 10;
+		rect.x -= 3;
+		rect.y -= 3;
+		rect.w += 6;
+		rect.h += 6;
 		SDL_RenderDrawRect(doom->sdl.rend, &rect);
 	}
 	if (new)
 	{
 		rect = new->loc.area;
-		rect.x -= 5;
-		rect.y -= 5;
-		rect.w += 10;
-		rect.h += 10;
+		rect.x -= 3;
+		rect.y -= 3;
+		rect.w += 6;
+		rect.h += 6;
 		SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
 		SDL_RenderDrawRect(doom->sdl.rend, &rect);
 		SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
