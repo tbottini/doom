@@ -143,6 +143,16 @@ typedef struct			s_editor
 	t_tab				keys;
 }						t_editor;
 
+typedef	struct			s_weapon
+{
+	int					clip_max;
+	int					ammo;
+	int					clip;
+	int					rate;
+	int					dmg;
+	void				*sprites;
+}						t_weapon;
+
 typedef struct 			s_player
 {
 	t_fvct2				pos;
