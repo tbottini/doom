@@ -1,4 +1,6 @@
 SRCS_DOOM		:=		editor.c										\
+						button_function.c								\
+						slider_function.c								\
 						movement.c		 								\
 						main.c
 

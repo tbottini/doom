@@ -29,7 +29,7 @@ static void		window_event(t_doom *doom, SDL_Event e)
 			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
 			doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
-			prog_quit(doom);
+			doom_exit(doom);
 		doom->sdl.screen = (uint32_t *)tmp;
 		draw_menu(doom);
 	}
