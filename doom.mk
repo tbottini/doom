@@ -26,7 +26,7 @@ SRCS_RENDER		:=		bunch.c											\
 						wall.c											\
 						bresenham.c										\
 						draw_wall.c										\
-						sector.c
+						sector.c										\
 						minimap.c
 
 SRCS_PARSING	:=		parsing.c										\
