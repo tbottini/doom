@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/28 16:50:49 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/09 13:33:03 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,17 +17,30 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra\
-# -Werror
+CFLAGS			:=		-Wall -Wextra -g #-Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
 						-lSDL2_ttf								\
 						-lSDL2_image							\
 
-INCLUDE			=		-I ./include							\
+INCLUDE			:=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
+
+INCLUDE_RES		:=		include/sector.h						\
+						include/vector.h						\
+						libft/libft.h							\
+						include/doom_nukem.h
+
+FOLDER			:=		objs									\
+						objs/parsing							\
+						objs/render								\
+						objs/debug								\
+						objs/tools								\
+						objs/ui									\
+						objs/input								\
+						objs/manager
 
 COMPILE_LIB		:=		make -C libft/
 
@@ -35,25 +48,23 @@ OBJDIR			:=		objs
 
 SRCDIR			:=		srcs
 
-NB_SRCS			:=		$(shell ls srcs/ | wc -l)
+NB_SRCS			:=		$(shell find srcs/ -type f | wc -l)
 
-NB_OBJS			=		$(shell ls objs/ | wc -l | sed -e 's/[^0-9]//g')
+NB_OBJS			=		$(shell find objs/ -type f | wc -l | sed -e 's/[^0-9]//g')
 
-MAX_FILL		:=		$$(( $(NB_SRCS)))
+MAX_FILL		:=		$$(( $(NB_SRCS) ))
 
-FILL_BAR		=		$$(( $(NB_OBJS) * $(MAX_FILL) / $(NB_SRCS)))
+FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
-OBJS    		:=		$(patsubst %.c,$(OBJDIR)/%.o,$(SRCS_WOLF))
 
-SRCS_WOLF  		:=		$(patsubst %.c,srcs/%.c,$(SRCS_WOLF))
+all				:		directory $(NAME)
 
-SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))
+directory		:
+	@mkdir -p $(FOLDER)
 
-all				:		$(NAME)
-
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/doom.h libft/libft.h
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) $(INCLUDE_RES)
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
@@ -70,14 +81,19 @@ $(NAME)			:		$(OBJS)
 	@rm tmpicns.rsrc
 	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
-clean:
+clean			:
 	@make clean -C ./libft
 	@rm -f $(OBJS)
+	@rm -rf $(FOLDER)
 
-fclean: clean
+fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
 
-re: fclean all
+parsing			:
+	$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o parsing \
+		srcs/parsing/*.c main_parsing.c srcs/tools/*.c srcs/debug/*.c
+
+re				: fclean all
 
 .PHONY: all clean fclean re

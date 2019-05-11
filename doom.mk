@@ -1,29 +1,58 @@
-SRCS_WOLF		:=		button_action.c							\
-						button_drawer.c							\
-						button_function.c						\
-						button_hover.c							\
-						button_loader.c							\
-						little_tools.c							\
-						draw_tools.c							\
-						editor.c								\
-						event_controller.c						\
-						event_handler.c							\
-						event_handler1.c						\
-						event_handler2.c						\
-						init_btns.c								\
-						init_btns2.c							\
-						init_slids.c							\
-						input_hook.c							\
-						loop_hook.c								\
-						main.c			 						\
-						movement.c		 						\
-						num_tools.c								\
-						ray_horizontal.c						\
-						ray_vertical.c							\
-						raycasting.c							\
-						sdl_manager.c							\
-						sdl_quit.c								\
-						slider_function.c						\
-						doom_init.c								\
-						doom_parseur.c							\
-						map_check.c
+SRCS_DOOM		:=		editor.c										\
+						button_function.c								\
+						slider_function.c								\
+						main.c
+
+SRCS_UI			:=		button_action.c									\
+						button_drawer.c									\
+						button_hover.c									\
+						button_loader.c									\
+						init_btns.c										\
+						init_btns2.c									\
+						init_slids.c									\
+						fire.c									\
+
+
+SRCS_INPUT		:=		event_controller.c								\
+						event_handler.c									\
+						event_handler1.c								\
+						event_handler2.c								\
+						input_hook.c									\
+						loop_hook.c										\
+						action.c										\
+						move.c											\
+						shoot.c											\
+
+SRCS_RENDER		:=		bunch.c											\
+						wall.c											\
+						bresenham.c										\
+						draw_wall.c										\
+						sector.c										\
+						minimap.c
+
+SRCS_PARSING	:=		parsing.c										\
+						chunck.c
+
+SRCS_DEBUG		:=		debug_sector.c									\
+						debug_screen.c
+
+SRCS_TOOLS		:=		num_tools.c										\
+						little_tools.c									\
+						sdl_tools.c
+
+SRCS_GESTION	:=		doom_manager.c									\
+						sdl_manager.c									\
+						ui_manager.c									\
+						player_manager.c								\
+						editor_manager.c
+
+OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
+						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
+						$(patsubst %.c,objs/parsing/%.o,$(SRCS_PARSING))\
+						$(patsubst %.c,objs/debug/%.o,$(SRCS_DEBUG))	\
+						$(patsubst %.c,objs/tools/%.o,$(SRCS_TOOLS))	\
+						$(patsubst %.c,objs/ui/%.o,$(SRCS_UI))			\
+						$(patsubst %.c,objs/input/%.o,$(SRCS_INPUT))	\
+						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))
+
+SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))
