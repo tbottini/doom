@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   button_function.c                                  :+:      :+:    :+:   */
+/*   player_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/07 23:05:38 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/07 23:05:39 by magrab           ###   ########.fr       */
+/*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
+/*   Updated: 2019/05/10 22:08:14 by magrab           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void	start_button(t_doom *doom)
+void	player_free(t_player *player)
 {
-	sdl_set_status(doom, 2);
+	(void)player;
 }
 
-void	option_button(t_doom *doom)
+int		player_init(t_player *player)
 {
-	sdl_set_status(doom, 3);
-}
-
-void	return_button(t_doom *doom)
-{
-	sdl_set_status(doom, 1);
+	player->fov = 60;
+	player->health = 100;
+	player->height = 180;
+	player->weight = 10;
+	return (1);
 }
