@@ -14,7 +14,8 @@
 
 void		send_bullet(t_fvct2 pos, t_texture *tex)
 {
-	;
+	(void)pos;
+	(void)tex;
 }
 
 void		reload(t_weapon *weapon)
@@ -43,6 +44,8 @@ void		shoot(t_doom *doom)
 
 void		kick(t_player *player, t_sector *sector)
 {
+	(void)player;
+	(void)sector;
 	;//if (is_in_range(player, sector) && is_ennemy(sector))
 	//	sector->health -= player->dmg;
 }

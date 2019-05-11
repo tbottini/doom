@@ -22,7 +22,7 @@ void	ui_free(t_ui *ui)
 		TTF_CloseFont(ui->fonts.s128);
 }
 
-int		ui_by_sdl(t_ui *ui, t_doom *doom)
+int		ui_by_sdl(t_doom *doom, t_ui *ui)
 {
 	ui->btnarr[0] = add_doom_button(doom);
 	ui->btnarr[1] = add_start_button(doom);
@@ -34,6 +34,7 @@ int		ui_by_sdl(t_ui *ui, t_doom *doom)
 	ui->btnopt[0] = ui->btnmap[0];
 	ui->btnopt[1] = ui->btnarr[0];
 	ui->slidopt[0] = add_fov_slider(doom);
+	ui->slidopt[0].loc.parent = &(ui->btnopt[1].loc);
 	return (1);
 }
 
