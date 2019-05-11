@@ -40,6 +40,11 @@ static void		window_event(t_doom *doom, SDL_Event e)
 	}
 }
 
+/*
+** Here are event which trigger on win1 (editor window)
+** New event shouldn't be needed
+*/
+
 int event_handler2(t_doom *doom, SDL_Event e)
 {
 	if (e.type == SDL_QUIT)

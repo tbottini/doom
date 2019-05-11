@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   editor.c                                           :+:      :+:    :+:   */
+/*   player_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/06 17:46:28 by tbottini         ###   ########.fr       */
+/*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
+/*   Updated: 2019/05/10 22:08:14 by magrab           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-int		close_editor(t_doom *doom)
+void	player_free(t_player *player)
 {
-	if (!(doom->edit.win))
-	{
-		doom->edit.status = 0;
-		SDL_HideWindow(doom->edit.win);
-		return (0);
-	}
-	return (-1);
+	(void)player;
 }
 
-void	start_editor(t_doom *doom)
+int		player_init(t_player *player)
 {
-	SDL_ShowWindow(doom->edit.win);
-	doom->edit.status = 1;
+	player->fov = 60;
+	player->health = 100;
+	player->height = 180;
+	player->weight = 10;
+	return (1);
 }

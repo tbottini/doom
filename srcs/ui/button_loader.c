@@ -24,11 +24,12 @@ static int		read_directory(t_doom *doom, DIR *maps, int y)
 	struct dirent	*mapdata;
 	char			tmp[512];
 
+	ft_printf("Reading\n");
 	while ((mapdata = readdir(maps)) && y < 9)
 	{
 		ft_strcpy(tmp, "ressources/map/");
 		ft_strcpy(&(tmp[15]), mapdata->d_name);
-		if (mapdata->d_reclen == 32 /*&& map_check(doom, tmp)*/)
+		if (mapdata->d_type == 8 /*&& map_check(doom, tmp)*/)
 		{
 			if (doom->ui.btnmap[y].txture)
 				free_btnmap(doom, y);
