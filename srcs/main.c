@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/28 15:36:46 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/09 20:14:03 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 static int	init(void)
 {
@@ -32,15 +32,16 @@ static int	init(void)
 	return (1);
 }
 
-int			main(void)
+int			main()
 {
-	t_doom *doom;
+	t_doom		*doom;
 
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))
 		return (-1);
-	while (0 == 0)
+	sdl_set_status(doom, 1);
+	while ('^' == '^')
 	{
 		if (!(event_handler(doom)))
 			return (0);

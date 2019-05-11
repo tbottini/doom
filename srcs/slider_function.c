@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "doom_nukem.h"
 
 void update_slider_txt(t_doom *doom, t_slid *slid)
 {
@@ -27,11 +27,13 @@ void update_slider_txt(t_doom *doom, t_slid *slid)
 
 void update_slider_value(t_doom *doom, t_slid *slid, int value)
 {
+	value = (((value - slid->loc.area.x) / (double)slid->loc.area.w
+								* (slid->max - slid->min)) + slid->min);
 	if (slid->min <= value && value <= slid->max && *slid->val != value)
 	{
 		*slid->val = value;
 		update_slider_txt(doom, slid);
-		draw_slid(doom, slid);
+		//draw_slid(doom, slid); //Deactivate because menu is now rendered everyframe
 	}
 }
 
@@ -50,5 +52,5 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
 	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
 	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
-	SDL_RenderPresent(doom->sdl.rend);
+	//SDL_RenderPresent(doom->sdl.rend);
 }
