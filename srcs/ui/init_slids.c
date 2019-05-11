@@ -36,7 +36,7 @@ t_slid		add_fov_slider(t_doom *doom)
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 30;
 	tmp.val = &doom->player.fov;
-	tmp.max = 175;
+	tmp.max = 110;
 	update_slider_txt(doom, &tmp);
 	return (tmp);
 }

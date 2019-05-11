@@ -11,27 +11,7 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-/*
-int		sdl_set_status(t_doom *doom, int status)
-{
-	if (status == 0)
-		draw_menu(doom);
-	else if (status == 1)
-	{
-		//doom_clear_map(doom);
-		draw_menu(doom);
-	}
-	else if (status == 2)
-	{
-		load_map_btns(doom);
-		draw_menu(doom);
-	}
-	else if (status == 3)
-		draw_menu(doom);
-	doom->ui.m_status = status;
-	return (status);
-}
-*/
+
 static void		on_menu_two(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
@@ -46,10 +26,10 @@ static void		on_menu_two(t_doom *doom, int x, int y)
 		{
 			if (i > 1)
 			{
-				//if (doom_parseur(doom, tmp.data))
-				//{
-				//	sdl_set_status(doom, 0);
-				//}
+				if (parsing(doom, tmp.data))
+					sdl_set_status(doom, 0);
+				else
+					ft_printf("Error reading file\n");
 			}
 		}
 	}
