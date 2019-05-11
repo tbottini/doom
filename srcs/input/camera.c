@@ -1,28 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   button_function.c                                  :+:      :+:    :+:   */
+/*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/07 23:05:38 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/07 23:05:39 by magrab           ###   ########.fr       */
+/*   Created: 2019/05/06 15:35:41 by akrache           #+#    #+#             */
+/*   Updated: 2019/05/06 16:22:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void	start_button(t_doom *doom)
-{
-	sdl_set_status(doom, 2);
-}
+void		jump();
 
-void	option_button(t_doom *doom)
-{
-	sdl_set_status(doom, 3);
-}
-
-void	return_button(t_doom *doom)
-{
-	sdl_set_status(doom, 1);
-}
+void		camera();
