@@ -32,11 +32,13 @@ void		prev_weapon(t_player *player)
 
 int			is_in_range(t_player *player, t_sector *sector)
 {
+	(void)player;
+	(void)sector;
 	return (0);
 }
 
 void		action(t_doom *doom)
 {
-	if (is_in_range(&(doom->player), &(doom->sector)))
+	if (is_in_range(&(doom->player), (doom->sector)))
 		;//interact(sector);
 }

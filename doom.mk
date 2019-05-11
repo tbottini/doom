@@ -1,7 +1,6 @@
 SRCS_DOOM		:=		editor.c										\
 						button_function.c								\
 						slider_function.c								\
-						movement.c		 								\
 						main.c
 
 SRCS_UI			:=		button_action.c									\
@@ -11,6 +10,7 @@ SRCS_UI			:=		button_action.c									\
 						init_btns.c										\
 						init_btns2.c									\
 						init_slids.c									\
+						fire.c									\
 
 
 SRCS_INPUT		:=		event_controller.c								\
@@ -22,7 +22,6 @@ SRCS_INPUT		:=		event_controller.c								\
 						action.c										\
 						move.c											\
 						shoot.c											\
-						keyboard_input.c
 
 SRCS_RENDER		:=		bunch.c											\
 						wall.c											\
@@ -44,6 +43,7 @@ SRCS_TOOLS		:=		num_tools.c										\
 SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\
 						ui_manager.c									\
+						player_manager.c								\
 						editor_manager.c
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
