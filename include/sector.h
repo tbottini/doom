@@ -4,7 +4,12 @@
 #include <stdlib.h>
 #include "vector.h"
 
-typedef t_fvct2		t_pillar;
+typedef struct		s_pillar
+{
+	t_fvct2			p;
+	char			frust;
+	float			angle;
+}					t_pillar;
 
 //definir une structure pillar avec un attribu frust plutot que dans le wall
 
@@ -20,8 +25,7 @@ typedef t_fvct2		t_pillar;
 typedef struct		s_wall
 {
 	t_pillar		pillar;
-	float			angle;
-	char			frust;
+	t_pillar		*next;
 	//texture
 	//enum wall, portal
 	//t_sector *portal sector
@@ -38,6 +42,10 @@ typedef struct		s_sector
 	//list things (shapes, objets, deco, enemis)
 }					t_sector;
 
-float			wall_clipping(t_wall wall1, t_wall wall2, t_fvct2 origin, float ang);
+/*
+**	wall : draw, manipulation
+*/
+float			wall_clipping(t_wall wall, t_fvct2 pos, float angle);
+
 
 #endif
