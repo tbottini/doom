@@ -32,7 +32,7 @@ static int	init(void)
 	return (1);
 }
 
-int			main()
+int			main(int ac, char **av)
 {
 	t_doom		*doom;
 
@@ -40,7 +40,15 @@ int			main()
 		return (0);
 	if (!(doom = doom_init()))
 		return (-1);
-	sdl_set_status(doom, 1);
+	if (ac == 2)
+	{
+		if (parsing(doom, av[1]))
+			sdl_set_status(doom, 0);
+		else
+			sdl_set_status(doom, 1);
+	}
+	else
+		sdl_set_status(doom, 1);
 	while ('^' == '^')
 	{
 		if (!(event_handler(doom)))
