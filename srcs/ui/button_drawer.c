@@ -17,7 +17,6 @@ static void	draw_buttons(t_doom *doom, int arr)
 	int x;
 
 	x = -1;
-	SDL_RenderClear(doom->sdl.rend);
 	if (arr == 1)
 	{
 		while (doom->ui.btnarr[++x].txture)
@@ -36,7 +35,7 @@ static void	draw_buttons(t_doom *doom, int arr)
 			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnopt[x].txture,
 					NULL, &(doom->ui.btnopt[x].loc.area));
 	}
-	SDL_RenderPresent(doom->sdl.rend);
+	//SDL_RenderPresent(doom->sdl.rend);
 }
 
 static void	update_loc_buttons(t_doom *doom, t_btn *arr)
@@ -73,24 +72,6 @@ void		update_loc(t_doom *doom, t_sloc *loc, t_sloc before)
 		loc->area.y = before.area.y + before.area.h + loc->pos.y;
 }
 
-void		draw_slid(t_doom *doom, t_slid *tmp)
-{
-	int size;
-
-	size = tmp->loc.area.h;
-	update_loc(doom, &tmp->loc, doom->ui.btnopt[1].loc);
-	update_slider_txt(doom, tmp);
-	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
-		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
-	tmp->grip.y = tmp->loc.area.y;
-	SDL_RenderFillRect(doom->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
-	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
-	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
-	SDL_RenderPresent(doom->sdl.rend);
-}
-
 void		draw_menu(t_doom *doom)
 {
 	int status;
@@ -111,5 +92,10 @@ void		draw_menu(t_doom *doom)
 		update_loc_buttons(doom, doom->ui.btnopt);
 		draw_buttons(doom, status);
 		draw_slid(doom, &doom->ui.slidopt[0]);
+	}
+	if (doom->ui.curr_btn)
+	{
+		if (((doom->ui.curr_btn->func || doom->ui.curr_btn->data)))
+			draw_hover(doom, doom->ui.curr_btn, NULL);
 	}
 }
