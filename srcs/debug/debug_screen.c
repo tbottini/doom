@@ -11,19 +11,24 @@ t_vct2		hot_point(t_fvct2 vct, t_vct2 size_s)
 	return (px);
 }
 
-void		bold_point(t_vct2 cursor, uint32_t color, t_doom *doom)
+void		bold_point(t_vct2 v, uint32_t color, t_doom *doom)
 {
-	doom->sdl.screen[cursor.x + cursor.y * doom->sdl.size.x] = color;
-	doom->sdl.screen[(cursor.x + 1) + cursor.y * (doom->sdl.size.x)] = color;
-	doom->sdl.screen[(cursor.x - 1) + cursor.y * (doom->sdl.size.x)] = color;
-	doom->sdl.screen[cursor.x + (cursor.y + 1)* doom->sdl.size.x] = color;
-	doom->sdl.screen[(cursor.x + 1) + (cursor.y + 1)* (doom->sdl.size.x)] = color;
-	doom->sdl.screen[(cursor.x - 1) + (cursor.y + 1)* (doom->sdl.size.x)] = color;
-	doom->sdl.screen[cursor.x + (cursor.y - 1) * doom->sdl.size.x] = color;
-	doom->sdl.screen[(cursor.x + 1) + (cursor.y - 1) * (doom->sdl.size.x)] = color;
-	doom->sdl.screen[(cursor.x - 1) + (cursor.y - 1) * (doom->sdl.size.x)] = color;
-}
+	int tmp;
 
+	tmp = v.y * doom->sdl.size.x;
+	if (v.y > 0 && v.y < (doom->sdl.size.y - 1) && (v.x < doom->sdl.size.x - 1) && v.x > 0)
+	{
+		doom->sdl.screen[v.x + tmp] = color;
+		doom->sdl.screen[v.x + 1 + tmp] = color;
+		doom->sdl.screen[v.x - 1 + tmp] = color;
+		doom->sdl.screen[v.x + 1 + tmp + doom->sdl.size.x] = color;
+		doom->sdl.screen[v.x - 1 + tmp + doom->sdl.size.x] = color;
+		doom->sdl.screen[v.x + 1 + tmp - doom->sdl.size.x] = color;
+		doom->sdl.screen[v.x - 1 + tmp - doom->sdl.size.x] = color;
+		doom->sdl.screen[v.x + tmp + doom->sdl.size.x] = color;
+		doom->sdl.screen[v.x + tmp - doom->sdl.size.x] = color;
+	}
+}
 
 void		debug_up(t_doom *doom)
 {
