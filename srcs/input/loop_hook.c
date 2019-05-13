@@ -87,6 +87,8 @@ int loop_hook(t_doom *doom)
 
 /// End Comment
 	}
+	if (doom->edit.status)
+		SDL_RenderPresent(doom->edit.rend);
 	SDL_RenderPresent(doom->sdl.rend);
 	delaypcmasterrace(doom);
 	return (0);

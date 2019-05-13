@@ -37,7 +37,6 @@
 # define PINK_FLOOR 0xdcc8c8ff
 # define INT_MAX 2147483647
 # define MAX_SPEED 50
-# define FIRE_HEIGHT HEIGHT / 48
 # define RANGE 1 //range max for kick and actions with objects
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
@@ -155,6 +154,7 @@ typedef struct			s_editor
 	t_btn				btnarr[20];
 	t_vct2				size;
 	SDL_Texture			*txture;
+	uint32_t			*screen;
 	t_tab				keys;
 }						t_editor;
 
@@ -264,6 +264,14 @@ void					start_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
 void					debug_player(t_player player);
+
+/*
+** Drawer functions
+*/
+
+int						fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color);
+void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, int color);
+void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, int color);
 
 /*
 ** Editor

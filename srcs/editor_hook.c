@@ -51,6 +51,10 @@ int		editor_key_release(int key, t_doom *doom)
 
 int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 {
+	(void)btn;
+	(void)x;
+	(void)y;
+	(void)doom;
 	return (0);
 }
 
@@ -63,6 +67,10 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 
 int		editor_mouse_release(int btn, int x, int y, t_doom *doom)
 {
+	(void)btn;
+	(void)x;
+	(void)y;
+	(void)doom;
 	return (0);
 }
 
@@ -73,5 +81,8 @@ int		editor_mouse_release(int btn, int x, int y, t_doom *doom)
 
 int		editor_mouse_move(int x, int y, t_doom *doom)
 {
+	(void)x;
+	(void)y;
+	(void)doom;
 	return (0);
 }
