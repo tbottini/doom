@@ -21,39 +21,35 @@ static void controller_input(t_doom *doom, SDL_Event e)
 
 void controller_handler(t_doom *doom, SDL_Event e)
 {
-	// if (e.type == SDL_CONTROLLERAXISMOTION)
-	// {
-	// 	if (e.jaxis.axis == 0) // Move x
-	// 	{
-	// 		if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-	// 			doom->vel.y = -e.jaxis.value;
-	// 		else
-	// 			doom->vel.y = 0;
-	// 	}
-	// 	else if (e.jaxis.axis == 1) // Move y
-	// 	{
-	// 		if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-	// 			doom->vel.x = e.jaxis.value;
-	// 		else
-	// 			doom->vel.x = 0;
-	// 	}
-	// 	else if (e.jaxis.axis == 2) // Cam y
-	// 	{
-	// 		if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-	// 		{
-	// 			if (ft_abs(e.jaxis.value) > 30000)
-	// 				doom->nrot = -e.jaxis.value / 5000.0;
-	// 			else
-	// 				doom->nrot = -e.jaxis.value / 10000.0;
-	// 		}
-	// 		else
-	// 			doom->nrot = 0;
-	// 	}
-	// }
-	// else
-	// 	controller_input(doom, e);
-	if (0)
+	if (e.type == SDL_CONTROLLERAXISMOTION)
+	{
+		if (e.jaxis.axis == 0) // Move x
+		{
+			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+				doom->vel.y = -e.jaxis.value;
+			else
+				doom->vel.y = 0;
+		}
+		else if (e.jaxis.axis == 1) // Move y
+		{
+			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+				doom->vel.x = e.jaxis.value;
+			else
+				doom->vel.x = 0;
+		}
+		else if (e.jaxis.axis == 2) // Cam y
+		{
+			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+			{
+				if (ft_abs(e.jaxis.value) > 30000)
+					doom->player.rotvel.y = -e.jaxis.value / 5000.0;
+				else
+					doom->player.rotvel.y = -e.jaxis.value / 10000.0;
+			}
+			else
+				doom->player.rotvel.y = 0.0;
+		}
+	}
+	else
 		controller_input(doom, e);
-	(void)doom;
-	(void)e;
 }

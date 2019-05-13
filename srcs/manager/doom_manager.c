@@ -28,7 +28,7 @@ int		secure_doom(t_doom *doom)
 
 void	doom_exit(t_doom *doom)
 {
-
+	player_free(&doom->player);
 	ui_free(&doom->ui);
 	editor_free(&doom->edit);
 	sdl_free(&doom->sdl);
@@ -45,7 +45,6 @@ t_doom	*doom_init()
 
 	if (!(doom = (t_doom *)malloc(sizeof(t_doom))))
 		return (NULL);
-	ft_bzero(doom, sizeof(t_doom));
 	if (secure_doom(doom))
 		return (NULL);
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
@@ -54,6 +53,8 @@ t_doom	*doom_init()
 		return (NULL);
 	if (!ui_init(&doom->ui))
 		return (NULL);
-	ui_by_sdl(&doom->ui, doom);
+	if (!player_init(&doom->player))
+		return (NULL);
+	ui_by_sdl(doom, &doom->ui);
 	return (doom);
 }

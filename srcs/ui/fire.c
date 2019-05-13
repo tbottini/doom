@@ -10,10 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf.h"
-
-static void	fill_palette(t_wolf *tab)
+#include "doom_nukem.h"
+/*
+static void	fill_palette(t_pal *p)
 {
+	*p = (t_pal){0, 0x070707, 0x1F0707, 0x2F0F07, 0x470F07, 0x571707, 0x671F07,
+		0x771F07, 0x8F2707, 0x9F2F07, 0xAF3F07, 0xBF4707, 0xC74707, 0xDF4F07,
+		0xDF5707, 0xDF5707, 0xD75F07, 0xD75F07, 0xD7670F, 0xCF6F0F, 0xCF770F,
+		0xCF7F0F, 0xCF8717, 0xC78717, 0xC78F17, 0xC7971F, 0xBF9F1F, 0xBF9F1F,
+		0xBFA727, 0xBFA727, 0xBFAF2F, 0xB7AF2F, 0xB7B72F, 0xB7B737, 0xCFCF6F,
+		0xDFDF9F, 0xEFEFC7, 0xFFFFFF, 1};
+	
 	tab->fire.pal[37] = 0xFFFFFF;
 	tab->fire.pal[36] = 0xEFEFC7;
 	tab->fire.pal[35] = 0xDFDF9F;
@@ -39,29 +46,6 @@ static void	fill_palette(t_wolf *tab)
 	tab->fire.pal[15] = 0xDF5707;
 	tab->fire.pal[14] = 0xDF5707;
 	tab->fire.pal[13] = 0xDF4F07;
-}
-
-void		fire_on_off(t_wolf *tab, int on)
-{
-	int i;
-
-	i = -1;
-	if (on)
-	{
-		while (++i < WIDTH)
-			tab->fire.pixel[(HEIGHT - 1) * WIDTH + i] = 37;
-	}
-	else
-	{
-		while (++i < WIDTH)
-			tab->fire.pixel[(HEIGHT - 1) * WIDTH + i] = 0;
-	}
-}
-
-void		fire_init(t_wolf *tab)
-{
-	int i;
-
 	tab->fire.pal[12] = 0xC74707;
 	tab->fire.pal[11] = 0xBF4707;
 	tab->fire.pal[10] = 0xAF3F07;
@@ -75,48 +59,89 @@ void		fire_init(t_wolf *tab)
 	tab->fire.pal[2] = 0x1F0707;
 	tab->fire.pal[1] = 0x070707;
 	tab->fire.pal[0] = 0;
-	fill_palette(tab);
-	ft_memset(tab->fire.pixel, 1, HEIGHT * WIDTH * 4);
-	fire_on_off(tab, 1);
+}
+*/
+
+void fire_on_off(uint32_t *screen, t_vct2 size, int status)
+{
+	int i;
+	int x;
+
+	i = -1;
+	x = size.x * (size.y - 1);
+	if (status)
+	{
+		while (++i < size.x)
+			screen[x + i] = 37;
+	}
+	else
+	{
+		while (++i < size.x)
+			screen[x + i] = 0;
+	}
 }
 
-void		spread(t_wolf *tab, int x)
+void fire_init(t_doom *doom)
 {
-	int			deg;
-	int			p;
-	int			pix;
+	/* old palette
+	doom->ui.fire = (t_pal){0, 0x07070701, 0x1F070702, 0x2F0F0703, 0x470F0704, 0x57170705,
+							0x671F0706, 0x771F0707, 0x8F270708, 0x9F2F0709, 0xAF3F070A, 0xBF47070B, 0xC747070C,
+							0xDF4F070D, 0xDF57070E, 0xDF57070F, 0xD75F0710, 0xD75F0711, 0xD7670F12, 0xCF6F0F13,
+							0xCF770F14, 0xCF7F0F15, 0xCF871716, 0xC7871717, 0xC78F1718, 0xC7971F19, 0xBF9F1F1A,
+							0xBF9F1F1B, 0xBFA7271C, 0xBFA7271D, 0xBFAF2F1E, 0xB7AF2F1F, 0xB7B72F20, 0xB7B73721,
+							0xCFCF6F22, 0xDFDF9F23, 0xEFEFC724, 0xFFFFFF25};
+	*/
+	doom->ui.fire = (t_pal){{0, 0x07070701, 0x1F070702, 0x2F0F0703, 0x470F0704,
+		0x57170705, 0x671F0706, 0x771F0707, 0x8F270708, 0x9F2F0709, 0xAF3F070A,
+		0xBF47070B, 0xC747070C, 0xDF4F070D, 0xDF57070E, 0xDF57070F, 0xD75F0710,
+		0xD75F0711, 0xD7670F12, 0xCF6F0F13, 0xCF770F14, 0xCF7F0F15, 0xCF871716,
+		0xCC8A1817, 0xD18E1918, 0xDB8E2119, 0xD9A8091A, 0xE2B00B1B, 0xF8C2281C,
+		0xF8C2291D, 0xF1D62F1E, 0xF1D62F1F, 0xF1E62F20, 0xDDB73721, 0xCFBF6F22,
+		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 145)};
+	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
+}
 
-	pix = tab->fire.pixel[x];
+/*
+static void spread(uint32_t *img, int pal[38], int width, int x)
+{
+	int p;
+	int pix;
+
+	pix = (img[x] & 0xFF) % 38;
 	if (pix == 0)
 	{
-		tab->fire.pixel[x - WIDTH] = 1;
+		img[x - width] = pal[1];
 	}
 	else if (pix)
 	{
-		p = lrint(random()) % (FIRE_HEIGHT);
-		deg = x - (p & 3) + 1;
-		tab->fire.pixel[deg - WIDTH] = pix - (p ? 0 : 1);
+		p = (rand()) % 5;
+		img[x - (p & 3) + 1 - width] = pal[pix - (p ? 0 : 1)];
 	}
 }
+*/
 
-void		fire(t_wolf *tab)
+void fire(t_doom *doom)
 {
-	int		i;
-	int		j;
-	int		ind;
+	int i;
+	int p;
+	int pix;
 
-	i = 0;
-	while (i < WIDTH)
+	i = doom->sdl.size.x * (doom->sdl.size.y / 3);
+	while (++i < doom->sdl.size.x * doom->sdl.size.y)
 	{
-		j = HEIGHT - 1;
-		while (j > 1)
+		pix = (doom->sdl.screen[i] & 0xFF) % 38;
+		//pix = (doom->sdl.screen[i] % 256) % 38;  2 fois moins opti
+		if (pix == 0)
 		{
-			ind = j * WIDTH + i;
-			spread(tab, ind);
-			tab->img_adr[ind] = tab->fire.pal[tab->fire.pixel[ind]];
-			j--;
+			doom->sdl.screen[i - doom->sdl.size.x] = doom->ui.fire.pal[1];
 		}
-		i++;
+		else
+		{
+			p = (rand()) % doom->ui.fire.height;
+			doom->sdl.screen[i - (p & 3) + 1 - doom->sdl.size.x] = doom->ui.fire.pal[pix - (p ? 0 : 1)];
+		}
+		// Je gagne 7 fps si je passe pas a la fonction #Skill #Optimisation #Jai passe beaucoup trop de temps dessus
+		// spread(doom->sdl.screen, doom->ui.fire.pal, doom->sdl.size.x, i);
 	}
-	mlx_put_image_to_window(tab->mlx_ptr, tab->win_ptr, tab->img_ptr, 0, 0);
+	SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
 }

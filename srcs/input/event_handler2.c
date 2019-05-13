@@ -29,7 +29,7 @@ static void		window_event(t_doom *doom, SDL_Event e)
 			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
 			doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
-			prog_quit(doom);
+			doom_exit(doom);
 		doom->sdl.screen = (uint32_t *)tmp;
 		draw_menu(doom);
 	}
@@ -39,6 +39,11 @@ static void		window_event(t_doom *doom, SDL_Event e)
 		SDL_HideWindow(doom->edit.win);
 	}
 }
+
+/*
+** Here are event which trigger on win2 (editor window)
+** New event shouldn't be needed
+*/
 
 int event_handler2(t_doom *doom, SDL_Event e)
 {
@@ -55,11 +60,15 @@ int event_handler2(t_doom *doom, SDL_Event e)
 	}
 	else if (e.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
 		SDL_GameControllerClose(doom->controller);
+	else if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+		editor_key_press(e.key.keysym.sym, doom);
+	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+		editor_key_release(e.key.keysym.sym, doom);
 	else if (e.type == SDL_MOUSEMOTION)
-	{}
+		editor_mouse_move(e.motion.x, e.motion.y, doom);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
-		{}
+		editor_mouse_press(e.button.button, e.button.x, e.button.y, doom);
 	else if (e.type == SDL_MOUSEBUTTONUP)
-		{}
+		editor_mouse_release(e.button.button, e.button.x, e.button.y, doom);
 	return (0);
 }

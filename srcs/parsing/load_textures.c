@@ -12,12 +12,12 @@
 //	if (!(tmp = IMG_LoadXPM_RW(rwop)))
 //	{
 //		ft_printf("IMG_LoadXPM_RW: %s\n", IMG_GetError());
-//		prog_quit(doom);
+//		doom_exit(doom);
 //	}
 //	if (!(surf = SDL_ConvertSurface(tmp, doom->sdl.format, 0)))
 //	{
 //		ft_printf("SDL_ConvertSurface: failed\n");
-//		prog_quit(doom);
+//		doom_exit(doom);
 //	}
 //	SDL_FreeSurface(tmp);
 //	SDL_RWclose(rwop);
