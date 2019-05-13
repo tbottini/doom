@@ -2,25 +2,27 @@
 
 //on peut voir si un point est dans le frustum
 
-int			on_frustum(t_player player, t_wall *wall)
+int			on_frustum(t_player player, t_pillar *pillar)
 {
 	t_fvct2	dist;
 	float	angle;
 
-	dist.x = wall->pillar.x - player.pos.x;
-	dist.y = wall->pillar.y - player.pos.y;
+	dist.x = pillar->p.x - player.pos.x;
+	dist.y = pillar->p.y - player.pos.y;
 	angle = atan2(dist.y, dist.x) * TOANGLE;
 	if (angle < 0)
 		angle = 360 + angle;
-	angle = (angle - player.rot.y);
-	angle = double_modulo(angle);
+	angle = double_modulo(angle - player.rot.y);
 	if (angle < -180)
 		angle += 360;
 	else if (angle > 180)
 		angle -= 360;
-	wall->angle = angle;
-	wall->pillar.frust = (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0) ? 1 : 0;
-	return (wall->pillar.frust);
+	pillar->angle = angle;
+	if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
+		pillar->frust = 1;
+	else
+		pillar->frust = 0;
+	return (pillar->frust);
 }
 
 void		sector_frustum(t_sector *sector, t_player player)
@@ -30,7 +32,7 @@ void		sector_frustum(t_sector *sector, t_player player)
 	i = 0;
 	while (i < sector->len)
 	{
-		on_frustum(player, &sector->wall[i]);
+		on_frustum(player, &sector->wall[i].pillar);
 		i++;
 	}
 }
@@ -105,14 +107,14 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 	return (1);
 }
 
-void		bunch_comsuption(t_doom *doom, t_player player, t_wall **bunch)
+void		bunch_comsuption(t_doom *doom, t_wall **bunch)
 {
 	int		i;
 
 	i = 0;
-	while (bunch[i + 1] != NULL)
+	while (bunch[i] != NULL)
 	{
-
+		draw_wall(*doom, *bunch[i]);
 		i++;
 	}
 }
@@ -126,7 +128,7 @@ void		portal_engine(t_doom *doom)
 	//buncherisation(*doom->sector, bunch);
 	buncherisation2(*doom->sector, bunch);
 	describe_bunch(bunch);
-	bunch_comsuption(doom, doom->player, bunch);
+	bunch_comsuption(doom, bunch);
 	minimap(doom);
 	sdl_present(&doom->sdl);
 }

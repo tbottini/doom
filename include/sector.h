@@ -6,17 +6,15 @@
 
 typedef struct		s_pillar
 {
-	float			x;
-	float			y;
+	t_fvct2			p;
 	char			frust;
+	float			angle;
 }					t_pillar;
 
 typedef struct		s_wall
 {
 	t_pillar		pillar;
 	t_pillar		*next;
-	float			angle;
-	char			frust;
 	//texture
 	//enum wall, portal
 	//t_sector *portal sector
@@ -36,7 +34,7 @@ typedef struct		s_sector
 /*
 **	wall : draw, manipulation
 */
+float			wall_clipping(t_wall wall, t_fvct2 pos, float angle);
 
-float			wall_clipping(t_wall wall1, t_wall wall2, t_fvct2 origin, float ang);
 
 #endif
