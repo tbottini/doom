@@ -27,6 +27,8 @@
 # define MINHEIGHT 600
 # define WIDTH 1280
 # define HEIGHT 720
+# define MAXWIDTH 1920
+# define MAXHEIGHT 1080
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
@@ -114,6 +116,7 @@ typedef struct			s_font
 
 typedef struct			s_pal {
 	int					pal[38];
+	int					height;
 }						t_pal;
 
 typedef struct			s_ui
