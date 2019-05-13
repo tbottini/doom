@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/13 19:01:36 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/13 22:18:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ typedef struct			s_minimap
 	t_vct2	size;
 	int		*tab;
 }						t_minimap;
+
+
 
 /*
 ** returns the color c as if it passes throught a transparent screen of color s.
@@ -73,13 +75,13 @@ void		big_point(t_doom *d, t_vct2 v, uint32_t c)
 t_vct2		minipoint(t_doom *d, t_fvct2 vct, t_minimap mini)
 {
 	t_vct2	px;
-	//double	rap;
+	double	rap;
 
-	px.x = (vct.x / (double)d->sdl.size.x) * mini.size.x + mini.d.x;
-	px.y = (vct.y / (double)d->sdl.size.y) * mini.size.y + mini.d.y;
-	//px.x = ((vct.x + 10.0) / 20.0) * mini.size.x;
-	//rap = 20.0 / mini.size.x * mini.size.y;
-	//px.y = (((vct.y + rap/2.0) / rap) * mini.size.y);
+	//px.x = (vct.x / (double)d->sdl.size.x) * mini.size.x + mini.d.x;
+	//px.y = (vct.y / (double)d->sdl.size.y) * mini.size.y + mini.d.y;
+	px.x = ((vct.x + 10.0) / 20.0) * mini.size.x;
+	rap = 20.0 / mini.size.x * mini.size.y;
+	px.y = (((vct.y + rap/2.0) / rap) * mini.size.y);
 	return (px);
 }
 
