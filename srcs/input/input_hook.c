@@ -26,8 +26,8 @@ int		key_press(int key, t_doom *doom)
 		doom->ui.curr_btn = NULL;
 		sdl_set_status(doom, 1);
 	}
-	else if (key == SDLK_5)
-		ft_printf("controller : %d\n", SDL_GameControllerEventState(SDL_ENABLE));
+	else if (key == SDLK_RETURN)
+		SDL_SetRelativeMouseMode(SDL_FALSE);
 	else if (key == SDLK_SPACE)
 		;//jump();
 	else if (key == SDLK_v)
