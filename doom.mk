@@ -28,6 +28,7 @@ SRCS_RENDER		:=		bunch.c											\
 						wall.c											\
 						bresenham.c										\
 						draw_wall.c										\
+						draw_line.c										\
 						sector.c										\
 						minimap.c
 
