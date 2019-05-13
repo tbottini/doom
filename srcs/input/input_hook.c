@@ -99,8 +99,8 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);*/
 		}
 	}
-	else if (btn == SDL_BUTTON_RIGHT)
-		fire_on_off(doom->sdl.screen, doom->sdl.size, 0); // Debug thing
+	//else if (btn == SDL_BUTTON_RIGHT)
+		//fire_on_off(doom->sdl.screen, doom->sdl.size, 0); // Debug thing
 	else if (btn == SDL_BUTTON_X1)
 		next_weapon(&(doom->player));
 	else if (btn == SDL_BUTTON_X2)
