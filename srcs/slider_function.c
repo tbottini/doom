@@ -52,5 +52,4 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
 	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
 	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
-	//SDL_RenderPresent(doom->sdl.rend);
 }

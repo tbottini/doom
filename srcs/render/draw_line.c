@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#define BIGPIXELSIZE 5
+
 
 int		fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
 {
@@ -20,6 +22,25 @@ int		fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
 		return (1);
 	}
 	return (0);
+}
+
+void	big_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
+{
+	t_vct2 big;
+
+	big.x = BIGPIXELSIZE + pos.x;
+	big.y = BIGPIXELSIZE + pos.y;
+	pos.x -= BIGPIXELSIZE;
+	while (pos.x < big.x)
+	{
+		pos.y = big.y - BIGPIXELSIZE - BIGPIXELSIZE;
+		while (pos.y < big.y)
+		{
+			fill_pixel(screen, size, pos, color);
+			++pos.y;
+		}
+		++pos.x;
+	}
 }
 
 void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)

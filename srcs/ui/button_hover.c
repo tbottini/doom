@@ -101,5 +101,4 @@ void		draw_hover(t_doom *doom, t_btn *new, t_btn *old)
 		SDL_RenderDrawRect(doom->sdl.rend, &rect);
 		SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
 	}
-	SDL_RenderPresent(doom->sdl.rend);
 }

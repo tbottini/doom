@@ -11,22 +11,54 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#define CLICKRANGE 10
 
-int		close_editor(t_doom *doom)
+t_pilier	find_pilier(t_pilier start, int x, int y)
 {
-	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
-	if (doom->edit.win)
+	t_pilier curr;
+
+	curr = start;
+	while (curr)
 	{
-		doom->edit.status = 0;
-		SDL_HideWindow(doom->edit.win);
-		return (0);
+		if (x - CLICKRANGE < curr->pos.x && curr->pos.x < x + CLICKRANGE
+			&& y - CLICKRANGE < curr->pos.y && curr->pos.y < y + CLICKRANGE)
+			return (curr);
+		curr = curr->next;
 	}
-	return (-1);
+	return (NULL);
 }
 
-void	start_editor(t_doom *doom)
+static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)
 {
-	fire_on_off(doom->sdl.screen, doom->sdl.size, 0);
-	SDL_ShowWindow(doom->edit.win);
-	doom->edit.status = 1;
+	pos0.x += editor->mappos.x;
+	pos0.y += editor->mappos.y;
+	pos1.x += editor->mappos.x;
+	pos1.y += editor->mappos.y;
+	editor_fill_line(editor, pos0, pos1, color);
+}
+
+void	draw_map(t_editor *editor)
+{
+	t_pilier	curr;
+	t_vct2		loc;
+
+	if (!editor->map)
+		return ;
+	curr = editor->map;
+	editor_fill_line(editor, (t_vct2){editor->mappos.x - 20, editor->mappos.y},
+		(t_vct2){editor->mappos.x + 200, editor->mappos.y}, 0xFFFFFFFF);
+	editor_fill_line(editor, (t_vct2){editor->mappos.x, editor->mappos.y - 20},
+		(t_vct2){editor->mappos.x, editor->mappos.y + 200}, 0xFFFFFFFF);
+	while (curr)
+	{
+		loc.x = editor->mappos.x + curr->pos.x;
+		loc.y = editor->mappos.y + curr->pos.y;
+		if (curr->next)
+			map_draw_line(editor, curr->pos, curr->next->pos, 0xFFFFFFFF);
+		if (curr == editor->currpilier)
+			big_pixel(editor->screen, editor->size, loc, 0xFF0000FF);
+		else
+			big_pixel(editor->screen, editor->size, loc, 0xFFFFFFFF);
+		curr = curr->next;
+	}
 }
