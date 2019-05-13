@@ -74,6 +74,11 @@ void PrintEvent(const SDL_Event *event)
 		}
 }
 
+/*
+** Here are event which trigger on no window
+** New event shouldn't be needed
+*/
+
 int				event_handler(t_doom *doom)
 {
 	SDL_Event event;
