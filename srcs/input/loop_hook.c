@@ -67,9 +67,9 @@ int loop_hook(t_doom *doom)
 		input_loop(doom, pos->data);
 		pos = pos->next;
 	}
+	SDL_RenderClear(doom->sdl.rend);
 	if (doom->ui.m_status == 0)
 	{
-		SDL_RenderClear(doom->sdl.rend);
 /// Place here functions that need to be launch every frame while the game is running
 
 		move(doom, doom->player.vel.x, doom->player.vel.y);
@@ -80,7 +80,6 @@ int loop_hook(t_doom *doom)
 	}
 	else
 	{
-		SDL_RenderClear(doom->sdl.rend);
 /// Place here functions that need to be launch every frame while in the menu
 
 		fire(doom);
@@ -88,6 +87,8 @@ int loop_hook(t_doom *doom)
 
 /// End Comment
 	}
+	if (doom->edit.status)
+		SDL_RenderPresent(doom->edit.rend);
 	SDL_RenderPresent(doom->sdl.rend);
 	delaypcmasterrace(doom);
 	return (0);
