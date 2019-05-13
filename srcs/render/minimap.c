@@ -93,11 +93,11 @@ void        miniwalls(t_doom *doom, t_minimap mini)
 
 	i = 0;
 	wall = doom->sector->wall;
-	cursor = minipoint(doom, wall[0].pillar, mini);
+	cursor = minipoint(doom, wall[0].pillar.p, mini);
 	tmp = cursor;
 	while (i < doom->sector->len - 1)
 	{
-		cursor2 = minipoint(doom, wall[i + 1].pillar, mini);
+		cursor2 = minipoint(doom, wall[i + 1].pillar.p, mini);
 		trait(doom, cursor, cursor2, 0x00FFFFFF);
 		i++;
 		cursor = cursor2;
