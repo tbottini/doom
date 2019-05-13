@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOOM_NUKEM
-# define DOOM_NUKEM
+#ifndef DOOM_NUKEM_H
+# define DOOM_NUKEM_H
 
 # include "libft.h"
 # include <fcntl.h>
@@ -20,7 +20,8 @@
 # include <SDL_ttf.h>
 # include <SDL_image.h>
 
-#include "sector.h"
+# include "sector.h"
+# include "list.h"
 
 
 # define MINWIDTH 800
@@ -156,6 +157,7 @@ typedef struct			s_editor
 	SDL_Texture			*txture;
 	uint32_t			*screen;
 	t_tab				keys;
+	t_dlst				*map;
 }						t_editor;
 
 typedef	struct			s_weapon
