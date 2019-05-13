@@ -21,7 +21,6 @@
 # include <SDL_image.h>
 
 # include "sector.h"
-# include "list.h"
 
 
 # define MINWIDTH 800
@@ -147,6 +146,15 @@ typedef struct			s_sdl
 	int					fps;
 }						t_sdl;
 
+typedef struct s_pilier	*t_pilier;
+
+struct					s_pilier {
+	t_vct2				pos;
+
+	t_pilier			prvs;
+	t_pilier			next;
+};
+
 typedef struct			s_editor
 {
 	int					status;
@@ -157,7 +165,10 @@ typedef struct			s_editor
 	SDL_Texture			*txture;
 	uint32_t			*screen;
 	t_tab				keys;
-	t_dlst				*map;
+	t_pilier			currpilier;
+	t_pilier			map;
+	t_vct2				mappos;
+	int					mapzoom;
 }						t_editor;
 
 typedef	struct			s_weapon
@@ -271,6 +282,8 @@ void					debug_player(t_player player);
 ** Drawer functions
 */
 
+void					sdl_cleartexture(uint32_t *screen, t_vct2 size);
+void					big_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color);
 int						fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color);
 void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, int color);
 void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, int color);
@@ -285,7 +298,14 @@ int						editor_mouse_press(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
-int						editor_mouse_move(int x, int y, t_doom *doom);
+int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
+
+void					draw_map(t_editor *editor);
+
+t_pilier				ft_newpillar(t_vct2 loc);
+t_pilier				ft_pillarpushend(t_pilier *start, t_vct2 loc);
+void					ft_nodeprint_pillar(t_pilier node);
+t_pilier				find_pilier(t_pilier start, int x, int y);
 
 /*
 **	gestion

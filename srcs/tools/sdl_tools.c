@@ -14,6 +14,18 @@ void	sdl_present(t_sdl *sdl)
 ** calcdelay("end", doom);
 */
 
+void	sdl_cleartexture(uint32_t *screen, t_vct2 size)
+{
+	int x;
+
+	x = -1;
+	while (++x < size.x * size.y)
+	{
+		if (screen[x])
+			screen[x] = 0;
+	}
+}
+
 void calcdelay(const char *str, t_doom *doom)
 {
 	struct timespec spec;
