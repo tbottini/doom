@@ -73,7 +73,7 @@ int loop_hook(t_doom *doom)
 /// Place here functions that need to be launch every frame while the game is running
 
 		move(doom, doom->player.vel.x, doom->player.vel.y);
-		//portal_engine(doom);
+		portal_engine(doom);
 		//raycasting(doom);
 
 /// End Comment
