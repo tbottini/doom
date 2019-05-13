@@ -89,8 +89,9 @@ void		describe_bunch(t_wall **bunch)
 void		debug_player(t_player player)
 {
 	ft_putendl("------player------");
-	fvct2_msg("pos", player.pos);
-	fvct2_msg("rot", player.rot);
-	ft_putnbr_msg("fov", player.fov);
+	printf("Player :\n");
+	printf("Pos : %f\t%f\n", player.pos.x, player.pos.y);
+	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
+	printf("Fov : %d\n", player.fov);
 	ft_putendl("------------------");
 }

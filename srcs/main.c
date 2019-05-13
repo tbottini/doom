@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
 /*   Updated: 2019/05/09 20:14:03 by tbottini         ###   ########.fr       */
@@ -32,30 +32,20 @@ static int	init(void)
 	return (1);
 }
 
-int			main(int ac, char **av)
+int			main()
 {
 	t_doom		*doom;
-	SDL_Event	event;
 
-	if (ac < 2)
-		return (-1);
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))
 		return (-1);
-	if (!(parsing(doom, av[1])))
+	sdl_set_status(doom, 1);
+	while ('^' == '^')
 	{
-		printf("bad parsing\n");
-		return (0);
-	}
-	debug_player(doom->player);
-	portal_engine(doom);
-	sector_describe(*doom->sector);
-	while (1)
-	{
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_KEYDOWN)
-			keyboard_input(doom, event);
+		if (!(event_handler(doom)))
+			return (0);
+		loop_hook(doom);
 	}
 	return (0);
 }

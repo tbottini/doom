@@ -29,8 +29,8 @@ static void window_event(t_doom *doom, SDL_Event e)
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			doom_exit(doom);
 		doom->sdl.screen = (uint32_t *)tmp;
-		printf("ok\n");
-		//draw_menu(doom);
+		fire_init(doom);
+		draw_menu(doom);
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 		doom_exit(doom);
@@ -58,6 +58,11 @@ static void dropfile_event(t_doom *doom, SDL_Event e)
 	SDL_free(e.drop.file);
 }
 
+/*
+** Here are event which trigger on win1 (game window)
+** New event shouldn't be needed
+*/
+
 int event_handler1(t_doom *doom, SDL_Event e)
 {
 	if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
@@ -78,7 +83,12 @@ int event_handler1(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
 		SDL_GameControllerClose(doom->controller);
 	else if (e.type == SDL_MOUSEMOTION)
-		mouse_move(e.motion.x, e.motion.y, doom);
+	{
+		if (doom->ui.m_status == 0)
+			mouse_move(e.motion.xrel, e.motion.yrel, doom);
+		else
+			mouse_move(e.motion.x, e.motion.y, doom);
+	}
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		mouse_press(e.button.button, e.button.x, e.button.y, doom);
 	else if (e.type == SDL_MOUSEBUTTONUP)
