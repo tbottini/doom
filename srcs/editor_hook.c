@@ -22,7 +22,7 @@ int		editor_key_press(int key, t_doom *doom)
 {
 	if (key == SDLK_BACKQUOTE)
 	{
-		printf("%d\n",close_editor(doom));
+		close_editor(doom);
 	}
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
@@ -84,5 +84,6 @@ int		editor_mouse_move(int x, int y, t_doom *doom)
 	(void)x;
 	(void)y;
 	(void)doom;
+	fill_pixel(doom->edit.screen, doom->edit.size, (t_vct2){x, y}, 0xFFFFFF);
 	return (0);
 }

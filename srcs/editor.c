@@ -14,7 +14,8 @@
 
 int		close_editor(t_doom *doom)
 {
-	if (!(doom->edit.win))
+	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
+	if (doom->edit.win)
 	{
 		doom->edit.status = 0;
 		SDL_HideWindow(doom->edit.win);
@@ -25,6 +26,7 @@ int		close_editor(t_doom *doom)
 
 void	start_editor(t_doom *doom)
 {
+	fire_on_off(doom->sdl.screen, doom->sdl.size, 0);
 	SDL_ShowWindow(doom->edit.win);
 	doom->edit.status = 1;
 }
