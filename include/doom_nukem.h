@@ -287,8 +287,6 @@ void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
 
 void					draw_wall(t_doom doom, t_wall wall);
-
-
 void					minimap(t_doom *d);
 
 #endif
