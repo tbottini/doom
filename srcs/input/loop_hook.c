@@ -48,7 +48,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		printf("%d\t%d\t%d\n", doom->sdl.size.x, doom->sdl.size.y, doom->sdl.fps);
+		//printf("%d FPS\n", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = spec.tv_sec;
 	}
@@ -68,31 +68,37 @@ int loop_hook(t_doom *doom)
 		pos = pos->next;
 	}
 	SDL_RenderClear(doom->sdl.rend);
-	if (doom->ui.m_status == 0)
+	if (doom->edit.status == 1)
 	{
-/// Place here functions that need to be launch every frame while the game is running
-
-		move(doom, doom->player.vel.x, doom->player.vel.y);
-		portal_engine(doom);
-		//raycasting(doom);
-
-/// End Comment
-	}
-	else
-	{
-/// Place here functions that need to be launch every frame while in the menu
-
-		fire(doom);
-		draw_menu(doom);
-
-/// End Comment
-	}
-	if (doom->edit.status)
-	{
+		SDL_RenderClear(doom->edit.rend);
+		sdl_cleartexture(doom->edit.screen, doom->edit.size);
+		draw_map(&doom->edit);
 		SDL_RenderCopy(doom->edit.rend, doom->edit.txture, NULL, NULL);
 		SDL_RenderPresent(doom->edit.rend);
 	}
-	SDL_RenderPresent(doom->sdl.rend);
+	else
+	{
+		if (doom->ui.m_status == 0)
+		{
+/// Place here functions that need to be launch every frame while the game is running
+
+			move(doom, doom->player.vel.x, doom->player.vel.y);
+			portal_engine(doom);
+			//raycasting(doom);
+
+/// End Comment
+		}
+		else
+		{
+/// Place here functions that need to be launch every frame while in the menu
+
+			fire(doom);
+			draw_menu(doom);
+
+/// End Comment
+		}
+		SDL_RenderPresent(doom->sdl.rend);
+	}
 	delaypcmasterrace(doom);
 	return (0);
 }

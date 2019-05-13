@@ -35,7 +35,6 @@ static void	draw_buttons(t_doom *doom, int arr)
 			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnopt[x].txture,
 					NULL, &(doom->ui.btnopt[x].loc.area));
 	}
-	//SDL_RenderPresent(doom->sdl.rend);
 }
 
 static void	update_loc_buttons(t_doom *doom, t_btn *arr)
