@@ -16,15 +16,15 @@ typedef struct			s_vct3
 
 typedef struct			s_fvct2
 {
-	float				x;
-	float				y;
+	double				x;
+	double				y;
 }						t_fvct2;
 
 typedef struct			s_fvct3
 {
-	float				x;
-	float				y;
-	float				z;
+	double				x;
+	double				y;
+	double				z;
 }						t_fvct3;
 
 
