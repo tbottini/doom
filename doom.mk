@@ -1,4 +1,5 @@
 SRCS_DOOM		:=		editor.c										\
+						editor_hook.c									\
 						button_function.c								\
 						slider_function.c								\
 						main.c
@@ -10,7 +11,7 @@ SRCS_UI			:=		button_action.c									\
 						init_btns.c										\
 						init_btns2.c									\
 						init_slids.c									\
-						fire.c									\
+						fire.c											\
 
 
 SRCS_INPUT		:=		event_controller.c								\
