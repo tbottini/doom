@@ -48,7 +48,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		printf("FPS : %d\n", doom->sdl.fps);
+		printf("%d\t%d\t%d\n", doom->sdl.size.x, doom->sdl.size.y, doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = spec.tv_sec;
 	}
