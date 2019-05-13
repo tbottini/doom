@@ -59,7 +59,7 @@ static void dropfile_event(t_doom *doom, SDL_Event e)
 }
 
 /*
-** Here are event which trigger on win0 (game window)
+** Here are event which trigger on win1 (game window)
 ** New event shouldn't be needed
 */
 
