@@ -19,7 +19,6 @@ t_wall		*chunck_walls(t_list *chunck_line, size_t len)
 		if (i != 0)
 			wall[i].next = &wall[i - 1].pillar;
 		double_atof(node->content, &wall[i].pillar.p);
-		//fvct2_msg("parsing vct", *(t_fvct2*)&wall[i].pillar);
 		chunck_line = chunck_line->next;
 		free(node);
 		i++;
@@ -41,6 +40,8 @@ t_player	chunck_player(int fd)
 			double_atof(line, &player.pos);
 		else if (i == 1)
 			double_atof(line, &player.rot);
+		else if (i == 2)
+			player.fov = ft_atof(line);
 		i++;
 	}
 	return (player);
