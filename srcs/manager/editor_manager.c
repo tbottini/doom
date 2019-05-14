@@ -57,7 +57,7 @@ int		editor_init(t_editor *editor)
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
 	if (SDL_LockTexture(editor->txture, NULL, &tmp, &pitch))
 		return (0);
-	editor->screen = (uint32_t*)tmp;
+	editor->screen = (Uint32*)tmp;
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
 	return (1);
 }

@@ -14,7 +14,7 @@
 #define BIGPIXELSIZE 5
 
 
-int		fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
+int		fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color)
 {
 	if (0 <= pos.x && pos.x < size.x && 0 <= pos.y && pos.y < size.y)
 	{
@@ -24,7 +24,7 @@ int		fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
 	return (0);
 }
 
-void	big_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
+void	big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color)
 {
 	t_vct2 big;
 
@@ -43,7 +43,7 @@ void	big_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
 	}
 }
 
-void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)
+void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 {
 	t_vct3	decal;
 	t_vct2	orig;
@@ -67,7 +67,7 @@ void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)
 	}
 }
 
-void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, int color)
+void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 {
 	t_vct3	decal;
 	t_vct2	orig;

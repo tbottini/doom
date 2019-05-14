@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-void			trait_id(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
+void			trait_id(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	int			dx;
 	int			dy;
@@ -41,7 +41,7 @@ void			trait_id(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
 	}
 }
 
-void			trait_iu(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
+void			trait_iu(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	int			dx;
 	int			dy;
@@ -70,7 +70,7 @@ void			trait_iu(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
 	}
 }
 
-void			trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
+void			trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	if (vct2.x != -1 && vct2.y != -1
 		&& vct1.x != -1 && vct1.y != -1)
