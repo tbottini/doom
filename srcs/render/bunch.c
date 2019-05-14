@@ -129,6 +129,6 @@ void		portal_engine(t_doom *doom)
 	buncherisation2(*doom->sector, bunch);
 	describe_bunch(bunch);
 	bunch_comsuption(doom, bunch);
-	minimap(doom);
+	//minimap(doom);
 	sdl_present(&doom->sdl);
 }
