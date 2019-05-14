@@ -56,9 +56,9 @@ void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	decal.y = (pos0.y < pos1.y ? 1 : -1);
 	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
 	fill_pixel(editor->screen, editor->size, pos0, color);
-	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-			&& fill_pixel(editor->screen, editor->size, pos0, color))
+	while ((pos0.x != pos1.x || pos0.y != pos1.y))
 	{
+		fill_pixel(editor->screen, editor->size, pos0, color);
 		e2 = err;
 		if (e2 > -orig.x && ((err -= orig.y) || 1))
 			pos0.x += decal.x;
@@ -80,9 +80,9 @@ void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	decal.y = (pos0.y < pos1.y ? 1 : -1);
 	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
 	fill_pixel(sdl->screen, sdl->size, pos0, color);
-	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-			&& fill_pixel(sdl->screen, sdl->size, pos0, color))
+	while ((pos0.x != pos1.x || pos0.y != pos1.y))
 	{
+		fill_pixel(sdl->screen, sdl->size, pos0, color);
 		e2 = err;
 		if (e2 > -orig.x && ((err -= orig.y) || 1))
 			pos0.x += decal.x;
