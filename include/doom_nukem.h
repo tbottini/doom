@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   doom.h                                             :+:      :+:    :+:   */
+/*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 20:44:04 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:18:30 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 600
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 1920
+# define HEIGHT 1024
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -350,5 +350,5 @@ void					prev_weapon(t_player *player);
 void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
-
+int						keyboard_input(t_doom *doom, SDL_Event event);
 #endif

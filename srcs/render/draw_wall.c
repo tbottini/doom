@@ -1,24 +1,5 @@
 #include "doom_nukem.h"
 
-
-/*
-print un wall il faut
-
-(px1, px2, dist1, dist2, sdl, texture1, texture2)
-
--determiner la colonne du pillier 1
--determiner la colomne du pillier 2
--determiner la distance des deux pillier
--determiner un coeficient
--faire un degrader jusqu'au pillier
-*/
-
-//il faut definir pillar et *next
-//		une verification pa
-
-//		si on est endehors du frustrum
-
-
 void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
 {
 	t_vct2 px;
@@ -62,18 +43,64 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	*dist = d;
 }
 
+void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
+{
+	int		i;
+	int		sky_size;
+
+	i = 0;
+	if (length > sdl->size.y)
+		length = sdl->size.y - 1;
+	sky_size = (sdl->size.y - length) / 2;
+	while (i < sky_size)
+	{
+		sdl->screen[ipx] = BLUE_SKY;
+		ipx += sdl->size.x;
+		i++;
+	}
+	i = 0;
+	while (i < length)
+	{
+		sdl->screen[ipx] = PINK_FLOOR;
+		ipx += sdl->size.x;
+		i++;
+	}
+	sky_size += length % 2;
+	i = 0;
+	while (i < sky_size)
+	{
+		sdl->screen[ipx] = 0x272130ff;
+		ipx += sdl->size.x;
+		i++;
+	}
+}
+
+void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
+{
+	float	coef_dist_px;
+	int		fact_px;
+	int		column;
+	t_fvct2	column_len;
+
+	column = px.x;
+	fact_px = (px.x < px.y) ? 1 : -1;
+	column_len.x = (float)(sdl->size.y / 2) / dist.x;
+	column_len.y = (float)(sdl->size.y / 2) / dist.y;
+	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x);
+	while (column != px.y)
+	{
+		column += fact_px;
+
+		draw_column(sdl, column, column_len.x, BLUE_SKY);
+		column_len.x -= coef_dist_px;
+	}
+}
+
 void		draw_wall(t_doom doom , t_wall wall)
 {
 	t_vct2	column_id;
 	t_fvct2	dist;
 
-	//test mur 1
-	printf("--------------------test_mur----------------------------\n");
-	fvct2_msg("pos pillar", wall.pillar.p);
-	fvct2_msg("pos next", wall.next->p);
 	pillar_screen_info(doom, wall, &dist, &column_id);
-	printf("px pillar %d next %d\n dist pillar %f next %f\n", column_id.x, column_id.y, dist.x, dist.y);
-	printf("--------------------------------------------------------\n");
-	//printf("pillar column id %d dist %f\n", column_id.x, dist.x);
-	//printf("pillar2 column id %d dist %f\n", column_id.y, dist.y);
+	pillar_to_pillar(&doom.sdl, column_id, dist);
 }
