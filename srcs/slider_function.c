@@ -27,8 +27,7 @@ void update_slider_txt(t_doom *doom, t_slid *slid)
 
 void update_slider_value(t_doom *doom, t_slid *slid, int value)
 {
-	value = (((value - slid->loc.area.x) / (double)slid->loc.area.w
-								* (slid->max - slid->min)) + slid->min);
+	value = ((int)((value - slid->loc.area.x) / (double)slid->loc.area.w * (slid->max - slid->min)) + slid->min);
 	if (slid->min <= value && value <= slid->max && *slid->val != value)
 	{
 		*slid->val = value;

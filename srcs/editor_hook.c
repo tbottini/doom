@@ -76,7 +76,7 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 			pos.x = x - doom->edit.mappos.x;
 			pos.y = y - doom->edit.mappos.y;
 			
-			if (!(ft_pillarpushend(&doom->edit.currpilier, pos)))
+			if (!(ft_pillarpushend(&(doom->edit.currpilier), pos)))
 				doom_exit(doom); 
 		}
 	}

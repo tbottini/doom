@@ -41,7 +41,7 @@ void		sprint_release(t_doom *doom)
 	doom->player.speed = 10;
 }
 
-void		move(t_doom *doom, int x, int y)
+void		move(t_doom *doom, double x, double y)
 {
 	t_fvct2 d;
 	t_fvct2 npos;

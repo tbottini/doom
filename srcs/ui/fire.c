@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-void fire_on_off(uint32_t *screen, t_vct2 size, int status)
+void fire_on_off(Uint32 *screen, t_vct2 size, int status)
 {
 	int i;
 	int x;
