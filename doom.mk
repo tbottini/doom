@@ -40,6 +40,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 
 SRCS_TOOLS		:=		num_tools.c										\
 						little_tools.c									\
+						list_tools.c									\
 						sdl_tools.c
 
 SRCS_GESTION	:=		doom_manager.c									\
