@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/14 22:36:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/14 22:55:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,38 +201,14 @@ void		minicursor(t_doom *d, int c, t_minimap mini)
 	bold_point2(cursor, c, d, mini);
 }
 
-void		minifield(t_doom *d, t_minimap mini, double angle)//, t_vct2 mid)
+void		minifield(t_doom *d, t_minimap mini, double angle)
 {
-	//double	angle;
-	//double	inc_ang;
-	int		mx;
-	int		my;
-	t_fvct2	end;
-	t_vct2	pix;
-	//int		x;
-	//int		y;
 
-	//angle = d->player.rot.y - (d->player.fov >> 1);
-	mx = mini.a.x;
-	my = mini.a.y - (mini.size.y >> 1);
-	mx = -1;
-	my = 0;
-	end.x = mx * cos(angle * PI180) - my * sin(angle * PI180);
-	end.y = mx * sin(angle * PI180) + my * cos(angle * PI180);
-	pix.x = end.x * -100;
-	pix.y = end.y * 100;
-	pix.x += mini.mid.x;
-	pix.y += mini.mid.y;
+	t_vct2	pix;
+
+	pix.x = 128 * cos(angle * PI180) + mini.mid.x;
+	pix.y = -128 * sin(angle * PI180) + mini.mid.y;
 	fill_line(&d->sdl, mini.mid, pix, hcol(d->player.health));
-	//coef = tan(angle * PI180);
-	/*while (x >= 0 && x < d->sdl.size.x && y < d->sdl.size.y && y >= 0 &&
-		d->sdl.screen[x + y * d->sdl.size.x] != WHITE && d->sdl.screen[x + y * d->sdl.size.x] != CWALL)
-	{
-		d->sdl.screen[x + y * d->sdl.size.x] =
-			opacity(WHITE, d->sdl.screen[x + y * d->sdl.size.x], 0.5);
-		x += coef > 1 ? 1 : 1 / coef;
-		y += coef > 1 ? coef : 1;
-	}*/
 }
 
 void		minimap(t_doom *d)
@@ -263,9 +239,16 @@ void		minimap(t_doom *d)
 		++i;
 	}
 	miniwalls(d, mini, CWALL);
+	i = (d->player.rot.y - (d->player.fov >> 1));
+	while (i < (d->player.rot.y + (d->player.fov >> 1)))
+	{
+		minifield(d, mini, i);
+		i += d->player.fov / 4;
+	}
+	miniwalls(d, mini, CWALL);
 	//minifield(d, mini, (d->player.rot.y + (d->player.fov >> 1)));
 	//minifield(d, mini, (d->player.rot.y - (d->player.fov >> 1)));
-	minifield(d, mini, (d->player.rot.y));
+	//minifield(d, mini, (d->player.rot.y));
 	minicursor(d, CPERS, mini); //mid
 	debug_player(d->player);
 	SDL_RenderCopy(d->sdl.rend, d->sdl.txture, NULL, NULL);
