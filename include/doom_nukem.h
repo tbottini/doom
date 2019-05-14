@@ -142,7 +142,7 @@ typedef struct			s_sdl
 	uint32_t			*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
-	int					timp;
+	Uint32				timp;
 	int					fps;
 }						t_sdl;
 
@@ -202,7 +202,7 @@ struct					s_doom
 	t_sdl				sdl;
 	t_editor			edit;
 	t_ui				ui;
-	unsigned long		timestamp;
+	Uint32				timestamp;
 	t_player			player;
 	SDL_GameController	*controller;
 	t_sector			*sector;

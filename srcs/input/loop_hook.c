@@ -41,20 +41,16 @@ static void input_loop(t_doom *doom, int key)
 
 static void	delaypcmasterrace(t_doom *doom)
 {
-	struct timespec spec;
-
-	clock_gettime(CLOCK_REALTIME, &spec);
-	if (doom->sdl.timp == spec.tv_sec)
+	if (doom->sdl.timp == SDL_GetTicks() / 1000)
 		++doom->sdl.fps;
 	else
 	{
 		//printf("%d FPS\n", doom->sdl.fps);
 		doom->sdl.fps = 0;
-		doom->sdl.timp = spec.tv_sec;
+		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
-	while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - doom->timestamp < 16500)
-		clock_gettime(CLOCK_REALTIME, &spec);
-	doom->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
+	while (SDL_GetTicks() - doom->timestamp < 16); // Limiteur de FPS (16)
+	doom->timestamp = SDL_GetTicks();
 }
 
 int loop_hook(t_doom *doom)
