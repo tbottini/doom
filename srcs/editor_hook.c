@@ -58,29 +58,9 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 	t_vct2 pos;
 	if (btn == SDL_BUTTON_LEFT)
 	{
-		if (!(doom->edit.map))
-		{
-			if (!(doom->edit.map = ft_newpillar((t_vct2){0, 0})))
-				doom_exit(doom);
-			doom->edit.mappos = (t_vct2){x, y};
-			doom->edit.mapzoom = 1;
-			doom->edit.currpilier = doom->edit.map;
-		}
-		else
-			doom->edit.currpilier = find_pilier(doom->edit.map, x - doom->edit.mappos.x, y - doom->edit.mappos.y);
+		doom->edit.currpilier = find_pilier(doom->edit.map, x - doom->edit.mappos.x, y - doom->edit.mappos.y);
+		printf("currpillar : %p\n", doom->edit.currpilier);
 	}
-	else if (btn == SDL_BUTTON_RIGHT)
-	{
-		if (doom->edit.currpilier)
-		{
-			pos.x = x - doom->edit.mappos.x;
-			pos.y = y - doom->edit.mappos.y;
-			
-			if (!(ft_pillarpushend(&(doom->edit.currpilier), pos)))
-				doom_exit(doom); 
-		}
-	}
-	printf("currpillar : %p\n", doom->edit.currpilier);
 	return (0);
 }
 
