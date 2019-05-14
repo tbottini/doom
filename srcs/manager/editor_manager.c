@@ -59,5 +59,9 @@ int		editor_init(t_editor *editor)
 		return (0);
 	editor->screen = (Uint32*)tmp;
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
+	editor->mappos = (t_vct2){editor->size.x / 2, editor->size.y / 2};
+	editor->mapzoom = 1;
+	if (!(editor->map = ft_newpillar((t_vct2){0, 0})))
+		return (0);
 	return (1);
 }
