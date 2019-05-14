@@ -30,7 +30,7 @@ static void		window_event(t_doom *doom, SDL_Event e)
 			doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			doom_exit(doom);
-		doom->sdl.screen = (uint32_t *)tmp;
+		doom->sdl.screen = (Uint32 *)tmp;
 		draw_menu(doom);
 	}
 	else */

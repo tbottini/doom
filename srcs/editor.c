@@ -28,7 +28,7 @@ t_pilier	find_pilier(t_pilier start, int x, int y)
 	return (NULL);
 }
 
-static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)
+static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 {
 	pos0.x += editor->mappos.x;
 	pos0.y += editor->mappos.y;
