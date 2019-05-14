@@ -15,24 +15,22 @@
 int		close_editor(t_doom *doom)
 {
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
-	if (doom->edit.win)
-	{
-		doom->edit.status = 0;
-		SDL_HideWindow(doom->edit.win);
-		return (0);
-	}
-	return (-1);
+	SDL_HideWindow(doom->edit.win);
+	doom->edit.status = 0;
+	return (0);
 }
 
-void	start_editor(t_doom *doom)
+void	open_editor(t_doom *doom)
 {
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 0);
 	SDL_ShowWindow(doom->edit.win);
+	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;
 }
 
 void	editor_free(t_editor *editor)
 {
+	SDL_ShowWindow(editor->win);
 	if (editor->map)
 		free(editor->map); // Must Change
 	if (editor->txture)

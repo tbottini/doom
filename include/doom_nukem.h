@@ -273,7 +273,7 @@ void					*listdel(t_list **list);
 char					**tab_new(int y);
 void					controller_handler(t_doom *doom, SDL_Event event);
 void					lst_del_node(t_list **node);
-void					start_editor(t_doom *doom);
+void					open_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
 void					debug_player(t_player player);
