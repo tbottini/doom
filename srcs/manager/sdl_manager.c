@@ -58,7 +58,7 @@ int		sdl_init(t_sdl *sdl, const char *title)
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
 	if (SDL_LockTexture(sdl->txture, NULL, &tmp, &pitch))
 		return (0);
-	sdl->screen = (uint32_t*)tmp;
+	sdl->screen = (Uint32*)tmp;
 	if (!(sdl->format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888)))
 		return (0);
 	return (1);

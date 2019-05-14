@@ -51,7 +51,7 @@ int			hcol(int health)
 		return (0xFF764401);
 }
 
-void		big_point(t_doom *d, t_vct2 v, uint32_t c)
+void		big_point(t_doom *d, t_vct2 v, Uint32 c)
 {
 	int tmp;
 
@@ -118,7 +118,7 @@ void		minicursor(t_doom *d, int x, int y, int c)
 void		minimap(t_doom *d)
 {
 	t_minimap	mini;
-	uint32_t c;
+	Uint32 c;
 
 	mini.d.x = (d->sdl.size.x >> 6);
 	mini.a.x = d->sdl.size.x >> 3;

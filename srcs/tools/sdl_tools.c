@@ -14,7 +14,7 @@ void	sdl_present(t_sdl *sdl)
 ** calcdelay("end", doom);
 */
 
-void	sdl_cleartexture(uint32_t *screen, t_vct2 size)
+void	sdl_cleartexture(Uint32 *screen, t_vct2 size)
 {
 	int x;
 
@@ -28,9 +28,6 @@ void	sdl_cleartexture(uint32_t *screen, t_vct2 size)
 
 void calcdelay(const char *str, t_doom *doom)
 {
-	struct timespec spec;
-
-	clock_gettime(CLOCK_REALTIME, &spec);
-	printf(" %s %lu |", str, (spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - doom->timestamp);
-	doom->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
+	printf(" %s %u |", str, SDL_GetTicks() - doom->timestamp);
+	doom->timestamp = SDL_GetTicks();
 }
