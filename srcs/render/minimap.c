@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/14 21:11:27 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/14 22:36:53 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ typedef struct			s_minimap
 	t_vct2	d;
 	t_vct2	a;
 	t_vct2	size;
+	t_vct2	mid;
 }						t_minimap;
 
 #define UNIT 20.0
@@ -141,7 +142,7 @@ int			opacity(int s, int c, double f)
 	+ ((int)((c >> 24 & 255) + f * ((s >> 24 & 255) - (c >> 24 & 255))) << 24));
 }
 
-int			hcol(int health)
+Uint32			hcol(int health)
 {
 	if (health >= 100)
 		return (0x44FF7D64);
@@ -200,25 +201,38 @@ void		minicursor(t_doom *d, int c, t_minimap mini)
 	bold_point2(cursor, c, d, mini);
 }
 
-void		minifield(t_doom *d, t_minimap mini, double angle)
+void		minifield(t_doom *d, t_minimap mini, double angle)//, t_vct2 mid)
 {
-	double	coef;
-	int		x;
-	int		y;
+	//double	angle;
+	//double	inc_ang;
+	int		mx;
+	int		my;
+	t_fvct2	end;
+	t_vct2	pix;
+	//int		x;
+	//int		y;
 
-	printf("rot = %f\n", d->player.rot.y);
-	coef = tan(angle * PI180);
-	printf("coef = %d\n", coef);
-	x = (mini.a.x - (mini.size.x >> 1));
-	y = (mini.a.y - (mini.size.y >> 1));
-	while (x >= 0 && x < d->sdl.size.x && y < d->sdl.size.y && y >= 0 &&
+	//angle = d->player.rot.y - (d->player.fov >> 1);
+	mx = mini.a.x;
+	my = mini.a.y - (mini.size.y >> 1);
+	mx = -1;
+	my = 0;
+	end.x = mx * cos(angle * PI180) - my * sin(angle * PI180);
+	end.y = mx * sin(angle * PI180) + my * cos(angle * PI180);
+	pix.x = end.x * -100;
+	pix.y = end.y * 100;
+	pix.x += mini.mid.x;
+	pix.y += mini.mid.y;
+	fill_line(&d->sdl, mini.mid, pix, hcol(d->player.health));
+	//coef = tan(angle * PI180);
+	/*while (x >= 0 && x < d->sdl.size.x && y < d->sdl.size.y && y >= 0 &&
 		d->sdl.screen[x + y * d->sdl.size.x] != WHITE && d->sdl.screen[x + y * d->sdl.size.x] != CWALL)
 	{
 		d->sdl.screen[x + y * d->sdl.size.x] =
 			opacity(WHITE, d->sdl.screen[x + y * d->sdl.size.x], 0.5);
 		x += coef > 1 ? 1 : 1 / coef;
 		y += coef > 1 ? coef : 1;
-	}
+	}*/
 }
 
 void		minimap(t_doom *d)
@@ -233,6 +247,8 @@ void		minimap(t_doom *d)
 	mini.a.y = d->sdl.size.y - (d->sdl.size.y >> 5);
 	mini.size.x = mini.a.x - mini.d.x;
 	mini.size.y = mini.a.y - mini.d.y;
+	mini.mid.x = mini.a.x - (mini.size.x >> 1);
+	mini.mid.y = mini.a.y - (mini.size.y >> 1);
 	i = mini.d.x;
 	while (i < mini.a.x)
 	{
@@ -250,7 +266,7 @@ void		minimap(t_doom *d)
 	//minifield(d, mini, (d->player.rot.y + (d->player.fov >> 1)));
 	//minifield(d, mini, (d->player.rot.y - (d->player.fov >> 1)));
 	minifield(d, mini, (d->player.rot.y));
-	minicursor(d, CPERS, mini);
+	minicursor(d, CPERS, mini); //mid
 	debug_player(d->player);
 	SDL_RenderCopy(d->sdl.rend, d->sdl.txture, NULL, NULL);
 }
