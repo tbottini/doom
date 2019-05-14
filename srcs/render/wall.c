@@ -17,17 +17,11 @@ float			wall_clipping(t_wall wall, t_fvct2 pos, float angle)
 	diff.y = wall.pillar.p.y - pos.y;
 	diff2.x = wall.next->p.x - pos.x;
 	diff2.y = wall.next->p.y - pos.y;
-	coef_ang = tan(angle * PI180);
-	printf("-WALL CLIPPING-\n");
-	printf("angle coef: %f\n", coef_ang);
-	fvct2_msg("diff pillar", diff);
-	fvct2_msg("diff next", diff2);
+	coef_ang = tan(angle * PI180);;
 	if (diff2.x - diff.x < 0.001 && diff2.x - diff.x > -0.001)
 	{
-		printf("!sans wall_coef\n");
 		inter.x = diff.x;
 		inter.y = diff.x * coef_ang;
-		fvct2_msg("inter :", inter);
 	}
 	else
 	{

@@ -15,7 +15,11 @@
 
 double		double_modulo(double num)
 {
-	num = (int)num % 360 + num - (int)num;
+	//num = (int)num % 360 + num - (int)num;
+	if (num > 360)
+		num -= 360;
+	else if (num < 0)
+		num += 360;
 	return (num);
 }
 
