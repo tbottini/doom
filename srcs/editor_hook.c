@@ -24,6 +24,10 @@ int		editor_key_press(int key, t_doom *doom)
 	{
 		close_editor(doom);
 	}
+	else if (key == SDLK_5)
+		ft_nodeprint_pillar(doom->edit.map);
+	else if (key == SDLK_6)
+		draw_map(&doom->edit);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);
@@ -51,10 +55,32 @@ int		editor_key_release(int key, t_doom *doom)
 
 int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 {
-	(void)btn;
-	(void)x;
-	(void)y;
-	(void)doom;
+	t_vct2 pos;
+	if (btn == SDL_BUTTON_LEFT)
+	{
+		if (!(doom->edit.map))
+		{
+			if (!(doom->edit.map = ft_newpillar((t_vct2){0, 0})))
+				doom_exit(doom);
+			doom->edit.mappos = (t_vct2){x, y};
+			doom->edit.mapzoom = 1;
+			doom->edit.currpilier = doom->edit.map;
+		}
+		else
+			doom->edit.currpilier = find_pilier(doom->edit.map, x - doom->edit.mappos.x, y - doom->edit.mappos.y);
+	}
+	else if (btn == SDL_BUTTON_RIGHT)
+	{
+		if (doom->edit.currpilier)
+		{
+			pos.x = x - doom->edit.mappos.x;
+			pos.y = y - doom->edit.mappos.y;
+			
+			if (!(ft_pillarpushend(&(doom->edit.currpilier), pos)))
+				doom_exit(doom); 
+		}
+	}
+	printf("currpillar : %p\n", doom->edit.currpilier);
 	return (0);
 }
 
@@ -79,11 +105,21 @@ int		editor_mouse_release(int btn, int x, int y, t_doom *doom)
 ** x and y are relative postions when in gamemode
 */
 
-int		editor_mouse_move(int x, int y, t_doom *doom)
+int		editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 {
-	(void)x;
-	(void)y;
-	(void)doom;
-	fill_pixel(doom->edit.screen, doom->edit.size, (t_vct2){x, y}, 0xFFFFFF);
+	if (e.state == SDL_BUTTON_LMASK)
+	{
+		if (doom->edit.currpilier)
+		{
+			doom->edit.currpilier->pos.x += e.xrel;
+			doom->edit.currpilier->pos.y += e.yrel;
+		}
+		else
+		{
+			doom->edit.mappos.x += e.xrel;
+			doom->edit.mappos.y += e.yrel;
+		}
+	}
+	//fill_pixel(doom->edit.screen, doom->edit.size, (t_vct2){x, y}, 0xFFFFFF);
 	return (0);
 }

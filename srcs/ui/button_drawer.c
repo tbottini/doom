@@ -35,7 +35,6 @@ static void	draw_buttons(t_doom *doom, int arr)
 			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnopt[x].txture,
 					NULL, &(doom->ui.btnopt[x].loc.area));
 	}
-	//SDL_RenderPresent(doom->sdl.rend);
 }
 
 static void	update_loc_buttons(t_doom *doom, t_btn *arr)
@@ -56,8 +55,8 @@ static void	update_loc_buttons(t_doom *doom, t_btn *arr)
 
 void		update_loc(t_doom *doom, t_sloc *loc, t_sloc before)
 {
-	loc->area.x = doom->sdl.size.x * (loc->pos.x / 100.0);
-	loc->area.y = doom->sdl.size.y * (loc->pos.y / 100.0);
+	loc->area.x = (int)(doom->sdl.size.x * (loc->pos.x / 100.0));
+	loc->area.y = (int)(doom->sdl.size.y * (loc->pos.y / 100.0));
 	if (loc->snapx == 1)
 		loc->area.x -= loc->area.w / 2;
 	else if (loc->snapx == 2)
@@ -69,7 +68,7 @@ void		update_loc(t_doom *doom, t_sloc *loc, t_sloc before)
 	else if (loc->snapy == 2)
 		loc->area.y -= loc->area.h;
 	else if (loc->snapy == 3)
-		loc->area.y = before.area.y + before.area.h + loc->pos.y;
+		loc->area.y = before.area.y + before.area.h + (int)loc->pos.y;
 }
 
 void		draw_menu(t_doom *doom)
