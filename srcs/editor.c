@@ -11,13 +11,14 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-#define CLICKRANGE 10
+#define CLICKRANGE 12
 
 t_pilier	find_pilier(t_pilier start, int x, int y)
 {
 	t_pilier curr;
 
-	curr = start;
+	curr = NULL; // GROS BUG CHELOU QUE JE COMPREND PAS
+	curr = start; // (le pointeur ne prend pas la valeur de l'autre pointeur aka ignore la ligne)
 	while (curr)
 	{
 		if (x - CLICKRANGE < curr->pos.x && curr->pos.x < x + CLICKRANGE
@@ -42,13 +43,12 @@ void	draw_map(t_editor *editor)
 	t_pilier	curr;
 	t_vct2		loc;
 
-	if (!editor->map)
-		return ;
-	curr = editor->map;
-	editor_fill_line(editor, (t_vct2){editor->mappos.x - 20, editor->mappos.y},
-		(t_vct2){editor->mappos.x + 200, editor->mappos.y}, 0xFFFFFFFF);
-	editor_fill_line(editor, (t_vct2){editor->mappos.x, editor->mappos.y - 20},
-		(t_vct2){editor->mappos.x, editor->mappos.y + 200}, 0xFFFFFFFF);
+	editor_fill_line(editor, (t_vct2){editor->mappos.x - 500, editor->mappos.y},
+		(t_vct2){editor->mappos.x + 500, editor->mappos.y}, 0xFFFFFFFF);
+	editor_fill_line(editor, (t_vct2){editor->mappos.x, editor->mappos.y - 500},
+		(t_vct2){editor->mappos.x, editor->mappos.y + 500}, 0xFFFFFFFF);
+	curr = NULL; // GROS BUG CHELOU QUE JE COMPREND PAS
+	curr = editor->map; // (le pointeur ne prend pas la valeur de l'autre pointeur aka ignore la ligne)
 	while (curr)
 	{
 		loc.x = editor->mappos.x + curr->pos.x;
