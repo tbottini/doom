@@ -1,10 +1,45 @@
+notes --Render--
+
+wall render
+
+-lorsque un pillier n'est pas dans le champ de vision mais son voisin oui
+	il y a coupure mais si leur angle n'est pas droit elle se fait produit mal
+	revoir (wall_clipping)
+ex :
+   .
+  /|
+./ |
+|  |
+.--.
+--> pblm d'ordonne a l'origine :
+ax + b = y
+b = diff.x * coef_wall - diff.y // b = a * x + y
+-->
+b = diff.y - diff.x * coef_wall // b = y - a * x
 
 
-t_point			(t_fvct2 point)
-
-t_wall			(t_wall wall)
-	t_point		
+-lorsqu'aucun pillier n'est detecter le mur ne s'affiche pas meme
+	si il est dans le champs de vision du joueur:
 
 
-<thought>
-Utiliser https://www.youtube.com/watch?v=SNCT9HVIf3A Pour music de main menu ?
+un segment est dans le champs de vision (hormis ses point) si
+le point de vision du joueur est dans l'angle pillier-joueur-pillier
+
+car les sommets ne sont pas dans le champs de vision
+(seul l'angle de rotation est concerne car)
+soit tout le champs de vision est concerne par le mur
+soit rien du tout
+
+on verifie que dans la rotation y est bien entre l'angle entre les deux
+
+
+
+etapes
+
+render
+-affichage selon la hauteur du personnage / mur
+-texture mur/sol/plafond
+portail
+	secteur interieur
+	portail vers d'autre secteur
+
