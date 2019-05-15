@@ -1,12 +1,5 @@
 #include "doom_nukem.h"
 
-//on peut voir si un point est dans le frustum
-
-//pblm les mur ne s'affiche pas si on ne detecte pas au moins un pillier
-
-
-
-
 int			on_frustum(t_player player, t_pillar *pillar)
 {
 	t_fvct2	dist;
@@ -49,7 +42,7 @@ void		sector_frustum(t_sector *sector, t_player player)
 */
 //si l'un des pillier du mur est dans le frustum alors on ajoute le mur
 
-int			buncherisation(t_sector sector, t_wall **bunch)
+int			buncherisation(t_player p, t_sector sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
@@ -61,6 +54,11 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 	while (i_wall < sector.len)
 	{
 		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
+		{
+			bunch[i_bunch] = &wall[i_wall];
+			i_bunch++;
+		}
+		else if (fabs(wall[i_wall].pillar.angle) + fabs(wall[i_wall].next->angle) < 180)
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
@@ -89,7 +87,7 @@ void		portal_engine(t_doom *doom)
 
 	ft_bzero(doom->sdl.screen, doom->sdl.size.x * doom->sdl.size.y * 4);
 	sector_frustum(doom->sector, doom->player);
-	buncherisation(*doom->sector, bunch);
+	buncherisation(doom->player, *doom->sector, bunch);
 	bunch_comsuption(doom, bunch);
 	minimap(doom);
 	sdl_present(&doom->sdl);
