@@ -13,9 +13,9 @@
 #include "doom_nukem.h"
 #define CLICKRANGE 12
 
-t_pilier	find_pilier(t_pilier start, int x, int y)
+t_lstpil	find_pilier(t_lstpil start, int x, int y)
 {
-	t_pilier curr;
+	t_lstpil curr;
 
 	curr = NULL; // GROS BUG CHELOU QUE JE COMPREND PAS
 	curr = start; // (le pointeur ne prend pas la valeur de l'autre pointeur aka ignore la ligne)
@@ -40,7 +40,7 @@ static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, Uint32 col
 
 void	draw_map(t_editor *editor)
 {
-	t_pilier	curr;
+	t_lstpil	curr;
 	t_vct2		loc;
 
 	editor_fill_line(editor, (t_vct2){editor->mappos.x - 500, editor->mappos.y},
