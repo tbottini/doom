@@ -66,6 +66,17 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 }
 
 /*
+** Add here function that need to be done when mouse wheel is used
+*/
+
+int		editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
+{
+	doom->edit.mapzoom += e.y;
+	printf("Wheel %d\t%d\n", doom->edit.mapzoom, e.y);
+	return (0);
+}
+
+/*
 ** Add here function that need to be done when mouse is released
 ** Example :
 ** else if (btn == SDL_BUTTON_yourbutton)
