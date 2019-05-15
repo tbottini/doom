@@ -25,8 +25,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 600
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 1200
+# define HEIGHT 800
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -300,6 +300,7 @@ int						editor_mouse_press(int button, int x, int y,
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
+int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 
 void					draw_map(t_editor *editor);
 

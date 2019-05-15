@@ -17,8 +17,7 @@ t_lstpil	find_pilier(t_lstpil start, int x, int y)
 {
 	t_lstpil curr;
 
-	curr = NULL; // GROS BUG CHELOU QUE JE COMPREND PAS
-	curr = start; // (le pointeur ne prend pas la valeur de l'autre pointeur aka ignore la ligne)
+	curr = start;
 	while (curr)
 	{
 		if (x - CLICKRANGE < curr->pos.x && curr->pos.x < x + CLICKRANGE
@@ -38,17 +37,42 @@ static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, Uint32 col
 	editor_fill_line(editor, pos0, pos1, color);
 }
 
+void		draw_grid(t_editor *editor, t_vct2 center, int cases, int dist)
+{
+	t_vct2 curr;
+	t_vct2 pos;
+
+	curr.x = center.x - cases * dist;
+	curr.y = center.y - cases * dist;
+	pos.x = center.x - cases * dist;
+	pos.y = center.y + cases * dist;
+	if (pos.x < 0)
+		pos.x = 0;
+	if (pos.y > editor->size.y)
+		pos.y = editor->size.y;
+	while (curr.x < center.x + cases * dist && curr.x < editor->size.x)
+	{
+		if (curr.x >= 0)
+			editor_fill_line(editor, curr, (t_vct2){curr.x, pos.y}, 0x50505050);
+		curr.x += dist;
+	}
+	editor_fill_line(editor, curr, (t_vct2){curr.x, pos.y}, 0x50505050);
+	while (curr.y < pos.y && curr.y < editor->size.y)
+	{
+		if (curr.y >= 0)
+			editor_fill_line(editor, curr, (t_vct2){pos.x, curr.y}, 0x50505050);
+		curr.y += dist;
+	}
+	editor_fill_line(editor, curr, (t_vct2){pos.x, curr.y}, 0x50505050);
+}
+
 void	draw_map(t_editor *editor)
 {
 	t_lstpil	curr;
 	t_vct2		loc;
 
-	editor_fill_line(editor, (t_vct2){editor->mappos.x - 500, editor->mappos.y},
-		(t_vct2){editor->mappos.x + 500, editor->mappos.y}, 0xFFFFFFFF);
-	editor_fill_line(editor, (t_vct2){editor->mappos.x, editor->mappos.y - 500},
-		(t_vct2){editor->mappos.x, editor->mappos.y + 500}, 0xFFFFFFFF);
-	curr = NULL; // GROS BUG CHELOU QUE JE COMPREND PAS
-	curr = editor->map; // (le pointeur ne prend pas la valeur de l'autre pointeur aka ignore la ligne)
+	draw_grid(editor, editor->mappos, 50, editor->mapzoom);
+	curr = editor->map;
 	while (curr)
 	{
 		loc.x = editor->mappos.x + curr->pos.x;
