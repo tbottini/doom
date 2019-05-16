@@ -11,8 +11,10 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#define BIGPIXELSIZE 5
 
-int		fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
+
+int		fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color)
 {
 	if (0 <= pos.x && pos.x < size.x && 0 <= pos.y && pos.y < size.y)
 	{
@@ -22,7 +24,26 @@ int		fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color)
 	return (0);
 }
 
-void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)
+void	big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color)
+{
+	t_vct2 big;
+
+	big.x = BIGPIXELSIZE + pos.x;
+	big.y = BIGPIXELSIZE + pos.y;
+	pos.x -= BIGPIXELSIZE;
+	while (pos.x < big.x)
+	{
+		pos.y = big.y - BIGPIXELSIZE - BIGPIXELSIZE;
+		while (pos.y < big.y)
+		{
+			fill_pixel(screen, size, pos, color);
+			++pos.y;
+		}
+		++pos.x;
+	}
+}
+
+void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 {
 	t_vct3	decal;
 	t_vct2	orig;
@@ -35,9 +56,9 @@ void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)
 	decal.y = (pos0.y < pos1.y ? 1 : -1);
 	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
 	fill_pixel(editor->screen, editor->size, pos0, color);
-	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-			&& fill_pixel(editor->screen, editor->size, pos0, color))
+	while ((pos0.x != pos1.x || pos0.y != pos1.y))
 	{
+		fill_pixel(editor->screen, editor->size, pos0, color);
 		e2 = err;
 		if (e2 > -orig.x && ((err -= orig.y) || 1))
 			pos0.x += decal.x;
@@ -46,7 +67,7 @@ void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, int color)
 	}
 }
 
-void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, int color)
+void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 {
 	t_vct3	decal;
 	t_vct2	orig;
@@ -59,9 +80,9 @@ void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, int color)
 	decal.y = (pos0.y < pos1.y ? 1 : -1);
 	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
 	fill_pixel(sdl->screen, sdl->size, pos0, color);
-	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-			&& fill_pixel(sdl->screen, sdl->size, pos0, color))
+	while ((pos0.x != pos1.x || pos0.y != pos1.y))
 	{
+		fill_pixel(sdl->screen, sdl->size, pos0, color);
 		e2 = err;
 		if (e2 > -orig.x && ((err -= orig.y) || 1))
 			pos0.x += decal.x;

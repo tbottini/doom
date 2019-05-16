@@ -30,13 +30,13 @@ static void		window_event(t_doom *doom, SDL_Event e)
 			doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			doom_exit(doom);
-		doom->sdl.screen = (uint32_t *)tmp;
+		doom->sdl.screen = (Uint32 *)tmp;
 		draw_menu(doom);
 	}
 	else */
 	if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 	{
-		SDL_HideWindow(doom->edit.win);
+		close_editor(doom);
 	}
 }
 
@@ -47,6 +47,8 @@ static void		window_event(t_doom *doom, SDL_Event e)
 
 int event_handler2(t_doom *doom, SDL_Event e)
 {
+	if (doom->edit.status != 1)
+		doom->edit.status = 1;
 	if (e.type == SDL_QUIT)
 		return (close_editor(doom));
 	else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
@@ -65,9 +67,11 @@ int event_handler2(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		editor_key_release(e.key.keysym.sym, doom);
 	else if (e.type == SDL_MOUSEMOTION)
-		editor_mouse_move(e.motion.x, e.motion.y, doom);
+		editor_mouse_move(e.motion, doom);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		editor_mouse_press(e.button.button, e.button.x, e.button.y, doom);
+	else if (e.type == SDL_MOUSEWHEEL)
+		editor_mouse_wheel(e.wheel, doom);
 	else if (e.type == SDL_MOUSEBUTTONUP)
 		editor_mouse_release(e.button.button, e.button.x, e.button.y, doom);
 	return (0);
