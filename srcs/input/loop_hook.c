@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/14 19:14:15 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/15 21:31:04 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void input_loop(t_doom *doom, int key)
 		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
+	//if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
+	//	input_deplacement(doom, key);
 	else if (key == SDLK_LSHIFT)
 		sprint(doom);
 	else if (key == SDLK_r)
