@@ -24,8 +24,6 @@ int		editor_key_press(int key, t_doom *doom)
 	{
 		close_editor(doom);
 	}
-	else if (key == SDLK_4)
-		printf("currpillar : %p\n", doom->edit.currpilier);
 	else if (key == SDLK_5)
 		ft_nodeprint_pillar(doom->edit.map);
 	else if (key == SDLK_6)
@@ -60,19 +58,29 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 	t_vct2 pos;
 	if (btn == SDL_BUTTON_LEFT)
 	{
-		//doom->edit.currpilier = find_pilier(doom->edit.map, x - doom->edit.mappos.x, y - doom->edit.mappos.y);
+		if (!(doom->edit.map))
+		{
+			if (!(doom->edit.map = ft_newpillar((t_vct2){0, 0})))
+				doom_exit(doom);
+			doom->edit.mappos = (t_vct2){x, y};
+			doom->edit.mapzoom = 1;
+			doom->edit.currpilier = doom->edit.map;
+		}
+		else
+			doom->edit.currpilier = find_pilier(doom->edit.map, x - doom->edit.mappos.x, y - doom->edit.mappos.y);
 	}
-	return (0);
-}
-
-/*
-** Add here function that need to be done when mouse wheel is used
-*/
-
-int		editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
-{
-	doom->edit.mapzoom += e.y;
-	printf("Wheel %d\t%d\n", doom->edit.mapzoom, e.y);
+	else if (btn == SDL_BUTTON_RIGHT)
+	{
+		if (doom->edit.currpilier)
+		{
+			pos.x = x - doom->edit.mappos.x;
+			pos.y = y - doom->edit.mappos.y;
+			
+			if (!(ft_pillarpushend(&(doom->edit.currpilier), pos)))
+				doom_exit(doom); 
+		}
+	}
+	printf("currpillar : %p\n", doom->edit.currpilier);
 	return (0);
 }
 
@@ -99,19 +107,18 @@ int		editor_mouse_release(int btn, int x, int y, t_doom *doom)
 
 int		editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 {
-	doom->edit.currpilier = find_pilier(doom->edit.map, e.x - doom->edit.mappos.x, e.y - doom->edit.mappos.y);
 	if (e.state == SDL_BUTTON_LMASK)
-	{/*
+	{
 		if (doom->edit.currpilier)
 		{
 			doom->edit.currpilier->pos.x += e.xrel;
 			doom->edit.currpilier->pos.y += e.yrel;
 		}
 		else
-		{*/
+		{
 			doom->edit.mappos.x += e.xrel;
 			doom->edit.mappos.y += e.yrel;
-		//}
+		}
 	}
 	//fill_pixel(doom->edit.screen, doom->edit.size, (t_vct2){x, y}, 0xFFFFFF);
 	return (0);

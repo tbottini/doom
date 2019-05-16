@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/15 21:31:04 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/16 18:07:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		ft_printf("\r%d FPS ", doom->sdl.fps);
+		//printf("%d FPS\n", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
@@ -77,16 +77,14 @@ int loop_hook(t_doom *doom)
 		if (doom->ui.m_status == 0)
 		{
 /// Place here functions that need to be launch every frame while the game is running
-		int x;
+		/*int x;
 		x = -1;
 		while (++x < doom->sdl.size.x * doom->sdl.size.y)
 			doom->sdl.screen[x] = 0;
-		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
+		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);*/
 		move(doom, doom->player.vel.x, doom->player.vel.y);
-		//portal_engine(doom);
+		portal_engine(doom);
 		minimap(doom);
-		//raycasting(doom);
-
 /// End Comment
 		}
 		else

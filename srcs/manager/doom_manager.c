@@ -44,6 +44,5 @@ t_doom	*doom_init()
 	if (!player_init(&doom->player))
 		return (NULL);
 	ui_by_sdl(doom, &doom->ui);
-	SDL_RaiseWindow(doom->sdl.win);
 	return (doom);
 }

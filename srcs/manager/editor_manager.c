@@ -15,22 +15,24 @@
 int		close_editor(t_doom *doom)
 {
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
-	SDL_HideWindow(doom->edit.win);
-	doom->edit.status = 0;
-	return (0);
+	if (doom->edit.win)
+	{
+		doom->edit.status = 0;
+		SDL_HideWindow(doom->edit.win);
+		return (0);
+	}
+	return (-1);
 }
 
-void	open_editor(t_doom *doom)
+void	start_editor(t_doom *doom)
 {
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 0);
 	SDL_ShowWindow(doom->edit.win);
-	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;
 }
 
 void	editor_free(t_editor *editor)
 {
-	SDL_ShowWindow(editor->win);
 	if (editor->map)
 		free(editor->map); // Must Change
 	if (editor->txture)
@@ -57,9 +59,5 @@ int		editor_init(t_editor *editor)
 		return (0);
 	editor->screen = (Uint32*)tmp;
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
-	editor->mappos = (t_vct2){editor->size.x / 2, editor->size.y / 2};
-	editor->mapzoom = 100;
-	if (!(editor->map = ft_newpillar((t_vct2){0, 0})))
-		return (0);
 	return (1);
 }
