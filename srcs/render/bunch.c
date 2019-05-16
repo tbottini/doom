@@ -42,7 +42,7 @@ void		sector_frustum(t_sector *sector, t_player player)
 */
 //si l'un des pillier du mur est dans le frustum alors on ajoute le mur
 
-int			buncherisation(t_player p, t_sector sector, t_wall **bunch)
+int			buncherisation(t_sector sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
@@ -86,7 +86,7 @@ void		portal_engine(t_doom *doom)
 	t_wall	*bunch[50];
 
 	sector_frustum(doom->sector, doom->player);
-	buncherisation(doom->player, *doom->sector, bunch);
+	buncherisation(*doom->sector, bunch);
 	bunch_comsuption(doom, bunch);
 	minimap(doom);
 	sdl_present(&doom->sdl);

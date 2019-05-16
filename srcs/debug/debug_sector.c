@@ -121,7 +121,6 @@ void		sector_recursif(t_sector sector)
 	while (i < sector.len_sub)
 	{
 		sector_recursif(sector.ssector[i]);
-		//sector_describe(sector.ssector[i]);
 		++i;
 	}
 }
