@@ -55,7 +55,7 @@ void		move(t_doom *doom, double x, double y)
 	// Update Position
 	d.x = sin(doom->player.rot.y * PI180) / 10.0;
 	d.y = cos(doom->player.rot.y * PI180) / 10.0;
-	npos.x = doom->player.pos.x + d.x * -y / 35000.0 + d.y * 1 * -x / 35000.0;
+	npos.x = doom->player.pos.x + d.x * y / 35000.0 + d.y * 1 * x / 35000.0;
 	npos.y = doom->player.pos.y + d.x * -x / 35000.0 + d.y * y / 35000.0;
 	// Check new pos
 	//DEPRECATED if (0 < npos.x && npos.x < doom->map_size.x && 0 < npos.y && npos.y < doom->map_size.y)
