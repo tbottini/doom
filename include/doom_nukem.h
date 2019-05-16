@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/14 18:18:30 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/16 18:09:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ int						loop_hook(t_doom *doom);
 t_btn					*btn_hover(t_doom *doom, int x, int y);
 void					draw_hover(t_doom *doom, t_btn *new, t_btn *old);
 
-void					move(t_doom *doom, double x, double y);
+void					move(t_doom *doom, int x, int y);
 
 int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);

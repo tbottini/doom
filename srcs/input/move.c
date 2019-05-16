@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/15 12:58:07 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/16 18:09:27 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void		sprint_release(t_doom *doom)
 	doom->player.speed = 10;
 }
 
-void		move(t_doom *doom, double x, double y)
+void		move(t_doom *doom, int x, int y)
 {
 	t_fvct2 d;
 	t_fvct2 npos;
