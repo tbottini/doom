@@ -27,8 +27,7 @@ void update_slider_txt(t_doom *doom, t_slid *slid)
 
 void update_slider_value(t_doom *doom, t_slid *slid, int value)
 {
-	value = (((value - slid->loc.area.x) / (double)slid->loc.area.w
-								* (slid->max - slid->min)) + slid->min);
+	value = ((int)((value - slid->loc.area.x) / (double)slid->loc.area.w * (slid->max - slid->min)) + slid->min);
 	if (slid->min <= value && value <= slid->max && *slid->val != value)
 	{
 		*slid->val = value;
@@ -52,5 +51,4 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
 	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
 	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
-	//SDL_RenderPresent(doom->sdl.rend);
 }

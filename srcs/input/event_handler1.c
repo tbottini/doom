@@ -28,7 +28,7 @@ static void window_event(t_doom *doom, SDL_Event e)
 											 doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			doom_exit(doom);
-		doom->sdl.screen = (uint32_t *)tmp;
+		doom->sdl.screen = (Uint32 *)tmp;
 		fire_init(doom);
 		draw_menu(doom);
 	}
@@ -65,6 +65,8 @@ static void dropfile_event(t_doom *doom, SDL_Event e)
 
 int event_handler1(t_doom *doom, SDL_Event e)
 {
+	if (doom->edit.status == 1)
+		doom->edit.status = 2;
 	if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
 		doom_exit(doom);
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)

@@ -6,12 +6,12 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/14 18:18:30 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/16 17:30:32 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DOOM_NUKEM
-# define DOOM_NUKEM
+#ifndef DOOM_NUKEM_H
+# define DOOM_NUKEM_H
 
 # include "libft.h"
 # include <fcntl.h>
@@ -20,13 +20,13 @@
 # include <SDL_ttf.h>
 # include <SDL_image.h>
 
-#include "sector.h"
+# include "sector.h"
 
 
 # define MINWIDTH 800
 # define MINHEIGHT 600
-# define WIDTH 1920
-# define HEIGHT 1024
+# define WIDTH 1200
+# define HEIGHT 800
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -67,7 +67,7 @@ typedef struct			s_sloc
 	int					snapx;
 	struct s_sloc		*parent;
 	int					snapy;
-	t_fvct2				pos;
+	t_vct2				pos;
 }						t_sloc;
 
 typedef struct			s_btn
@@ -109,7 +109,7 @@ typedef struct			s_font
 */
 
 typedef struct			s_pal {
-	int					pal[38];
+	Uint32				pal[38];
 	int					height;
 }						t_pal;
 
@@ -134,12 +134,22 @@ typedef struct			s_sdl
 	t_vct2				size;
 	t_vct2				m_pos;
 	SDL_Texture			*txture;
-	uint32_t			*screen;
+	Uint32				*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
-	int					timp;
+	Uint32				timp;
 	int					fps;
 }						t_sdl;
+
+typedef struct s_pilier	t_pilier;
+typedef t_pilier		*t_lstpil;
+
+struct					s_pilier {
+	t_vct2				pos;
+
+	t_lstpil			prvs;
+	t_lstpil			next;
+};
 
 typedef struct			s_editor
 {
@@ -149,8 +159,12 @@ typedef struct			s_editor
 	t_btn				btnarr[20];
 	t_vct2				size;
 	SDL_Texture			*txture;
-	uint32_t			*screen;
+	Uint32				*screen;
 	t_tab				keys;
+	t_lstpil			currpilier;
+	t_lstpil			map;
+	t_vct2				mappos;
+	int					mapzoom;
 }						t_editor;
 
 typedef	struct			s_weapon
@@ -184,7 +198,7 @@ struct					s_doom
 	t_sdl				sdl;
 	t_editor			edit;
 	t_ui				ui;
-	unsigned long		timestamp;
+	Uint32				timestamp;
 	t_player			player;
 	SDL_GameController	*controller;
 	t_sector			*sector;
@@ -211,7 +225,7 @@ void					portal_engine(t_doom *doom);
 
 void					fire_init(t_doom *doom);
 void					fire(t_doom *doom);
-void					fire_on_off(uint32_t *screen, t_vct2 size, int status);
+void					fire_on_off(Uint32 *screen, t_vct2 size, int status);
 
 void					sdl_showscreen(t_sdl *sdl);
 void					btn_click(t_doom *doom, int x, int y);
@@ -238,7 +252,7 @@ int						loop_hook(t_doom *doom);
 t_btn					*btn_hover(t_doom *doom, int x, int y);
 void					draw_hover(t_doom *doom, t_btn *new, t_btn *old);
 
-void					move(t_doom *doom, int x, int y);
+void					move(t_doom *doom, double x, double y);
 
 int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
@@ -255,7 +269,7 @@ void					*listdel(t_list **list);
 char					**tab_new(int y);
 void					controller_handler(t_doom *doom, SDL_Event event);
 void					lst_del_node(t_list **node);
-void					start_editor(t_doom *doom);
+void					open_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
 void					debug_player(t_player player);
@@ -264,9 +278,11 @@ void					debug_player(t_player player);
 ** Drawer functions
 */
 
-int						fill_pixel(uint32_t *screen, t_vct2 size, t_vct2 pos, int color);
-void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, int color);
-void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, int color);
+void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
+void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
+int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
+void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
+void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 /*
 ** Editor
@@ -278,7 +294,15 @@ int						editor_mouse_press(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
-int						editor_mouse_move(int x, int y, t_doom *doom);
+int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
+int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
+
+void					draw_map(t_editor *editor);
+
+t_lstpil				ft_newpillar(t_vct2 loc);
+t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
+void					ft_nodeprint_pillar(t_lstpil node);
+t_lstpil				find_pilier(t_lstpil start, int x, int y);
 
 /*
 **	gestion
@@ -304,8 +328,8 @@ void					debug_up(t_doom *doom);
 void					sdl_present(t_sdl *sdl);
 void					calcdelay(const char *str, t_doom *doom);
 
-void					point_gras(t_vct2 cursor, uint32_t color, t_doom *doom);
-void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col);
+void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
+void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 float					distance(t_fvct2 vct1, t_fvct2 vct2);
 
 /*
@@ -325,7 +349,7 @@ void					fvct2_msg(char *msg, t_fvct2 vct);
 void					describe_bunch(t_wall **bunch);
 void					fvct2_print(t_fvct2 vct);
 void					sector_describe(t_sector sector);
-void					bold_point(t_vct2 cursor, uint32_t color, t_doom *doom);
+void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 float					dist(t_fvct2 vct1, t_fvct2 vct2);
 
 /*
