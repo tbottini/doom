@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/09 13:07:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/15 21:31:04 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 static void input_loop(t_doom *doom, int key)
 {
 	if (key == SDLK_w || key == SDLK_s)
-		doom->player.vel.x = (key == SDLK_w ? -32700 : 32700);
+		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.vel.y = (key == SDLK_a ? 32700 : -32700);
-	//else if (key == SDLK_q || key == SDLK_e) // Qui utiliserait le clavier pour pivoter
-	//	doom->player.rotvel.y = (key == SDLK_q ? 5.0 : -5.0);
+		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
+	//if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
+	//	input_deplacement(doom, key);
 	else if (key == SDLK_LSHIFT)
 		sprint(doom);
 	else if (key == SDLK_r)
@@ -41,20 +41,16 @@ static void input_loop(t_doom *doom, int key)
 
 static void	delaypcmasterrace(t_doom *doom)
 {
-	struct timespec spec;
-
-	clock_gettime(CLOCK_REALTIME, &spec);
-	if (doom->sdl.timp == spec.tv_sec)
+	if (doom->sdl.timp == SDL_GetTicks() / 1000)
 		++doom->sdl.fps;
 	else
 	{
-		printf("%d\t%d\t%d\n", doom->sdl.size.x, doom->sdl.size.y, doom->sdl.fps);
+		ft_printf("\r%d FPS ", doom->sdl.fps);
 		doom->sdl.fps = 0;
-		doom->sdl.timp = spec.tv_sec;
+		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
-	while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - doom->timestamp < 16500)
-		clock_gettime(CLOCK_REALTIME, &spec);
-	doom->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
+	while (SDL_GetTicks() - doom->timestamp < 16); // Limiteur de FPS (16)
+	doom->timestamp = SDL_GetTicks();
 }
 
 int loop_hook(t_doom *doom)
@@ -68,31 +64,42 @@ int loop_hook(t_doom *doom)
 		pos = pos->next;
 	}
 	SDL_RenderClear(doom->sdl.rend);
-	if (doom->ui.m_status == 0)
+	if (doom->edit.status == 1)
 	{
-/// Place here functions that need to be launch every frame while the game is running
-
-		move(doom, doom->player.vel.x, doom->player.vel.y);
-		portal_engine(doom);
-		//raycasting(doom);
-
-/// End Comment
-	}
-	else
-	{
-/// Place here functions that need to be launch every frame while in the menu
-
-		fire(doom);
-		draw_menu(doom);
-
-/// End Comment
-	}
-	if (doom->edit.status)
-	{
+		SDL_RenderClear(doom->edit.rend);
+		sdl_cleartexture(doom->edit.screen, doom->edit.size);
+		draw_map(&doom->edit);
 		SDL_RenderCopy(doom->edit.rend, doom->edit.txture, NULL, NULL);
 		SDL_RenderPresent(doom->edit.rend);
 	}
-	SDL_RenderPresent(doom->sdl.rend);
+	else
+	{
+		if (doom->ui.m_status == 0)
+		{
+/// Place here functions that need to be launch every frame while the game is running
+		int x;
+		x = -1;
+		while (++x < doom->sdl.size.x * doom->sdl.size.y)
+			doom->sdl.screen[x] = 0;
+		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
+		move(doom, doom->player.vel.x, doom->player.vel.y);
+		//portal_engine(doom);
+		minimap(doom);
+		//raycasting(doom);
+
+/// End Comment
+		}
+		else
+		{
+/// Place here functions that need to be launch every frame while in the menu
+
+			fire(doom);
+			draw_menu(doom);
+
+/// End Comment
+		}
+		SDL_RenderPresent(doom->sdl.rend);
+	}
 	delaypcmasterrace(doom);
 	return (0);
 }

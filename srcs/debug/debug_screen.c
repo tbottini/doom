@@ -11,7 +11,7 @@ t_vct2		hot_point(t_fvct2 vct, t_vct2 size_s)
 	return (px);
 }
 
-void		bold_point(t_vct2 v, uint32_t color, t_doom *doom)
+void		bold_point(t_vct2 v, Uint32 color, t_doom *doom)
 {
 	int tmp;
 

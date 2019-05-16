@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bresenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/05/08 21:23:52 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/14 14:58:48 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void			trait_id(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
+void			trait_id(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	int			dx;
 	int			dy;
@@ -41,7 +41,7 @@ void			trait_id(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
 	}
 }
 
-void			trait_iu(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
+void			trait_iu(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	int			dx;
 	int			dy;
@@ -70,7 +70,7 @@ void			trait_iu(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
 	}
 }
 
-void			trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, uint32_t col)
+void			trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	if (vct2.x != -1 && vct2.y != -1
 		&& vct1.x != -1 && vct1.y != -1)
