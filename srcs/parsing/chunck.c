@@ -47,6 +47,69 @@ t_player	chunck_player(int fd)
 	return (player);
 }
 
+/*
+chunk sector
+
+on recupere les lignes
+on defini les premiere caracteristique lorsque qu'il y a un secteur
+on l'ajoute a une liste chaine
+
+
+*/
+t_list		*add_subsector(t_list **list, int fd)
+{
+	t_list		*sub_sector;
+	t_sector	*sector;
+
+	sub_sector = (t_list*)malloc(sizeof(t_list));
+	if (!sub_sector)
+		return (NULL);
+	sector = chunck_sector(fd);
+	fvct2_msg("pos pillar 1", sector->wall[0].pillar.p);
+	sub_sector->content = sector;
+	sub_sector->next = *list;
+	(*list) = sub_sector;
+	return (*list);
+}
+
+size_t		list_len(t_list *list)
+{
+	size_t	len;
+
+	len = 0;
+	while (list != NULL)
+	{
+		len++;
+		list = list->next;
+	}
+	return (len);
+}
+
+int			list_to_ssector(t_sector *parent, t_list *sub_sector)
+{
+	int			i;
+	t_list		*tmp;
+
+	i = 0;
+	parent->len_sub = list_len(sub_sector);
+	printf("okay\n");
+	parent->ssector = (t_sector*)malloc(sizeof(t_sector) * (parent->len_sub));
+	if (!parent->ssector)
+		return (0);
+	printf("parent %d \n", parent->len_sub);
+	while (i < parent->len_sub)
+	{
+		//parent->ssector[i].wall
+		ft_memcpy(&parent->ssector[i], sub_sector->content, sizeof(t_sector));
+		tmp = sub_sector;
+		free(sub_sector);
+		sub_sector = tmp->next;
+		++i;
+	}
+	printf("test == %f ==\n", parent->ssector[0].h_floor);
+	return (0);
+}
+
 t_sector	*chunck_sector(int fd)
 {
 	t_sector	*sector;
@@ -54,8 +117,13 @@ t_sector	*chunck_sector(int fd)
 	t_list		*node;
 	char		*line;
 	int			nline;
+	t_list		*sub_sector;
+
+
+	t_sector	*tmp;
 
 	nline = 0;
+	sub_sector = NULL;
 	if (!(sector = sector_new()))
 		return (0);
 	while (get_next_line(fd, &line) > 0 && ft_strcmp(line, "END"))
@@ -66,6 +134,15 @@ t_sector	*chunck_sector(int fd)
 			sector->h_ceil = ft_atof(line);
 		else if (nline == 2)
 			files = ft_lstn(line);
+		else if (!ft_strcmp(line, "SCTR"))
+		{
+			//on ajoute le sous secteur a la liste du secteur
+			printf("sub_sector detected\n");
+			add_subsector(&sub_sector, fd);
+			tmp = (t_sector*)sub_sector->content;
+			printf("test new sub sector 1 %f\n", tmp->wall[0].pillar.p.x);
+			nline--;
+		}
 		else
 		{
 			node = ft_lstn(line);
@@ -73,7 +150,10 @@ t_sector	*chunck_sector(int fd)
 		}
 		nline++;
 	}
+	if (sub_sector)
+		list_to_ssector(sector, sub_sector);
 	sector->wall = chunck_walls(files, nline - 2);
 	sector->len = nline - 2;
+	printf("nline== %d\n", sector->len);
 	return (sector);
 }
