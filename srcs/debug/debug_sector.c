@@ -8,7 +8,7 @@ void		ft_putnbr_msg(char *msg, int nb)
 	ft_putchar('\n');
 }
 
-void		ft_putfloat(float num)
+void		ft_putdouble(double num)
 {
 	int		i;
 
@@ -24,11 +24,11 @@ void		ft_putfloat(float num)
 	}
 }
 
-void		float_msg(char *msg, float num)
+void		double_msg(char *msg, double num)
 {
 	ft_putstr(msg);
 	ft_putchar(' ');
-	ft_putfloat(num);
+	ft_putdouble(num);
 	ft_putchar('\n');
 }
 
@@ -42,9 +42,9 @@ void		int_msg(char *msg, int num)
 
 void		fvct2_print(t_fvct2 vct)
 {
-	ft_putfloat(vct.x);
+	ft_putdouble(vct.x);
 	ft_putchar(' ');
-	ft_putfloat(vct.y);
+	ft_putdouble(vct.y);
 }
 
 void		fvct2_msg(char *msg, t_fvct2 vct)
@@ -62,8 +62,8 @@ void		sector_describe(t_sector sector)
 	t_pillar	a;
 	i = 0;
 	ft_putendl("-------sector-------");
-	float_msg("height floor :", sector.h_floor);
-	float_msg("height ceil :", sector.h_ceil);
+	double_msg("height floor :", sector.h_floor);
+	double_msg("height ceil :", sector.h_ceil);
 	int_msg("son sector :", sector.len_sub);
 	wall = sector.wall;
 	while (i < sector.len)
