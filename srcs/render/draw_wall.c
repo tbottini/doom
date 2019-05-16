@@ -105,6 +105,5 @@ void		draw_wall(t_doom doom , t_wall wall)
 	t_fvct2	dist;
 
 	pillar_screen_info(doom, wall, &dist, &column_id);
-	fvct2_msg("dist", dist);
 	pillar_to_pillar(&doom.sdl, column_id, dist);
 }

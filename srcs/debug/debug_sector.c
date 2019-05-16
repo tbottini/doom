@@ -95,3 +95,19 @@ void		debug_player(t_player player)
 	printf("Fov : %d\n", player.fov);
 	ft_putendl("------------------");
 }
+
+void		describe_sector_recursif(t_sector sector)
+{
+	int		i;
+
+	i = 0;
+	ft_putendl("=sector_recursive=");
+	sector_describe(sector);
+	printf("sector.len %d\n", sector.len_sub);
+	while (i < sector.len_sub)
+	{
+		sector_describe(sector.ssector[i]);
+		++i;
+	}
+	ft_putendl("==================");
+}

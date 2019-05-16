@@ -56,14 +56,14 @@ int			buncherisation(t_player p, t_sector sector, t_wall **bunch)
 		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
-			i_bunch++;
+			++i_bunch;
 		}
 		else if (fabs(wall[i_wall].pillar.angle) + fabs(wall[i_wall].next->angle) < 180)
 		{
 			bunch[i_bunch] = &wall[i_wall];
-			i_bunch++;
+			++i_bunch;
 		}
-		i_wall++;
+		++i_wall;
 	}
 	bunch[i_bunch] = NULL;
 	return (1);
@@ -85,7 +85,6 @@ void		portal_engine(t_doom *doom)
 {
 	t_wall	*bunch[50];
 
-	ft_bzero(doom->sdl.screen, doom->sdl.size.x * doom->sdl.size.y * 4);
 	sector_frustum(doom->sector, doom->player);
 	buncherisation(doom->player, *doom->sector, bunch);
 	bunch_comsuption(doom, bunch);
