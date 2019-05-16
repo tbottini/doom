@@ -1,0 +1,24 @@
+notes fichier
+
+forme de chunk
+
+SCTR defini un secteur
+SCTR <id du secteur relier> <vct2 id des point a relier>
+
+un SCTR dans un SCTR defini un sous secteur
+le sous secteur doit etre defini a la fin du secteur
+au dessus du end pour verifier que le secteur est bien
+dans le sous secteur
+secteur
+{
+	struct s_sector		*sub_sector;
+}
+
+detection des chunck
+
+
+dans le chunck secteur
+
+	recursif
+
+	liste chaine de secteur
