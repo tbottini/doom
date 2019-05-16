@@ -1,7 +1,5 @@
 #include "doom_nukem.h"
 
-//on peut voir si un point est dans le frustum
-
 int			on_frustum(t_player player, t_pillar *pillar)
 {
 	t_fvct2	dist;
@@ -42,10 +40,9 @@ void		sector_frustum(t_sector *sector, t_player player)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
-
 //si l'un des pillier du mur est dans le frustum alors on ajoute le mur
 
-int			buncherisation2(t_sector sector, t_wall **bunch)
+int			buncherisation(t_sector sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
@@ -59,49 +56,14 @@ int			buncherisation2(t_sector sector, t_wall **bunch)
 		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
-			i_bunch++;
+			++i_bunch;
 		}
-		i_wall++;
-	}
-	bunch[i_bunch] = NULL;
-	return (1);
-}
-
-int			buncherisation(t_sector sector, t_wall **bunch)
-{
-	int 	i_wall;
-	int		i_bunch;
-	t_wall	*wall;
-
-	i_bunch = 0;
-	i_wall = 0;
-	wall = sector.wall;
-	while (i_wall < sector.len - 1)
-	{
-		if (wall[i_wall + 1].pillar.frust)
+		else if (fabs(wall[i_wall].pillar.angle) + fabs(wall[i_wall].next->angle) < 180)
 		{
 			bunch[i_bunch] = &wall[i_wall];
-			i_bunch++;
+			++i_bunch;
 		}
-		else if (wall[i_wall].pillar.frust)
-		{
-			bunch[i_bunch] = &wall[i_wall];
-			bunch[i_bunch + 1] = &wall[i_wall + 1];
-			i_bunch += 2;
-			i_wall++;
-		}
-		i_wall++;
-	}
-	if (wall[0].pillar.frust)
-	{
-		bunch[i_bunch] = &wall[i_wall];
-		i_bunch++;
-	}
-	else if (wall[i_wall].pillar.frust && i_wall < sector.len)
-	{
-		bunch[i_bunch] = &wall[i_wall];
-		bunch[i_bunch + 1] = &wall[0];
-		i_bunch += 2;
+		++i_wall;
 	}
 	bunch[i_bunch] = NULL;
 	return (1);
@@ -123,11 +85,8 @@ void		portal_engine(t_doom *doom)
 {
 	t_wall	*bunch[50];
 
-	ft_bzero(doom->sdl.screen, doom->sdl.size.x * doom->sdl.size.y * 4);
 	sector_frustum(doom->sector, doom->player);
-	//buncherisation(*doom->sector, bunch);
-	buncherisation2(*doom->sector, bunch);
-	describe_bunch(bunch);
+	buncherisation(*doom->sector, bunch);
 	bunch_comsuption(doom, bunch);
 	//minimap(doom);
 	sdl_present(&doom->sdl);
