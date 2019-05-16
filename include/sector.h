@@ -35,6 +35,8 @@ typedef struct		s_wall
 typedef struct		s_sector
 {
 	t_wall			*wall;
+	struct s_sector	*ssector;
+	int				len_sub;
 	float			h_floor;
 	float			h_ceil;
 	int				len;
@@ -46,6 +48,6 @@ typedef struct		s_sector
 **	wall : draw, manipulation
 */
 float			wall_clipping(t_wall wall, t_fvct2 pos, float angle);
-
+void			describe_sector_recursif(t_sector sector);
 
 #endif

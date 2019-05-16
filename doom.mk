@@ -23,6 +23,7 @@ SRCS_INPUT		:=		event_controller.c								\
 						action.c										\
 						move.c											\
 						shoot.c											\
+						keyboard_input.c
 
 SRCS_RENDER		:=		bunch.c											\
 						wall.c											\

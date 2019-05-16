@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   doom.h                                             :+:      :+:    :+:   */
+/*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 20:44:04 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/14 18:18:30 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,6 @@
 # define RANGE 1 //range max for kick and actions with objects
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
-# define WALLBLUE "ressources/textures/wall_blue.xpm"
-# define WALL "ressources/textures/wall.xpm"
-# define GOLD "ressources/textures/plaqueor.xpm"
-# define TEST "ressources/textures/test.xpm"
 
 //le bunch permet de faire des groupe de mur visible
 //pour organiser l'affichage
@@ -53,9 +49,7 @@
 # define SENSIBILITY 6.0
 
 typedef struct s_doom	t_doom;
-
 typedef	Uint32* t_texture;
-
 # define JOYSTICK_DEAD_ZONE 2500
 
 /*
@@ -374,5 +368,5 @@ void					prev_weapon(t_player *player);
 void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
-
+int						keyboard_input(t_doom *doom, SDL_Event event);
 #endif

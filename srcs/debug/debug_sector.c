@@ -24,6 +24,22 @@ void		ft_putfloat(float num)
 	}
 }
 
+void		float_msg(char *msg, float num)
+{
+	ft_putstr(msg);
+	ft_putchar(' ');
+	ft_putfloat(num);
+	ft_putchar('\n');
+}
+
+void		int_msg(char *msg, int num)
+{
+	ft_putstr(msg);
+	ft_putchar(' ');
+	ft_putnbr(num);
+	ft_putchar('\n');
+}
+
 void		fvct2_print(t_fvct2 vct)
 {
 	ft_putfloat(vct.x);
@@ -46,11 +62,9 @@ void		sector_describe(t_sector sector)
 	t_pillar	a;
 	i = 0;
 	ft_putendl("-------sector-------");
-	ft_putstr("height floor : ");
-	ft_putfloat(sector.h_floor);
-	ft_putstr("\nheight ceil : ");
-	ft_putfloat(sector.h_ceil);
-	ft_putchar('\n');
+	float_msg("height floor :", sector.h_floor);
+	float_msg("height ceil :", sector.h_ceil);
+	int_msg("son sector :", sector.len_sub);
 	wall = sector.wall;
 	while (i < sector.len)
 	{
@@ -94,4 +108,26 @@ void		debug_player(t_player player)
 	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
 	printf("Fov : %d\n", player.fov);
 	ft_putendl("------------------");
+}
+
+void		sector_recursif(t_sector sector)
+{
+	int		i;
+
+	i = 0;
+	sector_describe(sector);
+	if (sector.len_sub)
+		ft_putendl("|--->son");
+	while (i < sector.len_sub)
+	{
+		sector_recursif(sector.ssector[i]);
+		++i;
+	}
+}
+
+void		describe_sector_recursif(t_sector sector)
+{
+	ft_putendl("---------sector_recursive--------");
+	sector_recursif(sector);
+	ft_putendl("---------------------------------");
 }
