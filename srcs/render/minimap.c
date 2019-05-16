@@ -77,7 +77,7 @@ int			bold_point2(t_doom *doom, t_minimap mini, t_vct2 pos, Uint32 color)
 
 /*
 ** returns the color c as if it passes throught a transparent screen of color s.
-** float f determines the opacity of the "screen".
+** double f determines the opacity of the "screen".
 ** f must be between 0 and 1, returning the color s, 0 the color c.
 */
 

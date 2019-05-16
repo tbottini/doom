@@ -9,8 +9,8 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	p = &doom.player;
 	if (wall.pillar.frust)
 	{
-		px.x = (float)(doom.sdl.size.x) / 2.0;
-		px.x -= (float)(doom.sdl.size.x - 1) / doom.player.fov * wall.pillar.angle;
+		px.x = (double)(doom.sdl.size.x) / 2.0;
+		px.x -= (double)(doom.sdl.size.x - 1) / doom.player.fov * wall.pillar.angle;
 		d.x = distance(p->pos, wall.pillar.p);
 	}
 	else if (wall.pillar.angle <= -doom.player.fov / 2.0)
@@ -25,8 +25,8 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	}
 	if (wall.next->frust)
 	{
-		px.y = (float)(doom.sdl.size.x) / 2.0;
-		px.y -= (float)(doom.sdl.size.x - 1) / doom.player.fov * wall.next->angle;
+		px.y = (double)(doom.sdl.size.x) / 2.0;
+		px.y -= (double)(doom.sdl.size.x - 1) / doom.player.fov * wall.next->angle;
 		d.y = distance(p->pos, wall.next->p);
 	}
 	else if (wall.next->angle <= -doom.player.fov / 2.0)
@@ -77,15 +77,15 @@ void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
 
 void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
 {
-	float	coef_dist_px;
+	double	coef_dist_px;
 	int		fact_px;
 	int		column;
 	t_fvct2	column_len;
 
 	column = px.x;
 	fact_px = (px.x < px.y) ? 1 : -1;
-	column_len.x = (float)(sdl->size.y) / dist.x;
-	column_len.y = (float)(sdl->size.y) / dist.y;
+	column_len.x = (double)(sdl->size.y) / dist.x;
+	column_len.y = (double)(sdl->size.y) / dist.y;
 	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x);
 	while (column != px.y)
 	{

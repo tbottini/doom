@@ -4,14 +4,14 @@
 **trouve l'intersection entre le mur et un angle donne
 **pour ne pas afficher ce qui en dehors
 */
-float			wall_clipping(t_wall wall, t_fvct2 pos, float angle)
+double			wall_clipping(t_wall wall, t_fvct2 pos, double angle)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;
 	t_fvct2		diff2;
-	float		coef_ang;
-	float		coef_wall;
-	float		b;
+	double		coef_ang;
+	double		coef_wall;
+	double		b;
 
 	diff.x = wall.pillar.p.x - pos.x;
 	diff.y = wall.pillar.p.y - pos.y;
