@@ -40,10 +40,6 @@
 # define RANGE 1 //range max for kick and actions with objects
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
-# define WALLBLUE "ressources/textures/wall_blue.xpm"
-# define WALL "ressources/textures/wall.xpm"
-# define GOLD "ressources/textures/plaqueor.xpm"
-# define TEST "ressources/textures/test.xpm"
 
 //le bunch permet de faire des groupe de mur visible
 //pour organiser l'affichage
@@ -53,8 +49,7 @@
 # define SENSIBILITY 6.0
 
 typedef struct s_doom	t_doom;
-
-typedef	uint32_t* t_texture;
+typedef	uint32_t*		t_texture;
 
 # define JOYSTICK_DEAD_ZONE 2500
 
