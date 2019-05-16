@@ -41,9 +41,11 @@ t_player	chunck_player(int fd)
 			double_atof(line, &player.pos);
 		else if (i == 1)
 			double_atof(line, &player.rot);
+		else if (i == 2)
+			player.fov = ft_atoi(line);
 		i++;
 	}
-	player.fov = 60;
+	//player.fov = 60;
 	player.health = 100;
 	return (player);
 }
