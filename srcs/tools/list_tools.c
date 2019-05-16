@@ -12,9 +12,9 @@
 
 #include "doom_nukem.h"
 
-t_lstpil		ft_newpillar(t_vct2 loc)
+t_pilier		ft_newpillar(t_vct2 loc)
 {
-	t_lstpil	t;
+	t_pilier	t;
 
 	if (!(t = malloc(sizeof(t_pilier))))
 		return (NULL);
@@ -24,9 +24,9 @@ t_lstpil		ft_newpillar(t_vct2 loc)
 	return (t);
 }
 
-t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
+t_pilier		ft_pillarpushend(t_pilier *start, t_vct2 loc)
 {
-	t_lstpil t;
+	t_pilier t;
 
 	if (!start)
 		return (NULL);
@@ -41,16 +41,16 @@ t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 	return (t->next);
 }
 
-static int	check_diff(t_lstpil un, t_lstpil deux)
+static int	check_diff(t_pilier un, t_pilier deux)
 {
 	if (un->pos.x != deux->pos.x || un->pos.y != deux->pos.y)
 		return (0);
 	return (1);
 }
 
-void	ft_nodeprint_pillar(t_lstpil node)
+void	ft_nodeprint_pillar(t_pilier node)
 {
-	t_lstpil curr;
+	t_pilier curr;
 
 	if (!node)
 	{
