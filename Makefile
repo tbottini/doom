@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/13 21:43:48 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/16 16:47:54 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ INCLUDE			:=		-I ./include							\
 INCLUDE_RES		:=		include/sector.h						\
 						include/vector.h						\
 						libft/libft.h							\
-						include/doom_nukem.h
+						include/doom_nukem.h					\
+						include/debug.h
 
 FOLDER			:=		objs									\
 						objs/parsing							\

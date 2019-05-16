@@ -10,18 +10,6 @@ int		secure_doom(t_doom *doom)
 	if ((fd = open(TTFIMPACT, O_RDONLY | O_NOFOLLOW)) < 0)
 		return (-1);
 	close(fd);
-	if ((fd = open(WALLBLUE, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(WALL, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(GOLD, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
-	if ((fd = open(TEST, O_RDONLY | O_NOFOLLOW)) < 0)
-		return (-1);
-	close(fd);
 	ft_bzero(doom, sizeof(t_doom));
 	return (0);
 }
