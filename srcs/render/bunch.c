@@ -88,6 +88,6 @@ void		portal_engine(t_doom *doom)
 	sector_frustum(doom->sector, doom->player);
 	buncherisation(*doom->sector, bunch);
 	bunch_comsuption(doom, bunch);
-	minimap(doom);
+	//minimap(doom);
 	sdl_present(&doom->sdl);
 }
