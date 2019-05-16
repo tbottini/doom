@@ -25,8 +25,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 600
-# define WIDTH 1200
-# define HEIGHT 800
+# define WIDTH 1280
+# define HEIGHT 720
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -146,14 +146,13 @@ typedef struct			s_sdl
 	int					fps;
 }						t_sdl;
 
-typedef struct s_pilier	t_pilier;
-typedef t_pilier		*t_lstpil;
+typedef struct s_pilier	*t_pilier;
 
 struct					s_pilier {
 	t_vct2				pos;
 
-	t_lstpil			prvs;
-	t_lstpil			next;
+	t_pilier			prvs;
+	t_pilier			next;
 };
 
 typedef struct			s_editor
@@ -166,8 +165,8 @@ typedef struct			s_editor
 	SDL_Texture			*txture;
 	Uint32				*screen;
 	t_tab				keys;
-	t_lstpil			currpilier;
-	t_lstpil			map;
+	t_pilier			currpilier;
+	t_pilier			map;
 	t_vct2				mappos;
 	int					mapzoom;
 }						t_editor;
@@ -274,7 +273,7 @@ void					*listdel(t_list **list);
 char					**tab_new(int y);
 void					controller_handler(t_doom *doom, SDL_Event event);
 void					lst_del_node(t_list **node);
-void					open_editor(t_doom *doom);
+void					start_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
 void					debug_player(t_player player);
@@ -300,14 +299,13 @@ int						editor_mouse_press(int button, int x, int y,
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
-int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 
 void					draw_map(t_editor *editor);
 
-t_lstpil				ft_newpillar(t_vct2 loc);
-t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
-void					ft_nodeprint_pillar(t_lstpil node);
-t_lstpil				find_pilier(t_lstpil start, int x, int y);
+t_pilier				ft_newpillar(t_vct2 loc);
+t_pilier				ft_pillarpushend(t_pilier *start, t_vct2 loc);
+void					ft_nodeprint_pillar(t_pilier node);
+t_pilier				find_pilier(t_pilier start, int x, int y);
 
 /*
 **	gestion

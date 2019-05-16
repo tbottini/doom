@@ -45,7 +45,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		ft_printf("\r%d FPS ", doom->sdl.fps);
+		//printf("%d FPS\n", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
