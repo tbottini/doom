@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/16 18:07:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/17 15:06:31 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 static void input_loop(t_doom *doom, int key)
 {
 	if (key == SDLK_w || key == SDLK_s)
-		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+		doom->player.vel.x = (key == SDLK_w ? -32700 : 32700);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
-	//if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
-	//	input_deplacement(doom, key);
+		doom->player.vel.y = (key == SDLK_a ? 32700 : -32700);
+	//else if (key == SDLK_q || key == SDLK_e) // Qui utiliserait le clavier pour pivoter
+	//	doom->player.rotvel.y = (key == SDLK_q ? 5.0 : -5.0);
 	else if (key == SDLK_LSHIFT)
 		sprint(doom);
 	else if (key == SDLK_r)
@@ -39,18 +39,23 @@ static void input_loop(t_doom *doom, int key)
 		fire(doom);
 }
 
+
 static void	delaypcmasterrace(t_doom *doom)
 {
-	if (doom->sdl.timp == SDL_GetTicks() / 1000)
+	struct timespec spec;
+
+	clock_gettime(CLOCK_REALTIME, &spec);
+	if (doom->sdl.timp == spec.tv_sec)
 		++doom->sdl.fps;
 	else
 	{
-		//printf("%d FPS\n", doom->sdl.fps);
+		printf("%d\t%d\t%d\n", doom->sdl.size.x, doom->sdl.size.y, doom->sdl.fps);
 		doom->sdl.fps = 0;
-		doom->sdl.timp = SDL_GetTicks() / 1000;
+		doom->sdl.timp = spec.tv_sec;
 	}
-	while (SDL_GetTicks() - doom->timestamp < 16); // Limiteur de FPS (16)
-	doom->timestamp = SDL_GetTicks();
+	while ((spec.tv_sec * 1000000 + spec.tv_nsec / 1000) - doom->timestamp < 16500)
+		clock_gettime(CLOCK_REALTIME, &spec);
+	doom->timestamp = spec.tv_sec * 1000000 + spec.tv_nsec / 1000;
 }
 
 int loop_hook(t_doom *doom)
