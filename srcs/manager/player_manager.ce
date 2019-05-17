@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   player_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/09 20:14:03 by tbottini         ###   ########.fr       */
+/*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
+/*   Updated: 2019/05/10 22:08:14 by magrab           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-int	main(int ac, char **av)
+void	player_free(t_player *player)
 {
-	t_doom		*doom;
+	(void)player;
+}
 
-	if (ac < 2)
-	{
-		ft_putendl("no args");
-		return (0);
-	}
-	doom = (t_doom*)malloc(sizeof(t_doom));
-	if (!parsing(doom, av[1]))
-	{
-		ft_putendl("bad parsing");
-		return (0);
-	}
-	return (0);
+int		player_init(t_player *player)
+{
+	player->fov = 60;
+	player->health = 100;
+	player->height = 180;
+	player->weight = 10;
+	return (1);
 }

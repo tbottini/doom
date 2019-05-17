@@ -32,12 +32,12 @@ double		angle_adaptater(double angle)
 	return (angle);
 }
 
-float		ft_atof(char *str)
+double		ft_atof(char *str)
 {
-	float	nb;
+	double	nb;
 	int		i;
 	int		sign;
-	float	j;
+	double	j;
 
 	j = 10.0;
 	sign = (str[0] == '-') ? -1 : 1;
@@ -58,12 +58,12 @@ float		ft_atof(char *str)
 	return (nb);
 }
 
-float		ft_catof(char *str, char c)
+double		ft_catof(char *str, char c)
 {
-	float	nb;
+	double	nb;
 	int		i;
 	int		sign;
-	float	j;
+	double	j;
 
 	j = 10.0;
 	sign = (str[0] == '-') ? -1 : 1;
@@ -85,7 +85,7 @@ float		ft_catof(char *str, char c)
 	return (nb);
 }
 
-float		distance(t_fvct2 vct1, t_fvct2 vct2)
+double		distance(t_fvct2 vct1, t_fvct2 vct2)
 {
 	t_fvct2	dist;
 

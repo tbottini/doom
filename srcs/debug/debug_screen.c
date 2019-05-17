@@ -3,10 +3,10 @@
 t_vct2		hot_point(t_fvct2 vct, t_vct2 size_s)
 {
 	t_vct2	px;
-	float	rap;
+	double	rap;
 
 	px.x = ((vct.x + 10.0) / 20.0) * size_s.x;
-	rap = 20.0 / (float)size_s.x * (float)size_s.y;
+	rap = 20.0 / (double)size_s.x * (double)size_s.y;
 	px.y = ((vct.y + rap/2.0) / rap) * size_s.y;
 	return (px);
 }

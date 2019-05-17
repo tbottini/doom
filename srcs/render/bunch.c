@@ -3,7 +3,7 @@
 int			on_frustum(t_player player, t_pillar *pillar)
 {
 	t_fvct2	dist;
-	float	angle;
+	double	angle;
 
 	dist.x = pillar->p.x - player.pos.x;
 	dist.y = pillar->p.y - player.pos.y;

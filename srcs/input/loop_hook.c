@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/17 15:06:31 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/17 17:19:40 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		printf("%d\t%d\t%d\n", doom->sdl.size.x, doom->sdl.size.y, doom->sdl.fps);
+		//printf("%d FPS\n", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = spec.tv_sec;
 	}

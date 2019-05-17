@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/16 16:47:54 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/16 21:15:57 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,9 +91,11 @@ fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
 
-parsing			:
-	$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o parsing \
-		srcs/parsing/*.c main_parsing.c srcs/tools/*.c srcs/debug/*.c
+chmain			:
+	mv srcs/main.c main/main2.c
+	mv main/main.c srcs/main.c
+	mv main/main2.c main/main.c
+	touch srcs/main.c
 
 re				: fclean all
 

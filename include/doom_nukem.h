@@ -215,8 +215,8 @@ void					return_button(t_doom *doom);
 ** End Button Functions
 */
 
-float					ft_atof(char *str);
-float					ft_catof(char *str, char c);
+double					ft_atof(char *str);
+double					ft_catof(char *str, char c);
 int						parsing(t_doom *doom, char *filename);
 
 void					portal_engine(t_doom *doom);
@@ -327,7 +327,7 @@ void					calcdelay(const char *str, t_doom *doom);
 
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
-float					distance(t_fvct2 vct1, t_fvct2 vct2);
+double					distance(t_fvct2 vct1, t_fvct2 vct2);
 
 /*
 **	parsing
@@ -347,7 +347,7 @@ void					describe_bunch(t_wall **bunch);
 void					fvct2_print(t_fvct2 vct);
 void					sector_describe(t_sector sector);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-float					dist(t_fvct2 vct1, t_fvct2 vct2);
+double					dist(t_fvct2 vct1, t_fvct2 vct2);
 
 /*
 ** Gameplay
