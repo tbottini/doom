@@ -37,7 +37,8 @@ SRCS_PARSING	:=		parsing.c										\
 						chunck.c
 
 SRCS_DEBUG		:=		debug_sector.c									\
-						debug_screen.c
+						debug_screen.c									\
+						debug_vector.c
 
 SRCS_TOOLS		:=		num_tools.c										\
 						little_tools.c									\
