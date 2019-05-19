@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/19 16:21:47 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/19 16:54:12 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(INCLUDE_RES)
 $(NAME)			:		$(OBJS) $(SRCS_LIBFT)
 	@make -C libft/
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
-	@sips -i ressources/icon/icon.ico
+	@#sips -i ressources/icon/icon.ico
 	@derez -only icns ressources/icon/icon.ico > tmpicns.rsrc
 	@rez -append tmpicns.rsrc -o $(NAME)
 	@setfile -a C $(NAME)

@@ -11,33 +11,33 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	{
 		px.x = (double)(doom.sdl.size.x) / 2.0;
 		px.x -= (double)(doom.sdl.size.x - 1) / doom.player.fov * wall.pillar.angle;
-		d.x = distance(p->pos, wall.pillar.p);
+		d.x = distance(*(t_fvct2*)&p->pos, wall.pillar.p);
 	}
 	else if (wall.pillar.angle <= -doom.player.fov / 2.0)
 	{
 		px.x = doom.sdl.size.x - 1;
-		d.x = wall_clipping(wall, p->pos, p->rot.y - p->fov / 2.0);
+		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.pillar.angle >= doom.player.fov / 2.0)
 	{
 		px.x = 0;
-		d.x = wall_clipping(wall, p->pos, p->rot.y + p->fov / 2.0);
+		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
 	if (wall.next->frust)
 	{
 		px.y = (double)(doom.sdl.size.x) / 2.0;
 		px.y -= (double)(doom.sdl.size.x - 1) / doom.player.fov * wall.next->angle;
-		d.y = distance(p->pos, wall.next->p);
+		d.y = distance(*(t_fvct2*)&p->pos, wall.next->p);
 	}
 	else if (wall.next->angle <= -doom.player.fov / 2.0)
 	{
 		px.y = doom.sdl.size.x - 1;
-		d.y = wall_clipping(wall, p->pos, p->rot.y - p->fov / 2.0);
+		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.next->angle >= doom.player.fov / 2.0)
 	{
 		px.y = 0;
-		d.y = wall_clipping(wall, p->pos, p->rot.y + p->fov / 2.0);
+		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
 	*column_id = px;
 	*dist = d;
@@ -104,6 +104,11 @@ void		draw_wall(t_doom doom , t_wall wall)
 	t_vct2	column_id;
 	t_fvct2	dist;
 
+
 	pillar_screen_info(doom, wall, &dist, &column_id);
+	//dist.x *= cos(wall.pillar.angle);
+	//dist.y *= cos(wall.next->angle);
+	//dist.y = dist.y * cos(fabs(wall.next->angle) * PI / 180.0);
+	//dist.x = dist.x * cos(fabs(wall.pillar.angle) * PI / 180.0);
 	pillar_to_pillar(&doom.sdl, column_id, dist);
 }
