@@ -19,6 +19,17 @@ t_fvct2		*double_atof(char *line, t_fvct2 *vct)
 	return (vct);
 }
 
+t_fvct3		*triple_atof(char *line, t_fvct3 *fvct)
+{
+	char	*inter;
+
+	fvct->x = ft_catof(line, ' ');
+	inter =  ft_strchr(line, ' ') + 1;
+	fvct->y = ft_catof(inter, ' ');
+	fvct->z = ft_atof(ft_strchr(inter, ' ') + 1);
+	return (fvct);
+}
+
 // t_wl		*wall_by_line(char *line, t_wl *past)
 // {
 	// t_wall	*wall;
@@ -33,6 +44,33 @@ t_fvct2		*double_atof(char *line, t_fvct2 *vct)
 		// past->next = wall;
 	// return (wall);
 // }
+
+t_sector		*search_sector(t_sector *sector, char *search)
+{
+	int	i_sector;
+	char			*next_s;
+
+	//0.0.1 //on recherche is le premier index existe c
+	//a.2
+	//.
+	//a.32.52 //de passement de l'index
+	//si ya plus de nombre on remonte
+	next_s = ft_strchr(search, '.');
+	//si il ne reste plus de point on recupere le prochain nombre on renvoie l'index du sector
+	//si il reste un point alors on recupere le prochain nombre jusqu'au point, on fait un recursive
+	//en envoiyant le secteur et l'index
+	i_sector = ft_catoi_u(search, '.');
+	if (i_sector < sector->len_sub)
+		return (NULL);
+	if (!next_s)
+	{
+		return (&sector->ssector[i_sector]);
+	}
+	else
+	{
+		return (search_sector(&sector->ssector[i_sector], next_s + 1));
+	}
+}
 
 int			parsing(t_doom *doom, char *filename)
 {
