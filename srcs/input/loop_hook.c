@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/16 18:07:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/19 17:23:34 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static void input_loop(t_doom *doom, int key)
 	//if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
 	//	input_deplacement(doom, key);
 	else if (key == SDLK_LSHIFT)
-		sprint(doom);
+		sprint(&doom->player);
 	else if (key == SDLK_r)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDL_BUTTON_LEFT)
-		shoot(doom);
+		shoot(&doom->player);
 	else if (key == SDLK_LGUI)
-		crouch(doom);
+		crouch(&doom->player);
 	else if (key == SDLK_y)
 		fire(doom);
 }
@@ -82,7 +82,7 @@ int loop_hook(t_doom *doom)
 		while (++x < doom->sdl.size.x * doom->sdl.size.y)
 			doom->sdl.screen[x] = 0;
 		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);*/
-		move(doom, doom->player.vel.x, doom->player.vel.y);
+		move(&doom->player, doom->player.vel.x, doom->player.vel.y);
 		portal_engine(doom);
 		minimap(doom);
 /// End Comment
