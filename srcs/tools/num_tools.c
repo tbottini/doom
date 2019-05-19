@@ -58,6 +58,20 @@ double		ft_atof(char *str)
 	return (nb);
 }
 
+unsigned int	ft_catoi_u(char *str, char c)
+{
+	unsigned int	i;
+	unsigned int	nb;
+
+	i = 0;
+	while (str[i] && str[i] != c && i < 10)
+	{
+		nb = str[i] - '0' + nb * 10;
+		i++;
+	}
+	return (nb);
+}
+
 double		ft_catof(char *str, char c)
 {
 	double	nb;
