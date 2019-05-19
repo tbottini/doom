@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/16 21:15:57 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/19 16:21:47 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,19 +60,19 @@ FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
 
-all				:		directory $(NAME)
+all				:		$(FOLDER) $(NAME)
 
-directory		:
+$(FOLDER)		:
 	@mkdir -p $(FOLDER)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) $(INCLUDE_RES)
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(INCLUDE_RES)
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
-$(NAME)			:		$(OBJS)
+$(NAME)			:		$(OBJS) $(SRCS_LIBFT)
 	@make -C libft/
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@sips -i ressources/icon/icon.ico
@@ -90,6 +90,9 @@ clean			:
 fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
+
+lclean			:
+	@rm -rf $(FOLDER)
 
 chmain			:
 	mv srcs/main.c main/main2.c
