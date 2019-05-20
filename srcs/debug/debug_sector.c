@@ -8,49 +8,24 @@ void		ft_putnbr_msg(char *msg, int nb)
 	ft_putchar('\n');
 }
 
-void		ft_putfloat(float num)
-{
-	int		i;
-
-	i = 4;
-	ft_putnbr((int)num);
-	num = num - (int)num;
-	ft_putchar('.');
-	while (--i)
-	{
-		ft_putchar((int)(num * 10.0) + '0');
-		num *= 10;
-		num -= (int)num;
-	}
-}
-
-void		fvct2_print(t_fvct2 vct)
-{
-	ft_putfloat(vct.x);
-	ft_putchar(' ');
-	ft_putfloat(vct.y);
-}
-
-void		fvct2_msg(char *msg, t_fvct2 vct)
+void		int_msg(char *msg, int num)
 {
 	ft_putstr(msg);
-	ft_putstr(" : ");
-	fvct2_print(vct);
+	ft_putchar(' ');
+	ft_putnbr(num);
 	ft_putchar('\n');
 }
 
-void		sector_describe(t_sector sector)
+void		describe_sector(t_sector sector)
 {
 	int		i;
 	t_wall	*wall;
 	t_pillar	a;
 	i = 0;
 	ft_putendl("-------sector-------");
-	ft_putstr("height floor : ");
-	ft_putfloat(sector.h_floor);
-	ft_putstr("\nheight ceil : ");
-	ft_putfloat(sector.h_ceil);
-	ft_putchar('\n');
+	double_msg("height floor :", sector.h_floor);
+	double_msg("height ceil :", sector.h_ceil);
+	int_msg("son sector :", sector.len_sub);
 	wall = sector.wall;
 	while (i < sector.len)
 	{
@@ -86,12 +61,40 @@ void		describe_bunch(t_wall **bunch)
 	ft_putendl("-------------");
 }
 
-void		debug_player(t_player player)
+void		describe_player(t_player player)
 {
 	ft_putendl("------player------");
 	printf("Player :\n");
-	printf("Pos : %f\t%f\n", player.pos.x, player.pos.y);
+	fvct3_msg("Pos", player.pos);
 	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
 	printf("Fov : %d\n", player.fov);
 	ft_putendl("------------------");
+}
+
+void		describe_wall(t_wall wall)
+{
+	fvct2_msg("pillar", wall.pillar.p);
+	fvct2_msg("next", wall.next->p);
+}
+
+void		sector_recursif(t_sector sector)
+{
+	int		i;
+
+	i = 0;
+	describe_sector(sector);
+	if (sector.len_sub)
+		ft_putendl("|--->son");
+	while (i < sector.len_sub)
+	{
+		sector_recursif(sector.ssector[i]);
+		++i;
+	}
+}
+
+void		describe_sector_recursif(t_sector sector)
+{
+	ft_putendl("---------sector_recursive--------");
+	sector_recursif(sector);
+	ft_putendl("---------------------------------");
 }

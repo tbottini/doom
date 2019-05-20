@@ -28,6 +28,29 @@ typedef struct			s_fvct3
 }						t_fvct3;
 
 
+/*
+**	operation
+*/
 t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
+double					ft_atof(char *str);
+double					ft_catof(char *str, char c);
+unsigned int			ft_catoi_u(char *str, char c);
+t_fvct2					*double_atof(char *line, t_fvct2 *fvct);
+t_fvct3					*triple_atof(char *line, t_fvct3 *fvct);
+
+/*
+**	debug
+*/
+void					double_msg(char *msg, double num);
+void					ft_putdouble(double num);
+void					fvct2_msg(char *msg, t_fvct2 vct);
+void					fvct2_print(t_fvct2 vct);
+void					fvct3_print(t_fvct3 vector);
+void					fvct3_msg(char *msg, t_fvct3 vector);
+
+/*
+**	calcul
+*/
+double					dist(t_fvct2 vct1, t_fvct2 vct2);
 
 #endif

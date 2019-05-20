@@ -7,5 +7,7 @@ t_sector		*sector_new()
 	new = (t_sector *)malloc(sizeof(t_sector));
 	if (!new)
 		return (NULL);
+	new->ssector = NULL;
+	new->len_sub = 0;
 	return (new);
 }
