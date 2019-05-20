@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   doom.h                                             :+:      :+:    :+:   */
+/*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 20:44:04 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/20 17:37:20 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <SDL_image.h>
 
 # include "sector.h"
-
+# include "player.h"
 
 # define MINWIDTH 800
 # define MINHEIGHT 600
@@ -40,10 +40,6 @@
 # define RANGE 1 //range max for kick and actions with objects
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
-# define WALLBLUE "ressources/textures/wall_blue.xpm"
-# define WALL "ressources/textures/wall.xpm"
-# define GOLD "ressources/textures/plaqueor.xpm"
-# define TEST "ressources/textures/test.xpm"
 
 //le bunch permet de faire des groupe de mur visible
 //pour organiser l'affichage
@@ -55,8 +51,6 @@
 typedef struct s_doom	t_doom;
 
 typedef	Uint32* t_texture;
-
-# define JOYSTICK_DEAD_ZONE 2500
 
 /*
 ** Snap var behaviour
@@ -172,32 +166,6 @@ typedef struct			s_editor
 	int					mapzoom;
 }						t_editor;
 
-typedef	struct			s_weapon
-{
-	int					clip_max;
-	int					ammo;
-	int					clip;
-	int					rate;
-	int					dmg;
-	void				*sprites;
-}						t_weapon;
-
-typedef struct 			s_player
-{
-	t_fvct2				pos;
-	t_fvct2				rot;
-	int					crouch;
-	int					height;
-	int					weight;
-	int					speed;
-	int					health;
-	int					fov;
-	t_fvct2				vel;
-	t_fvct2				rotvel; // Rotvel needed for controller implementation
-	int					hand;
-	t_weapon			*weapons;
-}						t_player;
-
 struct					s_doom
 {
 	t_sdl				sdl;
@@ -222,8 +190,6 @@ void					return_button(t_doom *doom);
 ** End Button Functions
 */
 
-float					ft_atof(char *str);
-float					ft_catof(char *str, char c);
 int						parsing(t_doom *doom, char *filename);
 
 void					portal_engine(t_doom *doom);
@@ -255,9 +221,7 @@ int						event_handler1(t_doom *doom, SDL_Event event);
 int						event_handler2(t_doom *doom, SDL_Event event);
 int						loop_hook(t_doom *doom);
 t_btn					*btn_hover(t_doom *doom, int x, int y);
-void					draw_hover(t_doom *doom, t_btn *new, t_btn *old);
-
-void					move(t_doom *doom, double x, double y);
+void					draw_hover(t_doom *doom, t_btn *newl, t_btn *old);
 
 int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
@@ -277,7 +241,6 @@ void					lst_del_node(t_list **node);
 void					open_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
-void					debug_player(t_player player);
 
 /*
 ** Drawer functions
@@ -321,13 +284,12 @@ int						sdl_init(t_sdl *sdl, const char *title);
 void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
-int						player_init(t_player *player);
-void					player_free(t_player *player);
 
 /*
 **	simple input
 */
 
+void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					sdl_present(t_sdl *sdl);
@@ -335,44 +297,26 @@ void					calcdelay(const char *str, t_doom *doom);
 
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
-float					distance(t_fvct2 vct1, t_fvct2 vct2);
+double					distance(t_fvct2 vct1, t_fvct2 vct2);
 
 /*
 **	parsing
 */
+
 t_wall					*chunck_walls(t_list *chunck_line, size_t len);
 t_player				chunck_player(int fd);
 t_sector				*chunck_sector(int fd);
-t_fvct2					*double_atof(char *line, t_fvct2 *vct);
 t_sector				*sector_new();
 t_list					*ft_lstn(void *content);
 
 /*
 **	debug
 */
-void					fvct2_msg(char *msg, t_fvct2 vct);
-void					describe_bunch(t_wall **bunch);
-void					fvct2_print(t_fvct2 vct);
-void					sector_describe(t_sector sector);
+
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-float					dist(t_fvct2 vct1, t_fvct2 vct2);
-
-/*
-** Gameplay
-*/
-
-void					action(t_doom *doom);
-void					shoot(t_doom *doom);
-void					reload(t_weapon *weapon);
-void					crouch_release(t_doom *doom);
-void					crouch(t_doom *doom);
-void					sprint_release(t_doom *doom);
-void					sprint(t_doom *doom);
-void					next_weapon(t_player *player);
-void					prev_weapon(t_player *player);
-
 void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
+int						keyboard_input(t_doom *doom, SDL_Event event);
 
 #endif

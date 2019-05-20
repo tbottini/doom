@@ -1,0 +1,41 @@
+README
+
+les structures de doom
+
+un pillar
+	-un vecteur 2d la position du pillier
+	-char frust (frustum = champ de vision)(tmp : determine si le pilier est dans le champs de vision)
+		(c'est un char juste pcq c'est plus petit qu'un int)
+
+	-double angle (tmp : l'angle joueur -> pillier (negatif si le pillier est a droite))
+
+un wall
+	-un pillier (qui defini le depart du mur par exemple pour le debut de l'affichage)
+	-un pointeur sur pillier (il pointe vers le pillier du prochain mur !il ne pointe pas sur le mur mais sur son pillier)
+				le pillier reliée au prochain pillier forme un mur
+
+	//le pillier qui appartient au mur sera donc pointé pas un autre mur
+	//par exemple le dernier mur du tableau a un pilier et pointe le pilier du premier mur du tableau
+	//ce qui forme un polygone (le dernier point/pilier) et relier au premier
+
+	-une texture (vous savez ce que c'est...)
+
+	(plus tard une hauteur... ce qui rentrerai en contradiction avec la hauteur du secteur ... a voir plus tard)
+
+un secteur
+	-hauteur du sol, et du plafond (par rapport au sol du secteur ou juste position
+																	a definir)
+	-d'un tableau de structure wall (tous les mur du secteur)
+
+	-len le nombre de wall (et aussi de pilier au final)
+
+	-ssector (sub_sector)(tous les secteur present dans le secteur)
+
+	-len_sub (le nombre de sous secteur)
+
+
+il faudra penser a diviser la structure joueur en deux parties elle est et deviendra trop longue
+
+par exemple la vitesse / rot / pos / vel / poid --> structure carac
+
+ce sera une structure reutilisable pour d'autre structure comme les enemis, les objets du jeu...
