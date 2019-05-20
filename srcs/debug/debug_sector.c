@@ -73,8 +73,10 @@ void		describe_player(t_player player)
 
 void		describe_wall(t_wall wall)
 {
-	fvct2_msg("pillar", wall.pillar.p);
-	fvct2_msg("next", wall.next->p);
+	printf("pillar %f %f ang %f\nnext %f %f ang %f\n",
+		wall.pillar.p.x, wall.pillar.p.y, wall.pillar.angle,
+		wall.next->p.x, wall.next->p.y, wall.next->angle);
+
 }
 
 void		sector_recursif(t_sector sector)

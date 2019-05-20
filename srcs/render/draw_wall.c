@@ -1,12 +1,32 @@
 #include "doom_nukem.h"
 
+double		extrem_angle_test(t_wall wall, int max)
+{
+	t_fvct2	angle;
+	double	diff;
+	int		polarite;
+	int		px;
+
+	angle.x = wall.pillar.angle;
+	angle.y = wall.next->angle;
+	printf("angle %f %f\n", wall.pillar.angle, wall.next->angle);
+	if (angle.x < 0)
+		angle.x = 360 + angle.x;
+	if (angle.y < 0)
+		angle.y = 360 + angle.y;
+	diff = fabs(angle.x - angle.y);
+	printf("diff %f\n", diff);
+	polarite = ((wall.pillar.angle > 0) ? -1 : 1) * (diff < 180 ? 1 : -1);
+	printf("polarite ===%d===\n", polarite);
+	return ((polarite == -1) ? 0 : max);
+}
+
 void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
 {
 	t_vct2 px;
 	t_fvct2 d;
 	t_player	*p;
 
-	printf("wall pillar next angle %f\n", wall.next->angle);
 	p = &doom.player;
 	if (wall.pillar.frust)
 	{
@@ -16,11 +36,13 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	}
 	else if (wall.pillar.angle <= -doom.player.fov / 2.0)
 	{
+		extrem_angle_test(wall, doom.sdl.size.x - 1);
 		px.x = doom.sdl.size.x - 1;
 		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.pillar.angle >= doom.player.fov / 2.0)
 	{
+		extrem_angle_test(wall, doom.sdl.size.x - 1);
 		px.x = 0;
 		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
@@ -32,17 +54,18 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	}
 	else if (wall.next->angle <= -doom.player.fov / 2.0)
 	{
+		extrem_angle_test(wall, doom.sdl.size.x - 1);
 		px.y = doom.sdl.size.x - 1;
 		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.next->angle >= doom.player.fov / 2.0)
 	{
+		extrem_angle_test(wall, doom.sdl.size.x - 1);
 		px.y = 0;
 		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
 	*column_id = px;
 	*dist = d;
-	printf("column_id %d %d\n", column_id->x, column_id->y);
 }
 
 void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
@@ -85,7 +108,6 @@ void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
 	t_fvct2	column_len;
 
 	column = px.x;
-	printf("%d to %d px\n", px.x, px.y);
 	fact_px = (px.x < px.y) ? 1 : -1;
 	column_len.x = (double)(sdl->size.y) / dist.x;
 	column_len.y = (double)(sdl->size.y) / dist.y;

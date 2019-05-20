@@ -45,6 +45,7 @@ void	rot_input(t_doom *doom, SDL_Keycode key)
 	else if (key == SDLK_q)
 		doom->player.rot.y += 5;
 	doom->player.rot.y = double_modulo(doom->player.rot.y);
+	printf("---------------------%f---------------------\n", doom->player.rot.y);
 }
 
 int		keyboard_input(t_doom *doom, SDL_Event event)
