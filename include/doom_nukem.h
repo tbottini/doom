@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/05/20 16:15:23 by akrache          ###   ########.fr       */
+=======
+/*   Updated: 2019/05/19 18:21:33 by tbottini         ###   ########.fr       */
+>>>>>>> render
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +25,7 @@
 # include <SDL_image.h>
 
 # include "sector.h"
-
+# include "player.h"
 
 # define MINWIDTH 800
 # define MINHEIGHT 600
@@ -165,32 +169,6 @@ typedef struct			s_editor
 	int					mapzoom;
 }						t_editor;
 
-typedef	struct			s_weapon
-{
-	int					clip_max;
-	int					ammo;
-	int					clip;
-	int					rate;
-	int					dmg;
-	void				*sprites;
-}						t_weapon;
-
-typedef struct 			s_player
-{
-	t_fvct2				pos;
-	t_fvct2				rot;
-	int					crouch;
-	int					height;
-	int					weight;
-	int					speed;
-	int					health;
-	int					fov;
-	t_fvct2				vel;
-	t_fvct2				rotvel; // Rotvel needed for controller implementation
-	int					hand;
-	t_weapon			*weapons;
-}						t_player;
-
 struct					s_doom
 {
 	t_sdl				sdl;
@@ -206,7 +184,6 @@ struct					s_doom
 /*
 ** Button Functions
 */
-
 void					start_button(t_doom *doom);
 void					option_button(t_doom *doom);
 void					return_button(t_doom *doom);
@@ -214,9 +191,6 @@ void					return_button(t_doom *doom);
 /*
 ** End Button Functions
 */
-
-double					ft_atof(char *str);
-double					ft_catof(char *str, char c);
 int						parsing(t_doom *doom, char *filename);
 
 void					portal_engine(t_doom *doom);
@@ -250,8 +224,6 @@ int						loop_hook(t_doom *doom);
 t_btn					*btn_hover(t_doom *doom, int x, int y);
 void					draw_hover(t_doom *doom, t_btn *new, t_btn *old);
 
-void					move(t_doom *doom, int x, int y);
-
 int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
 int						mouse_press(int button, int x, int y, t_doom *doom);
@@ -270,12 +242,10 @@ void					lst_del_node(t_list **node);
 void					start_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
-void					debug_player(t_player player);
 
 /*
 ** Drawer functions
 */
-
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
@@ -285,7 +255,6 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 /*
 ** Editor
 */
-
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(int button, int x, int y,
@@ -293,9 +262,7 @@ int						editor_mouse_press(int button, int x, int y,
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
-
 void					draw_map(t_editor *editor);
-
 t_pilier				ft_newpillar(t_vct2 loc);
 t_pilier				ft_pillarpushend(t_pilier *start, t_vct2 loc);
 void					ft_nodeprint_pillar(t_pilier node);
@@ -313,13 +280,11 @@ int						sdl_init(t_sdl *sdl, const char *title);
 void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
-int						player_init(t_player *player);
-void					player_free(t_player *player);
 
 /*
 **	simple input
 */
-
+void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					sdl_present(t_sdl *sdl);
@@ -335,35 +300,13 @@ double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*chunck_walls(t_list *chunck_line, size_t len);
 t_player				chunck_player(int fd);
 t_sector				*chunck_sector(int fd);
-t_fvct2					*double_atof(char *line, t_fvct2 *vct);
 t_sector				*sector_new();
 t_list					*ft_lstn(void *content);
 
 /*
 **	debug
 */
-void					fvct2_msg(char *msg, t_fvct2 vct);
-void					describe_bunch(t_wall **bunch);
-void					fvct2_print(t_fvct2 vct);
-void					sector_describe(t_sector sector);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-double					dist(t_fvct2 vct1, t_fvct2 vct2);
-
-/*
-** Gameplay
-*/
-
-int						collision(t_doom *doom, int key);
-void					action(t_doom *doom);
-void					shoot(t_doom *doom);
-void					reload(t_weapon *weapon);
-void					crouch_release(t_doom *doom);
-void					crouch(t_doom *doom);
-void					sprint_release(t_doom *doom);
-void					sprint(t_doom *doom);
-void					next_weapon(t_player *player);
-void					prev_weapon(t_player *player);
-
 void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);

@@ -22,3 +22,22 @@ dans le chunck secteur
 	recursif
 
 	liste chaine de secteur
+
+
+
+reference
+
+a cote d'une balise on met en argument on met en argument
+la reference attendu
+
+la balise PERS attend son secteur de spawn
+0 --> le premier secteur definis dans la map est le secteur du joueur souvent la racine contenant tous
+		les secteur
+0.0 --> le premier sous secteur de la racine
+0.1 --> le second
+0.0.3 --> le troisieme sous secteur du premier sous secteur de la racine
+PERS 0.0.3
+...
+END
+
+SCTR 0.1.4 (le quatrieme mur du premier sous secteur)

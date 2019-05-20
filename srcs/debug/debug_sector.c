@@ -8,30 +8,6 @@ void		ft_putnbr_msg(char *msg, int nb)
 	ft_putchar('\n');
 }
 
-void		ft_putdouble(double num)
-{
-	int		i;
-
-	i = 4;
-	ft_putnbr((int)num);
-	num = num - (int)num;
-	ft_putchar('.');
-	while (--i)
-	{
-		ft_putchar((int)(num * 10.0) + '0');
-		num *= 10;
-		num -= (int)num;
-	}
-}
-
-void		double_msg(char *msg, double num)
-{
-	ft_putstr(msg);
-	ft_putchar(' ');
-	ft_putdouble(num);
-	ft_putchar('\n');
-}
-
 void		int_msg(char *msg, int num)
 {
 	ft_putstr(msg);
@@ -40,22 +16,7 @@ void		int_msg(char *msg, int num)
 	ft_putchar('\n');
 }
 
-void		fvct2_print(t_fvct2 vct)
-{
-	ft_putdouble(vct.x);
-	ft_putchar(' ');
-	ft_putdouble(vct.y);
-}
-
-void		fvct2_msg(char *msg, t_fvct2 vct)
-{
-	ft_putstr(msg);
-	ft_putstr(" : ");
-	fvct2_print(vct);
-	ft_putchar('\n');
-}
-
-void		sector_describe(t_sector sector)
+void		describe_sector(t_sector sector)
 {
 	int		i;
 	t_wall	*wall;
@@ -100,14 +61,20 @@ void		describe_bunch(t_wall **bunch)
 	ft_putendl("-------------");
 }
 
-void		debug_player(t_player player)
+void		describe_player(t_player player)
 {
 	ft_putendl("------player------");
 	printf("Player :\n");
-	printf("Pos : %f\t%f\n", player.pos.x, player.pos.y);
+	fvct3_msg("Pos", player.pos);
 	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
 	printf("Fov : %d\n", player.fov);
 	ft_putendl("------------------");
+}
+
+void		describe_wall(t_wall wall)
+{
+	fvct2_msg("pillar", wall.pillar.p);
+	fvct2_msg("next", wall.next->p);
 }
 
 void		sector_recursif(t_sector sector)
@@ -115,7 +82,7 @@ void		sector_recursif(t_sector sector)
 	int		i;
 
 	i = 0;
-	sector_describe(sector);
+	describe_sector(sector);
 	if (sector.len_sub)
 		ft_putendl("|--->son");
 	while (i < sector.len_sub)

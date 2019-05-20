@@ -37,14 +37,13 @@ t_player	chunck_player(int fd)
 	while (get_next_line(fd, &line) > 0 && ft_strcmp(line, "END"))
 	{
 		if (i == 0)
-			double_atof(line, &player.pos);
+			triple_atof(line, &player.pos);
 		else if (i == 1)
 			double_atof(line, &player.rot);
 		else if (i == 2)
 			player.fov = ft_atoi(line);
 		i++;
 	}
-	//player.fov = 60;
 	player.health = 100;
 	return (player);
 }
@@ -67,7 +66,6 @@ t_list		*add_subsector(t_list **list, int fd)
 	if (!sub_sector)
 		return (NULL);
 	sector = chunck_sector(fd);
-	fvct2_msg("pos pillar 1", sector->wall[0].pillar.p);
 	sub_sector->content = sector;
 	sub_sector->next = *list;
 	(*list) = sub_sector;
@@ -94,21 +92,18 @@ int			list_to_ssector(t_sector *parent, t_list *sub_sector)
 
 	i = 0;
 	parent->len_sub = list_len(sub_sector);
-	printf("okay\n");
 	parent->ssector = (t_sector*)malloc(sizeof(t_sector) * (parent->len_sub));
 	if (!parent->ssector)
 		return (0);
-	printf("parent %d \n", parent->len_sub);
 	while (i < parent->len_sub)
 	{
 		//parent->ssector[i].wall
 		ft_memcpy(&parent->ssector[i], sub_sector->content, sizeof(t_sector));
 		tmp = sub_sector;
-		free(sub_sector);
-		sub_sector = tmp->next;
+		sub_sector = sub_sector->next;
+		free(tmp);
 		++i;
 	}
-	printf("test == %f ==\n", parent->ssector[0].h_floor);
 	return (0);
 }
 
@@ -139,10 +134,8 @@ t_sector	*chunck_sector(int fd)
 		else if (!ft_strcmp(line, "SCTR"))
 		{
 			//on ajoute le sous secteur a la liste du secteur
-			printf("sub_sector detected\n");
 			add_subsector(&sub_sector, fd);
 			tmp = (t_sector*)sub_sector->content;
-			printf("test new sub sector 1 %f\n", tmp->wall[0].pillar.p.x);
 			nline--;
 		}
 		else
@@ -156,6 +149,5 @@ t_sector	*chunck_sector(int fd)
 		list_to_ssector(sector, sub_sector);
 	sector->wall = chunck_walls(files, nline - 2);
 	sector->len = nline - 2;
-	printf("nline== %d\n", sector->len);
 	return (sector);
 }

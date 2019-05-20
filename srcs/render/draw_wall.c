@@ -6,41 +6,43 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	t_fvct2 d;
 	t_player	*p;
 
+	printf("wall pillar next angle %f\n", wall.next->angle);
 	p = &doom.player;
 	if (wall.pillar.frust)
 	{
 		px.x = (double)(doom.sdl.size.x) / 2.0;
 		px.x -= (double)(doom.sdl.size.x - 1) / doom.player.fov * wall.pillar.angle;
-		d.x = distance(p->pos, wall.pillar.p);
+		d.x = distance(*(t_fvct2*)&p->pos, wall.pillar.p);
 	}
 	else if (wall.pillar.angle <= -doom.player.fov / 2.0)
 	{
 		px.x = doom.sdl.size.x - 1;
-		d.x = wall_clipping(wall, p->pos, p->rot.y - p->fov / 2.0);
+		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.pillar.angle >= doom.player.fov / 2.0)
 	{
 		px.x = 0;
-		d.x = wall_clipping(wall, p->pos, p->rot.y + p->fov / 2.0);
+		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
 	if (wall.next->frust)
 	{
 		px.y = (double)(doom.sdl.size.x) / 2.0;
 		px.y -= (double)(doom.sdl.size.x - 1) / doom.player.fov * wall.next->angle;
-		d.y = distance(p->pos, wall.next->p);
+		d.y = distance(*(t_fvct2*)&p->pos, wall.next->p);
 	}
 	else if (wall.next->angle <= -doom.player.fov / 2.0)
 	{
 		px.y = doom.sdl.size.x - 1;
-		d.y = wall_clipping(wall, p->pos, p->rot.y - p->fov / 2.0);
+		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.next->angle >= doom.player.fov / 2.0)
 	{
 		px.y = 0;
-		d.y = wall_clipping(wall, p->pos, p->rot.y + p->fov / 2.0);
+		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
 	*column_id = px;
 	*dist = d;
+	printf("column_id %d %d\n", column_id->x, column_id->y);
 }
 
 void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
@@ -83,6 +85,7 @@ void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
 	t_fvct2	column_len;
 
 	column = px.x;
+	printf("%d to %d px\n", px.x, px.y);
 	fact_px = (px.x < px.y) ? 1 : -1;
 	column_len.x = (double)(sdl->size.y) / dist.x;
 	column_len.y = (double)(sdl->size.y) / dist.y;
@@ -90,10 +93,12 @@ void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
 	while (column != px.y)
 	{
 		column += fact_px;
-
+		//printf("coef %f len %f\n", coef_dist_px, column_len.x);
+		//printf("hello world\n");
 		draw_column(sdl, column, column_len.x, PINK_FLOOR);
 		column_len.x -= coef_dist_px;
 	}
+	//printf("pillar debug visu\n");
 	draw_column(sdl, px.x, sdl->size.y, RED_WALL);
 	draw_column(sdl, px.y, sdl->size.y, RED_WALL);
 
@@ -104,6 +109,13 @@ void		draw_wall(t_doom doom , t_wall wall)
 	t_vct2	column_id;
 	t_fvct2	dist;
 
+	//on determine le mauvais pixel pour le nouveau pillier
+	//1119->60;1279->1119;60->1279;
+	//on reviens sur tout ce qui a ete dessiner
+	//0->60 ?
+	describe_wall(wall);
 	pillar_screen_info(doom, wall, &dist, &column_id);
+	//segv pcq on depasse l'ecran, ?skysize
+
 	pillar_to_pillar(&doom.sdl, column_id, dist);
 }
