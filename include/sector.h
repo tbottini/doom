@@ -8,7 +8,7 @@ typedef struct		s_pillar
 {
 	t_fvct2			p;
 	char			frust;
-	float			angle;
+	double			angle;
 }					t_pillar;
 
 //definir une structure pillar avec un attribu frust plutot que dans le wall
@@ -35,8 +35,10 @@ typedef struct		s_wall
 typedef struct		s_sector
 {
 	t_wall			*wall;
-	float			h_floor;
-	float			h_ceil;
+	struct s_sector	*ssector;
+	int				len_sub;
+	double			h_floor;
+	double			h_ceil;
 	int				len;
 	//sector effector *fonction
 	//list things (shapes, objets, deco, enemis)
@@ -45,7 +47,10 @@ typedef struct		s_sector
 /*
 **	wall : draw, manipulation
 */
-float			wall_clipping(t_wall wall, t_fvct2 pos, float angle);
-
+double			wall_clipping(t_wall wall, t_fvct2 pos, double angle);
+void			describe_sector_recursif(t_sector sector);
+void			describe_bunch(t_wall **bunch);
+void			describe_sector(t_sector sector);
+void			describe_wall(t_wall wall);
 
 #endif
