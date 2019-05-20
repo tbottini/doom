@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/16 18:09:59 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/20 16:15:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,6 +353,7 @@ double					dist(t_fvct2 vct1, t_fvct2 vct2);
 ** Gameplay
 */
 
+int						collision(t_doom *doom, int key);
 void					action(t_doom *doom);
 void					shoot(t_doom *doom);
 void					reload(t_weapon *weapon);

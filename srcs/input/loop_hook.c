@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/17 17:19:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/20 17:06:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 static void input_loop(t_doom *doom, int key)
 {
-	if (key == SDLK_w || key == SDLK_s)
+	if ((key == SDLK_w || key == SDLK_s) && collision(doom, key) == 1)
 		doom->player.vel.x = (key == SDLK_w ? -32700 : 32700);
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.vel.y = (key == SDLK_a ? 32700 : -32700);
@@ -82,13 +82,13 @@ int loop_hook(t_doom *doom)
 		if (doom->ui.m_status == 0)
 		{
 /// Place here functions that need to be launch every frame while the game is running
-		/*int x;
+		int x;
 		x = -1;
 		while (++x < doom->sdl.size.x * doom->sdl.size.y)
 			doom->sdl.screen[x] = 0;
-		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);*/
+		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
 		move(doom, doom->player.vel.x, doom->player.vel.y);
-		portal_engine(doom);
+		//portal_engine(doom);
 		minimap(doom);
 /// End Comment
 		}

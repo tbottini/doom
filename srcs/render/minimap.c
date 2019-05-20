@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/16 14:48:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/20 17:13:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,6 @@ void		minimap(t_doom *d)
 	}
 	miniwalls(d, mini);
 	bold_point2(d, mini, mini.mid, CPERS);
-	debug_player(d->player);
+	//debug_player(d->player);
 	SDL_RenderCopy(d->sdl.rend, d->sdl.txture, NULL, NULL);
 }
