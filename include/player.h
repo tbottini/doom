@@ -49,4 +49,9 @@ void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
 void					move(t_player *player, int x, int y);
 
+/*
+**	Debug
+*/
+void					describe_player(t_player player);
+
 #endif
