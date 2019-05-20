@@ -71,6 +71,12 @@ void		describe_player(t_player player)
 	ft_putendl("------------------");
 }
 
+void		describe_wall(t_wall wall)
+{
+	fvct2_msg("pillar", wall.pillar.p);
+	fvct2_msg("next", wall.next->p);
+}
+
 void		sector_recursif(t_sector sector)
 {
 	int		i;

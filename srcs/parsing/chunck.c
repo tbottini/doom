@@ -100,8 +100,8 @@ int			list_to_ssector(t_sector *parent, t_list *sub_sector)
 		//parent->ssector[i].wall
 		ft_memcpy(&parent->ssector[i], sub_sector->content, sizeof(t_sector));
 		tmp = sub_sector;
-		free(sub_sector);
-		sub_sector = tmp->next;
+		sub_sector = sub_sector->next;
+		free(tmp);
 		++i;
 	}
 	return (0);

@@ -21,14 +21,13 @@ void	mvt_input(t_player *player, SDL_Keycode key)
 		angle -= 90;
 	else if (key == SDLK_s)
 		angle += 180;
-	next_pos.x += player->pos.x + (cos(angle * PI180) / 100.0);
-	next_pos.y += player->pos.y + (sin(angle * PI180) / 100.0);
+	next_pos.x += player->pos.x + (cos(angle * PI180) / 10.0);
+	next_pos.y += player->pos.y + (sin(angle * PI180) / 10.0);
 
 	if (next_pos.x < 0 || next_pos.y < 0)
 		return ;
 	player->pos.x = next_pos.x;
 	player->pos.y = next_pos.y;
-	//condition a enlever
 }
 
 void	debug_input(t_doom *doom, SDL_Keycode key)

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/19 17:16:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/19 18:21:33 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,6 @@ void					lst_del_node(t_list **node);
 void					start_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
-void					describe_player(t_player player);
 
 /*
 ** Drawer functions
@@ -252,7 +251,6 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 /*
 ** Editor
 */
-
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(int button, int x, int y,
@@ -260,9 +258,7 @@ int						editor_mouse_press(int button, int x, int y,
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
-
 void					draw_map(t_editor *editor);
-
 t_pilier				ft_newpillar(t_vct2 loc);
 t_pilier				ft_pillarpushend(t_pilier *start, t_vct2 loc);
 void					ft_nodeprint_pillar(t_pilier node);
@@ -306,8 +302,6 @@ t_list					*ft_lstn(void *content);
 /*
 **	debug
 */
-void					describe_bunch(t_wall **bunch);
-void					describe_sector(t_sector sector);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);

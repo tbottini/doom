@@ -32,14 +32,28 @@ soit rien du tout
 
 on verifie que dans la rotation y est bien entre l'angle entre les deux
 
-etapes
+-segv inconnu
+	troisieme pillier trop proche
 
-render
+.--.
+|  |
+X--.
+....
+
+========================================etapes===========================================
+
+------render
 -affichage selon la hauteur du personnage / mur
 -texture mur/sol/plafond
 portail
 	secteur interieur
 	portail vers d'autre secteur
+
+
+!!!!enlever le fish eyes
+--->il faut faire un produit de cos (nouvelle angle d'intersection) * distance
+			determiner le nouvelle angle d'intersection
+
 
 <thought>
 Utiliser https://www.youtube.com/watch?v=SNCT9HVIf3A Pour music de main menu ?
