@@ -2,9 +2,9 @@
 
 # define PADDING 0.01
 
-t_fvct2			wall_collide(t_wall wall, t_fvct2 pos, double angle)
+t_fvct3			wall_collide(t_wall wall, t_fvct3 pos, double angle)
 {
-	t_fvct2		inter;
+	t_fvct3		inter;
 	t_fvct2		diff;
 	t_fvct2		diff2;
 	double		coef_ang;
@@ -52,15 +52,24 @@ t_wall	get_wall(t_doom *doom)
 	return (doom->sector->wall[0]);
 }
 
+double		colli_dist(t_fvct3 vct1, t_fvct3 vct2)
+{
+	t_fvct2	dist;
+
+	dist.x = vct2.x - vct1.x;
+	dist.y = vct2.y - vct1.y;
+	return (sqrt((dist.x * dist.x) + (dist.y * dist.y)));
+}
+
 int		collision(t_doom *doom, int key)
 {
-	t_fvct2 inter;
+	t_fvct3 inter;
 	t_wall wall;
 	double dist;
 
 	wall = get_wall(doom);
 	inter = wall_collide(wall, doom->player.pos, doom->player.rot.y);
-	dist = distance(inter, doom->player.pos);
+	dist = colli_dist(inter, doom->player.pos);
 	printf("dist = %f\n", dist);
 	if (dist < PADDING)
 	{
