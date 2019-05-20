@@ -3,10 +3,10 @@
 t_vct2		hot_point(t_fvct2 vct, t_vct2 size_s)
 {
 	t_vct2	px;
-	float	rap;
+	double	rap;
 
 	px.x = ((vct.x + 10.0) / 20.0) * size_s.x;
-	rap = 20.0 / (float)size_s.x * (float)size_s.y;
+	rap = 20.0 / (double)size_s.x * (double)size_s.y;
 	px.y = ((vct.y + rap/2.0) / rap) * size_s.y;
 	return (px);
 }
@@ -40,7 +40,7 @@ void		debug_up(t_doom *doom)
 	i = 0;
 	wall = doom->sector->wall;
 	ft_bzero(doom->sdl.screen, doom->sdl.size.x * doom->sdl.size.y);
-	cursor = hot_point(doom->player.pos, doom->sdl.size);
+	cursor = hot_point(*(t_fvct2*)&doom->player.pos, doom->sdl.size);
 	bold_point(cursor, RED_WALL, doom);
 	i = 0;
 	cursor = hot_point(*(t_fvct2*)&wall[0].pillar, doom->sdl.size);

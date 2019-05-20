@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/09 12:57:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/19 17:22:37 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ int		key_press(int key, t_doom *doom)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDLK_e)
 		action(doom);
+	else if (key == SDLK_LGUI)
+		crouch(&doom->player);
 	else if (key == SDLK_g)
-		debug_player(doom->player);
+		describe_player(doom->player);
 	else if (key == SDLK_h)
-		sector_describe(*doom->sector);
+		describe_sector(*doom->sector);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);
@@ -68,7 +70,7 @@ int		key_release(int key, t_doom *doom)
 		doom->player.rotvel.y = 0.0;
 	}
 	else if (key == SDLK_LGUI)
-		crouch_release(doom);
+		crouch_release(&doom->player);
 	return (0);
 }
 

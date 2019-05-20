@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/09 13:33:03 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/19 17:43:32 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g #-Werror
+CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -31,7 +31,8 @@ INCLUDE			:=		-I ./include							\
 INCLUDE_RES		:=		include/sector.h						\
 						include/vector.h						\
 						libft/libft.h							\
-						include/doom_nukem.h
+						include/doom_nukem.h					\
+						include/debug.h							\
 
 FOLDER			:=		objs									\
 						objs/parsing							\
@@ -59,19 +60,19 @@ FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
 
-all				:		directory $(NAME)
+all				:		$(FOLDER) $(NAME)
 
-directory		:
+$(FOLDER)		:
 	@mkdir -p $(FOLDER)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) $(INCLUDE_RES)
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(INCLUDE_RES)
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
-$(NAME)			:		$(OBJS)
+$(NAME)			:		$(OBJS) $(SRCS_LIBFT)
 	@make -C libft/
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@sips -i ressources/icon/icon.ico
@@ -90,9 +91,8 @@ fclean			: clean
 	@make fclean -C ./libft
 	@rm -f $(NAME)
 
-parsing			:
-	$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o parsing \
-		srcs/parsing/*.c main_parsing.c srcs/tools/*.c srcs/debug/*.c
+lclean			:
+	@rm -rf $(FOLDER)
 
 re				: fclean all
 
