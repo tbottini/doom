@@ -40,16 +40,13 @@ double		wall_angle_pers(t_wall wall)
 	double	field;
 	t_fvct2	angles;
 
-	printf("angle without modif %f %f\n", wall.pillar.angle, wall.next->angle);
 	angles.x = wall.pillar.angle;
 	angles.y = wall.next->angle;
 	if (wall.pillar.angle < 0)
 		angles.x += 360;
 	if (wall.next->angle < 0)
 		angles.y += 360;
-	fvct2_msg("angle pers", angles);
 	field = fabs(angles.y - angles.x);
-	printf("field test %f+++++++++++++++++++\n", field);
 	return (field);
 }
 
@@ -78,9 +75,7 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 		}
 		else if (wall_angle_pers(wall[i_wall]) > 180)
 		{
-			printf("======double hors champs\n");
 			wall_angle_pers(wall[i_wall]);
-			describe_wall(wall[i_wall]);
 			bunch[i_bunch] = &wall[i_wall];
 			++i_bunch;
 		}
@@ -108,8 +103,6 @@ void		portal_engine(t_doom *doom)
 
 	sector_frustum(doom->sector, doom->player);
 	buncherisation(*doom->sector, bunch);
-	describe_bunch(bunch);
-	printf("-------------------->bunch\n");
 	bunch_comsuption(doom, bunch);
 	//minimap(doom);
 	sdl_present(&doom->sdl);
