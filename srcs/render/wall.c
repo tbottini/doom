@@ -13,7 +13,6 @@ double			wall_clipping(t_wall wall, t_fvct2 pos, double angle)
 	double		coef_wall;
 	double		b;
 
-	printf("---clipping wall----\n");
 	diff.x = wall.pillar.p.x - pos.x;
 	diff.y = wall.pillar.p.y - pos.y;
 	diff2.x = wall.next->p.x - pos.x;
@@ -31,6 +30,5 @@ double			wall_clipping(t_wall wall, t_fvct2 pos, double angle)
 		inter.x = b / (coef_ang - coef_wall);
 		inter.y = coef_wall * inter.x + b;
 	}
-	printf("-----------------\n");
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
