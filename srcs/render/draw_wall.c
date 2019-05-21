@@ -1,23 +1,52 @@
 #include "doom_nukem.h"
 
+/*
+**	si au moins l'un des pilier est hors frustum il passe pas l'extremite de
+**	l'ecran, on determine laquelle avec une polarite (-1 == 0px et 1 == max)
+**	si l'angle entre le joueur est les deux pillier est superieur a 180
+**	la polarite de depart (position du premier pillier) s'inverse
+*/
+
+//!!! si deux pillier sont hors frustum ca change l'effet il
+//faut faire une fonction qui prend en parametre deux pillier
+//et non un wall
+//	le programme ne fonctionne pas avec un wall entier
+//	car l'angle de depart definie la polarite
 double		extrem_angle_test(t_wall wall, int max)
 {
 	t_fvct2	angle;
 	double	diff;
 	int		polarite;
-	int		px;
 
+	polarite = 0;
 	angle.x = wall.pillar.angle;
 	angle.y = wall.next->angle;
-	printf("angle %f %f\n", wall.pillar.angle, wall.next->angle);
 	if (angle.x < 0)
 		angle.x = 360 + angle.x;
 	if (angle.y < 0)
 		angle.y = 360 + angle.y;
 	diff = fabs(angle.x - angle.y);
-	printf("diff %f\n", diff);
 	polarite = ((wall.pillar.angle > 0) ? -1 : 1) * (diff < 180 ? 1 : -1);
-	printf("polarite ===%d===\n", polarite);
+	printf("angle %f px %d\n", diff, max);
+	return ((polarite == -1) ? 0 : max);
+}
+
+double		pillar_polarite(t_pillar pillar, t_pillar next, int max)
+{
+	t_fvct2	angle;
+	double	diff;
+	int		polarite;
+
+	polarite = 0;
+	angle.x = pillar.angle;
+	angle.y = next.angle;
+	if (angle.x < 0)
+		angle.x = 360 + angle.x;
+	if (angle.y < 0)
+		angle.y = 360 + angle.y;
+	diff = fabs(angle.x - angle.y);
+	polarite = (pillar.angle > 0 ? -1 : 1) * (diff < 180 ? 1 : -1);
+	printf("angle %f polarite %d\n", diff, polarite);
 	return ((polarite == -1) ? 0 : max);
 }
 
@@ -36,14 +65,16 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	}
 	else if (wall.pillar.angle <= -doom.player.fov / 2.0)
 	{
-		extrem_angle_test(wall, doom.sdl.size.x - 1);
-		px.x = doom.sdl.size.x - 1;
+		//extrem_angle_test(wall, doom.sdl.size.x - 1);
+		px.x = pillar_polarite(*wall.next, wall.pillar, doom.sdl.size.x - 1);
+		//px.x = extrem_angle_test(wall, doom.sdl.size.x - 1);
+		//px.x = doom.sdl.size.x - 1;
 		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.pillar.angle >= doom.player.fov / 2.0)
 	{
-		extrem_angle_test(wall, doom.sdl.size.x - 1);
-		px.x = 0;
+		px.x = pillar_polarite(*wall.next, wall.pillar, doom.sdl.size.x - 1);
+		//px.x = 0;
 		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
 	if (wall.next->frust)
@@ -54,14 +85,16 @@ void		pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column
 	}
 	else if (wall.next->angle <= -doom.player.fov / 2.0)
 	{
-		extrem_angle_test(wall, doom.sdl.size.x - 1);
-		px.y = doom.sdl.size.x - 1;
+		px.y = pillar_polarite(wall.pillar, *wall.next, doom.sdl.size.x - 1);
+		//px.y = extrem_angle_test(wall, doom.sdl.size.x - 1);
+		//px.y = doom.sdl.size.x - 1;
 		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y - p->fov / 2.0);
 	}
 	else if (wall.next->angle >= doom.player.fov / 2.0)
 	{
-		extrem_angle_test(wall, doom.sdl.size.x - 1);
-		px.y = 0;
+		px.y = pillar_polarite(wall.pillar, *wall.next, doom.sdl.size.x - 1);
+		//px.y = extrem_angle_test(wall, doom.sdl.size.x - 1);
+		//px.y = 0;
 		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, p->rot.y + p->fov / 2.0);
 	}
 	*column_id = px;
@@ -131,13 +164,9 @@ void		draw_wall(t_doom doom , t_wall wall)
 	t_vct2	column_id;
 	t_fvct2	dist;
 
-	//on determine le mauvais pixel pour le nouveau pillier
-	//1119->60;1279->1119;60->1279;
-	//on reviens sur tout ce qui a ete dessiner
-	//0->60 ?
+	ft_putendl("--------wall-------------------------");
 	describe_wall(wall);
 	pillar_screen_info(doom, wall, &dist, &column_id);
-	//segv pcq on depasse l'ecran, ?skysize
-
 	pillar_to_pillar(&doom.sdl, column_id, dist);
+	ft_putendl("-------------------------------------");
 }
