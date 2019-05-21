@@ -64,14 +64,23 @@ t_list		*add_subsector(t_list **list, int fd)
 {
 	t_list		*sub_sector;
 	t_sector	*sector;
+	t_list		*cursor;
 
 	sub_sector = (t_list*)malloc(sizeof(t_list));
 	if (!sub_sector)
 		return (NULL);
 	sector = chunck_sector(fd);
 	sub_sector->content = sector;
-	sub_sector->next = *list;
-	(*list) = sub_sector;
+	sub_sector->next = NULL;
+	if (!(*list))
+	{
+		*list = sub_sector;
+		return (*list);
+	}
+	cursor = *list;
+	while (cursor->next)
+		cursor = cursor->next;
+	cursor->next = sub_sector;
 	return (*list);
 }
 
@@ -85,6 +94,7 @@ size_t		list_len(t_list *list)
 		len++;
 		list = list->next;
 	}
+	printf("list len %d\n", len);
 	return (len);
 }
 
