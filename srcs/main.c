@@ -37,7 +37,7 @@ int			main(int ac, char **av)
 		return (0);
 	}
 	describe_player(doom->player);
-	describe_sector(*doom->sector);
+	describe_sector_recursif(*doom->sector);
 	portal_engine(doom);
 	while (1)
 	{
