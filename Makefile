@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/21 16:35:36 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/21 19:13:24 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g#-Werror
+CFLAGS			:=		-Wall -Wextra -g #-Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\

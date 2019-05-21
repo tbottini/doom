@@ -79,24 +79,63 @@ void		describe_wall(t_wall wall)
 
 }
 
-void		sector_recursif(t_sector sector)
+void		ft_putnchar(char c, int i)
+{
+	while (--i != -1)
+		ft_putchar(c);
+}
+
+void		describe_sub_sector(t_sector sector, int sub)
+{
+	int		i;
+	t_wall	*wall;
+	t_pillar	a;
+	i = 0;
+	ft_putnchar('\t', sub);
+	ft_putendl("-------sector-------");
+	ft_putnchar('\t', sub);
+	double_msg("height floor :", sector.h_floor);
+	ft_putnchar('\t', sub);
+	double_msg("height ceil :", sector.h_ceil);
+	ft_putnchar('\t', sub);
+	int_msg("son sector :", sector.len_sub);
+	wall = sector.wall;
+	while (i < sector.len)
+	{
+		ft_putnchar('\t', sub);
+		fvct2_print(*(t_fvct2*)&sector.wall[i].pillar);
+		ft_putstr(" --> ");
+		a = *sector.wall[i].next;
+		fvct2_print(*(t_fvct2*)&a);
+		ft_putchar('\n');
+		i++;
+	}
+}
+
+void		sector_recursif(t_sector sector, int sub)
 {
 	int		i;
 
 	i = 0;
-	describe_sector(sector);
+
+	describe_sub_sector(sector, sub);
 	if (sector.len_sub)
-		ft_putendl("|--->son");
+	{
+		ft_putnchar('\t', sub);
+		ft_putendl("--->son");
+	}
 	while (i < sector.len_sub)
 	{
-		sector_recursif(sector.ssector[i]);
+		sector_recursif(sector.ssector[i], sub + 1);
 		++i;
 	}
+	ft_putnchar('\t', sub);
+	ft_putendl("--------------------");
 }
 
 void		describe_sector_recursif(t_sector sector)
 {
-	ft_putendl("---------sector_recursive--------");
-	sector_recursif(sector);
-	ft_putendl("---------------------------------");
+	printf("\e[31m\e[1m=============sector_recursivite===============\033[0m\n");
+	sector_recursif(sector, 0);
+	printf("\e[31m\e[1m==============================================\033[0m\n");
 }
