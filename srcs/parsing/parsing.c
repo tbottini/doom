@@ -86,6 +86,8 @@ int			parsing(t_doom *doom, char *filename)
 			doom->sector = chunck_sector(fd);
 		else if (!ft_strcmp(line, "PERS"))
 			doom->player = chunck_player(fd);
+		free(line);
 	}
+	free(line);
 	return (1);
 }
