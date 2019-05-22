@@ -41,7 +41,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		//ft_printf("\r%d FPS ", doom->sdl.fps);
+		ft_printf("\r%d FPS ", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
@@ -63,9 +63,7 @@ int loop_hook(t_doom *doom)
 	if (doom->edit.status == 1)
 	{
 		SDL_RenderClear(doom->edit.rend);
-		sdl_cleartexture(doom->edit.screen, doom->edit.size);
 		draw_map(&doom->edit);
-		SDL_RenderCopy(doom->edit.rend, doom->edit.txture, NULL, NULL);
 		SDL_RenderPresent(doom->edit.rend);
 	}
 	else
