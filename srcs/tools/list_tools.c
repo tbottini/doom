@@ -41,6 +41,21 @@ t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 	return (t->next);
 }
 
+int		ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
+{
+	t_lstpil t;
+
+	if (!pos)
+		return (0);
+	if (!(*pos) || (*pos)->next)
+		return (0);
+	t = *pos;
+	if (!(t->next = ft_newpillar(loc)))
+		return (0);
+	t->next->prvs = t;
+	return (1);
+}
+
 static int	check_diff(t_lstpil un, t_lstpil deux)
 {
 	if (un->pos.x != deux->pos.x || un->pos.y != deux->pos.y)

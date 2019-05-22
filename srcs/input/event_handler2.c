@@ -17,10 +17,9 @@ static void		window_event(t_doom *doom, SDL_Event e)
 //	void	*tmp;
 //	int		pitch;
 
-	(void)doom;
 	//PrintEvent(&e);
-/*	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
-	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
+	SDL_GetWindowSize(doom->edit.win, &(doom->edit.size.x), &(doom->edit.size.y));
+/*	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
 		|| e.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
 		if (doom->sdl.txture)
