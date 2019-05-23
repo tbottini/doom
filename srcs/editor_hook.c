@@ -32,7 +32,12 @@ int		editor_key_press(int key, t_doom *doom)
 	else if (key == SDLK_5)
 		ft_nodeprint_pillar(doom->edit.map);
 	else if (key == SDLK_6)
-		draw_map(&doom->edit);
+		ft_clear_pillar_list(&doom->edit.map);
+	else if (key == SDLK_r)
+	{
+		doom->edit.mappos = (t_vct2){doom->edit.size.x / 2, doom->edit.size.y / 2};
+		doom->edit.mapzoom = 100;
+	}
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);

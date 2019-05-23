@@ -16,6 +16,7 @@ int		close_editor(t_doom *doom)
 {
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 	SDL_HideWindow(doom->edit.win);
+	SDL_RaiseWindow(doom->sdl.win);
 	doom->edit.status = 0;
 	return (0);
 }
@@ -32,7 +33,7 @@ void	editor_free(t_editor *editor)
 {
 	SDL_ShowWindow(editor->win);
 	if (editor->map)
-		free(editor->map); // Must Change
+		ft_clear_pillar_list(&editor->map);
 	if (editor->rend)
 		SDL_DestroyRenderer(editor->rend);
 	if (editor->win)

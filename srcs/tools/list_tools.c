@@ -82,3 +82,23 @@ void	ft_nodeprint_pillar(t_lstpil node)
 	}
 	ft_printf("\n");
 }
+
+void	ft_clear_pillar_list(t_lstpil *start)
+{
+	t_lstpil tmp;
+
+	if (!start || !(*start))
+		return ;
+	tmp = *start;
+	while (tmp->next && tmp->next != *start)
+		tmp = tmp->next;
+	while (tmp->prvs && tmp->prvs != *start)
+	{
+		tmp = tmp->prvs;
+		free(tmp->next);
+	}
+	if (tmp != *start)
+		free(tmp);
+	(*start)->next = NULL;
+	(*start)->prvs = NULL;
+}
