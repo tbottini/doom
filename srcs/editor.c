@@ -22,13 +22,16 @@ t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	y = (y - editor->mappos.y) * EDITORPRECISION / editor->mapzoom;
 	while (curr)
 	{
-		if (x - MAXZOOM / editor->mapzoom < curr->pos.x && curr->pos.x < x + MAXZOOM / editor->mapzoom
-			&& y - MAXZOOM / editor->mapzoom < curr->pos.y && curr->pos.y < y + MAXZOOM / editor->mapzoom)
+		if (x - MAXZOOM / editor->mapzoom * 2 <= curr->pos.x
+				&& curr->pos.x <= x + MAXZOOM / editor->mapzoom * 2
+				&& y - MAXZOOM / editor->mapzoom * 2 <= curr->pos.y
+				&& curr->pos.y <= y + MAXZOOM / editor->mapzoom * 2)
 			return (curr);
 		curr = curr->next;
 	}
 	return (NULL);
 }
+
 /*
 t_lstpil	find_pilier(t_lstpil start, t_vct2 p)
 {
@@ -97,7 +100,6 @@ void	draw_map(t_editor *editor)
 	{
 		loc.x = editor->mappos.x + curr->pos.x * editor->mapzoom / EDITORPRECISION;
 		loc.y = editor->mappos.y + curr->pos.y * editor->mapzoom / EDITORPRECISION;
-		//printf("pillard : %d\t%d\n", curr->pos.x, curr->pos.y);
 		tmp.x = loc.x - 5;
 		tmp.y = loc.y - 5;
 		tmp.w = 10;

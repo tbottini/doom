@@ -259,6 +259,7 @@ int						secure_doom(t_doom *doom);
 ** Drawer functions
 */
 
+int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
@@ -283,6 +284,7 @@ void					draw_map(t_editor *editor);
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
 int						ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
+void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 
