@@ -135,7 +135,15 @@ int		editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 	doom->edit.🐁.x = e.x;
 	doom->edit.🐁.y = e.y;
 	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.map, e.x, e.y);
-	if (e.state == SDL_BUTTON_MMASK)
+	if (e.state == SDL_BUTTON_LMASK)
+	{
+		if (doom->edit.currpilier)
+		{
+			doom->edit.currpilier->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mapzoom;
+			doom->edit.currpilier->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mapzoom;
+		}
+	}
+	else if (e.state == SDL_BUTTON_MMASK)
 	{
 		doom->edit.mappos.x += e.xrel;
 		doom->edit.mappos.y += e.yrel;
