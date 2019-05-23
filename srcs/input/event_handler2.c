@@ -14,26 +14,16 @@
 
 static void		window_event(t_doom *doom, SDL_Event e)
 {
-//	void	*tmp;
-//	int		pitch;
+	t_vct2 tmp;
 
-	//PrintEvent(&e);
-	SDL_GetWindowSize(doom->edit.win, &(doom->edit.size.x), &(doom->edit.size.y));
-/*	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
-		|| e.window.event == SDL_WINDOWEVENT_RESIZED)
+	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || e.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
-		if (doom->sdl.txture)
-			SDL_DestroyTexture(doom->sdl.txture);
-		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
-			SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
-			doom->sdl.size.x, doom->sdl.size.y);
-		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
-			doom_exit(doom);
-		doom->sdl.screen = (Uint32 *)tmp;
-		draw_menu(doom);
+		tmp = doom->edit.size;
+		SDL_GetWindowSize(doom->edit.win, &(doom->edit.size.x), &(doom->edit.size.y));
+		doom->edit.mappos.x += (doom->edit.size.x - tmp.x) / 2;
+		doom->edit.mappos.y += (doom->edit.size.y - tmp.y) / 2;
 	}
-	else */
-	if (e.window.event == SDL_WINDOWEVENT_CLOSE)
+	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 	{
 		close_editor(doom);
 	}
