@@ -45,7 +45,7 @@
 //pour organiser l'affichage
 //over : indique si le mur depasse la vision mais et relier a un
 //mur dans la vision
-# define JOYSTICK_DEAD_ZONE 2500
+# define JOYSTICK_DEAD_ZONE 5000
 # define SENSIBILITY 6.0
 
 typedef struct s_doom	t_doom;
