@@ -91,7 +91,9 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 		if (doom->edit.currpilier)
 		{
 			tmp = find_pilier(&doom->edit, doom->edit.map, x, y);
-			if (tmp)
+			if (tmp && doom->edit.currpilier != tmp
+				&& doom->edit.currpilier->next != tmp
+				&& doom->edit.currpilier->prvs != tmp)
 			{
 				doom->edit.currpilier->next = tmp;
 				doom->edit.currpilier->next->prvs = doom->edit.currpilier;
@@ -144,6 +146,7 @@ int		editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 {
 	doom->edit.🐁.x = e.x;
 	doom->edit.🐁.y = e.y;
+	doom->edit.map🐁 = get_rel_mappos(&doom->edit, e.x, e.y);
 	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.map, e.x, e.y);
 	if (e.state == SDL_BUTTON_LMASK)
 	{

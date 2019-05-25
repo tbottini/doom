@@ -20,34 +20,20 @@ t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	curr = start;
 	x = (x - editor->mappos.x) * EDITORPRECISION / editor->mapzoom;
 	y = (y - editor->mappos.y) * EDITORPRECISION / editor->mapzoom;
-	while (curr && curr->next != start)
+	while (curr)
 	{
 		if (x - MAXZOOM / editor->mapzoom * 2 <= curr->pos.x
 				&& curr->pos.x <= x + MAXZOOM / editor->mapzoom * 2
 				&& y - MAXZOOM / editor->mapzoom * 2 <= curr->pos.y
 				&& curr->pos.y <= y + MAXZOOM / editor->mapzoom * 2)
 			return (curr);
-		curr = curr->next;
+		if (curr->next != start)
+			curr = curr->next;
+		else
+			curr = NULL;
 	}
 	return (NULL);
 }
-
-/*
-t_lstpil	find_pilier(t_lstpil start, t_vct2 p)
-{
-	t_lstpil curr;
-
-	curr = start;
-	while (curr)
-	{
-		if (p.x - CLICKRANGE < curr->pos.x && curr->pos.x < p.x + CLICKRANGE
-			&& p.y - CLICKRANGE < curr->pos.y && curr->pos.y < p.y + CLICKRANGE)
-			return (curr);
-		curr = curr->next;
-	}
-	return (NULL);
-}
-*/
 
 static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1)
 {
@@ -96,7 +82,7 @@ void	draw_map(t_editor *editor)
 
 	draw_grid(editor, loc, editor->mapzoom, 0);
 	curr = editor->map;
-	while (curr && curr->next != editor->map)
+	while (curr)
 	{
 		loc.x = editor->mappos.x + curr->pos.x * editor->mapzoom / EDITORPRECISION;
 		loc.y = editor->mappos.y + curr->pos.y * editor->mapzoom / EDITORPRECISION;
@@ -113,7 +99,10 @@ void	draw_map(t_editor *editor)
 		else
 			SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
 		SDL_RenderFillRect(editor->rend, &tmp);
-		curr = curr->next;
+		if (curr->next != editor->map)
+			curr = curr->next;
+		else
+			curr = NULL;
 	}
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }

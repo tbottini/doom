@@ -169,6 +169,7 @@ typedef struct			s_editor
 	t_vct2				size;
 	t_vct2				mouse; //Mouse pos
 	t_vct2				🐁;
+	t_vct2				map🐁;
 	//SDL_Texture			*txture;
 	//Uint32				*screen;
 	t_tab				keys;
