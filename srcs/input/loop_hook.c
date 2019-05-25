@@ -64,8 +64,8 @@ int loop_hook(t_doom *doom)
 	{
 		SDL_RenderClear(doom->edit.rend);
 		draw_map(&doom->edit);
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 50}, "x: ",  doom->edit.mappos.x, (SDL_Color){250,50,50,255});
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 82}, "y: ",  doom->edit.mappos.y, (SDL_Color){250,50,50,255});
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 50}, "x: ",  doom->edit.map🐁.x, (SDL_Color){250,50,50,255});
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 82}, "y: ",  doom->edit.map🐁.y, (SDL_Color){250,50,50,255});
 		SDL_RenderPresent(doom->edit.rend);
 	}
 	else
