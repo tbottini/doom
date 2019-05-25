@@ -47,7 +47,7 @@ void					sprint_release(t_player *player);
 void					sprint(t_player *player);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
-void					move(t_player *player, int x, int y);
+//void					move(t_doom *doom, t_player *player, int x, int y);
 
 /*
 **	Debug
