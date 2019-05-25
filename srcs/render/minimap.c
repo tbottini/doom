@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/20 17:33:39 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/21 18:01:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ t_vct2		minipoint(t_doom *d, t_fvct2 vct, t_minimap mini)
 	t_vct2	px;
 
 	px.x = (mini.a.x - (mini.size.x >> 1)) + ((vct.x - d->player.pos.x)) * (UNIT);
-	px.y = (mini.a.y - (mini.size.y >> 1)) + ((vct.y - d->player.pos.y)) * (UNIT);
+	//px.y = (mini.a.y - (mini.size.y >> 1)) + ((vct.y - d->player.pos.y)) * (UNIT);
+	px.y = (mini.a.y - (mini.size.y >> 1)) + ((d->player.pos.y - vct.y)) * (UNIT);
 	return (px);
 }
 
@@ -202,6 +203,5 @@ void		minimap(t_doom *d)
 	}
 	miniwalls(d, mini);
 	bold_point2(d, mini, mini.mid, CPERS);
-	describe_player(d->player);
 	SDL_RenderCopy(d->sdl.rend, d->sdl.txture, NULL, NULL);
 }
