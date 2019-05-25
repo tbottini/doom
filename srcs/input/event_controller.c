@@ -26,16 +26,16 @@ void controller_handler(t_doom *doom, SDL_Event e)
 		if (e.jaxis.axis == 0) // Move x
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				doom->vel.y = -e.jaxis.value;
+				doom->player.vel.y = e.jaxis.value;
 			else
-				doom->vel.y = 0;
+				doom->player.vel.y = 0;
 		}
 		else if (e.jaxis.axis == 1) // Move y
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				doom->vel.x = e.jaxis.value;
+				doom->player.vel.x = -e.jaxis.value;
 			else
-				doom->vel.x = 0;
+				doom->player.vel.x = 0;
 		}
 		else if (e.jaxis.axis == 2) // Cam y
 		{
