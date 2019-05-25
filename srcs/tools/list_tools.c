@@ -78,7 +78,13 @@ void	ft_nodeprint_pillar(t_lstpil node)
 		ft_printf("%d %d", curr->pos.x, curr->pos.y);
 		if (curr->next)
 			ft_printf("%c-> ", check_diff(curr->next->prvs, curr) ? ' ' : '!');
-		curr = curr->next;
+		if (curr->next != node)
+			curr = curr->next;
+		else
+		{
+			ft_printf("Loop");
+			curr = NULL;
+		}
 	}
 	ft_printf("\n");
 }
