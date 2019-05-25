@@ -75,6 +75,7 @@ t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
 int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	t_vct2 relpos;
+	t_lstpil tmp;
 
 	relpos = get_rel_mappos(&doom->edit, x, y);
 	//ft_printf("pos %d\t%d\n", (x - doom->edit.mappos.x) / doom->edit.mapzoom, (y - doom->edit.mappos.y) / doom->edit.mapzoom);
@@ -87,8 +88,17 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 	}
 	else if (btn == SDL_BUTTON_RIGHT)
 	{
-		if (doom->edit.currpilier && !(ft_pillarpushnext(&doom->edit.currpilier, relpos)))
-			ft_printf("Error adding pillar\n");
+		if (doom->edit.currpilier)
+		{
+			tmp = find_pilier(&doom->edit, doom->edit.map, x, y);
+			if (tmp)
+			{
+				doom->edit.currpilier->next = tmp;
+				doom->edit.currpilier->next->prvs = doom->edit.currpilier;
+			}
+			else if (!(ft_pillarpushnext(&doom->edit.currpilier, relpos)))
+				ft_printf("Error adding pillar\n");
+		}
 	}
 	return (0);
 }
