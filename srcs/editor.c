@@ -20,7 +20,7 @@ t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	curr = start;
 	x = (x - editor->mappos.x) * EDITORPRECISION / editor->mapzoom;
 	y = (y - editor->mappos.y) * EDITORPRECISION / editor->mapzoom;
-	while (curr)
+	while (curr && curr->next != start)
 	{
 		if (x - MAXZOOM / editor->mapzoom * 2 <= curr->pos.x
 				&& curr->pos.x <= x + MAXZOOM / editor->mapzoom * 2
@@ -96,7 +96,7 @@ void	draw_map(t_editor *editor)
 
 	draw_grid(editor, loc, editor->mapzoom, 0);
 	curr = editor->map;
-	while (curr)
+	while (curr && curr->next != editor->map)
 	{
 		loc.x = editor->mappos.x + curr->pos.x * editor->mapzoom / EDITORPRECISION;
 		loc.y = editor->mappos.y + curr->pos.y * editor->mapzoom / EDITORPRECISION;
