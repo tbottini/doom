@@ -24,7 +24,8 @@ int		sdl_set_status(t_doom *doom, int status)
 	else if (status == 1)
 	{
 		doom->ui.m_status = 1;
-		//doom_clear_map(doom);
+		//doom_clear_map(doom); // TODO Add map data free;
+		fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 		draw_menu(doom);
 	}
 	else if (status == 2)

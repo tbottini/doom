@@ -41,6 +41,21 @@ t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 	return (t->next);
 }
 
+t_lstpil		ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
+{
+	t_lstpil t;
+
+	if (!pos)
+		return (0);
+	if (!(*pos) || (*pos)->next)
+		return (0);
+	t = *pos;
+	if (!(t->next = ft_newpillar(loc)))
+		return (NULL);
+	t->next->prvs = t;
+	return (t->next);
+}
+
 static int	check_diff(t_lstpil un, t_lstpil deux)
 {
 	if (un->pos.x != deux->pos.x || un->pos.y != deux->pos.y)
@@ -63,7 +78,35 @@ void	ft_nodeprint_pillar(t_lstpil node)
 		ft_printf("%d %d", curr->pos.x, curr->pos.y);
 		if (curr->next)
 			ft_printf("%c-> ", check_diff(curr->next->prvs, curr) ? ' ' : '!');
-		curr = curr->next;
+		if (curr->next != node)
+			curr = curr->next;
+		else
+		{
+			ft_printf("Loop");
+			curr = NULL;
+		}
 	}
 	ft_printf("\n");
+}
+
+void	ft_clear_pillar_list(t_lstpil *start)
+{
+	t_lstpil tmp;
+
+	if (!start || !(*start))
+		return ;
+	tmp = *start;
+	while (tmp->next && tmp->next != *start)
+		tmp = tmp->next;
+	while (tmp->prvs && tmp->prvs != *start)
+	{
+		tmp = tmp->prvs;
+		free(tmp->next);
+	}
+	if (tmp != *start)
+		free(tmp);
+	(*start)->next = NULL;
+	(*start)->prvs = NULL;
+	(*start)->pos.x = 0;
+	(*start)->pos.y = 0;
 }
