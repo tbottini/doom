@@ -74,13 +74,15 @@ int loop_hook(t_doom *doom)
 		{
 /// Place here functions that need to be launch every frame while the game is running
 		move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
-		/*portal_engine(doom);*/
+		portal_engine(doom);
+		/*
 		int x;
 		x = -1;
 		while (++x < doom->sdl.size.x * doom->sdl.size.y)
 			doom->sdl.screen[x] = 0;
 		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
 		sector_frustum(doom->sector, doom->player);
+		*/
 		//describe_player(d->player);
 		minimap(doom);
 /// End Comment
