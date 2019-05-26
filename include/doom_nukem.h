@@ -285,7 +285,7 @@ void					draw_map(t_editor *editor);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
-int						ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
+t_lstpil				ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
 void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
