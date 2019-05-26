@@ -115,4 +115,5 @@ void		portal_engine(t_doom *doom)
 	//backface_culling(bunch, doom->player);
 
 	bunch_comsuption(doom, bunch);
+	sdl_present(&doom->sdl);
 }
