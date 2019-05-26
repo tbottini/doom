@@ -68,6 +68,7 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 	wall = sector.wall;
 	while (i_wall < sector.len)
 	{
+		// viewing frustum culling
 		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
@@ -79,6 +80,7 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 			bunch[i_bunch] = &wall[i_wall];
 			++i_bunch;
 		}
+		// backface culling
 		++i_wall;
 	}
 	bunch[i_bunch] = NULL;
@@ -103,6 +105,16 @@ void		portal_engine(t_doom *doom)
 
 	sector_frustum(doom->sector, doom->player);
 	buncherisation(*doom->sector, bunch);
+	bunch_comsuption(doom, bunch);
+
+	sector_frustum(&doom->sector->ssector[0], doom->player);
+	buncherisation(doom->sector->ssector[0], bunch);
+
+//	describe_bunch(bunch);
+	//gestion des faces caches
+	//on affiche tout le secteur
+	backface_culling(bunch, doom->player);
+
 	bunch_comsuption(doom, bunch);
 	sdl_present(&doom->sdl);
 }
