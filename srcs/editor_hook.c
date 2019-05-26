@@ -27,6 +27,8 @@ int		editor_key_press(int key, t_doom *doom)
 	{
 		close_editor(doom);
 	}
+	else if (key == SDLK_4)
+		printf("currpillar : %p\n", doom->edit.currpilier);
 	else if (key == SDLK_5)
 		ft_nodeprint_pillar(doom->edit.map);
 	else if (key == SDLK_6)
