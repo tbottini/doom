@@ -73,7 +73,7 @@ t_btn	add_editor_button(t_doom *doom)
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
-	tmp.func = &open_editor;
+	tmp.func = &start_editor;
 	tmp.loc.pos.x = 50;
 	tmp.loc.pos.y = 20;
 	tmp.loc.snapx = 1;
