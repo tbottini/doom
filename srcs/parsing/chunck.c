@@ -94,7 +94,6 @@ size_t		list_len(t_list *list)
 		len++;
 		list = list->next;
 	}
-	printf("list len %d\n", len);
 	return (len);
 }
 

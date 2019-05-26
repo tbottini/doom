@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/19 18:21:33 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/26 15:54:22 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ struct					s_doom
 	t_player			player;
 	SDL_GameController	*controller;
 	t_sector			*sector;
+
+	/*test*/
 	t_vct2				vel;
 };
 
@@ -307,4 +309,10 @@ void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
+
+/*
+**	render
+*/
+void					backface_culling(t_wall **bunch, t_player player);
+
 #endif

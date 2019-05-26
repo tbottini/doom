@@ -56,3 +56,4 @@ void					move(t_player *player, int x, int y);
 void					describe_player(t_player player);
 
 #endif
+
