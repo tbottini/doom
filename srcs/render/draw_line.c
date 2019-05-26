@@ -43,30 +43,6 @@ void	big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color)
 	}
 }
 
-void	editor_fill_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, Uint32 color)
-{
-	t_vct3	decal;
-	t_vct2	orig;
-	int		err;
-	int		e2;
-
-	orig.x = ft_abs(pos1.x - pos0.x);
-	orig.y = ft_abs(pos1.y - pos0.y);
-	decal.x = (pos0.x < pos1.x ? 1 : -1);
-	decal.y = (pos0.y < pos1.y ? 1 : -1);
-	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
-	fill_pixel(editor->screen, editor->size, pos0, color);
-	while ((pos0.x != pos1.x || pos0.y != pos1.y))
-	{
-		fill_pixel(editor->screen, editor->size, pos0, color);
-		e2 = err;
-		if (e2 > -orig.x && ((err -= orig.y) || 1))
-			pos0.x += decal.x;
-		if (e2 < orig.y && ((err += orig.x) || 1))
-			pos0.y += decal.y;
-	}
-}
-
 void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 {
 	t_vct3	decal;

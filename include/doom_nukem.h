@@ -48,6 +48,16 @@
 # define JOYSTICK_DEAD_ZONE 5000
 # define SENSIBILITY 6.0
 
+/*
+** Editor Stuff
+*/
+#define MAXZOOM 20000
+# define EDITORPRECISION 10000
+
+/*
+** End
+*/
+
 typedef struct s_doom	t_doom;
 
 typedef	Uint32* t_texture;
@@ -157,10 +167,14 @@ typedef struct			s_editor
 	SDL_Renderer		*rend;
 	t_btn				btnarr[20];
 	t_vct2				size;
-	SDL_Texture			*txture;
-	Uint32				*screen;
+	t_vct2				mouse; //Mouse pos
+	t_vct2				🐁;
+	t_vct2				map🐁;
+	//SDL_Texture			*txture;
+	//Uint32				*screen;
 	t_tab				keys;
 	t_lstpil			currpilier;
+	t_lstpil			hoverpilier;
 	t_lstpil			map;
 	t_vct2				mappos;
 	int					mapzoom;
@@ -246,10 +260,12 @@ int						secure_doom(t_doom *doom);
 ** Drawer functions
 */
 
+int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
+int						sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg);
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
-void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
+//void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 /*
@@ -269,8 +285,10 @@ void					draw_map(t_editor *editor);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
+t_lstpil				ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
+void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
-t_lstpil				find_pilier(t_lstpil start, int x, int y);
+t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 
 /*
 **	gestion

@@ -41,7 +41,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		//ft_printf("\r%d FPS ", doom->sdl.fps);
+		ft_printf("\r%d FPS ", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
@@ -63,9 +63,9 @@ int loop_hook(t_doom *doom)
 	if (doom->edit.status == 1)
 	{
 		SDL_RenderClear(doom->edit.rend);
-		sdl_cleartexture(doom->edit.screen, doom->edit.size);
 		draw_map(&doom->edit);
-		SDL_RenderCopy(doom->edit.rend, doom->edit.txture, NULL, NULL);
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 50}, "x: ",  doom->edit.map🐁.x, (SDL_Color){250,50,50,255});
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 82}, "y: ",  doom->edit.map🐁.y, (SDL_Color){250,50,50,255});
 		SDL_RenderPresent(doom->edit.rend);
 	}
 	else
@@ -74,13 +74,15 @@ int loop_hook(t_doom *doom)
 		{
 /// Place here functions that need to be launch every frame while the game is running
 		move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
-		/*portal_engine(doom);*/
+		portal_engine(doom);
+		/*
 		int x;
 		x = -1;
 		while (++x < doom->sdl.size.x * doom->sdl.size.y)
 			doom->sdl.screen[x] = 0;
 		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
 		sector_frustum(doom->sector, doom->player);
+		*/
 		//describe_player(d->player);
 		minimap(doom);
 /// End Comment

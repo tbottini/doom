@@ -14,15 +14,16 @@
 
 int		close_editor(t_doom *doom)
 {
-	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
+	//fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 	SDL_HideWindow(doom->edit.win);
+	SDL_RaiseWindow(doom->sdl.win);
 	doom->edit.status = 0;
 	return (0);
 }
 
 void	open_editor(t_doom *doom)
 {
-	fire_on_off(doom->sdl.screen, doom->sdl.size, 0);
+	//fire_on_off(doom->sdl.screen, doom->sdl.size, 0);
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;
@@ -32,9 +33,7 @@ void	editor_free(t_editor *editor)
 {
 	SDL_ShowWindow(editor->win);
 	if (editor->map)
-		free(editor->map); // Must Change
-	if (editor->txture)
-		SDL_DestroyTexture(editor->txture);
+		ft_clear_pillar_list(&editor->map);
 	if (editor->rend)
 		SDL_DestroyRenderer(editor->rend);
 	if (editor->win)
@@ -43,19 +42,12 @@ void	editor_free(t_editor *editor)
 
 int		editor_init(t_editor *editor)
 {
-	void	*tmp;
-	int		pitch;
-
 	if (!(editor->win = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN)))
+		SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE)))
 		return (0);
 	if (!(editor->rend = SDL_CreateRenderer(editor->win, -1, 1)))
 		return (0);
-	editor->txture = SDL_CreateTexture(editor->rend,
-		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
-	if (SDL_LockTexture(editor->txture, NULL, &tmp, &pitch))
-		return (0);
-	editor->screen = (Uint32*)tmp;
+	SDL_SetWindowMinimumSize(editor->win, MINWIDTH, MINHEIGHT);
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
 	editor->mappos = (t_vct2){editor->size.x / 2, editor->size.y / 2};
 	editor->mapzoom = 100;
