@@ -98,7 +98,7 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 				doom->edit.currpilier->next = tmp;
 				doom->edit.currpilier->next->prvs = doom->edit.currpilier;
 			}
-			else if (!(ft_pillarpushnext(&doom->edit.currpilier, relpos)))
+			else if (!(doom->edit.currpilier = ft_pillarpushnext(&doom->edit.currpilier, relpos)))
 				ft_printf("Error adding pillar\n");
 		}
 	}
