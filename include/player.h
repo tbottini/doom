@@ -28,6 +28,7 @@ typedef struct 			s_player
 	t_fvct2				rotvel;
 	int					hand;
 	t_weapon			*weapons;
+	t_sector			*sector;
 }						t_player;
 
 /*
