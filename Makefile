@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/19 17:43:32 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/26 22:04:22 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,6 +93,13 @@ fclean			: clean
 
 lclean			:
 	@rm -rf $(FOLDER)
+
+chmain			:
+	@mv srcs/main.c main/main2.c
+	@mv main/main.c srcs/main.c
+	@mv main/main2.c main/main.c
+	@touch srcs/main.c
+	@make
 
 re				: fclean all
 
