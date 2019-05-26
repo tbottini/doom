@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/20 17:37:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/26 01:43:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 //pour organiser l'affichage
 //over : indique si le mur depasse la vision mais et relier a un
 //mur dans la vision
-# define JOYSTICK_DEAD_ZONE 2500
+# define JOYSTICK_DEAD_ZONE 5000
 # define SENSIBILITY 6.0
 
 typedef struct s_doom	t_doom;
@@ -298,6 +298,8 @@ void					calcdelay(const char *str, t_doom *doom);
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
+int						collision(t_doom *doom, int key);
+t_wall					*collisionV42(t_doom *doom, t_fvct3 pos, t_wall *w);
 
 /*
 **	parsing
@@ -313,6 +315,9 @@ t_list					*ft_lstn(void *content);
 **	debug
 */
 
+void					super_move(t_doom *doom, t_player *player, int key);
+void					mvt_input(t_doom *doom, int key);
+void					move(t_doom *doom, t_player *player, int x, int y);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);
