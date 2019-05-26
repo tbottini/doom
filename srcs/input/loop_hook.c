@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/26 17:11:16 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/25 19:29:09 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static void input_loop(t_doom *doom, int key)
 		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
-	//if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
-	//	input_deplacement(doom, key);
 	else if (key == SDLK_LSHIFT)
 		sprint(&doom->player);
 	else if (key == SDLK_r)
@@ -43,7 +41,7 @@ static void	delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		//printf("%d FPS\n", doom->sdl.fps);
+		ft_printf("\r%d FPS ", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}

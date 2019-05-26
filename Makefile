@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/26 17:36:57 by tbottini         ###   ########.fr        #
+#    Updated: 2019/05/19 17:43:32 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g #-Werror
+CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -75,7 +75,7 @@ $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(INCLUDE_RES)
 $(NAME)			:		$(OBJS) $(SRCS_LIBFT)
 	@make -C libft/
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
-	@#sips -i ressources/icon/icon.ico
+	@sips -i ressources/icon/icon.ico
 	@derez -only icns ressources/icon/icon.ico > tmpicns.rsrc
 	@rez -append tmpicns.rsrc -o $(NAME)
 	@setfile -a C $(NAME)
@@ -93,12 +93,6 @@ fclean			: clean
 
 lclean			:
 	@rm -rf $(FOLDER)
-
-chmain			:
-	mv srcs/main.c main/main2.c
-	mv main/main.c srcs/main.c
-	mv main/main2.c main/main.c
-	touch srcs/main.c
 
 re				: fclean all
 
