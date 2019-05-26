@@ -14,9 +14,6 @@ void	mvt_input(t_doom *doom, int key)
 	double angle;
 	t_fvct2	next_pos;
 
-	describe_player(doom->player);
-	if (collisionV7(doom, key))
-		return (ft_putendl("BLOCKED"));
 	angle = doom->player.rot.y;
 	if (key == SDLK_a)
 		angle += 90;
