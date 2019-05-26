@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/26 03:53:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/26 17:42:19 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void        miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
 	t_vct2		cursor2;
 	t_wall		*wall;
 
-	
+
 	i = -1;
 	while (++i < sector.len_sub)
 		miniwalls(doom, sector.ssector[i], mini);

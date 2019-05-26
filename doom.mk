@@ -33,7 +33,8 @@ SRCS_RENDER		:=		bunch.c											\
 						draw_line.c										\
 						draw_text.c										\
 						sector.c										\
-						minimap.c
+						minimap.c										\
+						culling.c
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c
