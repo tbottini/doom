@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/09 20:14:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/21 18:53:48 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			main(int ac, char **av)
 	}
 	else
 		sdl_set_status(doom, 1);
-	while ('^' == '^')
+	while (1)
 	{
 		if (!(event_handler(doom)))
 			return (0);
@@ -57,3 +57,4 @@ int			main(int ac, char **av)
 	}
 	return (0);
 }
+

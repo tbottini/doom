@@ -9,6 +9,7 @@ int		is_movekey(SDL_Keycode key)
 {
 	return (key == SDLK_w || key == SDLK_s || key == SDLK_d || key == SDLK_a);
 }
+
 void	mvt_input(t_doom *doom, int key)
 {
 	double angle;
