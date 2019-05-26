@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/26 17:41:08 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/26 01:43:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 600
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 1200
+# define HEIGHT 800
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -59,6 +59,7 @@
 */
 
 typedef struct s_doom	t_doom;
+
 typedef	Uint32* t_texture;
 
 /*
@@ -149,14 +150,14 @@ typedef struct			s_sdl
 	int					fps;
 }						t_sdl;
 
-typedef struct s_pilier	*t_pilier;
-typedef t_pilier		t_lstpil;
+typedef struct s_pilier	t_pilier;
+typedef t_pilier		*t_lstpil;
 
 struct					s_pilier {
 	t_vct2				pos;
 
-	t_pilier			prvs;
-	t_pilier			next;
+	t_lstpil			prvs;
+	t_lstpil			next;
 };
 
 typedef struct			s_editor
@@ -188,14 +189,13 @@ struct					s_doom
 	t_player			player;
 	SDL_GameController	*controller;
 	t_sector			*sector;
-
-	/*test*/
 	t_vct2				vel;
 };
 
 /*
 ** Button Functions
 */
+
 void					start_button(t_doom *doom);
 void					option_button(t_doom *doom);
 void					return_button(t_doom *doom);
@@ -203,6 +203,7 @@ void					return_button(t_doom *doom);
 /*
 ** End Button Functions
 */
+
 int						parsing(t_doom *doom, char *filename);
 
 void					portal_engine(t_doom *doom);
@@ -251,7 +252,7 @@ void					*listdel(t_list **list);
 char					**tab_new(int y);
 void					controller_handler(t_doom *doom, SDL_Event event);
 void					lst_del_node(t_list **node);
-void					start_editor(t_doom *doom);
+void					open_editor(t_doom *doom);
 int						close_editor(t_doom *doom);
 int						secure_doom(t_doom *doom);
 
@@ -270,6 +271,7 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 /*
 ** Editor
 */
+
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(int button, int x, int y,
@@ -277,6 +279,8 @@ int						editor_mouse_press(int button, int x, int y,
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
+int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
+
 void					draw_map(t_editor *editor);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
@@ -302,6 +306,7 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 /*
 **	simple input
 */
+
 void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
@@ -336,10 +341,5 @@ void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
-
-/*
-**	render
-*/
-void					backface_culling(t_wall **bunch, t_player player);
 
 #endif
