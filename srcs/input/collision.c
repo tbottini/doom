@@ -1,80 +1,84 @@
 #include "doom_nukem.h"
 
-# define PADDING 0.01
+# define PADDING 0.30
+# define PADDING2 0.60
+# define EPSILON 0.001
 
-t_fvct3			wall_collide(t_wall wall, t_fvct3 pos, double angle)
+static int orientationV42(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 {
-	t_fvct3		inter;
-	t_fvct2		diff;
-	t_fvct2		diff2;
-	double		coef_ang;
-	double		coef_wall;
-	double		b;
+	double val;
 
-	diff.x = wall.pillar.p.x - pos.x;
-	diff.y = wall.pillar.p.y - pos.y;
-	diff2.x = wall.next->p.x - pos.x;
-	diff2.y = wall.next->p.y - pos.y;
-	coef_ang = tan(angle * PI180);
-	if (diff2.x - diff.x < 0.001 && diff2.x - diff.x > -0.001)
-	{
-		inter.x = diff.x;
-		inter.y = diff.x * coef_ang;
-	}
-	else
-	{
-		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
-		b = diff.y - diff.x * coef_wall;
-		inter.x = b / (coef_ang - coef_wall);
-		inter.y = coef_wall * inter.x + b;
-	}
-	return (inter);
+	val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+	if (val == 0)
+		return (0);
+	return (val > 0) ? 1 : 2;
 }
 
-int		linear(t_fvct2 a, t_fvct2 b, t_fvct2 mid)
+int vector_intersectV42(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 {
-	if ((b.y - a.y) / (b.x - a.x) == (mid.y - a.y) / (mid.x - a.x))
-		;
+	//int o1;
+	//int o2;
+	//int o3;
+	//int o4;
+
+	//o1 = orientationV42(p1, q1, p2);
+	//o2 = orientationV42(p1, q1, q2);
+	//o3 = orientationV42(p2, q2, p1);
+	//o4 = orientationV42(p2, q2, q1);
+	if (orientationV42(p1, q1, p2) != orientationV42(p1, q1, q2)
+		&& orientationV42(p2, q2, p1) != orientationV42(p2, q2, q1))
+		return (1);
+	return (0);
 }
 
-t_wall	get_wall(t_doom *doom)
+t_wall		*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 {
-	int i;
+	int		i;
+	int		j;
 
+	if (w)
+	{
+		if (vector_intersectV42(ori, pos, *(t_fvct3*)&w->pillar.p, *(t_fvct3*)&w->next->p))
+			return (w);
+		return (0);
+	}
 	i = 0;
 	while (i < doom->sector->len)
 	{
-		if ((doom->sector->wall[i].pillar.angle >= 0 && doom->sector->wall[i].next->angle < 0)
-			|| (doom->sector->wall[i].pillar.angle < 0 && doom->sector->wall[i].next->angle >= 0))
-			return (doom->sector->wall[i]);
+		if (vector_intersectV42(ori, pos, *(t_fvct3*)&doom->sector->wall[i].pillar.p, *(t_fvct3*)&doom->sector->wall[i].next->p))
+			return (&doom->sector->wall[i]);
 		++i;
 	}
-	return (doom->sector->wall[0]);
-}
-
-double		colli_dist(t_fvct3 vct1, t_fvct3 vct2)
-{
-	t_fvct2	dist;
-
-	dist.x = vct2.x - vct1.x;
-	dist.y = vct2.y - vct1.y;
-	return (sqrt((dist.x * dist.x) + (dist.y * dist.y)));
-}
-
-int		collision(t_doom *doom, int key)
-{
-	t_fvct3 inter;
-	t_wall wall;
-	double dist;
-
-	wall = get_wall(doom);
-	inter = wall_collide(wall, doom->player.pos, doom->player.rot.y);
-	dist = colli_dist(inter, doom->player.pos);
-	printf("dist = %f\n", dist);
-	if (dist < PADDING)
+	j = -1;
+	while (++j < doom->sector->len_sub)
 	{
-		ft_putendl("WAOW"); return (0);
+		i = -1;
+		while (++i < doom->sector->len)
+		{
+			if (vector_intersectV42(ori, pos, *(t_fvct3*)&doom->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&doom->sector->ssector[j].wall[i].next->p))
+				return (&doom->sector->wall[i]);
+		}
 	}
-	ft_putendl("return un plutot auautrchose");
-	return (1);
+	return (NULL);
+}
+
+t_wall		*collisionV42(t_doom *doom, t_fvct3 pos, t_wall *w)
+{
+	t_fvct3 tmp;
+
+	tmp.x = pos.x;
+	tmp.y = pos.y + PADDING;
+	pos.x += PADDING;
+	if ((w = collisionV21(doom, pos, tmp, w)))
+		return (w);
+	tmp.y -= PADDING2;
+	if ((w = collisionV21(doom, pos, tmp, w)))
+		return (w);
+	pos.x -= PADDING2;
+	if ((w = collisionV21(doom, pos, tmp, w)))
+		return (w);
+	tmp.y += PADDING2;
+	if ((w = collisionV21(doom, pos, tmp, w)))
+		return (w);
+	return (NULL);
 }
