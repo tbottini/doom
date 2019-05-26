@@ -6,15 +6,15 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:36:28 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/27 13:13:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/26 16:56:07 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-t_lstpil		ft_newpillar(t_vct2 loc)
+t_pilier		ft_newpillar(t_vct2 loc)
 {
-	t_lstpil	t;
+	t_pilier	t;
 
 	if (!(t = malloc(sizeof(t_pilier))))
 		return (NULL);
@@ -24,9 +24,9 @@ t_lstpil		ft_newpillar(t_vct2 loc)
 	return (t);
 }
 
-t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
+t_pilier		ft_pillarpushend(t_pilier *start, t_vct2 loc)
 {
-	t_lstpil t;
+	t_pilier t;
 
 	if (!start)
 		return (NULL);
@@ -63,9 +63,9 @@ static int	check_diff(t_lstpil un, t_lstpil deux)
 	return (1);
 }
 
-void	ft_nodeprint_pillar(t_lstpil node)
+void	ft_nodeprint_pillar(t_pilier node)
 {
-	t_lstpil curr;
+	t_pilier curr;
 
 	if (!node)
 	{
