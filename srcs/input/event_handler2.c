@@ -59,6 +59,8 @@ int event_handler2(t_doom *doom, SDL_Event e)
 		editor_mouse_move(e.motion, doom);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		editor_mouse_press(e.button.button, e.button.x, e.button.y, doom);
+	else if (e.type == SDL_MOUSEWHEEL)
+		editor_mouse_wheel(e.wheel, doom);
 	else if (e.type == SDL_MOUSEBUTTONUP)
 		editor_mouse_release(e.button.button, e.button.x, e.button.y, doom);
 	return (0);
