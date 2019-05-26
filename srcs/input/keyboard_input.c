@@ -9,25 +9,26 @@ int		is_movekey(SDL_Keycode key)
 {
 	return (key == SDLK_w || key == SDLK_s || key == SDLK_d || key == SDLK_a);
 }
-void	mvt_input(t_player *player, SDL_Keycode key)
+void	mvt_input(t_doom *doom, int key)
 {
 	double angle;
 	t_fvct2	next_pos;
 
-	angle = player->rot.y;
+	angle = doom->player.rot.y;
 	if (key == SDLK_a)
 		angle += 90;
 	else if (key == SDLK_d)
-		angle -= 90;
+		angle += 270;
 	else if (key == SDLK_s)
 		angle += 180;
-	next_pos.x += player->pos.x + (cos(angle * PI180) / 10.0);
-	next_pos.y += player->pos.y + (sin(angle * PI180) / 10.0);
-
+	if (angle >= 360)
+		angle -= 360;
+	next_pos.x += doom->player.pos.x + (cos(angle * PI180) / 10.0);
+	next_pos.y += doom->player.pos.y + (sin(angle * PI180) / 10.0);
 	if (next_pos.x < 0 || next_pos.y < 0)
 		return ;
-	player->pos.x = next_pos.x;
-	player->pos.y = next_pos.y;
+	doom->player.pos.x = next_pos.x;
+	doom->player.pos.y = next_pos.y;
 }
 
 void	debug_input(t_doom *doom, SDL_Keycode key)
