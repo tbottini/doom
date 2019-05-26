@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/25 23:37:31 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/26 01:52:06 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		move(t_doom *doom, t_player *player, int x, int y)
 	t_fvct2	d;
 	t_fvct3	npos;
 	t_fvct3	tmp;
-	int		w;
+	t_wall	*w;
 
 	// Update Rotation
 	npos.z = player->pos.z;
@@ -61,28 +61,29 @@ void		move(t_doom *doom, t_player *player, int x, int y)
 	npos.x = player->pos.x + d.x * y / 35000.0 + d.y * 1 * x / 35000.0;
 	//npos.y = player->pos.y + d.x * -x / 35000.0 + d.y * y / 35000.0;
 	npos.y = player->pos.y - d.x * -x / 35000.0 - d.y * y / 35000.0;
-	if ((w = collisionV42(doom, npos, -1)) == -1)
+	tmp.x = npos.x;
+	tmp.y = npos.y;
+	if (!(w = collisionV42(doom, tmp, NULL)))
 	{
 		player->pos.x = npos.x;
 		player->pos.y = npos.y;
-		return (ft_putendl("OK"));
+		return ;
 	}
 	tmp.x = player->pos.x;
 	tmp.y = npos.y;
 	if (!collisionV42(doom, tmp, w))
 	{
 		player->pos.y = npos.y;
-		return (ft_putendl("Y OK Y"));
+		return ;
 	}
 	tmp.y = player->pos.y;
 	tmp.x = npos.x;
 	if (!collisionV42(doom, tmp, w))
 	{
 		player->pos.x = npos.x;
-		return (ft_putendl("X OK X"));
+		return ;
 	}
 	// Check new pos
 	//DEPRECATED if (0 < npos.x && npos.x < doom->map_size.x && 0 < npos.y && npos.y < doom->map_size.y)
 	//DEPRECATED	if (doom->map[(int)npos.y][(int)npos.x] != '#')
-	//player->pos = npos; //ancien aui marche
 }

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/21 18:01:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/26 03:53:53 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,8 @@ t_vct2		minipoint(t_doom *d, t_fvct2 vct, t_minimap mini)
 {
 	t_vct2	px;
 
-	px.x = (mini.a.x - (mini.size.x >> 1)) + ((vct.x - d->player.pos.x)) * (UNIT);
-	//px.y = (mini.a.y - (mini.size.y >> 1)) + ((vct.y - d->player.pos.y)) * (UNIT);
-	px.y = (mini.a.y - (mini.size.y >> 1)) + ((d->player.pos.y - vct.y)) * (UNIT);
+	px.x = (mini.a.x - (mini.size.x / 2)) + ((vct.x - d->player.pos.x)) * (UNIT);
+	px.y = (mini.a.y - (mini.size.y / 2)) + ((d->player.pos.y - vct.y)) * (UNIT);
 	return (px);
 }
 
@@ -97,7 +96,7 @@ void	minibigline(t_doom *doom, t_vct2 pos0, t_vct2 pos1, t_minimap mini)
 	orig.y = ft_abs(pos1.y - pos0.y);
 	decal.x = (pos0.x < pos1.x ? 1 : -1);
 	decal.y = (pos0.y < pos1.y ? 1 : -1);
-	err = (orig.x > orig.y ? orig.x : -orig.y) >> 1;
+	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
 	bold_point2(doom, mini, pos0, CWALL);
 	while ((pos0.x != pos1.x || pos0.y != pos1.y)
 			&& bold_point2(doom, mini, pos0, CWALL))
@@ -136,7 +135,7 @@ void	miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	}
 }
 
-void        miniwalls(t_doom *doom, t_minimap mini)
+void        miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
 {
 	int i;
 	t_vct2		cursor;
@@ -144,11 +143,15 @@ void        miniwalls(t_doom *doom, t_minimap mini)
 	t_vct2		cursor2;
 	t_wall		*wall;
 
+	
 	i = -1;
-	wall = doom->sector->wall;
+	while (++i < sector.len_sub)
+		miniwalls(doom, sector.ssector[i], mini);
+	wall = sector.wall;
 	cursor = minipoint(doom, wall[0].pillar.p, mini);
 	tmp = cursor;
-	while (++i < doom->sector->len - 1)
+	i = -1;
+	while (++i < sector.len - 1)
 	{
 		cursor2 = minipoint(doom, wall[i + 1].pillar.p, mini);
 		minibigline(doom, cursor, cursor2, mini);
@@ -172,6 +175,7 @@ void		minimap(t_doom *d)
 	t_minimap	mini;
 	int			i;
 	int			j;
+	int			s;
 
 	mini.d.x = (d->sdl.size.x >> 6);
 	mini.a.x = d->sdl.size.x >> 3;
@@ -194,14 +198,13 @@ void		minimap(t_doom *d)
 		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
 		++i;
 	}
-	miniwalls(d, mini);
+	miniwalls(d, *d->sector, mini);
 	i = (d->player.rot.y - (d->player.fov >> 1));
 	while (i < (d->player.rot.y + (d->player.fov >> 1)))
 	{
 		minifield(d, mini, i);
 		i += d->player.fov >> 3;
 	}
-	miniwalls(d, mini);
 	bold_point2(d, mini, mini.mid, CPERS);
 	SDL_RenderCopy(d->sdl.rend, d->sdl.txture, NULL, NULL);
 }
