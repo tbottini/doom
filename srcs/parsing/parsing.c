@@ -48,28 +48,26 @@ t_fvct3		*triple_atof(char *line, t_fvct3 *fvct)
 t_sector		*search_sector(t_sector *sector, char *search)
 {
 	int	i_sector;
-	char			*next_s;
 
 	//0.0.1 //on recherche is le premier index existe c
-	//a.2
-	//.
-	//a.32.52 //de passement de l'index
-	//si ya plus de nombre on remonte
-	next_s = ft_strchr(search, '.');
-	//si il ne reste plus de point on recupere le prochain nombre on renvoie l'index du sector
-	//si il reste un point alors on recupere le prochain nombre jusqu'au point, on fait un recursive
-	//en envoiyant le secteur et l'index
+	//on recupere le nombre jusqu'au prochain point
+	printf("appel\n");
+	if (!(*search))
+		return (sector);
+	printf("search : %s\n", search);
 	i_sector = ft_catoi_u(search, '.');
-	if (i_sector < sector->len_sub)
+	printf("i_sector %d sector->len_sub %d\n", i_sector, sector->len_sub);
+	if (i_sector > sector->len_sub)
 		return (NULL);
-	if (!next_s)
+	printf("no problem\n");
+	search = ft_strchr(search, '.');
+	if (!search)
 	{
+		printf("return \n");
 		return (&sector->ssector[i_sector]);
 	}
-	else
-	{
-		return (search_sector(&sector->ssector[i_sector], next_s + 1));
-	}
+	printf("search ?\n");
+	return (search_sector(&sector->ssector[i_sector], search + 1));
 }
 
 int			parsing(t_doom *doom, char *filename)
@@ -82,10 +80,20 @@ int			parsing(t_doom *doom, char *filename)
 		return (0);
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (!ft_strcmp(line, "SCTR"))
+		if (!ft_strncmp(line, "SCTR", 4))
+		{
+			printf("chunck_sector\n");
 			doom->sector = chunck_sector(fd);
-		else if (!ft_strcmp(line, "PERS"))
+		}
+		else if (!ft_strncmp(line, "PERS", 4))
+		{
 			doom->player = chunck_player(fd);
+			doom->player.sector = search_sector(doom->sector, line + 5);
+		}
+		free(line);
 	}
+	free(line);
+	printf("sector player %p\n", (doom->player.sector));
+	printf("sector root 0.0 %p\n", &doom->sector->ssector[0].ssector[1]);
 	return (1);
 }
