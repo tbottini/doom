@@ -41,7 +41,7 @@ t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 	return (t->next);
 }
 
-int		ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
+t_lstpil		ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
 {
 	t_lstpil t;
 
@@ -51,9 +51,9 @@ int		ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
 		return (0);
 	t = *pos;
 	if (!(t->next = ft_newpillar(loc)))
-		return (0);
+		return (NULL);
 	t->next->prvs = t;
-	return (1);
+	return (t->next);
 }
 
 static int	check_diff(t_lstpil un, t_lstpil deux)
@@ -107,4 +107,6 @@ void	ft_clear_pillar_list(t_lstpil *start)
 		free(tmp);
 	(*start)->next = NULL;
 	(*start)->prvs = NULL;
+	(*start)->pos.x = 0;
+	(*start)->pos.y = 0;
 }
