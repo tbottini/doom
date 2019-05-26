@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/25 19:29:09 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/26 22:11:22 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int loop_hook(t_doom *doom)
 		{
 /// Place here functions that need to be launch every frame while the game is running
 		move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
-		portal_engine(doom);
+		doom_render(doom);
 		/*
 		int x;
 		x = -1;
@@ -84,7 +84,6 @@ int loop_hook(t_doom *doom)
 		sector_frustum(doom->sector, doom->player);
 		*/
 		//describe_player(d->player);
-		minimap(doom);
 /// End Comment
 		}
 		else
@@ -93,10 +92,9 @@ int loop_hook(t_doom *doom)
 
 			fire(doom);
 			draw_menu(doom);
-
+			SDL_RenderPresent(doom->sdl.rend);
 /// End Comment
 		}
-		SDL_RenderPresent(doom->sdl.rend);
 	}
 	delaypcmasterrace(doom);
 	return (0);
