@@ -114,7 +114,7 @@ void		pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist)
 	while (column != px.y)
 	{
 		column += fact_px;
-		if (z_line_buffer(*doom, column_len.x, column))
+		if (z_line_buffer(*doom, column_len.x, column) > 0)
 			draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR);
 		column_len.x += coef_dist_px;
 	}

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/27 17:20:11 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/27 18:17:09 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,7 +348,7 @@ int						keyboard_input(t_doom *doom, SDL_Event event);
 /*
 **	render
 */
-int						z_line_buffer(t_doom doom, double dist, int px);
+int						z_line_buffer(t_doom doom, double len_pillar, int px);
 int						doom_render(t_doom *doom);
 
 /*
