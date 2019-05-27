@@ -21,7 +21,7 @@ void			backface_culling(t_wall **bunch, t_player player)
 	i = 0;
 	while (bunch[i])
 	{
-		printf("dist_simple : %f\n", dist_simple(bunch[i]->pillar.p, *(t_fvct2*)&player.pos));
+		//printf("dist_simple : %f\n", dist_simple(bunch[i]->pillar.p, *(t_fvct2*)&player.pos));
 		i++;
 	}
 }
