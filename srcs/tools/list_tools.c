@@ -12,9 +12,9 @@
 
 #include "doom_nukem.h"
 
-t_lstpil		ft_newpillar(t_vct2 loc)
+t_lstpil ft_newpillar(t_vct2 loc)
 {
-	t_lstpil	t;
+	t_lstpil t;
 
 	if (!(t = malloc(sizeof(t_pilier))))
 		return (NULL);
@@ -24,7 +24,7 @@ t_lstpil		ft_newpillar(t_vct2 loc)
 	return (t);
 }
 
-t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
+t_lstpil ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 {
 	t_lstpil t;
 
@@ -41,7 +41,7 @@ t_lstpil		ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 	return (t->next);
 }
 
-t_lstpil		ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
+t_lstpil ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
 {
 	t_lstpil t;
 
@@ -56,21 +56,21 @@ t_lstpil		ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
 	return (t->next);
 }
 
-static int	check_diff(t_lstpil un, t_lstpil deux)
+static int check_diff(t_lstpil un, t_lstpil deux)
 {
 	if (un->pos.x != deux->pos.x || un->pos.y != deux->pos.y)
 		return (0);
 	return (1);
 }
 
-void	ft_nodeprint_pillar(t_lstpil node)
+void ft_nodeprint_pillar(t_lstpil node)
 {
 	t_lstpil curr;
 
 	if (!node)
 	{
 		ft_printf("xxx\n");
-		return ;
+		return;
 	}
 	curr = node;
 	while (curr)
@@ -89,12 +89,12 @@ void	ft_nodeprint_pillar(t_lstpil node)
 	ft_printf("\n");
 }
 
-void	ft_clear_pillar_list(t_lstpil *start)
+void ft_clear_pillar_list(t_lstpil *start)
 {
 	t_lstpil tmp;
 
 	if (!start || !(*start))
-		return ;
+		return;
 	tmp = *start;
 	while (tmp->next && tmp->next != *start)
 		tmp = tmp->next;
@@ -109,4 +109,22 @@ void	ft_clear_pillar_list(t_lstpil *start)
 	(*start)->prvs = NULL;
 	(*start)->pos.x = 0;
 	(*start)->pos.y = 0;
+}
+
+int add_pillar(t_editor *edit, int x, int y)
+{
+	t_vct2 relpos;
+	t_lstpil tmp;
+
+	tmp = find_pilier(edit, edit->map, x, y);
+	relpos = get_rel_mappos(edit, x, y);
+	if (tmp && !tmp->prvs && edit->currpilier != tmp && edit->currpilier->next != tmp && edit->currpilier->prvs != tmp)
+	{
+		edit->currpilier->next = tmp;
+		edit->currpilier->next->prvs = edit->currpilier;
+		return (2);
+	}
+	else if (!(edit->currpilier = ft_pillarpushnext(&edit->currpilier, relpos)))
+		return (0);
+	return (1);
 }

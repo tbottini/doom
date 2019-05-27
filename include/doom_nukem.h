@@ -176,8 +176,7 @@ typedef struct			s_editor
 	t_lstpil			currpilier;
 	t_lstpil			hoverpilier;
 	t_lstpil			map;
-	t_vct2				mappos;
-	int					mapzoom;
+	t_vct3				mappos;
 }						t_editor;
 
 struct					s_doom
@@ -281,6 +280,8 @@ int						editor_mouse_release(int button, int x, int y,
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
 int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 
+t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
+
 void					draw_map(t_editor *editor);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
@@ -289,6 +290,8 @@ t_lstpil				ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
 void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
+
+int						add_pillar(t_editor *edit, int x, int y);
 
 /*
 **	gestion
