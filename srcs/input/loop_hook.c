@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/25 19:29:09 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/27 17:35:11 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void input_loop(t_doom *doom, int key)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDL_BUTTON_LEFT)
 		shoot(&doom->player);
+	else if (key == SDLK_p)//test tir
+		bullet(doom, &doom->player, 0, 0);
 	else if (key == SDLK_y)
 		fire(doom);
 }
@@ -74,7 +76,7 @@ int loop_hook(t_doom *doom)
 		{
 /// Place here functions that need to be launch every frame while the game is running
 		move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
-		describe_player(doom->player);
+		//describe_player(doom->player);
 		portal_engine(doom);
 		/*
 		int x;

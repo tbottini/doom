@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/26 01:52:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/27 17:18:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void		move(t_doom *doom, t_player *player, int x, int y)
 	npos.y = player->pos.y - d.x * -x / 35000.0 - d.y * y / 35000.0;
 	tmp.x = npos.x;
 	tmp.y = npos.y;
-	if (!(w = collisionV42(doom, tmp, NULL)))
+	if (!(w = collision(doom, tmp, NULL)))
 	{
 		player->pos.x = npos.x;
 		player->pos.y = npos.y;
@@ -76,14 +76,14 @@ void		move(t_doom *doom, t_player *player, int x, int y)
 	}
 	tmp.x = player->pos.x;
 	tmp.y = npos.y;
-	if (!collisionV42(doom, tmp, w))
+	if (!collision(doom, tmp, w))
 	{
 		player->pos.y = npos.y;
 		return ;
 	}
 	tmp.y = player->pos.y;
 	tmp.x = npos.x;
-	if (!collisionV42(doom, tmp, w))
+	if (!collision(doom, tmp, w))
 	{
 		player->pos.x = npos.x;
 		return ;

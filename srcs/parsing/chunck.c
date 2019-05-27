@@ -47,7 +47,7 @@ t_player	chunck_player(int fd)
 		i++;
 	}
 	free(line);
-	player.health = 100;
+	player_init(&player);
 	return (player);
 }
 
