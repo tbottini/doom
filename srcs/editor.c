@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/06 17:46:28 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/27 16:22:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void		draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 {
 	t_vct2 curr;
 
+	(void)master;
 	//if (master)
 	//	printf("%d\n", master);
 	if (dist >= 400)

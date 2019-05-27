@@ -21,5 +21,6 @@ int					doom_render(t_doom *doom)
 		sector_render(doom, &doom->sector->ssector[0]);
 	minimap(doom);
 	sdl_present(&doom->sdl);
+	ft_bzero(doom->zline, sizeof(double) * doom->sdl.size.x);
 	return (1);
 }

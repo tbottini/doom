@@ -94,7 +94,7 @@ void		bunch_comsuption(t_doom *doom, t_wall **bunch)
 	i = 0;
 	while (bunch[i] != NULL)
 	{
-		draw_wall(*doom, *bunch[i]);
+		draw_wall(doom, *bunch[i]);
 		i++;
 	}
 }
