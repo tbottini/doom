@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/26 17:42:19 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/27 16:22:20 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ void		minimap(t_doom *d)
 	t_minimap	mini;
 	int			i;
 	int			j;
-	int			s;
 
 	mini.d.x = (d->sdl.size.x >> 6);
 	mini.a.x = d->sdl.size.x >> 3;

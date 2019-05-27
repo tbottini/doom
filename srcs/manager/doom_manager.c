@@ -43,6 +43,8 @@ t_doom	*doom_init()
 		return (NULL);
 	if (!player_init(&doom->player))
 		return (NULL);
+	if (!(doom->zline = (double*)malloc(sizeof(double) * doom->sdl.size.x)))
+		return (NULL);
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
 	return (doom);

@@ -99,7 +99,7 @@ void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
 **	use : z_line_buffer	who check if the new pillar is neareast
 **	than the last one
 */
-void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
+void		pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist)
 {
 	double	coef_dist_px;
 	int		fact_px;
@@ -108,25 +108,26 @@ void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
 
 	column = px.x;
 	fact_px = (px.x < px.y) ? 1 : -1;
-	column_len.x = (double)(sdl->size.y) / dist.x;
-	column_len.y = (double)(sdl->size.y) / dist.y;
+	column_len.x = (double)(doom->sdl.size.y) / dist.x;
+	column_len.y = (double)(doom->sdl.size.y) / dist.y;
 	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x) * fact_px;
 	while (column != px.y)
 	{
 		column += fact_px;
-		draw_column(sdl, column, column_len.x, PINK_FLOOR);
+		if (z_line_buffer(*doom, column_len.x, column))
+			draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR);
 		column_len.x += coef_dist_px;
 	}
-	draw_column(sdl, px.x, sdl->size.y, RED_WALL);
-	draw_column(sdl, px.y, sdl->size.y, RED_WALL);
+	draw_column(&doom->sdl, px.x, doom->sdl.size.y, RED_WALL);
+	draw_column(&doom->sdl, px.y, doom->sdl.size.y, RED_WALL);
 
 }
 
-void		draw_wall(t_doom doom, t_wall wall)
+void		draw_wall(t_doom *doom, t_wall wall)
 {
 	t_vct2	column_id;
 	t_fvct2	dist;
 
-	pillar_screen_info(doom, wall, &dist, &column_id);
-	pillar_to_pillar(&doom.sdl, column_id, dist);
+	pillar_screen_info(*doom, wall, &dist, &column_id);
+	pillar_to_pillar(doom, column_id, dist);
 }
