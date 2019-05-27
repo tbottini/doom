@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/09 16:19:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/27 23:13:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,9 @@ void		action(t_doom *doom)
 {
 	if (is_in_range(&(doom->player), (doom->sector)))
 		;//interact(sector);
+}
+
+void		jump(t_player *player)
+{
+	player->vel.z = 10;
 }

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/27 21:34:28 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/27 21:44:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,37 +50,11 @@ void		kick(t_player *player, t_sector *sector)
 
 //===================================================================================================//
 
-t_wall		*collision_bullet_inv(t_doom *doom, t_fvct3 ori, t_fvct3 pos)
+t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)// ne renvoie pas encore le mur le plus proche
 {
 	int		i;
 	int		j;
-	t_wall	*res;
-
-	j = doom->sector->len_sub;
-	while (--j >= 0)
-	{
-		i = doom->sector->ssector[j].len;
-		while (--i >= 0)
-		{
-			if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&doom->sector->ssector[j].wall[i].next->p))
-				{printf("\nsubwall %d\n", i);return (&doom->sector->wall[i]);}
-		}
-	}
-	i = doom->sector->len;
-	while (--i >= 0)
-	{
-		if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->wall[i].pillar.p, *(t_fvct3*)&doom->sector->wall[i].next->p))
-			{printf("\nwall %d\n", i);return (&doom->sector->wall[i]);}
-	}
-	printf("\nwall %d\n", 0);
-	return (NULL);
-}
-
-t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)
-{
-	int		i;
-	int		j;
-	t_wall	*res;
+	//t_wall	*res;
 
 	j = -1;
 	while (++j < doom->sector->len_sub)
@@ -105,11 +79,10 @@ t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)
 
 # define RADIUS 500
 
-void		bullet(t_doom *doom, t_player *player, int x, int y)
+void		bullet(t_doom *doom, t_player *player)
 {
 	t_fvct3	d;
 	t_wall	*hit;
-	int		test;
 	//t_fvct3	npos;
 	//t_wall	*w;
 
@@ -121,10 +94,7 @@ void		bullet(t_doom *doom, t_player *player, int x, int y)
 	d.x = RADIUS * sin(player->rot.x * PI180) * cos(player->rot.y * PI180);
 	d.y = RADIUS * sin(player->rot.x * PI180) * sin(player->rot.y * PI180);
 	d.z = -(RADIUS * cos(player->rot.x * PI180)) + (player->height / 2);
-	if (player->rot.y < 45 || player->rot.y > 225)
-		hit = collision_bullet(doom, d, player->pos);
-	else
-		hit = collision_bullet_inv(doom, d, player->pos);
+	hit = collision_bullet(doom, d, player->pos);
 	if (hit)
 	{
 		printf("HIT\n");
