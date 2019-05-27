@@ -185,7 +185,7 @@ typedef struct			s_editor
 	t_tab				keys;
 	t_lstpil			currpilier;
 	t_lstpil			hoverpilier;
-	t_lstpil			sectors; // list of all root pillards in sector
+	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstpil			map;
 	t_vct3				mappos;
 }						t_editor;
@@ -300,9 +300,15 @@ t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
 t_lstpil				ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
 void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
+void 					ft_nodeprint_secteur(t_lstsec node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
+
+t_lstsec				ft_newsector(t_lstpil root);
+t_lstsec				init_secteur(void);
+t_lstsec push_init_secteur(t_lstsec *node);
+void ft_clear_secteur_list(t_lstsec *start);
 
 /*
 **	gestion
