@@ -10,6 +10,18 @@ void				sector_render(t_doom *doom, t_sector *sector)
 }
 
 
+void				zline_reset(t_doom *doom)
+{
+	int				i;
+
+	i = 0;
+	while (i < doom->sdl.size.x)
+	{
+		doom->zline[i] = ULONG_MAX;
+		i++;
+	}
+}
+
 int					doom_render(t_doom *doom)
 {
 	//portal_engine(doom);
