@@ -49,6 +49,18 @@ void controller_handler(t_doom *doom, SDL_Event e)
 			else
 				doom->player.rotvel.y = 0.0;
 		}
+		else if (e.jaxis.axis == 3) // Cam x
+		{
+			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+			{
+				if (ft_abs(e.jaxis.value) > 30000)
+					doom->player.rotvel.x = -e.jaxis.value / 5000.0;
+				else
+					doom->player.rotvel.x = -e.jaxis.value / 10000.0;
+			}
+			else
+				doom->player.rotvel.x = 0.0;
+		}
 	}
 	else
 		controller_input(doom, e);

@@ -19,6 +19,7 @@ void	player_free(t_player *player)
 
 int		player_init(t_player *player)
 {
+	player->rot.x = 90;
 	player->fov = 60;
 	player->health = 100;
 	player->height = 180;
