@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
+t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 {
 	t_vct2 pos;
 
@@ -21,10 +21,10 @@ t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
 	return (pos);
 }
 
-t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
+t_lstpil find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 {
 	t_lstpil curr;
-	t_vct2	p;
+	t_vct2 p;
 
 	curr = start;
 	p = get_rel_mappos(editor, x, y);
@@ -43,7 +43,7 @@ t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	return (NULL);
 }
 
-static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1)
+static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1)
 {
 	pos0.x = pos0.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
 	pos0.y = pos0.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
@@ -53,7 +53,7 @@ static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1)
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
 
-void		draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
+void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 {
 	t_vct2 curr;
 
@@ -79,38 +79,44 @@ void		draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 	}
 }
 
-void	draw_map(t_editor *editor)
+void draw_map(t_editor *editor)
 {
-	t_lstpil	curr;
-	t_vct2		loc;
-	SDL_Rect	tmp;
+	t_lstsec currsec;
+	t_lstpil curr;
+	t_vct2 loc;
+	SDL_Rect tmp;
 
 	loc.x = editor->mappos.x;
 	loc.y = editor->mappos.y;
 
 	draw_grid(editor, loc, editor->mappos.z, 0);
-	curr = editor->map;
-	while (curr)
+	currsec = editor->sectors;
+	while (currsec)
 	{
-		loc.x = editor->mappos.x + curr->pos.x * editor->mappos.z / EDITORPRECISION;
-		loc.y = editor->mappos.y + curr->pos.y * editor->mappos.z / EDITORPRECISION;
-		tmp.x = loc.x - 5;
-		tmp.y = loc.y - 5;
-		tmp.w = 10;
-		tmp.h = 10;
-		if (curr->next)
-			map_draw_line(editor, curr->pos, curr->next->pos);
-		if (curr == editor->currpilier)
-			SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
-		else if (curr == editor->hoverpilier)
-			SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
-		else
-			SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
-		SDL_RenderFillRect(editor->rend, &tmp);
-		if (curr->next != editor->map)
-			curr = curr->next;
-		else
-			curr = NULL;
+		curr = currsec->root;
+		while (curr)
+		{
+			loc.x = editor->mappos.x + curr->pos.x * editor->mappos.z / EDITORPRECISION;
+			loc.y = editor->mappos.y + curr->pos.y * editor->mappos.z / EDITORPRECISION;
+			tmp.x = loc.x - 5;
+			tmp.y = loc.y - 5;
+			tmp.w = 10;
+			tmp.h = 10;
+			if (curr->next)
+				map_draw_line(editor, curr->pos, curr->next->pos);
+			if (curr == editor->currpilier)
+				SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
+			else if (curr == editor->hoverpilier)
+				SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
+			else
+				SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+			SDL_RenderFillRect(editor->rend, &tmp);
+			if (curr->next != currsec->root)
+				curr = curr->next;
+			else
+				curr = NULL;
+		}
+		currsec = currsec->next;
 	}
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
