@@ -35,8 +35,8 @@ int		editor_key_press(int key, t_doom *doom)
 		ft_clear_pillar_list(&doom->edit.map);
 	else if (key == SDLK_r)
 	{
-		doom->edit.mappos = (t_vct2){doom->edit.size.x / 2, doom->edit.size.y / 2};
-		doom->edit.mapzoom = 100;
+		doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
+		//doom->edit.mapzoom = 100;
 	}
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
@@ -63,25 +63,15 @@ int		editor_key_release(int key, t_doom *doom)
 **		action();
 */
 
-t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
-{
-	t_vct2 pos;
-
-	pos.x = (x - editor->mappos.x) * EDITORPRECISION / editor->mapzoom;
-	pos.y = (y - editor->mappos.y) * EDITORPRECISION / editor->mapzoom;
-	return (pos);
-}
-
 int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	t_vct2 relpos;
-	t_lstpil tmp;
 
 	relpos = get_rel_mappos(&doom->edit, x, y);
-	//ft_printf("pos %d\t%d\n", (x - doom->edit.mappos.x) / doom->edit.mapzoom, (y - doom->edit.mappos.y) / doom->edit.mapzoom);
+	//ft_printf("pos %d\t%d\n", (x - doom->edit.mappos.x) / doom->edit.mappos.z, (y - doom->edit.mappos.y) / doom->edit.mappos.z);
 	//ft_printf("Center %d\t%d\n", doom->edit.size.x / 2 - x, doom->edit.size.y / 2 - y);
 	ft_printf("stru %d\t%d\n",  relpos.x, relpos.y);
-	ft_printf("area %d\n", MAXZOOM / doom->edit.mapzoom);
+	ft_printf("area %d\n", MAXZOOM / doom->edit.mappos.z);
 	if (btn == SDL_BUTTON_LEFT)
 	{
 		doom->edit.currpilier = find_pilier(&doom->edit, doom->edit.map, x, y);
@@ -90,15 +80,7 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 	{
 		if (doom->edit.currpilier)
 		{
-			tmp = find_pilier(&doom->edit, doom->edit.map, x, y);
-			if (tmp && doom->edit.currpilier != tmp
-				&& doom->edit.currpilier->next != tmp
-				&& doom->edit.currpilier->prvs != tmp)
-			{
-				doom->edit.currpilier->next = tmp;
-				doom->edit.currpilier->next->prvs = doom->edit.currpilier;
-			}
-			else if (!(doom->edit.currpilier = ft_pillarpushnext(&doom->edit.currpilier, relpos)))
+			if (!add_pillar(&doom->edit, x, y))
 				ft_printf("Error adding pillar\n");
 		}
 	}
@@ -111,13 +93,13 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 
 int		editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
 {
-	if (doom->edit.mapzoom + e.y < MINZOOM)
-		doom->edit.mapzoom = MINZOOM;
-	else if (doom->edit.mapzoom + e.y > MAXZOOM)
-		doom->edit.mapzoom = MAXZOOM;
+	if (doom->edit.mappos.z + e.y < MINZOOM)
+		doom->edit.mappos.z = MINZOOM;
+	else if (doom->edit.mappos.z + e.y > MAXZOOM)
+		doom->edit.mappos.z = MAXZOOM;
 	else
-		doom->edit.mapzoom += e.y * (doom->edit.mapzoom / 400 + 1);
-	ft_printf("\rWheel %d\t%d        ", doom->edit.mapzoom, e.y);
+		doom->edit.mappos.z += e.y * (doom->edit.mappos.z / 400 + 1);
+	ft_printf("\rWheel %d\t%d        ", doom->edit.mappos.z, e.y);
 	return (0);
 }
 
@@ -152,8 +134,8 @@ int		editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 	{
 		if (doom->edit.currpilier)
 		{
-			doom->edit.currpilier->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mapzoom;
-			doom->edit.currpilier->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mapzoom;
+			doom->edit.currpilier->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currpilier->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
 		}
 	}
 	else if (e.state == SDL_BUTTON_MMASK)

@@ -12,20 +12,28 @@
 
 #include "doom_nukem.h"
 
+t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
+{
+	t_vct2 pos;
+
+	pos.x = (x - editor->mappos.x) * EDITORPRECISION / editor->mappos.z;
+	pos.y = (y - editor->mappos.y) * EDITORPRECISION / editor->mappos.z;
+	return (pos);
+}
 
 t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 {
 	t_lstpil curr;
+	t_vct2	p;
 
 	curr = start;
-	x = (x - editor->mappos.x) * EDITORPRECISION / editor->mapzoom;
-	y = (y - editor->mappos.y) * EDITORPRECISION / editor->mapzoom;
+	p = get_rel_mappos(editor, x, y);
 	while (curr)
 	{
-		if (x - MAXZOOM / editor->mapzoom * 2 <= curr->pos.x
-				&& curr->pos.x <= x + MAXZOOM / editor->mapzoom * 2
-				&& y - MAXZOOM / editor->mapzoom * 2 <= curr->pos.y
-				&& curr->pos.y <= y + MAXZOOM / editor->mapzoom * 2)
+		if (p.x - MAXZOOM / editor->mappos.z * 2 <= curr->pos.x
+				&& curr->pos.x <= p.x + MAXZOOM / editor->mappos.z * 2
+				&& p.y - MAXZOOM / editor->mappos.z * 2 <= curr->pos.y
+				&& curr->pos.y <= p.y + MAXZOOM / editor->mappos.z * 2)
 			return (curr);
 		if (curr->next != start)
 			curr = curr->next;
@@ -37,10 +45,10 @@ t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 
 static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1)
 {
-	pos0.x = pos0.x * editor->mapzoom / EDITORPRECISION + editor->mappos.x;
-	pos0.y = pos0.y * editor->mapzoom / EDITORPRECISION + editor->mappos.y;
-	pos1.x = pos1.x * editor->mapzoom / EDITORPRECISION + editor->mappos.x;
-	pos1.y = pos1.y * editor->mapzoom / EDITORPRECISION + editor->mappos.y;
+	pos0.x = pos0.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
+	pos0.y = pos0.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
+	pos1.x = pos1.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
+	pos1.y = pos1.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
 	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
@@ -80,12 +88,12 @@ void	draw_map(t_editor *editor)
 	loc.x = editor->mappos.x;
 	loc.y = editor->mappos.y;
 
-	draw_grid(editor, loc, editor->mapzoom, 0);
+	draw_grid(editor, loc, editor->mappos.z, 0);
 	curr = editor->map;
 	while (curr)
 	{
-		loc.x = editor->mappos.x + curr->pos.x * editor->mapzoom / EDITORPRECISION;
-		loc.y = editor->mappos.y + curr->pos.y * editor->mapzoom / EDITORPRECISION;
+		loc.x = editor->mappos.x + curr->pos.x * editor->mappos.z / EDITORPRECISION;
+		loc.y = editor->mappos.y + curr->pos.y * editor->mappos.z / EDITORPRECISION;
 		tmp.x = loc.x - 5;
 		tmp.y = loc.y - 5;
 		tmp.w = 10;
