@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/27 17:35:11 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/27 21:44:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void input_loop(t_doom *doom, int key)
 	else if (key == SDL_BUTTON_LEFT)
 		shoot(&doom->player);
 	else if (key == SDLK_p)//test tir
-		bullet(doom, &doom->player, 0, 0);
+		bullet(doom, &doom->player);
 	else if (key == SDLK_y)
 		fire(doom);
 }

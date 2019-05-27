@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/19 17:22:37 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/27 22:15:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		key_press(int key, t_doom *doom)
 	else if (key == SDLK_RETURN)
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 	else if (key == SDLK_SPACE)
-		;//jump();
+		jump(&doom->player);
 	else if (key == SDLK_v)
 		;//kick(&(doom->player), /*sector*/);
 	else if (key == SDLK_r)

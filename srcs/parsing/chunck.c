@@ -41,8 +41,8 @@ t_player	chunck_player(int fd)
 			triple_atof(line, &player.pos);
 		else if (i == 1)
 			double_atof(line, &player.rot);
-		else if (i == 2)
-			player.fov = ft_atoi(line);
+		//else if (i == 2)
+		//	player.fov = ft_atoi(line);
 		free(line);
 		i++;
 	}

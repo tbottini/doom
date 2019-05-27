@@ -16,7 +16,7 @@ typedef	struct			s_weapon
 
 typedef struct 			s_player
 {
-	t_fvct3 				pos;
+	t_fvct3 			pos;
 	t_fvct2				rot;
 	int					crouch;
 	int					height;
@@ -24,8 +24,8 @@ typedef struct 			s_player
 	int					speed;
 	int					health;
 	int					fov;
-	t_fvct2				vel;
-	t_fvct2				rotvel;
+	t_fvct3				vel;
+	t_fvct3				rotvel;
 	int					hand;
 	t_weapon			*weapons;
 	t_sector			*sector;
@@ -40,6 +40,8 @@ void					player_free(t_player *player);
 /*
 **	Gameplay
 */
+
+void					jump(t_player *player);
 void					shoot(t_player *player);
 void					reload(t_weapon *weapon);
 void					crouch_release(t_player *player);
