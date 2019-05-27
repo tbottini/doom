@@ -50,7 +50,12 @@ void		move(t_doom *doom, t_player *player, int x, int y)
 
 	// Update Rotation
 	npos.z = player->pos.z;
+	player->rot.x += player->rotvel.x;
 	player->rot.y += player->rotvel.y;
+	if (player->rot.x < 10.0)
+		player->rot.x = 10.0;
+	else if (player->rot.x > 170.0)
+		player->rot.x = 170.0;
 	if (player->rot.y < 0.0)
 		player->rot.y += 360.0;
 	else if (player->rot.y > 360)
