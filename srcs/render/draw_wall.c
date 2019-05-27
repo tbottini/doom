@@ -94,6 +94,17 @@ void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
 	}
 }
 
+
+void		fish_eyes(double fov, int screenx, t_vct2 px, t_fvct2 *dist)
+{
+	double	angle;
+
+	angle = ((double)px.x / screenx) * fov - (fov / 2.0);
+	dist->x = cos(fabs(angle) * PI180) * dist->x;
+	angle = ((double)px.y / screenx) * fov - (fov / 2.0);
+	dist->y = cos(fabs(angle) * PI180) * dist->y;
+}
+
 /*
 **	draw column from a pillar to another pillar
 **	use : z_line_buffer	who check if the new pillar is neareast
@@ -108,6 +119,7 @@ void		pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist)
 
 	column = px.x;
 	fact_px = (px.x < px.y) ? 1 : -1;
+	fish_eyes(doom->player.fov, doom->sdl.size.x, px, &dist);
 	column_len.x = (double)(doom->sdl.size.y) / dist.x;
 	column_len.y = (double)(doom->sdl.size.y) / dist.y;
 	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x) * fact_px;
@@ -118,8 +130,8 @@ void		pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist)
 			draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR);
 		column_len.x += coef_dist_px;
 	}
-	draw_column(&doom->sdl, px.x, doom->sdl.size.y, RED_WALL);
-	draw_column(&doom->sdl, px.y, doom->sdl.size.y, RED_WALL);
+	//draw_column(&doom->sdl, px.x, doom->sdl.size.y, RED_WALL);
+	//draw_column(&doom->sdl, px.y, doom->sdl.size.y, RED_WALL);
 
 }
 
