@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/26 20:19:48 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/27 17:56:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,8 +330,8 @@ void					calcdelay(const char *str, t_doom *doom);
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
-int						collision(t_doom *doom, int key);
-t_wall					*collisionV42(t_doom *doom, t_fvct3 pos, t_wall *w);
+t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
+t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 
 /*
 **	parsing
