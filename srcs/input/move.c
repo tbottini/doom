@@ -64,7 +64,6 @@ void		move(t_doom *doom, t_player *player, int x, int y)
 	d.x = sin(player->rot.y * PI180) / 10.0;
 	d.y = cos(player->rot.y * PI180) / 10.0;
 	npos.x = player->pos.x + d.x * y / 35000.0 + d.y * 1 * x / 35000.0;
-	//npos.y = player->pos.y + d.x * -x / 35000.0 + d.y * y / 35000.0;
 	npos.y = player->pos.y - d.x * -x / 35000.0 - d.y * y / 35000.0;
 	tmp.x = npos.x;
 	tmp.y = npos.y;

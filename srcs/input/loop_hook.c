@@ -35,7 +35,23 @@ static void input_loop(t_doom *doom, int key)
 		fire(doom);
 }
 
-static void	delaypcmasterrace(t_doom *doom)
+static void editor_loop(t_doom *doom, int key)
+{
+	if (key == SDLK_w || key == SDLK_s)
+		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+	else if (key == SDLK_a || key == SDLK_d)
+		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
+	else if (key == SDLK_LSHIFT)
+		sprint(&doom->player);
+	else if (key == SDLK_r)
+		reload(&(doom->player.weapons[doom->player.hand]));
+	else if (key == SDL_BUTTON_LEFT)
+		shoot(&doom->player);
+	else if (key == SDLK_y)
+		fire(doom);
+}
+
+static void delaypcmasterrace(t_doom *doom)
 {
 	if (doom->sdl.timp == SDL_GetTicks() / 1000)
 		++doom->sdl.fps;
@@ -45,7 +61,8 @@ static void	delaypcmasterrace(t_doom *doom)
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
-	while (SDL_GetTicks() - doom->timestamp < 16); // Limiteur de FPS (16)
+	while (SDL_GetTicks() - doom->timestamp < 16)
+		; // Limiteur de FPS (16)
 	doom->timestamp = SDL_GetTicks();
 }
 
@@ -62,21 +79,27 @@ int loop_hook(t_doom *doom)
 	SDL_RenderClear(doom->sdl.rend);
 	if (doom->edit.status == 1)
 	{
+		pos = doom->edit.keys;
+		while (pos)
+		{
+			editor_loop(doom, pos->data);
+			pos = pos->next;
+		}
 		SDL_RenderClear(doom->edit.rend);
 		draw_map(&doom->edit);
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 50}, "x: ",  doom->edit.map🐁.x, (SDL_Color){250,50,50,255});
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 82}, "y: ",  doom->edit.map🐁.y, (SDL_Color){250,50,50,255});
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 50}, "x: ", doom->edit.map🐁.x, (SDL_Color){250, 50, 50, 255});
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 82}, "y: ", doom->edit.map🐁.y, (SDL_Color){250, 50, 50, 255});
 		SDL_RenderPresent(doom->edit.rend);
 	}
 	else
 	{
 		if (doom->ui.m_status == 0)
 		{
-/// Place here functions that need to be launch every frame while the game is running
-		move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
-		describe_player(doom->player);
-		portal_engine(doom);
-		/*
+			/// Place here functions that need to be launch every frame while the game is running
+			move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
+			//describe_player(doom->player);
+			portal_engine(doom);
+			/*
 		int x;
 		x = -1;
 		while (++x < doom->sdl.size.x * doom->sdl.size.y)
@@ -84,18 +107,18 @@ int loop_hook(t_doom *doom)
 		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
 		sector_frustum(doom->sector, doom->player);
 		*/
-		//describe_player(d->player);
-		minimap(doom);
-/// End Comment
+			//describe_player(d->player);
+			minimap(doom);
+			/// End Comment
 		}
 		else
 		{
-/// Place here functions that need to be launch every frame while in the menu
+			/// Place here functions that need to be launch every frame while in the menu
 
 			fire(doom);
 			draw_menu(doom);
 
-/// End Comment
+			/// End Comment
 		}
 		SDL_RenderPresent(doom->sdl.rend);
 	}

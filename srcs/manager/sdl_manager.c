@@ -51,7 +51,7 @@ int		sdl_init(t_sdl *sdl, const char *title)
 	sdl->size.y = HEIGHT;
 	if (!(sdl->win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, 32)))
 		return (0);
-	if (!(sdl->rend = SDL_CreateRenderer(sdl->win, -1, 1)))
+	if (!(sdl->rend = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
 	SDL_SetWindowMinimumSize(sdl->win, MINWIDTH, MINHEIGHT);
 	SDL_SetWindowMaximumSize(sdl->win, MAXWIDTH, MAXHEIGHT);
