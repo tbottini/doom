@@ -24,13 +24,16 @@ void				zline_reset(t_doom *doom)
 
 int					doom_render(t_doom *doom)
 {
-	//portal_engine(doom);
+	int				i_sector;
 
-	//on rend un modele
-
+	i_sector = 0;
 	sector_render(doom, doom->sector);
-	if (doom->sector->len_sub)
-		sector_render(doom, &doom->sector->ssector[0]);
+
+	while (i_sector < doom->sector->len_sub)
+	{
+		sector_render(doom, &doom->sector->ssector[i_sector]);
+		i_sector++;
+	}
 	minimap(doom);
 	sdl_present(&doom->sdl);
 	ft_bzero(doom->zline, sizeof(double) * doom->sdl.size.x);
