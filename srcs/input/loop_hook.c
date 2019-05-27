@@ -74,6 +74,7 @@ int loop_hook(t_doom *doom)
 		{
 /// Place here functions that need to be launch every frame while the game is running
 		move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
+		describe_player(doom->player);
 		portal_engine(doom);
 		/*
 		int x;

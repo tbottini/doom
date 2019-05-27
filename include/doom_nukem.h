@@ -160,6 +160,16 @@ struct					s_pilier {
 	t_lstpil			next;
 };
 
+typedef struct s_secteur	t_secteur;
+typedef t_secteur		*t_lstsec;
+
+struct					s_secteur {
+	t_lstpil			root;
+
+	t_lstsec			prvs;
+	t_lstsec			next;
+};
+
 typedef struct			s_editor
 {
 	int					status;
@@ -175,6 +185,7 @@ typedef struct			s_editor
 	t_tab				keys;
 	t_lstpil			currpilier;
 	t_lstpil			hoverpilier;
+	t_lstpil			sectors; // list of all root pillards in sector
 	t_lstpil			map;
 	t_vct3				mappos;
 }						t_editor;
