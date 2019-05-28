@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:24:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 20:34:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 # include <SDL_image.h>
-
+# include <limits.h>
 # include "sector.h"
 # include "player.h"
 
@@ -40,7 +40,7 @@
 # define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
-
+# define MAX_FAR 10000
 //le bunch permet de faire des groupe de mur visible
 //pour organiser l'affichage
 //over : indique si le mur depasse la vision mais et relier a un
@@ -59,7 +59,7 @@
 */
 
 typedef struct s_doom	t_doom;
-typedef int				t_zl_buffer;
+typedef double	t_zline;
 typedef	Uint32* 		t_texture;
 
 /*
@@ -190,6 +190,13 @@ typedef struct			s_editor
 	t_vct3				mappos;
 }						t_editor;
 
+typedef struct 			s_camera
+{
+	int					fov;
+	double				d_screen;
+	t_zline				*zline;
+}						t_camera;
+
 struct					s_doom
 {
 	t_sdl				sdl;
@@ -200,7 +207,8 @@ struct					s_doom
 	SDL_GameController	*controller;
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
-	t_zl_buffer			*zline;
+	t_zline				*zline;
+	t_camera			camera;
 };
 
 //? struct render		line buffer
@@ -354,7 +362,7 @@ void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
 void					move(t_doom *doom, t_player *player);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					draw_wall(t_doom doom, t_wall wall);
+void					draw_wall(t_doom *doom, t_wall wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
@@ -362,8 +370,8 @@ int						keyboard_input(t_doom *doom, SDL_Event event);
 /*
 **	render
 */
+int						z_line_buffer(t_doom doom, double len_pillar, int px);
 int						doom_render(t_doom *doom);
-void					backface_culling(t_wall **bunch, t_player player);
 
 /*
 **	bunch
