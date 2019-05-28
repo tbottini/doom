@@ -10,15 +10,10 @@
 */
 int			z_line_buffer(t_doom doom, double len_pillar, int px)
 {
-	static int ap = 0;
-	double	deep;
-	double	angle;
 
-	angle = ((double)px / doom.sdl.size.x) * doom.player.fov - (doom.player.fov / 2.0);
-	deep = cos(fabs(angle) * PI180) * len_pillar;
-	if (deep > doom.zline[px])
+	if (len_pillar > doom.zline[px])
 	{
-		doom.zline[px] = deep;
+		doom.zline[px] = len_pillar;
 		return (1);
 	}
 	return (0);

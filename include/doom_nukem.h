@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/27 18:17:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/27 19:38:32 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,13 @@ typedef struct			s_editor
 	int					mapzoom;
 }						t_editor;
 
+typedef struct 			s_camera
+{
+	int					fov;
+	double				d_screen;
+	t_zline				*zline;
+}						t_camera;
+
 struct					s_doom
 {
 	t_sdl				sdl;
@@ -190,6 +197,7 @@ struct					s_doom
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
 	t_zline				*zline;
+	t_camera			camera;
 };
 
 //? struct render		line buffer
