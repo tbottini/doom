@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:19:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 20:25:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ int loop_hook(t_doom *doom)
 			/// Place here functions that need to be launch every frame while the game is running
 			move(doom, &doom->player);
 			describe_player(doom->player);
-			portal_engine(doom);
 			doom_render(doom);
-			minimap(doom);
 			/// End Comment
 		}
 		else

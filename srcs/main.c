@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:20:48 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 20:25:51 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,17 @@ int			main(int ac, char **av)
 	t_doom		*doom;
 	SDL_Event	event;
 
-	if (ac < 2)
-		return (-1);
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))
 		return (-1);
-	if (!(parsing(doom, av[1])))
-	{
-		printf("bad parsing\n");
-		return (0);
-	}
-	else
-		sdl_set_status(doom, 1);
+	sdl_set_status(doom, 1);
 	player_init(&doom->player);
 	while ('^' == '^')
 	{
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_KEYDOWN)
-			keyboard_input(doom, event);
+		if (!(event_handler(doom)))
+			return (0);
+		loop_hook(doom);
 	}
 	return (0);
 }
