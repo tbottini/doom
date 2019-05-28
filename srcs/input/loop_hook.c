@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 05:24:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 20:19:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int loop_hook(t_doom *doom)
 			move(doom, &doom->player);
 			describe_player(doom->player);
 			portal_engine(doom);
+			doom_render(doom);
 			minimap(doom);
 			/// End Comment
 		}
@@ -90,10 +91,9 @@ int loop_hook(t_doom *doom)
 
 			fire(doom);
 			draw_menu(doom);
-
-			/// End Comment
+			SDL_RenderPresent(doom->sdl.rend);
+/// End Comment
 		}
-		SDL_RenderPresent(doom->sdl.rend);
 	}
 	delaypcmasterrace(doom);
 	return (0);
