@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:25:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 23:26:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,18 @@
 
 static void input_loop(t_doom *doom, int key)
 {
+	//if (key == SDLK_w || key == SDLK_s)
+	//	doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+	//else if (key == SDLK_a || key == SDLK_d)
+	//	doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
 	if (key == SDLK_w || key == SDLK_s)
-		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+		doom->player.vel.x = (key == SDLK_w ? doom->player.speed : -doom->player.speed);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
+		doom->player.vel.y = (key == SDLK_a ? -doom->player.speed : doom->player.speed);
+	else if (key == SDLK_LSHIFT && doom->player.vel.x == doom->player.speed)
+		sprint(&doom->player);
 	else if (key == SDLK_SPACE)
 		jump(&doom->player);
-	else if (key == SDLK_LSHIFT)
-		sprint(&doom->player);
 	else if (key == SDLK_r)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDL_BUTTON_LEFT)
