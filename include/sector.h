@@ -34,6 +34,7 @@ typedef struct		s_wall
 
 typedef struct		s_sector
 {
+	t_fvct3			gravity;
 	t_wall			*wall;
 	struct s_sector	*ssector;
 	int				len_sub;
