@@ -19,7 +19,7 @@ typedef struct 			s_player
 	t_fvct3 			pos;
 	t_fvct2				rot;
 	int					crouch;
-	int					height;
+	double				height;
 	int					weight;
 	int					speed;
 	int					health;
@@ -41,6 +41,8 @@ void					player_free(t_player *player);
 **	Gameplay
 */
 
+void					gravity(t_player *player);
+void					inertie(t_player *player);
 void					jump(t_player *player);
 void					shoot(t_player *player);
 void					reload(t_weapon *weapon);
@@ -50,7 +52,6 @@ void					sprint_release(t_player *player);
 void					sprint(t_player *player);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
-//void					move(t_doom *doom, t_player *player, int x, int y);
 
 /*
 **	Debug

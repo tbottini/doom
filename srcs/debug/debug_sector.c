@@ -66,6 +66,7 @@ void		describe_player(t_player player)
 	ft_putendl("------player------");
 	printf("Player :\n");
 	fvct3_msg("Pos", player.pos);
+	fvct3_msg("Vel", player.vel);
 	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
 	printf("Fov : %d\n", player.fov);
 	ft_putendl("------------------");
