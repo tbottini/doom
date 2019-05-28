@@ -6,7 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/05/28 20:25:51 by akrache          ###   ########.fr       */
+=======
+/*   Updated: 2019/05/09 20:14:03 by tbottini         ###   ########.fr       */
+>>>>>>> render
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +18,7 @@
 
 static int	init(void)
 {
-	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMECONTROLLER) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMECONTROLLER|SDL_INIT_TIMER) != 0)
 	{
 		ft_printf("SDL_Init: %s\n", SDL_GetError());
 		return (0);
@@ -35,13 +39,20 @@ static int	init(void)
 int			main(int ac, char **av)
 {
 	t_doom		*doom;
-	SDL_Event	event;
 
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))
 		return (-1);
-	sdl_set_status(doom, 1);
+	if (ac == 2)
+	{
+		if (parsing(doom, av[1]))
+			sdl_set_status(doom, 0);
+		else
+			sdl_set_status(doom, 1);
+	}
+	else
+		sdl_set_status(doom, 1);
 	player_init(&doom->player);
 	while ('^' == '^')
 	{
