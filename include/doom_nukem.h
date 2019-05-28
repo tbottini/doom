@@ -132,6 +132,7 @@ typedef struct			s_ui
 	t_slid				*currslid;
 	int					m_status;
 	t_btn				*curr_btn;
+	int					curr_btn_controller;
 	t_pal				fire;
 }						t_ui;
 
@@ -207,6 +208,7 @@ struct					s_doom
 */
 
 void					start_button(t_doom *doom);
+void					start_map_button(t_doom *doom);
 void					option_button(t_doom *doom);
 void					return_button(t_doom *doom);
 

@@ -80,17 +80,23 @@ void		draw_menu(t_doom *doom)
 	{
 		update_loc_buttons(doom, doom->ui.btnarr);
 		draw_buttons(doom, status);
+		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnarr[doom->ui.curr_btn_controller - 1].func)
+			doom->ui.curr_btn = &(doom->ui.btnarr[doom->ui.curr_btn_controller - 1]);
 	}
 	else if (status == 2)
 	{
 		update_loc_buttons(doom, doom->ui.btnmap);
 		draw_buttons(doom, status);
+		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnmap[doom->ui.curr_btn_controller - 1].txture)
+			doom->ui.curr_btn = &(doom->ui.btnmap[doom->ui.curr_btn_controller - 1]);
 	}
 	else if (status == 3)
 	{
 		update_loc_buttons(doom, doom->ui.btnopt);
 		draw_buttons(doom, status);
 		draw_slid(doom, &doom->ui.slidopt[0]);
+		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnopt[doom->ui.curr_btn_controller - 1].func)
+			doom->ui.curr_btn = &(doom->ui.btnopt[doom->ui.curr_btn_controller - 1]);
 	}
 	if (doom->ui.curr_btn)
 	{
