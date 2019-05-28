@@ -69,6 +69,7 @@ void		describe_player(t_player player)
 	fvct3_msg("Vel", player.vel);
 	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
 	printf("Fov : %d\n", player.fov);
+	printf("Speed : %f\n", player.speed);
 	ft_putendl("------------------");
 }
 

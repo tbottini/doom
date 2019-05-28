@@ -4,6 +4,8 @@
 
 # include "vector.h"
 
+# define WEAPON_MAX 5
+
 typedef	struct			s_weapon
 {
 	int					clip_max;
@@ -21,12 +23,13 @@ typedef struct 			s_player
 	int					crouch;
 	double				height;
 	int					weight;
-	int					speed;
+	double				speed;
 	int					health;
 	int					fov;
 	t_fvct3				vel;
 	t_fvct3				rotvel;
 	int					hand;
+	int					nb_weapons;
 	t_weapon			*weapons;
 	t_sector			*sector;
 }						t_player;
