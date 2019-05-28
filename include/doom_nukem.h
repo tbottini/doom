@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:21:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 20:24:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,7 +351,7 @@ t_list					*ft_lstn(void *content);
 **	debug
 */
 void					move_input(t_doom *doom, int key);
-void					mvt_input(t_doom *doom, int key);
+void					mvt_input(t_player *player, int key);
 void					move(t_doom *doom, t_player *player);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					draw_wall(t_doom doom, t_wall wall);
