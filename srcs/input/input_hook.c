@@ -21,6 +21,8 @@
 
 int		key_press(int key, t_doom *doom)
 {
+	if (doom->ui.curr_btn_controller > 0)
+		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
 	if (key == SDLK_BACKQUOTE)
 	{
 		doom->ui.curr_btn = NULL;
