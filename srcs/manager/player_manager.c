@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 01:59:18 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 23:35:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ void	player_free(t_player *player)
 
 int		player_init(t_player *player)
 {
+	player->hand = 0;
+	player->nb_weapons = 1;
+	player->speed = 32700.0;
 	player->pos.x = 1.0;
 	player->pos.y = 1.0;
 	player->rot.x = 90;

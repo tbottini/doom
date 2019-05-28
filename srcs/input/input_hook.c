@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 01:57:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 22:26:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		key_press(int key, t_doom *doom)
 int		key_release(int key, t_doom *doom)
 {
 	ft_noderm_int(&(doom->sdl.keys), key);
-	if (key == SDLK_w || key == SDLK_s)
+	/*if (key == SDLK_w || key == SDLK_s)
 	{
 		//doom->player.vel.x = 0;
 	}
@@ -66,7 +66,9 @@ int		key_release(int key, t_doom *doom)
 	else if (key == SDLK_q || key == SDLK_e)
 	{
 		doom->player.rotvel.y = 0.0;
-	}
+	}*/
+	if (key == SDLK_w || key == SDLK_LSHIFT)
+		sprint_release(&doom->player);
 	else if (key == SDLK_LGUI)
 		crouch_release(&doom->player);
 	return (0);
