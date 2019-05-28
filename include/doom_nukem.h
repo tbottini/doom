@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/27 17:56:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 02:10:10 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
 # define INT_MAX 2147483647
-# define MAX_SPEED 50
-# define RANGE 1 //range max for kick and actions with objects
+# define ACCELERATION 5000.0
+# define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 
@@ -346,10 +346,9 @@ t_list					*ft_lstn(void *content);
 /*
 **	debug
 */
-
-void					super_move(t_doom *doom, t_player *player, int key);
+void					move_input(t_doom *doom, int key);
 void					mvt_input(t_doom *doom, int key);
-void					move(t_doom *doom, t_player *player, int x, int y);
+void					move(t_doom *doom, t_player *player);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					draw_wall(t_doom doom, t_wall wall);
 void					minimap(t_doom *d);

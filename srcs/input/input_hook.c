@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/27 22:15:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 01:57:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int		key_press(int key, t_doom *doom)
 	}
 	else if (key == SDLK_RETURN)
 		SDL_SetRelativeMouseMode(SDL_FALSE);
-	else if (key == SDLK_SPACE)
-		jump(&doom->player);
 	else if (key == SDLK_v)
 		;//kick(&(doom->player), /*sector*/);
 	else if (key == SDLK_r)
@@ -59,11 +57,11 @@ int		key_release(int key, t_doom *doom)
 	ft_noderm_int(&(doom->sdl.keys), key);
 	if (key == SDLK_w || key == SDLK_s)
 	{
-		doom->player.vel.x = 0;
+		//doom->player.vel.x = 0;
 	}
 	else if (key == SDLK_a || key == SDLK_d)
 	{
-		doom->player.vel.y = 0;
+		//doom->player.vel.y = 0;
 	}
 	else if (key == SDLK_q || key == SDLK_e)
 	{
