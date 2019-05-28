@@ -26,7 +26,8 @@ SRCS_INPUT		:=		event_controller.c								\
 						collision.c										\
 						keyboard_input.c
 
-SRCS_RENDER		:=		bunch.c											\
+SRCS_RENDER		:=		render.c										\
+						bunch.c											\
 						wall.c											\
 						bresenham.c										\
 						draw_wall.c										\
