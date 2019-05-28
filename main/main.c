@@ -36,6 +36,7 @@ int			main(int ac, char **av)
 		printf("bad parsing\n");
 		return (0);
 	}
+	doom->player.fov = 90;
 	describe_player(doom->player);
 	describe_sector_recursif(*doom->sector);
 	doom_render(doom);

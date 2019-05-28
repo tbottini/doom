@@ -24,6 +24,22 @@ double		pillar_polarite(t_pillar pillar, t_pillar next, int max)
 	return ((polarite == -1) ? 0 : max);
 }
 
+int				fish_bowl_px(t_doom doom, t_pillar pillar)
+{
+	int			px;
+	int			sx;
+
+	sx = doom.sdl.size.x / 2.0;
+	px = sx - (tan(pillar.angle * PI180) * doom.camera.d_screen);
+	return (px);
+}
+
+void			fish_eyes(double *dist, double angle)
+{
+	*dist = cos(angle * PI180) * *dist;
+}
+
+
 void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
 {
 	t_vct2 		px;
@@ -36,27 +52,29 @@ void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *colum
 	size = doom.sdl.size.x;
 	if (wall.pillar.frust)
 	{
-		px.x = (double)(size) / 2.0;
-		px.x -= (double)(size - 1) / doom.player.fov * wall.pillar.angle;
+		px.x = fish_bowl_px(doom, wall.pillar);
 		d.x = distance(*(t_fvct2*)&p->pos, wall.pillar.p);
+		fish_eyes(&d.x, wall.pillar.angle);
 	}
 	else
 	{
 		px.x = pillar_polarite(*wall.next, wall.pillar, size - 1);
 		angle = (px.x == 0) ? p->rot.y + p->fov / 2.0 : p->rot.y - p->fov / 2.0;
 		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, angle);
+		fish_eyes(&d.x, angle - p->rot.y);
 	}
 	if (wall.next->frust)
 	{
-		px.y = (double)(size) / 2.0;
-		px.y -= (double)(size - 1) / doom.player.fov * wall.next->angle;
+		px.y = fish_bowl_px(doom, *wall.next);
 		d.y = distance(*(t_fvct2*)&p->pos, wall.next->p);
+		fish_eyes(&d.y, wall.next->angle);
 	}
 	else
 	{
 		px.y = pillar_polarite(wall.pillar, *wall.next, size - 1);
 		angle = (px.y == 0) ? p->rot.y + p->fov / 2.0 : p->rot.y - p->fov / 2.0;
 		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, angle);
+		fish_eyes(&d.y, angle - p->rot.y);
 	}
 	*column_id = px;
 	*dist = d;
@@ -94,17 +112,6 @@ void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
 	}
 }
 
-
-void		fish_eyes(double fov, int screenx, t_vct2 px, t_fvct2 *dist)
-{
-	double	angle;
-
-	angle = ((double)px.x / screenx) * fov - (fov / 2.0);
-	dist->x = cos(fabs(angle) * PI180) * dist->x;
-	angle = ((double)px.y / screenx) * fov - (fov / 2.0);
-	dist->y = cos(fabs(angle) * PI180) * dist->y;
-}
-
 /*
 **	draw column from a pillar to another pillar
 **	use : z_line_buffer	who check if the new pillar is neareast
@@ -119,7 +126,7 @@ void		pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist)
 
 	column = px.x;
 	fact_px = (px.x < px.y) ? 1 : -1;
-	fish_eyes(doom->player.fov, doom->sdl.size.x, px, &dist);
+	//fish_eyes(doom->player.fov, doom->sdl.size.x, px, &dist);
 	column_len.x = (double)(doom->sdl.size.y) / dist.x;
 	column_len.y = (double)(doom->sdl.size.y) / dist.y;
 	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x) * fact_px;
