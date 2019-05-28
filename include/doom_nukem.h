@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 02:10:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 20:21:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@
 */
 
 typedef struct s_doom	t_doom;
-
-typedef	Uint32* t_texture;
+typedef int				t_zl_buffer;
+typedef	Uint32* 		t_texture;
 
 /*
 ** Snap var behaviour
@@ -198,9 +198,13 @@ struct					s_doom
 	Uint32				timestamp;
 	t_player			player;
 	SDL_GameController	*controller;
-	t_sector			*sector;
+	t_sector			*sector;			//root sector
 	t_vct2				vel;
+	t_zl_buffer			*zline;
 };
+
+//? struct render		line buffer
+
 
 /*
 ** Button Functions
@@ -355,6 +359,17 @@ void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
 
+/*
+**	render
+*/
+int						doom_render(t_doom *doom);
 void					backface_culling(t_wall **bunch, t_player player);
+
+/*
+**	bunch
+*/
+void					sector_frustum(t_sector *sector, t_player player);
+int						buncherisation(t_sector sector, t_wall **bunch);
+void					bunch_comsuption(t_doom *doom, t_wall **bunch);
 
 #endif
