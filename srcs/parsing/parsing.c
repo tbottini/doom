@@ -89,6 +89,7 @@ int			parsing(t_doom *doom, char *filename)
 		{
 			chunck_player(fd);
 			doom->player.sector = search_sector(doom->sector, line + 5);
+			doom->player.pos.z = doom->player.sector->h_floor;
 		}
 		free(line);
 	}
