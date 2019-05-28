@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/28 05:24:51 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 23:24:38 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void		crouch_release(t_player *player)
 
 void		sprint(t_player *player)
 {
-	if (player->speed < 50)
-		player->speed += 0.2;
+	printf("why nunu\n");
+	player->speed = 49050.0;
 }
 
 void		sprint_release(t_player *player)
 {
-	player->speed = 10;
+	player->speed = 32700.0;
 }
 
 void		fall_damage(t_player *player, int f)

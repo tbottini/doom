@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:34:08 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/28 20:34:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@
 # define BLUE_SKY 0x4559a8ff
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
-# define INT_MAX 2147483647
 # define ACCELERATION 5000.0
 # define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
