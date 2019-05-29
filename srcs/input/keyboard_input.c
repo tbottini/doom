@@ -2,7 +2,7 @@
 
 int		is_rotkey(SDL_Keycode key)
 {
-	return (key == SDLK_q || key == SDLK_e);
+	return (key == SDLK_q || key == SDLK_e || key == SDLK_r || key == SDLK_f);
 }
 
 int		is_movekey(SDL_Keycode key)
@@ -45,6 +45,11 @@ void	rot_input(t_doom *doom, SDL_Keycode key)
 		doom->player.rot.y -= 5;
 	else if (key == SDLK_q)
 		doom->player.rot.y += 5;
+	else if (key == SDLK_r && doom->player.rot.x + 5 < 180)
+		doom->player.rot.x += 5;
+	else if (key == SDLK_f && doom->player.rot.x - 5 > 0)
+		doom->player.rot.x -= 5;
+	printf("player rot %f %f\n", doom->player.rot.x, doom->player.rot.y);
 	doom->player.rot.y = double_modulo(doom->player.rot.y);
 }
 
