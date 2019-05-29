@@ -39,7 +39,6 @@ void			fish_eyes(double *dist, double angle)
 	*dist = cos(angle * PI180) * *dist;
 }
 
-
 void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
 {
 	t_vct2 		px;
@@ -80,31 +79,32 @@ void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *colum
 	*dist = d;
 }
 
-void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
+void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color, t_player player)
 {
 	int		i;
 	int		sky_size;
+	int		floor_size;
 
 	i = 0;
-	if (length > sdl->size.y)
-		length = sdl->size.y - 1;
-	sky_size = (sdl->size.y - length) / 2;
-	while (i < sky_size)
+	//if (length > sdl->size.y)
+	//	length = sdl->size.y - 1;
+
+	//plus le regard est bas moins plus skysize l'est aussi
+	sky_size = (sdl->size.y - length) / 2 + (player.rot.x - 90) * 30;
+	while (i < sky_size && i < sdl->size.y)
 	{
 		sdl->screen[ipx] = BLUE_SKY;
 		ipx += sdl->size.x;
 		i++;
 	}
-	i = 0;
-	while (i < length)
+	length += sky_size;
+	while (i < length && i < sdl->size.y)
 	{
 		sdl->screen[ipx] = color;
 		ipx += sdl->size.x;
 		i++;
 	}
-	sky_size += length % 2;
-	i = 0;
-	while (i < sky_size)
+	while (i < sdl->size.y)
 	{
 		sdl->screen[ipx] = 0x272130ff;
 		ipx += sdl->size.x;
@@ -133,7 +133,7 @@ void		pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist)
 	{
 		column += fact_px;
 		if (z_line_buffer(*doom, column_len.x, column) > 0)
-			draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR);
+			draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR, doom->player);
 		column_len.x += coef_dist_px;
 	}
 
