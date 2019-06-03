@@ -16,7 +16,7 @@ t_lstsec ft_newsector(t_lstpil root)
 {
 	t_lstsec t;
 
-	if (!(t = malloc(sizeof(t_pilier))))
+	if (!(t = malloc(sizeof(t_secteur))))
 		return (NULL);
 	t->root = root;
 	t->prvs = NULL;
