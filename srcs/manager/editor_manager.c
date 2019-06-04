@@ -45,13 +45,17 @@ int		editor_init(t_editor *editor)
 	if (!(editor->win = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE)))
 		return (0);
-	if (!(editor->rend = SDL_CreateRenderer(editor->win, -1, 1)))
+	if (!(editor->rend = SDL_CreateRenderer(editor->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
 	SDL_SetWindowMinimumSize(editor->win, MINWIDTH, MINHEIGHT);
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
 	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
 	//editor->mapzoom = 1000;
-	if (!(editor->map = ft_newpillar((t_vct2){0, 0})))
+	if(!(editor->sectors = init_secteur()))
 		return (0);
+	editor->map = editor->sectors->root;
+	editor->sectbox.x = -1;
+	editor->sectbox.y = -1;
+	editor->sectbox.w = 160;
 	return (1);
 }
