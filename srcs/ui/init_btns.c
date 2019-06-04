@@ -22,6 +22,7 @@ t_btn	add_doom_button(t_doom *doom)
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
+	tmp.func = NULL;
 	tmp.loc.pos.x = 50;
 	tmp.loc.pos.y = 5;
 	tmp.loc.snapx = 1;

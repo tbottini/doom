@@ -23,6 +23,7 @@ t_btn	add_map_button(t_doom *doom, const char *str)
 	SDL_Rect		rect;
 
 	ft_bzero(&tmp, sizeof(t_btn));
+	tmp.func = &start_map_button;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.loc.pos.x = 50;
