@@ -36,9 +36,11 @@ int			main(int ac, char **av)
 		printf("bad parsing\n");
 		return (0);
 	}
+	doom->player.fov = 90;
 	describe_player(doom->player);
 	describe_sector_recursif(*doom->sector);
-	portal_engine(doom);
+	doom_render(doom);
+	printf("player tall %d\n", doom->player.height);
 	while (1)
 	{
 		SDL_WaitEvent(&event);

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/09 20:14:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/28 20:35:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int			main(int ac, char **av)
 	}
 	else
 		sdl_set_status(doom, 1);
+	player_init(&doom->player);
 	while ('^' == '^')
 	{
 		if (!(event_handler(doom)))
