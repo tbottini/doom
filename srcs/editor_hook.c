@@ -98,15 +98,20 @@ int editor_mouse_press(int btn, int x, int y, t_doom *doom)
 ** Add here function that need to be done when mouse wheel is used
 */
 
-int editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
+int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 {
-	if (doom->edit.mappos.z + e.y < MINZOOM)
-		doom->edit.mappos.z = MINZOOM;
-	else if (doom->edit.mappos.z + e.y > MAXZOOM)
-		doom->edit.mappos.z = MAXZOOM;
+	if (pos_in_rect(edit->sectbox, edit->mouse.x, edit->mouse.y))
+	{
+		edit->sectscroll -= e.y;
+		return (0);
+	}
+	if (edit->mappos.z + e.y < MINZOOM)
+		edit->mappos.z = MINZOOM;
+	else if (edit->mappos.z + e.y > MAXZOOM)
+		edit->mappos.z = MAXZOOM;
 	else
-		doom->edit.mappos.z += e.y * (doom->edit.mappos.z / 400 + 1);
-	ft_printf("\rWheel %d\t%d        ", doom->edit.mappos.z, e.y);
+		edit->mappos.z += e.y * (edit->mappos.z / 400 + 1);
+	ft_printf("\rWheel %d\t%d        ", edit->mappos.z, e.y);
 	return (0);
 }
 
@@ -133,9 +138,9 @@ int editor_mouse_release(int btn, int x, int y, t_doom *doom)
 
 int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 {
-	doom->edit.🐁.x = e.x;
-	doom->edit.🐁.y = e.y;
-	doom->edit.map🐁 = get_rel_mappos(&doom->edit, e.x, e.y);
+	doom->edit.mouse.x = e.x;
+	doom->edit.mouse.y = e.y;
+	doom->edit.mapmouse = get_rel_mappos(&doom->edit, e.x, e.y);
 	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.map, e.x, e.y);
 	if (e.state == SDL_BUTTON_LMASK)
 	{
