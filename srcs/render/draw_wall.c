@@ -39,7 +39,6 @@ void			fish_eyes(double *dist, double angle)
 	*dist = cos(angle * PI180) * *dist;
 }
 
-
 void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
 {
 	t_vct2 		px;
@@ -80,35 +79,25 @@ void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *colum
 	*dist = d;
 }
 
-void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
+void		draw_column2(t_doom *doom, t_sector sector, int numcol, int length)
 {
-	int		i;
 	int		sky_size;
+	int		i;
 
 	i = 0;
-	if (length > sdl->size.y)
-		length = sdl->size.y - 1;
-	sky_size = (sdl->size.y - length) / 2;
-	while (i < sky_size)
+	//sky_size = (doom->sdl.size.y - length) / 2;
+	sky_size = doom->sdl.size.y / 2 - ((sector.h_ceil - doom->player.height) / sector.h_ceil) * length;
+	length += sky_size;
+	while (i < doom->sdl.size.y)
 	{
-		sdl->screen[ipx] = BLUE_SKY;
-		ipx += sdl->size.x;
+		if (i < sky_size)
+			doom->sdl.screen[numcol] = BLUE_SKY;
+		else if (i < length)
+			doom->sdl.screen[numcol] = PINK_FLOOR;
+		else
+			doom->sdl.screen[numcol] = 0x272130ff;
 		i++;
-	}
-	i = 0;
-	while (i < length)
-	{
-		sdl->screen[ipx] = color;
-		ipx += sdl->size.x;
-		i++;
-	}
-	sky_size += length % 2;
-	i = 0;
-	while (i < sky_size)
-	{
-		sdl->screen[ipx] = 0x272130ff;
-		ipx += sdl->size.x;
-		i++;
+		numcol += doom->sdl.size.x;
 	}
 }
 
@@ -117,33 +106,42 @@ void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
 **	use : z_line_buffer	who check if the new pillar is neareast
 **	than the last one
 */
-void		pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist)
+void			pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
 {
-	double	coef_dist_px;
-	int		fact_px;
-	int		column;
-	t_fvct2	column_len;
+	double		coef_dist_px;
+	int			fact_px;
+	t_fvct2		column_len;
+	t_fvct2		neutre;
+	double		coef_neutre;
 
-	column = px.x;
 	fact_px = (px.x < px.y) ? 1 : -1;
-	column_len.x = (double)(doom->sdl.size.y) / dist.x;
-	column_len.y = (double)(doom->sdl.size.y) / dist.y;
+	column_len.x = (((double)(doom->sdl.size.y) / 5) / dist.x) * sector.h_ceil;
+	column_len.y = (((double)(doom->sdl.size.y) / 5) / dist.y) * sector.h_ceil;
+
+	neutre.x = (double)(doom->sdl.size.y) / dist.x;
+	neutre.y = (double)(doom->sdl.size.y) / dist.y;
+	coef_neutre = (neutre.y - neutre.x) / (px.y - px.x) * fact_px;
 	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x) * fact_px;
-	while (column != px.y)
+
+	while (px.x != px.y)
 	{
-		column += fact_px;
-		if (z_line_buffer(*doom, column_len.x, column) > 0)
-			draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR);
+		if (z_line_buffer(*doom, neutre.x, px.x) > 0)
+		{
+			draw_column2(doom, sector, px.x, column_len.x);
+		}
+			//draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR, doom->player);
 		column_len.x += coef_dist_px;
+		neutre.x += coef_neutre;
+		px.x += fact_px;
 	}
 
 }
 
-void		draw_wall(t_doom *doom, t_wall wall)
+void		draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall)
 {
 	t_vct2	column_id;
 	t_fvct2	dist;
 
 	pillar_screen_info(*doom, wall, &dist, &column_id);
-	pillar_to_pillar(doom, column_id, dist);
+	pillar_to_pillar(doom, column_id, dist, sector_wall);
 }
