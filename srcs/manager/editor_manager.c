@@ -54,5 +54,8 @@ int		editor_init(t_editor *editor)
 	if(!(editor->sectors = init_secteur()))
 		return (0);
 	editor->map = editor->sectors->root;
+	editor->sectbox.x = -1;
+	editor->sectbox.y = -1;
+	editor->sectbox.w = 160;
 	return (1);
 }

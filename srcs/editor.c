@@ -43,13 +43,13 @@ t_lstpil find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	return (NULL);
 }
 
-static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1)
+static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, char c[4])
 {
 	pos0.x = pos0.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
 	pos0.y = pos0.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
 	pos1.x = pos1.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
 	pos1.y = pos1.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
-	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(editor->rend, c[0], c[1], c[2], c[3]);
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
 
@@ -103,7 +103,12 @@ void draw_map(t_editor *editor)
 			tmp.w = 10;
 			tmp.h = 10;
 			if (curr->next)
-				map_draw_line(editor, curr->pos, curr->next->pos);
+			{
+				if (currsec->root == editor->map)
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){0xFF, 0xFF, 0xFF, 0xFF});
+				else
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){0x55, 0xAA, 0xBB, 0xAA});
+			}
 			if (curr == editor->currpilier)
 				SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
 			else if (curr == editor->hoverpilier)
@@ -117,6 +122,31 @@ void draw_map(t_editor *editor)
 				curr = NULL;
 		}
 		currsec = currsec->next;
+	}
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
+void draw_sector_menu(t_editor *editor)
+{
+	SDL_Rect box;
+	t_lstsec currsec;
+	int x;
+
+	x = 0;
+	box = editor->sectbox;
+	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
+	SDL_RenderFillRect(editor->rend, &box);
+	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+	//SDL_RenderDrawLine(editor->rend, box.x + box.w, box.y, box.x + )
+	box.h = 50;
+	box.y += editor->sectscroll;
+	currsec = editor->sectors;
+	while (currsec)
+	{
+		SDL_RenderDrawRect(editor->rend, &box);
+		box.y += box.h;
+		currsec = currsec->next;
+		x++;
 	}
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }

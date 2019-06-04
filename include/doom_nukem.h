@@ -179,8 +179,9 @@ typedef struct			s_editor
 	t_btn				btnarr[20];
 	t_vct2				size;
 	t_vct2				mouse; //Mouse pos
-	t_vct2				🐁;
-	t_vct2				map🐁;
+	t_vct2				mapmouse;
+	int					sectscroll; // Current scroll of sector menu
+	SDL_Rect			sectbox;
 	//SDL_Texture			*txture;
 	//Uint32				*screen;
 	t_tab				keys;
@@ -291,11 +292,12 @@ int						editor_mouse_press(int button, int x, int y,
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
-int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
+int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 
 t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 
 void					draw_map(t_editor *editor);
+void					draw_sector_menu(t_editor *editor);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
@@ -334,6 +336,7 @@ void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					sdl_present(t_sdl *sdl);
 void					calcdelay(const char *str, t_doom *doom);
+int						pos_in_rect(SDL_Rect rect, int x, int y);
 
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
