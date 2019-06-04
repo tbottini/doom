@@ -24,6 +24,21 @@ double		pillar_polarite(t_pillar pillar, t_pillar next, int max)
 	return ((polarite == -1) ? 0 : max);
 }
 
+int				fish_bowl_px(t_doom doom, t_pillar pillar)
+{
+	int			px;
+	int			sx;
+
+	sx = doom.sdl.size.x / 2.0;
+	px = sx - (tan(pillar.angle * PI180) * doom.camera.d_screen);
+	return (px);
+}
+
+void			fish_eyes(double *dist, double angle)
+{
+	*dist = cos(angle * PI180) * *dist;
+}
+
 void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
 {
 	t_vct2 		px;
@@ -36,92 +51,97 @@ void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *colum
 	size = doom.sdl.size.x;
 	if (wall.pillar.frust)
 	{
-		px.x = (double)(size) / 2.0;
-		px.x -= (double)(size - 1) / doom.player.fov * wall.pillar.angle;
+		px.x = fish_bowl_px(doom, wall.pillar);
 		d.x = distance(*(t_fvct2*)&p->pos, wall.pillar.p);
+		fish_eyes(&d.x, wall.pillar.angle);
 	}
 	else
 	{
 		px.x = pillar_polarite(*wall.next, wall.pillar, size - 1);
 		angle = (px.x == 0) ? p->rot.y + p->fov / 2.0 : p->rot.y - p->fov / 2.0;
 		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, angle);
+		fish_eyes(&d.x, angle - p->rot.y);
 	}
 	if (wall.next->frust)
 	{
-		px.y = (double)(size) / 2.0;
-		px.y -= (double)(size - 1) / doom.player.fov * wall.next->angle;
+		px.y = fish_bowl_px(doom, *wall.next);
 		d.y = distance(*(t_fvct2*)&p->pos, wall.next->p);
+		fish_eyes(&d.y, wall.next->angle);
 	}
 	else
 	{
 		px.y = pillar_polarite(wall.pillar, *wall.next, size - 1);
 		angle = (px.y == 0) ? p->rot.y + p->fov / 2.0 : p->rot.y - p->fov / 2.0;
 		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, angle);
+		fish_eyes(&d.y, angle - p->rot.y);
 	}
 	*column_id = px;
 	*dist = d;
 }
 
-void		draw_column(t_sdl *sdl, int ipx, int length, uint32_t color)
+void		draw_column2(t_doom *doom, t_sector sector, int numcol, int length)
 {
-	int		i;
 	int		sky_size;
+	int		i;
 
 	i = 0;
-	if (length > sdl->size.y)
-		length = sdl->size.y - 1;
-	sky_size = (sdl->size.y - length) / 2;
-	while (i < sky_size)
+	//sky_size = (doom->sdl.size.y - length) / 2;
+	sky_size = doom->sdl.size.y / 2 - ((sector.h_ceil - doom->player.height) / sector.h_ceil) * length;
+	length += sky_size;
+	while (i < doom->sdl.size.y)
 	{
-		sdl->screen[ipx] = BLUE_SKY;
-		ipx += sdl->size.x;
+		if (i < sky_size)
+			doom->sdl.screen[numcol] = BLUE_SKY;
+		else if (i < length)
+			doom->sdl.screen[numcol] = PINK_FLOOR;
+		else
+			doom->sdl.screen[numcol] = 0x272130ff;
 		i++;
-	}
-	i = 0;
-	while (i < length)
-	{
-		sdl->screen[ipx] = color;
-		ipx += sdl->size.x;
-		i++;
-	}
-	sky_size += length % 2;
-	i = 0;
-	while (i < sky_size)
-	{
-		sdl->screen[ipx] = 0x272130ff;
-		ipx += sdl->size.x;
-		i++;
+		numcol += doom->sdl.size.x;
 	}
 }
 
-void		pillar_to_pillar(t_sdl *sdl, t_vct2 px, t_fvct2 dist)
+/*
+**	draw column from a pillar to another pillar
+**	use : z_line_buffer	who check if the new pillar is neareast
+**	than the last one
+*/
+void			pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
 {
-	double	coef_dist_px;
-	int		fact_px;
-	int		column;
-	t_fvct2	column_len;
+	double		coef_dist_px;
+	int			fact_px;
+	t_fvct2		column_len;
+	t_fvct2		neutre;
+	double		coef_neutre;
 
-	column = px.x;
 	fact_px = (px.x < px.y) ? 1 : -1;
-	column_len.x = (double)(sdl->size.y) / dist.x;
-	column_len.y = (double)(sdl->size.y) / dist.y;
-	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x);
-	while (column != px.y)
+	column_len.x = (((double)(doom->sdl.size.y) / 5) / dist.x) * sector.h_ceil;
+	column_len.y = (((double)(doom->sdl.size.y) / 5) / dist.y) * sector.h_ceil;
+
+	neutre.x = (double)(doom->sdl.size.y) / dist.x;
+	neutre.y = (double)(doom->sdl.size.y) / dist.y;
+	coef_neutre = (neutre.y - neutre.x) / (px.y - px.x) * fact_px;
+	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x) * fact_px;
+
+	while (px.x != px.y)
 	{
-		column += fact_px;
-		draw_column(sdl, column, column_len.x, PINK_FLOOR);
-		column_len.x -= coef_dist_px;
+		if (z_line_buffer(*doom, neutre.x, px.x) > 0)
+		{
+			draw_column2(doom, sector, px.x, column_len.x);
+		}
+			//draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR, doom->player);
+		column_len.x += coef_dist_px;
+		neutre.x += coef_neutre;
+		px.x += fact_px;
 	}
-	draw_column(sdl, px.x, sdl->size.y, RED_WALL);
-	draw_column(sdl, px.y, sdl->size.y, RED_WALL);
 
 }
 
-void		draw_wall(t_doom doom , t_wall wall)
+void		draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall)
 {
 	t_vct2	column_id;
 	t_fvct2	dist;
 
-	pillar_screen_info(doom, wall, &dist, &column_id);
-	pillar_to_pillar(&doom.sdl, column_id, dist);
+	pillar_screen_info(*doom, wall, &dist, &column_id);
+	pillar_to_pillar(doom, column_id, dist, sector_wall);
 }

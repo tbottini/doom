@@ -26,7 +26,8 @@ SRCS_INPUT		:=		event_controller.c								\
 						collision.c										\
 						keyboard_input.c								\
 
-SRCS_RENDER		:=		bunch.c											\
+SRCS_RENDER		:=		render.c										\
+						bunch.c											\
 						wall.c											\
 						bresenham.c										\
 						draw_wall.c										\
@@ -34,6 +35,7 @@ SRCS_RENDER		:=		bunch.c											\
 						draw_text.c										\
 						sector.c										\
 						minimap.c										\
+						backface.c                  \
 						culling.c										\
 
 SRCS_PARSING	:=		parsing.c										\
@@ -54,6 +56,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						ui_manager.c									\
 						player_manager.c								\
 						editor_manager.c								\
+						designer_manager.c
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\

@@ -11,14 +11,6 @@ typedef struct		s_pillar
 	double			angle;
 }					t_pillar;
 
-//definir une structure pillar avec un attribu frust plutot que dans le wall
-
-//typedef struct		s_pillar
-//{
-//
-//}					t_pillar;
-
-
 /*
 **	rajouter un pointeur sur le prochain pillier ? pour le mur
 */
@@ -34,6 +26,7 @@ typedef struct		s_wall
 
 typedef struct		s_sector
 {
+	t_fvct3			gravity;
 	t_wall			*wall;
 	struct s_sector	*ssector;
 	int				len_sub;

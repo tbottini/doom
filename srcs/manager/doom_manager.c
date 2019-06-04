@@ -37,12 +37,16 @@ t_doom	*doom_init()
 		return (NULL);
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
 		return (NULL);
+	designer_init(&doom->tool, doom->sdl);
 	if (!editor_init(&doom->edit))
 		return (NULL);
 	if (!ui_init(&doom->ui))
 		return (NULL);
 	if (!player_init(&doom->player))
 		return (NULL);
+	if (!(doom->zline = (double*)malloc(sizeof(double) * doom->sdl.size.x)))
+		return (NULL);
+	zline_reset(doom);
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
 	return (doom);

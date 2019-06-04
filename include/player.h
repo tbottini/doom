@@ -4,6 +4,8 @@
 
 # include "vector.h"
 
+# define WEAPON_MAX 5
+
 typedef	struct			s_weapon
 {
 	int					clip_max;
@@ -16,17 +18,18 @@ typedef	struct			s_weapon
 
 typedef struct 			s_player
 {
-	t_fvct3 				pos;
+	t_fvct3 			pos;
 	t_fvct2				rot;
 	int					crouch;
-	int					height;
+	double				height;
 	int					weight;
-	int					speed;
+	double				speed;
 	int					health;
 	int					fov;
-	t_fvct2				vel;
-	t_fvct2				rotvel;
+	t_fvct3				vel;
+	t_fvct3				rotvel;
 	int					hand;
+	int					nb_weapons;
 	t_weapon			*weapons;
 	t_sector			*sector;
 }						t_player;
@@ -40,6 +43,10 @@ void					player_free(t_player *player);
 /*
 **	Gameplay
 */
+
+void					gravity(t_player *player);
+void					inertie(t_player *player);
+void					jump(t_player *player);
 void					shoot(t_player *player);
 void					reload(t_weapon *weapon);
 void					crouch_release(t_player *player);
@@ -48,7 +55,6 @@ void					sprint_release(t_player *player);
 void					sprint(t_player *player);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
-//void					move(t_doom *doom, t_player *player, int x, int y);
 
 /*
 **	Debug
