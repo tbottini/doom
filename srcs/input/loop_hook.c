@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/25 19:29:09 by akrache          ###   ########.fr       */
+/*   Updated: 2019/05/29 16:02:33 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,24 @@
 
 static void input_loop(t_doom *doom, int key)
 {
+	//if (key == SDLK_w || key == SDLK_s)
+	//	doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+	//else if (key == SDLK_a || key == SDLK_d)
+	//	doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
 	if (key == SDLK_w || key == SDLK_s)
-		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+		doom->player.vel.x = (key == SDLK_w ? doom->player.speed : -doom->player.speed);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
-	else if (key == SDLK_LSHIFT)
+		doom->player.vel.y = (key == SDLK_a ? -doom->player.speed : doom->player.speed);
+	else if (key == SDLK_LSHIFT && doom->player.vel.x == doom->player.speed)
 		sprint(&doom->player);
+	else if (key == SDLK_SPACE)
+		jump(&doom->player);
 	else if (key == SDLK_r)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDL_BUTTON_LEFT)
 		shoot(&doom->player);
+	else if (key == SDLK_p) //test tir
+		bullet(doom, &doom->player);
 	else if (key == SDLK_y)
 		fire(doom);
 }
@@ -57,7 +65,8 @@ static void delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		ft_printf("\r%d FPS ", doom->sdl.fps);
+		ft_printf("\r%d FPS\n", doom->sdl.fps);
+		describe_player(doom->player);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
@@ -97,18 +106,9 @@ int loop_hook(t_doom *doom)
 		if (doom->ui.m_status == 0)
 		{
 			/// Place here functions that need to be launch every frame while the game is running
-			move(doom, &doom->player, doom->player.vel.x, doom->player.vel.y);
+			move(doom, &doom->player);
 			//describe_player(doom->player);
-			portal_engine(doom);
-			/*
-		int x;
-		x = -1;
-		while (++x < doom->sdl.size.x * doom->sdl.size.y)
-			doom->sdl.screen[x] = 0;
-		SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
-		sector_frustum(doom->sector, doom->player);
-		*/
-			//describe_player(d->player);
+			doom_render(doom);
 			minimap(doom);
 			/// End Comment
 		}
@@ -118,10 +118,10 @@ int loop_hook(t_doom *doom)
 
 			fire(doom);
 			draw_menu(doom);
-
+      
 			/// End Comment
 		}
-		SDL_RenderPresent(doom->sdl.rend);
+    SDL_RenderPresent(doom->sdl.rend);
 	}
 	delaypcmasterrace(doom);
 	return (0);

@@ -87,33 +87,14 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 	return (1);
 }
 
-void		bunch_comsuption(t_doom *doom, t_wall **bunch)
+void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector)
 {
 	int		i;
 
 	i = 0;
 	while (bunch[i] != NULL)
 	{
-		draw_wall(*doom, *bunch[i]);
+		draw_wall(doom, *bunch[i], sector);
 		i++;
 	}
-}
-
-void		portal_engine(t_doom *doom)
-{
-	t_wall	*bunch[50];
-
-	sector_frustum(doom->sector, doom->player);
-	buncherisation(*doom->sector, bunch);
-	bunch_comsuption(doom, bunch);
-
-	sector_frustum(&doom->sector->ssector[0], doom->player);
-	buncherisation(doom->sector->ssector[0], bunch);
-
-//	describe_bunch(bunch);
-	//gestion des faces caches
-	//on affiche tout le secteur
-	backface_culling(bunch, doom->player);
-
-	bunch_comsuption(doom, bunch);
 }

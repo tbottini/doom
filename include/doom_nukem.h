@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/26 20:19:48 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/05/28 20:34:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 # include <SDL_image.h>
-
+# include <limits.h>
 # include "sector.h"
 # include "player.h"
 
@@ -35,12 +35,11 @@
 # define BLUE_SKY 0x4559a8ff
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
-# define INT_MAX 2147483647
-# define MAX_SPEED 50
-# define RANGE 1 //range max for kick and actions with objects
+# define ACCELERATION 5000.0
+# define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
-
+# define MAX_FAR 10000
 //le bunch permet de faire des groupe de mur visible
 //pour organiser l'affichage
 //over : indique si le mur depasse la vision mais et relier a un
@@ -59,8 +58,8 @@
 */
 
 typedef struct s_doom	t_doom;
-
-typedef	Uint32* t_texture;
+typedef double	t_zline;
+typedef	Uint32* 		t_texture;
 
 /*
 ** Snap var behaviour
@@ -192,6 +191,19 @@ typedef struct			s_editor
 	t_vct3				mappos;
 }						t_editor;
 
+typedef struct 			s_camera
+{
+	int					fov;
+	double				d_screen;
+	t_zline				*zline;
+}						t_camera;
+
+typedef struct 			s_designer
+{
+	uint32_t			*bot[1920];
+	uint32_t			*top[1920];
+}						t_designer;
+
 struct					s_doom
 {
 	t_sdl				sdl;
@@ -200,9 +212,15 @@ struct					s_doom
 	Uint32				timestamp;
 	t_player			player;
 	SDL_GameController	*controller;
-	t_sector			*sector;
+	t_sector			*sector;			//root sector
 	t_vct2				vel;
+	double				*zline;
+	t_designer			tool;
+	t_camera			camera;
 };
+
+//? struct render		line buffer
+
 
 /*
 ** Button Functions
@@ -319,6 +337,7 @@ void ft_clear_secteur_list(t_lstsec *start);
 */
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
+int						designer_init(t_designer *designer, t_sdl sdl);
 void					editor_free(t_editor *editor);
 int						editor_init(t_editor *editor);
 void					sdl_free(t_sdl *sdl);
@@ -341,8 +360,8 @@ int						pos_in_rect(SDL_Rect rect, int x, int y);
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
-int						collision(t_doom *doom, int key);
-t_wall					*collisionV42(t_doom *doom, t_fvct3 pos, t_wall *w);
+t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
+t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 
 /*
 **	parsing
@@ -357,16 +376,27 @@ t_list					*ft_lstn(void *content);
 /*
 **	debug
 */
-
-void					super_move(t_doom *doom, t_player *player, int key);
-void					mvt_input(t_doom *doom, int key);
-void					move(t_doom *doom, t_player *player, int x, int y);
+void					move_input(t_doom *doom, int key);
+void					mvt_input(t_player *player, int key);
+void					move(t_doom *doom, t_player *player);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					draw_wall(t_doom doom, t_wall wall);
+void					draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
 
-void					backface_culling(t_wall **bunch, t_player player);
+/*
+**	render
+*/
+int						z_line_buffer(t_doom doom, double len_pillar, int px);
+int						doom_render(t_doom *doom);
+void					zline_reset(t_doom *doom);
+
+/*
+**	bunch
+*/
+void					sector_frustum(t_sector *sector, t_player player);
+int						buncherisation(t_sector sector, t_wall **bunch);
+void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
 
 #endif
