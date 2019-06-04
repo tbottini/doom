@@ -38,16 +38,18 @@ t_player	chunck_player(int fd)
 	while (get_next_line(fd, &line) > 0 && ft_strcmp(line, "END"))
 	{
 		if (i == 0)
-			triple_atof(line, &player.pos);
+			double_atof(line, (t_fvct2*)&player.pos);
 		else if (i == 1)
-			double_atof(line, &player.rot);
+			player.height = ft_atof(line);
 		else if (i == 2)
+			double_atof(line, &player.rot);
+		else if (i == 3)
 			player.fov = ft_atoi(line);
 		free(line);
 		i++;
 	}
 	free(line);
-	player.health = 100;
+	player_init(&player);
 	return (player);
 }
 
