@@ -43,6 +43,22 @@ static void input_loop(t_doom *doom, int key)
 		fire(doom);
 }
 
+static void editor_loop(t_doom *doom, int key)
+{
+	if (key == SDLK_w || key == SDLK_s)
+		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+	else if (key == SDLK_a || key == SDLK_d)
+		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
+	else if (key == SDLK_LSHIFT)
+		sprint(&doom->player);
+	else if (key == SDLK_r)
+		reload(&(doom->player.weapons[doom->player.hand]));
+	else if (key == SDL_BUTTON_LEFT)
+		shoot(&doom->player);
+	else if (key == SDLK_y)
+		fire(doom);
+}
+
 static void delaypcmasterrace(t_doom *doom)
 {
 	if (doom->sdl.timp == SDL_GetTicks() / 1000)
@@ -72,10 +88,17 @@ int loop_hook(t_doom *doom)
 	SDL_RenderClear(doom->sdl.rend);
 	if (doom->edit.status == 1)
 	{
+		pos = doom->edit.keys;
+		while (pos)
+		{
+			editor_loop(doom, pos->data);
+			pos = pos->next;
+		}
 		SDL_RenderClear(doom->edit.rend);
 		draw_map(&doom->edit);
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 50}, "x: ", doom->edit.map🐁.x, (SDL_Color){250, 50, 50, 255});
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){50, 82}, "y: ", doom->edit.map🐁.y, (SDL_Color){250, 50, 50, 255});
+		draw_sector_menu(&doom->edit);
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
+		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
 		SDL_RenderPresent(doom->edit.rend);
 	}
 	else
@@ -84,8 +107,9 @@ int loop_hook(t_doom *doom)
 		{
 			/// Place here functions that need to be launch every frame while the game is running
 			move(doom, &doom->player);
-			describe_player(doom->player);
+			//describe_player(doom->player);
 			doom_render(doom);
+			minimap(doom);
 			/// End Comment
 		}
 		else
@@ -94,9 +118,10 @@ int loop_hook(t_doom *doom)
 
 			fire(doom);
 			draw_menu(doom);
-			SDL_RenderPresent(doom->sdl.rend);
-/// End Comment
+      
+			/// End Comment
 		}
+    SDL_RenderPresent(doom->sdl.rend);
 	}
 	delaypcmasterrace(doom);
 	return (0);
