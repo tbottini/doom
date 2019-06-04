@@ -40,6 +40,7 @@ int			main(int ac, char **av)
 	describe_player(doom->player);
 	describe_sector_recursif(*doom->sector);
 	doom_render(doom);
+	printf("player tall %d\n", doom->player.height);
 	while (1)
 	{
 		SDL_WaitEvent(&event);
