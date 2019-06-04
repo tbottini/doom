@@ -87,14 +87,14 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 	return (1);
 }
 
-void		bunch_comsuption(t_doom *doom, t_wall **bunch)
+void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector)
 {
 	int		i;
 
 	i = 0;
 	while (bunch[i] != NULL)
 	{
-		draw_wall(doom, *bunch[i]);
+		draw_wall(doom, *bunch[i], sector);
 		i++;
 	}
 }
