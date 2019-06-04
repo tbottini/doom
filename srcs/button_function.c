@@ -26,3 +26,11 @@ void	return_button(t_doom *doom)
 {
 	sdl_set_status(doom, 1);
 }
+
+void	start_map_button(t_doom *doom)
+{
+	if (parsing(doom, doom->ui.curr_btn->data))
+		sdl_set_status(doom, 0);
+	else
+		ft_printf("Error reading file\n");
+}

@@ -21,25 +21,32 @@
 **		action();
 */
 
-int		editor_key_press(int key, t_doom *doom)
+int editor_key_press(int key, t_doom *doom)
 {
 	if (key == SDLK_BACKQUOTE)
 	{
 		close_editor(doom);
 	}
+	else if (key == SDLK_3)
+	{
+		doom->edit.map = push_init_secteur(&(doom->edit.sectors))->root;
+	}
 	else if (key == SDLK_4)
 		printf("currpillar : %p\n", doom->edit.currpilier);
 	else if (key == SDLK_5)
-		ft_nodeprint_pillar(doom->edit.map);
+		ft_nodeprint_secteur(doom->edit.sectors);
 	else if (key == SDLK_6)
-		ft_clear_pillar_list(&doom->edit.map);
+	{
+		ft_clear_secteur_list(&doom->edit.sectors);
+		doom->edit.sectors = init_secteur();
+		doom->edit.map = doom->edit.sectors->root;
+	}
 	else if (key == SDLK_r)
 	{
 		doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
-		//doom->edit.mapzoom = 100;
 	}
 	else
-		ft_nodeadd_int(&(doom->sdl.keys), key);
+		ft_nodeadd_int(&(doom->edit.keys), key);
 	return (0);
 }
 
@@ -50,9 +57,9 @@ int		editor_key_press(int key, t_doom *doom)
 **		action();
 */
 
-int		editor_key_release(int key, t_doom *doom)
+int editor_key_release(int key, t_doom *doom)
 {
-	ft_noderm_int(&(doom->sdl.keys), key);
+	ft_noderm_int(&(doom->edit.keys), key);
 	return (0);
 }
 
@@ -63,14 +70,14 @@ int		editor_key_release(int key, t_doom *doom)
 **		action();
 */
 
-int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
+int editor_mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	t_vct2 relpos;
 
 	relpos = get_rel_mappos(&doom->edit, x, y);
 	//ft_printf("pos %d\t%d\n", (x - doom->edit.mappos.x) / doom->edit.mappos.z, (y - doom->edit.mappos.y) / doom->edit.mappos.z);
 	//ft_printf("Center %d\t%d\n", doom->edit.size.x / 2 - x, doom->edit.size.y / 2 - y);
-	ft_printf("stru %d\t%d\n",  relpos.x, relpos.y);
+	ft_printf("stru %d\t%d\n", relpos.x, relpos.y);
 	ft_printf("area %d\n", MAXZOOM / doom->edit.mappos.z);
 	if (btn == SDL_BUTTON_LEFT)
 	{
@@ -91,15 +98,20 @@ int		editor_mouse_press(int btn, int x, int y, t_doom *doom)
 ** Add here function that need to be done when mouse wheel is used
 */
 
-int		editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
+int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 {
-	if (doom->edit.mappos.z + e.y < MINZOOM)
-		doom->edit.mappos.z = MINZOOM;
-	else if (doom->edit.mappos.z + e.y > MAXZOOM)
-		doom->edit.mappos.z = MAXZOOM;
+	if (pos_in_rect(edit->sectbox, edit->mouse.x, edit->mouse.y))
+	{
+		edit->sectscroll -= e.y;
+		return (0);
+	}
+	if (edit->mappos.z + e.y < MINZOOM)
+		edit->mappos.z = MINZOOM;
+	else if (edit->mappos.z + e.y > MAXZOOM)
+		edit->mappos.z = MAXZOOM;
 	else
-		doom->edit.mappos.z += e.y * (doom->edit.mappos.z / 400 + 1);
-	ft_printf("\rWheel %d\t%d        ", doom->edit.mappos.z, e.y);
+		edit->mappos.z += e.y * (edit->mappos.z / 400 + 1);
+	ft_printf("\rWheel %d\t%d        ", edit->mappos.z, e.y);
 	return (0);
 }
 
@@ -110,7 +122,7 @@ int		editor_mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
 **		action();
 */
 
-int		editor_mouse_release(int btn, int x, int y, t_doom *doom)
+int editor_mouse_release(int btn, int x, int y, t_doom *doom)
 {
 	(void)btn;
 	(void)x;
@@ -124,11 +136,11 @@ int		editor_mouse_release(int btn, int x, int y, t_doom *doom)
 ** x and y are relative postions when in gamemode
 */
 
-int		editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
+int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 {
-	doom->edit.🐁.x = e.x;
-	doom->edit.🐁.y = e.y;
-	doom->edit.map🐁 = get_rel_mappos(&doom->edit, e.x, e.y);
+	doom->edit.mouse.x = e.x;
+	doom->edit.mouse.y = e.y;
+	doom->edit.mapmouse = get_rel_mappos(&doom->edit, e.x, e.y);
 	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.map, e.x, e.y);
 	if (e.state == SDL_BUTTON_LMASK)
 	{
