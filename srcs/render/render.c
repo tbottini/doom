@@ -6,19 +6,22 @@ void				sector_render(t_doom *doom, t_sector *sector)
 
 	sector_frustum(sector, doom->player);
 	buncherisation(*sector, bunch);
-	bunch_comsuption(doom, bunch);
+	bunch_comsuption(doom, bunch, *sector);
 }
 
-
-void				zline_reset(t_doom *doom)
+void				test_tools(t_doom *doom)
 {
-	int				i;
+	int				y;
+	int				x = doom->sdl.size.x / 2.0;
+	int				cursor = 0;
 
-	i = 0;
-	while (i < doom->sdl.size.x)
+	y = 0;
+	while (y < doom->sdl.size.y)
 	{
-		doom->zline[i] = ULONG_MAX;
-		i++;
+		*doom->tool.top[x] = 0x272130ff;
+		doom->tool.top[x] += doom->sdl.size.x;
+		y++;
+		*doom->tool.top[x] = 0x272130ff;
 	}
 }
 
@@ -35,7 +38,9 @@ int					doom_render(t_doom *doom)
 		i_sector++;
 	}
 	minimap(doom);
+	//test_tools(doom);
 	sdl_present(&doom->sdl);
-	ft_bzero(doom->zline, sizeof(double) * doom->sdl.size.x);
+	zline_reset(doom);
+
 	return (1);
 }
