@@ -18,3 +18,16 @@ int			z_line_buffer(t_doom doom, double len_pillar, int px)
 	}
 	return (0);
 }
+
+void				zline_reset(t_doom *doom)
+{
+	int				i;
+
+	i = 0;
+	while (i < doom->sdl.size.x)
+	{
+		//doom->zline[i] = X;
+		doom->zline[i] = 0;
+		i++;
+	}
+}
