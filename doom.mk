@@ -53,7 +53,8 @@ SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\
 						ui_manager.c									\
 						player_manager.c								\
-						editor_manager.c
+						editor_manager.c								\
+						designer_manager.c
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\

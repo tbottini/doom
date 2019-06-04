@@ -16,7 +16,7 @@ typedef	struct			s_weapon
 
 typedef struct 			s_player
 {
-	t_fvct3 				pos;
+	t_fvct3 			pos;
 	t_fvct2				rot;
 	int					crouch;
 	int					height;
