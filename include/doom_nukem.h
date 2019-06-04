@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:34:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/03 20:35:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 # include <SDL_image.h>
+# include <SDL_mixer.h>
 # include <limits.h>
 # include "sector.h"
 # include "player.h"
