@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/29 16:02:33 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/05 00:39:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void delaypcmasterrace(t_doom *doom)
 	else
 	{
 		ft_printf("\r%d FPS\n", doom->sdl.fps);
-		describe_player(doom->player);
+		//describe_player(doom->player);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
@@ -109,7 +109,6 @@ int loop_hook(t_doom *doom)
 			move(doom, &doom->player);
 			//describe_player(doom->player);
 			doom_render(doom);
-			minimap(doom);
 			/// End Comment
 		}
 		else
