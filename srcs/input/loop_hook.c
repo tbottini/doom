@@ -65,8 +65,7 @@ static void delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		ft_printf("\r%d FPS\n", doom->sdl.fps);
-		describe_player(doom->player);
+		ft_printf("\r%d FPS", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
@@ -96,7 +95,7 @@ int loop_hook(t_doom *doom)
 		}
 		SDL_RenderClear(doom->edit.rend);
 		draw_map(&doom->edit);
-		draw_sector_menu(&doom->edit);
+		draw_sector_menu(&doom->edit, doom->ui.fonts);
 		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
 		SDL_RenderPresent(doom->edit.rend);
