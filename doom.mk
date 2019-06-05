@@ -3,6 +3,7 @@ SRCS_DOOM		:=		editor.c										\
 						button_function.c								\
 						slider_function.c								\
 						main.c											\
+						cinematri.c										\
 
 SRCS_UI			:=		button_action.c									\
 						button_drawer.c									\

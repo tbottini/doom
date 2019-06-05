@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/03 20:35:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/05 01:58:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,5 +399,11 @@ void					zline_reset(t_doom *doom);
 void					sector_frustum(t_sector *sector, t_player player);
 int						buncherisation(t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
+
+/*
+**	Cinematique
+*/
+
+void					cinematrique(t_doom *doom);
 
 #endif
