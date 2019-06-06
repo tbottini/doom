@@ -22,8 +22,18 @@ static void cine_events(t_doom *doom, int *i)
 			doom_exit(doom);
 		else if ((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE))
 			*i = 3000;
-		else if (e.type == SDL_WINDOWEVENT)
-			event_handler1(doom, e);
+		else if (e.type == SDL_DROPFILE)
+				dropfile_event(doom, e);
+		else if (e.window.windowID == 1)
+		{
+			if (e.type == SDL_WINDOWEVENT)
+				event_handler1(doom, e);
+		}
+		else if (e.window.windowID == 2)
+		{
+			if (e.type == SDL_WINDOWEVENT)
+				event_handler2(doom, e);
+		}
 		else if (e.type == SDL_CONTROLLERDEVICEADDED)
 		{
 			ft_printf("Controller Added\n");
@@ -33,10 +43,6 @@ static void cine_events(t_doom *doom, int *i)
 		{
 			ft_printf("Controller Removed\n");
 		}
-		else if (e.type == SDL_CONTROLLERAXISMOTION
-			|| e.type == SDL_CONTROLLERBUTTONDOWN
-				|| e.type == SDL_CONTROLLERBUTTONUP)
-			controller_handler(doom, e);
 	}
 }
 
