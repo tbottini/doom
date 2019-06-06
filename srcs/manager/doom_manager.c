@@ -16,6 +16,7 @@ int		secure_doom(t_doom *doom)
 
 void	doom_exit(t_doom *doom)
 {
+	free(doom->zline);
 	player_free(&doom->player);
 	ui_free(&doom->ui);
 	editor_free(&doom->edit);
