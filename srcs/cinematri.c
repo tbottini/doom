@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 01:54:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/06 23:30:18 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/07 00:24:18 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	super_cinematrique(t_doom *doom, SDL_Surface *image, SDL_Texture *te
 	int			max;
 
 	max = i == 200 ? 3000 : 138;
-	ft_strcpy(deb, "ressources/cinematic/frame_0000.png");//change path
+	ft_strcpy(deb, "ressources/cinematic/frame_0000.png");
 	while (i <= max && (image = IMG_Load(deb)))
 	{
 		concat_atoi(deb, i);
@@ -106,8 +106,8 @@ void	cinematrique(t_doom *doom)
 	SDL_Texture	*texture;
 
 	i = 0;
-	ft_strcpy(deb, "ressources/cinematic/frame_0000.png");//change path
-	if (!(image = IMG_Load("ressources/cinematic/frame_0000.png")))//change path
+	ft_strcpy(deb, "ressources/cinematic/frame_0000.png");
+	if (!(image = IMG_Load("ressources/cinematic/frame_0000.png")))
 		return ;
 	if (!(texture = SDL_CreateTextureFromSurface(doom->sdl.rend, image)))
 		return ;
