@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/28 23:24:38 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/03 19:53:06 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		crouch(t_player *player)
 	if (!(player->crouch))
 	{
 		player->crouch = 1;
-		player->speed /= 2;
+		player->speed = 16350;
 		player->height /= 2;
 	}
 }
@@ -26,13 +26,12 @@ void		crouch(t_player *player)
 void		crouch_release(t_player *player)
 {
 	player->crouch = 0;
-	player->speed *= 2;
+	player->speed = 32700.0;
 	player->height *= 2;
 }
 
 void		sprint(t_player *player)
 {
-	printf("why nunu\n");
 	player->speed = 49050.0;
 }
 
@@ -56,8 +55,6 @@ void		fall_damage(t_player *player, int f)
 
 void		gravity(t_player *player)
 {
-	double	tmp;
-
 	player->vel.x += player->sector->gravity.x;
 	player->vel.y += player->sector->gravity.y;
 	//tmp = player->vel.z + player->sector->gravity.z;
@@ -74,13 +71,8 @@ void		gravity(t_player *player)
 	//	fall_damage(player);
 }
 
-void		move(t_doom *doom, t_player *player)
+void		update_rotation(t_player *player)
 {
-	t_fvct2	d;
-	t_fvct3	npos;
-	t_fvct3	tmp;
-	t_wall	*w;
-
 	// Update Rotation
 	player->rot.x += player->rotvel.x;
 	player->rot.y += player->rotvel.y;
@@ -92,12 +84,42 @@ void		move(t_doom *doom, t_player *player)
 		player->rot.y += 360.0;
 	else if (player->rot.y > 360)
 		player->rot.y -= 360.0;
-	// Update Position
-	printf("\n h_floor = %f | h_ceil = %f | height = %f\n",player->sector->h_floor, player->sector->h_ceil, player->height);
 	if (player->sector->h_floor >= player->pos.z || player->pos.z >= player->sector->h_floor + player->sector->h_ceil - player->height)
-		inertie(&doom->player);
+		inertie(player);
 	else
 		gravity(player);
+}
+
+void		update_position(t_doom *doom, t_fvct3 npos)
+{
+	t_fvct3	tmp;
+	t_wall	*w;
+
+	if (!(w = collision(doom, npos, NULL)))
+	{
+		doom->player.pos.x = npos.x;
+		doom->player.pos.y = npos.y;
+		return ;
+	}
+	tmp.x = doom->player.pos.x;
+	tmp.y = npos.y;
+	if (!collision(doom, tmp, w))
+	{
+		doom->player.pos.y = npos.y;
+		return ;
+	}
+	tmp.y = doom->player.pos.y;
+	tmp.x = npos.x;
+	if (!collision(doom, tmp, w))
+		doom->player.pos.x = npos.x;
+}
+
+void		move(t_doom *doom, t_player *player)
+{
+	t_fvct2	d;
+	t_fvct3	npos;
+
+	update_rotation(player);
 	d.x = sin(player->rot.y * PI180) / 10.0;
 	d.y = cos(player->rot.y * PI180) / 10.0;
 	npos.x = player->pos.x + d.x * player->vel.y / 35000.0 + d.y * player->vel.x / 35000.0;
@@ -110,26 +132,7 @@ void		move(t_doom *doom, t_player *player)
 		fall_damage(player, 0);
 	else
 		player->pos.z = npos.z;
-	if (!(w = collision(doom, npos, NULL)))
-	{
-		player->pos.x = npos.x;
-		player->pos.y = npos.y;
-		return ;
-	}
-	tmp.x = player->pos.x;
-	tmp.y = npos.y;
-	if (!collision(doom, tmp, w))
-	{
-		player->pos.y = npos.y;
-		return ;
-	}
-	tmp.y = player->pos.y;
-	tmp.x = npos.x;
-	if (!collision(doom, tmp, w))
-	{
-		player->pos.x = npos.x;
-		return ;
-	}
+	update_position(doom, npos);
 }
 
 void		inertie(t_player *player)

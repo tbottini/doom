@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:34:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/06 05:41:42 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 # include <SDL_image.h>
+# include <SDL_mixer.h>
 # include <limits.h>
 # include "sector.h"
 # include "player.h"
@@ -100,6 +101,12 @@ typedef struct			s_slid
 	SDL_Color			fgcolor;
 	SDL_Color			bgcolor;
 }						t_slid;
+
+typedef struct			s_sound
+{
+	Mix_Music	*music;
+	int			on;
+}						t_sound;
 
 typedef struct			s_font
 {
@@ -211,6 +218,7 @@ struct					s_doom
 	t_ui				ui;
 	Uint32				timestamp;
 	t_player			player;
+	t_sound				sound;
 	SDL_GameController	*controller;
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
@@ -399,5 +407,11 @@ void					zline_reset(t_doom *doom);
 void					sector_frustum(t_sector *sector, t_player player);
 int						buncherisation(t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
+
+/*
+**	Cinematique
+*/
+
+void					cinematrique(t_doom *doom);
 
 #endif
