@@ -70,24 +70,27 @@ int editor_key_release(int key, t_doom *doom)
 **		action();
 */
 
-int editor_mouse_press(int btn, int x, int y, t_doom *doom)
+int editor_mouse_press(int btn, int x, int y, t_editor *edit)
 {
 	t_vct2 relpos;
 
-	relpos = get_rel_mappos(&doom->edit, x, y);
-	//ft_printf("pos %d\t%d\n", (x - doom->edit.mappos.x) / doom->edit.mappos.z, (y - doom->edit.mappos.y) / doom->edit.mappos.z);
-	//ft_printf("Center %d\t%d\n", doom->edit.size.x / 2 - x, doom->edit.size.y / 2 - y);
+	if (pos_in_rect(edit->sectbox, edit->mouse.x, edit->mouse.y))
+	{
+		change_sector(edit, y);
+		return (0);
+	}
+	relpos = get_rel_mappos(edit, x, y);
 	ft_printf("stru %d\t%d\n", relpos.x, relpos.y);
-	ft_printf("area %d\n", MAXZOOM / doom->edit.mappos.z);
+	ft_printf("area %d\n", MAXZOOM / edit->mappos.z);
 	if (btn == SDL_BUTTON_LEFT)
 	{
-		doom->edit.currpilier = find_pilier(&doom->edit, doom->edit.map, x, y);
+		edit->currpilier = find_pilier(edit, edit->map, x, y);
 	}
 	else if (btn == SDL_BUTTON_RIGHT)
 	{
-		if (doom->edit.currpilier)
+		if (edit->currpilier)
 		{
-			if (!add_pillar(&doom->edit, x, y))
+			if (!add_pillar(edit, x, y))
 				ft_printf("Error adding pillar\n");
 		}
 	}
@@ -102,7 +105,10 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 {
 	if (pos_in_rect(edit->sectbox, edit->mouse.x, edit->mouse.y))
 	{
-		edit->sectscroll -= e.y;
+		if (edit->sectscroll + e.y * 2 > 0)
+			edit->sectscroll = 0;
+		else
+			edit->sectscroll += e.y * 2;
 		return (0);
 	}
 	if (edit->mappos.z + e.y < MINZOOM)
