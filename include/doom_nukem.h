@@ -344,6 +344,8 @@ void ft_clear_secteur_list(t_lstsec *start);
 /*
 **	gestion
 */
+
+void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
 int						designer_init(t_designer *designer, t_sdl sdl);

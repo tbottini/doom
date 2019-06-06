@@ -56,6 +56,7 @@ int			main(int ac, char **av)
 		sdl_set_status(doom, 1);
 	player_init(&doom->player);
 	Mix_FadeInMusic(doom->sound.music, -1, 18000);
+	event_handler(doom);
 	cinematrique(doom);
 	while ('^' == '^')
 	{
