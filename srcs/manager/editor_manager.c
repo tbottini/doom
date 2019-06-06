@@ -32,8 +32,8 @@ void	open_editor(t_doom *doom)
 void	editor_free(t_editor *editor)
 {
 	SDL_ShowWindow(editor->win);
-	if (editor->map)
-		ft_clear_pillar_list(&editor->map);
+	if (editor->sectors)
+		ft_clear_secteur_list(&editor->sectors);
 	if (editor->rend)
 		SDL_DestroyRenderer(editor->rend);
 	if (editor->win)
