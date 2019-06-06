@@ -50,13 +50,15 @@ SRCS_TOOLS		:=		list_tools.c									\
 						num_tools.c										\
 						sdl_tools.c										\
 						secteur_tools.c									\
+						musi.c											\
 
 SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\
 						ui_manager.c									\
 						player_manager.c								\
 						editor_manager.c								\
-						designer_manager.c
+						music_manager.c									\
+						designer_manager.c								\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
