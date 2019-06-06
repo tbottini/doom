@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
+#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/26 22:20:10 by tbottini         ###   ########.fr        #
+#    Updated: 2019/06/03 20:38:19 by akrache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
 						-lSDL2_ttf								\
 						-lSDL2_image							\
+						-lSDL2_mixer							\
 
 INCLUDE			:=		-I ./include							\
 						-I ./libft								\

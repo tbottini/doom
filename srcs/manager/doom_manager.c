@@ -21,6 +21,8 @@ void	doom_exit(t_doom *doom)
 	ui_free(&doom->ui);
 	editor_free(&doom->edit);
 	sdl_free(&doom->sdl);
+	music_free(&doom->sound);
+	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
@@ -44,6 +46,8 @@ t_doom	*doom_init()
 	if (!ui_init(&doom->ui))
 		return (NULL);
 	if (!player_init(&doom->player))
+		return (NULL);
+	if (!music_init(&doom->sound))
 		return (NULL);
 	if (!(doom->zline = (double*)malloc(sizeof(double) * doom->sdl.size.x)))
 		return (NULL);
