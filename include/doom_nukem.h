@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/06 05:41:42 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/07 00:25:04 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct			s_slid
 typedef struct			s_sound
 {
 	Mix_Music	*music;
+	Mix_Music	*tab_music[11];
 	int			on;
 }						t_sound;
 
