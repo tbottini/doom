@@ -32,7 +32,7 @@ void update_slider_value(t_doom *doom, t_slid *slid, int value)
 	{
 		*slid->val = value;
 		update_slider_txt(doom, slid);
-		//draw_slid(doom, slid); //Deactivate because menu is now rendered everyframe
+		//draw_slid(doom, slid); //Deactivated because menu is now rendered everyframe
 	}
 }
 
