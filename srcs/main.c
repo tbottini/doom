@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/06 05:46:04 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/06 20:50:55 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int			main(int ac, char **av)
 	else
 		sdl_set_status(doom, 1);
 	player_init(&doom->player);
-	Mix_PlayMusic(doom->sound.music, -1);
+	Mix_FadeInMusic(doom->sound.music, -1, 18000);
 	cinematrique(doom);
 	while ('^' == '^')
 	{
