@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/05 22:30:15 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/06 05:46:04 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ static int	init(void)
 	if (IMG_Init(IMG_INIT_PNG) == -1)
 	{
 		ft_printf("IMG: %s\n", IMG_GetError());
+		return (0);
+	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		ft_printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
 		return (0);
 	}
 	return (1);
@@ -50,6 +55,7 @@ int			main(int ac, char **av)
 	else
 		sdl_set_status(doom, 1);
 	player_init(&doom->player);
+	Mix_PlayMusic(doom->sound.music, -1);
 	cinematrique(doom);
 	while ('^' == '^')
 	{
