@@ -107,16 +107,18 @@ void draw_map(t_editor *editor)
 			if (curr->next)
 			{
 				if (currsec->root == editor->map)
-					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){0xFF, 0xFF, 0xFF, 0xFF});
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){150, 170, 250, 0xAA});
 				else
-					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){0x55, 0xAA, 0xBB, 0xAA});
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){150, 150, 150, 0xFF});
 			}
 			if (curr == editor->currpilier)
 				SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
 			else if (curr == editor->hoverpilier)
 				SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
-			else
+			else if (currsec->root == editor->map)
 				SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+			else
+				SDL_SetRenderDrawColor(editor->rend, 150, 150, 150, 255);
 			SDL_RenderFillRect(editor->rend, &tmp);
 			if (curr->next != currsec->root)
 				curr = curr->next;
