@@ -313,8 +313,7 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
-int						editor_mouse_press(int button, int x, int y,
-																t_doom *doom);
+int						editor_mouse_press(int btn, int x, int y, t_editor *edit);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
@@ -323,7 +322,9 @@ int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 
 void					draw_map(t_editor *editor);
-void					draw_sector_menu(t_editor *editor);
+void					draw_sector_menu(t_editor *editor, t_font font);
+
+void					change_sector(t_editor *edit, int pos);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
