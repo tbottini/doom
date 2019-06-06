@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/05 01:58:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/06 05:41:42 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,12 @@ typedef struct			s_slid
 	SDL_Color			fgcolor;
 	SDL_Color			bgcolor;
 }						t_slid;
+
+typedef struct			s_sound
+{
+	Mix_Music	*music;
+	int			on;
+}						t_sound;
 
 typedef struct			s_font
 {
@@ -212,6 +218,7 @@ struct					s_doom
 	t_ui				ui;
 	Uint32				timestamp;
 	t_player			player;
+	t_sound				sound;
 	SDL_GameController	*controller;
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
