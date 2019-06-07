@@ -12,55 +12,19 @@
 
 #include "doom_nukem.h"
 
-static t_btn	*on_menu_one(t_doom *doom, int x, int y)
+static t_btn	*on_menu(t_btn *btnarr, int x, int y)
 {
 	t_btn	tmp;
 	int		i;
 
 	i = -1;
-	while (doom->ui.btnarr[++i].txture)
+	while (btnarr[++i].txture)
 	{
-		tmp = doom->ui.btnarr[i];
+		tmp = btnarr[i];
 		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
 			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
 		{
-			return (&(doom->ui.btnarr[i]));
-		}
-	}
-	return (NULL);
-}
-
-static t_btn	*on_menu_two(t_doom *doom, int x, int y)
-{
-	t_btn	tmp;
-	int		i;
-
-	i = -1;
-	while (doom->ui.btnmap[++i].txture)
-	{
-		tmp = doom->ui.btnmap[i];
-		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
-			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
-		{
-			return (&(doom->ui.btnmap[i]));
-		}
-	}
-	return (NULL);
-}
-
-static t_btn	*on_menu_tree(t_doom *doom, int x, int y)
-{
-	t_btn	tmp;
-	int		i;
-
-	i = -1;
-	while (doom->ui.btnopt[++i].txture)
-	{
-		tmp = doom->ui.btnopt[i];
-		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
-			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
-		{
-			return (&(doom->ui.btnopt[i]));
+			return (&(btnarr[i]));
 		}
 	}
 	return (NULL);
@@ -69,11 +33,13 @@ static t_btn	*on_menu_tree(t_doom *doom, int x, int y)
 t_btn		*btn_hover(t_doom *doom, int x, int y)
 {
 	if (doom->ui.m_status == 1)
-		return (on_menu_one(doom, x, y));
+		return (on_menu(doom->ui.btnarr, x, y));
 	else if (doom->ui.m_status == 2)
-		return(on_menu_two(doom, x, y));
-	else if (doom->ui.m_status == 3)
-		return(on_menu_tree(doom, x, y));
+		return(on_menu(doom->ui.btnmap, x, y));
+	else if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
+		return(on_menu(doom->ui.btnopt, x, y));
+	else if (doom->ui.m_status == 4)
+		return(on_menu(doom->ui.btnpse, x, y));
 	return(NULL);
 }
 

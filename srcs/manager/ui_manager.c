@@ -24,7 +24,7 @@ void	ui_free(t_ui *ui)
 
 int		ui_by_sdl(t_doom *doom, t_ui *ui)
 {
-	ui->btnarr[0] = add_doom_button(doom);
+	ui->btnarr[0] = add_doom_button(doom, " Doom-Nukem ");
 	ui->btnarr[1] = add_start_button(doom);
 	ui->btnarr[2] = add_opt_button(doom);
 	ui->btnarr[3] = add_editor_button(doom);
@@ -32,9 +32,17 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	ui->btnmap[0] = add_quit_button(doom, " Return ", &return_button);
 	ui->btnmap[1] = add_mapmenu_button(doom);
 	ui->btnopt[0] = ui->btnmap[0];
-	ui->btnopt[1] = ui->btnarr[0];
+	ui->btnopt[1] = add_doom_button(doom, " Options ");
 	ui->slidopt[0] = add_fov_slider(doom);
 	ui->slidopt[0].loc.parent = &(ui->btnopt[1].loc);
+	ui->slidopt[1] = add_music_slider(doom);
+	ui->slidopt[1].loc.parent = &(ui->slidopt[0].loc);
+	ui->slidopt[2] = add_effect_slider(doom);
+	ui->slidopt[2].loc.parent = &(ui->slidopt[1].loc);
+	ui->btnpse[0] = add_pause_button(doom);
+	ui->btnpse[1] = add_resume_button(doom);
+	ui->btnpse[2] = add_ing_opt_button(doom);
+	ui->btnpse[3] = add_main_menu_button(doom);
 	return (1);
 }
 
