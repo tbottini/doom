@@ -20,7 +20,6 @@ int		sdl_set_status(t_doom *doom, int status)
 	{
 		doom->ui.m_status = 0;
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-		change_music(&doom->sound, doom->sound.on, 5000);
 		draw_menu(doom);
 	}
 	else if (status == 1) // mainmenu
@@ -29,7 +28,6 @@ int		sdl_set_status(t_doom *doom, int status)
 		doom->ui.curr_btn_controller = -2;
 		//doom_clear_map(doom); // TODO Add map data free;
 		fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
-		change_music(&doom->sound, 0, 18000);
 		draw_menu(doom);
 	}
 	else if (status == 2) // Map selection
