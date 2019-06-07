@@ -42,12 +42,18 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 
 	size = tmp->loc.area.h;
 	update_loc(doom, &tmp->loc, *tmp->loc.parent);
+	tmp->griplabel.x = tmp->loc.area.x;
+	tmp->griplabel.y = tmp->loc.area.y;
 	update_slider_txt(doom, tmp);
 	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
 		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
 	tmp->grip.y = tmp->loc.area.y;
 	SDL_RenderFillRect(doom->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
+	SDL_RenderCopy(doom->sdl.rend, tmp->label, NULL, &tmp->griplabel);
+	if (doom->ui.currslid == tmp)
+		SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
+	else
+		SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
 	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
 	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
 	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
