@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 22:26:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/07 02:41:16 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int		key_press(int key, t_doom *doom)
 		describe_player(doom->player);
 	else if (key == SDLK_h)
 		describe_sector(*doom->sector);
+	else if (key == SDLK_9)
+		change_music(&doom->sound, 10, 5000);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);
