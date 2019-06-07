@@ -49,7 +49,12 @@ void fire(t_doom *doom)
 	int p;
 	int pix;
 
-	i = doom->sdl.size.x * (doom->sdl.size.y / 3);
+	//i = doom->sdl.size.x * (doom->sdl.size.y / 3);
+	i = 0;
+	while (++i < doom->sdl.size.x * 2)
+	{
+		doom->sdl.screen[i] = 0;
+	}
 	while (++i < doom->sdl.size.x * doom->sdl.size.y)
 	{
 		pix = doom->sdl.screen[i] & 0xFF;

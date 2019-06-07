@@ -39,6 +39,8 @@ static void window_event(t_doom *doom, SDL_Event e)
 		load_map_btns(doom);
 		draw_menu(doom);
 	}
+	else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+		doom_render(doom);
 }
 
 void dropfile_event(t_doom *doom, SDL_Event e)
