@@ -40,28 +40,21 @@ static Mix_Music	*loadmus(char *track)
 
 int					music_init(t_sound *sound)
 {
-	if (!(sound->tab_music[0] = loadmus("ressources/music/new_dawn.wav")))
-		return (0);
-	if (!(sound->tab_music[1] = loadmus("ressources/music/pilot.wav")))
-		return (0);
-	if (!(sound->tab_music[2] = loadmus("ressources/music/graviton.wav")))
-		return (0);
-	if (!(sound->tab_music[3] = loadmus("ressources/music/impact.wav")))
-		return (0);
-	if (!(sound->tab_music[4] = loadmus("ressources/music/normandy.wav")))
-		return (0);
-	if (!(sound->tab_music[5] = loadmus("ressources/music/venice.wav")))
-		return (0);
-	if (!(sound->tab_music[6] = loadmus("ressources/music/patriots.wav")))
-		return (0);
-	if (!(sound->tab_music[7] = loadmus("ressources/music/normandy_atk.wav")))
-		return (0);
-	if (!(sound->tab_music[8] = loadmus("ressources/music/guile.wav")))
-		return (0);
-	if (!(sound->tab_music[9] = loadmus("ressources/music/gerudo.wav")))
-		return (0);
-	if (!(sound->tab_music[10] = loadmus("ressources/music/snake.wav")))
+	if (!(sound->tab_music[0] = loadmus("ressources/music/new_dawn.wav"))
+		|| !(sound->tab_music[1] = loadmus("ressources/music/pilot.wav"))
+		|| !(sound->tab_music[2] = loadmus("ressources/music/graviton.wav"))
+		|| !(sound->tab_music[3] = loadmus("ressources/music/impact.wav"))
+		|| !(sound->tab_music[4] = loadmus("ressources/music/normandy.wav"))
+		|| !(sound->tab_music[5] = loadmus("ressources/music/venice.wav"))
+		|| !(sound->tab_music[6] = loadmus("ressources/music/patriots.wav"))
+		|| !(sound->tab_music[7] = loadmus("ressources/music/normandy_atk.wav"))
+		|| !(sound->tab_music[8] = loadmus("ressources/music/guile.wav"))
+		|| !(sound->tab_music[9] = loadmus("ressources/music/gerudo.wav"))
+		|| !(sound->tab_music[10] = loadmus("ressources/music/snake.wav")))
 		return (0);
 	sound->music = sound->tab_music[0];
+	sound->maxmusic = 7;
+	sound->musicvolume = 128;
+	sound->effectvolume = 128;
 	return (sound->on = 1);
 }
