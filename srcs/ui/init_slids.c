@@ -14,29 +14,81 @@
 
 t_slid		add_fov_slider(t_doom *doom)
 {
+	SDL_Surface		*slidtext;
 	t_slid			tmp;
 
+	tmp.bgcolor = (SDL_Color){191, 35, 44, 255};
+	tmp.fgcolor = (SDL_Color){255, 255, 255, 255};
 	tmp.txture = SDL_CreateTexture(doom->sdl.rend,
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 200, 200);
-	tmp.loc.area.w = 500;
-	tmp.loc.area.h = 50;
-	tmp.loc.area.x = 0;
-	tmp.loc.area.y = 0;
+	slidtext = TTF_RenderText_Solid(doom->ui.fonts.s32, " FOVNITE",
+		tmp.fgcolor);
+	SDL_GetClipRect(slidtext, &tmp.griplabel);
+	tmp.label = SDL_CreateTextureFromSurface(doom->sdl.rend, slidtext);
+	SDL_FreeSurface(slidtext);
+	tmp.loc.area = (SDL_Rect){0, 0, 500, 40};
 	tmp.loc.snapx = 1;
 	tmp.loc.snapy = 3;
-	tmp.loc.pos.x = 50;
-	tmp.loc.pos.y = 20;
-	tmp.bgcolor.r = 191;
-	tmp.bgcolor.g = 35;
-	tmp.bgcolor.b = 44;
-	tmp.fgcolor.r = 255;
-	tmp.fgcolor.g = 255;
-	tmp.fgcolor.b = 255;
+	tmp.loc.pos = (t_vct2){50, 20};
 	tmp.grip.w = tmp.loc.area.h;
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 30;
 	tmp.val = &doom->player.fov;
 	tmp.max = 110;
+	update_slider_txt(doom, &tmp);
+	return (tmp);
+}
+
+t_slid		add_music_slider(t_doom *doom)
+{
+	SDL_Surface		*slidtext;
+	t_slid			tmp;
+
+	tmp.bgcolor = (SDL_Color){191, 35, 44, 255};
+	tmp.fgcolor = (SDL_Color){255, 255, 255, 255};
+	tmp.txture = SDL_CreateTexture(doom->sdl.rend,
+		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 200, 200);
+	slidtext = TTF_RenderText_Solid(doom->ui.fonts.s32, " Music Volume",
+		tmp.fgcolor);
+	SDL_GetClipRect(slidtext, &tmp.griplabel);
+	tmp.label = SDL_CreateTextureFromSurface(doom->sdl.rend, slidtext);
+	SDL_FreeSurface(slidtext);
+	tmp.loc.area = (SDL_Rect){0, 0, 600, 40};
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 3;
+	tmp.loc.pos = (t_vct2){50, 20};
+	tmp.grip.w = tmp.loc.area.h;
+	tmp.grip.h = tmp.loc.area.h;
+	tmp.min = 0;
+	tmp.val = &doom->sound.musicvolume;
+	tmp.max = 128;
+	update_slider_txt(doom, &tmp);
+	return (tmp);
+}
+
+t_slid		add_effect_slider(t_doom *doom)
+{
+	SDL_Surface		*slidtext;
+	t_slid			tmp;
+
+	tmp.bgcolor = (SDL_Color){191, 35, 44, 255};
+	tmp.fgcolor = (SDL_Color){255, 255, 255, 255};
+	tmp.txture = SDL_CreateTexture(doom->sdl.rend,
+		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 200, 200);
+	slidtext = TTF_RenderText_Solid(doom->ui.fonts.s32, " Effects Volume",
+		tmp.fgcolor);
+	SDL_GetClipRect(slidtext, &tmp.griplabel);
+	tmp.label = SDL_CreateTextureFromSurface(doom->sdl.rend, slidtext);
+	SDL_FreeSurface(slidtext);
+	tmp.loc.area = (SDL_Rect){0, 0, 600, 40};
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 3;
+	tmp.loc.pos = (t_vct2){50, 20};
+	tmp.grip.w = tmp.loc.area.h;
+	tmp.grip.h = tmp.loc.area.h;
+	tmp.min = 0;
+	tmp.val = &doom->sound.effectvolume;
+	tmp.max = 128;
 	update_slider_txt(doom, &tmp);
 	return (tmp);
 }
