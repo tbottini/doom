@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/07 00:25:04 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/07 05:50:46 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,6 +362,7 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 **	simple input
 */
 
+void					bullet(t_doom *doom, t_player *player);
 void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
@@ -374,6 +375,7 @@ void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
 t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
+int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 
 /*
 **	parsing
@@ -412,9 +414,12 @@ int						buncherisation(t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
 
 /*
-**	Cinematique
+**	Cinematique et Musique
 */
 
+void					music_free(t_sound *sound);
+int						music_init(t_sound *sound);
+void					change_music(t_sound *sound, int n, int fade);
 void					cinematrique(t_doom *doom);
 
 #endif
