@@ -25,11 +25,16 @@ int		key_press(int key, t_doom *doom)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
 	if (key == SDLK_BACKQUOTE)
 	{
-		doom->ui.curr_btn = NULL;
-		sdl_set_status(doom, 1);
+		//doom->ui.curr_btn = NULL;
+		//sdl_set_status(doom, 1);
 	}
 	else if (key == SDLK_RETURN)
-		SDL_SetRelativeMouseMode(SDL_FALSE);
+	{
+		if (doom->ui.m_status == 0)
+			sdl_set_status(doom, 4);
+		else if (doom->ui.m_status == 4)
+			sdl_set_status(doom, 0);
+	}
 	else if (key == SDLK_v)
 		;//kick(&(doom->player), /*sector*/);
 	else if (key == SDLK_r)
@@ -164,6 +169,10 @@ int		mouse_move(int x, int y, t_doom *doom)
 	{
 		tmp = doom->ui.currslid;
 		update_slider_value(doom, tmp, x);
+		if (tmp == &(doom->ui.slidopt[1]))
+			Mix_VolumeMusic(doom->sound.musicvolume);
+		else if (tmp == &(doom->ui.slidopt[2]))
+			Mix_SetPanning(MIX_CHANNELS, doom->sound.effectvolume, doom->sound.musicvolume);
 	}
 	return (0);
 }

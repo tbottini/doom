@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_btns.c                                        :+:      :+:    :+:   */
+/*   init_btns3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,10 +13,10 @@
 #include "doom_nukem.h"
 
 /*
-** Wolf Logo (Not really a button)
+** Pause Logo (Not really a button)
 */
 
-t_btn	add_doom_button(t_doom *doom, const char *name)
+t_btn	add_pause_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
@@ -29,7 +29,7 @@ t_btn	add_doom_button(t_doom *doom, const char *name)
 	tmp.loc.snapy = 0;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s128, name,
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s128, " PAUSE ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &tmp.loc.area);
 	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
@@ -41,20 +41,20 @@ t_btn	add_doom_button(t_doom *doom, const char *name)
 ** Start button (main menu)
 */
 
-t_btn	add_start_button(t_doom *doom)
+t_btn	add_resume_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
-	tmp.func = &start_button;
+	tmp.func = &resume_button;
 	tmp.loc.pos.x = 50;
-	tmp.loc.pos.y = 10;
+	tmp.loc.pos.y = 20;
 	tmp.loc.snapx = 1;
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " START ",
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Resume ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &tmp.loc.area);
 	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
@@ -63,16 +63,16 @@ t_btn	add_start_button(t_doom *doom)
 }
 
 /*
-** Option button (main menu)
+** Option button (in game)
 */
 
-t_btn	add_opt_button(t_doom *doom)
+t_btn	add_ing_opt_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
-	tmp.func = &option_button;
+	tmp.func = &ignoption_button;
 	tmp.loc.pos.x = 50;
 	tmp.loc.pos.y = 20;
 	tmp.loc.snapx = 1;
@@ -88,23 +88,23 @@ t_btn	add_opt_button(t_doom *doom)
 }
 
 /*
-** Bottom Right button
+** Return Main Menu button (in game)
 */
 
-t_btn	add_quit_button(t_doom *doom, const char *str, void *fc)
+t_btn	add_main_menu_button(t_doom *doom)
 {
 	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
-	tmp.func = fc;
-	tmp.loc.pos.x = 95;
-	tmp.loc.pos.y = 95;
-	tmp.loc.snapx = 2;
-	tmp.loc.snapy = 2;
-	tmp.fgcolor = (SDL_Color){191, 35, 44, 0};
+	tmp.func = &main_menu_button;
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 50;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 3;
+	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, str,
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Main Menu ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &tmp.loc.area);
 	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
