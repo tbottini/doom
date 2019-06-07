@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/07 01:19:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/07 01:53:34 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ int			music_init(t_sound *sound)
 	if (!(sound->tab_music[10] = loadmus("ressources/music/snake.wav")))
 		return (0);
 	sound->music = sound->tab_music[0];
-	return (!(sound->on = 0));
+	return (sound->on = 1);
 }
