@@ -6,13 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/07 01:53:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/07 05:49:12 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "doom_nukem.h"
 
-void		music_free(t_sound *sound)
+void				music_free(t_sound *sound)
 {
 	int i;
 
@@ -26,7 +26,7 @@ void		music_free(t_sound *sound)
 	sound->music = NULL;
 }
 
-Mix_Music	*loadmus(char *track)
+static Mix_Music	*loadmus(char *track)
 {
 	Mix_Music *res;
 
@@ -38,7 +38,7 @@ Mix_Music	*loadmus(char *track)
 	return (res);
 }
 
-int			music_init(t_sound *sound)
+int					music_init(t_sound *sound)
 {
 	if (!(sound->tab_music[0] = loadmus("ressources/music/new_dawn.wav")))
 		return (0);
