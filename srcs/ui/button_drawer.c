@@ -12,29 +12,14 @@
 
 #include "doom_nukem.h"
 
-static void	draw_buttons(t_doom *doom, int arr)
+static void	draw_buttons(t_doom *doom, t_btn *btnarr)
 {
 	int x;
 
 	x = -1;
-	if (arr == 1)
-	{
-		while (doom->ui.btnarr[++x].txture)
-			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnarr[x].txture,
-					NULL, &(doom->ui.btnarr[x].loc.area));
-	}
-	else if (arr == 2)
-	{
-		while (doom->ui.btnmap[++x].txture)
-			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnmap[x].txture,
-					NULL, &(doom->ui.btnmap[x].loc.area));
-	}
-	else if (arr == 3)
-	{
-		while (doom->ui.btnopt[++x].txture)
-			SDL_RenderCopy(doom->sdl.rend, doom->ui.btnopt[x].txture,
-					NULL, &(doom->ui.btnopt[x].loc.area));
-	}
+	while (btnarr[++x].txture)
+		SDL_RenderCopy(doom->sdl.rend, btnarr[x].txture,
+			NULL, &(btnarr[x].loc.area));
 }
 
 static void	update_loc_buttons(t_doom *doom, t_btn *arr)
@@ -79,24 +64,31 @@ void		draw_menu(t_doom *doom)
 	if (status == 1)
 	{
 		update_loc_buttons(doom, doom->ui.btnarr);
-		draw_buttons(doom, status);
+		draw_buttons(doom, doom->ui.btnarr);
 		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnarr[doom->ui.curr_btn_controller - 1].func)
 			doom->ui.curr_btn = &(doom->ui.btnarr[doom->ui.curr_btn_controller - 1]);
 	}
 	else if (status == 2)
 	{
 		update_loc_buttons(doom, doom->ui.btnmap);
-		draw_buttons(doom, status);
+		draw_buttons(doom, doom->ui.btnmap);
 		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnmap[doom->ui.curr_btn_controller - 1].txture)
 			doom->ui.curr_btn = &(doom->ui.btnmap[doom->ui.curr_btn_controller - 1]);
 	}
-	else if (status == 3)
+	else if (status == 3 || status == 5)
 	{
 		update_loc_buttons(doom, doom->ui.btnopt);
-		draw_buttons(doom, status);
+		draw_buttons(doom, doom->ui.btnopt);
 		draw_slid(doom, &doom->ui.slidopt[0]);
+		draw_slid(doom, &doom->ui.slidopt[1]);
+		draw_slid(doom, &doom->ui.slidopt[2]);
 		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnopt[doom->ui.curr_btn_controller - 1].func)
 			doom->ui.curr_btn = &(doom->ui.btnopt[doom->ui.curr_btn_controller - 1]);
+	}
+	else if (status == 4)
+	{
+		update_loc_buttons(doom, doom->ui.btnpse);
+		draw_buttons(doom, doom->ui.btnpse);
 	}
 	if (doom->ui.curr_btn)
 	{

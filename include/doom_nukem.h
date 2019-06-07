@@ -94,10 +94,12 @@ typedef struct			s_slid
 {
 	t_sloc				loc;
 	SDL_Texture			*txture;
+	SDL_Texture			*label;
 	int					*val;
 	int					min;
 	int					max;
 	SDL_Rect			grip;
+	SDL_Rect			griplabel;
 	SDL_Color			fgcolor;
 	SDL_Color			bgcolor;
 }						t_slid;
@@ -107,6 +109,9 @@ typedef struct			s_sound
 	Mix_Music	*music;
 	Mix_Music	*tab_music[11];
 	int			on;
+	int			maxmusic;
+	int			musicvolume;
+	int			effectvolume;
 }						t_sound;
 
 typedef struct			s_font
@@ -135,6 +140,7 @@ typedef struct			s_ui
 	t_btn				btnarr[20];
 	t_btn				btnmap[20];
 	t_btn				btnopt[20];
+	t_btn				btnpse[20];
 	t_slid				slidopt[10];
 	t_slid				*currslid;
 	int					m_status;
@@ -236,8 +242,11 @@ struct					s_doom
 */
 
 void					start_button(t_doom *doom);
+void					resume_button(t_doom *doom);
 void					start_map_button(t_doom *doom);
 void					option_button(t_doom *doom);
+void					ignoption_button(t_doom *doom);
+void					main_menu_button(t_doom *doom);
 void					return_button(t_doom *doom);
 
 /*
@@ -257,8 +266,12 @@ void					btn_click(t_doom *doom, int x, int y);
 t_btn					add_start_button(t_doom *doom);
 t_btn					add_mapmenu_button(t_doom *doom);
 t_btn					add_map_button(t_doom *doom, const char *str);
-t_btn					add_doom_button(t_doom *doom);
+t_btn					add_pause_button(t_doom *doom);
+t_btn					add_resume_button(t_doom *doom);
+t_btn					add_doom_button(t_doom *doom, const char *name);
 t_btn					add_opt_button(t_doom *doom);
+t_btn					add_ing_opt_button(t_doom *doom);
+t_btn					add_main_menu_button(t_doom *doom);
 t_btn					add_editor_button(t_doom *doom);
 t_btn					add_quit_button(t_doom *doom, const char *str,
 																void *fc);
@@ -269,6 +282,8 @@ void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
 void					update_slider_value(t_doom *doom, t_slid *slid, int v);
 t_slid					add_fov_slider(t_doom *doom);
+t_slid					add_music_slider(t_doom *doom);
+t_slid					add_effect_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
 int						event_handler1(t_doom *doom, SDL_Event event);
