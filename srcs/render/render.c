@@ -13,7 +13,6 @@ void				test_tools(t_doom *doom)
 {
 	int				y;
 	int				x = doom->sdl.size.x / 2.0;
-	int				cursor = 0;
 
 	y = 0;
 	while (y < doom->sdl.size.y)

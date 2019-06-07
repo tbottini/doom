@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/03 19:53:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/07 04:16:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void		crouch(t_player *player)
 {
-
 	if (!(player->crouch))
 	{
 		player->crouch = 1;
-		player->speed = 16350;
+		player->speed = 16350.0;
 		player->height /= 2;
 	}
 }
