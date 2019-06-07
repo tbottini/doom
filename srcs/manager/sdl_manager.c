@@ -16,14 +16,14 @@ int		sdl_set_status(t_doom *doom, int status)
 {
 	SDL_SetRelativeMouseMode(SDL_FALSE);
 	doom->ui.curr_btn = NULL;
-	if (status == 0)
+	if (status == 0) // gamemode
 	{
 		doom->ui.m_status = 0;
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		change_music(&doom->sound, doom->sound.on, 5000);
 		draw_menu(doom);
 	}
-	else if (status == 1)
+	else if (status == 1) // mainmenu
 	{
 		doom->ui.m_status = 1;
 		doom->ui.curr_btn_controller = -2;
@@ -32,16 +32,27 @@ int		sdl_set_status(t_doom *doom, int status)
 		change_music(&doom->sound, 0, 18000);
 		draw_menu(doom);
 	}
-	else if (status == 2)
+	else if (status == 2) // Map selection
 	{
 		doom->ui.m_status = 2;
 		doom->ui.curr_btn_controller = -3;
 		load_map_btns(doom);
 		draw_menu(doom);
 	}
-	else if (status == 3)
+	else if (status == 3) // Options
 	{
 		doom->ui.m_status = 3;
+		doom->ui.curr_btn_controller = -1;
+		draw_menu(doom);
+	}
+	else if (status == 4) // Pause menu
+	{
+		doom->ui.m_status = 4;
+		doom->ui.curr_btn_controller = -1;
+	}
+	else if (status == 5) // Options from pause menu
+	{
+		doom->ui.m_status = 5;
 		doom->ui.curr_btn_controller = -1;
 		draw_menu(doom);
 	}
