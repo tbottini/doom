@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/28 23:24:38 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/05 13:20:02 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void		crouch_release(t_player *player)
 
 void		sprint(t_player *player)
 {
-	printf("why nunu\n");
 	player->speed = 49050.0;
 }
 
@@ -68,7 +67,6 @@ void		gravity(t_player *player)
 	//	fall_damage(player, 0);
 	//else
 		player->vel.z += player->sector->gravity.z * 350.0;
-	printf("gravity !\n");
 	//player->vel.z += player->sector->gravity.z / 100;
 	//else
 	//	fall_damage(player);
@@ -93,7 +91,6 @@ void		move(t_doom *doom, t_player *player)
 	else if (player->rot.y > 360)
 		player->rot.y -= 360.0;
 	// Update Position
-	printf("\n h_floor = %f | h_ceil = %f | height = %f\n",player->sector->h_floor, player->sector->h_ceil, player->height);
 	if (player->sector->h_floor >= player->pos.z || player->pos.z >= player->sector->h_floor + player->sector->h_ceil - player->height)
 		inertie(&doom->player);
 	else
@@ -103,7 +100,6 @@ void		move(t_doom *doom, t_player *player)
 	npos.x = player->pos.x + d.x * player->vel.y / 35000.0 + d.y * player->vel.x / 35000.0;
 	npos.y = player->pos.y - d.x * -player->vel.x / 35000.0 - d.y * player->vel.y / 35000.0;
 	npos.z = player->pos.z + player->vel.z / 35000.0;
-	printf("%f\t%f\t%f\n", npos.x, npos.y, npos.z);
 	if (npos.z < player->sector->h_floor)
 		fall_damage(player, 1);
 	else if (npos.z > player->height + player->sector->h_ceil + player->sector->h_floor)
@@ -146,7 +142,6 @@ void		inertie(t_player *player)
 		player->vel.y += DECELERATION;
 	else
 		player->vel.y = 0;
-	printf("inertie !\n");
 	/*if (player->vel.z > DECELERATION)
 		player->vel.z -= DECELERATION;
 	else if (player->vel.z < -DECELERATION)

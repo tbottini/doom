@@ -1,92 +1,85 @@
 #include "doom_nukem.h"
 
 /*
-**	si au moins l'un des pilier est hors frustum il passe pas l'extremite de
-**	l'ecran, on determine laquelle avec une polarite (-1 == 0px et 1 == max)
-**	si l'angle entre le joueur est les deux pillier est superieur a 180
-**	la polarite de depart (position du premier pillier) s'inverse
+**	renvoie le pixel a l'ecran d'un point d'un pillier
+**	doom information generale
+**	h_diff hauteur du point par rapport a la vision de la camera
+**		(haut du pillier : h_diff = hauteur pillier - hauteur joueur)
+**	rot	rotation du joueur
+**	dist_wall	la distance du joueur par rapport au pillier
 */
-double		pillar_polarite(t_pillar pillar, t_pillar next, int max)
+
+//pblm les mur change de taille quand on monte ou on baisse la tete
+
+
+int			px_point(t_doom doom, double h_diff, double rot, double dist_wall)
 {
-	t_fvct2	angle;
-	double	diff;
-	int		polarite;
+	double	wall_angle;
+	double	limit_angle;
 
-	polarite = 0;
-	angle.x = pillar.angle;
-	angle.y = next.angle;
-	if (angle.x < 0)
-		angle.x = 360 + angle.x;
-	if (angle.y < 0)
-		angle.y = 360 + angle.y;
-	diff = fabs(angle.x - angle.y);
-	polarite = (pillar.angle > 0 ? -1 : 1) * (diff < 180 ? 1 : -1);
-	return ((polarite == -1) ? 0 : max);
-}
+	int px;
 
-int				fish_bowl_px(t_doom doom, t_pillar pillar)
-{
-	int			px;
-	int			sx;
-
-	sx = doom.sdl.size.x / 2.0;
-	px = sx - (tan(pillar.angle * PI180) * doom.camera.d_screen);
+	limit_angle = (doom.player.fov / 2) * (M_PI / 180.0);
+	wall_angle = atan2(h_diff, dist_wall);
+	px = doom.sdl.size.y / 2 - tan(wall_angle) * doom.camera.d_screen;
+	px += (doom.player.rot.x - 90) * 45;
+	//px += (doom.player.pos.z - doom.player.sector->h_ceil);
 	return (px);
 }
 
-void			fish_eyes(double *dist, double angle)
+t_fvct2		px_wall(t_doom doom, int wall_height, double rot, double dist)
 {
-	*dist = cos(angle * PI180) * *dist;
+	t_fvct2	wall_portion;
+
+	double	up;
+	double	down;
+
+	up = wall_height - doom.player.height - (doom.player.pos.z - doom.player.sector->h_floor);
+	down = -doom.player.height - (doom.player.pos.z - doom.player.sector->h_floor);
+
+	wall_portion.x = px_point(doom, up, rot, dist);
+	wall_portion.y = px_point(doom, down, rot, dist);
+	return (wall_portion);
 }
 
-void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
-{
-	t_vct2 		px;
-	t_fvct2 	d;
-	float		angle;
-	t_player	*p;
-	int			size;
 
-	p = &doom.player;
-	size = doom.sdl.size.x;
-	if (wall.pillar.frust)
+void		draw_column_s(t_doom *doom, t_sector sector, int numcol, t_fvct2 surface)
+{
+	int		i;
+	int		len;
+
+	i = 0;
+	len = doom->sdl.size.x;
+	while (i < surface.x && i < doom->sdl.size.y)
 	{
-		px.x = fish_bowl_px(doom, wall.pillar);
-		d.x = distance(*(t_fvct2*)&p->pos, wall.pillar.p);
-		fish_eyes(&d.x, wall.pillar.angle);
+		doom->sdl.screen[numcol] = BLUE_SKY;
+		numcol += len;
+		i++;
 	}
-	else
+	while (i < surface.y && i < doom->sdl.size.y)
 	{
-		px.x = pillar_polarite(*wall.next, wall.pillar, size - 1);
-		angle = (px.x == 0) ? p->rot.y + p->fov / 2.0 : p->rot.y - p->fov / 2.0;
-		d.x = wall_clipping(wall, *(t_fvct2*)&p->pos, angle);
-		fish_eyes(&d.x, angle - p->rot.y);
+		doom->sdl.screen[numcol] = PINK_FLOOR;
+		numcol += len;
+		i++;
 	}
-	if (wall.next->frust)
+	while (i < doom->sdl.size.y)
 	{
-		px.y = fish_bowl_px(doom, *wall.next);
-		d.y = distance(*(t_fvct2*)&p->pos, wall.next->p);
-		fish_eyes(&d.y, wall.next->angle);
+		doom->sdl.screen[numcol] = 0x272130ff;
+		numcol += len;
+		i++;
 	}
-	else
-	{
-		px.y = pillar_polarite(wall.pillar, *wall.next, size - 1);
-		angle = (px.y == 0) ? p->rot.y + p->fov / 2.0 : p->rot.y - p->fov / 2.0;
-		d.y = wall_clipping(wall, *(t_fvct2*)&p->pos, angle);
-		fish_eyes(&d.y, angle - p->rot.y);
-	}
-	*column_id = px;
-	*dist = d;
 }
 
-void		draw_column2(t_doom *doom, t_sector sector, int numcol, int length)
+void		draw_column(t_doom *doom, t_sector sector, int numcol, int length)
 {
 	int		sky_size;
 	int		i;
+	double	up;
 
 	i = 0;
-	//sky_size = (doom->sdl.size.y - length) / 2;
-	sky_size = doom->sdl.size.y / 2 - ((sector.h_ceil - doom->player.height) / sector.h_ceil) * length;
+	sky_size = (doom->sdl.size.y - length) / 2;
+	up = doom->player.pos.z - doom->player.sector->h_floor;
+	sky_size = doom->sdl.size.y / 2 + ((-sector.h_ceil + doom->player.height + up) / sector.h_ceil) * length;
 	length += sky_size;
 	while (i < doom->sdl.size.y)
 	{
@@ -99,6 +92,55 @@ void		draw_column2(t_doom *doom, t_sector sector, int numcol, int length)
 		i++;
 		numcol += doom->sdl.size.x;
 	}
+}
+
+void			reorder(t_vct2 *px, t_fvct2 *dist)
+{
+	double		tmp;
+	int			tmpint;
+
+	if (px->x > px->y)
+	{
+		tmpint = px->x;
+		px->x = px->y;
+		px->y = tmpint;
+		tmp = dist->x;
+		dist->x = dist->y;
+		dist->y = tmp;
+	}
+}
+void			pillar_to_pillar2(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
+{
+	t_fvct2		pillar;
+	t_fvct2		pillar_next;
+   	t_fvct2		neutre;
+	double		coef_surface;
+	double		coef_down;
+	double		coef_neutre;
+
+	reorder(&px, &dist);
+	pillar = px_wall(*doom, sector.h_ceil, doom->player.rot.x, dist.x);
+	pillar_next = px_wall(*doom, sector.h_ceil, doom->player.rot.x, dist.y);
+
+	coef_surface = (pillar.x - pillar_next.x) / (px.y - px.x);
+	coef_down = (pillar.y - pillar_next.y) / (px.y - px.x);
+
+	neutre.x = (double)(doom->sdl.size.y) / dist.x;
+	neutre.y = (double)(doom->sdl.size.y) / dist.y;
+
+	coef_neutre = (neutre.y - neutre.x) / (px.y - px.x);
+	while (px.x != px.y)
+	{
+		if (z_line_buffer(*doom, neutre.x, px.x) > 0)
+		{
+			draw_column_s(doom, sector, px.x, pillar);
+		}
+		pillar.x -= coef_surface;
+		pillar.y -= coef_down;
+		neutre.x += coef_neutre;
+		px.x++;
+	}
+
 }
 
 /*
@@ -127,9 +169,8 @@ void			pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
 	{
 		if (z_line_buffer(*doom, neutre.x, px.x) > 0)
 		{
-			draw_column2(doom, sector, px.x, column_len.x);
+			draw_column(doom, sector, px.x, column_len.x);
 		}
-			//draw_column(&doom->sdl, column, column_len.x, PINK_FLOOR, doom->player);
 		column_len.x += coef_dist_px;
 		neutre.x += coef_neutre;
 		px.x += fact_px;
@@ -142,6 +183,9 @@ void		draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall)
 	t_vct2	column_id;
 	t_fvct2	dist;
 
+	//printf("player rott %f\n", doom->player.rot.x);
+	//printf("player pos %f\n", doom->player.pos.z);
+	//printf("sector floor %f\n", doom->player.sector->h)
 	pillar_screen_info(*doom, wall, &dist, &column_id);
-	pillar_to_pillar(doom, column_id, dist, sector_wall);
+	pillar_to_pillar2(doom, column_id, dist, sector_wall);
 }
