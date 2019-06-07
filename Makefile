@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/05/26 22:20:10 by tbottini         ###   ########.fr        #
+#    Updated: 2019/06/05 12:57:41 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,10 +59,9 @@ FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
+all				:		folder $(NAME)
 
-all				:		$(FOLDER) $(NAME)
-
-$(FOLDER)		:
+folder			:
 	@mkdir -p $(FOLDER)
 
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(INCLUDE_RES)
@@ -101,6 +100,10 @@ chmain			:
 	@touch srcs/main.c
 	@make
 
-re				: fclean all
+start			:	all
+	./doom-nukem $(ARGS)
+	
+
+re				:	fclean all
 
 .PHONY: all clean fclean re

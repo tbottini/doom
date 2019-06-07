@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 20:34:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/05 15:51:48 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -380,6 +380,8 @@ int						keyboard_input(t_doom *doom, SDL_Event event);
 int						z_line_buffer(t_doom doom, double len_pillar, int px);
 int						doom_render(t_doom *doom);
 void					zline_reset(t_doom *doom);
+int						fish_bowl_px(t_doom doom, t_pillar pillar);
+void					fish_eyes(double *dist, double angle);
 
 /*
 **	bunch
@@ -388,4 +390,9 @@ void					sector_frustum(t_sector *sector, t_player player);
 int						buncherisation(t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
 
+/*
+**	pillar --> sector.h
+*/
+double					pillar_polarite(t_pillar pillar, t_pillar next, int max);
+void					pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
 #endif

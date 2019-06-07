@@ -40,7 +40,10 @@ t_player	chunck_player(int fd)
 		if (i == 0)
 			double_atof(line, (t_fvct2*)&player.pos);
 		else if (i == 1)
+		{
+			printf("ft_atof(line) %f\n", ft_atof(line));
 			player.height = ft_atof(line);
+		}
 		else if (i == 2)
 			double_atof(line, &player.rot);
 		else if (i == 3)
@@ -49,7 +52,9 @@ t_player	chunck_player(int fd)
 		i++;
 	}
 	free(line);
+	printf("player chunck %f\n", player.height);
 	player_init(&player);
+	printf("player preinit %f\n", player.height);
 	return (player);
 }
 

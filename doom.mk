@@ -35,7 +35,9 @@ SRCS_RENDER		:=		render.c										\
 						draw_text.c										\
 						sector.c										\
 						minimap.c										\
-						backface.c
+						backface.c										\
+						render_effect.c									\
+						pillar_info.c
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c
