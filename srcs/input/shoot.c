@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/10 02:01:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 11:07:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,39 @@ void		kick(t_doom *doom, t_player *player)
 	d.x = range * sin(player->rot.x * PI180) * cos(player->rot.y * PI180);
 	d.y = range * sin(player->rot.x * PI180) * sin(player->rot.y * PI180);
 	d.z = -(range * cos(player->rot.x * PI180)) + (player->height / 2);
+	Mix_PlayChannel(2, doom->sound.tab_effect[6], 0);
 }
 
 //===================================================================================================//
+
+double			bullet_clipping(t_wall wall, t_fvct2 pos, double angle)
+{
+	t_fvct2		inter;
+	t_fvct2		diff;
+	t_fvct2		diff2;
+	double		coef_ang;
+	double		coef_wall;
+	double		b;
+
+	diff.x = wall.pillar.p.x - pos.x;
+	diff.y = wall.pillar.p.y - pos.y;
+	diff2.x = wall.next->p.x - pos.x;
+	diff2.y = wall.next->p.y - pos.y;
+	coef_ang = tan(angle * PI180);
+	if (diff2.x - diff.x < 0.00001 && diff2.x - diff.x > -0.000001)
+	{
+		inter.x = diff.x;
+		inter.y = diff.x * coef_ang;
+	}
+	else
+	{
+		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
+		b = diff.y - diff.x * coef_wall;
+		inter.x = b / (coef_ang - coef_wall);
+		inter.y = coef_wall * inter.x + b;
+	}
+	return (distance((t_fvct2){0.0, 0.0}, inter));
+} 
 
 t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)// ne renvoie pas encore le mur le plus proche
 {
@@ -71,7 +101,6 @@ t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)// ne renvoie p
 			{printf("\nwall %d\n", i);return (&doom->sector->wall[i]);}
 		++i;
 	}
-	printf("\nwall %d\n", 0);
 	return (NULL);
 }
 
