@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/07 05:50:46 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 04:45:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,10 @@ typedef struct			s_slid
 
 typedef struct			s_sound
 {
+	Mix_Chunk	*e_world;
+	Mix_Chunk	*e_perso;
+	Mix_Chunk	*e_other;
+	Mix_Chunk	*tab_effect[50];//changer nb effects
 	Mix_Music	*music;
 	Mix_Music	*tab_music[11];
 	int			on;
@@ -377,6 +381,8 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 **	simple input
 */
 
+void					sprint_release(t_player *player, t_sound *sound);
+void					sprint(t_player *player, t_sound *sound);
 void					bullet(t_doom *doom, t_player *player);
 void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
