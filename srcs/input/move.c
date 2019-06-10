@@ -6,11 +6,15 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/07 04:16:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 05:12:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+# define CROUCH 16350.0
+# define WALK 32700.0
+# define SPRINT 49050.0
 
 void		crouch(t_player *player)
 {
@@ -29,14 +33,18 @@ void		crouch_release(t_player *player)
 	player->height *= 2;
 }
 
-void		sprint(t_player *player)
+void		sprint(t_player *player, t_sound *sound)
 {
 	player->speed = 49050.0;
+	//if (player->vel.x || player->vel.y)
+	//	Mix_PlayChannel(1, sound->tab_effect[1], -1);
 }
 
-void		sprint_release(t_player *player)
+void		sprint_release(t_player *player, t_sound *sound)
 {
 	player->speed = 32700.0;
+	//if (player->vel.x || player->vel.y)
+	//	Mix_PlayChannel(1, sound->tab_effect[0], -1);
 }
 
 void		fall_damage(t_player *player, int f)
@@ -148,6 +156,8 @@ void		inertie(t_player *player)
 		player->vel.y += DECELERATION;
 	else
 		player->vel.y = 0;
+	if (player->vel.x == 0 && player->vel.y == 0 && !Mix_Playing(1))
+		Mix_FadeOutChannel(1, 0);
 	printf("inertie !\n");
 	/*if (player->vel.z > DECELERATION)
 		player->vel.z -= DECELERATION;

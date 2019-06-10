@@ -6,17 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/27 21:44:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 02:01:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-void		send_bullet(t_fvct3 pos, t_texture *tex)
-{
-	(void)pos;
-	(void)tex;
-}
 
 void		reload(t_weapon *weapon)
 {
@@ -37,15 +31,20 @@ void		shoot(t_player *player)
 		if (player->hand == 4)//ROCKETLAUNCHER)
 			;//send_bullet(player->pos, /*RocketTexture*/);
 		else
-			send_bullet(player->pos, 0);
+			;//bullet(player);
 		player->weapons[player->hand].clip--;
 	}
 }
 
-void		kick(t_player *player, t_sector *sector)
+void		kick(t_doom *doom, t_player *player)
 {
-	(void)player;
-	(void)sector;
+	t_fvct3	d;
+	int		range;
+
+	range = 1;
+	d.x = range * sin(player->rot.x * PI180) * cos(player->rot.y * PI180);
+	d.y = range * sin(player->rot.x * PI180) * sin(player->rot.y * PI180);
+	d.z = -(range * cos(player->rot.x * PI180)) + (player->height / 2);
 }
 
 //===================================================================================================//
@@ -54,7 +53,6 @@ t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)// ne renvoie p
 {
 	int		i;
 	int		j;
-	//t_wall	*res;
 
 	j = -1;
 	while (++j < doom->sector->len_sub)
@@ -83,14 +81,7 @@ void		bullet(t_doom *doom, t_player *player)
 {
 	t_fvct3	d;
 	t_wall	*hit;
-	//t_fvct3	npos;
-	//t_wall	*w;
 
-	//d.x = sin(player->rot.y * PI180) / 10.0;
-	//d.y = cos(player->rot.y * PI180) / 10.0;
-	//npos.x = player->pos.x + d.x * y / 35000.0 + d.y * 1 * x / 35000.0;
-	//npos.y = player->pos.y - d.x * -x / 35000.0 - d.y * y / 35000.0;
-	//npos.z = (player->pos.z / 2);
 	d.x = RADIUS * sin(player->rot.x * PI180) * cos(player->rot.y * PI180);
 	d.y = RADIUS * sin(player->rot.x * PI180) * sin(player->rot.y * PI180);
 	d.z = -(RADIUS * cos(player->rot.x * PI180)) + (player->height / 2);

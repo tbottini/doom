@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/07 05:49:12 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 02:47:20 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ int					music_init(t_sound *sound)
 		|| !(sound->tab_music[9] = loadmus("ressources/music/gerudo.wav"))
 		|| !(sound->tab_music[10] = loadmus("ressources/music/snake.wav")))
 		return (0);
+	if (!effect_init(sound))
+		return (0);
 	sound->music = sound->tab_music[0];
 	sound->maxmusic = 7;
 	sound->musicvolume = 128;
-	sound->effectvolume = 128;
 	return (sound->on = 1);
 }
