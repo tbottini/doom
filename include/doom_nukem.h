@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 04:45:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 07:52:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,8 +381,6 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 **	simple input
 */
 
-void					sprint_release(t_player *player, t_sound *sound);
-void					sprint(t_player *player, t_sound *sound);
 void					bullet(t_doom *doom, t_player *player);
 void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
@@ -438,6 +436,8 @@ void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
 **	Cinematique et Musique
 */
 
+void					effect_free(t_sound *sound);
+int						effect_init(t_sound *sound);
 void					music_free(t_sound *sound);
 int						music_init(t_sound *sound);
 void					change_music(t_sound *sound, int n, int fade);
