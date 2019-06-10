@@ -59,6 +59,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						player_manager.c								\
 						editor_manager.c								\
 						music_manager.c									\
+						effect_manager.c								\
 						designer_manager.c								\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
