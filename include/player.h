@@ -51,14 +51,13 @@ void					shoot(t_player *player);
 void					reload(t_weapon *weapon);
 void					crouch_release(t_player *player);
 void					crouch(t_player *player);
-void					sprint_release(t_player *player);
-void					sprint(t_player *player);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
 
 /*
 **	Debug
 */
+
 void					describe_player(t_player player);
 
 #endif

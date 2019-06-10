@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/07 06:24:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 04:44:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		key_release(int key, t_doom *doom)
 		doom->player.rotvel.y = 0.0;
 	}*/
 	if (key == SDLK_w || key == SDLK_LSHIFT)
-		sprint_release(&doom->player);
+		sprint_release(&doom->player, &doom->sound);
 	else if (key == SDLK_LGUI)
 		crouch_release(&doom->player);
 	return (0);
