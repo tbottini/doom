@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/10 05:12:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 10:08:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,33 @@
 
 void		crouch(t_player *player)
 {
-	if (!(player->crouch))
+	if (!(player->crouch) && player->speed == WALK)
 	{
 		player->crouch = 1;
-		player->speed = 16350.0;
+		player->speed = CROUCH;
 		player->height /= 2;
 	}
 }
 
 void		crouch_release(t_player *player)
 {
-	player->crouch = 0;
-	player->speed = 32700.0;
-	player->height *= 2;
+	if (player->crouch)
+	{
+		player->crouch = 0;
+		player->speed = WALK;
+		player->height *= 2;
+	}
 }
 
-void		sprint(t_player *player, t_sound *sound)
+void		sprint(t_player *player)
 {
-	player->speed = 49050.0;
-	//if (player->vel.x || player->vel.y)
-	//	Mix_PlayChannel(1, sound->tab_effect[1], -1);
+	if (player->speed == WALK)
+		player->speed = SPRINT;
 }
 
-void		sprint_release(t_player *player, t_sound *sound)
+void		sprint_release(t_player *player)
 {
-	player->speed = 32700.0;
-	//if (player->vel.x || player->vel.y)
-	//	Mix_PlayChannel(1, sound->tab_effect[0], -1);
+	player->speed = WALK;
 }
 
 void		fall_damage(t_player *player, int f)
@@ -54,7 +54,10 @@ void		fall_damage(t_player *player, int f)
 		player->health -= player->vel.z / 100.0;
 	}
 	if (f)
+	{
 		player->pos.z = player->sector->h_floor;
+		Mix_Resume(1);
+	}
 	else
 		player->pos.z = player->sector->h_floor + player->sector->h_ceil - player->height;
 	player->vel.z = 0;
@@ -156,7 +159,7 @@ void		inertie(t_player *player)
 		player->vel.y += DECELERATION;
 	else
 		player->vel.y = 0;
-	if (player->vel.x == 0 && player->vel.y == 0 && !Mix_Playing(1))
+	if (player->vel.x == 0 && player->vel.y == 0 && Mix_Playing(1))
 		Mix_FadeOutChannel(1, 0);
 	printf("inertie !\n");
 	/*if (player->vel.z > DECELERATION)

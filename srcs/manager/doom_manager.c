@@ -22,6 +22,7 @@ void	doom_exit(t_doom *doom)
 	editor_free(&doom->edit);
 	sdl_free(&doom->sdl);
 	music_free(&doom->sound);
+	effect_free(&doom->sound);
 	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
