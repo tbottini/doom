@@ -74,7 +74,6 @@ t_vct2			sector_starend(t_sector sector, double dist, t_doom doom)
 	t_vct2		surface;
 	double		point;
 	double		alpha;
-	double		dist_point;
 
 	point = sector.h_ceil - doom.player.height;
 	//dist_point = sqrt(dist * dist + up * up);
