@@ -8,11 +8,7 @@
 **	rot	rotation du joueur
 **	dist_wall	la distance du joueur par rapport au pillier
 */
-
-//pblm les mur change de taille quand on monte ou on baisse la tete
-
-
-int			px_point(t_doom doom, double h_diff, double rot, double dist_wall)
+int			px_point(t_doom doom, double h_diff, double dist_wall)
 {
 	double	wall_angle;
 	double	limit_angle;
@@ -27,7 +23,7 @@ int			px_point(t_doom doom, double h_diff, double rot, double dist_wall)
 	return (px);
 }
 
-t_fvct2		px_wall(t_doom doom, int wall_height, double rot, double dist)
+t_fvct2		px_wall(t_doom doom, int wall_height, double dist)
 {
 	t_fvct2	wall_portion;
 
@@ -37,18 +33,57 @@ t_fvct2		px_wall(t_doom doom, int wall_height, double rot, double dist)
 	up = wall_height - doom.player.height - (doom.player.pos.z - doom.player.sector->h_floor);
 	down = -doom.player.height - (doom.player.pos.z - doom.player.sector->h_floor);
 
-	wall_portion.x = px_point(doom, up, rot, dist);
-	wall_portion.y = px_point(doom, down, rot, dist);
+	wall_portion.x = px_point(doom, up, dist);
+	wall_portion.y = px_point(doom, down, dist);
 	return (wall_portion);
 }
 
+void		draw_part_texture(t_doom *doom, t_wall *wall, int numcol, int col_txtr, t_fvct2 surface)
+{
+	double	coef;
+	int		px;
+	double	buff;
+	int		px_screen;
 
-void		draw_column_s(t_doom *doom, t_sector sector, int numcol, t_fvct2 surface)
+	px = col_txtr;
+	buff = 0;
+	coef = wall->txtr.h / (surface.y - surface.x);
+	if (surface.y < 0)
+		return ;
+	if (surface.x < 0)
+	{
+		buff = -surface.x * coef;
+		if (buff > 1.0)
+		{
+			px += (int)buff * wall->txtr.w;
+			buff = buff - (int)buff;
+		}
+		surface.x = 0;
+	}
+	while (surface.x < surface.y && surface.x < doom->sdl.size.y)
+	{
+		doom->sdl.screen[numcol] = wall->txtr.pixels[px];
+		surface.x++;
+		numcol += doom->sdl.size.x;
+		buff += coef;
+		if (buff > 1.0)
+		{
+			px += (int)buff * wall->txtr.w;
+			buff = buff - (int)buff;
+		}
+
+	}
+}
+
+void		draw_column(t_doom *doom, t_wall *wall, int numcol, t_fvct2 surface)
 {
 	int		i;
 	int		len;
+	int		ncol;
 
 	i = 0;
+	ncol = numcol;
+	//utilisation de sector ?
 	len = doom->sdl.size.x;
 	while (i < surface.x && i < doom->sdl.size.y)
 	{
@@ -56,41 +91,20 @@ void		draw_column_s(t_doom *doom, t_sector sector, int numcol, t_fvct2 surface)
 		numcol += len;
 		i++;
 	}
-	while (i < surface.y && i < doom->sdl.size.y)
+	draw_part_texture(doom, wall, numcol, 1, surface);
+
+	numcol = ncol + ((int)surface.y + 1) * len;
+	i = surface.y;
+	if (i < 0)
 	{
-		doom->sdl.screen[numcol] = PINK_FLOOR;
-		numcol += len;
-		i++;
+		i = 0;
+		numcol = ncol;
 	}
 	while (i < doom->sdl.size.y)
 	{
 		doom->sdl.screen[numcol] = 0x272130ff;
 		numcol += len;
 		i++;
-	}
-}
-
-void		draw_column(t_doom *doom, t_sector sector, int numcol, int length)
-{
-	int		sky_size;
-	int		i;
-	double	up;
-
-	i = 0;
-	sky_size = (doom->sdl.size.y - length) / 2;
-	up = doom->player.pos.z - doom->player.sector->h_floor;
-	sky_size = doom->sdl.size.y / 2 + ((-sector.h_ceil + doom->player.height + up) / sector.h_ceil) * length;
-	length += sky_size;
-	while (i < doom->sdl.size.y)
-	{
-		if (i < sky_size)
-			doom->sdl.screen[numcol] = BLUE_SKY;
-		else if (i < length)
-			doom->sdl.screen[numcol] = PINK_FLOOR;
-		else
-			doom->sdl.screen[numcol] = 0x272130ff;
-		i++;
-		numcol += doom->sdl.size.x;
 	}
 }
 
@@ -109,7 +123,8 @@ void			reorder(t_vct2 *px, t_fvct2 *dist)
 		dist->y = tmp;
 	}
 }
-void			pillar_to_pillar2(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
+
+void			pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector, t_wall *wl)
 {
 	t_fvct2		pillar;
 	t_fvct2		pillar_next;
@@ -119,8 +134,8 @@ void			pillar_to_pillar2(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
 	double		coef_neutre;
 
 	reorder(&px, &dist);
-	pillar = px_wall(*doom, sector.h_ceil, doom->player.rot.x, dist.x);
-	pillar_next = px_wall(*doom, sector.h_ceil, doom->player.rot.x, dist.y);
+	pillar = px_wall(*doom, sector.h_ceil, dist.x);
+	pillar_next = px_wall(*doom, sector.h_ceil, dist.y);
 
 	coef_surface = (pillar.x - pillar_next.x) / (px.y - px.x);
 	coef_down = (pillar.y - pillar_next.y) / (px.y - px.x);
@@ -133,49 +148,13 @@ void			pillar_to_pillar2(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
 	{
 		if (z_line_buffer(*doom, neutre.x, px.x) > 0)
 		{
-			draw_column_s(doom, sector, px.x, pillar);
+			draw_column(doom, wl, px.x, pillar);
 		}
 		pillar.x -= coef_surface;
 		pillar.y -= coef_down;
 		neutre.x += coef_neutre;
 		px.x++;
 	}
-
-}
-
-/*
-**	draw column from a pillar to another pillar
-**	use : z_line_buffer	who check if the new pillar is neareast
-**	than the last one
-*/
-void			pillar_to_pillar(t_doom *doom, t_vct2 px, t_fvct2 dist, t_sector sector)
-{
-	double		coef_dist_px;
-	int			fact_px;
-	t_fvct2		column_len;
-	t_fvct2		neutre;
-	double		coef_neutre;
-
-	fact_px = (px.x < px.y) ? 1 : -1;
-	column_len.x = (((double)(doom->sdl.size.y) / 5) / dist.x) * sector.h_ceil;
-	column_len.y = (((double)(doom->sdl.size.y) / 5) / dist.y) * sector.h_ceil;
-
-	neutre.x = (double)(doom->sdl.size.y) / dist.x;
-	neutre.y = (double)(doom->sdl.size.y) / dist.y;
-	coef_neutre = (neutre.y - neutre.x) / (px.y - px.x) * fact_px;
-	coef_dist_px = (column_len.y - column_len.x) / (px.y - px.x) * fact_px;
-
-	while (px.x != px.y)
-	{
-		if (z_line_buffer(*doom, neutre.x, px.x) > 0)
-		{
-			draw_column(doom, sector, px.x, column_len.x);
-		}
-		column_len.x += coef_dist_px;
-		neutre.x += coef_neutre;
-		px.x += fact_px;
-	}
-
 }
 
 void		draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall)
@@ -183,9 +162,7 @@ void		draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall)
 	t_vct2	column_id;
 	t_fvct2	dist;
 
-	//printf("player rott %f\n", doom->player.rot.x);
-	//printf("player pos %f\n", doom->player.pos.z);
-	//printf("sector floor %f\n", doom->player.sector->h)
+	//printf("wall.texture w %d h %d\n", wall.txtr.w, wall.txtr.h);
 	pillar_screen_info(*doom, wall, &dist, &column_id);
-	pillar_to_pillar2(doom, column_id, dist, sector_wall);
+	pillar_to_pillar(doom, column_id, dist, sector_wall, &wall);
 }

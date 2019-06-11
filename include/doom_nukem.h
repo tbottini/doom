@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/05 15:51:48 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/10 17:07:36 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@
 
 typedef struct s_doom	t_doom;
 typedef double	t_zline;
-typedef	Uint32* 		t_texture;
-
+typedef uint32_t	t_texture;
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
@@ -200,6 +199,7 @@ typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];
 	uint32_t			*top[1920];
+	SDL_Surface			**texture;
 }						t_designer;
 
 struct					s_doom
@@ -351,14 +351,16 @@ void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
 t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
-
+void					bullet(t_doom *doom, t_player *player);
+int 					vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 /*
 **	parsing
 */
 
-t_wall					*chunck_walls(t_list *chunck_line, size_t len);
+t_wall					*chunck_walls(t_list *chunck_line, t_designer *ressources, size_t len);
+int						chunk_texture(t_sdl *sdl, t_designer *designer, int fd);
 t_player				chunck_player(int fd);
-t_sector				*chunck_sector(int fd);
+t_sector				*chunck_sector(int fd, t_designer *ressources);
 t_sector				*sector_new();
 t_list					*ft_lstn(void *content);
 
