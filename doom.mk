@@ -40,7 +40,8 @@ SRCS_RENDER		:=		render.c										\
 						pillar_info.c
 
 SRCS_PARSING	:=		parsing.c										\
-						chunck.c
+						chunck.c										\
+						chunk_ressources.c
 
 SRCS_DEBUG		:=		debug_sector.c									\
 						debug_screen.c									\

@@ -35,8 +35,8 @@ t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
 double					ft_atof(char *str);
 double					ft_catof(char *str, char c);
 unsigned int			ft_catoi_u(char *str, char c);
-t_fvct2					*double_atof(char *line, t_fvct2 *fvct);
-t_fvct3					*triple_atof(char *line, t_fvct3 *fvct);
+char				*double_atof(char *line, t_fvct2 *fvct);
+char					*triple_atof(char *line, t_fvct3 *fvct);
 
 /*
 **	debug

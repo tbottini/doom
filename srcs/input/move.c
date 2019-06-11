@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/05 13:20:02 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/11 16:28:10 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ void		crouch(t_player *player)
 
 void		crouch_release(t_player *player)
 {
-	player->crouch = 0;
-	player->speed *= 2;
-	player->height *= 2;
+	if (player->crouch)
+	{
+		player->crouch = 0;
+		player->speed *= 2;
+		player->height *= 2;
+	}
 }
 
 void		sprint(t_player *player)
@@ -55,7 +58,7 @@ void		fall_damage(t_player *player, int f)
 
 void		gravity(t_player *player)
 {
-	double	tmp;
+	//double	tmp;
 
 	player->vel.x += player->sector->gravity.x;
 	player->vel.y += player->sector->gravity.y;
@@ -82,10 +85,10 @@ void		move(t_doom *doom, t_player *player)
 	// Update Rotation
 	player->rot.x += player->rotvel.x;
 	player->rot.y += player->rotvel.y;
-	if (player->rot.x < 10.0)
-		player->rot.x = 10.0;
-	else if (player->rot.x > 170.0)
-		player->rot.x = 170.0;
+	if (player->rot.x < 0.0)
+		player->rot.x = 0.0;
+	else if (player->rot.x > 180.0)
+		player->rot.x = 180.0;
 	if (player->rot.y < 0.0)
 		player->rot.y += 360.0;
 	else if (player->rot.y > 360)
@@ -97,9 +100,9 @@ void		move(t_doom *doom, t_player *player)
 		gravity(player);
 	d.x = sin(player->rot.y * PI180) / 10.0;
 	d.y = cos(player->rot.y * PI180) / 10.0;
-	npos.x = player->pos.x + d.x * player->vel.y / 35000.0 + d.y * player->vel.x / 35000.0;
-	npos.y = player->pos.y - d.x * -player->vel.x / 35000.0 - d.y * player->vel.y / 35000.0;
-	npos.z = player->pos.z + player->vel.z / 35000.0;
+	npos.x = player->pos.x + d.x * player->vel.y / 15000.0 + d.y * player->vel.x / 15000.0;
+	npos.y = player->pos.y - d.x * -player->vel.x / 15000.0 - d.y * player->vel.y / 15000.0;
+	npos.z = player->pos.z + player->vel.z / 15000.0;
 	if (npos.z < player->sector->h_floor)
 		fall_damage(player, 1);
 	else if (npos.z > player->height + player->sector->h_ceil + player->sector->h_floor)
