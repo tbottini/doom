@@ -21,6 +21,8 @@
 
 int		key_press(int key, t_doom *doom)
 {
+	if (doom->ui.curr_btn_controller > 0)
+		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
 	if (key == SDLK_BACKQUOTE)
 	{
 		doom->ui.curr_btn = NULL;
@@ -87,7 +89,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 
 	if (btn == SDL_BUTTON_LEFT)
 	{
-		doom->ui.curr_btn = NULL;
+		//doom->ui.curr_btn = NULL;
 		curr_btn = btn_hover(doom, x, y);
 		if (curr_btn && curr_btn->func)
 			(*curr_btn->func)(doom);
