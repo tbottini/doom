@@ -39,7 +39,6 @@ t_btn	add_pause_button(t_doom *doom)
 
 t_btn	add_resume_button(t_doom *doom)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));

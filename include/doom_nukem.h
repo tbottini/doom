@@ -384,6 +384,8 @@ void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
+void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
+
 /*
 **	simple input
 */
@@ -402,6 +404,7 @@ double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
 t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
+void					bulletV42(t_doom *doom, t_player *player);
 
 /*
 **	parsing
@@ -425,6 +428,7 @@ void					draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
+void					play_effect(t_sound *sound, int e);
 
 /*
 **	render
@@ -454,5 +458,6 @@ void					music_free(t_sound *sound);
 int						music_init(t_sound *sound);
 void					change_music(t_sound *sound, int n, int fade);
 void					cinematrique(t_doom *doom);
+void					effect_volume(t_doom *doom);
 
 #endif
