@@ -4,13 +4,11 @@
 **	on recupere le chunck en liste de string, chaque string est un pillier
 **	du mur
 */
-t_wall		*chunck_walls(t_list *chunck_line, t_designer *ressource, size_t len)
+t_wall		*chunck_walls(t_list *chunck_line, size_t len)
 {
 	t_wall	*wall;
 	t_list	*node;
-	char	*p;
 	int		i;
-	int		index_info;
 
 	if (!(wall = (t_wall*)malloc(sizeof(t_wall) * (len))))
 		return (NULL);
@@ -20,13 +18,7 @@ t_wall		*chunck_walls(t_list *chunck_line, t_designer *ressource, size_t len)
 		node = chunck_line;
 		if (i != 0)
 			wall[i].next = &wall[i - 1].pillar;
-		p = double_atof(node->content, &wall[i].pillar.p);
-		index_info = atoi(p);
-		//verifier que index info n'est pas superieur a la taille ni inferieur a 0
-
-		wall[i].txtr.pixels = ressource->texture[index_info]->pixels;
-		wall[i].txtr.w = ressource->texture[index_info]->w;
-		wall[i].txtr.h = ressource->texture[index_info]->h;
+		double_atof(node->content, &wall[i].pillar.p);
 		chunck_line = chunck_line->next;
 		free(node->content);
 		free(node);
@@ -48,10 +40,7 @@ t_player	chunck_player(int fd)
 		if (i == 0)
 			double_atof(line, (t_fvct2*)&player.pos);
 		else if (i == 1)
-		{
-			printf("ft_atof(line) %f\n", ft_atof(line));
 			player.height = ft_atof(line);
-		}
 		else if (i == 2)
 			double_atof(line, &player.rot);
 		else if (i == 3)
@@ -73,7 +62,7 @@ on l'ajoute a une liste chaine
 
 
 */
-t_list		*add_subsector(t_list **list, t_designer *ressources, int fd)
+t_list		*add_subsector(t_list **list, int fd)
 {
 	t_list		*sub_sector;
 	t_sector	*sector;
@@ -82,7 +71,7 @@ t_list		*add_subsector(t_list **list, t_designer *ressources, int fd)
 	sub_sector = (t_list*)malloc(sizeof(t_list));
 	if (!sub_sector)
 		return (NULL);
-	sector = chunck_sector(fd, ressources);
+	sector = chunck_sector(fd);
 	sub_sector->content = sector;
 	sub_sector->next = NULL;
 	if (!(*list))
@@ -132,7 +121,7 @@ int			list_to_ssector(t_sector *parent, t_list *sub_sector)
 	return (0);
 }
 
-t_sector	*chunck_sector(int fd, t_designer *ressources)
+t_sector	*chunck_sector(int fd)
 {
 	t_sector	*sector;
 	t_list		*files;
@@ -162,7 +151,7 @@ t_sector	*chunck_sector(int fd, t_designer *ressources)
 			files = ft_lstn(line);
 		else if (!ft_strcmp(line, "SCTR"))
 		{
-			add_subsector(&sub_sector, ressources, fd);
+			add_subsector(&sub_sector, fd);
 			tmp = (t_sector*)sub_sector->content;
 			nline--;
 			free(line);
@@ -178,7 +167,7 @@ t_sector	*chunck_sector(int fd, t_designer *ressources)
 		free(line);
 	if (sub_sector)
 		list_to_ssector(sector, sub_sector);
-	sector->wall = chunck_walls(files, ressources, nline - 2);
+	sector->wall = chunck_walls(files, nline - 2);
 	sector->len = nline - 2;
 	return (sector);
 }

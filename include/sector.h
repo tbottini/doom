@@ -3,14 +3,6 @@
 
 #include <stdlib.h>
 #include "vector.h"
-#include <SDL.h>
-
-typedef struct 			s_txtr
-{
-	uint32_t			*pixels;
-	uint32_t			w;
-	uint32_t			h;
-}						t_txtr;
 
 typedef struct		s_pillar
 {
@@ -26,7 +18,6 @@ typedef struct		s_wall
 {
 	t_pillar		pillar;
 	t_pillar		*next;
-	t_txtr			txtr;
 	//texture
 	//enum wall, portal
 	//t_sector *portal sector
