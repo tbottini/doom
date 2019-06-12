@@ -54,6 +54,6 @@ void			btn_click(t_doom *doom, int x, int y)
 {
 	if (doom->ui.m_status == 2)
 		on_menu_two(doom, x, y);
-	else if (doom->ui.m_status == 3)
+	else if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
 		on_menu_tree(doom, x, y);
 }
