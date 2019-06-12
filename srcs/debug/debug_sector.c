@@ -65,12 +65,12 @@ void		describe_player(t_player player)
 {
 	ft_putendl("------player------");
 	printf("Player :\n");
-	fvct3_msg("Pos", player.pos);
-	fvct3_msg("Vel", player.vel);
-	double_msg("Height", player.height);
-	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
+	fvct3_msg("Pos", player.stat.pos);
+	fvct3_msg("Vel", player.stat.vel);
+	double_msg("Height", player.stat.height);
+	printf("Rot : %f\t%f\n", player.stat.rot.x, player.stat.rot.y);
 	printf("Fov : %d\n", player.fov);
-	printf("Speed : %f\n", player.speed);
+	printf("Speed : %f\n", player.stat.speed);
 	ft_putendl("------------------");
 }
 

@@ -108,16 +108,16 @@ typedef struct			s_slid
 
 typedef struct			s_sound
 {
-	Mix_Chunk	*e_world;
-	Mix_Chunk	*e_perso;
-	Mix_Chunk	*e_other;
-	Mix_Chunk	*tab_effect[50];//changer nb effects
-	Mix_Music	*music;
-	Mix_Music	*tab_music[11];
-	int			on;
-	int			maxmusic;
-	int			musicvolume;
-	int			effectvolume;
+	Mix_Chunk			*e_world;
+	Mix_Chunk			*e_perso;
+	Mix_Chunk			*e_other;
+	Mix_Chunk			*tab_effect[50];//changer nb effects
+	Mix_Music			*music;
+	Mix_Music			*tab_music[11];
+	int					on;
+	int					maxmusic;
+	int					musicvolume;
+	int					effectvolume;
 }						t_sound;
 
 typedef struct			s_font
