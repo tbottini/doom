@@ -205,5 +205,4 @@ void		minimap(t_doom *d)
 		i += d->player.fov >> 3;
 	}
 	bold_point2(d, mini, mini.mid, CPERS);
-	SDL_RenderCopy(d->sdl.rend, d->sdl.txture, NULL, NULL);
 }
