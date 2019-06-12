@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 09:15:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 17:03:28 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ int loop_hook(t_doom *doom)
 		{
 			/// Place here functions that need to be launch every frame while the game is running
 			move(doom, &doom->player);
-			//describe_player(doom->player);
 			doom_render(doom);
 			/// End Comment
 		}
@@ -148,7 +147,7 @@ int loop_hook(t_doom *doom)
 			else
 				fire(doom);
 			draw_menu(doom);
-      
+
 			/// End Comment
 		}
     SDL_RenderPresent(doom->sdl.rend);
