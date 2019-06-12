@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
+#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/03 20:38:19 by akrache          ###   ########.fr        #
+#    Updated: 2019/06/12 17:01:15 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,10 +60,9 @@ FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
+all				:		folder $(NAME)
 
-all				:		$(FOLDER) $(NAME)
-
-$(FOLDER)		:
+folder			:
 	@mkdir -p $(FOLDER)
 
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(INCLUDE_RES)
@@ -102,6 +101,10 @@ chmain			:
 	@touch srcs/main.c
 	@make
 
-re				: fclean all
+start			:	all
+	./doom-nukem $(ARGS)
+
+
+re				:	fclean all
 
 .PHONY: all clean fclean re

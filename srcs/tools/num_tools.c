@@ -107,3 +107,8 @@ double		distance(t_fvct2 vct1, t_fvct2 vct2)
 	dist.y = vct2.y - vct1.y;
 	return (sqrt((dist.x * dist.x) + (dist.y * dist.y)));
 }
+
+//double		coeficient(t_fvct2 diff1, t_fvct2 diff2)
+//{
+//	return ((diff1.y - diff1.x) / (diff2.y - diff2.x));
+//}
