@@ -109,6 +109,8 @@ void ft_clear_pillar_list(t_lstpil *start)
 	(*start)->prvs = NULL;
 	(*start)->pos.x = 0;
 	(*start)->pos.y = 0;
+	free(*start);
+	*start = NULL;
 }
 
 int add_pillar(t_editor *edit, int x, int y)
