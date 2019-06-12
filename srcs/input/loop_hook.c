@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 16:51:48 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 17:03:28 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,42 @@
 **		action();
 */
 
+void		benda(t_doom *doom, int key)
+{
+	static int prev = 32700.0;
+
+	if (key == SDLK_s)
+		doom->player.vel.x = -doom->player.speed;
+	else if (key == SDLK_w)
+		doom->player.vel.x = doom->player.speed;
+	else if (key == SDLK_a)
+		doom->player.vel.y = -doom->player.speed;
+	else if (key == SDLK_d)
+		doom->player.vel.y = doom->player.speed;
+	if (!Mix_Playing(1) || prev != doom->player.speed)
+	{
+		if (doom->player.speed == 32700.0)
+			Mix_PlayChannel(1, doom->sound.tab_effect[0], -1);
+		else if (doom->player.speed == 49050.0)
+			Mix_PlayChannel(1, doom->sound.tab_effect[1], -1);
+		else if (doom->player.speed == 16350.0)
+			Mix_PlayChannel(1, doom->sound.tab_effect[2], -1);
+	}
+	prev = doom->player.speed;
+}
+
 static void input_loop(t_doom *doom, int key)
 {
 	//if (key == SDLK_w || key == SDLK_s)
 	//	doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
 	//else if (key == SDLK_a || key == SDLK_d)
 	//	doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
-	if (key == SDLK_w || key == SDLK_s)
+	/*if (key == SDLK_w || key == SDLK_s)
 		doom->player.vel.x = (key == SDLK_w ? doom->player.speed : -doom->player.speed);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.vel.y = (key == SDLK_a ? -doom->player.speed : doom->player.speed);
+		doom->player.vel.y = (key == SDLK_a ? -doom->player.speed : doom->player.speed);*/
+	if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
+		benda(doom, key);
 	else if (key == SDLK_LSHIFT && doom->player.vel.x == doom->player.speed)
 		sprint(&doom->player);
 	else if (key == SDLK_SPACE)
@@ -38,7 +64,9 @@ static void input_loop(t_doom *doom, int key)
 	else if (key == SDL_BUTTON_LEFT)
 		shoot(&doom->player);
 	else if (key == SDLK_p) //test tir
-		bullet(doom, &doom->player);
+		bulletV42(doom, &doom->player);
+	else if (key == SDLK_0)
+		play_effect(&doom->sound, 8);
 	else if (key == SDLK_y)
 		fire(doom);
 }
@@ -65,7 +93,7 @@ static void delaypcmasterrace(t_doom *doom)
 		++doom->sdl.fps;
 	else
 	{
-		ft_printf("\r%d FPS\n", doom->sdl.fps);
+		ft_printf("\r%d FPS", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
@@ -95,7 +123,7 @@ int loop_hook(t_doom *doom)
 		}
 		SDL_RenderClear(doom->edit.rend);
 		draw_map(&doom->edit);
-		draw_sector_menu(&doom->edit);
+		draw_sector_menu(&doom->edit, doom->ui.fonts);
 		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
 		SDL_RenderPresent(doom->edit.rend);
@@ -107,14 +135,17 @@ int loop_hook(t_doom *doom)
 			/// Place here functions that need to be launch every frame while the game is running
 			move(doom, &doom->player);
 			doom_render(doom);
-			minimap(doom);
 			/// End Comment
 		}
 		else
 		{
 			/// Place here functions that need to be launch every frame while in the menu
-
-			fire(doom);
+			if (doom->ui.m_status == 5 && doom->ui.currslid == &(doom->ui.slidopt[0]))
+				doom_render(doom);
+			else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+				sdl_MultiRenderCopy(&doom->sdl);
+			else
+				fire(doom);
 			draw_menu(doom);
 
 			/// End Comment

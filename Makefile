@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/10 12:45:47 by tbottini         ###   ########.fr        #
+#    Updated: 2019/06/12 17:01:15 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
 						-lSDL2_ttf								\
 						-lSDL2_image							\
+						-lSDL2_mixer							\
 
 INCLUDE			:=		-I ./include							\
 						-I ./libft								\
@@ -102,7 +103,7 @@ chmain			:
 
 start			:	all
 	./doom-nukem $(ARGS)
-	
+
 
 re				:	fclean all
 

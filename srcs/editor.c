@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#define SECTORBOXHEIGHT 50
 
 t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 {
@@ -106,16 +107,18 @@ void draw_map(t_editor *editor)
 			if (curr->next)
 			{
 				if (currsec->root == editor->map)
-					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){0xFF, 0xFF, 0xFF, 0xFF});
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){150, 170, 250, 0xAA});
 				else
-					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){0x55, 0xAA, 0xBB, 0xAA});
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){150, 150, 150, 0xFF});
 			}
 			if (curr == editor->currpilier)
 				SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
 			else if (curr == editor->hoverpilier)
 				SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
-			else
+			else if (currsec->root == editor->map)
 				SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+			else
+				SDL_SetRenderDrawColor(editor->rend, 150, 150, 150, 255);
 			SDL_RenderFillRect(editor->rend, &tmp);
 			if (curr->next != currsec->root)
 				curr = curr->next;
@@ -127,7 +130,7 @@ void draw_map(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-void draw_sector_menu(t_editor *editor)
+void draw_sector_menu(t_editor *editor, t_font font)
 {
 	SDL_Rect box;
 	t_lstsec currsec;
@@ -139,15 +142,41 @@ void draw_sector_menu(t_editor *editor)
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
 	//SDL_RenderDrawLine(editor->rend, box.x + box.w, box.y, box.x + )
-	box.h = 50;
+	box.h = SECTORBOXHEIGHT;
 	box.y += editor->sectscroll;
 	currsec = editor->sectors;
 	while (currsec)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
+		if (currsec->root == editor->map)
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Secteur ", x, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		else
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Secteur ", x, (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
 		box.y += box.h;
 		currsec = currsec->next;
 		x++;
 	}
+	//SDL_RenderDrawRect(editor->rend, &box);
+	sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
+void	change_sector(t_editor *edit, int pos)
+{
+	t_lstsec sec;
+	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;
+	edit->currpilier = NULL;
+	sec = edit->sectors;
+	while (pos > 0 && sec->next)
+	{
+		sec = sec->next;
+		pos--;
+	}
+	if (pos == 0)
+		edit->map = sec->root;
+	else if (pos == 1)
+		edit->map = push_init_secteur(&(edit->sectors))->root;
+	else
+		edit->map = NULL;
+	ft_printf("%d\n", pos);
 }

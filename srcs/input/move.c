@@ -6,19 +6,22 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/11 16:28:10 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 16:58:50 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
+# define CROUCH 16350.0
+# define WALK 32700.0
+# define SPRINT 49050.0
+
 void		crouch(t_player *player)
 {
-
-	if (!(player->crouch))
+	if (!(player->crouch) && player->speed == WALK)
 	{
 		player->crouch = 1;
-		player->speed /= 2;
+		player->speed = CROUCH;
 		player->height /= 2;
 	}
 }
@@ -28,19 +31,20 @@ void		crouch_release(t_player *player)
 	if (player->crouch)
 	{
 		player->crouch = 0;
-		player->speed *= 2;
+		player->speed = WALK;
 		player->height *= 2;
 	}
 }
 
 void		sprint(t_player *player)
 {
-	player->speed = 49050.0;
+	if (player->speed == WALK)
+		player->speed = SPRINT;
 }
 
 void		sprint_release(t_player *player)
 {
-	player->speed = 32700.0;
+	player->speed = WALK;
 }
 
 void		fall_damage(t_player *player, int f)
@@ -50,7 +54,10 @@ void		fall_damage(t_player *player, int f)
 		player->health -= player->vel.z / 100.0;
 	}
 	if (f)
+	{
 		player->pos.z = player->sector->h_floor;
+		Mix_Resume(1);
+	}
 	else
 		player->pos.z = player->sector->h_floor + player->sector->h_ceil - player->height;
 	player->vel.z = 0;
@@ -58,8 +65,6 @@ void		fall_damage(t_player *player, int f)
 
 void		gravity(t_player *player)
 {
-	//double	tmp;
-
 	player->vel.x += player->sector->gravity.x;
 	player->vel.y += player->sector->gravity.y;
 	//tmp = player->vel.z + player->sector->gravity.z;
@@ -69,19 +74,15 @@ void		gravity(t_player *player)
 	//else if (player->pos.z < player->sector->h_floor + player->sector->h_ceil - player->height)
 	//	fall_damage(player, 0);
 	//else
-		player->vel.z += player->sector->gravity.z * 350.0;
+
+	player->vel.z += player->sector->gravity.z * 450.0;
 	//player->vel.z += player->sector->gravity.z / 100;
 	//else
 	//	fall_damage(player);
 }
 
-void		move(t_doom *doom, t_player *player)
+void		update_rotation(t_player *player)
 {
-	t_fvct2	d;
-	t_fvct3	npos;
-	t_fvct3	tmp;
-	t_wall	*w;
-
 	// Update Rotation
 	player->rot.x += player->rotvel.x;
 	player->rot.y += player->rotvel.y;
@@ -93,42 +94,55 @@ void		move(t_doom *doom, t_player *player)
 		player->rot.y += 360.0;
 	else if (player->rot.y > 360)
 		player->rot.y -= 360.0;
-	// Update Position
 	if (player->sector->h_floor >= player->pos.z || player->pos.z >= player->sector->h_floor + player->sector->h_ceil - player->height)
-		inertie(&doom->player);
+		inertie(player);
 	else
 		gravity(player);
+}
+
+void		update_position(t_doom *doom, t_fvct3 npos)
+{
+	t_fvct3	tmp;
+	t_wall	*w;
+
+	if (!(w = collision(doom, npos, NULL)))
+	{
+		doom->player.pos.x = npos.x;
+		doom->player.pos.y = npos.y;
+		return ;
+	}
+	tmp.x = doom->player.pos.x;
+	tmp.y = npos.y;
+	if (!collision(doom, tmp, w))
+	{
+		doom->player.pos.y = npos.y;
+		return ;
+	}
+	tmp.y = doom->player.pos.y;
+	tmp.x = npos.x;
+	if (!collision(doom, tmp, w))
+		doom->player.pos.x = npos.x;
+}
+
+void		move(t_doom *doom, t_player *player)
+{
+	t_fvct2	d;
+	t_fvct3	npos;
+
+	update_rotation(player);
 	d.x = sin(player->rot.y * PI180) / 10.0;
 	d.y = cos(player->rot.y * PI180) / 10.0;
-	npos.x = player->pos.x + d.x * player->vel.y / 15000.0 + d.y * player->vel.x / 15000.0;
-	npos.y = player->pos.y - d.x * -player->vel.x / 15000.0 - d.y * player->vel.y / 15000.0;
-	npos.z = player->pos.z + player->vel.z / 15000.0;
+	npos.x = player->pos.x + d.x * player->vel.y / 35000.0 + d.y * player->vel.x / 35000.0;
+	npos.y = player->pos.y - d.x * -player->vel.x / 35000.0 - d.y * player->vel.y / 35000.0;
+	npos.z = player->pos.z + player->vel.z / 35000.0;
+	//printf("%f\t%f\t%f\n", npos.x, npos.y, npos.z);
 	if (npos.z < player->sector->h_floor)
 		fall_damage(player, 1);
 	else if (npos.z > player->height + player->sector->h_ceil + player->sector->h_floor)
 		fall_damage(player, 0);
 	else
 		player->pos.z = npos.z;
-	if (!(w = collision(doom, npos, NULL)))
-	{
-		player->pos.x = npos.x;
-		player->pos.y = npos.y;
-		return ;
-	}
-	tmp.x = player->pos.x;
-	tmp.y = npos.y;
-	if (!collision(doom, tmp, w))
-	{
-		player->pos.y = npos.y;
-		return ;
-	}
-	tmp.y = player->pos.y;
-	tmp.x = npos.x;
-	if (!collision(doom, tmp, w))
-	{
-		player->pos.x = npos.x;
-		return ;
-	}
+	update_position(doom, npos);
 }
 
 void		inertie(t_player *player)
@@ -145,6 +159,9 @@ void		inertie(t_player *player)
 		player->vel.y += DECELERATION;
 	else
 		player->vel.y = 0;
+	if (player->vel.x < player->speed - DECELERATION && player->vel.y < player->speed - DECELERATION  && Mix_Playing(1))
+		Mix_FadeOutChannel(1, 0);
+	//printf("inertie !\n");
 	/*if (player->vel.z > DECELERATION)
 		player->vel.z -= DECELERATION;
 	else if (player->vel.z < -DECELERATION)
