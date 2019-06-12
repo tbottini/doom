@@ -18,10 +18,8 @@ void update_slider_txt(t_doom *doom, t_slid *slid)
 	char *str;
 
 	str = ft_itoa(*slid->val);
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s32, str,
-									slid->fgcolor, slid->bgcolor);
-	slid->txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s32, &slid->txture, NULL,
+		str, slid->fgcolor, slid->bgcolor);
 	free(str);
 }
 
@@ -32,7 +30,7 @@ void update_slider_value(t_doom *doom, t_slid *slid, int value)
 	{
 		*slid->val = value;
 		update_slider_txt(doom, slid);
-		//draw_slid(doom, slid); //Deactivate because menu is now rendered everyframe
+		//draw_slid(doom, slid); //Deactivated because menu is now rendered everyframe
 	}
 }
 
@@ -42,12 +40,18 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 
 	size = tmp->loc.area.h;
 	update_loc(doom, &tmp->loc, *tmp->loc.parent);
+	tmp->griplabel.x = tmp->loc.area.x;
+	tmp->griplabel.y = tmp->loc.area.y;
 	update_slider_txt(doom, tmp);
 	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
 		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
 	tmp->grip.y = tmp->loc.area.y;
 	SDL_RenderFillRect(doom->sdl.rend, &tmp->loc.area);
-	SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
+	SDL_RenderCopy(doom->sdl.rend, tmp->label, NULL, &tmp->griplabel);
+	if (doom->ui.currslid == tmp)
+		SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
+	else
+		SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
 	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
 	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
 	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
