@@ -33,7 +33,10 @@ static void	update_loc_buttons(t_doom *doom, t_btn *arr)
 	ft_bzero(&tmp, sizeof(t_sloc));
 	while (arr[++x].txture)
 	{
-		update_loc(doom, &(arr[x].loc), tmp);
+		if (arr[x].loc.parent)
+			update_loc(doom, &(arr[x].loc), *(arr[x].loc.parent));
+		else
+			update_loc(doom, &(arr[x].loc), tmp);
 		tmp = arr[x].loc;
 	}
 }
@@ -47,13 +50,21 @@ void		update_loc(t_doom *doom, t_sloc *loc, t_sloc before)
 	else if (loc->snapx == 2)
 		loc->area.x -= loc->area.w;
 	else if (loc->snapx == 3)
-		loc->area.x = before.pos.x + before.area.w + loc->pos.x;
+		loc->area.x = before.area.x + before.area.w + loc->pos.x;
+	else if (loc->snapx == 4)
+		loc->area.x = before.area.x + loc->pos.x;
+	else if (loc->snapx == 5)
+		loc->area.x = before.area.x - loc->area.w - loc->pos.x;
 	if (loc->snapy == 1)
 		loc->area.y -= loc->area.h / 2;
 	else if (loc->snapy == 2)
 		loc->area.y -= loc->area.h;
 	else if (loc->snapy == 3)
-		loc->area.y = before.area.y + before.area.h + (int)loc->pos.y;
+		loc->area.y = before.area.y + before.area.h + loc->pos.y;
+	else if (loc->snapy == 4)
+		loc->area.y = before.area.y + loc->pos.y;
+	else if (loc->snapy == 5)
+		loc->area.y = before.area.y - loc->area.h - loc->pos.y;
 }
 
 void		draw_menu(t_doom *doom)
