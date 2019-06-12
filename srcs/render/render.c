@@ -38,7 +38,7 @@ int					doom_render(t_doom *doom)
 	}
 	minimap(doom);
 	//test_tools(doom);
-	sdl_present(&doom->sdl);
+	sdl_MultiRenderCopy(&doom->sdl);
 	zline_reset(doom);
 
 	return (1);
