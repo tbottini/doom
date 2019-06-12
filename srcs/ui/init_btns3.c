@@ -18,7 +18,6 @@
 
 t_btn	add_pause_button(t_doom *doom)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
@@ -29,11 +28,8 @@ t_btn	add_pause_button(t_doom *doom)
 	tmp.loc.snapy = 0;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s128, " PAUSE ",
-		tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &tmp.loc.area);
-	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s128, &tmp.txture, &tmp.loc.area,
+		" PAUSE ", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }
 
@@ -54,11 +50,8 @@ t_btn	add_resume_button(t_doom *doom)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Resume ",
-		tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &tmp.loc.area);
-	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+		" Resume ", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }
 
@@ -68,7 +61,6 @@ t_btn	add_resume_button(t_doom *doom)
 
 t_btn	add_ing_opt_button(t_doom *doom)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
@@ -79,11 +71,8 @@ t_btn	add_ing_opt_button(t_doom *doom)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Options ",
-		tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &tmp.loc.area);
-	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+		" Options ", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }
 
@@ -93,7 +82,6 @@ t_btn	add_ing_opt_button(t_doom *doom)
 
 t_btn	add_main_menu_button(t_doom *doom)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
@@ -104,12 +92,8 @@ t_btn	add_main_menu_button(t_doom *doom)
 	tmp.loc.snapy = 2;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	//btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Main Menu ",
-	//	tmp.fgcolor, tmp.bgcolor);
-	//SDL_GetClipRect(btntext, &tmp.loc.area);
-	//tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	//SDL_FreeSurface(btntext);
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area, " Main Menu ", tmp.fgcolor, tmp.bgcolor);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+		" Main Menu ", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }
 
@@ -119,7 +103,6 @@ t_btn	add_main_menu_button(t_doom *doom)
 
 t_btn	add_middle_music_button(t_doom *doom)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
@@ -130,18 +113,14 @@ t_btn	add_middle_music_button(t_doom *doom)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Track 1 ",
-		tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &tmp.loc.area);
-	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+		" Track 1 ", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }
 
 
 t_btn	add_left_music_button(t_doom *doom, t_sloc *parent)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
@@ -153,17 +132,13 @@ t_btn	add_left_music_button(t_doom *doom, t_sloc *parent)
 	tmp.loc.snapy = 4;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " < ",
-		tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &tmp.loc.area);
-	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+		" < ", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }
 
 t_btn	add_right_music_button(t_doom *doom, t_sloc *parent)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
@@ -175,10 +150,7 @@ t_btn	add_right_music_button(t_doom *doom, t_sloc *parent)
 	tmp.loc.snapy = 4;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " > ",
-		tmp.fgcolor, tmp.bgcolor);
-	SDL_GetClipRect(btntext, &tmp.loc.area);
-	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+		" > ", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }
