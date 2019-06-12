@@ -144,7 +144,7 @@ int loop_hook(t_doom *doom)
 			if (doom->ui.m_status == 5 && doom->ui.currslid == &(doom->ui.slidopt[0]))
 				doom_render(doom);
 			else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
-				SDL_RenderCopy(doom->sdl.rend, doom->sdl.txture, NULL, NULL);
+				sdl_MultiRenderCopy(&doom->sdl);
 			else
 				fire(doom);
 			draw_menu(doom);
