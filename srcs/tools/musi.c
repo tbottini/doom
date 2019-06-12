@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 03:47:35 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/10 03:34:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 13:32:22 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ void		change_music(t_sound *sound, int n, int fade)
 
 void		play_effect(t_sound *sound, int e)//debug fonction
 {
-	ft_printf("effect = %d\n", e);
 	Mix_PlayChannel(-1, sound->tab_effect[e], 0);
+}
+
+void		next_track(t_doom *doom)
+{
+	doom->sound.on += 1;
+	if (!(doom->sound.on % doom->sound.maxmusic))
+		doom->sound.on = 1;
+}
+
+void		prev_track(t_doom *doom)
+{
+	doom->sound.on -= 1;
+	if (!(doom->sound.on))
+		doom->sound.on = doom->sound.maxmusic - 1;
 }
