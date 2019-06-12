@@ -43,7 +43,6 @@ void		draw_part_texture(t_doom *doom, t_wall *wall, int numcol, int col_txtr, t_
 	double	coef;
 	int		px;
 	double	buff;
-	int		px_screen;
 
 	px = col_txtr;
 	buff = 0;
@@ -71,7 +70,6 @@ void		draw_part_texture(t_doom *doom, t_wall *wall, int numcol, int col_txtr, t_
 			px += (int)buff * wall->txtr.w;
 			buff = buff - (int)buff;
 		}
-
 	}
 }
 
@@ -163,6 +161,6 @@ void		draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall)
 	t_fvct2	dist;
 
 	//printf("wall.texture w %d h %d\n", wall.txtr.w, wall.txtr.h);
-	pillar_screen_info(*doom, wall, &dist, &column_id);
-	pillar_to_pillar(doom, column_id, dist, sector_wall, &wall);
+	pillar_screen_info(doom, wall, &dist, &column_id);
+	pillar_to_pillar(doom, doom->tool.px, doom->tool.dist, sector_wall, &wall);
 }
