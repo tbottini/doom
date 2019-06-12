@@ -22,6 +22,8 @@ static void		window_event(t_doom *doom, SDL_Event e)
 		SDL_GetWindowSize(doom->edit.win, &(doom->edit.size.x), &(doom->edit.size.y));
 		doom->edit.mappos.x += (doom->edit.size.x - tmp.x) / 2;
 		doom->edit.mappos.y += (doom->edit.size.y - tmp.y) / 2;
+		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y - doom->edit.sectbox.x;
+		
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 	{
@@ -58,9 +60,9 @@ int event_handler2(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_MOUSEMOTION)
 		editor_mouse_move(e.motion, doom);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
-		editor_mouse_press(e.button.button, e.button.x, e.button.y, doom);
+		editor_mouse_press(e.button.button, e.button.x, e.button.y, &doom->edit);
 	else if (e.type == SDL_MOUSEWHEEL)
-		editor_mouse_wheel(e.wheel, doom);
+		editor_mouse_wheel(e.wheel, &(doom->edit));
 	else if (e.type == SDL_MOUSEBUTTONUP)
 		editor_mouse_release(e.button.button, e.button.x, e.button.y, doom);
 	return (0);

@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#define SECTORBOXHEIGHT 50
 
-t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
+t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 {
 	t_vct2 pos;
 
@@ -21,10 +22,10 @@ t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
 	return (pos);
 }
 
-t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
+t_lstpil find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 {
 	t_lstpil curr;
-	t_vct2	p;
+	t_vct2 p;
 
 	curr = start;
 	p = get_rel_mappos(editor, x, y);
@@ -43,17 +44,17 @@ t_lstpil	find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	return (NULL);
 }
 
-static void	map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1)
+static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, char c[4])
 {
 	pos0.x = pos0.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
 	pos0.y = pos0.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
 	pos1.x = pos1.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
 	pos1.y = pos1.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
-	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(editor->rend, c[0], c[1], c[2], c[3]);
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
 
-void		draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
+void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 {
 	t_vct2 curr;
 
@@ -80,38 +81,102 @@ void		draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 	}
 }
 
-void	draw_map(t_editor *editor)
+void draw_map(t_editor *editor)
 {
-	t_lstpil	curr;
-	t_vct2		loc;
-	SDL_Rect	tmp;
+	t_lstsec currsec;
+	t_lstpil curr;
+	t_vct2 loc;
+	SDL_Rect tmp;
 
 	loc.x = editor->mappos.x;
 	loc.y = editor->mappos.y;
 
 	draw_grid(editor, loc, editor->mappos.z, 0);
-	curr = editor->map;
-	while (curr)
+	currsec = editor->sectors;
+	while (currsec)
 	{
-		loc.x = editor->mappos.x + curr->pos.x * editor->mappos.z / EDITORPRECISION;
-		loc.y = editor->mappos.y + curr->pos.y * editor->mappos.z / EDITORPRECISION;
-		tmp.x = loc.x - 5;
-		tmp.y = loc.y - 5;
-		tmp.w = 10;
-		tmp.h = 10;
-		if (curr->next)
-			map_draw_line(editor, curr->pos, curr->next->pos);
-		if (curr == editor->currpilier)
-			SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
-		else if (curr == editor->hoverpilier)
-			SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
-		else
-			SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
-		SDL_RenderFillRect(editor->rend, &tmp);
-		if (curr->next != editor->map)
-			curr = curr->next;
-		else
-			curr = NULL;
+		curr = currsec->root;
+		while (curr)
+		{
+			loc.x = editor->mappos.x + curr->pos.x * editor->mappos.z / EDITORPRECISION;
+			loc.y = editor->mappos.y + curr->pos.y * editor->mappos.z / EDITORPRECISION;
+			tmp.x = loc.x - 5;
+			tmp.y = loc.y - 5;
+			tmp.w = 10;
+			tmp.h = 10;
+			if (curr->next)
+			{
+				if (currsec->root == editor->map)
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){150, 170, 250, 0xAA});
+				else
+					map_draw_line(editor, curr->pos, curr->next->pos, (char[4]){150, 150, 150, 0xFF});
+			}
+			if (curr == editor->currpilier)
+				SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
+			else if (curr == editor->hoverpilier)
+				SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
+			else if (currsec->root == editor->map)
+				SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+			else
+				SDL_SetRenderDrawColor(editor->rend, 150, 150, 150, 255);
+			SDL_RenderFillRect(editor->rend, &tmp);
+			if (curr->next != currsec->root)
+				curr = curr->next;
+			else
+				curr = NULL;
+		}
+		currsec = currsec->next;
 	}
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
+void draw_sector_menu(t_editor *editor, t_font font)
+{
+	SDL_Rect box;
+	t_lstsec currsec;
+	int x;
+
+	x = 0;
+	box = editor->sectbox;
+	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
+	SDL_RenderFillRect(editor->rend, &box);
+	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+	//SDL_RenderDrawLine(editor->rend, box.x + box.w, box.y, box.x + )
+	box.h = SECTORBOXHEIGHT;
+	box.y += editor->sectscroll;
+	currsec = editor->sectors;
+	while (currsec)
+	{
+		SDL_RenderDrawRect(editor->rend, &box);
+		if (currsec->root == editor->map)
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Secteur ", x, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		else
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Secteur ", x, (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
+		box.y += box.h;
+		currsec = currsec->next;
+		x++;
+	}
+	//SDL_RenderDrawRect(editor->rend, &box);
+	sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
+void	change_sector(t_editor *edit, int pos)
+{
+	t_lstsec sec;
+	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;
+	edit->currpilier = NULL;
+	sec = edit->sectors;
+	while (pos > 0 && sec->next)
+	{
+		sec = sec->next;
+		pos--;
+	}
+	if (pos == 0)
+		edit->map = sec->root;
+	else if (pos == 1)
+		edit->map = push_init_secteur(&(edit->sectors))->root;
+	else
+		edit->map = NULL;
+	ft_printf("%d\n", pos);
 }

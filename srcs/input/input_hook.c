@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/28 22:26:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 13:58:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,20 @@
 
 int		key_press(int key, t_doom *doom)
 {
+	if (doom->ui.curr_btn_controller > 0)
+		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
 	if (key == SDLK_BACKQUOTE)
 	{
-		doom->ui.curr_btn = NULL;
-		sdl_set_status(doom, 1);
+		//doom->ui.curr_btn = NULL;
+		//sdl_set_status(doom, 1);
 	}
 	else if (key == SDLK_RETURN)
-		SDL_SetRelativeMouseMode(SDL_FALSE);
+	{
+		if (doom->ui.m_status == 0)
+			sdl_set_status(doom, 4);
+		else if (doom->ui.m_status == 4)
+			sdl_set_status(doom, 0);
+	}
 	else if (key == SDLK_v)
 		;//kick(&(doom->player), /*sector*/);
 	else if (key == SDLK_r)
@@ -40,6 +47,10 @@ int		key_press(int key, t_doom *doom)
 		describe_player(doom->player);
 	else if (key == SDLK_h)
 		describe_sector(*doom->sector);
+	else if (key == SDLK_9)
+		change_music(&doom->sound, 10, 5000);
+	else if (key == SDLK_o)
+		kick(doom, &doom->player);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);
@@ -87,7 +98,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 
 	if (btn == SDL_BUTTON_LEFT)
 	{
-		doom->ui.curr_btn = NULL;
+		//doom->ui.curr_btn = NULL;
 		curr_btn = btn_hover(doom, x, y);
 		if (curr_btn && curr_btn->func)
 			(*curr_btn->func)(doom);
@@ -160,6 +171,10 @@ int		mouse_move(int x, int y, t_doom *doom)
 	{
 		tmp = doom->ui.currslid;
 		update_slider_value(doom, tmp, x);
+		if (tmp == &(doom->ui.slidopt[1]))
+			Mix_VolumeMusic(doom->sound.musicvolume);
+		else if (tmp == &(doom->ui.slidopt[2]))
+			effect_volume(doom);//Mix_SetPanning(1, doom->sound.effectvolume, doom->sound.effectvolume);
 	}
 	return (0);
 }
