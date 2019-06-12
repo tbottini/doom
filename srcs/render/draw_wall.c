@@ -12,7 +12,6 @@ int			px_point(t_doom doom, double h_diff, double dist_wall)
 {
 	double	wall_angle;
 	double	limit_angle;
-
 	int px;
 
 	limit_angle = (doom.player.fov / 2) * (M_PI / 180.0);
@@ -43,7 +42,6 @@ void		draw_part_texture(t_doom *doom, t_wall *wall, int numcol, int col_txtr, t_
 	double	coef;
 	int		px;
 	double	buff;
-	int		px_screen;
 
 	px = col_txtr;
 	buff = 0;

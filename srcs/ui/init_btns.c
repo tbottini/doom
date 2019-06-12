@@ -81,7 +81,6 @@ t_btn	add_opt_button(t_doom *doom)
 
 t_btn	add_quit_button(t_doom *doom, const char *str, void *fc)
 {
-	SDL_Surface		*btntext;
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));

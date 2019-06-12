@@ -14,7 +14,6 @@
 
 void update_slider_txt(t_doom *doom, t_slid *slid)
 {
-	SDL_Surface *btntext;
 	char *str;
 
 	str = ft_itoa(*slid->val);
