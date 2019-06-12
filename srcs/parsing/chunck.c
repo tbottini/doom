@@ -46,14 +46,14 @@ t_player	chunck_player(int fd)
 	while (get_next_line(fd, &line) > 0 && ft_strcmp(line, "END"))
 	{
 		if (i == 0)
-			double_atof(line, (t_fvct2*)&player.pos);
+			double_atof(line, (t_fvct2*)&player.stat.pos);
 		else if (i == 1)
 		{
 			printf("ft_atof(line) %f\n", ft_atof(line));
-			player.height = ft_atof(line);
+			player.stat.height = ft_atof(line);
 		}
 		else if (i == 2)
-			double_atof(line, &player.rot);
+			double_atof(line, &player.stat.rot);
 		else if (i == 3)
 			player.fov = ft_atoi(line);
 		free(line);

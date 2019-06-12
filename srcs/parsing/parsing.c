@@ -70,8 +70,8 @@ int			parsing(t_doom *doom, char *filename)
 		else if (!ft_strncmp(line, "PERS", 4))
 		{
 			doom->player = chunck_player(fd);
-			doom->player.sector = search_sector(doom->sector, line + 5);
-			doom->player.pos.z = doom->player.sector->h_floor;
+			doom->player.stat.sector = search_sector(doom->sector, line + 5);
+			doom->player.stat.pos.z = doom->player.stat.sector->h_floor;
 			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->player.fov / 2.0 * PI180);
 		}
 		free(line);

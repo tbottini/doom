@@ -5,12 +5,12 @@ int			on_frustum(t_player player, t_pillar *pillar)
 	t_fvct2	dist;
 	double	angle;
 
-	dist.x = pillar->p.x - player.pos.x;
-	dist.y = pillar->p.y - player.pos.y;
+	dist.x = pillar->p.x - player.stat.pos.x;
+	dist.y = pillar->p.y - player.stat.pos.y;
 	angle = atan2(dist.y, dist.x) * TOANGLE;
 	if (angle < 0)
 		angle = 360 + angle;
-	angle = double_modulo(angle - player.rot.y);
+	angle = double_modulo(angle - player.stat.rot.y);
 	if (angle < -180)
 		angle += 360;
 	else if (angle > 180)

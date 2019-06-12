@@ -50,7 +50,7 @@ t_doom	*doom_init()
 		return (NULL);
 	if (!music_init(&doom->sound))
 		return (NULL);
-	if (!(doom->zline = (double*)malloc(sizeof(double) * doom->sdl.size.x)))
+	if (!(doom->zline = (double*)malloc(sizeof(double) * MAXWIDTH)))
 		return (NULL);
 	zline_reset(doom);
 	ui_by_sdl(doom, &doom->ui);

@@ -40,7 +40,7 @@ void		debug_up(t_doom *doom)
 	i = 0;
 	wall = doom->sector->wall;
 	ft_bzero(doom->sdl.screen, doom->sdl.size.x * doom->sdl.size.y);
-	cursor = hot_point(*(t_fvct2*)&doom->player.pos, doom->sdl.size);
+	cursor = hot_point(*(t_fvct2*)&doom->player.stat.pos, doom->sdl.size);
 	bold_point(cursor, RED_WALL, doom);
 	i = 0;
 	cursor = hot_point(*(t_fvct2*)&wall[0].pillar, doom->sdl.size);

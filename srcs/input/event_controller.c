@@ -61,40 +61,40 @@ void controller_handler(t_doom *doom, SDL_Event e)
 		if (e.jaxis.axis == 0) // Move x
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				doom->player.vel.y = e.jaxis.value;
+				doom->player.stat.vel.y = e.jaxis.value;
 			else
-				doom->player.vel.y = 0;
+				doom->player.stat.vel.y = 0;
 		}
 		else if (e.jaxis.axis == 1) // Move y
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				doom->player.vel.x = -e.jaxis.value;
+				doom->player.stat.vel.x = -e.jaxis.value;
 			else
-				doom->player.vel.x = 0;
+				doom->player.stat.vel.x = 0;
 		}
 		else if (e.jaxis.axis == 2) // Cam y
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
 			{
 				if (ft_abs(e.jaxis.value) > 30000)
-					doom->player.rotvel.y = -e.jaxis.value / 5000.0;
+					doom->player.stat.rotvel.y = -e.jaxis.value / 5000.0;
 				else
-					doom->player.rotvel.y = -e.jaxis.value / 10000.0;
+					doom->player.stat.rotvel.y = -e.jaxis.value / 10000.0;
 			}
 			else
-				doom->player.rotvel.y = 0.0;
+				doom->player.stat.rotvel.y = 0.0;
 		}
 		else if (e.jaxis.axis == 3) // Cam x
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
 			{
 				if (ft_abs(e.jaxis.value) > 30000)
-					doom->player.rotvel.x = -e.jaxis.value / 5000.0;
+					doom->player.stat.rotvel.x = -e.jaxis.value / 5000.0;
 				else
-					doom->player.rotvel.x = -e.jaxis.value / 10000.0;
+					doom->player.stat.rotvel.x = -e.jaxis.value / 10000.0;
 			}
 			else
-				doom->player.rotvel.x = 0.0;
+				doom->player.stat.rotvel.x = 0.0;
 		}
 	}
 	else
