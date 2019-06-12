@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 07:52:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 14:57:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,6 +443,8 @@ void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
 **	Cinematique et Musique
 */
 
+void					prev_track(t_doom *doom);
+void					next_track(t_doom *doom);
 void					effect_free(t_sound *sound);
 int						effect_init(t_sound *sound);
 void					music_free(t_sound *sound);
