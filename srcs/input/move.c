@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 16:58:50 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 06:52:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void		gravity(t_player *player)
 	//else if (player->pos.z < player->sector->h_floor + player->sector->h_ceil - player->height)
 	//	fall_damage(player, 0);
 	//else
-
-	player->vel.z += player->sector->gravity.z * 450.0;
+		player->vel.z += player->sector->gravity.z * 450.0;
+	printf("gravity !\n");
 	//player->vel.z += player->sector->gravity.z / 100;
 	//else
 	//	fall_damage(player);
@@ -86,10 +86,10 @@ void		update_rotation(t_player *player)
 	// Update Rotation
 	player->rot.x += player->rotvel.x;
 	player->rot.y += player->rotvel.y;
-	if (player->rot.x < 0.0)
-		player->rot.x = 0.0;
-	else if (player->rot.x > 180.0)
-		player->rot.x = 180.0;
+	if (player->rot.x < 10.0)
+		player->rot.x = 10.0;
+	else if (player->rot.x > 170.0)
+		player->rot.x = 170.0;
 	if (player->rot.y < 0.0)
 		player->rot.y += 360.0;
 	else if (player->rot.y > 360)

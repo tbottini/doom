@@ -67,7 +67,6 @@ void		describe_player(t_player player)
 	printf("Player :\n");
 	fvct3_msg("Pos", player.pos);
 	fvct3_msg("Vel", player.vel);
-	double_msg("Height", player.height);
 	printf("Rot : %f\t%f\n", player.rot.x, player.rot.y);
 	printf("Fov : %d\n", player.fov);
 	printf("Speed : %f\n", player.speed);
