@@ -12,6 +12,8 @@
 
 # include "doom_nukem.h"
 
+
+
 void		change_music(t_sound *sound, int n, int fade)
 {
 	if (n >= 0 && n < 11)
@@ -30,16 +32,26 @@ void		play_effect(t_sound *sound, int e)//debug fonction
 
 void		next_track(t_doom *doom)
 {
+	static char *lol[] = {" Track 0 ", " Track 1 ", " Track 2 ", " Track 3 ",
+		" Track 4 ", " Track 5 ", " Track 6 ",
+		" Track 7 ", " Track 8 ", " Track 9 "};
+
 	doom->sound.on += 1;
 	if (!(doom->sound.on % doom->sound.maxmusic))
 		doom->sound.on = 1;
 	change_music(&doom->sound, doom->sound.on, 5000);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, lol[doom->sound.on], doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
 }
 
 void		prev_track(t_doom *doom)
 {
+	static char *lol[] = {" Track 0 ", " Track 1 ", " Track 2 ", " Track 3 ",
+		" Track 4 ", " Track 5 ", " Track 6 ",
+		" Track 7 ", " Track 8 ", " Track 9 "};
+
 	doom->sound.on -= 1;
 	if (!(doom->sound.on))
 		doom->sound.on = doom->sound.maxmusic - 1;
 	change_music(&doom->sound, doom->sound.on, 5000);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, lol[doom->sound.on], doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
 }
