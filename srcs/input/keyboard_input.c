@@ -54,7 +54,7 @@ void	rot_input(t_doom *doom, SDL_Keycode key)
 		doom->player.sector->h_ceil += 0.5;
 	else if (key == SDLK_f)
 		doom->player.sector->h_ceil -= 0.5;
-	//printf("player rot %f %f\n", doom->player.rot.x, doom->player.rot.y);
+	printf("player rot %f\n", doom->player.sector->h_ceil);
 	doom->player.rot.y = double_modulo(doom->player.rot.y);
 }
 
