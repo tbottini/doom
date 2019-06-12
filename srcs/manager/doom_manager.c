@@ -4,10 +4,10 @@ int		secure_doom(t_doom *doom)
 {
 	int fd;
 
-	if ((fd = open(TTFWOLF, O_RDONLY | O_NOFOLLOW)) < 0)
+	if ((fd = open(TTFWOLF, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) < 0)
 		return (-1);
 	close(fd);
-	if ((fd = open(TTFIMPACT, O_RDONLY | O_NOFOLLOW)) < 0)
+	if ((fd = open(TTFIMPACT, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) < 0)
 		return (-1);
 	close(fd);
 	ft_bzero(doom, sizeof(t_doom));
