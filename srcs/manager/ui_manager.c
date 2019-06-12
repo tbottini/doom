@@ -5,15 +5,15 @@ void	ui_free(t_ui *ui)
 	int i;
 
 	i = -1;
-	while (ui->btnarr[++i].txture)
-		SDL_DestroyTexture(ui->btnarr[i].txture);
+	//while (ui->btnarr[++i].txture)
+	//	SDL_DestroyTexture(ui->btnarr[i].txture);
 	i = -1;
-	while (ui->btnmap[++i].txture)
-	{
-		SDL_DestroyTexture(ui->btnmap[i].txture);
+	//while (ui->btnmap[++i].txture)
+	//{
+	//	SDL_DestroyTexture(ui->btnmap[i].txture);
 		if (i > 1)
 			free(ui->btnmap[i].data);
-	}
+	//}
 	if (ui->fonts.s64)
 		TTF_CloseFont(ui->fonts.s64);
 	if (ui->fonts.s32)
@@ -41,8 +41,11 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	ui->slidopt[2].loc.parent = &(ui->slidopt[1].loc);
 	ui->btnpse[0] = add_pause_button(doom);
 	ui->btnpse[1] = add_resume_button(doom);
-	ui->btnpse[2] = add_ing_opt_button(doom);
-	ui->btnpse[3] = add_main_menu_button(doom);
+	ui->btnpse[2] = add_middle_music_button(doom);
+	ui->btnpse[3] = add_left_music_button(doom, &(ui->btnpse[2].loc));
+	ui->btnpse[4] = add_right_music_button(doom, &(ui->btnpse[2].loc));
+	ui->btnpse[5] = add_ing_opt_button(doom);
+	ui->btnpse[6] = add_main_menu_button(doom);
 	return (1);
 }
 
