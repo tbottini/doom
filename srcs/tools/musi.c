@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 03:47:35 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 15:07:30 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 15:35:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,26 @@ void		play_effect(t_sound *sound, int e)//debug fonction
 
 void		next_track(t_doom *doom)
 {
-	static char *lol[] = {" Track 0 ", " Track 1 ", " Track 2 ", " Track 3 ",
-		" Track 4 ", " Track 5 ", " Track 6 ",
-		" Track 7 ", " Track 8 ", " Track 9 "};
+	char tmp[10];
 
+	ft_strcpy(tmp, " Track 1 ");
 	doom->sound.on += 1;
 	if (!(doom->sound.on % doom->sound.maxmusic))
 		doom->sound.on = 1;
 	change_music(&doom->sound, doom->sound.on, 5000);
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, lol[doom->sound.on], doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
+	tmp[7] = doom->sound.on + '0';
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
 }
 
 void		prev_track(t_doom *doom)
 {
-	static char *lol[] = {" Track 0 ", " Track 1 ", " Track 2 ", " Track 3 ",
-		" Track 4 ", " Track 5 ", " Track 6 ",
-		" Track 7 ", " Track 8 ", " Track 9 "};
+	char tmp[10];
 
+	ft_strcpy(tmp, " Track 1 ");
 	doom->sound.on -= 1;
 	if (!(doom->sound.on))
 		doom->sound.on = doom->sound.maxmusic - 1;
 	change_music(&doom->sound, doom->sound.on, 5000);
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, lol[doom->sound.on], doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
+	tmp[7] = doom->sound.on + '0';
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
 }
