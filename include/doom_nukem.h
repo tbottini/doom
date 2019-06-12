@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 17:07:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 16:42:31 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,8 @@ typedef struct 			s_designer
 	uint32_t			*bot[1920];
 	uint32_t			*top[1920];
 	SDL_Surface			**texture;
+	t_vct2				px;
+	t_fvct2				dist;
 }						t_designer;
 
 struct					s_doom
@@ -382,7 +384,7 @@ int						keyboard_input(t_doom *doom, SDL_Event event);
 int						z_line_buffer(t_doom doom, double len_pillar, int px);
 int						doom_render(t_doom *doom);
 void					zline_reset(t_doom *doom);
-int						fish_bowl_px(t_doom doom, t_pillar pillar);
+int						fish_bowl_px(t_doom *doom, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 
 /*
@@ -396,5 +398,5 @@ void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
 **	pillar --> sector.h
 */
 double					pillar_polarite(t_pillar pillar, t_pillar next, int max);
-void					pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
+void					pillar_screen_info(t_doom *doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
 #endif
