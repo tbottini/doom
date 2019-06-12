@@ -18,10 +18,8 @@ void update_slider_txt(t_doom *doom, t_slid *slid)
 	char *str;
 
 	str = ft_itoa(*slid->val);
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s32, str,
-									slid->fgcolor, slid->bgcolor);
-	slid->txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
-	SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s32, &slid->txture, NULL,
+		str, slid->fgcolor, slid->bgcolor);
 	free(str);
 }
 
