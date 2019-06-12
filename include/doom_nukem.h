@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 16:42:31 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 17:02:43 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@
 # include <SDL.h>
 # include <SDL_ttf.h>
 # include <SDL_image.h>
+# include <SDL_mixer.h>
 # include <limits.h>
 # include "sector.h"
 # include "player.h"
 
+//# define MINWIDTH 1280
 # define MINWIDTH 800
-# define MINHEIGHT 600
-# define WIDTH 1200
+# define MINHEIGHT 800
+# define WIDTH 1280
 # define HEIGHT 800
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
@@ -66,6 +68,8 @@ typedef uint32_t	t_texture;
 ** 1 = center of object is its center;
 ** 2 = center of object is its right;
 ** 3 = under the object before + (pos) px
+** 4 = center of the object before + (pos) px
+** 5 = over the object before + (pos) px
 */
 
 typedef struct			s_sloc
@@ -92,13 +96,29 @@ typedef struct			s_slid
 {
 	t_sloc				loc;
 	SDL_Texture			*txture;
+	SDL_Texture			*label;
 	int					*val;
 	int					min;
 	int					max;
 	SDL_Rect			grip;
+	SDL_Rect			griplabel;
 	SDL_Color			fgcolor;
 	SDL_Color			bgcolor;
 }						t_slid;
+
+typedef struct			s_sound
+{
+	Mix_Chunk	*e_world;
+	Mix_Chunk	*e_perso;
+	Mix_Chunk	*e_other;
+	Mix_Chunk	*tab_effect[50];//changer nb effects
+	Mix_Music	*music;
+	Mix_Music	*tab_music[11];
+	int			on;
+	int			maxmusic;
+	int			musicvolume;
+	int			effectvolume;
+}						t_sound;
 
 typedef struct			s_font
 {
@@ -126,6 +146,7 @@ typedef struct			s_ui
 	t_btn				btnarr[20];
 	t_btn				btnmap[20];
 	t_btn				btnopt[20];
+	t_btn				btnpse[20];
 	t_slid				slidopt[10];
 	t_slid				*currslid;
 	int					m_status;
@@ -213,6 +234,7 @@ struct					s_doom
 	t_ui				ui;
 	Uint32				timestamp;
 	t_player			player;
+	t_sound				sound;
 	SDL_GameController	*controller;
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
@@ -229,8 +251,11 @@ struct					s_doom
 */
 
 void					start_button(t_doom *doom);
+void					resume_button(t_doom *doom);
 void					start_map_button(t_doom *doom);
 void					option_button(t_doom *doom);
+void					ignoption_button(t_doom *doom);
+void					main_menu_button(t_doom *doom);
 void					return_button(t_doom *doom);
 
 /*
@@ -250,8 +275,15 @@ void					btn_click(t_doom *doom, int x, int y);
 t_btn					add_start_button(t_doom *doom);
 t_btn					add_mapmenu_button(t_doom *doom);
 t_btn					add_map_button(t_doom *doom, const char *str);
-t_btn					add_doom_button(t_doom *doom);
+t_btn					add_pause_button(t_doom *doom);
+t_btn					add_left_music_button(t_doom *doom, t_sloc *parent);
+t_btn					add_middle_music_button(t_doom *doom);
+t_btn					add_right_music_button(t_doom *doom, t_sloc *parent);
+t_btn					add_resume_button(t_doom *doom);
+t_btn					add_doom_button(t_doom *doom, const char *name);
 t_btn					add_opt_button(t_doom *doom);
+t_btn					add_ing_opt_button(t_doom *doom);
+t_btn					add_main_menu_button(t_doom *doom);
 t_btn					add_editor_button(t_doom *doom);
 t_btn					add_quit_button(t_doom *doom, const char *str,
 																void *fc);
@@ -262,6 +294,8 @@ void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
 void					update_slider_value(t_doom *doom, t_slid *slid, int v);
 t_slid					add_fov_slider(t_doom *doom);
+t_slid					add_music_slider(t_doom *doom);
+t_slid					add_effect_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
 int						event_handler1(t_doom *doom, SDL_Event event);
@@ -307,8 +341,7 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
-int						editor_mouse_press(int button, int x, int y,
-																t_doom *doom);
+int						editor_mouse_press(int btn, int x, int y, t_editor *edit);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
@@ -317,7 +350,9 @@ int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 
 void					draw_map(t_editor *editor);
-void					draw_sector_menu(t_editor *editor);
+void					draw_sector_menu(t_editor *editor, t_font font);
+
+void					change_sector(t_editor *edit, int pos);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
@@ -337,6 +372,9 @@ void ft_clear_secteur_list(t_lstsec *start);
 /*
 **	gestion
 */
+
+void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_Rect *loc, const char *str, SDL_Color fg, SDL_Color bg);
+void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
 int						designer_init(t_designer *designer, t_sdl sdl);
@@ -352,10 +390,11 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 **	simple input
 */
 
+void					bullet(t_doom *doom, t_player *player);
 void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
-void					sdl_present(t_sdl *sdl);
+void					sdl_MultiRenderCopy(t_sdl *sdl);
 void					calcdelay(const char *str, t_doom *doom);
 int						pos_in_rect(SDL_Rect rect, int x, int y);
 
@@ -364,8 +403,8 @@ void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
 t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
-void					bullet(t_doom *doom, t_player *player);
-int 					vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
+int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
+
 /*
 **	parsing
 */
@@ -406,8 +445,17 @@ int						buncherisation(t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
 
 /*
-**	pillar --> sector.h
+**	Cinematique et Musique
 */
-double					pillar_polarite(t_pillar pillar, t_pillar next, int max);
-void					pillar_screen_info(t_doom *doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
+
+void					prev_track(t_doom *doom);
+void					next_track(t_doom *doom);
+void					effect_free(t_sound *sound);
+int						effect_init(t_sound *sound);
+void					music_free(t_sound *sound);
+int						music_init(t_sound *sound);
+void					change_music(t_sound *sound, int n, int fade);
+void					cinematrique(t_doom *doom);
+
+void			pillar_screen_info(t_doom *doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
 #endif

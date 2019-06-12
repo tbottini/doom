@@ -52,5 +52,5 @@ void		debug_up(t_doom *doom)
 		i++;
 		cursor = cursor2;
 	}
-	sdl_present(&doom->sdl);
+	sdl_MultiRenderCopy(&doom->sdl);
 }

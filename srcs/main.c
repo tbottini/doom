@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/05 20:43:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 16:57:55 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ static int	init(void)
 	if (IMG_Init(IMG_INIT_PNG) == -1)
 	{
 		ft_printf("IMG: %s\n", IMG_GetError());
+		return (0);
+	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		ft_printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
 		return (0);
 	}
 	return (1);
@@ -50,8 +55,9 @@ int			main(int ac, char **av)
 	else
 		sdl_set_status(doom, 1);
 	player_init(&doom->player);
-	printf("player tail %f\n", doom->player.height);
-	printf("d_screen %f fov %d\n", doom->camera.d_screen, doom->player.fov);
+	event_handler(doom);
+	Mix_FadeInMusic(doom->sound.tab_music[0], -1, 18000);
+	cinematrique(doom);
 	while ('^' == '^')
 	{
 		if (!(event_handler(doom)))
