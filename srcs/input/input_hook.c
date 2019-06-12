@@ -50,7 +50,7 @@ int		key_press(int key, t_doom *doom)
 	else if (key == SDLK_9)
 		change_music(&doom->sound, 10, 5000);
 	else if (key == SDLK_o)
-		kick(doom, &doom->player);
+		;//kick(doom, &doom->player);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);

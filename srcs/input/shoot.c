@@ -248,7 +248,6 @@ t_wall		*possible_walls(t_doom *doom, t_fvct3 ori, t_fvct3 pos)
 void		bulletV42(t_doom *doom, t_player *player)
 {
 	t_fvct3	d;
-	t_wall	**walls;
 	t_wall	*hit;
 
 	d.x = player->stat.pos.x + (RADIUS * sin(player->stat.rot.x * PI180) * cos(player->stat.rot.y * PI180));
