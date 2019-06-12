@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/10 10:08:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 06:52:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		gravity(t_player *player)
 	//else if (player->pos.z < player->sector->h_floor + player->sector->h_ceil - player->height)
 	//	fall_damage(player, 0);
 	//else
-		player->vel.z += player->sector->gravity.z * 350.0;
+		player->vel.z += player->sector->gravity.z * 450.0;
 	printf("gravity !\n");
 	//player->vel.z += player->sector->gravity.z / 100;
 	//else
@@ -159,7 +159,7 @@ void		inertie(t_player *player)
 		player->vel.y += DECELERATION;
 	else
 		player->vel.y = 0;
-	if (player->vel.x == 0 && player->vel.y == 0 && Mix_Playing(1))
+	if (player->vel.x < player->speed - DECELERATION && player->vel.y < player->speed - DECELERATION  && Mix_Playing(1))
 		Mix_FadeOutChannel(1, 0);
 	printf("inertie !\n");
 	/*if (player->vel.z > DECELERATION)

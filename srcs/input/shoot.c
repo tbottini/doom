@@ -6,11 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/10 11:07:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:52:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+# define RADIUS 500
 
 void		reload(t_weapon *weapon)
 {
@@ -50,7 +52,54 @@ void		kick(t_doom *doom, t_player *player)
 
 //===================================================================================================//
 
-double			bullet_clipping(t_wall wall, t_fvct2 pos, double angle)
+t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)// ne renvoie pas encore le mur le plus proche
+{
+	int		i;
+	int		j;
+
+	j = -1;
+	while (++j < doom->sector->len_sub)
+	{
+		i = -1;
+		while (++i < doom->sector->len)
+		{
+			if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&doom->sector->ssector[j].wall[i].next->p))
+				{printf("\nsubwall %d\n", i);return (&doom->sector->ssector[j].wall[i]);}
+		}
+	}
+	i = 0;
+	while (i < doom->sector->len)
+	{
+		if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->wall[i].pillar.p, *(t_fvct3*)&doom->sector->wall[i].next->p))
+			{printf("\nwall %d\n", i);return (&doom->sector->wall[i]);}
+		++i;
+	}
+	return (NULL);
+}
+
+void		bullet(t_doom *doom, t_player *player)
+{
+	t_fvct3	d;
+	t_wall	*hit;
+
+	d.x = RADIUS * sin(player->rot.x * PI180) * cos(player->rot.y * PI180);
+	d.y = RADIUS * sin(player->rot.x * PI180) * sin(player->rot.y * PI180);
+	d.z = -(RADIUS * cos(player->rot.x * PI180)) + (player->height / 2);
+	hit = collision_bullet(doom, d, player->pos);
+	if (hit)
+	{
+		printf("HIT\n");
+	}
+	else
+		printf("MISSED\n");
+	printf("\rRot : %f\t%f\n", player->rot.x, player->rot.y);
+	printf("\rFov : %d\n", player->fov);
+	printf("\rbullet landed : x = %f | y = %f | z = %f\n", d.x, d.y, d.z);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+double			bullet_clipping(t_wall wall, t_fvct3 pos, double angle)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;
@@ -77,44 +126,137 @@ double			bullet_clipping(t_wall wall, t_fvct2 pos, double angle)
 		inter.y = coef_wall * inter.x + b;
 	}
 	return (distance((t_fvct2){0.0, 0.0}, inter));
-} 
-
-t_wall		*collision_bullet(t_doom *doom, t_fvct3 ori, t_fvct3 pos)// ne renvoie pas encore le mur le plus proche
+}
+/*
+t_wall		**possible_walls(t_doom *doom, t_fvct3 ori, t_fvct3 pos)
 {
+	t_wall	*walls[50];
 	int		i;
 	int		j;
+	int		index;
 
 	j = -1;
+	index = 0;
 	while (++j < doom->sector->len_sub)
 	{
 		i = -1;
 		while (++i < doom->sector->len)
 		{
 			if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&doom->sector->ssector[j].wall[i].next->p))
-				{printf("\nsubwall %d\n", i);return (&doom->sector->wall[i]);}
+			{
+				walls[index] = &doom->sector->ssector[j].wall[i];
+				index++;
+				printf("sub wall %d\n", i);
+			}
 		}
 	}
-	i = 0;
-	while (i < doom->sector->len)
+	i = -1;
+	while (++i < doom->sector->len)
 	{
 		if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->wall[i].pillar.p, *(t_fvct3*)&doom->sector->wall[i].next->p))
-			{printf("\nwall %d\n", i);return (&doom->sector->wall[i]);}
-		++i;
+		{
+			walls[index] = &doom->sector->wall[i];
+			index++;
+			printf("sec wall %d\n", i);
+		}
 	}
-	return (NULL);
+	walls[index] = NULL;
+	return (walls);
 }
 
-# define RADIUS 500
+t_wall		*real_hit(t_wall **walls, t_fvct3 pos, double angle)
+{
+	t_wall *hit;
+	int		i;
+	double	res;
+	double	tmp;
 
-void		bullet(t_doom *doom, t_player *player)
+	i = 0;
+	res = 987654312.0;
+	hit = NULL;
+	while (walls[i])
+	{
+		if ((tmp = bullet_clipping(*walls[i], pos, angle)) < res)
+		{
+			res = tmp;
+			hit = walls[i];
+		}
+		++i;
+	}
+	return (hit);
+}*/
+
+t_wall		*real_hit(t_wall **walls, t_fvct3 pos, double angle)
+{
+	t_wall *hit;
+	int		i;
+	double	res;
+	double	tmp;
+
+	i = 0;
+	res = 987654312.0;
+	hit = NULL;
+	while (walls[i])
+	{
+		if ((tmp = bullet_clipping(*walls[i], pos, angle)) < res)
+		{
+			res = tmp;
+			hit = walls[i];
+		}
+		++i;
+	}
+	printf("MURMUR AU MUR PAS MUR || %f ||\n", res);
+	return (hit);
+}
+
+t_wall		*possible_walls(t_doom *doom, t_fvct3 ori, t_fvct3 pos)
+{
+	t_wall	*walls[50];
+	int		i;
+	int		j;
+	int		index;
+
+	j = -1;
+	index = 0;
+	while (++j < doom->sector->len_sub)
+	{
+		i = -1;
+		while (++i < doom->sector->len)
+		{
+			if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&doom->sector->ssector[j].wall[i].next->p))
+			{
+				walls[index] = &doom->sector->ssector[j].wall[i];
+				index++;
+				printf("sub wall %d\n", i);
+			}
+		}
+	}
+	i = -1;
+	while (++i < doom->sector->len)
+	{
+		if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->wall[i].pillar.p, *(t_fvct3*)&doom->sector->wall[i].next->p))
+		{
+			walls[index] = &doom->sector->wall[i];
+			index++;
+			printf("sec wall %d\n", i);
+		}
+	}
+	walls[index] = NULL;
+	return (real_hit(walls, pos, doom->player.rot.y));
+}
+
+void		bulletV42(t_doom *doom, t_player *player)
 {
 	t_fvct3	d;
+	t_wall	**walls;
 	t_wall	*hit;
 
-	d.x = RADIUS * sin(player->rot.x * PI180) * cos(player->rot.y * PI180);
-	d.y = RADIUS * sin(player->rot.x * PI180) * sin(player->rot.y * PI180);
-	d.z = -(RADIUS * cos(player->rot.x * PI180)) + (player->height / 2);
-	hit = collision_bullet(doom, d, player->pos);
+	d.x = player->pos.x + (RADIUS * sin(player->rot.x * PI180) * cos(player->rot.y * PI180));
+	d.y = player->pos.y + (RADIUS * sin(player->rot.x * PI180) * sin(player->rot.y * PI180));
+	d.z = player->pos.z + (-(RADIUS * cos(player->rot.x * PI180)) + (player->height / 2));
+	//walls = possible_walls(doom, d, player->pos);
+	//hit = real_hit(walls, player->pos, player->rot.y);
+	hit = possible_walls(doom, d, player->pos);
 	if (hit)
 	{
 		printf("HIT\n");
@@ -125,3 +267,4 @@ void		bullet(t_doom *doom, t_player *player)
 	printf("\rFov : %d\n", player->fov);
 	printf("\rbullet landed : x = %f | y = %f | z = %f\n", d.x, d.y, d.z);
 }
+
