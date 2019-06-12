@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/28 23:38:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/10 06:56:46 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,8 @@ void		action(t_doom *doom)
 void		jump(t_player *player)
 {
 	if (player->pos.z == player->sector->h_floor)
+	{
 		player->vel.z = 32700;
+		Mix_Pause(1);
+	}
 }
