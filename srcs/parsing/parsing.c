@@ -12,22 +12,22 @@ t_list		*ft_lstn(void *content)
 	return (n);
 }
 
-char 		*double_atof(char *line, t_fvct2 *vct)
+t_fvct2		*double_atof(char *line, t_fvct2 *vct)
 {
-	char	*p;
 	vct->x = ft_catof(line, ' ');
-	p = ft_strchr(line, ' ');
-	vct->y = ft_atof(p + 1);
-	return (ft_strchr(p + 1, ' '));
+	vct->y = ft_atof(ft_strchr(line, ' ') + 1);
+	return (vct);
 }
 
-char		*triple_atof(char *line, t_fvct3 *fvct)
+t_fvct3		*triple_atof(char *line, t_fvct3 *fvct)
 {
-	char	*p;
+	char	*inter;
 
-	p = double_atof(line, (t_fvct2*)fvct);
-	fvct->z = ft_atof(p + 1);
-	return (ft_strchr(p + 1, ' '));
+	fvct->x = ft_catof(line, ' ');
+	inter =  ft_strchr(line, ' ') + 1;
+	fvct->y = ft_catof(inter, ' ');
+	fvct->z = ft_atof(ft_strchr(inter, ' ') + 1);
+	return (fvct);
 }
 
 t_sector		*search_sector(t_sector *sector, char *search)
@@ -57,19 +57,14 @@ int			parsing(t_doom *doom, char *filename)
 		return (0);
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (!ft_strncmp(line, "TXTR", 4))
-		{
-			printf("chunk texture\n");
-			chunk_texture(&doom->sdl, &doom->tool, fd);
-		}
 		if (!ft_strncmp(line, "SCTR", 4))
 		{
 			printf("chunck_sector\n");
-			doom->sector = chunck_sector(fd, &doom->tool);
+			doom->sector = chunck_sector(fd);
 		}
 		else if (!ft_strncmp(line, "PERS", 4))
 		{
-			doom->player = chunck_player(fd);
+			chunck_player(fd);
 			doom->player.sector = search_sector(doom->sector, line + 5);
 			doom->player.pos.z = doom->player.sector->h_floor;
 			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->player.fov / 2.0 * PI180);
