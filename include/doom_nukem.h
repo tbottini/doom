@@ -24,9 +24,10 @@
 # include "sector.h"
 # include "player.h"
 
+//# define MINWIDTH 1280
 # define MINWIDTH 800
-# define MINHEIGHT 600
-# define WIDTH 1200
+# define MINHEIGHT 800
+# define WIDTH 1280
 # define HEIGHT 800
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
@@ -68,6 +69,8 @@ typedef	Uint32* 		t_texture;
 ** 1 = center of object is its center;
 ** 2 = center of object is its right;
 ** 3 = under the object before + (pos) px
+** 4 = center of the object before + (pos) px
+** 5 = over the object before + (pos) px
 */
 
 typedef struct			s_sloc
@@ -271,6 +274,9 @@ t_btn					add_start_button(t_doom *doom);
 t_btn					add_mapmenu_button(t_doom *doom);
 t_btn					add_map_button(t_doom *doom, const char *str);
 t_btn					add_pause_button(t_doom *doom);
+t_btn					add_left_music_button(t_doom *doom, t_sloc *parent);
+t_btn					add_middle_music_button(t_doom *doom);
+t_btn					add_right_music_button(t_doom *doom, t_sloc *parent);
 t_btn					add_resume_button(t_doom *doom);
 t_btn					add_doom_button(t_doom *doom, const char *name);
 t_btn					add_opt_button(t_doom *doom);
@@ -365,6 +371,7 @@ void ft_clear_secteur_list(t_lstsec *start);
 **	gestion
 */
 
+void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_Rect *loc, const char *str, SDL_Color fg, SDL_Color bg);
 void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
@@ -385,7 +392,7 @@ void					bullet(t_doom *doom, t_player *player);
 void					action(t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
-void					sdl_present(t_sdl *sdl);
+void					sdl_MultiRenderCopy(t_sdl *sdl);
 void					calcdelay(const char *str, t_doom *doom);
 int						pos_in_rect(SDL_Rect rect, int x, int y);
 

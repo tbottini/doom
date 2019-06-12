@@ -135,7 +135,7 @@ void		move(t_doom *doom, t_player *player)
 	npos.x = player->pos.x + d.x * player->vel.y / 35000.0 + d.y * player->vel.x / 35000.0;
 	npos.y = player->pos.y - d.x * -player->vel.x / 35000.0 - d.y * player->vel.y / 35000.0;
 	npos.z = player->pos.z + player->vel.z / 35000.0;
-	printf("%f\t%f\t%f\n", npos.x, npos.y, npos.z);
+	//printf("%f\t%f\t%f\n", npos.x, npos.y, npos.z);
 	if (npos.z < player->sector->h_floor)
 		fall_damage(player, 1);
 	else if (npos.z > player->height + player->sector->h_ceil + player->sector->h_floor)
@@ -161,7 +161,7 @@ void		inertie(t_player *player)
 		player->vel.y = 0;
 	if (player->vel.x < player->speed - DECELERATION && player->vel.y < player->speed - DECELERATION  && Mix_Playing(1))
 		Mix_FadeOutChannel(1, 0);
-	printf("inertie !\n");
+	//printf("inertie !\n");
 	/*if (player->vel.z > DECELERATION)
 		player->vel.z -= DECELERATION;
 	else if (player->vel.z < -DECELERATION)
