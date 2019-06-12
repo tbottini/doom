@@ -2,7 +2,7 @@ SRCS_DOOM		:=		editor.c										\
 						editor_hook.c									\
 						button_function.c								\
 						slider_function.c								\
-						main.c
+						main.c											\
 
 SRCS_UI			:=		button_action.c									\
 						button_drawer.c									\
@@ -24,7 +24,7 @@ SRCS_INPUT		:=		event_controller.c								\
 						move.c											\
 						shoot.c											\
 						collision.c										\
-						keyboard_input.c
+						keyboard_input.c								\
 
 SRCS_RENDER		:=		render.c										\
 						bunch.c											\
@@ -45,12 +45,13 @@ SRCS_PARSING	:=		parsing.c										\
 
 SRCS_DEBUG		:=		debug_sector.c									\
 						debug_screen.c									\
-						debug_vector.c
+						debug_vector.c									\
 
-SRCS_TOOLS		:=		num_tools.c										\
+SRCS_TOOLS		:=		list_tools.c									\
 						little_tools.c									\
-						list_tools.c									\
-						sdl_tools.c
+						num_tools.c										\
+						sdl_tools.c										\
+						secteur_tools.c									\
 
 SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\

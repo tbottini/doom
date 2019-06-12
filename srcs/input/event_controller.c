@@ -14,9 +14,44 @@
 
 static void controller_input(t_doom *doom, SDL_Event e)
 {
-	if (e.jbutton.button == SDL_CONTROLLER_BUTTON_START)
+	if (doom->ui.curr_btn_controller < 0)
+		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
+	else if (doom->ui.m_status > 0)
+	{
+		if (e.jbutton.state && e.jbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
+		{
+			if (doom->ui.m_status == 1 && doom->ui.curr_btn_controller > 2)
+				--doom->ui.curr_btn_controller;
+			else if (doom->ui.m_status == 2)
+			{
+				if (doom->ui.curr_btn_controller == 3)
+					doom->ui.curr_btn_controller -= 2;
+				else if (doom->ui.curr_btn_controller > 3)
+					--doom->ui.curr_btn_controller;
+			}
+		}
+		else if (e.jbutton.state && e.jbutton.button == SDL_CONTROLLER_BUTTON_A)
+		{
+			doom->ui.curr_btn->func(doom);
+		}
+		if (e.jbutton.state && e.jbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
+		{
+			if (doom->ui.m_status == 1 && doom->ui.btnarr[doom->ui.curr_btn_controller].func)
+				++doom->ui.curr_btn_controller;
+			else if (doom->ui.m_status == 2)
+			{
+				if (doom->ui.curr_btn_controller == 1 && doom->ui.btnmap[doom->ui.curr_btn_controller + 1].txture)
+					doom->ui.curr_btn_controller += 2;
+				else if (doom->ui.btnmap[doom->ui.curr_btn_controller].txture)
+					++doom->ui.curr_btn_controller;
+			}
+			else if (doom->ui.m_status == 3 && doom->ui.btnopt[doom->ui.curr_btn_controller].func)
+				++doom->ui.curr_btn_controller;
+		}
+	}
+	if (e.jbutton.button == SDL_CONTROLLER_BUTTON_START || e.jbutton.button == SDL_CONTROLLER_BUTTON_B)
 		sdl_set_status(doom, 1);
-	ft_printf("%d\n", e.jbutton.button);
+	ft_printf("%d\t%d\tcurr : %d\tStatus : %d\n", e.jbutton.button, e.jbutton.state, doom->ui.curr_btn_controller, doom->ui.m_status);
 }
 
 void controller_handler(t_doom *doom, SDL_Event e)
