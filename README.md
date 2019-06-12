@@ -6,6 +6,10 @@
 
 >brew install sdl2_image
 
+>brew install sdl2_mixer
+
+>brew install git-lfs
+
 fichier map
 
 //les textures avec un id
