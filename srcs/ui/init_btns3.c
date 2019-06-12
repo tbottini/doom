@@ -99,12 +99,83 @@ t_btn	add_main_menu_button(t_doom *doom)
 	ft_bzero(&tmp, sizeof(t_btn));
 	tmp.func = &main_menu_button;
 	tmp.loc.pos.x = 50;
-	tmp.loc.pos.y = 50;
+	tmp.loc.pos.y = 95;
+	tmp.loc.snapx = 1;
+	tmp.loc.snapy = 2;
+	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
+	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
+	//btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Main Menu ",
+	//	tmp.fgcolor, tmp.bgcolor);
+	//SDL_GetClipRect(btntext, &tmp.loc.area);
+	//tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
+	//SDL_FreeSurface(btntext);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area, " Main Menu ", tmp.fgcolor, tmp.bgcolor);
+	return (tmp);
+}
+
+/*
+** Change music
+*/
+
+t_btn	add_middle_music_button(t_doom *doom)
+{
+	SDL_Surface		*btntext;
+	t_btn			tmp;
+
+	ft_bzero(&tmp, sizeof(t_btn));
+	tmp.func = NULL;
+	tmp.loc.pos.x = 50;
+	tmp.loc.pos.y = 20;
 	tmp.loc.snapx = 1;
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Main Menu ",
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Track          1 ",
+		tmp.fgcolor, tmp.bgcolor);
+	SDL_GetClipRect(btntext, &tmp.loc.area);
+	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
+	SDL_FreeSurface(btntext);
+	return (tmp);
+}
+
+
+t_btn	add_left_music_button(t_doom *doom, t_sloc *parent)
+{
+	SDL_Surface		*btntext;
+	t_btn			tmp;
+
+	ft_bzero(&tmp, sizeof(t_btn));
+	tmp.func = &main_menu_button;
+	tmp.loc.parent = parent;
+	tmp.loc.pos.x = 10;
+	tmp.loc.pos.y = 0;
+	tmp.loc.snapx = 5;
+	tmp.loc.snapy = 4;
+	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
+	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " < ",
+		tmp.fgcolor, tmp.bgcolor);
+	SDL_GetClipRect(btntext, &tmp.loc.area);
+	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
+	SDL_FreeSurface(btntext);
+	return (tmp);
+}
+
+t_btn	add_right_music_button(t_doom *doom, t_sloc *parent)
+{
+	SDL_Surface		*btntext;
+	t_btn			tmp;
+
+	ft_bzero(&tmp, sizeof(t_btn));
+	tmp.func = &main_menu_button;
+	tmp.loc.parent = parent;
+	tmp.loc.pos.x = 10;
+	tmp.loc.pos.y = 0;
+	tmp.loc.snapx = 3;
+	tmp.loc.snapy = 4;
+	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
+	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " > ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &tmp.loc.area);
 	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
