@@ -1,0 +1,20 @@
+on definit un carre avec la dimension du minimun et le max du secteur
+sur x et y
+
+on a un t_fvct2 avec les rotation sur x et y (du cote et du dessus)
+
+pour avoir la hauteur du mur
+
+on recupere la hauteur au plafond au dessus du pillier
+avec sa position et l'inclinaison du plafond
+
+on ajoute la hauteur au plafond a la hauteur du plafond du secteur
+
+et on a la hauteur du pillier 
+
+
+-->on sauvegarde une equation sur x et y (de la position du joueur)
+et de la hauteur au plafond
+
+on fait pareil pour le sol mais on l'ajoute pour la diff du joueur
+
