@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_btns3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/16 00:18:29 by magrab           ###   ########.fr       */
+/*   Updated: 2019/06/12 14:56:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_btn	add_left_music_button(t_doom *doom, t_sloc *parent)
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
-	tmp.func = &main_menu_button;
+	tmp.func = &prev_track;
 	tmp.loc.parent = parent;
 	tmp.loc.pos.x = 10;
 	tmp.loc.pos.y = 0;
@@ -167,7 +167,7 @@ t_btn	add_right_music_button(t_doom *doom, t_sloc *parent)
 	t_btn			tmp;
 
 	ft_bzero(&tmp, sizeof(t_btn));
-	tmp.func = &main_menu_button;
+	tmp.func = &next_track;
 	tmp.loc.parent = parent;
 	tmp.loc.pos.x = 10;
 	tmp.loc.pos.y = 0;
