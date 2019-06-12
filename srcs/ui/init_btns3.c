@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 14:56:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 15:37:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ t_btn	add_middle_music_button(t_doom *doom)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Track          1 ",
+	btntext = TTF_RenderText_Shaded(doom->ui.fonts.s64, " Track 1 ",
 		tmp.fgcolor, tmp.bgcolor);
 	SDL_GetClipRect(btntext, &tmp.loc.area);
 	tmp.txture = SDL_CreateTextureFromSurface(doom->sdl.rend, btntext);
