@@ -22,14 +22,14 @@ int		player_init(t_player *player)
 	player->hand = 0;
 	player->crouch = 0;
 	player->nb_weapons = 1;
-	player->speed = 32700.0;
-	//player->pos.x = 1.0;
-	//player->pos.y = 1.0;
-	//player->rot.x = 90;
-	//player->rot.y = 90;
+	player->stat.speed = 32700.0;
+	//player->stat.pos.x = 1.0;
+	//player->stat.pos.y = 1.0;
+	//player->stat.rot.x = 90;
+	//player->stat.rot.y = 90;
 	player->fov = 90;
-	player->health = 100;
-	player->weight = 10;
+	player->stat.health = 100;
+	player->stat.weight = 10;
 	player->crouch = 0;
 	return (1);
 }

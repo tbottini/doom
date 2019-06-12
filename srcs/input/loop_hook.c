@@ -24,38 +24,38 @@ void		benda(t_doom *doom, int key)
 	static int prev = 32700.0;
 
 	if (key == SDLK_s)
-		doom->player.vel.x = -doom->player.speed;
+		doom->player.stat.vel.x = -doom->player.stat.speed;
 	else if (key == SDLK_w)
-		doom->player.vel.x = doom->player.speed;
+		doom->player.stat.vel.x = doom->player.stat.speed;
 	else if (key == SDLK_a)
-		doom->player.vel.y = -doom->player.speed;
+		doom->player.stat.vel.y = -doom->player.stat.speed;
 	else if (key == SDLK_d)
-		doom->player.vel.y = doom->player.speed;
-	if (!Mix_Playing(1) || prev != doom->player.speed)
+		doom->player.stat.vel.y = doom->player.stat.speed;
+	if (!Mix_Playing(1) || prev != doom->player.stat.speed)
 	{
-		if (doom->player.speed == 32700.0)
+		if (doom->player.stat.speed == 32700.0)
 			Mix_PlayChannel(1, doom->sound.tab_effect[0], -1);
-		else if (doom->player.speed == 49050.0)
+		else if (doom->player.stat.speed == 49050.0)
 			Mix_PlayChannel(1, doom->sound.tab_effect[1], -1);
-		else if (doom->player.speed == 16350.0)
+		else if (doom->player.stat.speed == 16350.0)
 			Mix_PlayChannel(1, doom->sound.tab_effect[2], -1);
 	}
-	prev = doom->player.speed;
+	prev = doom->player.stat.speed;
 }
 
 static void input_loop(t_doom *doom, int key)
 {
 	//if (key == SDLK_w || key == SDLK_s)
-	//	doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+	//	doom->player.stat.vel.x = (key == SDLK_w ? 32700 : -32700);
 	//else if (key == SDLK_a || key == SDLK_d)
-	//	doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
+	//	doom->player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
 	/*if (key == SDLK_w || key == SDLK_s)
-		doom->player.vel.x = (key == SDLK_w ? doom->player.speed : -doom->player.speed);
+		doom->player.stat.vel.x = (key == SDLK_w ? doom->player.stat.speed : -doom->player.stat.speed);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.vel.y = (key == SDLK_a ? -doom->player.speed : doom->player.speed);*/
+		doom->player.stat.vel.y = (key == SDLK_a ? -doom->player.stat.speed : doom->player.stat.speed);*/
 	if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
 		benda(doom, key);
-	else if (key == SDLK_LSHIFT && doom->player.vel.x == doom->player.speed)
+	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed)
 		sprint(&doom->player);
 	else if (key == SDLK_SPACE)
 		jump(&doom->player);
@@ -74,9 +74,9 @@ static void input_loop(t_doom *doom, int key)
 static void editor_loop(t_doom *doom, int key)
 {
 	if (key == SDLK_w || key == SDLK_s)
-		doom->player.vel.x = (key == SDLK_w ? 32700 : -32700);
+		doom->player.stat.vel.x = (key == SDLK_w ? 32700 : -32700);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.vel.y = (key == SDLK_a ? -32700 : 32700);
+		doom->player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
 	else if (key == SDLK_LSHIFT)
 		sprint(&doom->player);
 	else if (key == SDLK_r)

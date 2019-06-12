@@ -18,8 +18,8 @@ int			px_point(t_doom doom, double h_diff, double dist_wall)
 	limit_angle = (doom.player.fov / 2) * (M_PI / 180.0);
 	wall_angle = atan2(h_diff, dist_wall);
 	px = doom.sdl.size.y / 2 - tan(wall_angle) * doom.camera.d_screen;
-	px += (doom.player.rot.x - 90) * 45;
-	//px += (doom.player.pos.z - doom.player.sector->h_ceil);
+	px += (doom.player.stat.rot.x - 90) * 45;
+	//px += (doom.player.stat.pos.z - doom.player.stat.sector->h_ceil);
 	return (px);
 }
 
@@ -30,8 +30,8 @@ t_fvct2		px_wall(t_doom doom, int wall_height, double dist)
 	double	up;
 	double	down;
 
-	up = wall_height - doom.player.height - (doom.player.pos.z - doom.player.sector->h_floor);
-	down = -doom.player.height - (doom.player.pos.z - doom.player.sector->h_floor);
+	up = wall_height - doom.player.stat.height - (doom.player.stat.pos.z - doom.player.stat.sector->h_floor);
+	down = -doom.player.stat.height - (doom.player.stat.pos.z - doom.player.stat.sector->h_floor);
 
 	wall_portion.x = px_point(doom, up, dist);
 	wall_portion.y = px_point(doom, down, dist);
