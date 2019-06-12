@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 01:18:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/10 07:55:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 08:05:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ void				effect_free(t_sound *sound)
 		i++;
 	}
 	//leaks possible ?
+}
+
+void				effect_volume(t_doom *doom)
+{
+	Mix_SetPanning(0, doom->sound.effectvolume, doom->sound.effectvolume);
+	Mix_SetPanning(1, doom->sound.effectvolume, doom->sound.effectvolume);
+	Mix_SetPanning(2, doom->sound.effectvolume, doom->sound.effectvolume);
+	Mix_SetPanning(3, doom->sound.effectvolume, doom->sound.effectvolume);
 }
 
 static Mix_Chunk	*loadef(char *track)

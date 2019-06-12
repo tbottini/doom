@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 08:09:22 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 08:05:29 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int		mouse_move(int x, int y, t_doom *doom)
 		if (tmp == &(doom->ui.slidopt[1]))
 			Mix_VolumeMusic(doom->sound.musicvolume);
 		else if (tmp == &(doom->ui.slidopt[2]))
-			Mix_SetPanning(MIX_CHANNELS, doom->sound.effectvolume, doom->sound.musicvolume);
+			effect_volume(doom);//Mix_SetPanning(1, doom->sound.effectvolume, doom->sound.effectvolume);
 	}
 	return (0);
 }
