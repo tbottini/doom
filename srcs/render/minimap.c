@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 14:01:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 17:01:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,5 +205,4 @@ void		minimap(t_doom *d)
 		i += d->player.fov >> 3;
 	}
 	bold_point2(d, mini, mini.mid, CPERS);
-	//SDL_RenderCopy(d->sdl.rend, d->sdl.txture, NULL, NULL);
 }

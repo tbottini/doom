@@ -39,9 +39,11 @@ static void window_event(t_doom *doom, SDL_Event e)
 		load_map_btns(doom);
 		draw_menu(doom);
 	}
+	else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+		doom_render(doom);
 }
 
-static void dropfile_event(t_doom *doom, SDL_Event e)
+void dropfile_event(t_doom *doom, SDL_Event e)
 {
 	(void)doom;
 	//if (doom->map)
@@ -73,8 +75,6 @@ int event_handler1(t_doom *doom, SDL_Event e)
 		key_press(e.key.keysym.sym, doom);
 	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		key_release(e.key.keysym.sym, doom);
-	else if (e.type == SDL_DROPFILE)
-		dropfile_event(doom, e);
 	else if (e.type == SDL_WINDOWEVENT)
 		window_event(doom, e);
 	else if (e.type == SDL_CONTROLLERDEVICEADDED)
