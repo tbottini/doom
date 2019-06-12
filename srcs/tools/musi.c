@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 03:47:35 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 13:32:22 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/12 15:07:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void		next_track(t_doom *doom)
 	doom->sound.on += 1;
 	if (!(doom->sound.on % doom->sound.maxmusic))
 		doom->sound.on = 1;
+	change_music(&doom->sound, doom->sound.on, 5000);
 }
 
 void		prev_track(t_doom *doom)
@@ -40,4 +41,5 @@ void		prev_track(t_doom *doom)
 	doom->sound.on -= 1;
 	if (!(doom->sound.on))
 		doom->sound.on = doom->sound.maxmusic - 1;
+	change_music(&doom->sound, doom->sound.on, 5000);
 }
