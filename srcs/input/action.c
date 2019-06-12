@@ -42,9 +42,9 @@ void		action(t_doom *doom)
 
 void		jump(t_player *player)
 {
-	if (player->pos.z == player->sector->h_floor)
+	if (player->stat.pos.z == player->stat.sector->h_floor)
 	{
-		player->vel.z = 32700;
+		player->stat.vel.z = 32700;
 		Mix_Pause(1);
 	}
 }

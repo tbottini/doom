@@ -80,8 +80,8 @@ t_vct2		minipoint(t_doom *d, t_fvct2 vct, t_minimap mini)
 {
 	t_vct2	px;
 
-	px.x = (mini.a.x - (mini.size.x / 2)) + ((vct.x - d->player.pos.x)) * (UNIT);
-	px.y = (mini.a.y - (mini.size.y / 2)) + ((d->player.pos.y - vct.y)) * (UNIT);
+	px.x = (mini.a.x - (mini.size.x / 2)) + ((vct.x - d->player.stat.pos.x)) * (UNIT);
+	px.y = (mini.a.y - (mini.size.y / 2)) + ((d->player.stat.pos.y - vct.y)) * (UNIT);
 	return (px);
 }
 
@@ -167,7 +167,7 @@ void		minifield(t_doom *d, t_minimap mini, double angle)
 
 	pix.x = 256 * cos(angle * PI180) + mini.mid.x;
 	pix.y = -256 * sin(angle * PI180) + mini.mid.y;
-	miniline(&d->sdl, mini.mid, pix, hcol(d->player.health));
+	miniline(&d->sdl, mini.mid, pix, hcol(d->player.stat.health));
 }
 
 void		minimap(t_doom *d)
@@ -192,14 +192,14 @@ void		minimap(t_doom *d)
 		while (++j < mini.a.y - 1)
 		{
 			d->sdl.screen[i + j * d->sdl.size.x] = (i == (d->sdl.size.x >> 6)
-				|| i == mini.a.x - 1) ? WHITE : opacity(hcol(d->player.health), d->sdl.screen[i + j * d->sdl.size.x], 0.5);
+				|| i == mini.a.x - 1) ? WHITE : opacity(hcol(d->player.stat.health), d->sdl.screen[i + j * d->sdl.size.x], 0.5);
 		}
 		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
 		++i;
 	}
 	miniwalls(d, *d->sector, mini);
-	i = (d->player.rot.y - (d->player.fov >> 1));
-	while (i < (d->player.rot.y + (d->player.fov >> 1)))
+	i = (d->player.stat.rot.y - (d->player.fov >> 1));
+	while (i < (d->player.stat.rot.y + (d->player.fov >> 1)))
 	{
 		minifield(d, mini, i);
 		i += d->player.fov >> 3;

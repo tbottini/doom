@@ -16,22 +16,27 @@ typedef	struct			s_weapon
 	void				*sprites;
 }						t_weapon;
 
-typedef struct 			s_player
+typedef struct 			s_stat
 {
 	t_fvct3 			pos;
 	t_fvct2				rot;
-	int					crouch;
 	double				height;
 	int					weight;
 	double				speed;
 	int					health;
-	int					fov;
 	t_fvct3				vel;
 	t_fvct3				rotvel;
+	t_sector			*sector;
+}						t_stat;
+
+typedef struct 			s_player
+{
+	t_stat				stat;
+	int					crouch;
+	int					fov;
 	int					hand;
 	int					nb_weapons;
 	t_weapon			*weapons;
-	t_sector			*sector;
 }						t_player;
 
 /*
