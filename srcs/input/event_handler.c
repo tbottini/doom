@@ -85,7 +85,9 @@ int				event_handler(t_doom *doom)
 
 	while (SDL_PollEvent(&event))
 	{
-		if (event.window.windowID == 1)
+		if (event.type == SDL_DROPFILE)
+				dropfile_event(doom, event);
+		else if (event.window.windowID == 1)
 			event_handler1(doom, event);
 		else if (event.window.windowID == 2)
 			event_handler2(doom, event);
