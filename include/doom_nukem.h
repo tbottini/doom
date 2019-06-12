@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 17:02:43 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/12 14:57:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@
 
 typedef struct s_doom	t_doom;
 typedef double	t_zline;
-typedef uint32_t	t_texture;
+typedef	Uint32* 		t_texture;
+
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
@@ -222,9 +223,6 @@ typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];
 	uint32_t			*top[1920];
-	SDL_Surface			**texture;
-	t_vct2				px;
-	t_fvct2				dist;
 }						t_designer;
 
 struct					s_doom
@@ -409,10 +407,9 @@ int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 **	parsing
 */
 
-t_wall					*chunck_walls(t_list *chunck_line, t_designer *ressources, size_t len);
-int						chunk_texture(t_sdl *sdl, t_designer *designer, int fd);
+t_wall					*chunck_walls(t_list *chunck_line, size_t len);
 t_player				chunck_player(int fd);
-t_sector				*chunck_sector(int fd, t_designer *ressources);
+t_sector				*chunck_sector(int fd);
 t_sector				*sector_new();
 t_list					*ft_lstn(void *content);
 
@@ -434,8 +431,6 @@ int						keyboard_input(t_doom *doom, SDL_Event event);
 int						z_line_buffer(t_doom doom, double len_pillar, int px);
 int						doom_render(t_doom *doom);
 void					zline_reset(t_doom *doom);
-int						fish_bowl_px(t_doom *doom, t_pillar pillar);
-void					fish_eyes(double *dist, double angle);
 
 /*
 **	bunch
@@ -457,5 +452,4 @@ int						music_init(t_sound *sound);
 void					change_music(t_sound *sound, int n, int fade);
 void					cinematrique(t_doom *doom);
 
-void			pillar_screen_info(t_doom *doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
 #endif
