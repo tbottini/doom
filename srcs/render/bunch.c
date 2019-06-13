@@ -55,8 +55,6 @@ double		wall_angle_pers(t_wall wall)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
-//si l'un des pillier du mur est dans le frustum alors on ajoute le mur
-
 int			buncherisation(t_sector sector, t_wall **bunch)
 {
 	int		i_wall;
