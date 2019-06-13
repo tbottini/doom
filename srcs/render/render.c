@@ -6,22 +6,7 @@ void				sector_render(t_doom *doom, t_sector *sector)
 
 	sector_frustum(sector, doom->player);
 	buncherisation(*sector, bunch);
-	bunch_comsuption(doom, bunch, *sector);
-}
-
-void				test_tools(t_doom *doom)
-{
-	int				y;
-	int				x = doom->sdl.size.x / 2.0;
-
-	y = 0;
-	while (y < doom->sdl.size.y)
-	{
-		*doom->tool.top[x] = 0x272130ff;
-		doom->tool.top[x] += doom->sdl.size.x;
-		y++;
-		*doom->tool.top[x] = 0x272130ff;
-	}
+	bunch_comsuption(doom, bunch, sector);
 }
 
 int					doom_render(t_doom *doom)
@@ -37,7 +22,6 @@ int					doom_render(t_doom *doom)
 		i_sector++;
 	}
 	minimap(doom);
-	//test_tools(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
 	zline_reset(&doom->tool);
 

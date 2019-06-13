@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/13 11:08:38 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/13 12:57:20 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,8 @@ typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];
 	uint32_t			*top[1920];
+	t_sector			*sector;
+	t_wall				*wall;
 	t_camera			*cam;
 	t_sdl				*sdl;
 	SDL_Surface			**texture;
@@ -389,7 +391,7 @@ void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
-void					pillar_screen_info(t_doom *doom, t_wall wall);
+void					pillar_screen_info(t_designer *arch, t_player *p);
 
 /*
 **	simple input
@@ -429,7 +431,7 @@ void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
 void					move(t_doom *doom, t_player *player);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall);
+void					draw_wall(t_designer *arch, t_player *player);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
@@ -441,7 +443,7 @@ void					play_effect(t_sound *sound, int e);
 int						z_line_buffer(t_designer *arch, double len_pillar, int px);
 int						doom_render(t_doom *doom);
 void					zline_reset(t_designer *arch);
-int						fish_bowl_px(t_doom *doom, t_pillar pillar);
+int						fish_bowl_px(t_designer *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 
 /*
@@ -449,7 +451,7 @@ void					fish_eyes(double *dist, double angle);
 */
 void					sector_frustum(t_sector *sector, t_player player);
 int						buncherisation(t_sector sector, t_wall **bunch);
-void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
+void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 
 /*
 **	Cinematique et Musique
