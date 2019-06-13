@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 06:52:52 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/13 10:14:15 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-# define CROUCH 16350.0
-# define WALK 32700.0
-# define SPRINT 49050.0
 
 void		crouch(t_player *player)
 {
@@ -63,10 +59,10 @@ void		fall_damage(t_player *player, int f)
 	player->stat.vel.z = 0;
 }
 
-void		gravity(t_player *player)
+void		gravity(t_stat *stat)
 {
-	player->stat.vel.x += player->stat.sector->gravity.x;
-	player->stat.vel.y += player->stat.sector->gravity.y;
+	stat->vel.x += stat->sector->gravity.x;
+	stat->vel.y += stat->sector->gravity.y;
 	//tmp = player->stat.vel.z + player->stat.sector->gravity.z;
 	//if (tmp >= player->stat.sector->h_floor && tmp <= player->stat.height + player->stat.sector->h_ceil + player->stat.sector->h_floor)
 	//if (player->stat.pos.z <= player->stat.sector->h_floor)
@@ -74,7 +70,7 @@ void		gravity(t_player *player)
 	//else if (player->stat.pos.z < player->stat.sector->h_floor + player->stat.sector->h_ceil - player->stat.height)
 	//	fall_damage(player, 0);
 	//else
-		player->stat.vel.z += player->stat.sector->gravity.z * 450.0;
+		stat->vel.z += stat->sector->gravity.z * 450.0;
 	//printf("gravity !\n");
 	//player->stat.vel.z += player->stat.sector->gravity.z / 100;
 	//else
@@ -98,7 +94,7 @@ void		update_rotation(t_player *player)
 	if (player->stat.sector->h_floor >= player->stat.pos.z || player->stat.pos.z >= player->stat.sector->h_floor + player->stat.sector->h_ceil - player->stat.height)
 		inertie(player);
 	else
-		gravity(player);
+		gravity(&player->stat);
 }
 
 void		update_position(t_doom *doom, t_fvct3 npos)

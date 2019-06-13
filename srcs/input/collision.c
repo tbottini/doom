@@ -42,22 +42,17 @@ t_wall		*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 			return (w);
 		return (0);
 	}
-	i = 0;
-	while (i < doom->sector->len)
-	{
+	i = -1;
+	while (++i < doom->sector->len)
 		if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->wall[i].pillar.p, *(t_fvct3*)&doom->sector->wall[i].next->p))
 			return (&doom->sector->wall[i]);
-		++i;
-	}
 	j = -1;
 	while (++j < doom->sector->len_sub)
 	{
 		i = -1;
-		while (++i < doom->sector->len)
-		{
+		while (++i < doom->sector->ssector[j].len)
 			if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&doom->sector->ssector[j].wall[i].next->p))
-				return (&doom->sector->wall[i]);
-		}
+				return (&doom->sector->ssector[j].wall[i]);
 	}
 	return (NULL);
 }
