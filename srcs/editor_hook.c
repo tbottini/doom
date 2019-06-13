@@ -29,7 +29,8 @@ int editor_key_press(int key, t_doom *doom)
 	}
 	else if (key == SDLK_3)
 	{
-		doom->edit.map = push_init_secteur(&(doom->edit.sectors))->root;
+		ft_printf("%d\n", SDL_HasScreenKeyboardSupport());
+		SDL_StartTextInput();
 	}
 	else if (key == SDLK_4)
 		printf("currpillar : %p\n", doom->edit.currpilier);
@@ -74,9 +75,9 @@ int editor_mouse_press(int btn, int x, int y, t_editor *edit)
 {
 	t_vct2 relpos;
 
-	if (pos_in_rect(edit->sectbox, edit->mouse.x, edit->mouse.y))
+	if (pos_in_rect(edit->sectbox, x, y))
 	{
-		change_sector(edit, y);
+		change_sector(edit, y, x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
 	}
 	relpos = get_rel_mappos(edit, x, y);
@@ -148,6 +149,8 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 	doom->edit.mouse.y = e.y;
 	doom->edit.mapmouse = get_rel_mappos(&doom->edit, e.x, e.y);
 	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.map, e.x, e.y);
+	
+
 	if (e.state == SDL_BUTTON_LMASK)
 	{
 		if (doom->edit.currpilier)

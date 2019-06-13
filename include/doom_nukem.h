@@ -350,7 +350,7 @@ t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
 
-void					change_sector(t_editor *edit, int pos);
+void					change_sector(t_editor *edit, int pos, int del);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
