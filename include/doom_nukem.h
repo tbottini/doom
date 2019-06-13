@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/13 13:11:06 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/13 15:11:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ typedef struct 			s_designer
 	SDL_Surface			**texture;
 	t_fvct2				dist;
 	t_vct2				px;
+	t_fvct2				shift_txtr;
 	double				*zline;
 	//double			coef_px;
 
@@ -445,6 +446,7 @@ int						doom_render(t_doom *doom);
 void					zline_reset(t_designer *arch);
 int						fish_bowl_px(t_designer *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
+double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
 
 /*
 **	bunch

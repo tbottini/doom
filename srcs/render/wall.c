@@ -4,7 +4,7 @@
 **trouve l'intersection entre le mur et un angle donne
 **pour ne pas afficher ce qui en dehors
 */
-double			wall_clipping(t_wall *wall, t_fvct2 pos, double angle)
+double			wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;
@@ -22,6 +22,7 @@ double			wall_clipping(t_wall *wall, t_fvct2 pos, double angle)
 	{
 		inter.x = diff.x;
 		inter.y = diff.x * coef_ang;
+		arch->shift_txtr.y = (diff2.y - inter.y) / (diff2.y - diff.y);
 	}
 	else
 	{
@@ -29,6 +30,7 @@ double			wall_clipping(t_wall *wall, t_fvct2 pos, double angle)
 		b = diff.y - diff.x * coef_wall;
 		inter.x = b / (coef_ang - coef_wall);
 		inter.y = coef_wall * inter.x + b;
+		arch->shift_txtr.y = (diff2.x - inter.x) / (diff2.x - diff.x);
 	}
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
