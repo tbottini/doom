@@ -171,7 +171,9 @@ int		mouse_move(int x, int y, t_doom *doom)
 	{
 		tmp = doom->ui.currslid;
 		update_slider_value(doom, tmp, x);
-		if (tmp == &(doom->ui.slidopt[1]))
+		if (tmp == &(doom->ui.slidopt[0]))
+			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->player.fov / 2.0 * PI180);
+		else if (tmp == &(doom->ui.slidopt[1]))
 			Mix_VolumeMusic(doom->sound.musicvolume);
 		else if (tmp == &(doom->ui.slidopt[2]))
 			effect_volume(doom);//Mix_SetPanning(1, doom->sound.effectvolume, doom->sound.effectvolume);

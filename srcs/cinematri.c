@@ -58,7 +58,7 @@ static void	cine_delay(t_doom *doom, int *i)
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
 	while (SDL_GetTicks() - doom->timestamp < 39)
-		; 
+		SDL_Delay(1); 
 	doom->timestamp = SDL_GetTicks();
 }
 

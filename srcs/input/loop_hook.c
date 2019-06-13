@@ -147,10 +147,9 @@ int loop_hook(t_doom *doom)
 			else
 				fire(doom);
 			draw_menu(doom);
-      
 			/// End Comment
 		}
-    SDL_RenderPresent(doom->sdl.rend);
+		SDL_RenderPresent(doom->sdl.rend);
 	}
 	delaypcmasterrace(doom);
 	return (0);
