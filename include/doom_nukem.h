@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 17:07:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/13 11:08:38 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,14 +215,20 @@ typedef struct 			s_camera
 {
 	int					fov;
 	double				d_screen;
-	t_zline				*zline;
 }						t_camera;
 
 typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];
 	uint32_t			*top[1920];
+	t_camera			*cam;
+	t_sdl				*sdl;
 	SDL_Surface			**texture;
+	t_fvct2				dist;
+	t_vct2				px;
+	double				*zline;
+	//double			coef_px;
+
 }						t_designer;
 
 struct					s_doom
@@ -236,7 +242,6 @@ struct					s_doom
 	SDL_GameController	*controller;
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
-	double				*zline;
 	t_designer			tool;
 	t_camera			camera;
 };
@@ -364,8 +369,8 @@ int						add_pillar(t_editor *edit, int x, int y);
 
 t_lstsec				ft_newsector(t_lstpil root);
 t_lstsec				init_secteur(void);
-t_lstsec push_init_secteur(t_lstsec *node);
-void ft_clear_secteur_list(t_lstsec *start);
+t_lstsec				push_init_secteur(t_lstsec *node);
+void					ft_clear_secteur_list(t_lstsec *start);
 
 /*
 **	gestion
@@ -375,7 +380,7 @@ void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_
 void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
-int						designer_init(t_designer *designer, t_sdl sdl);
+int						designer_init(t_designer *designer, t_sdl *sdl, t_camera *cam);
 void					editor_free(t_editor *editor);
 int						editor_init(t_editor *editor);
 void					sdl_free(t_sdl *sdl);
@@ -384,7 +389,7 @@ void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
-void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
+void					pillar_screen_info(t_doom *doom, t_wall wall);
 
 /*
 **	simple input
@@ -433,10 +438,10 @@ void					play_effect(t_sound *sound, int e);
 /*
 **	render
 */
-int						z_line_buffer(t_doom doom, double len_pillar, int px);
+int						z_line_buffer(t_designer *arch, double len_pillar, int px);
 int						doom_render(t_doom *doom);
-void					zline_reset(t_doom *doom);
-int						fish_bowl_px(t_doom doom, t_pillar pillar);
+void					zline_reset(t_designer *arch);
+int						fish_bowl_px(t_doom *doom, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 
 /*

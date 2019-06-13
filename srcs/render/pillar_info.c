@@ -24,44 +24,40 @@ double		pillar_polarite(t_pillar pillar, t_pillar next, int max)
 	return ((polarite == -1) ? 0 : max);
 }
 
-void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
+void			pillar_screen_info(t_doom *doom, t_wall wall)
 {
-	t_vct2 		px;
-	t_fvct2 	d;
 	float		angle;
 	t_player	*p;
 	int			size;
 
-	p = &doom.player;
-	size = doom.sdl.size.x;
+	p = &doom->player;
+	size = doom->sdl.size.x;
 	if (wall.pillar.frust)
 	{
-		px.x = fish_bowl_px(doom, wall.pillar);
-		d.x = distance(*(t_fvct2*)&p->stat.pos, wall.pillar.p);
-		fish_eyes(&d.x, wall.pillar.angle);
+		doom->tool.px.x = fish_bowl_px(doom, wall.pillar);
+		doom->tool.dist.x = distance(*(t_fvct2*)&p->stat.pos, wall.pillar.p);
+		fish_eyes(&doom->tool.dist.x, wall.pillar.angle);
 	}
 	else
 	{
-		px.x = pillar_polarite(*wall.next, wall.pillar, size - 1);
-		angle = (px.x == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		d.x = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
-		fish_eyes(&d.x, angle - p->stat.rot.y);
+		doom->tool.px.x = pillar_polarite(*wall.next, wall.pillar, size - 1);
+		angle = (doom->tool.px.x == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
+		doom->tool.dist.x = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
+		fish_eyes(&doom->tool.dist.x, angle - p->stat.rot.y);
 	}
 	if (wall.next->frust)
 	{
-		px.y = fish_bowl_px(doom, *wall.next);
-		d.y = distance(*(t_fvct2*)&p->stat.pos, wall.next->p);
-		fish_eyes(&d.y, wall.next->angle);
+		doom->tool.px.y = fish_bowl_px(doom, *wall.next);
+		doom->tool.dist.y = distance(*(t_fvct2*)&p->stat.pos, wall.next->p);
+		fish_eyes(&doom->tool.dist.y, wall.next->angle);
 	}
 	else
 	{
-		px.y = pillar_polarite(wall.pillar, *wall.next, size - 1);
-		angle = (px.y == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		d.y = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
-		fish_eyes(&d.y, angle - p->stat.rot.y);
+		doom->tool.px.y = pillar_polarite(wall.pillar, *wall.next, size - 1);
+		angle = (doom->tool.px.y == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
+		doom->tool.dist.y = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
+		fish_eyes(&doom->tool.dist.y, angle - p->stat.rot.y);
 	}
-	*column_id = px;
-	*dist = d;
 }
 
 /*
