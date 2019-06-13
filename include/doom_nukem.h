@@ -180,11 +180,22 @@ struct					s_pilier {
 	t_lstpil			next;
 };
 
+typedef struct s_mur	t_mur;
+typedef t_mur			*t_lstmur;
+
+struct					s_mur {
+	t_pilier			*pil1;
+	t_pilier			*pil2;
+
+	t_lstmur			prvs;
+	t_lstmur			next;
+};
+
 typedef struct s_secteur	t_secteur;
 typedef t_secteur		*t_lstsec;
 
 struct					s_secteur {
-	t_lstpil			root;
+	t_lstmur			murs;
 
 	t_lstsec			prvs;
 	t_lstsec			next;
@@ -204,10 +215,11 @@ typedef struct			s_editor
 	//SDL_Texture			*txture;
 	//Uint32				*screen;
 	t_tab				keys;
+	t_lstpil			pillist;
 	t_lstpil			currpilier;
 	t_lstpil			hoverpilier;
 	t_lstsec			sectors; // list of all root pillards in sector
-	t_lstpil			map;
+	t_lstsec			map;
 	t_vct3				mappos;
 }						t_editor;
 
@@ -339,7 +351,7 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
-int						editor_mouse_press(int btn, int x, int y, t_editor *edit);
+int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
@@ -352,6 +364,10 @@ void					draw_sector_menu(t_editor *editor, t_font font);
 
 void					change_sector(t_editor *edit, int pos, int del);
 
+t_lstmur 				ft_newwall(t_pilier *pil1, t_pilier *pil2);
+t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
+void					ft_clear_wall_list(t_lstmur *start);
+
 t_lstpil				ft_newpillar(t_vct2 loc);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
 t_lstpil				ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
@@ -362,10 +378,10 @@ t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
 
-t_lstsec				ft_newsector(t_lstpil root);
+t_lstsec				ft_newsector();
 t_lstsec				init_secteur(void);
-t_lstsec push_init_secteur(t_lstsec *node);
-void ft_clear_secteur_list(t_lstsec *start);
+t_lstsec				push_init_secteur(t_lstsec *node);
+void					ft_clear_secteur_list(t_lstsec *start);
 
 /*
 **	gestion

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   secteur_tools.c                                    :+:      :+:    :+:   */
+/*   mur_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,85 +12,53 @@
 
 #include "doom_nukem.h"
 
-t_lstsec ft_newsector()
+t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2)
 {
-	t_lstsec t;
+	t_lstmur t;
 
-	if (!(t = malloc(sizeof(t_secteur))))
+	if (!(t = malloc(sizeof(t_mur))))
 		return (NULL);
-	t->murs = NULL;
+	t->pil1 = pil1;
+	t->pil2 = pil2;
 	t->prvs = NULL;
 	t->next = NULL;
 	return (t);
 }
 
-t_lstsec init_secteur(void)
+t_lstmur ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2)
 {
-	t_lstsec sec;
+	t_lstmur t;
 
-	if (!(sec = ft_newsector()))
-	{
+	ft_printf("New Wall\n");
+	if (!start)
 		return (NULL);
-	}
-	sec->prvs = NULL;
-	sec->next = NULL;
-	return (sec);
+	if (!(*start))
+		return (*start = ft_newwall(pil1, pil2));
+	t = *start;
+	while (t->next)
+		t = t->next;
+	if (!(t->next = ft_newwall(pil1, pil2)))
+		return (NULL);
+	t->next->prvs = t;
+	return (t->next);
 }
 
-t_lstsec push_init_secteur(t_lstsec *node)
+void ft_clear_wall_list(t_lstmur *start)
 {
-	t_lstsec tmp;
-	if (!node || !(*node))
-		return (NULL);
-	tmp = (*node);
-	while (tmp->next)
-		tmp = tmp->next;
-	if (!(tmp->next = ft_newsector()))
-		return (NULL);
-	tmp->next->prvs = tmp;
-	return tmp->next;
-}
-
-void ft_clear_secteur_list(t_lstsec *start)
-{
-	t_lstsec tmp;
+	t_lstmur tmp;
 
 	if (!start || !(*start))
 		return;
 	tmp = *start;
 	while (tmp->next && tmp->next != *start)
 		tmp = tmp->next;
-	while (tmp->prvs)
+	while (tmp->prvs && tmp->prvs != *start)
 	{
-		ft_clear_wall_list(&tmp->murs);
 		tmp = tmp->prvs;
 		free(tmp->next);
 	}
-	ft_clear_wall_list(&tmp->murs);
-	free(tmp);
+	if (tmp != *start)
+		free(tmp);
+	free(*start);
 	*start = NULL;
-}
-
-void ft_nodeprint_secteur(t_lstsec node)
-{
-	t_lstsec curr;
-	int x;
-
-	if (!node)
-	{
-		ft_printf("xxx\n");
-		return;
-	}
-	curr = node;
-	x = 0;
-	while (curr)
-	{
-		ft_printf("%d : ", x);
-		//ft_nodeprint_pillar(*curr->pil1);
-		//ft_printf("\t");
-		//ft_nodeprint_pillar(*curr->pil2);
-		ft_printf("\n");
-		curr = curr->next;
-		x++;
-	}
 }
