@@ -39,7 +39,7 @@ int					doom_render(t_doom *doom)
 	minimap(doom);
 	//test_tools(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
-	zline_reset(doom);
+	zline_reset(&doom->tool);
 
 	return (1);
 }
