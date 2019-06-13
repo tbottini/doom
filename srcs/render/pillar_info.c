@@ -40,7 +40,7 @@ void			wall_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, do
 	{
 		*px = pillar_polarite(wall->next, wall->pillar, size - 1);
 		angle = (*px == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		*dist = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
+		*dist = wall_clipping(arch, wall, *(t_fvct2*)&p->stat.pos, angle);
 		fish_eyes(dist, angle - p->stat.rot.y);
 	}
 }
@@ -49,10 +49,13 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 {
 	t_wall		wall;
 
+	arch->shift_txtr = (t_fvct2){0, 0};
 	wall_screen_info(arch, arch->wall, p, &arch->px.x, &arch->dist.x);
+	arch->shift_txtr.x = 1 - arch->shift_txtr.y;
 	wall.pillar = *arch->wall->next;
 	wall.next = &arch->wall->pillar;
 	wall_screen_info(arch, &wall, p, &arch->px.y, &arch->dist.y);
+	printf("shift_txtr %f %f\n", arch->shift_txtr.x, arch->shift_txtr.y);
 }
 /*
 **	on calcul la portion de l'ecran appartenant au mur
