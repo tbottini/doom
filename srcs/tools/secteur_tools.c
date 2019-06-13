@@ -72,6 +72,7 @@ void ft_clear_secteur_list(t_lstsec *start)
 	}
 	ft_clear_pillar_list(&tmp->root);
 	free(tmp);
+	*start = NULL;
 }
 
 void ft_nodeprint_secteur(t_lstsec node)

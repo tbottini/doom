@@ -149,19 +149,19 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
 		if (currsec->root == editor->map)
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Secteur ", x, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Sect ", x, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 		else
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Secteur ", x, (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Sect ", x, (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
+		sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF});
 		box.y += box.h;
 		currsec = currsec->next;
-		x++;
+		++x;
 	}
-	//SDL_RenderDrawRect(editor->rend, &box);
 	sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-void	change_sector(t_editor *edit, int pos)
+void	change_sector(t_editor *edit, int pos, int del)
 {
 	t_lstsec sec;
 	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;
@@ -173,7 +173,30 @@ void	change_sector(t_editor *edit, int pos)
 		pos--;
 	}
 	if (pos == 0)
-		edit->map = sec->root;
+	{
+		if (del)
+		{
+			edit->map = NULL;
+			if (sec->prvs)
+				sec->prvs->next = sec->next;
+			else if (sec == edit->sectors)
+			{
+				if (sec->next)
+				{
+					edit->sectors = sec->next;
+					edit->sectors->prvs = NULL;
+				}
+				else
+					edit->sectors = init_secteur();
+			}
+			if (sec->next)
+				sec->next->prvs = sec->prvs;
+			ft_clear_pillar_list(&sec->root);
+			free(sec);
+		}
+		else
+			edit->map = sec->root;
+	}
 	else if (pos == 1)
 		edit->map = push_init_secteur(&(edit->sectors))->root;
 	else
