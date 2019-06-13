@@ -68,7 +68,6 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 	wall = sector.wall;
 	while (i_wall < sector.len)
 	{
-		// viewing frustum culling
 		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
@@ -80,21 +79,22 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 			bunch[i_bunch] = &wall[i_wall];
 			++i_bunch;
 		}
-		// backface culling
 		++i_wall;
 	}
 	bunch[i_bunch] = NULL;
 	return (1);
 }
 
-void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector)
+void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector)
 {
 	int		i;
 
 	i = 0;
+	doom->tool.sector = sector;
 	while (bunch[i] != NULL)
 	{
-		draw_wall(doom, *bunch[i], sector);
+		doom->tool.wall = bunch[i];
+		draw_wall(&doom->tool, &doom->player);
 		i++;
 	}
 }

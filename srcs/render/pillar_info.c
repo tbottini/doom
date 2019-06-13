@@ -24,39 +24,37 @@ double		pillar_polarite(t_pillar pillar, t_pillar next, int max)
 	return ((polarite == -1) ? 0 : max);
 }
 
-void			pillar_screen_info(t_doom *doom, t_wall wall)
+void			pillar_screen_info(t_designer *arch, t_player *p)
 {
 	float		angle;
-	t_player	*p;
 	int			size;
 
-	p = &doom->player;
-	size = doom->sdl.size.x;
-	if (wall.pillar.frust)
+	size = arch->sdl->size.x;
+	if (arch->wall->pillar.frust)
 	{
-		doom->tool.px.x = fish_bowl_px(doom, wall.pillar);
-		doom->tool.dist.x = distance(*(t_fvct2*)&p->stat.pos, wall.pillar.p);
-		fish_eyes(&doom->tool.dist.x, wall.pillar.angle);
+		arch->px.x = fish_bowl_px(arch, arch->wall->pillar);
+		arch->dist.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar.p);
+		fish_eyes(&arch->dist.x, arch->wall->pillar.angle);
 	}
 	else
 	{
-		doom->tool.px.x = pillar_polarite(*wall.next, wall.pillar, size - 1);
-		angle = (doom->tool.px.x == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		doom->tool.dist.x = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
-		fish_eyes(&doom->tool.dist.x, angle - p->stat.rot.y);
+		arch->px.x = pillar_polarite(*arch->wall->next, arch->wall->pillar, size - 1);
+		angle = (arch->px.x == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
+		arch->dist.x = wall_clipping(arch->wall, *(t_fvct2*)&p->stat.pos, angle);
+		fish_eyes(&arch->dist.x, angle - p->stat.rot.y);
 	}
-	if (wall.next->frust)
+	if (arch->wall->next->frust)
 	{
-		doom->tool.px.y = fish_bowl_px(doom, *wall.next);
-		doom->tool.dist.y = distance(*(t_fvct2*)&p->stat.pos, wall.next->p);
-		fish_eyes(&doom->tool.dist.y, wall.next->angle);
+		arch->px.y = fish_bowl_px(arch, *arch->wall->next);
+		arch->dist.y = distance(*(t_fvct2*)&p->stat.pos, arch->wall->next->p);
+		fish_eyes(&arch->dist.y, arch->wall->next->angle);
 	}
 	else
 	{
-		doom->tool.px.y = pillar_polarite(wall.pillar, *wall.next, size - 1);
-		angle = (doom->tool.px.y == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		doom->tool.dist.y = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
-		fish_eyes(&doom->tool.dist.y, angle - p->stat.rot.y);
+		arch->px.y = pillar_polarite(arch->wall->pillar, *arch->wall->next, size - 1);
+		angle = (arch->px.y == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
+		arch->dist.y = wall_clipping(arch->wall, *(t_fvct2*)&p->stat.pos, angle);
+		fish_eyes(&arch->dist.y, angle - p->stat.rot.y);
 	}
 }
 

@@ -120,7 +120,7 @@ void			reorder(t_vct2 *px, t_fvct2 *dist)
 	}
 }
 
-void			pillar_to_pillar(t_designer *arch, t_player *player, t_sector sector, t_wall *wl)
+void			pillar_to_pillar(t_designer *arch, t_player *player)
 {
 	t_fvct2		pillar;
 	t_fvct2		pillar_next;
@@ -130,8 +130,8 @@ void			pillar_to_pillar(t_designer *arch, t_player *player, t_sector sector, t_w
 	double		coef_neutre;
 
 	reorder(&arch->px, &arch->dist);
-	pillar = px_wall(arch, player, sector.h_ceil, arch->dist.x);
-	pillar_next = px_wall(arch, player, sector.h_ceil, arch->dist.y);
+	pillar = px_wall(arch, player, arch->sector->h_ceil, arch->dist.x);
+	pillar_next = px_wall(arch, player, arch->sector->h_ceil, arch->dist.y);
 
 	coef_surface = (pillar.x - pillar_next.x) / (arch->px.y - arch->px.x);
 	coef_down = (pillar.y - pillar_next.y) / (arch->px.y - arch->px.x);
@@ -144,7 +144,7 @@ void			pillar_to_pillar(t_designer *arch, t_player *player, t_sector sector, t_w
 	{
 		if (z_line_buffer(arch, neutre.x, arch->px.x) > 0)
 		{
-			draw_column(arch, wl, arch->px.x, pillar);
+			draw_column(arch, arch->wall, arch->px.x, pillar);
 		}
 		pillar.x -= coef_surface;
 		pillar.y -= coef_down;
@@ -153,10 +153,10 @@ void			pillar_to_pillar(t_designer *arch, t_player *player, t_sector sector, t_w
 	}
 }
 
-void		draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall)
+void		draw_wall(t_designer *arch, t_player *player)
 {
 
 	//printf("wall.texture w %d h %d\n", wall.txtr.w, wall.txtr.h);
-	pillar_screen_info(doom, wall);
-	pillar_to_pillar(&doom->tool, &doom->player, sector_wall, &wall);
+	pillar_screen_info(arch, player);
+	pillar_to_pillar(arch, player);
 }
