@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   music_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 15:07:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/14 10:11:24 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ int					music_init(t_sound *sound)
 		return (0);
 	sound->music = sound->tab_music[0];
 	sound->maxmusic = 8;
-	sound->musicvolume = 128;
+	sound->musicvolume = 0;
 	return (sound->on = 1);
 }

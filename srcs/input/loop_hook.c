@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/13 14:18:33 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/14 09:57:01 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,8 @@ int loop_hook(t_doom *doom)
 
 			/// End Comment
 		}
-    SDL_RenderPresent(doom->sdl.rend);
+		SDL_RenderPresent(doom->sdl.rend);
 	}
-	delaypcmasterrace(doom);
+	//delaypcmasterrace(doom);
 	return (0);
 }

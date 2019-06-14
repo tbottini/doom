@@ -37,15 +37,15 @@ t_fvct2		px_wall(t_designer *arch, t_player *player, int wall_height, double dis
 	return (wall_portion);
 }
 
-void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, int col_txtr, t_fvct2 surface)
+void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, double col_txtr, t_fvct2 surface)
 {
 	double	coef;
 	int		px;
 	double	buff;
 
-	px = col_txtr;
+	px = arch->shift_txtr.x;
 	buff = 0;
-	coef = wall->txtr.h / (surface.y - surface.x);
+	coef = (double)wall->txtr.h / (surface.y - surface.x);
 	if (surface.y < 0)
 		return ;
 	if (surface.x < 0)
@@ -104,19 +104,22 @@ void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
 	}
 }
 
-void			reorder(t_vct2 *px, t_fvct2 *dist)
+void			reorder(t_designer *arch)
 {
 	double		tmp;
 	int			tmpint;
 
-	if (px->x > px->y)
+	if (arch->px.x > arch->px.y)
 	{
-		tmpint = px->x;
-		px->x = px->y;
-		px->y = tmpint;
-		tmp = dist->x;
-		dist->x = dist->y;
-		dist->y = tmp;
+		tmpint = arch->px.x;
+		arch->px.x = arch->px.y;
+		arch->px.y = tmpint;
+		tmp = arch->dist.x;
+		arch->dist.x = arch->dist.y;
+		arch->dist.y = tmp;
+		tmp = arch->shift_txtr.x;
+		arch->shift_txtr.x = arch->shift_txtr.y;
+		arch->shift_txtr.y = tmp;
 	}
 }
 
@@ -128,14 +131,17 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	double		coef_surface;
 	double		coef_down;
 	double		coef_neutre;
+	double		coef_txtr;
 
-	reorder(&arch->px, &arch->dist);
+	reorder(arch);
 	pillar = px_wall(arch, player, arch->sector->h_ceil, arch->dist.x);
 	pillar_next = px_wall(arch, player, arch->sector->h_ceil, arch->dist.y);
 
 	coef_surface = (pillar.x - pillar_next.x) / (arch->px.y - arch->px.x);
 	coef_down = (pillar.y - pillar_next.y) / (arch->px.y - arch->px.x);
 
+	coef_txtr = ((arch->shift_txtr.y - arch->shift_txtr.x) * arch->wall->txtr.w)/ (arch->px.y - arch->px.x);
+	arch->shift_txtr.x *= arch->wall->txtr.w;
 	neutre.x = (double)(arch->sdl->size.y) / arch->dist.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->dist.y;
 
@@ -150,6 +156,7 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 		pillar.y -= coef_down;
 		neutre.x += coef_neutre;
 		arch->px.x++;
+		arch->shift_txtr.x += coef_txtr;
 	}
 }
 
@@ -157,6 +164,9 @@ void		draw_wall(t_designer *arch, t_player *player)
 {
 
 	//printf("wall.texture w %d h %d\n", wall.txtr.w, wall.txtr.h);
+	//printf("-----draw wall--------------\n");
+	//printf("wall .x %f .y %f\n", arch->wall->pillar.p.x, arch->wall->pillar.p.y);
 	pillar_screen_info(arch, player);
 	pillar_to_pillar(arch, player);
+	//printf("----------------------------\n");
 }

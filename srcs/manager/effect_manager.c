@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   effect_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 01:18:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 08:05:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/14 10:11:37 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ int					effect_init(t_sound *sound)
 		return (0);
 	if (Mix_AllocateChannels(4) != 4)
 		return (0);
-	sound->effectvolume = 128;
+	sound->effectvolume = 0;
 	return (1);
 }
