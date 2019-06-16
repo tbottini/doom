@@ -18,3 +18,13 @@ et de la hauteur au plafond
 
 on fait pareil pour le sol mais on l'ajoute pour la diff du joueur
 
+
+
+================les plafond des sous secteur=============
+
+cas complique pour une marche
+
+on garde le zline
+si le mur est plus profond alors on dessine la texture plafond
+jusqu'a tombe sur la texture du mur le plus proche
+si le mur est plus proche alors on redessine le mur

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/16 14:49:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/16 14:45:33 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ int					music_init(t_sound *sound)
 		|| !(sound->tab_music[1] = loadmus("ressources/music/pilot.ogg"))
 		|| !(sound->tab_music[2] = loadmus("ressources/music/graviton.ogg"))
 		|| !(sound->tab_music[3] = loadmus("ressources/music/impact.ogg"))
-		|| !(sound->tab_music[4] = loadmus("ressources/music/normandy.ogg"))
+		|| !(sound->tab_music[4] = loadmus("ressources/music/normandy.wav"))
 		|| !(sound->tab_music[5] = loadmus("ressources/music/venice.wav"))
-		|| !(sound->tab_music[6] = loadmus("ressources/music/patriots.ogg"))
-		|| !(sound->tab_music[7] = loadmus("ressources/music/normandy_atk.ogg"))
-		|| !(sound->tab_music[8] = loadmus("ressources/music/guile.ogg"))
+		|| !(sound->tab_music[6] = loadmus("ressources/music/patriots.wav"))
+		|| !(sound->tab_music[7] = loadmus("ressources/music/normandy_atk.wav"))
+		|| !(sound->tab_music[8] = loadmus("ressources/music/guile.wav"))
 		|| !(sound->tab_music[9] = loadmus("ressources/music/gerudo.ogg"))
-		|| !(sound->tab_music[10] = loadmus("ressources/music/snake.ogg")))
+		|| !(sound->tab_music[10] = loadmus("ressources/music/snake.wav")))
+		//|| !(sound->tab_music[10] = loadmus("ressources/music/diable.mp3")))
 		return (0);
 	if (!effect_init(sound))
 		return (0);

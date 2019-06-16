@@ -40,8 +40,8 @@ void			wall_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, do
 	{
 		*px = pillar_polarite(wall->next, wall->pillar, size - 1);
 		angle = (*px == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		if ((int)arch->wall->pillar.p.x == 0 && (int)arch->wall->pillar.p.y == 0)
-			printf("wall clipping\n");
+		//if ((int)arch->wall->pillar.p.x == 0 && (int)arch->wall->pillar.p.y == 0)
+		//	printf("wall clipping\n");
 		*dist = wall_clipping(arch, wall, *(t_fvct2*)&p->stat.pos, angle);
 		fish_eyes(dist, angle - p->stat.rot.y);
 	}
@@ -70,7 +70,7 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 	else
 		arch->shift_txtr.y = 1 - arch->shift_txtr.x;
 	arch->shift_txtr.x = !tmp ? 1 : tmp;
-	if ((int)arch->wall->pillar.p.x == 0 && (int)arch->wall->pillar.p.y == 0)
+	if ((int)arch->wall->pillar.p.x == 0 && (int)arch->wall->pillar.p.y == 39)
 		printf("shift_txtr .y %f .x %f\n", arch->shift_txtr.y, arch->shift_txtr.x);
 }
 /*
