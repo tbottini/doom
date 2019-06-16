@@ -140,7 +140,7 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	coef_surface = (pillar.x - pillar_next.x) / (arch->px.y - arch->px.x);
 	coef_down = (pillar.y - pillar_next.y) / (arch->px.y - arch->px.x);
 
-	coef_txtr = ((arch->shift_txtr.y - arch->shift_txtr.x) * arch->wall->txtr.w)/ (arch->px.y - arch->px.x);
+	coef_txtr = ((arch->shift_txtr.y - arch->shift_txtr.x) * arch->wall->txtr.w) / (arch->px.y - arch->px.x);
 	arch->shift_txtr.x *= arch->wall->txtr.w;
 	neutre.x = (double)(arch->sdl->size.y) / arch->dist.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->dist.y;
