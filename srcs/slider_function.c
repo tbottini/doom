@@ -41,7 +41,6 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 	update_loc(doom, &tmp->loc, *tmp->loc.parent);
 	tmp->griplabel.x = tmp->loc.area.x;
 	tmp->griplabel.y = tmp->loc.area.y;
-	update_slider_txt(doom, tmp);
 	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
 		* (*tmp->val - tmp->min)) / (tmp->max - tmp->min);
 	tmp->grip.y = tmp->loc.area.y;
