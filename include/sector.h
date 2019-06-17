@@ -49,7 +49,6 @@ typedef struct		s_sector
 /*
 **	wall : draw, manipulation
 */
-double			wall_clipping(t_wall wall, t_fvct2 pos, double angle);
 void			describe_sector_recursif(t_sector sector);
 void			describe_bunch(t_wall **bunch);
 void			describe_sector(t_sector sector);

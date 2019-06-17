@@ -6,64 +6,73 @@
 **	si l'angle entre le joueur est les deux pillier est superieur a 180
 **	la polarite de depart (position du premier pillier) s'inverse
 */
-double		pillar_polarite(t_pillar pillar, t_pillar next, int max)
+double		pillar_polarite(t_pillar *pillar, t_pillar next, int max)
 {
 	t_fvct2	angle;
 	double	diff;
 	int		polarite;
 
 	polarite = 0;
-	angle.x = pillar.angle;
+	angle.x = pillar->angle;
 	angle.y = next.angle;
 	if (angle.x < 0)
 		angle.x = 360 + angle.x;
 	if (angle.y < 0)
 		angle.y = 360 + angle.y;
 	diff = fabs(angle.x - angle.y);
-	polarite = (pillar.angle > 0 ? -1 : 1) * (diff < 180 ? 1 : -1);
+	polarite = (pillar->angle > 0 ? -1 : 1) * (diff < 180 ? 1 : -1);
 	return ((polarite == -1) ? 0 : max);
 }
 
-void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id)
+void			wall_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, double *dist)
 {
-	t_vct2 		px;
-	t_fvct2 	d;
 	float		angle;
-	t_player	*p;
 	int			size;
 
-	p = &doom.player;
-	size = doom.sdl.size.x;
-	if (wall.pillar.frust)
+	size = arch->sdl->size.x;
+	if (wall->pillar.frust)
 	{
-		px.x = fish_bowl_px(doom, wall.pillar);
-		d.x = distance(*(t_fvct2*)&p->stat.pos, wall.pillar.p);
-		fish_eyes(&d.x, wall.pillar.angle);
+		*px = fish_bowl_px(arch, wall->pillar);
+		*dist = distance(*(t_fvct2*)&p->stat.pos, wall->pillar.p);
+		fish_eyes(dist, wall->pillar.angle);
 	}
 	else
 	{
-		px.x = pillar_polarite(*wall.next, wall.pillar, size - 1);
-		angle = (px.x == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		d.x = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
-		fish_eyes(&d.x, angle - p->stat.rot.y);
+		*px = pillar_polarite(wall->next, wall->pillar, size - 1);
+		angle = (*px == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
+		//if ((int)arch->wall->pillar.p.x == 0 && (int)arch->wall->pillar.p.y == 0)
+		//	printf("wall clipping\n");
+		*dist = wall_clipping(arch, wall, *(t_fvct2*)&p->stat.pos, angle);
+		fish_eyes(dist, angle - p->stat.rot.y);
 	}
-	if (wall.next->frust)
-	{
-		px.y = fish_bowl_px(doom, *wall.next);
-		d.y = distance(*(t_fvct2*)&p->stat.pos, wall.next->p);
-		fish_eyes(&d.y, wall.next->angle);
-	}
-	else
-	{
-		px.y = pillar_polarite(wall.pillar, *wall.next, size - 1);
-		angle = (px.y == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		d.y = wall_clipping(wall, *(t_fvct2*)&p->stat.pos, angle);
-		fish_eyes(&d.y, angle - p->stat.rot.y);
-	}
-	*column_id = px;
-	*dist = d;
 }
 
+void			pillar_screen_info(t_designer *arch, t_player *p)
+{
+	t_wall		wall;
+	double		tmp;
+	//la disposition normal est x = 1 et y = 0
+
+	arch->shift_txtr = (t_fvct2){0, 0};
+	wall_screen_info(arch, arch->wall, p, &arch->px.x, &arch->dist.x);
+	tmp = arch->shift_txtr.x;
+	//arch->shift_txtr.x = arch->shift_txtr.y;
+	wall.pillar = *arch->wall->next;
+	wall.next = &arch->wall->pillar;
+
+	arch->shift_txtr.x = 0;
+	wall_screen_info(arch, &wall, p, &arch->px.y, &arch->dist.y);
+	//arch->shift_txtr.y = !arch->shift_txtr.x ? 0 : 1 - arch->shift_txtr.x;
+	//printf("percent %f return\n", arch->shift_txtr.x);
+
+	if (arch->shift_txtr.x == 0.0)
+		arch->shift_txtr.y = 0.0;
+	else
+		arch->shift_txtr.y = 1 - arch->shift_txtr.x;
+	arch->shift_txtr.x = !tmp ? 1 : tmp;
+	if ((int)arch->wall->pillar.p.x == 0 && (int)arch->wall->pillar.p.y == 39)
+		printf("shift_txtr .y %f .x %f\n", arch->shift_txtr.y, arch->shift_txtr.x);
+}
 /*
 **	on calcul la portion de l'ecran appartenant au mur
 **	sector : recup la hauteur au plafond,
