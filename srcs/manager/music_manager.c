@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   music_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 15:07:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/16 14:49:42 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ static Mix_Music	*loadmus(char *track)
 
 int					music_init(t_sound *sound)
 {
-	if (!(sound->tab_music[0] = loadmus("ressources/music/new_dawn.wav"))
-		|| !(sound->tab_music[1] = loadmus("ressources/music/pilot.wav"))
-		|| !(sound->tab_music[2] = loadmus("ressources/music/graviton.wav"))
-		|| !(sound->tab_music[3] = loadmus("ressources/music/impact.wav"))
-		|| !(sound->tab_music[4] = loadmus("ressources/music/normandy.wav"))
+	if (!(sound->tab_music[0] = loadmus("ressources/music/new_dawn.ogg"))
+		|| !(sound->tab_music[1] = loadmus("ressources/music/pilot.ogg"))
+		|| !(sound->tab_music[2] = loadmus("ressources/music/graviton.ogg"))
+		|| !(sound->tab_music[3] = loadmus("ressources/music/impact.ogg"))
+		|| !(sound->tab_music[4] = loadmus("ressources/music/normandy.ogg"))
 		|| !(sound->tab_music[5] = loadmus("ressources/music/venice.wav"))
-		|| !(sound->tab_music[6] = loadmus("ressources/music/patriots.wav"))
-		|| !(sound->tab_music[7] = loadmus("ressources/music/normandy_atk.wav"))
-		|| !(sound->tab_music[8] = loadmus("ressources/music/guile.wav"))
-		|| !(sound->tab_music[9] = loadmus("ressources/music/gerudo.wav"))
-		|| !(sound->tab_music[10] = loadmus("ressources/music/snake.wav")))
+		|| !(sound->tab_music[6] = loadmus("ressources/music/patriots.ogg"))
+		|| !(sound->tab_music[7] = loadmus("ressources/music/normandy_atk.ogg"))
+		|| !(sound->tab_music[8] = loadmus("ressources/music/guile.ogg"))
+		|| !(sound->tab_music[9] = loadmus("ressources/music/gerudo.ogg"))
+		|| !(sound->tab_music[10] = loadmus("ressources/music/snake.ogg")))
 		return (0);
 	if (!effect_init(sound))
 		return (0);

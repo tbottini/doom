@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 17:07:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/13 17:06:13 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,14 +227,23 @@ typedef struct 			s_camera
 {
 	int					fov;
 	double				d_screen;
-	t_zline				*zline;
 }						t_camera;
 
 typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];
 	uint32_t			*top[1920];
+	t_sector			*sector;
+	t_wall				*wall;
+	t_camera			*cam;
+	t_sdl				*sdl;
 	SDL_Surface			**texture;
+	t_fvct2				dist;
+	t_vct2				px;
+	t_fvct2				shift_txtr;
+	double				*zline;
+	//double			coef_px;
+
 }						t_designer;
 
 struct					s_doom
@@ -248,7 +257,6 @@ struct					s_doom
 	SDL_GameController	*controller;
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
-	double				*zline;
 	t_designer			tool;
 	t_camera			camera;
 };
@@ -391,7 +399,7 @@ void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_
 void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
-int						designer_init(t_designer *designer, t_sdl sdl);
+int						designer_init(t_designer *designer, t_sdl *sdl, t_camera *cam);
 void					editor_free(t_editor *editor);
 int						editor_init(t_editor *editor);
 void					sdl_free(t_sdl *sdl);
@@ -400,7 +408,7 @@ void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
-void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
+void					pillar_screen_info(t_designer *arch, t_player *p);
 
 /*
 **	simple input
@@ -440,7 +448,7 @@ void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
 void					move(t_doom *doom, t_player *player);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall);
+void					draw_wall(t_designer *arch, t_player *player);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
@@ -449,18 +457,19 @@ void					play_effect(t_sound *sound, int e);
 /*
 **	render
 */
-int						z_line_buffer(t_doom doom, double len_pillar, int px);
+int						z_line_buffer(t_designer *arch, double len_pillar, int px);
 int						doom_render(t_doom *doom);
-void					zline_reset(t_doom *doom);
-int						fish_bowl_px(t_doom doom, t_pillar pillar);
+void					zline_reset(t_designer *arch);
+int						fish_bowl_px(t_designer *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
+double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
 
 /*
 **	bunch
 */
 void					sector_frustum(t_sector *sector, t_player player);
 int						buncherisation(t_sector sector, t_wall **bunch);
-void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
+void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 
 /*
 **	Cinematique et Musique

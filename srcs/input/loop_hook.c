@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 10:22:47 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/14 09:57:01 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ static void delaypcmasterrace(t_doom *doom)
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
-	while (SDL_GetTicks() - doom->timestamp < 16)
-		; // Limiteur de FPS (16)
+	//while (SDL_GetTicks() - doom->timestamp < 16)
+	//	; // Limiteur de FPS (16)
 	doom->timestamp = SDL_GetTicks();
 }
 
@@ -151,6 +151,6 @@ int loop_hook(t_doom *doom)
 		}
 		SDL_RenderPresent(doom->sdl.rend);
 	}
-	delaypcmasterrace(doom);
+	//delaypcmasterrace(doom);
 	return (0);
 }
