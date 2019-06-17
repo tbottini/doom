@@ -24,24 +24,14 @@ t_lstsec ft_newsector()
 	return (t);
 }
 
-t_lstsec init_secteur(void)
-{
-	t_lstsec sec;
-
-	if (!(sec = ft_newsector()))
-	{
-		return (NULL);
-	}
-	sec->prvs = NULL;
-	sec->next = NULL;
-	return (sec);
-}
-
-t_lstsec push_init_secteur(t_lstsec *node)
+t_lstsec push_secteur(t_lstsec *node)
 {
 	t_lstsec tmp;
-	if (!node || !(*node))
+
+	if (!node)
 		return (NULL);
+	else if (!(*node))
+		return (*node = ft_newsector());
 	tmp = (*node);
 	while (tmp->next)
 		tmp = tmp->next;
@@ -49,6 +39,23 @@ t_lstsec push_init_secteur(t_lstsec *node)
 		return (NULL);
 	tmp->next->prvs = tmp;
 	return tmp->next;
+}
+
+void ft_clear_secteur(t_lstsec *sec)
+{
+	t_lstsec tmp;
+
+	if (!sec || !(*sec))
+		return;
+	tmp = *sec;
+	ft_clear_wall_list(&tmp->murs);
+	if (tmp->next)
+		tmp->next->prvs = tmp->prvs;
+	if (tmp->prvs)
+		tmp->prvs->next = tmp->next;
+	
+	free(tmp);
+	*sec = NULL;
 }
 
 void ft_clear_secteur_list(t_lstsec *start)

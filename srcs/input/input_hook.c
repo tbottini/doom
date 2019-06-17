@@ -156,7 +156,7 @@ int		mouse_move(int x, int y, t_doom *doom)
 	{
 		//ft_printf("mouse : %d\t%d\t%d\n", x, y);
 		doom->player.stat.rot.y -= x / SENSIBILITY;
-		doom->player.stat.rot.x -= y / SENSIBILITY;
+		doom->player.stat.rot.x -= y / (SENSIBILITY * 2);
 		return (0);
 	}
 	/* Moved in loop_hook because menu is now rendered everyframe

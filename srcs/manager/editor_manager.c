@@ -14,7 +14,9 @@
 
 int		close_editor(t_doom *doom)
 {
-	//fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
+	if (doom->edit.sectors)
+		ft_clear_secteur_list(&doom->edit.sectors);
+	doom->edit.map = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
 	doom->edit.status = 0;
@@ -23,7 +25,9 @@ int		close_editor(t_doom *doom)
 
 void	open_editor(t_doom *doom)
 {
-	//fire_on_off(doom->sdl.screen, doom->sdl.size, 0);
+	if(!(doom->edit.sectors = ft_newsector()))
+		return ;
+	doom->edit.map = doom->edit.sectors;
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;
@@ -51,9 +55,6 @@ int		editor_init(t_editor *editor)
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
 	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
 	//editor->mapzoom = 1000;
-	if(!(editor->sectors = ft_newsector()))
-		return (0);
-	editor->map = editor->sectors;
 	editor->pillist = ft_newpillar((t_vct2){0, 0});
 	editor->sectbox.x = -1;
 	editor->sectbox.y = -1;

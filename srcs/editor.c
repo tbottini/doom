@@ -44,13 +44,13 @@ t_lstpil find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	return (NULL);
 }
 
-static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, char c[4])
+static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, SDL_Color c)
 {
 	pos0.x = pos0.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
 	pos0.y = pos0.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
 	pos1.x = pos1.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
 	pos1.y = pos1.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
-	SDL_SetRenderDrawColor(editor->rend, c[0], c[1], c[2], c[3]);
+	SDL_SetRenderDrawColor(editor->rend, c.r, c.g, c.b, c.a);
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
 
@@ -91,7 +91,6 @@ void draw_map(t_editor *editor)
 
 	loc.x = editor->mappos.x;
 	loc.y = editor->mappos.y;
-
 	draw_grid(editor, loc, editor->mappos.z, 0);
 	currsec = editor->sectors;
 	while (currsec)
@@ -99,10 +98,11 @@ void draw_map(t_editor *editor)
 		currwall = currsec->murs;
 		while (currwall)
 		{
+			currwall->pil1 = currwall->pil1;
 			if (currsec == editor->map)
-				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (char[4]){150, 170, 250, 0xFF});
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 170, 250, 0xFF});
 			else
-				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (char[4]){150, 150, 150, 0xFF});
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
 			currwall = currwall->next;
 		}
 		currsec = currsec->next;
@@ -159,45 +159,47 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-void	change_sector(t_editor *edit, int pos, int del)
+void	sector_menu(t_editor *edit, int pos, int del)
 {
 	t_lstsec sec;
 	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;
 	edit->currpilier = NULL;
 	sec = edit->sectors;
-	while (pos > 0 && sec->next)
+	while (pos > 0 && sec)
 	{
 		sec = sec->next;
 		pos--;
 	}
 	if (pos == 0)
 	{
-		if (del)
+		if (!sec)
+			edit->map = push_secteur(&(edit->sectors));
+		else if (del)
 		{
 			edit->map = NULL;
 			if (sec->prvs)
 				sec->prvs->next = sec->next;
-			else if (sec == edit->sectors)
+			if (sec->next)
+				sec->next->prvs = sec->prvs;
+			if (sec == edit->sectors)
 			{
-				if (sec->next)
+				if (edit->sectors->next)
 				{
 					edit->sectors = sec->next;
 					edit->sectors->prvs = NULL;
 				}
 				else
-					edit->sectors = ft_newsector();
+					edit->sectors = NULL;
 			}
-			if (sec->next)
-				sec->next->prvs = sec->prvs;
 			//ft_clear_pillar_list(&sec->root);
-			free(sec);
+			ft_clear_secteur(&sec);
 		}
 		else
 			edit->map = sec;
 	}
 	else if (pos == 1)
-		edit->map = push_init_secteur(&(edit->sectors));
+		edit->map = push_secteur(&(edit->sectors));
 	else
 		edit->map = NULL;
-	ft_printf("%d\n", pos);
+	printf("%p\t%d\n", sec, pos);
 }
