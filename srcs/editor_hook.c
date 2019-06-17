@@ -30,7 +30,7 @@ int editor_key_press(int key, t_doom *doom)
 	}
 	else if (key == SDLK_3)
 	{
-		//doom->edit.map = push_init_secteur(&(doom->edit.sectors))->root;
+		//doom->edit.map = push_secteur(&(doom->edit.sectors));
 	}
 	else if (key == SDLK_4)
 		printf("currpillar : %p\n", doom->edit.currpilier);
@@ -42,7 +42,7 @@ int editor_key_press(int key, t_doom *doom)
 		//doom->edit.sectors = ft_newsector();
 		//doom->edit.map = doom->edit.sectors->root;
 	}
-	else if (key == SDLK_r)
+	else if (key == SDLK_r) // Reload position
 	{
 		doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
 	}
@@ -78,12 +78,10 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y))
 	{
-		change_sector(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
+		sector_menu(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
 	}
 	relpos = get_rel_mappos(edit, e.x, e.y);
-	ft_printf("stru %d\t%d\n", relpos.x, relpos.y);
-	ft_printf("area %d\n", MAXZOOM / edit->mappos.z);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
 		edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y);
@@ -93,12 +91,9 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (e.button == SDL_BUTTON_RIGHT)
 	{
-		if (edit->currpilier)
+		if (edit->currpilier && edit->hoverpilier)
 		{
-			if ((link = find_pilier(edit, edit->pillist, e.x, e.y)))
-			{
-				ft_wallpushend(&edit->map->murs, edit->currpilier, link);
-			}
+			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier);
 		}
 	}
 	return (0);

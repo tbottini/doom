@@ -362,7 +362,7 @@ t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
 
-void					change_sector(t_editor *edit, int pos, int del);
+void					sector_menu(t_editor *edit, int pos, int del);
 
 t_lstmur 				ft_newwall(t_pilier *pil1, t_pilier *pil2);
 t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
@@ -379,8 +379,8 @@ t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 int						add_pillar(t_editor *edit, int x, int y);
 
 t_lstsec				ft_newsector();
-t_lstsec				init_secteur(void);
-t_lstsec				push_init_secteur(t_lstsec *node);
+t_lstsec				push_secteur(t_lstsec *node);
+void					ft_clear_secteur(t_lstsec *sec);
 void					ft_clear_secteur_list(t_lstsec *start);
 
 /*

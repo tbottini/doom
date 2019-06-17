@@ -29,7 +29,6 @@ t_lstmur ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2)
 {
 	t_lstmur t;
 
-	ft_printf("New Wall\n");
 	if (!start)
 		return (NULL);
 	if (!(*start))
