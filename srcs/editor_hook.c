@@ -39,8 +39,6 @@ int editor_key_press(int key, t_doom *doom)
 	else if (key == SDLK_6)
 	{
 		ft_clear_secteur_list(&doom->edit.sectors);
-		//doom->edit.sectors = ft_newsector();
-		//doom->edit.map = doom->edit.sectors->root;
 	}
 	else if (key == SDLK_r) // Reload position
 	{
@@ -74,7 +72,6 @@ int editor_key_release(int key, t_doom *doom)
 int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 {
 	t_vct2 relpos;
-	t_pilier *link;
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y))
 	{
