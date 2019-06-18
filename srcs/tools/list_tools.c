@@ -24,6 +24,20 @@ t_lstpil ft_newpillar(t_vct2 loc)
 	return (t);
 }
 
+void ft_removepillar(t_lstpil *start, t_lstpil *pil)
+{
+	if (!pil || !(*pil))
+		return ;
+	if (*pil == *start)
+		*start = (*start)->next;
+	if ((*pil)->next)
+		(*pil)->next->prvs = (*pil)->prvs;
+	if ((*pil)->prvs)
+		(*pil)->prvs->next = (*pil)->next;
+	free(*pil);
+	*pil = NULL;
+}
+
 t_lstpil ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 {
 	t_lstpil t;
@@ -35,21 +49,6 @@ t_lstpil ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 	t = *start;
 	while (t->next)
 		t = t->next;
-	if (!(t->next = ft_newpillar(loc)))
-		return (NULL);
-	t->next->prvs = t;
-	return (t->next);
-}
-
-t_lstpil ft_pillarpushnext(t_lstpil *pos, t_vct2 loc)
-{
-	t_lstpil t;
-
-	if (!pos)
-		return (0);
-	if (!(*pos))// || (*pos)->next)
-		return (0);
-	t = *pos;
 	if (!(t->next = ft_newpillar(loc)))
 		return (NULL);
 	t->next->prvs = t;
@@ -105,29 +104,6 @@ void ft_clear_pillar_list(t_lstpil *start)
 	}
 	if (tmp != *start)
 		free(tmp);
-//	(*start)->next = NULL;
-//	(*start)->prvs = NULL;
-//	(*start)->pos.x = 0;
-//	(*start)->pos.y = 0;
 	free(*start);
 	*start = NULL;
 }
-/*
-int add_pillar(t_editor *edit, int x, int y)
-{
-	t_vct2 relpos;
-	t_lstpil tmp;
-
-	//tmp = find_pilier(edit, edit->map, x, y);
-	relpos = get_rel_mappos(edit, x, y);
-	if (tmp && !tmp->prvs && edit->currpilier != tmp && edit->currpilier->next != tmp && edit->currpilier->prvs != tmp)
-	{
-		edit->currpilier->next = tmp;
-		edit->currpilier->next->prvs = edit->currpilier;
-		return (2);
-	}
-	else if (!(edit->currpilier = ft_pillarpushnext(&edit->currpilier, relpos)))
-		return (0);
-	return (1);
-}
-*/

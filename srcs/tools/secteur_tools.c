@@ -41,6 +41,16 @@ t_lstsec push_secteur(t_lstsec *node)
 	return tmp->next;
 }
 
+void ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpil *pil)
+{
+	while (sectors)
+	{
+		ft_remove_pillar_fromwalls(&sectors->murs, *pil);
+		sectors = sectors->next;
+	}
+	ft_removepillar(start, pil);
+}
+
 void ft_clear_secteur(t_lstsec *sec)
 {
 	t_lstsec tmp;
