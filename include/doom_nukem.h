@@ -166,7 +166,7 @@ typedef struct			s_sdl
 	Uint32				*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
-	Uint32				timp;
+	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;
 
