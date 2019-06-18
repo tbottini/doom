@@ -89,16 +89,21 @@ static void editor_loop(t_doom *doom, int key)
 
 static void delaypcmasterrace(t_doom *doom)
 {
-	if (doom->sdl.timp == SDL_GetTicks() / 1000)
+	int wait;
+
+	// A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
+	if (doom->sdl.timp / 1000 == SDL_GetTicks() / 1000)
 		++doom->sdl.fps;
 	else
 	{
-		ft_printf("\r%d FPS", doom->sdl.fps);
+		printf("\r%d FPS\n", doom->sdl.fps);
 		doom->sdl.fps = 0;
-		doom->sdl.timp = SDL_GetTicks() / 1000;
+		doom->sdl.timp = SDL_GetTicks();
 	}
-	//while (SDL_GetTicks() - doom->timestamp < 16)
-	//	; // Limiteur de FPS (16)
+	// END A Supprimer
+	wait = SDL_GetTicks() - doom->timestamp - 16; // Nombre de ms min entre chaque frame
+	if (wait < 0)
+		SDL_Delay(-wait);
 	doom->timestamp = SDL_GetTicks();
 }
 
@@ -151,6 +156,6 @@ int loop_hook(t_doom *doom)
 		}
 		SDL_RenderPresent(doom->sdl.rend);
 	}
-	//delaypcmasterrace(doom);
+	delaypcmasterrace(doom);
 	return (0);
 }
