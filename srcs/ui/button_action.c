@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-static void		on_menu_two(t_doom *doom, int x, int y)
+static void		map_btn_click(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
 	int		i;
@@ -35,7 +35,7 @@ static void		on_menu_two(t_doom *doom, int x, int y)
 	}
 }
 
-static void		on_menu_tree(t_doom *doom, int x, int y)
+static void		use_slider(t_doom *doom, int x, int y)
 {
 	t_slid	stmp;
 	int		i;
@@ -53,7 +53,7 @@ static void		on_menu_tree(t_doom *doom, int x, int y)
 void			btn_click(t_doom *doom, int x, int y)
 {
 	if (doom->ui.m_status == 2)
-		on_menu_two(doom, x, y);
+		map_btn_click(doom, x, y);
 	else if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
-		on_menu_tree(doom, x, y);
+		use_slider(doom, x, y);
 }

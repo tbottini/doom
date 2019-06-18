@@ -23,12 +23,7 @@ int		key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
-	if (key == SDLK_BACKQUOTE)
-	{
-		//doom->ui.curr_btn = NULL;
-		//sdl_set_status(doom, 1);
-	}
-	else if (key == SDLK_RETURN)
+	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
 	{
 		if (doom->ui.m_status == 0)
 			sdl_set_status(doom, 4);
@@ -96,6 +91,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	t_btn *curr_btn;
 
+	SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (btn == SDL_BUTTON_LEFT)
 	{
 		//doom->ui.curr_btn = NULL;
@@ -146,12 +142,15 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 
 int		mouse_move(int x, int y, t_doom *doom)
 {
-	//t_btn	*curr_btn;
 	t_slid	*tmp;
 
 	doom->sdl.m_pos.x = x;
 	doom->sdl.m_pos.y = y;
 	doom->ui.curr_btn = btn_hover(doom, x, y);
+	if (doom->ui.curr_btn && doom->ui.curr_btn->func)
+		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
+	else
+		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (doom->ui.m_status == 0)
 	{
 		//ft_printf("mouse : %d\t%d\t%d\n", x, y);
@@ -159,16 +158,9 @@ int		mouse_move(int x, int y, t_doom *doom)
 		doom->player.stat.rot.x -= y / (SENSIBILITY * 2);
 		return (0);
 	}
-	/* Moved in loop_hook because menu is now rendered everyframe
-	if (doom->ui.curr_btn != curr_btn)
-	{
-		if ((curr_btn && (curr_btn->func || curr_btn->data)) || !curr_btn)
-			draw_hover(doom, curr_btn, doom->ui.curr_btn);
-		doom->ui.curr_btn = curr_btn;
-	}
-	*/
 	if (doom->ui.currslid)
 	{
+		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		tmp = doom->ui.currslid;
 		update_slider_value(doom, tmp, x);
 		if (tmp == &(doom->ui.slidopt[0]))
