@@ -25,6 +25,40 @@ t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2)
 	return (t);
 }
 
+void ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil)
+{
+	t_lstmur t;
+	t_lstmur tmp;
+
+	if (!start || !(*start))
+		return;
+	t = *start;
+	while (t)
+	{
+		if (t->pil1 == pil || t->pil2 == pil)
+		{
+			if (*start == t)
+			{
+				*start = t->next;
+				tmp = *start;
+				free(t);
+			}
+			else
+			{
+				if (t->prvs)
+					t->prvs->next = t->next;
+				if (t->next)
+					t->next->prvs = t->prvs;
+				tmp = t->next;
+				free(t);
+			}
+			t = tmp;
+		}
+		else
+			t = t->next;
+	}
+}
+
 t_lstmur ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2)
 {
 	t_lstmur t;

@@ -88,9 +88,15 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (e.button == SDL_BUTTON_RIGHT)
 	{
-		if (edit->currpilier && edit->hoverpilier)
+		if (edit->currpilier && edit->hoverpilier && edit->currpilier != edit->hoverpilier)
 		{
 			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier);
+		}
+		else if (e.clicks == 2)
+		{
+			ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, (edit->hoverpilier ? &edit->hoverpilier : &edit->currpilier));
+			//ft_remove_pillar_fromwalls(&edit->sectors->murs, (edit->hoverpilier ? edit->hoverpilier : edit->currpilier));
+			//ft_removepillar(&edit->pillist, (edit->hoverpilier ? &edit->hoverpilier : &edit->currpilier));
 		}
 	}
 	return (0);
