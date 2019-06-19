@@ -5,6 +5,10 @@
 # include "vector.h"
 
 # define WEAPON_MAX 5
+# define CROUCH 16350.0
+# define WALK 32700.0
+# define SPRINT 49050.0
+
 
 typedef	struct			s_weapon
 {
@@ -35,9 +39,24 @@ typedef struct 			s_player
 	int					crouch;
 	int					fov;
 	int					hand;
-	int					nb_weapons;
-	t_weapon			*weapons;
+	t_weapon			weapons[WEAPON_MAX];
 }						t_player;
+
+/*
+** Enemy states:
+**
+** 0 : idle, not moving (not to be considered in calculations)
+** 1 : moving towards player
+** 2 : shooting at player
+** 3 : dying / dead
+*/
+
+typedef struct 			s_enemy
+{
+	t_stat				stat;
+	int					dmg;
+	int					state;
+}						t_enemy;
 
 /*
 **	Gestion
@@ -49,10 +68,10 @@ void					player_free(t_player *player);
 **	Gameplay
 */
 
-void					sprint_release(t_player *player);
-void					sprint(t_player *player);
-void					gravity(t_player *player);
-void					inertie(t_player *player);
+void					sprint_release(t_stat *stat);
+void					sprint(t_stat *stat);
+void					gravity(t_stat *stat);
+void					inertie(t_stat *stat);
 void					jump(t_player *player);
 void					shoot(t_player *player);
 void					reload(t_weapon *weapon);
@@ -60,6 +79,7 @@ void					crouch_release(t_player *player);
 void					crouch(t_player *player);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
+void					change_weapon(t_player *player, int new_w);
 
 /*
 **	Debug
