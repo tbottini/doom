@@ -485,6 +485,6 @@ void					music_free(t_sound *sound);
 int						music_init(t_sound *sound);
 void					change_music(t_sound *sound, int n, int fade);
 void					cinematrique(t_doom *doom);
-void					effect_volume(t_doom *doom);
+void					effect_volume(t_sound *sound);
 
 #endif
