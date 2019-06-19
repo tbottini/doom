@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 13:58:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:55:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@ int		key_press(int key, t_doom *doom)
 		else if (doom->ui.m_status == 4)
 			sdl_set_status(doom, 0);
 	}
-	else if (key == SDLK_v)
-		;//kick(&(doom->player), /*sector*/);
-	else if (key == SDLK_r)
+	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&(doom->player.weapons[doom->player.hand]));
-	else if (key == SDLK_e)
-		action(doom);
-	else if (key == SDLK_LGUI)
+	else if (key == SDLK_e && !doom->ui.m_status)
+		action(&doom->player, &doom->player.stat);
+	else if (key == SDLK_LGUI && !doom->ui.m_status)
 		crouch(&doom->player);
 	else if (key == SDLK_g)
 		describe_player(doom->player);
@@ -44,8 +42,8 @@ int		key_press(int key, t_doom *doom)
 		describe_sector(*doom->sector);
 	else if (key == SDLK_9)
 		change_music(&doom->sound, 10, 5000);
-	else if (key == SDLK_o)
-		;//kick(doom, &doom->player);
+	else if (key == SDLK_v && !doom->ui.m_status)
+		kick(doom, &doom->player);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);
@@ -74,7 +72,7 @@ int		key_release(int key, t_doom *doom)
 		doom->player.stat.rotvel.y = 0.0;
 	}*/
 	if (key == SDLK_w || key == SDLK_LSHIFT)
-		sprint_release(&doom->player);
+		sprint_release(&doom->player.stat);
 	else if (key == SDLK_LGUI)
 		crouch_release(&doom->player);
 	return (0);

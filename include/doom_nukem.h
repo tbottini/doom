@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
 /*   Updated: 2019/06/13 17:06:13 by tbottini         ###   ########.fr       */
@@ -416,8 +416,9 @@ void					pillar_screen_info(t_designer *arch, t_player *p);
 **	simple input
 */
 
-void					bullet(t_doom *doom, t_player *player);
-void					action(t_doom *doom);
+void					bullet(t_doom *doom, t_stat *stat);
+void					action(t_player *player, t_stat *stat);
+void					kick(t_doom *doom, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					sdl_MultiRenderCopy(t_sdl *sdl);
@@ -427,8 +428,8 @@ int						pos_in_rect(SDL_Rect rect, int x, int y);
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
-t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
-t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
+t_wall					*collision(t_stat *stat, t_fvct3 pos, t_wall *w);
+t_wall					*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 void					bulletV42(t_doom *doom, t_player *player);
 
@@ -448,7 +449,7 @@ t_list					*ft_lstn(void *content);
 */
 void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
-void					move(t_doom *doom, t_player *player);
+void					move(t_stat *stat);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					draw_wall(t_designer *arch, t_player *player);
 void					minimap(t_doom *d);
