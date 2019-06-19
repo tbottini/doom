@@ -60,7 +60,7 @@ int event_handler2(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_MOUSEMOTION)
 		editor_mouse_move(e.motion, doom);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
-		editor_mouse_press(e.button.button, e.button.x, e.button.y, &doom->edit);
+		editor_mouse_press(e.button, &doom->edit);
 	else if (e.type == SDL_MOUSEWHEEL)
 		editor_mouse_wheel(e.wheel, &(doom->edit));
 	else if (e.type == SDL_MOUSEBUTTONUP)

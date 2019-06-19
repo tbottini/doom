@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_tools.c                                       :+:      :+:    :+:   */
+/*   mur_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,85 +12,73 @@
 
 #include "doom_nukem.h"
 
-t_lstpil ft_newpillar(t_vct2 loc)
+t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2)
 {
-	t_lstpil t;
+	t_lstmur t;
 
-	if (!(t = malloc(sizeof(t_pilier))))
+	if (!(t = malloc(sizeof(t_mur))))
 		return (NULL);
-	t->pos = loc;
+	t->pil1 = pil1;
+	t->pil2 = pil2;
 	t->prvs = NULL;
 	t->next = NULL;
 	return (t);
 }
 
-void ft_removepillar(t_lstpil *start, t_lstpil *pil)
+void ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil)
 {
-	if (!pil || !(*pil))
-		return ;
-	if (*pil == *start)
-		*start = (*start)->next;
-	if ((*pil)->next)
-		(*pil)->next->prvs = (*pil)->prvs;
-	if ((*pil)->prvs)
-		(*pil)->prvs->next = (*pil)->next;
-	free(*pil);
-	*pil = NULL;
+	t_lstmur t;
+	t_lstmur tmp;
+
+	if (!start || !(*start))
+		return;
+	t = *start;
+	while (t)
+	{
+		if (t->pil1 == pil || t->pil2 == pil)
+		{
+			if (*start == t)
+			{
+				*start = t->next;
+				tmp = *start;
+				free(t);
+			}
+			else
+			{
+				if (t->prvs)
+					t->prvs->next = t->next;
+				if (t->next)
+					t->next->prvs = t->prvs;
+				tmp = t->next;
+				free(t);
+			}
+			t = tmp;
+		}
+		else
+			t = t->next;
+	}
 }
 
-t_lstpil ft_pillarpushend(t_lstpil *start, t_vct2 loc)
+t_lstmur ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2)
 {
-	t_lstpil t;
+	t_lstmur t;
 
 	if (!start)
 		return (NULL);
 	if (!(*start))
-		return (*start = ft_newpillar(loc));
+		return (*start = ft_newwall(pil1, pil2));
 	t = *start;
 	while (t->next)
 		t = t->next;
-	if (!(t->next = ft_newpillar(loc)))
+	if (!(t->next = ft_newwall(pil1, pil2)))
 		return (NULL);
 	t->next->prvs = t;
 	return (t->next);
 }
 
-static int check_diff(t_lstpil un, t_lstpil deux)
+void ft_clear_wall_list(t_lstmur *start)
 {
-	if (un->pos.x != deux->pos.x || un->pos.y != deux->pos.y)
-		return (0);
-	return (1);
-}
-
-void ft_nodeprint_pillar(t_lstpil node)
-{
-	t_lstpil curr;
-
-	if (!node)
-	{
-		ft_printf("xxx\n");
-		return;
-	}
-	curr = node;
-	while (curr)
-	{
-		ft_printf("%d %d", curr->pos.x, curr->pos.y);
-		if (curr->next)
-			ft_printf("%c-> ", check_diff(curr->next->prvs, curr) ? ' ' : '!');
-		if (curr->next != node)
-			curr = curr->next;
-		else
-		{
-			ft_printf("Loop");
-			curr = NULL;
-		}
-	}
-	ft_printf("\n");
-}
-
-void ft_clear_pillar_list(t_lstpil *start)
-{
-	t_lstpil tmp;
+	t_lstmur tmp;
 
 	if (!start || !(*start))
 		return;

@@ -48,17 +48,12 @@ static void cine_events(t_doom *doom, int *i)
 
 static void	cine_delay(t_doom *doom, int *i)
 {
+	int wait;
+
 	cine_events(doom, i);
-	if (doom->sdl.timp == SDL_GetTicks() / 1000)
-		++doom->sdl.fps;
-	else
-	{
-		ft_printf("\r%d FPS\n", doom->sdl.fps);
-		doom->sdl.fps = 0;
-		doom->sdl.timp = SDL_GetTicks() / 1000;
-	}
-	while (SDL_GetTicks() - doom->timestamp < 39)
-		; 
+	wait = SDL_GetTicks() - doom->timestamp - 39; // Nombre de ms entre chaque frames
+	if (wait < 0)
+		SDL_Delay(-wait);
 	doom->timestamp = SDL_GetTicks();
 }
 

@@ -21,6 +21,7 @@ void		describe_sector(t_sector sector)
 	int		i;
 	t_wall	*wall;
 	t_pillar	a;
+
 	i = 0;
 	ft_putendl("-------sector-------");
 	double_msg("height floor :", sector.h_floor);
@@ -43,6 +44,7 @@ void		describe_bunch(t_wall **bunch)
 {
 	int		i;
 	t_pillar	a;
+
 	i = 0;
 	ft_putendl("----bunch----");
 	while (bunch[i] != NULL)
@@ -93,6 +95,7 @@ void		describe_sub_sector(t_sector sector, int sub)
 	int		i;
 	t_wall	*wall;
 	t_pillar	a;
+
 	i = 0;
 	ft_putnchar('\t', sub);
 	ft_putendl("-------sector-------");
@@ -106,6 +109,7 @@ void		describe_sub_sector(t_sector sector, int sub)
 	while (i < sector.len)
 	{
 		ft_putnchar('\t', sub);
+		//printf("%f %f --> %f %f\n", sector.wall[i].pillar.p.x, sector.wall[i].pillar.p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
 		fvct2_print(*(t_fvct2*)&sector.wall[i].pillar);
 		ft_putstr(" --> ");
 		a = *sector.wall[i].next;

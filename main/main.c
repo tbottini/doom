@@ -39,7 +39,6 @@ int			main(int ac, char **av)
 	//printf("player tall parsing")
 	player_init(&doom->player);
 	describe_player(doom->player);
-	//describe_sector_recursif(*doom->sector);
 	doom_render(doom);
 	printf("player tall %f\n", doom->player.stat.height);
 	while (1)

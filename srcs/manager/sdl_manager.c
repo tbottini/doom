@@ -69,7 +69,7 @@ int		sdl_init(t_sdl *sdl, const char *title)
 	if (!(sdl->rend = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
 	SDL_SetWindowMinimumSize(sdl->win, MINWIDTH, MINHEIGHT);
-	SDL_SetWindowMaximumSize(sdl->win, MAXWIDTH, MAXHEIGHT);
+	//SDL_SetWindowMaximumSize(sdl->win, MAXWIDTH, MAXHEIGHT);
 	sdl->txture = SDL_CreateTexture(sdl->rend,
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
 	if (SDL_LockTexture(sdl->txture, NULL, &tmp, &pitch))
