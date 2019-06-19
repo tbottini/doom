@@ -168,7 +168,7 @@ int		mouse_move(int x, int y, t_doom *doom)
 		else if (tmp == &(doom->ui.slidopt[1]))
 			Mix_VolumeMusic(doom->sound.musicvolume);
 		else if (tmp == &(doom->ui.slidopt[2]))
-			effect_volume(doom);//Mix_SetPanning(1, doom->sound.effectvolume, doom->sound.effectvolume);
+			effect_volume(&doom->sound);
 	}
 	return (0);
 }
