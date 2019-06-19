@@ -16,22 +16,13 @@ static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 
 int vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 {
-	//int o1;
-	//int o2;
-	//int o3;
-	//int o4;
-
-	//o1 = orientationV42(p1, q1, p2);
-	//o2 = orientationV42(p1, q1, q2);
-	//o3 = orientationV42(p2, q2, p1);
-	//o4 = orientationV42(p2, q2, q1);
 	if (orientation(p1, q1, p2) != orientation(p1, q1, q2)
 		&& orientation(p2, q2, p1) != orientation(p2, q2, q1))
 		return (1);
 	return (0);
 }
 
-t_wall		*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w)
+t_wall		*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 {
 	int		i;
 	int		j;
@@ -43,37 +34,37 @@ t_wall		*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 		return (0);
 	}
 	i = -1;
-	while (++i < doom->sector->len)
-		if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->wall[i].pillar.p, *(t_fvct3*)&doom->sector->wall[i].next->p))
-			return (&doom->sector->wall[i]);
+	while (++i < stat->sector->len)
+		if (stat->sector->h_ceil > stat->pos.z + 0.5 && vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p, *(t_fvct3*)&stat->sector->wall[i].next->p))
+			return (&stat->sector->wall[i]);
 	j = -1;
-	while (++j < doom->sector->len_sub)
+	while (++j < stat->sector->len_sub)
 	{
 		i = -1;
-		while (++i < doom->sector->ssector[j].len)
-			if (vector_intersect(ori, pos, *(t_fvct3*)&doom->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&doom->sector->ssector[j].wall[i].next->p))
-				return (&doom->sector->ssector[j].wall[i]);
+		while (++i < stat->sector->ssector[j].len)
+			if (stat->sector->ssector[j].h_ceil > stat->pos.z + 0.5 && vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
+				return (&stat->sector->ssector[j].wall[i]);
 	}
 	return (NULL);
 }
 
-t_wall		*collision(t_doom *doom, t_fvct3 pos, t_wall *w)
+t_wall		*collision(t_stat *stat, t_fvct3 pos, t_wall *w)
 {
 	t_fvct3 tmp;
 
 	tmp.x = pos.x;
 	tmp.y = pos.y + PADDING;
 	pos.x += PADDING;
-	if ((w = collisionV21(doom, pos, tmp, w)))
+	if ((w = collisionV21(stat, pos, tmp, w)))
 		return (w);
 	tmp.y -= PADDING2;
-	if ((w = collisionV21(doom, pos, tmp, w)))
+	if ((w = collisionV21(stat, pos, tmp, w)))
 		return (w);
 	pos.x -= PADDING2;
-	if ((w = collisionV21(doom, pos, tmp, w)))
+	if ((w = collisionV21(stat, pos, tmp, w)))
 		return (w);
 	tmp.y += PADDING2;
-	if ((w = collisionV21(doom, pos, tmp, w)))
+	if ((w = collisionV21(stat, pos, tmp, w)))
 		return (w);
 	return (NULL);
 }

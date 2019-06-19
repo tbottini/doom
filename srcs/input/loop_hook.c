@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/13 11:31:08 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/13 11:56:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ static void input_loop(t_doom *doom, int key)
 		doom->player.stat.vel.x = (key == SDLK_w ? doom->player.stat.speed : -doom->player.stat.speed);
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.stat.vel.y = (key == SDLK_a ? -doom->player.stat.speed : doom->player.stat.speed);*/
-	if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
+	if ((key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d) && !doom->ui.m_status)
 		benda(doom, key);
-	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed)
+	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed && !doom->ui.m_status)
 		sprint(&doom->player);
-	else if (key == SDLK_SPACE)
+	else if (key == SDLK_SPACE && !doom->ui.m_status)
 		jump(&doom->player);
-	else if (key == SDLK_r && doom->player.hand)
+	else if (key == SDLK_r && doom->player.hand && !doom->ui.m_status)
 		reload(&(doom->player.weapons[doom->player.hand]));
-	else if (key == SDL_BUTTON_LEFT)
+	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
 		shoot(&doom->player);
 	else if (key == SDLK_p) //test tir
 		bullet(doom, &doom->player.stat);
