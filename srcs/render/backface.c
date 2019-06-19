@@ -8,26 +8,25 @@
 **		calculer et afficher la colomne
 **	tout est inverse car on ne recoit pas la distance mais la taille du pillier
 */
-int			z_line_buffer(t_doom doom, double len_pillar, int px)
+int			z_line_buffer(t_designer *arch, double len_pillar, int px)
 {
 
-	if (len_pillar > doom.zline[px])
+	if (len_pillar > arch->zline[px])
 	{
-		doom.zline[px] = len_pillar;
+		arch->zline[px] = len_pillar;
 		return (1);
 	}
 	return (0);
 }
 
-void				zline_reset(t_doom *doom)
+void				zline_reset(t_designer *arch)
 {
 	int				i;
 
 	i = 0;
-	while (i < doom->sdl.size.x)
+	while (i < arch->sdl->size.x)
 	{
-		//doom->zline[i] = X;
-		doom->zline[i] = 0;
+		arch->zline[i] = 0;
 		i++;
 	}
 }

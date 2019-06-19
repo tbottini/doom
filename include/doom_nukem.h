@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/10 17:07:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/13 17:06:13 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ typedef struct			s_sdl
 	Uint32				*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
-	Uint32				timp;
+	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;
 
@@ -180,11 +180,22 @@ struct					s_pilier {
 	t_lstpil			next;
 };
 
+typedef struct s_mur	t_mur;
+typedef t_mur			*t_lstmur;
+
+struct					s_mur {
+	t_pilier			*pil1;
+	t_pilier			*pil2;
+
+	t_lstmur			prvs;
+	t_lstmur			next;
+};
+
 typedef struct s_secteur	t_secteur;
 typedef t_secteur		*t_lstsec;
 
 struct					s_secteur {
-	t_lstpil			root;
+	t_lstmur			murs;
 
 	t_lstsec			prvs;
 	t_lstsec			next;
@@ -204,10 +215,11 @@ typedef struct			s_editor
 	//SDL_Texture			*txture;
 	//Uint32				*screen;
 	t_tab				keys;
+	t_lstpil			pillist;
 	t_lstpil			currpilier;
 	t_lstpil			hoverpilier;
 	t_lstsec			sectors; // list of all root pillards in sector
-	t_lstpil			map;
+	t_lstsec			map;
 	t_vct3				mappos;
 }						t_editor;
 
@@ -215,14 +227,23 @@ typedef struct 			s_camera
 {
 	int					fov;
 	double				d_screen;
-	t_zline				*zline;
 }						t_camera;
 
 typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];
 	uint32_t			*top[1920];
+	t_sector			*sector;
+	t_wall				*wall;
+	t_camera			*cam;
+	t_sdl				*sdl;
 	SDL_Surface			**texture;
+	t_fvct2				dist;
+	t_vct2				px;
+	t_fvct2				shift_txtr;
+	double				*zline;
+	//double			coef_px;
+
 }						t_designer;
 
 struct					s_doom
@@ -236,7 +257,6 @@ struct					s_doom
 	SDL_GameController	*controller;
 	t_sector			*sector;			//root sector
 	t_vct2				vel;
-	double				*zline;
 	t_designer			tool;
 	t_camera			camera;
 };
@@ -339,7 +359,7 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
-int						editor_mouse_press(int btn, int x, int y, t_editor *edit);
+int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
@@ -350,11 +370,16 @@ t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
 
-void					change_sector(t_editor *edit, int pos);
+void					sector_menu(t_editor *edit, int pos, int del);
+
+t_lstmur 				ft_newwall(t_pilier *pil1, t_pilier *pil2);
+void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
+t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
+void					ft_clear_wall_list(t_lstmur *start);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
+void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
-t_lstpil				ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
 void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 void 					ft_nodeprint_secteur(t_lstsec node);
@@ -362,10 +387,11 @@ t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
 
-t_lstsec				ft_newsector(t_lstpil root);
-t_lstsec				init_secteur(void);
-t_lstsec push_init_secteur(t_lstsec *node);
-void ft_clear_secteur_list(t_lstsec *start);
+t_lstsec				ft_newsector();
+t_lstsec				push_secteur(t_lstsec *node);
+void					ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpil *pil);
+void					ft_clear_secteur(t_lstsec *sec);
+void					ft_clear_secteur_list(t_lstsec *start);
 
 /*
 **	gestion
@@ -375,7 +401,7 @@ void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_
 void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
-int						designer_init(t_designer *designer, t_sdl sdl);
+int						designer_init(t_designer *designer, t_sdl *sdl, t_camera *cam);
 void					editor_free(t_editor *editor);
 int						editor_init(t_editor *editor);
 void					sdl_free(t_sdl *sdl);
@@ -384,14 +410,15 @@ void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
-void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *column_id);
+void					pillar_screen_info(t_designer *arch, t_player *p);
 
 /*
 **	simple input
 */
 
-void					bullet(t_doom *doom, t_player *player);
-void					action(t_doom *doom);
+void					bullet(t_doom *doom, t_stat *stat);
+void					action(t_player *player, t_stat *stat);
+void					kick(t_doom *doom, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					sdl_MultiRenderCopy(t_sdl *sdl);
@@ -401,8 +428,8 @@ int						pos_in_rect(SDL_Rect rect, int x, int y);
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
-t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
-t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
+t_wall					*collision(t_stat *stat, t_fvct3 pos, t_wall *w);
+t_wall					*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 void					bulletV42(t_doom *doom, t_player *player);
 
@@ -422,9 +449,9 @@ t_list					*ft_lstn(void *content);
 */
 void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
-void					move(t_doom *doom, t_player *player);
+void					move(t_stat *stat);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					draw_wall(t_doom *doom, t_wall wall, t_sector sector_wall);
+void					draw_wall(t_designer *arch, t_player *player);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
@@ -433,18 +460,19 @@ void					play_effect(t_sound *sound, int e);
 /*
 **	render
 */
-int						z_line_buffer(t_doom doom, double len_pillar, int px);
+int						z_line_buffer(t_designer *arch, double len_pillar, int px);
 int						doom_render(t_doom *doom);
-void					zline_reset(t_doom *doom);
-int						fish_bowl_px(t_doom doom, t_pillar pillar);
+void					zline_reset(t_designer *arch);
+int						fish_bowl_px(t_designer *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
+double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
 
 /*
 **	bunch
 */
 void					sector_frustum(t_sector *sector, t_player player);
 int						buncherisation(t_sector sector, t_wall **bunch);
-void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector sector);
+void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 
 /*
 **	Cinematique et Musique
@@ -458,6 +486,6 @@ void					music_free(t_sound *sound);
 int						music_init(t_sound *sound);
 void					change_music(t_sound *sound, int n, int fade);
 void					cinematrique(t_doom *doom);
-void					effect_volume(t_doom *doom);
+void					effect_volume(t_sound *sound);
 
 #endif
