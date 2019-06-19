@@ -71,7 +71,7 @@ void					player_free(t_player *player);
 void					sprint_release(t_player *player);
 void					sprint(t_player *player);
 void					gravity(t_stat *stat);
-void					inertie(t_player *player);
+void					inertie(t_stat *stat);
 void					jump(t_player *player);
 void					shoot(t_player *player);
 void					reload(t_weapon *weapon);

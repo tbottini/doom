@@ -6,16 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/13 11:24:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 12:04:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-void		pause_game(t_doom *doom)
-{
-	doom->ui.m_status = 3;
-}
 
 void		next_weapon(t_player *player)
 {

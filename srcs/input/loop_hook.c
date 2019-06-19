@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/13 11:56:08 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 12:25:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int loop_hook(t_doom *doom)
 		if (doom->ui.m_status == 0)
 		{
 			/// Place here functions that need to be launch every frame while the game is running
-			move(doom, &doom->player);
+			move(&doom->player.stat);
 			doom_render(doom);
 			/// End Comment
 		}

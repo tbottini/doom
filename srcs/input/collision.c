@@ -35,14 +35,14 @@ t_wall		*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 	}
 	i = -1;
 	while (++i < stat->sector->len)
-		if (stat->sector->h_ceil > stat->pos.z + 0.5 && vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p, *(t_fvct3*)&stat->sector->wall[i].next->p))
+		if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p, *(t_fvct3*)&stat->sector->wall[i].next->p))
 			return (&stat->sector->wall[i]);
 	j = -1;
 	while (++j < stat->sector->len_sub)
 	{
 		i = -1;
 		while (++i < stat->sector->ssector[j].len)
-			if (stat->sector->ssector[j].h_ceil > stat->pos.z + 0.5 && vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
+			if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
 				return (&stat->sector->ssector[j].wall[i]);
 	}
 	return (NULL);
