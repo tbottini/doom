@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/19 12:25:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 16:19:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ void		crouch_release(t_player *player)
 	}
 }
 
-void		sprint(t_player *player)
+void		sprint(t_stat *stat)
 {
-	if (player->stat.speed == WALK)
-		player->stat.speed = SPRINT;
+	if (stat->speed == WALK)
+		stat->speed = SPRINT;
 }
 
-void		sprint_release(t_player *player)
+void		sprint_release(t_stat *stat)
 {
-	player->stat.speed = WALK;
+	stat->speed = WALK;
 }
 
 void		fall_damage(t_stat *stat, int f)
@@ -156,6 +156,6 @@ void		inertie(t_stat *stat)
 		stat->vel.y += DECELERATION;
 	else
 		stat->vel.y = 0;
-	if (stat->vel.x < stat->speed - DECELERATION && stat->vel.y < stat->speed - DECELERATION  && Mix_Playing(1))
+	if (stat->vel.x < stat->speed - DECELERATION && stat->vel.y < stat->speed - DECELERATION && Mix_Playing(1))
 		Mix_FadeOutChannel(1, 0);
 }

@@ -5,6 +5,8 @@
 #include "vector.h"
 #include <SDL.h>
 
+typedef struct s_doom t_doom;
+
 typedef struct 			s_txtr
 {
 	uint32_t			*pixels;
@@ -18,6 +20,17 @@ typedef struct		s_pillar
 	char			frust;
 	double			angle;
 }					t_pillar;
+
+typedef struct			s_prop
+{
+	double				x1;
+	double				x2;
+	double				y1;
+	double				y2;
+	double				z;
+	t_txtr				*tex;
+	void				(*func)(t_doom *doom);
+}						t_prop;
 
 /*
 **	rajouter un pointeur sur le prochain pillier ? pour le mur
@@ -37,6 +50,8 @@ typedef struct		s_sector
 {
 	t_fvct3			gravity;
 	t_wall			*wall;
+	t_prop			*prop;
+	int				len_prop;
 	struct s_sector	*ssector;
 	int				len_sub;
 	double			h_floor;

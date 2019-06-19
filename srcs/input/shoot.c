@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/13 10:29:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 16:54:07 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ double			bullet_clipping(t_wall wall, t_fvct3 pos, double angle)
 	t_fvct2		inter;
 	t_fvct2		diff;
 	t_fvct2		diff2;
-	double		coef_ang;
 	double		coef_wall;
 	double		b;
 
@@ -51,17 +50,16 @@ double			bullet_clipping(t_wall wall, t_fvct3 pos, double angle)
 	diff.y = wall.pillar.p.y - pos.y;
 	diff2.x = wall.next->p.x - pos.x;
 	diff2.y = wall.next->p.y - pos.y;
-	coef_ang = tan(angle * PI180);
 	if (diff2.x - diff.x < 0.00001 && diff2.x - diff.x > -0.000001)
 	{
 		inter.x = diff.x;
-		inter.y = diff.x * coef_ang;
+		inter.y = diff.x * tan(angle * PI180);
 	}
 	else
 	{
 		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
 		b = diff.y - diff.x * coef_wall;
-		inter.x = b / (coef_ang - coef_wall);
+		inter.x = b / (tan(angle * PI180) - coef_wall);
 		inter.y = coef_wall * inter.x + b;
 	}
 	return (distance((t_fvct2){0.0, 0.0}, inter));

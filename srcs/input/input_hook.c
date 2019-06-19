@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/13 11:33:30 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 17:55:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		key_press(int key, t_doom *doom)
 	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDLK_e && !doom->ui.m_status)
-		action(doom);
+		action(&doom->player, &doom->player.stat);
 	else if (key == SDLK_LGUI && !doom->ui.m_status)
 		crouch(&doom->player);
 	else if (key == SDLK_g)
@@ -77,7 +77,7 @@ int		key_release(int key, t_doom *doom)
 		doom->player.stat.rotvel.y = 0.0;
 	}*/
 	if (key == SDLK_w || key == SDLK_LSHIFT)
-		sprint_release(&doom->player);
+		sprint_release(&doom->player.stat);
 	else if (key == SDLK_LGUI)
 		crouch_release(&doom->player);
 	return (0);
