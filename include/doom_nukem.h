@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/19 12:25:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 18:34:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,7 +391,7 @@ void			pillar_screen_info(t_doom doom, t_wall wall, t_fvct2 *dist, t_vct2 *colum
 */
 
 void					bullet(t_doom *doom, t_stat *stat);
-void					action(t_doom *doom);
+void					action(t_player *player, t_stat *stat);
 void					kick(t_doom *doom, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);

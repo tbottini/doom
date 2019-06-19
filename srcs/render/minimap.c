@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/12 12:39:27 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 14:59:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct			s_minimap
 	t_vct2	mid;
 }						t_minimap;
 
-#define UNIT 20.0
+#define UNIT 8.0
 #define CWALL 0xDADADAFF
 #define CPERS 0xFFFFFFFF
 #define WHITE 0xFFFFFFFF
@@ -204,5 +204,6 @@ void		minimap(t_doom *d)
 		minifield(d, mini, i);
 		i += d->player.fov >> 3;
 	}
+	minifield(d, mini, (d->player.stat.rot.y + (d->player.fov >> 1)));
 	bold_point2(d, mini, mini.mid, CPERS);
 }

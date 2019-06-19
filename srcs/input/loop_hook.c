@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/19 12:25:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/19 14:44:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void input_loop(t_doom *doom, int key)
 	if ((key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d) && !doom->ui.m_status)
 		benda(doom, key);
 	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed && !doom->ui.m_status)
-		sprint(&doom->player);
+		sprint(&doom->player.stat);
 	else if (key == SDLK_SPACE && !doom->ui.m_status)
 		jump(&doom->player);
 	else if (key == SDLK_r && doom->player.hand && !doom->ui.m_status)
@@ -78,7 +78,7 @@ static void editor_loop(t_doom *doom, int key)
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
 	else if (key == SDLK_LSHIFT)
-		sprint(&doom->player);
+		sprint(&doom->player.stat);
 	else if (key == SDLK_r)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDL_BUTTON_LEFT)
