@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/13 10:14:15 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/13 11:54:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void		update_position(t_doom *doom, t_fvct3 npos)
 	t_fvct3	tmp;
 	t_wall	*w;
 
-	if (!(w = collision(doom, npos, NULL)))
+	if (!(w = collision(&doom->player.stat, npos, NULL)))
 	{
 		doom->player.stat.pos.x = npos.x;
 		doom->player.stat.pos.y = npos.y;
@@ -110,14 +110,14 @@ void		update_position(t_doom *doom, t_fvct3 npos)
 	}
 	tmp.x = doom->player.stat.pos.x;
 	tmp.y = npos.y;
-	if (!collision(doom, tmp, w))
+	if (!collision(&doom->player.stat, tmp, w))
 	{
 		doom->player.stat.pos.y = npos.y;
 		return ;
 	}
 	tmp.y = doom->player.stat.pos.y;
 	tmp.x = npos.x;
-	if (!collision(doom, tmp, w))
+	if (!collision(&doom->player.stat, tmp, w))
 		doom->player.stat.pos.x = npos.x;
 }
 
