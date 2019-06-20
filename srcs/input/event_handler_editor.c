@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event_handler2.c                                   :+:      :+:    :+:   */
+/*   event_handler_editor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -23,7 +23,6 @@ static void		window_event(t_doom *doom, SDL_Event e)
 		doom->edit.mappos.x += (doom->edit.size.x - tmp.x) / 2;
 		doom->edit.mappos.y += (doom->edit.size.y - tmp.y) / 2;
 		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y - doom->edit.sectbox.x;
-		
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 	{
@@ -36,7 +35,7 @@ static void		window_event(t_doom *doom, SDL_Event e)
 ** New event shouldn't be needed
 */
 
-int event_handler2(t_doom *doom, SDL_Event e)
+int event_handler_editor(t_doom *doom, SDL_Event e)
 {
 	if (doom->edit.status != 1)
 		doom->edit.status = 1;

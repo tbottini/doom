@@ -18,8 +18,8 @@ SRCS_UI			:=		button_action.c									\
 
 SRCS_INPUT		:=		event_controller.c								\
 						event_handler.c									\
-						event_handler1.c								\
-						event_handler2.c								\
+						event_handler_doom.c							\
+						event_handler_editor.c							\
 						input_hook.c									\
 						loop_hook.c										\
 						action.c										\
@@ -50,7 +50,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 						debug_vector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
-						mur_tools.c									\
+						mur_tools.c										\
 						little_tools.c									\
 						num_tools.c										\
 						sdl_tools.c										\
@@ -66,6 +66,8 @@ SRCS_GESTION	:=		doom_manager.c									\
 						effect_manager.c								\
 						designer_manager.c								\
 
+SRCS_CALCUL		:=		affine.c										\
+
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
 						$(patsubst %.c,objs/parsing/%.o,$(SRCS_PARSING))\
@@ -73,6 +75,7 @@ OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/tools/%.o,$(SRCS_TOOLS))	\
 						$(patsubst %.c,objs/ui/%.o,$(SRCS_UI))			\
 						$(patsubst %.c,objs/input/%.o,$(SRCS_INPUT))	\
-						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))
+						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))\
+						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))	\
 
 SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))

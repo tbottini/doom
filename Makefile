@@ -42,7 +42,8 @@ FOLDER			:=		objs									\
 						objs/tools								\
 						objs/ui									\
 						objs/input								\
-						objs/manager
+						objs/manager							\
+						objs/calcul								\
 
 COMPILE_LIB		:=		make -C libft/
 
