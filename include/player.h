@@ -68,6 +68,8 @@ void					player_free(t_player *player);
 **	Gameplay
 */
 
+void					fly(t_stat *stat);
+void					unfly(t_stat *stat);
 void					sprint_release(t_stat *stat);
 void					sprint(t_stat *stat);
 void					gravity(t_stat *stat);
