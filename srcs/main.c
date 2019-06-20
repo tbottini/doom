@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/16 14:14:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/20 12:26:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int			main(int ac, char **av)
 	else
 		sdl_set_status(doom, 1);
 	player_init(&doom->player);
-	describe_sector_recursif(*doom->sector);
 	event_handler(doom);
 	Mix_FadeInMusic(doom->sound.tab_music[0], -1, 18000);
 	cinematrique(doom);

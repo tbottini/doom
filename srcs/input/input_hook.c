@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 13:58:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/20 12:20:13 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 ** else if (key == SDLK_yourkey)
 **		action();
 */
-
 int		key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
@@ -62,22 +61,9 @@ int		key_press(int key, t_doom *doom)
 ** else if (key == SDLK_yourkey)
 **		action();
 */
-
 int		key_release(int key, t_doom *doom)
 {
 	ft_noderm_int(&(doom->sdl.keys), key);
-	/*if (key == SDLK_w || key == SDLK_s)
-	{
-		//doom->player.stat.vel.x = 0;
-	}
-	else if (key == SDLK_a || key == SDLK_d)
-	{
-		//doom->player.stat.vel.y = 0;
-	}
-	else if (key == SDLK_q || key == SDLK_e)
-	{
-		doom->player.stat.rotvel.y = 0.0;
-	}*/
 	if (key == SDLK_w || key == SDLK_LSHIFT)
 		sprint_release(&doom->player);
 	else if (key == SDLK_LGUI)
@@ -91,7 +77,6 @@ int		key_release(int key, t_doom *doom)
 ** else if (btn == SDL_BUTTON_yourbutton)
 **		action();
 */
-
 int		mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	t_btn *curr_btn;
@@ -127,7 +112,6 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 ** else if (btn == SDL_BUTTON_yourbutton)
 **		action();
 */
-
 int		mouse_release(int btn, int x, int y, t_doom *doom)
 {
 	doom->ui.currslid = NULL;
@@ -143,7 +127,6 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 ** Add here function that need to be done when mouse if moved in window
 ** x and y are relative postions when in gamemode
 */
-
 int		mouse_move(int x, int y, t_doom *doom)
 {
 	//t_btn	*curr_btn;
@@ -154,7 +137,6 @@ int		mouse_move(int x, int y, t_doom *doom)
 	doom->ui.curr_btn = btn_hover(doom, x, y);
 	if (doom->ui.m_status == 0)
 	{
-		//ft_printf("mouse : %d\t%d\t%d\n", x, y);
 		doom->player.stat.rot.y -= x / SENSIBILITY;
 		doom->player.stat.rot.x -= y / SENSIBILITY;
 		return (0);

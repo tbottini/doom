@@ -6,7 +6,7 @@
 #    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/03 20:38:19 by akrache          ###   ########.fr        #
+#    Updated: 2019/06/19 18:44:09 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ FOLDER			:=		objs									\
 						objs/tools								\
 						objs/ui									\
 						objs/input								\
-						objs/manager
+						objs/manager							\
+						objs/calcul
 
 COMPILE_LIB		:=		make -C libft/
 

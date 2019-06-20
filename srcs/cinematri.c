@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cinematri.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 01:54:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/07 00:24:18 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/20 12:04:42 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static void cine_events(t_doom *doom, int *i)
 		else if (e.window.windowID == 1)
 		{
 			if (e.type == SDL_WINDOWEVENT)
-				event_handler1(doom, e);
+				event_handler_doom(doom, e);
 		}
 		else if (e.window.windowID == 2)
 		{
 			if (e.type == SDL_WINDOWEVENT)
-				event_handler2(doom, e);
+				event_handler_editor(doom, e);
 		}
 		else if (e.type == SDL_CONTROLLERDEVICEADDED)
 		{
@@ -58,7 +58,7 @@ static void	cine_delay(t_doom *doom, int *i)
 		doom->sdl.timp = SDL_GetTicks() / 1000;
 	}
 	while (SDL_GetTicks() - doom->timestamp < 39)
-		; 
+		;
 	doom->timestamp = SDL_GetTicks();
 }
 

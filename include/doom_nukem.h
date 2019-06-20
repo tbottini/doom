@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/13 17:06:13 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/20 12:10:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <limits.h>
 # include "sector.h"
 # include "player.h"
+# include "equation.h"
 
 //# define MINWIDTH 1280
 # define MINWIDTH 800
@@ -71,6 +72,14 @@ typedef uint32_t	t_texture;
 ** 4 = center of the object before + (pos) px
 ** 5 = over the object before + (pos) px
 */
+
+
+enum 					e_window_id
+{
+	DOOM_WINDOW = 1,
+	EDITOR_WINDOW = 2
+};
+
 
 typedef struct			s_sloc
 {
@@ -227,6 +236,7 @@ typedef struct 			s_designer
 	t_sdl				*sdl;
 	SDL_Surface			**texture;
 	t_fvct2				dist;
+	t_fvct2				decal;
 	t_vct2				px;
 	t_fvct2				shift_txtr;
 	double				*zline;
@@ -304,8 +314,8 @@ t_slid					add_music_slider(t_doom *doom);
 t_slid					add_effect_slider(t_doom *doom);
 void					draw_slid(t_doom *doom, t_slid *tmp);
 int						event_handler(t_doom *doom);
-int						event_handler1(t_doom *doom, SDL_Event event);
-int						event_handler2(t_doom *doom, SDL_Event event);
+int						event_handler_doom(t_doom *doom, SDL_Event event);
+int						event_handler_editor(t_doom *doom, SDL_Event event);
 int						loop_hook(t_doom *doom);
 t_btn					*btn_hover(t_doom *doom, int x, int y);
 void					draw_hover(t_doom *doom, t_btn *newl, t_btn *old);

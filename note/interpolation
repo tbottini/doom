@@ -1,0 +1,50 @@
+
+filtrage trilineaire
+
+filtrage bilineaire
+
+interpolation
+
+-interpolate texture
+
+
+http://www.cs.bham.ac.uk/~vvk201/Teach/Graphics/16_Texture%20mapping.pdf
+
+http://chrishecker.com/images/4/41/Gdmtex1.pdf
+
+Texture mapping :
+(0,0) camera
+x0 hauteur du point
+z0 profondeur du point
+u0 hauteur sur la textures texel haut
+x0' projection sur l'ecran
+d = z profondeur de l'ecran
+x1, z1, u1 le deuxieme point
+(x0',d,u0') point de la texture
+
+x0' / d_screen = x / z0
+x0' = (x / z0) * d_screen
+
+x' hauteur d'un pixel sur l'ecran
+
+x' = x / z (position du d'un point)
+u' = u / z
+z' = 1 / z
+
+forward mapping (pour chaque pixel de la texture..iteration)
+-on recupere la position dans la textures
+-on definit la position dans la l'ecran
+-on definit quel pixel est a cette position
+-on copy la position du pixel
+pblm : on reecrit parfois le meme pipel sur l'ecran
+et certain pixel (d'ecran) peuvent pas recevoir d'information
+
+backward mapping (pour chaque pixel de l'ecran..iteration)
+
+x' ? z(=d_screen)
+l'equation de l'objet
+y = ax + b
+x = x'z
+az + b = x'z
+
+scalaire : multiplicateur de vecteur
