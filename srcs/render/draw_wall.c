@@ -1,12 +1,7 @@
 #include "doom_nukem.h"
 
 /*
-**	renvoie le pixel a l'ecran d'un point d'un pillier
-**	doom information generale
-**	h_diff hauteur du point par rapport a la vision de la camera
-**		(haut du pillier : h_diff = hauteur pillier - hauteur joueur)
-**	rot	rotation du joueur
-**	dist_wall	la distance du joueur par rapport au pillier
+**	renvoie la position en pixel d'un point
 */
 int			px_point(t_designer *arch, t_player *player, double h_diff, double dist_wall)
 {
@@ -22,7 +17,13 @@ int			px_point(t_designer *arch, t_player *player, double h_diff, double dist_wa
 	return (px);
 }
 
-t_fvct2		px_wall(t_designer *arch, t_player *player, int wall_height, double dist)
+/*
+**	renvoie la surface en px qu'un pillier prend
+**	en fonction de la hauteur du joueur (player)
+**	de la hauteur du mur (wall_height)
+**	et de la distance par rapport au mur (dist)
+*/
+t_fvct2		surface_pillar(t_designer *arch, t_player *player, int wall_height, double dist)
 {
 	t_fvct2	wall_portion;
 
@@ -44,6 +45,7 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, double col_t
 	double	buff;
 
 	px = arch->shift_txtr.x;
+	//futur appel de texture_interpolation2D
 	buff = 0;
 	coef = (double)wall->txtr.h / (surface.y - surface.x);
 	if (surface.y < 0)
@@ -103,6 +105,9 @@ void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
 	}
 }
 
+/*
+**	rearrange les parametre pour que l'on rende les colonnes de gauche a droite
+*/
 void			reorder(t_designer *arch)
 {
 	double		tmp;
@@ -133,18 +138,18 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	double		coef_txtr;
 
 	reorder(arch);
-	pillar = px_wall(arch, player, arch->sector->h_ceil, arch->dist.x);
-	pillar_next = px_wall(arch, player, arch->sector->h_ceil, arch->dist.y);
+	pillar = surface_pillar(arch, player, arch->sector->h_ceil, arch->dist.x);
+	pillar_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->dist.y);
 
-	coef_surface = (pillar.x - pillar_next.x) / (arch->px.y - arch->px.x);
-	coef_down = (pillar.y - pillar_next.y) / (arch->px.y - arch->px.x);
+	coef_surface = coef_diff(pillar.x - pillar_next.x, arch->px);
+	coef_down = coef_diff(pillar.y - pillar_next.y, arch->px);
+	coef_txtr = coef_vct(arch->shift_txtr, arch->px) * arch->wall->txtr.w;
 
-	coef_txtr = ((arch->shift_txtr.y - arch->shift_txtr.x) * arch->wall->txtr.w) / (arch->px.y - arch->px.x);
 	arch->shift_txtr.x *= arch->wall->txtr.w;
 	neutre.x = (double)(arch->sdl->size.y) / arch->dist.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->dist.y;
 
-	coef_neutre = (neutre.y - neutre.x) / (arch->px.y - arch->px.x);
+	coef_neutre = coef_vct(neutre, arch->px);
 	while (arch->px.x != arch->px.y)
 	{
 		if (z_line_buffer(arch, neutre.x, arch->px.x) > 0)
@@ -159,6 +164,11 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	}
 }
 
+/*
+**	les etapes de rendu pour un mur
+**	recuperation d'information supplementaire
+**	affichage d'un pillier a un autre
+*/
 void		draw_wall(t_designer *arch, t_player *player)
 {
 	pillar_screen_info(arch, player);
