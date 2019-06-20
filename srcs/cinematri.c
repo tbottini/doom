@@ -27,12 +27,12 @@ static void cine_events(t_doom *doom, int *i)
 		else if (e.window.windowID == 1)
 		{
 			if (e.type == SDL_WINDOWEVENT)
-				event_handler1(doom, e);
+				event_handler_doom(doom, e);
 		}
 		else if (e.window.windowID == 2)
 		{
 			if (e.type == SDL_WINDOWEVENT)
-				event_handler2(doom, e);
+				event_handler_editor(doom, e);
 		}
 		else if (e.type == SDL_CONTROLLERDEVICEADDED)
 		{

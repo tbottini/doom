@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event_handler1.c                                   :+:      :+:    :+:   */
+/*   event_handler_doom.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -69,7 +69,7 @@ void dropfile_event(t_doom *doom, SDL_Event e)
 ** New event shouldn't be needed
 */
 
-int event_handler1(t_doom *doom, SDL_Event e)
+int event_handler_doom(t_doom *doom, SDL_Event e)
 {
 	if (doom->edit.status == 1)
 		doom->edit.status = 2;
