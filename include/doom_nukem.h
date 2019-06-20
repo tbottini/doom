@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 12:10:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/20 12:58:58 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <limits.h>
 # include "sector.h"
 # include "player.h"
-# include "equation.h"
+# include "calcul.h"
 
 //# define MINWIDTH 1280
 # define MINWIDTH 800

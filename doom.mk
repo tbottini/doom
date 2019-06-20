@@ -67,6 +67,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						designer_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\
+						extra_calcul.c									\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
