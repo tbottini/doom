@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/14 09:57:01 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/20 21:29:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ static void input_loop(t_doom *doom, int key)
 		play_effect(&doom->sound, 8);
 	else if (key == SDLK_y)
 		fire(doom);
+	else if (key == SDLK_u)
+		fly(&doom->player.stat);
+	else if (key == SDLK_j)
+		unfly(&doom->player.stat);
 }
 
 static void editor_loop(t_doom *doom, int key)
