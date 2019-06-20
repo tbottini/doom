@@ -9,3 +9,4 @@ double			coef_diff(double diff, t_vct2 step)
 {
 	return (diff / (step.y - step.x));
 }
+

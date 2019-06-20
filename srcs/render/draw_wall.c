@@ -171,6 +171,6 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 */
 void		draw_wall(t_designer *arch, t_player *player)
 {
-	pillar_screen_info(arch, player);
+	wall_screen_info(arch, player);
 	pillar_to_pillar(arch, player);
 }

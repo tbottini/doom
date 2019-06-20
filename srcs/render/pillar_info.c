@@ -24,7 +24,7 @@ double		pillar_polarite(t_pillar *pillar, t_pillar next, int max)
 	return ((polarite == -1) ? 0 : max);
 }
 
-void			wall_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, double *dist, double *decal)
+void			pillar_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, double *dist, double *decal)
 {
 	float		angle;
 	int			size;
@@ -47,25 +47,26 @@ void			wall_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, do
 	}
 }
 
-void			pillar_screen_info(t_designer *arch, t_player *p)
+void			wall_screen_info(t_designer *arch, t_player *p)
 {
 	t_wall		wall;
 	double		tmp;
 
 	arch->shift_txtr = (t_fvct2){0, 0};
-	wall_screen_info(arch, arch->wall, p, &arch->px.x, &arch->dist.x, &arch->decal.x);
+	pillar_screen_info(arch, arch->wall, p, &arch->px.x, &arch->dist.x, &arch->decal.x);
 	tmp = arch->shift_txtr.x;
 	wall.pillar = *arch->wall->next;
 	wall.next = &arch->wall->pillar;
 
 	arch->shift_txtr.x = 0;
-	wall_screen_info(arch, &wall, p, &arch->px.y, &arch->dist.y, &arch->decal.y);
+	pillar_screen_info(arch, &wall, p, &arch->px.y, &arch->dist.y, &arch->decal.y);
 	if (arch->shift_txtr.x == 0.0)
 		arch->shift_txtr.y = 0.0;
 	else
 		arch->shift_txtr.y = 1 - arch->shift_txtr.x;
 	arch->shift_txtr.x = !tmp ? 1 : tmp;
 }
+
 /*
 **	on calcul la portion de l'ecran appartenant au mur
 **	sector : recup la hauteur au plafond,

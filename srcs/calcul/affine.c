@@ -8,7 +8,7 @@ double			affine_val(t_affine affine, int x)
 /*
 **	renvoie l'intersection des deux droite affine
 */
-t_fvct2			interpolation_lineaire(t_affine d1, t_affine d2)
+t_fvct2			interpolation_linear(t_affine d1, t_affine d2)
 {
 	t_fvct2		inter;
 

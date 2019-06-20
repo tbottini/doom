@@ -18,7 +18,23 @@ int				texture_interpolation2D(t_designer *arch)
 {
 	t_affine	px_affine;
 	t_affine	wall_affine;
+	t_fvct2		inter;
+	double		percent;
 
-	px_affine = affine_def(arch->px.x / arch->sdl.d_screen, 0);
+	//on determine les affine du mur est du
+	px_affine = affine_def(((arch->sdl.size.x / 2) - arch->px.x) / arch->sdl.d_screen, 0);
+	wall_affine.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
+	wall_affine.b = arch->decal.x - wall_affine.x * arch->depth.x;
+	//on optien la position
+	inter = interpolation_linear(px_affine, wall_affine);
+
+	//on doit recupere le pourcentage du la texture
+	percent = inter.x / (arch->depth.y - arch->depth.x);
+
+	//on a le pourcentage de la portion de mur par rapport au pixel
+
+	//recuperer le pourcentage global
+
+
 
 }
