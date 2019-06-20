@@ -69,7 +69,6 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, double col_t
 			px += (int)buff * wall->txtr.w;
 			buff = buff - (int)buff;
 		}
-
 	}
 }
 
@@ -162,11 +161,6 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 
 void		draw_wall(t_designer *arch, t_player *player)
 {
-
-	//printf("wall.texture w %d h %d\n", wall.txtr.w, wall.txtr.h);
-	//printf("-----draw wall--------------\n");
-	//printf("wall .x %f .y %f\n", arch->wall->pillar.p.x, arch->wall->pillar.p.y);
 	pillar_screen_info(arch, player);
 	pillar_to_pillar(arch, player);
-	//printf("----------------------------\n");
 }

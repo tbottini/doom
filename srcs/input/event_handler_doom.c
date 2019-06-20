@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 15:45:10 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/20 12:03:08 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void dropfile_event(t_doom *doom, SDL_Event e)
 ** New event shouldn't be needed
 */
 
-int event_handler1(t_doom *doom, SDL_Event e)
+int event_handler_doom(t_doom *doom, SDL_Event e)
 {
 	if (doom->edit.status == 1)
 		doom->edit.status = 2;
