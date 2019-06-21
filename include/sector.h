@@ -8,7 +8,7 @@
 typedef struct s_doom 	t_doom;
 typedef struct t_wall	t_portal;
 
-enum 					e_portal_id
+enum			e_portal_id
 {
 	WALL,
 	PORTAL_DIRECT,
@@ -51,7 +51,7 @@ typedef struct			s_wall
 	t_pillar			pillar;
 	t_pillar			*next;
 	t_txtr				txtr;
-	e_portal_id			status;
+	enum e_portal_id	status;
 	t_portal			*link;
 }						t_wall;
 

@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/21 14:13:04 by tbottini         ###   ########.fr        #
+#    Updated: 2019/06/21 14:42:25 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,18 @@ INCLUDE			:=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
 
-INCLUDE_RES		:=		libft/libft.h							\
+HEADERS			:=		libft/libft.h							\
 						include/doom_nukem.h					\
+						include/calcul.h						\
+						include/debug.h							\
+						include/doom_struct.h					\
+						include/editor.h						\
+						include/vector.h						\
+						include/render.h						\
+						include/player.h						\
+						include/input.h							\
+						include/sector.h						\
+
 
 FOLDER			:=		objs									\
 						objs/parsing							\
@@ -63,7 +73,7 @@ all				:		folder $(NAME)
 folder			:
 	@mkdir -p $(FOLDER)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(INCLUDE_RES)
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(HEADERS)
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
 	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
