@@ -59,12 +59,10 @@ int			parsing(t_doom *doom, char *filename)
 	{
 		if (!ft_strncmp(line, "TXTR", 4))
 		{
-			printf("chunk texture\n");
 			chunk_texture(&doom->sdl, &doom->tool, fd);
 		}
 		if (!ft_strncmp(line, "SCTR", 4))
 		{
-			printf("chunck_sector\n");
 			doom->sector = chunck_sector(fd, &doom->tool);
 		}
 		else if (!ft_strncmp(line, "PERS", 4))

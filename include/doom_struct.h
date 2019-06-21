@@ -14,7 +14,6 @@ typedef uint32_t	t_texture;
 ** 5 = over the object before + (pos) px
 */
 
-
 enum 					e_window_id
 {
 	DOOM_WINDOW = 1,
@@ -167,6 +166,10 @@ typedef struct 			s_camera
 	double				d_screen;
 }						t_camera;
 
+/*
+**
+**
+*/
 typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];
@@ -176,7 +179,7 @@ typedef struct 			s_designer
 	t_camera			*cam;
 	t_sdl				*sdl;
 	SDL_Surface			**texture;
-	t_fvct2				dist;
+	t_fvct2				depth;
 	t_fvct2				decal;
 	t_vct2				px;
 	t_fvct2				shift_txtr;

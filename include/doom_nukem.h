@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 16:15:02 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/20 17:18:03 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void					zline_reset(t_designer *arch);
 int						fish_bowl_px(t_designer *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
-int						texture_interpolation2D(t_designer *arch);
+uint32_t				texture_interpolation2D(t_designer *arch);
 
 /*
 **	bunch
