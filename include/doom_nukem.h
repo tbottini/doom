@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 13:36:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 14:04:38 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 800
-# define WIDTH 1280
-# define HEIGHT 800
+# define WIDTH 1920
+# define HEIGHT 1080
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -35,7 +35,7 @@
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
 
-# define ACCELERATION 5000.0
+# define ACCELERATION 8000.0
 # define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
