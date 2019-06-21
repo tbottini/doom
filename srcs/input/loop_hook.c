@@ -69,6 +69,10 @@ static void input_loop(t_doom *doom, int key)
 		play_effect(&doom->sound, 8);
 	else if (key == SDLK_y)
 		fire(doom);
+	else if (key == SDLK_u)
+		fly(&doom->player.stat);
+	else if (key == SDLK_j)
+		unfly(&doom->player.stat);
 }
 
 static void editor_loop(t_doom *doom, int key)
