@@ -44,6 +44,7 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, double col_t
 	int		px;
 	double	buff;
 
+	(void)col_txtr;
 	px = arch->shift_txtr.x;
 	//futur appel de texture_interpolation2
 	px = texture_interpolation2D(arch);
