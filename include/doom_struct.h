@@ -1,9 +1,19 @@
 #ifndef DOOM_STRUCT
 # define DOOM_STRUCT
 
+# include <fcntl.h>
+# include <dirent.h>
+# include <SDL_ttf.h>
+# include <SDL_image.h>
+# include <SDL_mixer.h>
+# include <limits.h>
+# include "sector.h"
+# include "player.h"
+# include "calcul.h"
+# include "libft.h"
+
 typedef struct s_doom	t_doom;
-typedef double	t_zline;
-typedef uint32_t	t_texture;
+
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
@@ -142,7 +152,8 @@ struct					s_mur {
 typedef struct s_secteur	t_secteur;
 typedef t_secteur		*t_lstsec;
 
-struct					s_secteur {
+struct					s_secteur
+{
 	t_lstmur			murs;
 
 	t_lstsec			prvs;
@@ -191,7 +202,6 @@ typedef struct 			s_designer
 	t_vct2				px;
 	t_fvct2				shift_txtr;
 	double				*zline;
-	//double			coef_px;
 }						t_designer;
 
 struct					s_doom
@@ -203,7 +213,7 @@ struct					s_doom
 	t_player			player;
 	t_sound				sound;
 	SDL_GameController	*controller;
-	t_sector			*sector;			//root sector
+	t_sector			*sector;
 	t_vct2				vel;
 	t_designer			tool;
 	t_camera			camera;
