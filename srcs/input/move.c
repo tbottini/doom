@@ -12,6 +12,22 @@
 
 #include "doom_nukem.h"
 
+void		fly(t_stat *stat)
+{
+	if (stat->pos.z < stat->sector->h_ceil - stat->height - 0.1)
+		stat->pos.z += 0.1;
+	else if (stat->pos.z < stat->sector->h_ceil - stat->height)
+		stat->pos.z = stat->sector->h_ceil - stat->height;
+}
+
+void		unfly(t_stat *stat)
+{
+	if (stat->pos.z > stat->sector->h_floor + 0.1)
+		stat->pos.z -= 0.1;
+	else if (stat->pos.z > stat->sector->h_floor)
+		stat->pos.z = stat->sector->h_floor;
+}
+
 void		crouch(t_player *player)
 {
 	if (!(player->crouch) && player->stat.speed == WALK)
