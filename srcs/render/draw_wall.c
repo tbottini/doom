@@ -122,6 +122,9 @@ void			reorder(t_designer *arch)
 		tmp = arch->depth.x;
 		arch->depth.x = arch->depth.y;
 		arch->depth.y = tmp;
+		tmp = arch->decal.x;
+		arch->decal.x = arch->decal.y;
+		arch->decal.y = tmp;
 		tmp = arch->shift_txtr.x;
 		arch->shift_txtr.x = arch->shift_txtr.y;
 		arch->shift_txtr.y = tmp;

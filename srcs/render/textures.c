@@ -19,6 +19,10 @@ double			up_percent(double percent, double percent_part)
 }
 
 
+//pblm saut du pixel 1163 -> 1164 percent 0.89->0.76
+
+
+
 /*
 **	renvoie l'index de la texture associee au pixel de l'ecran
 **	l'affine du mur est le decal(y) selon depth(x)
@@ -35,6 +39,10 @@ uint32_t		texture_interpolation2D(t_designer *arch)
 
 	//printf("--------interpolation--------\n");
 	//on determine les affines du mur et du rayon joueur->px
+
+	//le coef est inverse...
+
+
 	px_affine.a = ((arch->sdl->size.x / 2) - arch->px.x) / arch->cam->d_screen;
 	px_affine.b = 0;
 	//printf("pillar 1 decal %f depth %f\n", arch->decal.x, arch->depth.x);
@@ -57,26 +65,27 @@ uint32_t		texture_interpolation2D(t_designer *arch)
 
 	//printf("inter %f %f\n", inter.x, inter.y);
 	//on doit recuperer le pourcentage de la texture
-	if ((int)((arch->decal.x - arch->decal.y) * 100) == 0)
+	//if ((int)((arch->decal.x - arch->decal.y) * 100) == 0)
 		percent = (inter.x - arch->depth.x) / (arch->depth.y - arch->depth.x);
-	else
-		percent = (inter.y - arch->decal.x) / (arch->decal.y - arch->decal.x);
+	//else
+	//	percent = (inter.y - arch->decal.x) / (arch->decal.y - arch->decal.x);
 
 	//printf("percent %f\n", percent);
 	//on a le pourcentage de la portion de mur par rapport au pixel
 	//percent = up_percent(percent, arch->depth.x - arch->depth.y);
 	//recuperation du pourcentage global
 
-	if (percent > 1.0 || percent < -0.0001)
+	//printf("px %d percent %f\n", arch->px.x, percent);
+
+	if (arch->px.x == 1163 || arch->px.x == 1164 || arch->px.x == 1165)
 	{
 		printf("-------\n");
 		printf("px %d\n", arch->px.x);
-		printf("arch->depth.x %f\n", arch->depth.x);
+		//printf("decal.x %f\ndecal.y %f\n", arch->decal.x, arch->decal.y);
+		//printf("depth.x %f\ndepth.y %f\n", arch->depth.x, arch->depth.y);
 		printf("affine wall .a %f .b %f\n", wall_affine.a, wall_affine.b);
 		printf("affine px .a %f .b %f\n", px_affine.a, px_affine.b);
 		printf("inter.x %f\ninter.y %f\n", inter.x, inter.y);
-		printf("decal %f\ndecal %f\n", arch->decal.x, arch->decal.y);
-		printf("depth.x %f\ndepth.y %f\n", arch->depth.x, arch->depth.y);
 		//printf("div %f\n", fabs(arch->decal.y - arch->decal.x));
 		printf("percent %f\n", percent);
 		printf("-------\n");
