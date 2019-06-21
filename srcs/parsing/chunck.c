@@ -49,7 +49,6 @@ t_player	chunck_player(int fd)
 			double_atof(line, (t_fvct2*)&player.stat.pos);
 		else if (i == 1)
 		{
-			printf("ft_atof(line) %f\n", ft_atof(line));
 			player.stat.height = ft_atof(line);
 		}
 		else if (i == 2)

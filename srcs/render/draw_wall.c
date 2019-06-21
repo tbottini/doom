@@ -3,14 +3,14 @@
 /*
 **	renvoie la position en pixel d'un point
 */
-int			px_point(t_designer *arch, t_player *player, double h_diff, double dist_wall)
+int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_wall)
 {
 	double	wall_angle;
 	double	limit_angle;
 	int px;
 
 	limit_angle = (player->fov / 2) * (M_PI / 180.0);
-	wall_angle = atan2(h_diff, dist_wall);
+	wall_angle = atan2(h_diff, depth_wall);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
 	px += (player->stat.rot.x - 90) * 45;
 	//px += (player->stat.pos.z - player->stat.sector->h_ceil);
@@ -21,9 +21,9 @@ int			px_point(t_designer *arch, t_player *player, double h_diff, double dist_wa
 **	renvoie la surface en px qu'un pillier prend
 **	en fonction de la hauteur du joueur (player)
 **	de la hauteur du mur (wall_height)
-**	et de la distance par rapport au mur (dist)
+**	et de la depthance par rapport au mur (depth)
 */
-t_fvct2		surface_pillar(t_designer *arch, t_player *player, int wall_height, double dist)
+t_fvct2		surface_pillar(t_designer *arch, t_player *player, int wall_height, double depth)
 {
 	t_fvct2	wall_portion;
 
@@ -33,8 +33,8 @@ t_fvct2		surface_pillar(t_designer *arch, t_player *player, int wall_height, dou
 	up = wall_height - player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
 	down = -player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
 
-	wall_portion.x = px_point(arch, player, up, dist);
-	wall_portion.y = px_point(arch, player, down, dist);
+	wall_portion.x = px_point(arch, player, up, depth);
+	wall_portion.y = px_point(arch, player, down, depth);
 	return (wall_portion);
 }
 
@@ -45,7 +45,8 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, double col_t
 	double	buff;
 
 	px = arch->shift_txtr.x;
-	//futur appel de texture_interpolation2D
+	//futur appel de texture_interpolation2
+	px = texture_interpolation2D(arch);
 	buff = 0;
 	coef = (double)wall->txtr.h / (surface.y - surface.x);
 	if (surface.y < 0)
@@ -118,9 +119,9 @@ void			reorder(t_designer *arch)
 		tmpint = arch->px.x;
 		arch->px.x = arch->px.y;
 		arch->px.y = tmpint;
-		tmp = arch->dist.x;
-		arch->dist.x = arch->dist.y;
-		arch->dist.y = tmp;
+		tmp = arch->depth.x;
+		arch->depth.x = arch->depth.y;
+		arch->depth.y = tmp;
 		tmp = arch->shift_txtr.x;
 		arch->shift_txtr.x = arch->shift_txtr.y;
 		arch->shift_txtr.y = tmp;
@@ -138,16 +139,16 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	double		coef_txtr;
 
 	reorder(arch);
-	pillar = surface_pillar(arch, player, arch->sector->h_ceil, arch->dist.x);
-	pillar_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->dist.y);
+	pillar = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.x);
+	pillar_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.y);
 
 	coef_surface = coef_diff(pillar.x - pillar_next.x, arch->px);
 	coef_down = coef_diff(pillar.y - pillar_next.y, arch->px);
 	coef_txtr = coef_vct(arch->shift_txtr, arch->px) * arch->wall->txtr.w;
 
 	arch->shift_txtr.x *= arch->wall->txtr.w;
-	neutre.x = (double)(arch->sdl->size.y) / arch->dist.x;
-	neutre.y = (double)(arch->sdl->size.y) / arch->dist.y;
+	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
+	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
 
 	coef_neutre = coef_vct(neutre, arch->px);
 	while (arch->px.x != arch->px.y)
