@@ -45,7 +45,7 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, double col_t
 	double	buff;
 
 	(void)col_txtr;
-	px = arch->shift_txtr.x;
+	//px = arch->shift_txtr.x;
 	//futur appel de texture_interpolation2
 	px = texture_interpolation2D(arch);
 	buff = 0;
@@ -148,9 +148,9 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 
 	coef_surface = coef_diff(pillar.x - pillar_next.x, arch->px);
 	coef_down = coef_diff(pillar.y - pillar_next.y, arch->px);
-	coef_txtr = coef_vct(arch->shift_txtr, arch->px) * arch->wall->txtr.w;
+	//coef_txtr = coef_vct(arch->shift_txtr, arch->px) * arch->wall->txtr.w;
 
-	arch->shift_txtr.x *= arch->wall->txtr.w;
+	//arch->shift_txtr.x *= arch->wall->txtr.w;
 	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
 
@@ -165,7 +165,7 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 		pillar.y -= coef_down;
 		neutre.x += coef_neutre;
 		arch->px.x++;
-		arch->shift_txtr.x += coef_txtr;
+		//arch->shift_txtr.x += coef_txtr;
 	}
 }
 
