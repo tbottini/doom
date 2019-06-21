@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 17:18:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 09:51:45 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "player.h"
 # include "calcul.h"
 # include "doom_struct.h"
-//# define MINWIDTH 1280
+
 # define MINWIDTH 800
 # define MINHEIGHT 800
 # define WIDTH 1280
@@ -35,9 +35,14 @@
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
+
+/*
+**	Color
+*/
 # define BLUE_SKY 0x4559a8ff
 # define RED_WALL 0xb30000ff
 # define PINK_FLOOR 0xdcc8c8ff
+
 # define ACCELERATION 5000.0
 # define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
@@ -55,6 +60,9 @@
 */
 #define MAXZOOM 20000
 # define EDITORPRECISION 10000
+
+# define DEBUG 0
+
 
 /*
 ** Button Functions
