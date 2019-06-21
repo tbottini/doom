@@ -1,0 +1,29 @@
+parsing
+mur :
+1.0 1.0         //pillier
+
+1.0 1.0			//mur
+1.0 2.0
+
+1.0 1.0 0		//mur avec texture d'index 1
+1.0 2.0
+
+ajout des portail
+header pour portail/portail_dist/mur/mur_occlusion
+lettre P (pour le portail)
+D portail_dist
+M mur
+O mur_occlu
+Y mur_occlu_dist
+
+P1.0 1.0 //portail direct mur
+1.0 2.0
+
+D1.0 1.0 0.1.3 //portail relier au portail 0.1.3 racine/premier sous secteur/ 3 eme mur
+1.0 2.0
+
+M1.0 1.0 2 //mur direct avec textures
+1.0 2.0
+
+Y1.0 1.0 2 0.1.4 //portail distant avec texture 2 et portail 0.1.4
+1.0 2.0
