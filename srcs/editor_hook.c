@@ -88,7 +88,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (e.button == SDL_BUTTON_RIGHT)
 	{
-		if (edit->currpilier && edit->hoverpilier && edit->currpilier != edit->hoverpilier)
+		if (edit->currpilier && edit->hoverpilier)
 		{
 			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier);
 		}
