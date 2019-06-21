@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 12:10:19 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:51:44 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,18 @@ int		key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
-	if (key == SDLK_BACKQUOTE)
-	{
-		//doom->ui.curr_btn = NULL;
-		//sdl_set_status(doom, 1);
-	}
-	else if (key == SDLK_RETURN)
+	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
 	{
 		if (doom->ui.m_status == 0)
 			sdl_set_status(doom, 4);
 		else if (doom->ui.m_status == 4)
 			sdl_set_status(doom, 0);
 	}
-	else if (key == SDLK_v)
-		;//kick(&(doom->player), /*sector*/);
-	else if (key == SDLK_r)
+	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&(doom->player.weapons[doom->player.hand]));
-	else if (key == SDLK_e)
-		action(doom);
-	else if (key == SDLK_LGUI)
+	else if (key == SDLK_e && !doom->ui.m_status)
+		action(&doom->player, &doom->player.stat);
+	else if (key == SDLK_LGUI && !doom->ui.m_status)
 		crouch(&doom->player);
 	else if (key == SDLK_g)
 		describe_player(doom->player);
@@ -64,6 +57,8 @@ int		key_press(int key, t_doom *doom)
 		;//kick(doom, &doom->player);
 	else if (key == SDLK_b)
 		save_png(&doom->sdl);
+	else if (key == SDLK_v && !doom->ui.m_status)
+		kick(doom, &doom->player);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);
@@ -79,7 +74,7 @@ int		key_release(int key, t_doom *doom)
 {
 	ft_noderm_int(&(doom->sdl.keys), key);
 	if (key == SDLK_w || key == SDLK_LSHIFT)
-		sprint_release(&doom->player);
+		sprint_release(&doom->player.stat);
 	else if (key == SDLK_LGUI)
 		crouch_release(&doom->player);
 	return (0);
@@ -95,6 +90,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	t_btn *curr_btn;
 
+	SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (btn == SDL_BUTTON_LEFT)
 	{
 		//doom->ui.curr_btn = NULL;
@@ -143,34 +139,32 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 */
 int		mouse_move(int x, int y, t_doom *doom)
 {
-	//t_btn	*curr_btn;
 	t_slid	*tmp;
 
 	doom->sdl.m_pos.x = x;
 	doom->sdl.m_pos.y = y;
 	doom->ui.curr_btn = btn_hover(doom, x, y);
+	if (doom->ui.curr_btn && doom->ui.curr_btn->func)
+		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
+	else
+		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (doom->ui.m_status == 0)
 	{
 		doom->player.stat.rot.y -= x / SENSIBILITY;
-		doom->player.stat.rot.x -= y / SENSIBILITY;
+		doom->player.stat.rot.x -= y / (SENSIBILITY * 2);
 		return (0);
 	}
-	/* Moved in loop_hook because menu is now rendered everyframe
-	if (doom->ui.curr_btn != curr_btn)
-	{
-		if ((curr_btn && (curr_btn->func || curr_btn->data)) || !curr_btn)
-			draw_hover(doom, curr_btn, doom->ui.curr_btn);
-		doom->ui.curr_btn = curr_btn;
-	}
-	*/
 	if (doom->ui.currslid)
 	{
+		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		tmp = doom->ui.currslid;
 		update_slider_value(doom, tmp, x);
-		if (tmp == &(doom->ui.slidopt[1]))
+		if (tmp == &(doom->ui.slidopt[0]))
+			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->player.fov / 2.0 * PI180);
+		else if (tmp == &(doom->ui.slidopt[1]))
 			Mix_VolumeMusic(doom->sound.musicvolume);
 		else if (tmp == &(doom->ui.slidopt[2]))
-			effect_volume(doom);//Mix_SetPanning(1, doom->sound.effectvolume, doom->sound.effectvolume);
+			effect_volume(&doom->sound);
 	}
 	return (0);
 }

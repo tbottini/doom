@@ -20,7 +20,6 @@ enum 					e_window_id
 	EDITOR_WINDOW = 2
 };
 
-
 typedef struct			s_sloc
 {
 	SDL_Rect			area;
@@ -115,7 +114,7 @@ typedef struct			s_sdl
 	Uint32				*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
-	Uint32				timp;
+	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;
 
@@ -129,11 +128,22 @@ struct					s_pilier {
 	t_lstpil			next;
 };
 
+typedef struct s_mur	t_mur;
+typedef t_mur			*t_lstmur;
+
+struct					s_mur {
+	t_pilier			*pil1;
+	t_pilier			*pil2;
+
+	t_lstmur			prvs;
+	t_lstmur			next;
+};
+
 typedef struct s_secteur	t_secteur;
 typedef t_secteur		*t_lstsec;
 
 struct					s_secteur {
-	t_lstpil			root;
+	t_lstmur			murs;
 
 	t_lstsec			prvs;
 	t_lstsec			next;
@@ -153,10 +163,11 @@ typedef struct			s_editor
 	//SDL_Texture			*txture;
 	//Uint32				*screen;
 	t_tab				keys;
+	t_lstpil			pillist;
 	t_lstpil			currpilier;
 	t_lstpil			hoverpilier;
 	t_lstsec			sectors; // list of all root pillards in sector
-	t_lstpil			map;
+	t_lstsec			map;
 	t_vct3				mappos;
 }						t_editor;
 
@@ -166,10 +177,6 @@ typedef struct 			s_camera
 	double				d_screen;
 }						t_camera;
 
-/*
-**
-**
-*/
 typedef struct 			s_designer
 {
 	uint32_t			*bot[1920];

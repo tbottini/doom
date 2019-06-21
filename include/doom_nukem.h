@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 09:51:45 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:54:41 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,7 @@
 */
 #define MAXZOOM 20000
 # define EDITORPRECISION 10000
-
 # define DEBUG 0
-
 
 /*
 ** Button Functions
@@ -159,7 +157,7 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
-int						editor_mouse_press(int btn, int x, int y, t_editor *edit);
+int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
@@ -170,11 +168,16 @@ t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
 
-void					change_sector(t_editor *edit, int pos);
+void					sector_menu(t_editor *edit, int pos, int del);
+
+t_lstmur 				ft_newwall(t_pilier *pil1, t_pilier *pil2);
+void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
+t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
+void					ft_clear_wall_list(t_lstmur *start);
 
 t_lstpil				ft_newpillar(t_vct2 loc);
+void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
-t_lstpil				ft_pillarpushnext(t_lstpil *pos, t_vct2 loc);
 void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 void 					ft_nodeprint_secteur(t_lstsec node);
@@ -182,9 +185,10 @@ t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
 
-t_lstsec				ft_newsector(t_lstpil root);
-t_lstsec				init_secteur(void);
-t_lstsec				push_init_secteur(t_lstsec *node);
+t_lstsec				ft_newsector();
+t_lstsec				push_secteur(t_lstsec *node);
+void					ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpil *pil);
+void					ft_clear_secteur(t_lstsec *sec);
 void					ft_clear_secteur_list(t_lstsec *start);
 
 /*
@@ -210,8 +214,9 @@ void					wall_screen_info(t_designer *arch, t_player *p);
 **	simple input
 */
 
-void					bullet(t_doom *doom, t_player *player);
-void					action(t_doom *doom);
+void					bullet(t_doom *doom, t_stat *stat);
+void					action(t_player *player, t_stat *stat);
+void					kick(t_doom *doom, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					sdl_MultiRenderCopy(t_sdl *sdl);
@@ -221,8 +226,8 @@ int						pos_in_rect(SDL_Rect rect, int x, int y);
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
-t_wall					*collision(t_doom *doom, t_fvct3 pos, t_wall *w);
-t_wall					*collisionV21(t_doom *doom, t_fvct3 ori, t_fvct3 pos, t_wall *w);
+t_wall					*collision(t_stat *stat, t_fvct3 pos, t_wall *w);
+t_wall					*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 void					bulletV42(t_doom *doom, t_player *player);
 
@@ -242,7 +247,7 @@ t_list					*ft_lstn(void *content);
 */
 void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
-void					move(t_doom *doom, t_player *player);
+void					move(t_stat *stat);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					draw_wall(t_designer *arch, t_player *player);
 void					minimap(t_doom *d);
@@ -280,6 +285,6 @@ void					music_free(t_sound *sound);
 int						music_init(t_sound *sound);
 void					change_music(t_sound *sound, int n, int fade);
 void					cinematrique(t_doom *doom);
-void					effect_volume(t_doom *doom);
+void					effect_volume(t_sound *sound);
 
 #endif

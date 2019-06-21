@@ -26,12 +26,12 @@ void				effect_free(t_sound *sound)
 	//leaks possible ?
 }
 
-void				effect_volume(t_doom *doom)
+void				effect_volume(t_sound *sound)
 {
-	Mix_SetPanning(0, doom->sound.effectvolume, doom->sound.effectvolume);
-	Mix_SetPanning(1, doom->sound.effectvolume, doom->sound.effectvolume);
-	Mix_SetPanning(2, doom->sound.effectvolume, doom->sound.effectvolume);
-	Mix_SetPanning(3, doom->sound.effectvolume, doom->sound.effectvolume);
+	Mix_SetPanning(0, sound->effectvolume, sound->effectvolume);
+	Mix_SetPanning(1, sound->effectvolume, sound->effectvolume);
+	Mix_SetPanning(2, sound->effectvolume, sound->effectvolume);
+	Mix_SetPanning(3, sound->effectvolume, sound->effectvolume);
 }
 
 static Mix_Chunk	*loadef(char *track)
@@ -61,5 +61,6 @@ int					effect_init(t_sound *sound)
 	if (Mix_AllocateChannels(4) != 4)
 		return (0);
 	sound->effectvolume = 0;
+	effect_volume(sound);
 	return (1);
 }

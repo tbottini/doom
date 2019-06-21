@@ -57,5 +57,6 @@ int					music_init(t_sound *sound)
 	sound->music = sound->tab_music[0];
 	sound->maxmusic = 8;
 	sound->musicvolume = 0;
+	Mix_VolumeMusic(sound->musicvolume);
 	return (sound->on = 1);
 }

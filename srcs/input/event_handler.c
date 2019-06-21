@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 12:09:34 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:52:36 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,9 @@ int				event_handler(t_doom *doom)
 		if (event.type == SDL_DROPFILE)
 				dropfile_event(doom, event);
 		else if (event.window.windowID == DOOM_WINDOW)
-		{
 			event_handler_doom(doom, event);
-		}
 		else if (event.window.windowID == EDITOR_WINDOW)
-		{
 			event_handler_editor(doom, event);
-		}
 		if (event.type == SDL_CONTROLLERDEVICEADDED)
 		{
 			ft_printf("Controller Added\n");

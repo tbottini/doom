@@ -53,19 +53,19 @@ static void input_loop(t_doom *doom, int key)
 		doom->player.stat.vel.x = (key == SDLK_w ? doom->player.stat.speed : -doom->player.stat.speed);
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.stat.vel.y = (key == SDLK_a ? -doom->player.stat.speed : doom->player.stat.speed);*/
-	if (key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d)
+	if ((key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d) && !doom->ui.m_status)
 		benda(doom, key);
-	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed)
-		sprint(&doom->player);
-	else if (key == SDLK_SPACE)
+	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed && !doom->ui.m_status)
+		sprint(&doom->player.stat);
+	else if (key == SDLK_SPACE && !doom->ui.m_status)
 		jump(&doom->player);
-	else if (key == SDLK_r)
+	else if (key == SDLK_r && doom->player.hand && !doom->ui.m_status)
 		reload(&(doom->player.weapons[doom->player.hand]));
-	else if (key == SDL_BUTTON_LEFT)
+	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
 		shoot(&doom->player);
 	else if (key == SDLK_p) //test tir
-		bulletV42(doom, &doom->player);
-	else if (key == SDLK_0)
+		bullet(doom, &doom->player.stat);
+	else if (key == SDLK_0)//test effects
 		play_effect(&doom->sound, 8);
 	else if (key == SDLK_y)
 		fire(doom);
@@ -78,7 +78,7 @@ static void editor_loop(t_doom *doom, int key)
 	else if (key == SDLK_a || key == SDLK_d)
 		doom->player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
 	else if (key == SDLK_LSHIFT)
-		sprint(&doom->player);
+		sprint(&doom->player.stat);
 	else if (key == SDLK_r)
 		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDL_BUTTON_LEFT)
@@ -89,16 +89,21 @@ static void editor_loop(t_doom *doom, int key)
 
 static void delaypcmasterrace(t_doom *doom)
 {
-	if (doom->sdl.timp == SDL_GetTicks() / 1000)
+	int wait;
+
+	// A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
+	if (doom->sdl.timp / 1000 == SDL_GetTicks() / 1000)
 		++doom->sdl.fps;
 	else
 	{
 		ft_printf("\r%d FPS", doom->sdl.fps);
 		doom->sdl.fps = 0;
-		doom->sdl.timp = SDL_GetTicks() / 1000;
+		doom->sdl.timp = SDL_GetTicks();
 	}
-	//while (SDL_GetTicks() - doom->timestamp < 16)
-	//	; // Limiteur de FPS (16)
+	// END A Supprimer
+	wait = SDL_GetTicks() - doom->timestamp - 16; // Nombre de ms min entre chaque frame
+	if (wait < 0)
+		SDL_Delay(-wait);
 	doom->timestamp = SDL_GetTicks();
 }
 
@@ -133,7 +138,7 @@ int loop_hook(t_doom *doom)
 		if (doom->ui.m_status == 0)
 		{
 			/// Place here functions that need to be launch every frame while the game is running
-			move(doom, &doom->player);
+			move(&doom->player.stat);
 			doom_render(doom);
 			/// End Comment
 		}
@@ -147,11 +152,10 @@ int loop_hook(t_doom *doom)
 			else
 				fire(doom);
 			draw_menu(doom);
-
 			/// End Comment
 		}
 		SDL_RenderPresent(doom->sdl.rend);
 	}
-	//delaypcmasterrace(doom);
+	delaypcmasterrace(doom);
 	return (0);
 }
