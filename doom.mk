@@ -45,7 +45,7 @@ SRCS_RENDER		:=		render.c										\
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c										\
-						chunk_ressources.c
+						chunk_ressources.c								\
 
 SRCS_DEBUG		:=		debug_sector.c									\
 						debug_screen.c									\

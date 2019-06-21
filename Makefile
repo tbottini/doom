@@ -43,7 +43,7 @@ FOLDER			:=		objs									\
 						objs/ui									\
 						objs/input								\
 						objs/manager							\
-						objs/calcul
+						objs/calcul								\
 
 COMPILE_LIB		:=		make -C libft/
 
