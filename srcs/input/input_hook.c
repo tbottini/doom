@@ -6,11 +6,23 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 12:20:13 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 11:00:40 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+void			save_png(t_sdl *sdl)
+{
+	SDL_Surface	*s_shot;
+
+	s_shot = SDL_CreateRGBSurfaceWithFormatFrom(sdl->screen, sdl->size.x,
+		sdl->size.y, 8, sizeof(uint32_t) * sdl->size.x, sdl->format->format);
+	IMG_SavePNG(s_shot, "out.png");
+	ft_printf("png save\n");
+	SDL_FreeSurface(s_shot);
+}
+
 
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
@@ -50,6 +62,8 @@ int		key_press(int key, t_doom *doom)
 		change_music(&doom->sound, 10, 5000);
 	else if (key == SDLK_o)
 		;//kick(doom, &doom->player);
+	else if (key == SDLK_b)
+		save_png(&doom->sdl);
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);
