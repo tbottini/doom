@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/21 12:55:25 by tbottini         ###   ########.fr        #
+#    Updated: 2019/06/21 13:30:18 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,8 @@ INCLUDE			:=		-I ./include							\
 						-I ./libft								\
 						-I ~/.brew/include/SDL2					\
 
-INCLUDE_RES		:=		include/sector.h						\
-						include/vector.h						\
-						libft/libft.h							\
+INCLUDE_RES		:=		libft/libft.h							\
 						include/doom_nukem.h					\
-						include/debug.h							\
 
 FOLDER			:=		objs									\
 						objs/parsing							\
@@ -104,7 +101,6 @@ chmain			:
 
 start			:	all
 	./doom-nukem $(ARGS)
-
 
 re				:	fclean all
 

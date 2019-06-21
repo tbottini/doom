@@ -2,8 +2,7 @@
 #ifndef DEBUG_H
 # define DEBUG_H
 
-# include "libft.h"
-# include "doom_nukem.h"
+# include "doom_struct.h"
 
 t_wall					*chunck_walls(t_list *chunck_line, size_t len);
 t_player				chunck_player(int fd);

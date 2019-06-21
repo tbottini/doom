@@ -140,20 +140,14 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	double		coef_surface;
 	double		coef_down;
 	double		coef_neutre;
-	double		coef_txtr;
 
 	reorder(arch);
 	pillar = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.x);
 	pillar_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.y);
-
 	coef_surface = coef_diff(pillar.x - pillar_next.x, arch->px);
 	coef_down = coef_diff(pillar.y - pillar_next.y, arch->px);
-	//coef_txtr = coef_vct(arch->shift_txtr, arch->px) * arch->wall->txtr.w;
-
-	//arch->shift_txtr.x *= arch->wall->txtr.w;
 	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
-
 	coef_neutre = coef_vct(neutre, arch->px);
 	while (arch->px.x != arch->px.y)
 	{
@@ -165,7 +159,6 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 		pillar.y -= coef_down;
 		neutre.x += coef_neutre;
 		arch->px.x++;
-		//arch->shift_txtr.x += coef_txtr;
 	}
 }
 
