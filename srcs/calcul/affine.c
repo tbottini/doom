@@ -13,9 +13,9 @@ t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2)
 {
 	t_fvct2		inter;
 
-	if ((int)fct1.a == -1)
-		inter.x = fct1.b;
-	else
+	//if ((int)fct1.a == -1)
+	//	inter.x = fct1.b;
+	////else
 		inter.x = (fct2.b - fct1.b) / (fct1.a - fct2.a);
 	inter.y = affine_val(fct2, inter.x);
 	return (inter);
