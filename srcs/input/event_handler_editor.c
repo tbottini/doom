@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event_handler2.c                                   :+:      :+:    :+:   */
+/*   event_handler_editor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 12:03:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:52:09 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void		window_event(t_doom *doom, SDL_Event e)
 		doom->edit.mappos.x += (doom->edit.size.x - tmp.x) / 2;
 		doom->edit.mappos.y += (doom->edit.size.y - tmp.y) / 2;
 		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y - doom->edit.sectbox.x;
-
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 	{
@@ -60,7 +59,7 @@ int event_handler_editor(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_MOUSEMOTION)
 		editor_mouse_move(e.motion, doom);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
-		editor_mouse_press(e.button.button, e.button.x, e.button.y, &doom->edit);
+		editor_mouse_press(e.button, &doom->edit);
 	else if (e.type == SDL_MOUSEWHEEL)
 		editor_mouse_wheel(e.wheel, &(doom->edit));
 	else if (e.type == SDL_MOUSEBUTTONUP)

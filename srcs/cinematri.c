@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 01:54:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/20 12:04:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:52:53 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,12 @@ static void cine_events(t_doom *doom, int *i)
 
 static void	cine_delay(t_doom *doom, int *i)
 {
+	int wait;
+
 	cine_events(doom, i);
-	if (doom->sdl.timp == SDL_GetTicks() / 1000)
-		++doom->sdl.fps;
-	else
-	{
-		ft_printf("\r%d FPS\n", doom->sdl.fps);
-		doom->sdl.fps = 0;
-		doom->sdl.timp = SDL_GetTicks() / 1000;
-	}
-	while (SDL_GetTicks() - doom->timestamp < 39)
-		;
+	wait = SDL_GetTicks() - doom->timestamp - 39; // Nombre de ms entre chaque frames
+	if (wait < 0)
+		SDL_Delay(-wait);
 	doom->timestamp = SDL_GetTicks();
 }
 

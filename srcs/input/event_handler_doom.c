@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event_handler1.c                                   :+:      :+:    :+:   */
+/*   event_handler_doom.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,6 +19,9 @@ static void window_event(t_doom *doom, SDL_Event e)
 
 	//PrintEvent(&e);
 	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
+	if (doom->sdl.size.x % 4)
+		SDL_SetWindowSize(doom->sdl.win, doom->sdl.size.x + doom->sdl.size.x % 4,
+			doom->sdl.size.y);
 	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || e.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
 		if (doom->sdl.txture)
@@ -29,6 +32,7 @@ static void window_event(t_doom *doom, SDL_Event e)
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			doom_exit(doom);
 		doom->sdl.screen = (Uint32 *)tmp;
+		doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->player.fov / 2.0 * PI180);
 		fire_init(doom);
 		draw_menu(doom);
 	}

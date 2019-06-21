@@ -1,4 +1,3 @@
-
 #include "vector.h"
 
 typedef struct	s_affine
