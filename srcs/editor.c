@@ -139,7 +139,6 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
-	//SDL_RenderDrawLine(editor->rend, box.x + box.w, box.y, box.x + )
 	box.h = SECTORBOXHEIGHT;
 	box.y += editor->sectscroll;
 	currsec = editor->sectors;
@@ -147,9 +146,9 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
 		if (currsec == editor->map)
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Sect ", x, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 		else
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Sect ", x, (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
 		sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF});
 		box.y += box.h;
 		currsec = currsec->next;
