@@ -158,7 +158,7 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-void	sector_menu(t_editor *edit, int pos, int del)
+void	sector_menu_click(t_editor *edit, int pos, int del)
 {
 	t_lstsec sec;
 	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;

@@ -14,6 +14,7 @@
 
 #define MINZOOM 10
 #define MAXZOOM 20000
+#define ZOOMSPEED 3
 
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
@@ -75,7 +76,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y))
 	{
-		sector_menu(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
+		sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
 	}
 	relpos = get_rel_mappos(edit, e.x, e.y);
@@ -119,7 +120,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	else if (edit->mappos.z + e.y > MAXZOOM)
 		edit->mappos.z = MAXZOOM;
 	else
-		edit->mappos.z += e.y * (edit->mappos.z / 400 + 1);
+		edit->mappos.z += e.y * (edit->mappos.z / 400 * ZOOMSPEED + 1);
 	ft_printf("\rWheel %d\t%d        ", edit->mappos.z, e.y);
 	return (0);
 }
