@@ -14,12 +14,11 @@
 
 void update_slider_txt(t_doom *doom, t_slid *slid)
 {
-	char *str;
+	char s[12];
 
-	str = ft_itoa(*slid->val);
+	ft_itoacpy(s, *slid->val);
 	updateText(doom->sdl.rend, doom->ui.fonts.s32, &slid->txture, NULL,
-		str, slid->fgcolor, slid->bgcolor);
-	free(str);
+		s, slid->fgcolor, slid->bgcolor);
 }
 
 void update_slider_value(t_doom *doom, t_slid *slid, int value)

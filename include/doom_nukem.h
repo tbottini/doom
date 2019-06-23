@@ -168,7 +168,7 @@ t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
 
-void					sector_menu(t_editor *edit, int pos, int del);
+void					sector_menu_click(t_editor *edit, int pos, int del);
 
 void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
 t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
