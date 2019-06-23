@@ -16,9 +16,8 @@ void update_slider_txt(t_doom *doom, t_slid *slid)
 {
 	char s[12];
 
-	ft_itoacpy(s, *slid->val);
 	updateText(doom->sdl.rend, doom->ui.fonts.s32, &slid->txture, NULL,
-		s, slid->fgcolor, slid->bgcolor);
+		ft_itoacpy(s, *slid->val), slid->fgcolor, slid->bgcolor);
 }
 
 void update_slider_value(t_doom *doom, t_slid *slid, int value)
