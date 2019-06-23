@@ -22,6 +22,41 @@ t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 	return (pos);
 }
 
+t_vct2 get_screen_mappos(t_editor *editor, int x, int y)
+{
+	t_vct2 pos;
+
+	pos.x = x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
+	pos.y = y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
+	return (pos);
+}
+
+void	sdl_draw_rect_map(t_editor *editor, SDL_Rect rect)
+{
+	t_vct2 tmp;
+	SDL_Rect sbox;
+	
+	tmp = get_screen_mappos(editor, rect.x, rect.y);
+	sbox.x = tmp.x;
+	sbox.y = tmp.y;
+	tmp = get_screen_mappos(editor, rect.x + rect.w, rect.y + rect.h);
+	sbox.w = tmp.x - sbox.x;
+	sbox.h = tmp.y - sbox.y;
+	SDL_SetRenderDrawColor(editor->rend, 200,200,200,255);
+	SDL_RenderFillRect(editor->rend, &sbox);
+	SDL_SetRenderDrawColor(editor->rend, 0,0,0,0);
+}
+
+void	sdl_draw_pixel_map(t_editor *editor, int x, int y)
+{
+	t_vct2 tmp;
+
+	tmp = get_screen_mappos(editor, x, y);
+	SDL_SetRenderDrawColor(editor->rend, 200,200,200,255);
+	SDL_RenderDrawPoint(editor->rend, tmp.x, tmp.y);
+	SDL_SetRenderDrawColor(editor->rend, 0,0,0,0);
+}
+
 t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 {
 	t_pilier *curr;
@@ -36,6 +71,55 @@ t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 				&& p.y - MAXZOOM / editor->mappos.z * 2 <= curr->pos.y
 				&& curr->pos.y <= p.y + MAXZOOM / editor->mappos.z * 2)
 			return (curr);
+		if (curr->next != start)
+			curr = curr->next;
+		else
+			curr = NULL;
+	}
+	return (NULL);
+}
+
+t_mur *find_wall(t_editor *editor, t_lstmur start, int x, int y)
+{
+	SDL_Rect tbox;
+	t_mur *curr;
+	t_vct2 p;
+	int precs;
+
+	curr = start;
+	p = get_rel_mappos(editor, x, y);
+	while (curr)
+	{
+		tbox.x = (curr->pil1->pos.x < curr->pil2->pos.x ? curr->pil1->pos.x : curr->pil2->pos.x);
+		tbox.y = (curr->pil1->pos.y < curr->pil2->pos.y ? curr->pil1->pos.y : curr->pil2->pos.y);
+		tbox.w = (curr->pil1->pos.x > curr->pil2->pos.x ? curr->pil1->pos.x : curr->pil2->pos.x) - tbox.x;
+		tbox.h = (curr->pil1->pos.y > curr->pil2->pos.y ? curr->pil1->pos.y : curr->pil2->pos.y) - tbox.y;
+		precs = (EDITORPRECISION) / editor->mappos.z + 1;
+		tbox.x -= precs * 4;
+		tbox.y -= precs * 4;
+		tbox.w += precs * 8;
+		tbox.h += precs * 8;
+		//sdl_draw_rect_map(editor, tbox);
+		//if (pos_in_rect(tbox, p.x, p.y))
+		//{
+			x = tbox.x;
+			while (x < tbox.x + tbox.w)
+			{
+				y = tbox.y;
+				while (y < tbox.y + tbox.h)
+				{
+					if (fabs((double)(curr->pil1->pos.y - curr->pil2->pos.y) / (double)(curr->pil1->pos.x - curr->pil2->pos.x) - (double)(y - curr->pil2->pos.y) / (double)(x - curr->pil2->pos.x)) < 0.05)
+						sdl_draw_pixel_map(editor, x, y);
+					if (fabs((double)(curr->pil2->pos.y - curr->pil1->pos.y) / (double)(curr->pil2->pos.x - curr->pil1->pos.x) - (double)(y - curr->pil1->pos.y) / (double)(x - curr->pil1->pos.x)) < 0.05)
+						sdl_draw_pixel_map(editor, x, y);
+					y++;
+				}
+				x++;
+			}
+			if (fabs((double)curr->pil1->pos.y / (double)curr->pil1->pos.x - (double)(curr->pil1->pos.y - p.y) / (double)(curr->pil1->pos.x - p.x)) < 0.01)
+				printf("%f\t%f\n", (double)tbox.h / (double)tbox.w, (double)(tbox.y - p.y) / (double)(tbox.x - p.x));
+			return (curr);
+		//}
 		if (curr->next != start)
 			curr = curr->next;
 		else
