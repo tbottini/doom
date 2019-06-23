@@ -22,9 +22,9 @@ t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 	return (pos);
 }
 
-t_lstpil find_pilier(t_editor *editor, t_lstpil start, int x, int y)
+t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 {
-	t_lstpil curr;
+	t_pilier *curr;
 	t_vct2 p;
 
 	curr = start;
@@ -84,7 +84,7 @@ void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 void draw_map(t_editor *editor)
 {
 	t_lstsec currsec;
-	t_lstpil curr;
+	t_pilier *curr;
 	t_lstmur currwall;
 	t_vct2 loc;
 	SDL_Rect tmp;
