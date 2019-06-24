@@ -82,7 +82,8 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
-		edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y);
+		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
+			edit->currmur = find_mur(edit, edit->map, e.x, e.y);
 		if (e.clicks == 2)
 			if (!ft_pillarpushend(&edit->pillist, relpos))
 				ft_printf("Error adding pillar\n");
@@ -157,7 +158,8 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 	}
 	doom->edit.mapmouse = get_rel_mappos(&doom->edit, e.x, e.y);
 	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.pillist, e.x, e.y);
-	if (doom->edit.hoverpilier)
+	//doom->edit.hovermur = find_mur(&doom->edit, doom->edit.map, e.x, e.y);
+	if (doom->edit.hoverpilier || doom->edit.hovermur)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 	else
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
