@@ -84,6 +84,8 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	{
 		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
 			edit->currmur = find_mur(edit, edit->map, e.x, e.y);
+		else
+			edit->currmur = NULL;
 		if (e.clicks == 2)
 			if (!ft_pillarpushend(&edit->pillist, relpos))
 				ft_printf("Error adding pillar\n");
@@ -157,8 +159,10 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 		return (0);
 	}
 	doom->edit.mapmouse = get_rel_mappos(&doom->edit, e.x, e.y);
-	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.pillist, e.x, e.y);
-	//doom->edit.hovermur = find_mur(&doom->edit, doom->edit.map, e.x, e.y);
+	if (!(doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.pillist, e.x, e.y)))
+		doom->edit.hovermur = find_mur(&doom->edit, doom->edit.map, e.x, e.y);
+	else
+		doom->edit.hovermur = NULL;
 	if (doom->edit.hoverpilier || doom->edit.hovermur)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 	else
@@ -170,6 +174,14 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
 			doom->edit.currpilier->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
 			doom->edit.currpilier->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+		}
+		else if (doom->edit.currmur)
+		{
+			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
+			doom->edit.currmur->pil1->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currmur->pil1->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currmur->pil2->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currmur->pil2->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
 		}
 	}
 	else if (e.state == SDL_BUTTON_MMASK)
