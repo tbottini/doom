@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
+#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/03 20:38:19 by akrache          ###   ########.fr        #
+#    Updated: 2019/06/21 12:55:25 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,7 @@ chmain			:
 
 start			:	all
 	./doom-nukem $(ARGS)
-	
+
 
 re				:	fclean all
 

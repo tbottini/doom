@@ -27,6 +27,7 @@ SRCS_INPUT		:=		event_controller.c								\
 						shoot.c											\
 						collision.c										\
 						keyboard_input.c								\
+						debug_input.c									\
 
 SRCS_RENDER		:=		render.c										\
 						bunch.c											\
@@ -40,10 +41,11 @@ SRCS_RENDER		:=		render.c										\
 						backface.c										\
 						render_effect.c									\
 						pillar_info.c									\
+						textures.c										\
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c										\
-						chunk_ressources.c
+						chunk_ressources.c								\
 
 SRCS_DEBUG		:=		debug_sector.c									\
 						debug_screen.c									\
@@ -67,6 +69,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						designer_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\
+						extra_calcul.c									\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
@@ -76,6 +79,6 @@ OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/ui/%.o,$(SRCS_UI))			\
 						$(patsubst %.c,objs/input/%.o,$(SRCS_INPUT))	\
 						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))\
-						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))	\
+						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))
 
 SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))

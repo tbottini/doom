@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 09:28:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/21 12:52:36 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,6 @@ int				event_handler(t_doom *doom)
 			|| event.type == SDL_CONTROLLERBUTTONDOWN
 				|| event.type == SDL_CONTROLLERBUTTONUP)
 			controller_handler(doom, event);
-		else
-		{
-			//ft_printf("Event %d\n", event.type);
-		}
 	}
 	return (1);
 }

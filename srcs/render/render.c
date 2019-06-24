@@ -14,16 +14,20 @@ int					doom_render(t_doom *doom)
 	int				i_sector;
 
 	i_sector = 0;
-	sector_render(doom, doom->sector);
 
-	while (i_sector < doom->sector->len_sub)
+	if (DEBUG)
+		debug_up(doom);
+	else
 	{
-		sector_render(doom, &doom->sector->ssector[i_sector]);
-		i_sector++;
+		sector_render(doom, doom->sector);
+		while (i_sector < doom->sector->len_sub)
+		{
+			sector_render(doom, &doom->sector->ssector[i_sector]);
+			i_sector++;
+		}
+		minimap(doom);
+		sdl_MultiRenderCopy(&doom->sdl);
+		zline_reset(&doom->tool);
 	}
-	minimap(doom);
-	sdl_MultiRenderCopy(&doom->sdl);
-	zline_reset(&doom->tool);
-
 	return (1);
 }

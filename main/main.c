@@ -22,30 +22,12 @@ static int	init(void)
 
 int			main(int ac, char **av)
 {
-	t_doom		*doom;
-	SDL_Event	event;
+	printf("test\n");
+	//test de l'interpolation
 
-	if (ac < 2)
-		return (-1);
-	if (!init())
-		return (0);
-	if (!(doom = doom_init()))
-		return (-1);
-	if (!(parsing(doom, av[1])))
-	{
-		printf("bad parsing\n");
-		return (0);
-	}
-	//printf("player tall parsing")
-	player_init(&doom->player);
-	describe_player(doom->player);
-	doom_render(doom);
-	printf("player tall %f\n", doom->player.stat.height);
-	while (1)
-	{
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_KEYDOWN)
-			keyboard_input(doom, event);
-	}
+
+
+
+
 	return (0);
 }
