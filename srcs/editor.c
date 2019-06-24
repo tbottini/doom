@@ -99,36 +99,15 @@ t_mur *find_mur(t_editor *editor, t_lstsec start, int x, int y)
 		tbox.h = (curr->pil1->pos.y > curr->pil2->pos.y ? curr->pil1->pos.y : curr->pil2->pos.y) - tbox.y + precs * 8;
 		tbox.x -= precs * 4;
 		tbox.y -= precs * 4;
-
-		t_affine affine;
-		double	point_affine;
-		
-		x = tbox.x;
-		while (x < tbox.x + tbox.w)
-		{
-			y = tbox.y;
-			while (y < tbox.y + tbox.h)
-			{
-				coef.x = (double)(curr->pil1->pos.x - curr->pil2->pos.x) / (double)(curr->pil1->pos.y - curr->pil2->pos.y);
-				affine = affine_points((t_fvct2)curr->pil1->pos, (t_fvct2)curr->pil2->pos);
-				point_affine = point_var(affine, (double)x);
-				if (x >= y * coef.x - precs * 4 && x <= y * coef.x + precs * 4)
-					sdl_draw_pixel_map(editor, x, y);
-				//coef.y = (double)(curr->pil1->pos.y - curr->pil2->pos.y) / (double)(curr->pil1->pos.x - curr->pil2->pos.x);
-				//if (y >= x * coef.y - precs * 4 && y <= x * coef.y + precs * 4)
-				//	sdl_draw_pixel_map(editor, x, y);
-				y++;
-			}
-			x++;
-		}
-
 		if (pos_in_rect(tbox, p.x, p.y))
 		{
-			coef.x = (double)(curr->pil1->pos.x - curr->pil2->pos.x) / (double)(curr->pil1->pos.y - curr->pil2->pos.y);
-			if (p.x >= p.y * coef.x - precs * 4 && p.x <= p.y * coef.x + precs * 4)
+			coef.x = (double)(curr->pil1->pos.y - curr->pil2->pos.y) / (double)(curr->pil1->pos.x - curr->pil2->pos.x);
+			coef.y = (double)curr->pil1->pos.y - (double)curr->pil1->pos.x * coef.x;
+			if (p.y >= (p.x * coef.x + coef.y) - precs * 4 && p.y <= (p.x * coef.x + coef.y) + precs * 4)
 				return (curr);
-			coef.y = (double)(curr->pil1->pos.y - curr->pil2->pos.y) / (double)(curr->pil1->pos.x - curr->pil2->pos.x);
-			if (p.y >= p.x * coef.y - precs * 4 && p.y <= p.x * coef.y + precs * 4)
+			coef.x = (double)(curr->pil1->pos.x - curr->pil2->pos.x) / (double)(curr->pil1->pos.y - curr->pil2->pos.y);
+			coef.y = (double)curr->pil1->pos.x - (double)curr->pil1->pos.y * coef.x;
+			if (p.x >= (p.y * coef.x + coef.y) - precs * 4 && p.x <= (p.y * coef.x + coef.y) + precs * 4)
 				return (curr);
 		}
 		if (curr->next != start->murs)
@@ -196,10 +175,12 @@ void draw_map(t_editor *editor)
 			//currwall->pil1 = currwall->pil1;
 			if (currsec == editor->map)
 			{
-				if (currwall == editor->hovermur)
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 255, 250, 0xFF});
+				if (currwall == editor->currmur)
+					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){200, 0, 70, 0xFF});
+				else if (currwall == editor->hovermur)
+					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
 				else
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 170, 250, 0xFF});
+					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
 			}
 			else
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
