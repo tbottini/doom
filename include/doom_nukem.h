@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 14:04:38 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/24 17:22:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 800
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 1280
+# define HEIGHT 800
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -81,6 +81,7 @@ t_player				chunck_player(int fd);
 t_sector				*chunck_sector(int fd, t_designer *ressources);
 t_sector				*sector_new();
 t_list					*ft_lstn(void *content);
+int						line_wall(t_designer *rsrc, t_wall *wall, char *line);
 
 /*
 **	debug

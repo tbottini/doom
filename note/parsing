@@ -13,8 +13,7 @@ header pour portail/portail_dist/mur/mur_occlusion
 lettre P (pour le portail)
 D portail_dist
 M mur
-O mur_occlu
-Y mur_occlu_dist
+O wall_opaque
 
 P1.0 1.0 //portail direct mur
 1.0 2.0
