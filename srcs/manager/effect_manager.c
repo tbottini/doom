@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   effect_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 01:18:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/14 10:11:37 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/24 17:25:46 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,18 @@ void				effect_free(t_sound *sound)
 
 void				effect_volume(t_sound *sound)
 {
-	Mix_SetPanning(0, sound->effectvolume, sound->effectvolume);
+	/*Mix_SetPanning(0, sound->effectvolume, sound->effectvolume);
 	Mix_SetPanning(1, sound->effectvolume, sound->effectvolume);
 	Mix_SetPanning(2, sound->effectvolume, sound->effectvolume);
-	Mix_SetPanning(3, sound->effectvolume, sound->effectvolume);
+	Mix_SetPanning(3, sound->effectvolume, sound->effectvolume);*/
+	int tmp;
+
+	tmp = abs(sound->effectvolume - 255);
+	Mix_SetDistance(0, tmp);
+	Mix_SetDistance(1, tmp);
+	Mix_SetDistance(2, tmp);
+	Mix_SetDistance(3, tmp);
+
 }
 
 static Mix_Chunk	*loadef(char *track)
