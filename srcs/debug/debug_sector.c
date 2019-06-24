@@ -28,13 +28,16 @@ void		describe_sector(t_sector sector)
 	double_msg("height ceil :", sector.h_ceil);
 	int_msg("son sector :", sector.len_sub);
 	wall = sector.wall;
+	a = sector.wall[i].pillar;
 	while (i < sector.len)
 	{
-		fvct2_print(*(t_fvct2*)&sector.wall[i].pillar);
-		ft_putstr(" --> ");
+		//fvct2_print(*(t_fvct2*)&sector.wall[i].pillar);
+		//ft_putstr(" --> ");
+		printf("%f %f -->", a.p.x, a.p.y);
 		a = *sector.wall[i].next;
-		fvct2_print(*(t_fvct2*)&a);
-		ft_putchar('\n');
+		printf(" %f %f\n", a.p.x, a.p.y);
+		//fvct2_print(*(t_fvct2*)&a);
+		//ft_putchar('\n');
 		i++;
 	}
 	ft_putendl("--------------------");
@@ -94,7 +97,6 @@ void		describe_sub_sector(t_sector sector, int sub)
 {
 	int		i;
 	t_wall	*wall;
-	t_pillar	a;
 
 	i = 0;
 	ft_putnchar('\t', sub);
@@ -108,13 +110,14 @@ void		describe_sub_sector(t_sector sector, int sub)
 	wall = sector.wall;
 	while (i < sector.len)
 	{
+		if (sector.wall[i].status == WALL)
+			printf("WALL\t");
+		else if (sector.wall[i].status == PORTAL_DIRECT)
+			printf("PORT\t");
+		else if (sector.wall[i].status == WINDOW)
+			printf("WIND\t");
 		ft_putnchar('\t', sub);
-		//printf("%f %f --> %f %f\n", sector.wall[i].pillar.p.x, sector.wall[i].pillar.p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
-		fvct2_print(*(t_fvct2*)&sector.wall[i].pillar);
-		ft_putstr(" --> ");
-		a = *sector.wall[i].next;
-		fvct2_print(*(t_fvct2*)&a);
-		ft_putchar('\n');
+		printf("%f %f --> %f %f\n", sector.wall[i].pillar.p.x, sector.wall[i].pillar.p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
 		i++;
 	}
 }

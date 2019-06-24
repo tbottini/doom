@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 12:51:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/24 21:22:37 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		key_press(int key, t_doom *doom)
 	else if (key == SDLK_g)
 		describe_player(doom->player);
 	else if (key == SDLK_h)
-		describe_sector(*doom->sector);
+		describe_sector_recursif(*doom->sector);
 	else if (key == SDLK_9)
 		change_music(&doom->sound, 10, 5000);
 	else if (key == SDLK_o)
