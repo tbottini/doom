@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/19 18:46:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/24 12:25:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void		action(t_player *player, t_stat *stat)
 	d.x = stat->pos.x + (RANGE * sin(stat->rot.x * PI180) * cos(stat->rot.y * PI180));
 	d.y = stat->pos.y + (RANGE * sin(stat->rot.x * PI180) * sin(stat->rot.y * PI180));
 	d.z = stat->pos.z + (-(RANGE * cos(stat->rot.x * PI180)) + (stat->height / 2));
-	hit = possible_button(stat, d, stat->pos);
+	hit = NULL;//possible_button(stat, d, stat->pos);
 	if (hit)
 	{
 		printf("BUTTON HIT\n");
