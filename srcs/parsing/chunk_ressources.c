@@ -1,9 +1,5 @@
 #include "doom_nukem.h"
 
-//fct recup une porstion de fichier en liste chaine avec get_next_line
-
-
-
 t_list		*list_chunk_line(int fd, uint32_t *nline)
 {
 	char		*line;

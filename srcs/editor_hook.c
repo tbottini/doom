@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/06 17:46:28 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/20 16:30:43 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int editor_key_press(int key, t_doom *doom)
 	}
 	else if (key == SDLK_3)
 	{
-		//doom->edit.map = push_secteur(&(doom->edit.sectors));
+		doom->edit.map = push_secteur(&(doom->edit.sectors));
 	}
 	else if (key == SDLK_4)
 		printf("currpillar : %p\n", doom->edit.currpilier);

@@ -30,27 +30,27 @@ void		bold_point(t_vct2 v, Uint32 color, t_doom *doom)
 	}
 }
 
+void		init_debug(t_doom *doom)
+{
+	t_vct2	c1;
+	t_vct2	c2;
+
+	c1.x = 0;
+	c1.y = doom->sdl.size.y / 2;
+	c2.x = doom->sdl.size.x;
+	c2.y = doom->sdl.size.y / 2;
+	ft_bzero(doom->sdl.screen, sizeof(uint32_t) * doom->sdl.size.x * doom->sdl.size.y);
+	trait(doom, c1, c2, 0xffffffff);
+	c1.x = doom->sdl.size.x / 2;
+	c1.y = 0;
+	c2.x = doom->sdl.size.x / 2;
+	c2.y = doom->sdl.size.y;
+	trait(doom, c1, c2, 0xffffffff);
+	bold_point((t_vct2){doom->sdl.size.x / 2 + 1, doom->sdl.size.y / 2 + 1}, 0xff0000ff, doom);
+}
+
 void		debug_up(t_doom *doom)
 {
-	int i;
-	t_vct2	cursor;
-	t_vct2	cursor2;
-	t_wall	*wall;
-
-	i = 0;
-	wall = doom->sector->wall;
-	ft_bzero(doom->sdl.screen, doom->sdl.size.x * doom->sdl.size.y);
-	cursor = hot_point(*(t_fvct2*)&doom->player.stat.pos, doom->sdl.size);
-	bold_point(cursor, RED_WALL, doom);
-	i = 0;
-	cursor = hot_point(*(t_fvct2*)&wall[0].pillar, doom->sdl.size);
-	while (i < doom->sector->len)
-	{
-		cursor2 = hot_point(*(t_fvct2*)&wall[i + 1].pillar, doom->sdl.size);
-		bold_point(cursor, INT_MAX, doom);
-		trait(doom, cursor, cursor2, INT_MAX);
-		i++;
-		cursor = cursor2;
-	}
+	init_debug(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
 }

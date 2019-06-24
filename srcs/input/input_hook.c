@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/19 17:55:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/21 12:51:44 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+void			save_png(t_sdl *sdl)
+{
+	SDL_Surface	*s_shot;
+
+	s_shot = SDL_CreateRGBSurfaceWithFormatFrom(sdl->screen, sdl->size.x,
+		sdl->size.y, 8, sizeof(uint32_t) * sdl->size.x, sdl->format->format);
+	IMG_SavePNG(s_shot, "out.png");
+	ft_printf("png save\n");
+	SDL_FreeSurface(s_shot);
+}
+
 
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
@@ -18,7 +30,6 @@
 ** else if (key == SDLK_yourkey)
 **		action();
 */
-
 int		key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
@@ -42,6 +53,10 @@ int		key_press(int key, t_doom *doom)
 		describe_sector(*doom->sector);
 	else if (key == SDLK_9)
 		change_music(&doom->sound, 10, 5000);
+	else if (key == SDLK_o)
+		;//kick(doom, &doom->player);
+	else if (key == SDLK_b)
+		save_png(&doom->sdl);
 	else if (key == SDLK_v && !doom->ui.m_status)
 		kick(doom, &doom->player);
 	else
@@ -55,22 +70,9 @@ int		key_press(int key, t_doom *doom)
 ** else if (key == SDLK_yourkey)
 **		action();
 */
-
 int		key_release(int key, t_doom *doom)
 {
 	ft_noderm_int(&(doom->sdl.keys), key);
-	/*if (key == SDLK_w || key == SDLK_s)
-	{
-		//doom->player.stat.vel.x = 0;
-	}
-	else if (key == SDLK_a || key == SDLK_d)
-	{
-		//doom->player.stat.vel.y = 0;
-	}
-	else if (key == SDLK_q || key == SDLK_e)
-	{
-		doom->player.stat.rotvel.y = 0.0;
-	}*/
 	if (key == SDLK_w || key == SDLK_LSHIFT)
 		sprint_release(&doom->player.stat);
 	else if (key == SDLK_LGUI)
@@ -84,7 +86,6 @@ int		key_release(int key, t_doom *doom)
 ** else if (btn == SDL_BUTTON_yourbutton)
 **		action();
 */
-
 int		mouse_press(int btn, int x, int y, t_doom *doom)
 {
 	t_btn *curr_btn;
@@ -121,7 +122,6 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 ** else if (btn == SDL_BUTTON_yourbutton)
 **		action();
 */
-
 int		mouse_release(int btn, int x, int y, t_doom *doom)
 {
 	doom->ui.currslid = NULL;
@@ -137,7 +137,6 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 ** Add here function that need to be done when mouse if moved in window
 ** x and y are relative postions when in gamemode
 */
-
 int		mouse_move(int x, int y, t_doom *doom)
 {
 	t_slid	*tmp;
@@ -151,7 +150,6 @@ int		mouse_move(int x, int y, t_doom *doom)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (doom->ui.m_status == 0)
 	{
-		//ft_printf("mouse : %d\t%d\t%d\n", x, y);
 		doom->player.stat.rot.y -= x / SENSIBILITY;
 		doom->player.stat.rot.x -= y / (SENSIBILITY * 2);
 		return (0);
