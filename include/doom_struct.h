@@ -164,8 +164,10 @@ typedef struct			s_editor
 	//Uint32				*screen;
 	t_tab				keys;
 	t_lstpil			pillist;
-	t_lstpil			currpilier;
-	t_lstpil			hoverpilier;
+	t_pilier			*currpilier;
+	t_pilier			*hoverpilier;
+	t_mur				*currmur;
+	t_mur				*hovermur;
 	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstsec			map;
 	t_vct3				mappos;

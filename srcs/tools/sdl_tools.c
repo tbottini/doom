@@ -163,8 +163,8 @@ void calcdelay(const char *str, t_doom *doom)
 
 int	pos_in_rect(SDL_Rect rect, int x, int y)
 {
-	if (rect.x < x && x < rect.x + rect.w
-		&& rect.y < y && y < rect.y + rect.h)
+	if (rect.x <= x && x <= rect.x + rect.w
+		&& rect.y <= y && y <= rect.y + rect.h)
 	{
 		return (1);
 	}
