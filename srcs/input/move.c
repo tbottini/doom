@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/24 16:39:56 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/24 21:57:05 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,10 @@ void		update_rotation(t_stat *stat)
 	else if (stat->rot.y > 360)
 		stat->rot.y -= 360.0;
 	// Update Position
-	if (stat->sector->h_floor >= stat->pos.z || stat->pos.z
-		>= stat->sector->h_floor + stat->sector->h_ceil - stat->height)
+	if ((stat->sector->h_floor >= stat->pos.z
+		&& stat->sector->gravity.z < 0) || (stat->pos.z
+		>= stat->sector->h_floor + stat->sector->h_ceil
+		- stat->height && stat->sector->gravity.z > 0))
 		inertie(stat);
 	else
 		gravity(stat);
