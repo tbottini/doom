@@ -54,7 +54,7 @@ int		editor_init(t_editor *editor)
 		return (0);
 	SDL_SetWindowMinimumSize(editor->win, MINWIDTH, MINHEIGHT);
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
-	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
+	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 10000};
 	editor->sectbox.x = -1;
 	editor->sectbox.y = -1;
 	editor->sectbox.w = 160;

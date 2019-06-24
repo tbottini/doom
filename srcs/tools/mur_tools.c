@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2)
+static t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2)
 {
 	t_lstmur t;
 
@@ -59,17 +59,37 @@ void ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil)
 	}
 }
 
+int	ft_walllen(t_lstmur start)
+{
+	int x;
+
+	x = 0;
+	while (start)
+	{
+		++x;
+		start = start->next;
+	}
+	return (x);
+}
+
 t_lstmur ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2)
 {
 	t_lstmur t;
 
-	if (!start)
+	if (!start || pil1 == pil2)
 		return (NULL);
 	if (!(*start))
 		return (*start = ft_newwall(pil1, pil2));
 	t = *start;
 	while (t->next)
+	{
+		if ((t->pil1 == pil1 && t->pil2 == pil2)
+			|| (t->pil1 == pil2 && t->pil2 == pil1))
+			return (NULL);
 		t = t->next;
+	}
+	if ((t->pil1 == pil1 && t->pil2 == pil2) || (t->pil1 == pil2 && t->pil2 == pil1))
+			return (NULL);
 	if (!(t->next = ft_newwall(pil1, pil2)))
 		return (NULL);
 	t->next->prvs = t;
