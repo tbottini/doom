@@ -13,6 +13,8 @@
 #include "doom_nukem.h"
 #define SECTORBOXHEIGHT 50
 
+#define EPSILON 0.1
+
 t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 {
 	t_vct2 pos;
@@ -31,30 +33,30 @@ t_vct2 get_screen_mappos(t_editor *editor, int x, int y)
 	return (pos);
 }
 
-void	sdl_draw_rect_map(t_editor *editor, SDL_Rect rect)
+void sdl_draw_rect_map(t_editor *editor, SDL_Rect rect)
 {
 	t_vct2 tmp;
 	SDL_Rect sbox;
-	
+
 	tmp = get_screen_mappos(editor, rect.x, rect.y);
 	sbox.x = tmp.x;
 	sbox.y = tmp.y;
 	tmp = get_screen_mappos(editor, rect.x + rect.w, rect.y + rect.h);
 	sbox.w = tmp.x - sbox.x;
 	sbox.h = tmp.y - sbox.y;
-	SDL_SetRenderDrawColor(editor->rend, 200,200,200,255);
+	SDL_SetRenderDrawColor(editor->rend, 200, 200, 200, 255);
 	SDL_RenderFillRect(editor->rend, &sbox);
-	SDL_SetRenderDrawColor(editor->rend, 0,0,0,0);
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 0);
 }
 
-void	sdl_draw_pixel_map(t_editor *editor, int x, int y)
+void sdl_draw_pixel_map(t_editor *editor, int x, int y)
 {
 	t_vct2 tmp;
 
 	tmp = get_screen_mappos(editor, x, y);
-	SDL_SetRenderDrawColor(editor->rend, 200,200,200,255);
+	SDL_SetRenderDrawColor(editor->rend, 200, 200, 200, 255);
 	SDL_RenderDrawPoint(editor->rend, tmp.x, tmp.y);
-	SDL_SetRenderDrawColor(editor->rend, 0,0,0,0);
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 0);
 }
 
 t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
@@ -66,10 +68,7 @@ t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	p = get_rel_mappos(editor, x, y);
 	while (curr)
 	{
-		if (p.x - MAXZOOM / editor->mappos.z * 2 <= curr->pos.x
-				&& curr->pos.x <= p.x + MAXZOOM / editor->mappos.z * 2
-				&& p.y - MAXZOOM / editor->mappos.z * 2 <= curr->pos.y
-				&& curr->pos.y <= p.y + MAXZOOM / editor->mappos.z * 2)
+		if (p.x - MAXZOOM / editor->mappos.z * 2 <= curr->pos.x && curr->pos.x <= p.x + MAXZOOM / editor->mappos.z * 2 && p.y - MAXZOOM / editor->mappos.z * 2 <= curr->pos.y && curr->pos.y <= p.y + MAXZOOM / editor->mappos.z * 2)
 			return (curr);
 		if (curr->next != start)
 			curr = curr->next;
@@ -79,48 +78,60 @@ t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	return (NULL);
 }
 
-t_mur *find_wall(t_editor *editor, t_lstmur start, int x, int y)
+t_mur *find_mur(t_editor *editor, t_lstsec start, int x, int y)
 {
 	SDL_Rect tbox;
 	t_mur *curr;
 	t_vct2 p;
+	t_fvct2 coef;
 	int precs;
 
-	curr = start;
+	if (!start)
+		return (NULL);
+	curr = start->murs;
 	p = get_rel_mappos(editor, x, y);
+	precs = (EDITORPRECISION) / editor->mappos.z + 1;
 	while (curr)
 	{
 		tbox.x = (curr->pil1->pos.x < curr->pil2->pos.x ? curr->pil1->pos.x : curr->pil2->pos.x);
 		tbox.y = (curr->pil1->pos.y < curr->pil2->pos.y ? curr->pil1->pos.y : curr->pil2->pos.y);
-		tbox.w = (curr->pil1->pos.x > curr->pil2->pos.x ? curr->pil1->pos.x : curr->pil2->pos.x) - tbox.x;
-		tbox.h = (curr->pil1->pos.y > curr->pil2->pos.y ? curr->pil1->pos.y : curr->pil2->pos.y) - tbox.y;
-		precs = (EDITORPRECISION) / editor->mappos.z + 1;
+		tbox.w = (curr->pil1->pos.x > curr->pil2->pos.x ? curr->pil1->pos.x : curr->pil2->pos.x) - tbox.x + precs * 8;
+		tbox.h = (curr->pil1->pos.y > curr->pil2->pos.y ? curr->pil1->pos.y : curr->pil2->pos.y) - tbox.y + precs * 8;
 		tbox.x -= precs * 4;
 		tbox.y -= precs * 4;
-		tbox.w += precs * 8;
-		tbox.h += precs * 8;
-		//sdl_draw_rect_map(editor, tbox);
-		//if (pos_in_rect(tbox, p.x, p.y))
-		//{
-			x = tbox.x;
-			while (x < tbox.x + tbox.w)
+
+		t_affine affine;
+		double	point_affine;
+		
+		x = tbox.x;
+		while (x < tbox.x + tbox.w)
+		{
+			y = tbox.y;
+			while (y < tbox.y + tbox.h)
 			{
-				y = tbox.y;
-				while (y < tbox.y + tbox.h)
-				{
-					if (fabs((double)(curr->pil1->pos.y - curr->pil2->pos.y) / (double)(curr->pil1->pos.x - curr->pil2->pos.x) - (double)(y - curr->pil2->pos.y) / (double)(x - curr->pil2->pos.x)) < 0.05)
-						sdl_draw_pixel_map(editor, x, y);
-					if (fabs((double)(curr->pil2->pos.y - curr->pil1->pos.y) / (double)(curr->pil2->pos.x - curr->pil1->pos.x) - (double)(y - curr->pil1->pos.y) / (double)(x - curr->pil1->pos.x)) < 0.05)
-						sdl_draw_pixel_map(editor, x, y);
-					y++;
-				}
-				x++;
+				coef.x = (double)(curr->pil1->pos.x - curr->pil2->pos.x) / (double)(curr->pil1->pos.y - curr->pil2->pos.y);
+				affine = affine_points((t_fvct2)curr->pil1->pos, (t_fvct2)curr->pil2->pos);
+				point_affine = point_var(affine, (double)x);
+				if (x >= y * coef.x - precs * 4 && x <= y * coef.x + precs * 4)
+					sdl_draw_pixel_map(editor, x, y);
+				//coef.y = (double)(curr->pil1->pos.y - curr->pil2->pos.y) / (double)(curr->pil1->pos.x - curr->pil2->pos.x);
+				//if (y >= x * coef.y - precs * 4 && y <= x * coef.y + precs * 4)
+				//	sdl_draw_pixel_map(editor, x, y);
+				y++;
 			}
-			if (fabs((double)curr->pil1->pos.y / (double)curr->pil1->pos.x - (double)(curr->pil1->pos.y - p.y) / (double)(curr->pil1->pos.x - p.x)) < 0.01)
-				printf("%f\t%f\n", (double)tbox.h / (double)tbox.w, (double)(tbox.y - p.y) / (double)(tbox.x - p.x));
-			return (curr);
-		//}
-		if (curr->next != start)
+			x++;
+		}
+
+		if (pos_in_rect(tbox, p.x, p.y))
+		{
+			coef.x = (double)(curr->pil1->pos.x - curr->pil2->pos.x) / (double)(curr->pil1->pos.y - curr->pil2->pos.y);
+			if (p.x >= p.y * coef.x - precs * 4 && p.x <= p.y * coef.x + precs * 4)
+				return (curr);
+			coef.y = (double)(curr->pil1->pos.y - curr->pil2->pos.y) / (double)(curr->pil1->pos.x - curr->pil2->pos.x);
+			if (p.y >= p.x * coef.y - precs * 4 && p.y <= p.x * coef.y + precs * 4)
+				return (curr);
+		}
+		if (curr->next != start->murs)
 			curr = curr->next;
 		else
 			curr = NULL;
@@ -182,9 +193,14 @@ void draw_map(t_editor *editor)
 		currwall = currsec->murs;
 		while (currwall)
 		{
-			currwall->pil1 = currwall->pil1;
+			//currwall->pil1 = currwall->pil1;
 			if (currsec == editor->map)
-				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 170, 250, 0xFF});
+			{
+				if (currwall == editor->hovermur)
+					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 255, 250, 0xFF});
+				else
+					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 170, 250, 0xFF});
+			}
 			else
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
 			currwall = currwall->next;
@@ -242,7 +258,7 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-void	sector_menu_click(t_editor *edit, int pos, int del)
+void sector_menu_click(t_editor *edit, int pos, int del)
 {
 	t_lstsec sec;
 	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;
