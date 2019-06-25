@@ -6,11 +6,27 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/19 16:19:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/24 21:57:05 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+void		fly(t_stat *stat)
+{
+	if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height - 0.1)
+		stat->pos.z += 0.1;
+	else if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height)
+		stat->pos.z = stat->sector->h_ceil + stat->sector->h_ceil - stat->height;
+}
+
+void		unfly(t_stat *stat)
+{
+	if (stat->pos.z > stat->sector->h_floor + 0.1)
+		stat->pos.z -= 0.1;
+	else if (stat->pos.z > stat->sector->h_floor)
+		stat->pos.z = stat->sector->h_floor;
+}
 
 void		crouch(t_player *player)
 {
@@ -43,38 +59,18 @@ void		sprint_release(t_stat *stat)
 	stat->speed = WALK;
 }
 
-void		fall_damage(t_stat *stat, int f)
+/*void		fall_damage(t_stat *stat)
 {
-	if (stat->vel.z > 1000.0)
-	{
-		stat->health -= stat->vel.z / 100.0;
-	}
-	if (f)
-	{
-		stat->pos.z = stat->sector->h_floor;
-		Mix_Resume(1);
-	}
-	else
-		stat->pos.z = stat->sector->h_floor + stat->sector->h_ceil - stat->height;
-	stat->vel.z = 0;
-}
+	stat->pos.z = stat->sector->h_floor;
+	Mix_Resume(1);
+	//stat->vel.z = 0;
+}*/
 
 void		gravity(t_stat *stat)
 {
 	stat->vel.x += stat->sector->gravity.x;
 	stat->vel.y += stat->sector->gravity.y;
-	//tmp = player->stat.vel.z + player->stat.sector->gravity.z;
-	//if (tmp >= player->stat.sector->h_floor && tmp <= player->stat.height + player->stat.sector->h_ceil + player->stat.sector->h_floor)
-	//if (player->stat.pos.z <= player->stat.sector->h_floor)
-	//	fall_damage(player, 1);
-	//else if (player->stat.pos.z < player->stat.sector->h_floor + player->stat.sector->h_ceil - player->stat.height)
-	//	fall_damage(player, 0);
-	//else
-		stat->vel.z += stat->sector->gravity.z * 450.0;
-	//printf("gravity !\n");
-	//player->stat.vel.z += player->stat.sector->gravity.z / 100;
-	//else
-	//	fall_damage(player);
+	stat->vel.z += stat->sector->gravity.z * 450.0;
 }
 
 void		update_rotation(t_stat *stat)
@@ -91,7 +87,10 @@ void		update_rotation(t_stat *stat)
 	else if (stat->rot.y > 360)
 		stat->rot.y -= 360.0;
 	// Update Position
-	if (stat->sector->h_floor >= stat->pos.z || stat->pos.z >= stat->sector->h_floor + stat->sector->h_ceil - stat->height)
+	if ((stat->sector->h_floor >= stat->pos.z
+		&& stat->sector->gravity.z < 0) || (stat->pos.z
+		>= stat->sector->h_floor + stat->sector->h_ceil
+		- stat->height && stat->sector->gravity.z > 0))
 		inertie(stat);
 	else
 		gravity(stat);
@@ -134,9 +133,12 @@ void		move(t_stat *stat)
 	npos.z = stat->pos.z + stat->vel.z / 35000.0;
 	//printf("%f\t%f\t%f\n", npos.x, npos.y, npos.z);
 	if (npos.z < stat->sector->h_floor)
-		fall_damage(stat, 1);
-	else if (npos.z > stat->height + stat->sector->h_ceil + stat->sector->h_floor)
-		fall_damage(stat, 0);
+	{
+		stat->pos.z = stat->sector->h_floor;
+		Mix_Resume(1);
+	}
+	else if (npos.z > stat->sector->h_ceil - stat->height + stat->sector->h_floor)
+		stat->pos.z = stat->sector->h_ceil - stat->height + stat->sector->h_floor;//fall_damage(stat);
 	else
 		stat->pos.z = npos.z;
 	update_position(stat, npos);

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/24 17:22:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/25 14:18:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@
 /*
 ** Editor Stuff
 */
-#define MAXZOOM 20000
-# define EDITORPRECISION 10000
+# define MAXZOOM 20000
+# define EDITORPRECISION 5000
 # define DEBUG 0
 
 /*

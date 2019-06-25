@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 10:40:47 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/24 12:21:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ static void input_loop(t_doom *doom, int key)
 		play_effect(&doom->sound, 8);
 	else if (key == SDLK_y)
 		fire(doom);
+	else if (key == SDLK_u)
+		fly(&doom->player.stat);
+	else if (key == SDLK_j)
+		unfly(&doom->player.stat);
 }
 
 static void editor_loop(t_doom *doom, int key)
@@ -127,10 +131,12 @@ int loop_hook(t_doom *doom)
 			pos = pos->next;
 		}
 		SDL_RenderClear(doom->edit.rend);
+
 		draw_map(&doom->edit);
 		draw_sector_menu(&doom->edit, doom->ui.fonts);
 		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
+		find_mur(&doom->edit, doom->edit.map, 0, 0);
 		SDL_RenderPresent(doom->edit.rend);
 	}
 	else
