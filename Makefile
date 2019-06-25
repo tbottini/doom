@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/21 14:42:25 by tbottini         ###   ########.fr        #
+#    Updated: 2019/06/25 15:11:23 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,9 +68,9 @@ FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
-all				:		folder $(NAME)
+all				:		$(FOLDER) $(NAME)
 
-folder			:
+$(FOLDER)		:
 	@mkdir -p $(FOLDER)
 
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(HEADERS)
