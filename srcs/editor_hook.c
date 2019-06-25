@@ -99,6 +99,9 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 		else if (e.clicks == 2)
 		{
 			ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
+			if (edit->currmur == edit->hovermur)
+				edit->currmur = NULL;
+			ft_removewall(&edit->map->murs, &edit->hovermur);
 		}
 	}
 	return (0);

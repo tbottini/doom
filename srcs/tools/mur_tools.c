@@ -25,6 +25,20 @@ static t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2)
 	return (t);
 }
 
+void ft_removewall(t_lstmur *start, t_mur **mur)
+{
+	if (!mur || !(*mur))
+		return ;
+	if (*mur == *start)
+		*start = (*start)->next;
+	if ((*mur)->next)
+		(*mur)->next->prvs = (*mur)->prvs;
+	if ((*mur)->prvs)
+		(*mur)->prvs->next = (*mur)->next;
+	free(*mur);
+	*mur = NULL;
+}
+
 void ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil)
 {
 	t_lstmur t;
