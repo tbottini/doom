@@ -111,6 +111,24 @@ static void delaypcmasterrace(t_doom *doom)
 	doom->timestamp = SDL_GetTicks();
 }
 
+static void editor_loop_hook(t_doom *doom)
+{
+	t_tab pos;
+
+	pos = doom->edit.keys;
+	while (pos)
+	{
+		editor_loop(doom, pos->data);
+		pos = pos->next;
+	}
+	SDL_RenderClear(doom->edit.rend);
+	draw_map(&doom->edit);
+	draw_sector_menu(&doom->edit, doom->ui.fonts);
+	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
+	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
+	SDL_RenderPresent(doom->edit.rend);
+}
+
 int loop_hook(t_doom *doom)
 {
 	t_tab pos;
@@ -124,20 +142,7 @@ int loop_hook(t_doom *doom)
 	SDL_RenderClear(doom->sdl.rend);
 	if (doom->edit.status == 1)
 	{
-		pos = doom->edit.keys;
-		while (pos)
-		{
-			editor_loop(doom, pos->data);
-			pos = pos->next;
-		}
-		SDL_RenderClear(doom->edit.rend);
-
-		draw_map(&doom->edit);
-		draw_sector_menu(&doom->edit, doom->ui.fonts);
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
-		sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
-		find_mur(&doom->edit, doom->edit.map, 0, 0);
-		SDL_RenderPresent(doom->edit.rend);
+		editor_loop_hook(doom);
 	}
 	else
 	{
