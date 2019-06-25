@@ -14,6 +14,7 @@
 
 #define MINZOOM 10
 #define MAXZOOM 20000
+#define ZOOMSPEED 3
 
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
@@ -75,20 +76,23 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y))
 	{
-		sector_menu(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
+		sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
 	}
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
-		edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y);
+		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
+			edit->currmur = find_mur(edit, edit->map, e.x, e.y);
+		else
+			edit->currmur = NULL;
 		if (e.clicks == 2)
 			if (!ft_pillarpushend(&edit->pillist, relpos))
 				ft_printf("Error adding pillar\n");
 	}
 	else if (e.button == SDL_BUTTON_RIGHT)
 	{
-		if (edit->currpilier && edit->hoverpilier && edit->currpilier != edit->hoverpilier)
+		if (edit->currpilier && edit->hoverpilier)
 		{
 			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier);
 		}
@@ -119,7 +123,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	else if (edit->mappos.z + e.y > MAXZOOM)
 		edit->mappos.z = MAXZOOM;
 	else
-		edit->mappos.z += e.y * (edit->mappos.z / 400 + 1);
+		edit->mappos.z += e.y * (edit->mappos.z / 400 * ZOOMSPEED + 1);
 	ft_printf("\rWheel %d\t%d        ", edit->mappos.z, e.y);
 	return (0);
 }
@@ -155,8 +159,11 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 		return (0);
 	}
 	doom->edit.mapmouse = get_rel_mappos(&doom->edit, e.x, e.y);
-	doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.pillist, e.x, e.y);
-	if (doom->edit.hoverpilier)
+	if (!(doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.pillist, e.x, e.y)))
+		doom->edit.hovermur = find_mur(&doom->edit, doom->edit.map, e.x, e.y);
+	else
+		doom->edit.hovermur = NULL;
+	if (doom->edit.hoverpilier || doom->edit.hovermur)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 	else
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
@@ -167,6 +174,14 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
 			doom->edit.currpilier->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
 			doom->edit.currpilier->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+		}
+		else if (doom->edit.currmur)
+		{
+			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
+			doom->edit.currmur->pil1->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currmur->pil1->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currmur->pil2->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currmur->pil2->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
 		}
 	}
 	else if (e.state == SDL_BUTTON_MMASK)

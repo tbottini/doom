@@ -1,6 +1,6 @@
 #include "doom_nukem.h"
 
-int sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg)
+int				sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg)
 {
 	SDL_Texture *texture;
 	SDL_Surface *surf;
@@ -17,15 +17,24 @@ int sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *t
 	return (0);
 }
 
-int sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg)
+static int		ft_strlcpy_schlagg(char *dst, const char *src)
 {
-	char *str;
-	char *val;
+	int y;
 
-	val = ft_itoa(value);
-	str = ft_strjoin(label, val);
-	sdl_string_put(rend, font, loc, str, fg);
-	free(val);
-	free(str);
+	y = 0;
+	while (y < 12 && src[y])
+	{
+		dst[y] = src[y];
+		++y;
+	}
+	return (y);
+}
+
+int				sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg)
+{
+	char res[25];
+
+	ft_itoacpy(res + ft_strlcpy_schlagg(res, label), value);
+	sdl_string_put(rend, font, loc, res, fg);
 	return (0);
 }

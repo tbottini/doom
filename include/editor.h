@@ -21,12 +21,12 @@ void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
 
 void					sector_menu(t_editor *edit, int pos, int del);
-
-t_lstmur 				ft_newwall(t_pilier *pil1, t_pilier *pil2);
+int						ft_walllen(t_lstmur start);
 void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
 t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
 void					ft_clear_wall_list(t_lstmur *start);
-
+void					sector_menu_click(t_editor *edit, int pos, int del);
+t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
 void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);

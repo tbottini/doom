@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/24 21:22:37 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/25 14:17:47 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void			save_png(t_sdl *sdl)
 	ft_printf("png save\n");
 	SDL_FreeSurface(s_shot);
 }
-
 
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
