@@ -1,0 +1,26 @@
+frame:
+	zbuffer bzero
+	choix_modele -> sous secteur le plus proche
+		zline buffer bzero
+		choix_du_mur -> le plus proche
+		rendu sol
+		rendu plafond
+		si status(wall) == WALL
+			rendu (mur) entier (h_floor -> h_ceil)
+		si status(wall) == PORTAL || WINDOW
+			rendu (intersection) (h_floor -> sub_sector->h_floor)
+			rendu (intersection) (h_ceil -> sub_sector->h_ceil)
+			recursivite du rendu de secteur avec une fenetre plus petite
+				//adapter le rendu pour une fenetre qui n'est pas carre
+				//2 t_fvct3 x,y , hauteur (gauche et droite)
+			si status(wall) == WINDOW
+				rendu transparence (wall) entier
+			
+
+
+perte de calcul
+	-le pire cas du zbuffer est de commencer par la fin
+
+determiner les sous secteur du plus proche au plus loingtain
+
+
