@@ -22,7 +22,9 @@ static void		window_event(t_doom *doom, SDL_Event e)
 		SDL_GetWindowSize(doom->edit.win, &(doom->edit.size.x), &(doom->edit.size.y));
 		doom->edit.mappos.x += (doom->edit.size.x - tmp.x) / 2;
 		doom->edit.mappos.y += (doom->edit.size.y - tmp.y) / 2;
-		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y - doom->edit.sectbox.x;
+		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y;
+		doom->edit.inspectbox.h = doom->edit.size.y - doom->edit.inspectbox.y;
+		doom->edit.inspectbox.x = doom->edit.size.x - doom->edit.inspectbox.w;
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 	{

@@ -34,17 +34,17 @@ static void	update_loc_buttons(t_doom *doom, t_btn *arr)
 	while (arr[++x].txture)
 	{
 		if (arr[x].loc.parent)
-			update_loc(doom, &(arr[x].loc), *(arr[x].loc.parent));
+			update_loc(doom->sdl.size, &(arr[x].loc), *(arr[x].loc.parent));
 		else
-			update_loc(doom, &(arr[x].loc), tmp);
+			update_loc(doom->sdl.size, &(arr[x].loc), tmp);
 		tmp = arr[x].loc;
 	}
 }
 
-void		update_loc(t_doom *doom, t_sloc *loc, t_sloc before)
+void		update_loc(t_vct2 size, t_sloc *loc, t_sloc before)
 {
-	loc->area.x = (int)(doom->sdl.size.x * (loc->pos.x / 100.0));
-	loc->area.y = (int)(doom->sdl.size.y * (loc->pos.y / 100.0));
+	loc->area.x = (int)(size.x * (loc->pos.x / 100.0));
+	loc->area.y = (int)(size.y * (loc->pos.y / 100.0));
 	if (loc->snapx == 1)
 		loc->area.x -= loc->area.w / 2;
 	else if (loc->snapx == 2)
