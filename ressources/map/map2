@@ -5,11 +5,12 @@ ressources/textures/plaqueor.xpm
 END
 SCTR
 10.5
+50.4
 W100.0 1
 W0.0 0.0 1
 W10.0 0.0 0
 W10.0 50.0 1
-0.0 50.0 1
+W0.0 50.0 1
 SCTR
 4.0
 1.5
