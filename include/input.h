@@ -31,7 +31,7 @@ t_btn					add_quit_button(t_doom *doom, const char *str,
 int						sdl_set_status(t_doom *doom, int status);
 void					draw_menu(t_doom *doom);
 int						load_map_btns(t_doom *doom);
-void					update_loc(t_doom *doom, t_sloc *loc, t_sloc before);
+void					update_loc(t_vct2 size, t_sloc *loc, t_sloc before);
 void					update_slider_txt(t_doom *doom, t_slid *slid);
 void					update_slider_value(t_doom *doom, t_slid *slid, int v);
 t_slid					add_fov_slider(t_doom *doom);
