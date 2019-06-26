@@ -53,6 +53,7 @@ typedef struct			s_wall
 	t_txtr				txtr;
 	t_portal_id			status;
 	t_portal			*link;
+	double				dist;
 }						t_wall;
 
 typedef struct			s_sector
