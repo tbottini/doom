@@ -14,6 +14,7 @@ void					fish_eyes(double *dist, double angle);
 double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
 uint32_t				texture_interpolation2D(t_designer *arch);
 void					wall_screen_info(t_designer *arch, t_player *p);
+
 /*
 **	bunch
 */
@@ -24,7 +25,6 @@ void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 /*
 ** Drawer functions
 */
-
 int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
 int						sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg);
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
@@ -33,4 +33,5 @@ int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 //void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
+void					draw_part_line(t_sdl *sdl, t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d);
 #endif
