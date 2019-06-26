@@ -13,7 +13,6 @@ int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_w
 	wall_angle = atan2(h_diff, depth_wall);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
 	px += (player->stat.rot.x - 90) * 45;
-	//px += (player->stat.pos.z - player->stat.sector->h_ceil);
 	return (px);
 }
 
@@ -38,15 +37,12 @@ t_fvct2		surface_pillar(t_designer *arch, t_player *player, int wall_height, dou
 	return (wall_portion);
 }
 
-void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, double col_txtr, t_fvct2 surface)
+void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
 {
 	double	coef;
 	int		px;
 	double	buff;
 
-	(void)col_txtr;
-	//px = arch->shift_txtr.x;
-	//futur appel de texture_interpolation2
 	px = texture_interpolation2D(arch);
 	buff = 0;
 	coef = (double)wall->txtr.h / (surface.y - surface.x);
@@ -85,26 +81,14 @@ void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
 	i = 0;
 	ncol = numcol;
 	len = arch->sdl->size.x;
-	while (i < surface.x && i < arch->sdl->size.y)
-	{
-		arch->sdl->screen[numcol] = BLUE_SKY;
-		numcol += len;
-		i++;
-	}
-	draw_part_texture(arch, wall, numcol, 1, surface);
-	numcol = ncol + ((int)surface.y + 1) * len;
-	i = surface.y;
+	numcol = ncol + ((int)surface.x + 1) * len;
+	i = surface.x;
 	if (i < 0)
 	{
 		i = 0;
 		numcol = ncol;
 	}
-	while (i < arch->sdl->size.y)
-	{
-		arch->sdl->screen[numcol] = 0x272130ff;
-		numcol += len;
-		i++;
-	}
+	draw_part_texture(arch, wall, numcol, surface);
 }
 
 /*
@@ -165,78 +149,69 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 
 double		coef_vct2(t_fvct2 value, t_fvct2 value2)
 {
-	return ((value2.x - value.x) / (value2.y - value.y));
+	double	res;
+
+	res = ((value2.x - value.x) / (value2.y - value.y));
+	//if (res == INFINITY)
+	//{
+	//	printf("%f %f\n", res, INFINITY);
+	//}
+	return ((res == INFINITY) ? 0.0 : res);
 }
 
 
-void		draw_line(t_vct2 *cursor, t_sdl *sdl, t_fvct2 *portion)
+void		draw_section(t_vct2 *cursor, t_sdl *sdl, t_fvct2 *portion, int borne, double *edge, uint32_t color)
 {
+	while (cursor->y < borne)
+	{
+
 		while (cursor->x <= portion->y)
 		{
 			++cursor->x;
-			sdl->screen[cursor->x + cursor->y * sdl->size.x] = 0xffffffff;
+			sdl->screen[cursor->x + cursor->y * sdl->size.x] = color;
 		}
+		portion->x += edge[0];
+		portion->y += edge[1];
+		cursor->x = portion->x;
+		++cursor->y;
+	}
 }
 
-/*
-**	a haut (ou == b)
-**	b = gauche
-**	c = droite
-**	d = bas
-*/
-void		draw_part_line(t_sdl *sdl, t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d)
+
+void		draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color)
 {
 	double		edge[2];
 	t_vct2		cursor;
 	t_fvct2		portion;
 	int			borne;
-	t_fvct2		tmp;
 
-	borne = (b.y < c.y) ? b.y : c.y;
-	edge[0] = coef_vct2(a, b);
-	edge[1] = coef_vct2(a, c);
-	portion.x = a.x;
-	portion.y = a.x;
-	cursor.y = a.y;
+	borne = (shape->left.y < shape->right.y) ? shape->left.y : shape->right.y;
+	edge[0] = coef_vct2(shape->up, shape->left);
+	edge[1] = coef_vct2(shape->up, shape->right);
+	portion.x = shape->up.x;
+	if (!edge[1])
+		portion.y = shape->right.x;
+	else
+		portion.y = shape->up.x;
+	cursor.y = shape->up.y;
 	cursor.x = portion.x;
-	while (cursor.y < borne)
+	draw_section(&cursor, sdl, &portion, borne, edge, color);
+	if (shape->right.y > shape->left.y)
 	{
-		draw_line(&cursor, sdl, &portion);
-		portion.x += edge[0];
-		portion.y += edge[1];
-		cursor.x = portion.x;
-		++cursor.y;
-	}
-	if (c.y > b.y)
-	{
-		borne = c.y;
-		edge[0] = coef_vct2(b, d);
+		borne = shape->right.y;
+		edge[0] = coef_vct2(shape->left, shape->bot);
 	}
 	else
 	{
-		borne = b.y;
-		edge[1] = coef_vct2(c, d);
+		borne = shape->left.y;
+		edge[1] = coef_vct2(shape->right, shape->bot);
 	}
-	while (cursor.y < borne)
-	{
-		draw_line(&cursor, sdl, &portion);
-		portion.x += edge[0];
-		portion.y += edge[1];
-		cursor.x = portion.x;
-		++cursor.y;
-	}
-	if (c.y > b.y)
-		edge[1] = coef_vct2(c, d);
+	draw_section(&cursor, sdl, &portion, borne, edge, color);
+	if (shape->right.y > shape->left.y)
+		edge[1] = coef_vct2(shape->right, shape->bot);
 	else
-		edge[0] = coef_vct2(b, d);
-	while (cursor.y <= d.y)
-	{
-		draw_line(&cursor, sdl, &portion);
-		portion.x += edge[0];
-		portion.y += edge[1];
-		cursor.x = portion.x;
-		++cursor.y;
-	}
+		edge[0] = coef_vct2(shape->left, shape->bot);
+	draw_section(&cursor, sdl, &portion, borne, edge, color);
 }
 
 /*
@@ -248,10 +223,12 @@ void		draw_wall(t_designer *arch, t_player *player)
 {
 	t_fvct2		surface_pil;
 	t_fvct2		surface_next;
-
+	t_shape		draw_shape;
 
 	surface_pil = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.x);
 	surface_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.y);
+
+	//draw_shape =
 	wall_screen_info(arch, player);
 	pillar_to_pillar(arch, player);
 }

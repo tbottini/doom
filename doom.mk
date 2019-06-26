@@ -42,6 +42,7 @@ SRCS_RENDER		:=		render.c										\
 						render_effect.c									\
 						pillar_info.c									\
 						textures.c										\
+						shape.c											\
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c										\

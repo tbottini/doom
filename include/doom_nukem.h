@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/25 14:18:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/26 11:41:00 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 800
-# define WIDTH 1280
-# define HEIGHT 800
+# define WIDTH 1300
+# define HEIGHT 950
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932

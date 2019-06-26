@@ -12,16 +12,21 @@ void				sector_render(t_doom *doom, t_sector *sector)
 int					doom_render(t_doom *doom)
 {
 	int				i_sector;
-	t_fvct2			a,b,c,d;
+	t_fvct2			up, left, right, bot;
+	t_shape			shape;
 
-	a.x = 100;
-	a.y = 100;
-	b.x = 100;
-	b.y = 500;
-	c.x = 500;
-	c.y = 100;
-	d.x = 500;
-	d.y = 500;
+	up.x = 100;
+	up.y = 100;
+
+	left.x = 100;
+	left.y = 500;
+
+	right.x = 500;
+	right.y = 100;
+
+	bot.x = 500;
+	bot.y = 500;
+	shape = shape_reajust(left, bot, right, up);
 	i_sector = 0;
 
 	sector_render(doom, doom->sector);
@@ -31,7 +36,7 @@ int					doom_render(t_doom *doom)
 		i_sector++;
 	}
 	minimap(doom);
-	draw_part_line(&doom->sdl, a, b, c, d);
+	draw_part_line(&doom->sdl, &shape, 0xffffffff);
 	sdl_MultiRenderCopy(&doom->sdl);
 	zline_reset(&doom->tool);
 	return (1);

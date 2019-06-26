@@ -4,6 +4,19 @@
 #include "doom_struct.h"
 
 /*
+**	disfonctionnement si l'ordre n'est pas respecte
+**	pour un carre a(up left) b(bottom left) c(up right) d(bot right)
+*/
+typedef struct 		s_shape
+{
+	t_fvct2			up;
+	t_fvct2			left;
+	t_fvct2			right;
+	t_fvct2			bot;
+}					t_shape;
+
+
+/*
 **	render
 */
 int						z_line_buffer(t_designer *arch, double len_pillar, int px);
@@ -33,5 +46,9 @@ int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 //void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
-void					draw_part_line(t_sdl *sdl, t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d);
+/*
+**	shape
+*/
+void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
+t_shape					shape_reajust(t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d);
 #endif
