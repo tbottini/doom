@@ -54,6 +54,7 @@ typedef struct 			s_player
 typedef struct 			s_enemy
 {
 	t_stat				stat;
+	double				dist;
 	int					dmg;
 	int					state;
 }						t_enemy;
@@ -75,14 +76,17 @@ void					sprint(t_stat *stat);
 void					gravity(t_stat *stat);
 void					inertie(t_stat *stat);
 void					jump(t_player *player);
-void					shoot(t_player *player);
-void					reload(t_weapon *weapon);
 void					crouch_release(t_player *player);
 void					crouch(t_player *player);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
 void					change_weapon(t_player *player, int new_w);
 
+void					shoot(t_player *player);
+void					reload(t_weapon *weapon);
+t_wall					*possible_walls(t_stat *stat, t_fvct3 d, t_fvct3 mo);
+void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
+t_enemy					*possible_enemys(t_stat *stat, t_fvct3 d, t_fvct3 mo);
 /*
 **	Debug
 */
