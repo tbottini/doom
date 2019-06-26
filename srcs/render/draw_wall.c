@@ -144,6 +144,7 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	reorder(arch);
 	pillar = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.x);
 	pillar_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.y);
+
 	coef_surface = coef_diff(pillar.x - pillar_next.x, arch->px);
 	coef_down = coef_diff(pillar.y - pillar_next.y, arch->px);
 	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
@@ -162,6 +163,82 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	}
 }
 
+double		coef_vct2(t_fvct2 value, t_fvct2 value2)
+{
+	return ((value2.x - value.x) / (value2.y - value.y));
+}
+
+
+void		draw_line(t_vct2 *cursor, t_sdl *sdl, t_fvct2 *portion)
+{
+		while (cursor->x <= portion->y)
+		{
+			++cursor->x;
+			sdl->screen[cursor->x + cursor->y * sdl->size.x] = 0xffffffff;
+		}
+}
+
+/*
+**	a haut (ou == b)
+**	b = gauche
+**	c = droite
+**	d = bas
+*/
+void		draw_part_line(t_sdl *sdl, t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d)
+{
+	double		edge[2];
+	t_vct2		cursor;
+	t_fvct2		portion;
+	int			borne;
+	t_fvct2		tmp;
+
+	borne = (b.y < c.y) ? b.y : c.y;
+	edge[0] = coef_vct2(a, b);
+	edge[1] = coef_vct2(a, c);
+	portion.x = a.x;
+	portion.y = a.x;
+	cursor.y = a.y;
+	cursor.x = portion.x;
+	while (cursor.y < borne)
+	{
+		draw_line(&cursor, sdl, &portion);
+		portion.x += edge[0];
+		portion.y += edge[1];
+		cursor.x = portion.x;
+		++cursor.y;
+	}
+	if (c.y > b.y)
+	{
+		borne = c.y;
+		edge[0] = coef_vct2(b, d);
+	}
+	else
+	{
+		borne = b.y;
+		edge[1] = coef_vct2(c, d);
+	}
+	while (cursor.y < borne)
+	{
+		draw_line(&cursor, sdl, &portion);
+		portion.x += edge[0];
+		portion.y += edge[1];
+		cursor.x = portion.x;
+		++cursor.y;
+	}
+	if (c.y > b.y)
+		edge[1] = coef_vct2(c, d);
+	else
+		edge[0] = coef_vct2(b, d);
+	while (cursor.y <= d.y)
+	{
+		draw_line(&cursor, sdl, &portion);
+		portion.x += edge[0];
+		portion.y += edge[1];
+		cursor.x = portion.x;
+		++cursor.y;
+	}
+}
+
 /*
 **	les etapes de rendu pour un mur
 **	recuperation d'information supplementaire
@@ -169,6 +246,12 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 */
 void		draw_wall(t_designer *arch, t_player *player)
 {
+	t_fvct2		surface_pil;
+	t_fvct2		surface_next;
+
+
+	surface_pil = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.x);
+	surface_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.y);
 	wall_screen_info(arch, player);
 	pillar_to_pillar(arch, player);
 }

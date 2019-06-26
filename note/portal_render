@@ -71,6 +71,7 @@ rendu	:
 		
 separation du rendu :
 	formation des portions
+	interpolation billineaire
 	rendu par ligne(2 * t_fvct3)
 
 affichage portal :

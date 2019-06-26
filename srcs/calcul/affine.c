@@ -5,6 +5,11 @@ double			affine_val(t_affine affine, int x)
 	return (affine.a * x + affine.b);
 }
 
+double			affine_val_index(t_affine affine, double y)
+{
+	return ((y - affine.b) / affine.a);
+}
+
 /*
 **	renvoie l'intersection des deux droite affine
 <<<<<<< HEAD
