@@ -36,8 +36,6 @@ void				root_sector_render(t_doom *doom, t_sector *sector)
 */
 int					doom_render(t_doom *doom)
 {
-	t_fvct2			up, left, right, bot;
-	t_shape			shape;
 	int				i;
 
 	i = 0;
@@ -45,8 +43,6 @@ int					doom_render(t_doom *doom)
 	minimap(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
 	zline_reset(&doom->tool);
-
-	//clear buffer
 	while (i < doom->sdl.size.x * doom->sdl.size.y)
 	{
 		doom->sdl.screen[i] = 0;
