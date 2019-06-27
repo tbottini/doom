@@ -8,6 +8,7 @@
 # define CROUCH 16350.0
 # define WALK 32700.0
 # define SPRINT 49050.0
+# define G_EPSILON 0.01
 
 
 typedef	struct			s_weapon
@@ -17,7 +18,7 @@ typedef	struct			s_weapon
 	int					clip;
 	int					rate;
 	int					dmg;
-	void				*sprites;
+	t_txtr				*sprites;
 }						t_weapon;
 
 typedef struct 			s_stat
@@ -53,6 +54,7 @@ typedef struct 			s_player
 
 typedef struct 			s_enemy
 {
+	t_txtr				*sprites;
 	t_stat				stat;
 	double				dist;
 	int					dmg;
@@ -84,9 +86,9 @@ void					change_weapon(t_player *player, int new_w);
 
 void					shoot(t_player *player);
 void					reload(t_weapon *weapon);
-t_wall					*possible_walls(t_stat *stat, t_fvct3 d, t_fvct3 mo);
+t_wall					*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d);
 void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
-t_enemy					*possible_enemys(t_stat *stat, t_fvct3 d, t_fvct3 mo);
+t_enemy					*possible_enemys(t_stat *stat, t_fvct3 d);
 /*
 **	Debug
 */

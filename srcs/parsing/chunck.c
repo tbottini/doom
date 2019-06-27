@@ -174,6 +174,10 @@ t_sector	*chunck_sector(int fd, t_designer *ressources)
 			nline--;
 			free(line);
 		}
+		else if (!ft_strcmp(line, "ENEM"))
+		{
+			;//
+		}
 		else
 		{
 			node = ft_lstn(line);

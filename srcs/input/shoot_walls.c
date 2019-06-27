@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 21:41:46 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/26 22:06:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/27 19:35:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ static double	bullet_clipping(t_wall wall, t_stat *stat)
 	diff.y = wall.pillar.p.y - stat->pos.y;
 	diff2.x = wall.next->p.x - stat->pos.x;
 	diff2.y = wall.next->p.y - stat->pos.y;
-	if (diff2.x - diff.x < 0.00001 && diff2.x - diff.x > -0.000001)
+	if (diff2.x - diff.x < 0.0001 && diff2.x - diff.x > -0.0001)
 	{
 		inter.x = diff.x;
-		inter.y = diff.x * tan(stat->rot.x * PI180);
+		inter.y = diff.x * tan(stat->rot.y * PI180);
 	}
 	else
 	{
 		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
 		b = diff.y - diff.x * coef_wall;
-		inter.x = b / (tan(stat->rot.x * PI180) - coef_wall);
+		inter.x = b / (tan(stat->rot.y * PI180) - coef_wall);
 		inter.y = coef_wall * inter.x + b;
 	}
 	return (distance((t_fvct2){0.0, 0.0}, inter));
@@ -45,13 +45,17 @@ static t_wall	*real_hit(t_wall **walls, t_stat *stat)
 	int		i;
 	double	res;
 	double	tmp;
+	double	toto;
 
 	i = 0;
-	res = 987654312.0;
+	res = 987654321.0;
 	hit = NULL;
+	toto = cos((stat->rot.x - 90.0) * PI180);
+	if (toto < G_EPSILON)
+		toto = 1;
 	while (walls[i])
 	{
-		if ((tmp = bullet_clipping(*walls[i], stat) / cos((stat->rot.x - 90) * PI180)) < res)
+		if ((tmp = bullet_clipping(*walls[i], stat)) / toto < res)
 		{
 			res = tmp;
 			hit = walls[i];
@@ -63,19 +67,18 @@ static t_wall	*real_hit(t_wall **walls, t_stat *stat)
 	return (hit);
 }
 
-t_wall			*possible_walls(t_stat *stat, t_fvct3 ori)
+t_wall			*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 ori)
 {
-	t_wall	*walls[50];
 	int		i;
 	int		j;
 	int		index;
 
 	j = -1;
 	index = 0;
-	while (++j < stat->sector->len_sub)
+	while (index < 49 && ++j < stat->sector->len_sub)
 	{
 		i = -1;
-		while (++i < stat->sector->ssector[j].len)
+		while (index < 49 && ++i < stat->sector->ssector[j].len)
 		{
 			if (vector_intersect(ori, stat->pos, *(t_fvct3*)&stat->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
 			{
@@ -85,7 +88,7 @@ t_wall			*possible_walls(t_stat *stat, t_fvct3 ori)
 		}
 	}
 	i = -1;
-	while (++i < stat->sector->len)
+	while (index < 49 && ++i < stat->sector->len)
 	{
 		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p, *(t_fvct3*)&stat->sector->wall[i].next->p))
 		{
@@ -105,6 +108,6 @@ void			apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo)
 	aim.y = stat->pos.y + wall->dist * (mo.y / RADIUS);
 	aim.z = stat->pos.z + wall->dist * (mo.z / RADIUS);
 	(void)wall;//apply texture on wall
-	printf("\nSUPER COORD : x = %f | y = %f | z = %f\n", aim.x, aim.y, aim.z);
-	printf("distance || %f ||\n", wall->dist);
+	printf("SUPER COORD : x = %f | y = %f | z = %f\n", aim.x, aim.y, aim.z);
+	printf("distance || %f ||\n\n", wall->dist);
 }
