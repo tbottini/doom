@@ -192,8 +192,6 @@ typedef struct 			s_camera
 
 typedef struct 			s_designer
 {
-	uint32_t			*bot[1920];
-	uint32_t			*top[1920];
 	t_sector			*sector;
 	t_wall				*wall;
 	t_camera			*cam;

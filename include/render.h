@@ -17,6 +17,13 @@ typedef struct 		s_shape
 
 
 /*
+**	info function
+*/
+t_fvct2					surface_pillar(t_designer *arch, t_player *player, int wall_height, double depth);
+double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
+void					wall_screen_info(t_designer *arch, t_player *p);
+t_fvct2					surface_pillar(t_designer *arch, t_player *player, int wall_height, double depth);
+/*
 **	render
 */
 int						z_line_buffer(t_designer *arch, double len_pillar, int px);
@@ -24,9 +31,9 @@ int						doom_render(t_doom *doom);
 void					zline_reset(t_designer *arch);
 int						fish_bowl_px(t_designer *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
-double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
 uint32_t				texture_interpolation2D(t_designer *arch);
-void					wall_screen_info(t_designer *arch, t_player *p);
+void					render_wall(t_designer *arch, t_player *player);
+void					draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface);
 
 /*
 **	bunch
@@ -50,5 +57,5 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 **	shape
 */
 void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
-t_shape					shape_reajust(t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d);
+t_shape					shape_reajust(t_shape shape);
 #endif

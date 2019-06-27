@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/26 11:41:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:45:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
 void					move(t_stat *stat);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					draw_wall(t_designer *arch, t_player *player);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);

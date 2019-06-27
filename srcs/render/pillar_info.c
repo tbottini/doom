@@ -66,22 +66,3 @@ void			wall_screen_info(t_designer *arch, t_player *p)
 		arch->shift_txtr.y = 1 - arch->shift_txtr.x;
 	arch->shift_txtr.x = !tmp ? 1 : tmp;
 }
-
-/*
-**	on calcul la portion de l'ecran appartenant au mur
-**	sector : recup la hauteur au plafond,
-*/
-t_vct2			sector_starend(t_sector sector, double depth, t_doom doom)
-{
-	t_vct2		surface;
-	double		point;
-	double		alpha;
-
-	point = sector.h_ceil - doom.player.stat.height;
-	alpha = (doom.player.stat.rot.x - 90) * PI180 - atan(depth / point);
-	surface.x = doom.sdl.size.y / 2.0 - tan(alpha) * doom.camera.d_screen;
-	point = -doom.player.stat.height;
-	alpha = (doom.player.stat.rot.x - 90) * PI180 - atan(depth / point);
-	surface.y = doom.sdl.size.y / 2.0 - tan(alpha) * doom.camera.d_screen;
-	return (surface);
-}
