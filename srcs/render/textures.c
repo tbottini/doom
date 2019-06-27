@@ -31,3 +31,4 @@ uint32_t		texture_interpolation2D(t_designer *arch)
 	percent = percent * (arch->shift_txtr.y -  arch->shift_txtr.x) + arch->shift_txtr.x;
 	return (percent * arch->wall->txtr.w);
 }
+

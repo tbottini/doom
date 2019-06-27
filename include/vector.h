@@ -27,7 +27,6 @@ typedef struct			s_fvct3
 	double				z;
 }						t_fvct3;
 
-
 /*
 **	operation
 */
