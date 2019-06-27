@@ -43,10 +43,5 @@ int					doom_render(t_doom *doom)
 	minimap(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
 	zline_reset(&doom->tool);
-	while (i < doom->sdl.size.x * doom->sdl.size.y)
-	{
-		doom->sdl.screen[i] = 0;
-		i++;
-	}
 	return (1);
 }

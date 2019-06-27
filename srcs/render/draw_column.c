@@ -51,6 +51,7 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surf
 	double	coef;
 	int		px;
 	double	buff;
+	int		ncol;
 
 	px = texture_interpolation2D(arch);
 	buff = 0;
@@ -81,36 +82,59 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surf
 	}
 }
 
+double		draw_part(t_designer *arch, t_vct2 surface, uint32_t color)
+{
+	while (surface.x < surface.y)
+	{
+		arch->sdl->screen[surface.x] = color;
+		surface.x += arch->sdl->size.x;
+	}
+	return (surface.x);
+}
+
 /*
 **	dessine les differente partie d'une colonne
-*/
+
 void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
 {
 	int		i;
 	int		len;
 	int		ncol;
+	t_vct2	surf;
 
-	i = 0;
+	if (surface.x > arch->sdl->size.y)
+		surf.y = numcol + arch->sdl->size.x * (arch->sdl->size.y - 1);
+	else
+		surf.y = numcol + (int)surface.x * arch->sdl->size.x;
+	surf.x = numcol;
+
+	draw_part(arch, surf, BLUE_SKY);
+	draw_part_texture(arch, wall, surf.y, surface);
+	//surf.x = numcol + (int)surface.y * arch->sdl.size.x;
+	//surf.y = numcol + (arch->sdl.size.y - 1) * arch->sdl.size.x;
+	//draw_part(arch, surface, 0x272130ff);
+}*/
+
+void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
+{
+	int		len;
+	t_vct2	surf;
+	int		ncol;
+
 	ncol = numcol;
 	len = arch->sdl->size.x;
-	while (i < surface.x && i < arch->sdl->size.y)
-	{
-		arch->sdl->screen[numcol] = BLUE_SKY;
-		numcol += len;
-		i++;
-	}
-	draw_part_texture(arch, wall, numcol, surface);
-	numcol = ncol + ((int)surface.y + 1) * len;
-	i = surface.y;
-	if (i < 0)
-	{
-		i = 0;
-		numcol = ncol;
-	}
-	while (i < arch->sdl->size.y)
-	{
-		arch->sdl->screen[numcol] = 0x272130ff;
-		numcol += len;
-		i++;
-	}
+	surf.x = numcol;
+	surf.y = (int)surface.x * arch->sdl->size.x;
+	if (surface.x > arch->sdl->size.y)
+		surf.y = arch->sdl->size.y * arch->sdl->size.x;
+	else
+		surf.y = (int)surface.x * arch->sdl->size.x;
+	surf.x = draw_part(arch, surf, BLUE_SKY);
+	draw_part_texture(arch, wall, surf.x, surface);
+	surf.x = ncol + ((int)surface.y + 1) * len;
+	if (surface.y < 0)
+		surf.x = ncol;
+	surf.y = arch->sdl->size.y * arch->sdl->size.x;
+	draw_part(arch, surf, 0x272130ff);
 }
+
