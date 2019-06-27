@@ -2,7 +2,6 @@
 
 # define PADDING 0.30
 # define PADDING2 0.60
-# define EPSILON 0.001
 
 static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 {
