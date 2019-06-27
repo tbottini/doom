@@ -11,6 +11,7 @@ typedef struct	s_affine
 */
 double			coef_vct(t_fvct2 quantity, t_vct2 step);
 double			coef_diff(double diff, t_vct2 step);
+double			coef_vct2(t_fvct2 value, t_fvct2 value2);
 
 /*
 **	affine fonctions

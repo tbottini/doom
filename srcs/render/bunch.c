@@ -92,7 +92,7 @@ void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector)
 	while (bunch[i] != NULL)
 	{
 		doom->tool.wall = bunch[i];
-		draw_wall(&doom->tool, &doom->player);
+		render_wall(&doom->tool, &doom->player);
 		i++;
 	}
 }

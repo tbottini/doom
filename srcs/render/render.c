@@ -1,5 +1,10 @@
 #include "doom_nukem.h"
 
+/*
+**	on recupere les information du secteur par rapport au frustum (champs de vision du joueur)
+**	on definit un bunch contenant les mur visibles
+**	on affiche ce bunch
+*/
 void				sector_render(t_doom *doom, t_sector *sector)
 {
 	t_wall			*bunch[50];
@@ -9,35 +14,43 @@ void				sector_render(t_doom *doom, t_sector *sector)
 	bunch_comsuption(doom, bunch, sector);
 }
 
-int					doom_render(t_doom *doom)
+/*
+**	on rend le secteur definit avec ses sous secteur
+**	futurement appele recursivement ?
+*/
+void				root_sector_render(t_doom *doom, t_sector *sector)
 {
 	int				i_sector;
-	t_fvct2			up, left, right, bot;
-	t_shape			shape;
 
-	up.x = 100;
-	up.y = 100;
-
-	left.x = 100;
-	left.y = 500;
-
-	right.x = 500;
-	right.y = 100;
-
-	bot.x = 500;
-	bot.y = 500;
-	shape = shape_reajust(left, bot, right, up);
 	i_sector = 0;
-
-	sector_render(doom, doom->sector);
-	while (i_sector < doom->sector->len_sub)
+	sector_render(doom, sector);
+	while (i_sector < sector->len_sub)
 	{
-		sector_render(doom, &doom->sector->ssector[i_sector]);
+		sector_render(doom, &sector->ssector[i_sector]);
 		i_sector++;
 	}
+}
+
+/*
+**	les etapes de rendu du jeu
+*/
+int					doom_render(t_doom *doom)
+{
+	t_fvct2			up, left, right, bot;
+	t_shape			shape;
+	int				i;
+
+	i = 0;
+	root_sector_render(doom, doom->sector);
 	minimap(doom);
-	draw_part_line(&doom->sdl, &shape, 0xffffffff);
 	sdl_MultiRenderCopy(&doom->sdl);
 	zline_reset(&doom->tool);
+
+	//clear buffer
+	while (i < doom->sdl.size.x * doom->sdl.size.y)
+	{
+		doom->sdl.screen[i] = 0;
+		i++;
+	}
 	return (1);
 }

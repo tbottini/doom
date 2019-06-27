@@ -43,16 +43,24 @@ void			fvct2_sort_bubble(t_fvct2 *tab, int len)
 /*
 **	sort as tab fvct2, tab[0]=up, tab[3]=bot, verify left and right
 */
-t_shape			shape_reajust(t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d)
+t_shape			shape_reajust(t_shape shape)
+{
+	fvct2_sort_bubble((t_fvct2*)&shape, 4);
+
+	if (shape.bot.x == shape.up.x)
+		swap(&shape.bot, &shape.right);
+	if (shape.left.x > shape.right.x)
+		swap(&shape.left, &shape.right);
+	return (shape);
+}
+
+t_shape			shape_create_coor(t_fvct2 a, t_fvct2 b, t_fvct2 c, t_fvct2 d)
 {
 	t_shape		shape;
 
 	shape.up = a;
-	shape.bot = d;
 	shape.left = b;
 	shape.right = c;
-	fvct2_sort_bubble((t_fvct2*)&shape, 4);
-	if (shape.left.x > shape.right.x)
-		swap(&shape.left, &shape.right);
-	return (shape);
+	shape.bot = d;
+	return (shape_reajust(shape));
 }
