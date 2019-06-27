@@ -8,11 +8,20 @@ int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_w
 	double	wall_angle;
 	double	limit_angle;
 	int px;
+	double	player_angle;
+
+
+	player_angle = (player->stat.rot.x - 90) * PI180;
 
 	limit_angle = (player->fov / 2) * (M_PI / 180.0);
 	wall_angle = atan2(h_diff, depth_wall);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
 	px += (player->stat.rot.x - 90) * 45;
+
+	//vraies cervicales
+	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
+	//px = arch->sdl->size.y / 2 - px;
+
 	return (px);
 }
 

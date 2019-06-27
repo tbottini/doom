@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/24 21:57:05 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/27 16:25:03 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void		update_rotation(t_stat *stat)
 	stat->rot.y += stat->rotvel.y;
 	if (stat->rot.x < 0.0)
 		stat->rot.x = 0.0;
-	else if (stat->rot.x > 180.0)
-		stat->rot.x = 180.0;
+	else if (stat->rot.x > 360.0)
+		stat->rot.x = 360.0;
 	if (stat->rot.y < 0.0)
 		stat->rot.y += 360.0;
 	else if (stat->rot.y > 360)
