@@ -39,8 +39,8 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	t_shape		shape;
 
 	reorder(arch);
-	pillar = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.x);
-	pillar_next = surface_pillar(arch, player, arch->sector->h_ceil, arch->depth.y);
+	pillar = surface_pillar(arch, player, arch->depth.x);
+	pillar_next = surface_pillar(arch, player, arch->depth.y);
 
 	coef_surface = coef_diff(pillar.x - pillar_next.x, arch->px);
 	coef_down = coef_diff(pillar.y - pillar_next.y, arch->px);

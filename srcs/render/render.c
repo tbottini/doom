@@ -23,12 +23,12 @@ void				root_sector_render(t_doom *doom, t_sector *sector)
 	int				i_sector;
 
 	i_sector = 0;
-	sector_render(doom, sector);
 	while (i_sector < sector->len_sub)
 	{
 		sector_render(doom, &sector->ssector[i_sector]);
 		i_sector++;
 	}
+	sector_render(doom, sector);
 }
 
 /*
