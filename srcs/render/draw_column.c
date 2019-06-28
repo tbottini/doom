@@ -29,18 +29,32 @@ int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_w
 **	renvoie la surface en px qu'un pillier prend
 **	en fonction de la hauteur du joueur (player)
 **	de la hauteur du mur (wall_height)
-**	et de la depthance par rapport au mur (depth)
+**	et de la distance par rapport au mur (depth)
+**	up est la difference entre le point de vue de la camera
+**		et le haut du mur
 */
-t_fvct2		surface_pillar(t_designer *arch, t_player *player, int wall_height, double depth)
+t_fvct2		surface_pillar(t_designer *arch, t_player *player, double depth)
 {
 	t_fvct2	wall_portion;
 
 	double	up;
 	double	down;
 
-	up = wall_height - player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
+	//hauteur du mur - hauteur du perso - la difference de position par rapport au sol + la diff du sect joueur et sectr rendu
+	//si c'est un mur on prend tout
+	//si c'est un portail on determine la hauteur par rapport au prochain portail
+	//up = wall_height - player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
+	//printf ("player sector %f -- sector render %f\n", player->stat.sector->h_floor, arch->sector->h_floor);
 	down = -player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
-
+	if (arch->wall->status == PORTAL_DIRECT)
+	{
+		down += (arch->sector->h_floor - player->stat.sector->h_floor);
+		up = down + arch->sector->h_ceil;
+	}
+	else
+	{
+		up = down + player->stat.sector->h_ceil;
+	}
 	wall_portion.x = px_point(arch, player, up, depth);
 	wall_portion.y = px_point(arch, player, down, depth);
 	return (wall_portion);
@@ -70,6 +84,8 @@ void		draw_part_texture(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surf
 	}
 	while (surface.x < surface.y && surface.x < arch->sdl->size.y)
 	{
+		if (px < 0)
+			printf("px %d\n", px);
 		arch->sdl->screen[numcol] = wall->txtr.pixels[px];
 		surface.x++;
 		numcol += arch->sdl->size.x;
