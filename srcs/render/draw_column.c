@@ -46,15 +46,13 @@ t_fvct2		surface_pillar(t_designer *arch, t_player *player, double depth)
 	//up = wall_height - player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
 	//printf ("player sector %f -- sector render %f\n", player->stat.sector->h_floor, arch->sector->h_floor);
 	down = -player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
-	if (arch->wall->status == PORTAL_DIRECT)
-	{
-		down += (arch->sector->h_floor - player->stat.sector->h_floor);
-		up = down + arch->sector->h_ceil;
-	}
-	else
-	{
+	//if (arch->wall->status == PORTAL_DIRECT)
+	//{
+	//	down += (arch->sector->h_floor - player->stat.sector->h_floor);
+	//	up = down + arch->sector->h_ceil;
+	//}
+	//else
 		up = down + player->stat.sector->h_ceil;
-	}
 	wall_portion.x = px_point(arch, player, up, depth);
 	wall_portion.y = px_point(arch, player, down, depth);
 	return (wall_portion);
@@ -108,37 +106,17 @@ double		draw_part(t_designer *arch, t_vct2 surface, uint32_t color)
 	return (surface.x);
 }
 
-/*
-**	dessine les differente partie d'une colonne
+void		draw_sky(t_designer *arch, t_fvct2 surface)
+{
+
+}
 
 void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
 {
-	int		i;
-	int		len;
-	int		ncol;
-	t_vct2	surf;
-
-	if (surface.x > arch->sdl->size.y)
-		surf.y = numcol + arch->sdl->size.x * (arch->sdl->size.y - 1);
-	else
-		surf.y = numcol + (int)surface.x * arch->sdl->size.x;
-	surf.x = numcol;
-
-	draw_part(arch, surf, BLUE_SKY);
-	draw_part_texture(arch, wall, surf.y, surface);
-	//surf.x = numcol + (int)surface.y * arch->sdl.size.x;
-	//surf.y = numcol + (arch->sdl.size.y - 1) * arch->sdl.size.x;
-	//draw_part(arch, surface, 0x272130ff);
-}*/
-
-void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
-{
-	int		len;
 	t_vct2	surf;
 	int		ncol;
 
 	ncol = numcol;
-	len = arch->sdl->size.x;
 	surf.x = numcol;
 	surf.y = (int)surface.x * arch->sdl->size.x;
 	if (surface.x > arch->sdl->size.y)
@@ -147,10 +125,24 @@ void		draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface)
 		surf.y = (int)surface.x * arch->sdl->size.x;
 	surf.x = draw_part(arch, surf, BLUE_SKY);
 	draw_part_texture(arch, wall, surf.x, surface);
-	surf.x = ncol + ((int)surface.y + 1) * len;
+	surf.x = ncol + ((int)surface.y + 1) * arch->sdl->size.x;
 	if (surface.y < 0)
 		surf.x = ncol;
 	surf.y = arch->sdl->size.y * arch->sdl->size.x;
 	draw_part(arch, surf, 0x272130ff);
 }
+
+void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
+{
+	t_fvct2	surface_up;
+	t_fvct2	surface_down;
+	t_fvct2	surface_portal;
+
+	surface_portal.x = (arch->sector->h_ceil / player->stat.sector->h_ceil) * (surface.y - surface.x) + surface.x;
+	surface_portal.y = surface.y - (arch->sector->h_floor / player->stat.sector->h_floor) * (surface.y - surface.x);
+	surface_up.x = surface_portal.x - surface.x;
+	surface_up.y = surface_portal.y - surface.y;
+
+}
+
 

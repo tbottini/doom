@@ -52,7 +52,10 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	{
 		if (z_line_buffer(arch, neutre.x, arch->px.x) > 0)
 		{
-			draw_column(arch, arch->wall, arch->px.x, pillar);
+			if (arch->wall->status == WALL)
+				draw_column(arch, arch->wall, arch->px.x, pillar);
+			else
+				draw_portal(arch, player, pillar);
 		}
 		pillar.x -= coef_surface;
 		pillar.y -= coef_down;
