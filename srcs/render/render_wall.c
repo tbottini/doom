@@ -36,7 +36,6 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 	double		coef_surface;
 	double		coef_down;
 	double		coef_neutre;
-	t_shape		shape;
 
 	reorder(arch);
 	pillar = surface_pillar(arch, player, arch->depth.x);
@@ -53,8 +52,8 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 		if (z_line_buffer(arch, neutre.x, arch->px.x) > 0)
 		{
 			if (arch->wall->status == WALL)
-				draw_column(arch, arch->wall, arch->px.x, pillar);
-			else
+				draw_column(arch, pillar);
+			else if (arch->wall->status == PORTAL_DIRECT)
 				draw_portal(arch, player, pillar);
 		}
 		pillar.x -= coef_surface;

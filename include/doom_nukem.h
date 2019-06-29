@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/27 15:45:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/29 14:06:48 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,6 @@
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
-
-/*
-**	Color
-*/
-# define BLUE_SKY 0x4559a8ff
-# define RED_WALL 0xb30000ff
-# define PINK_FLOOR 0xdcc8c8ff
 
 # define ACCELERATION 8000.0
 # define DECELERATION 2500.0
