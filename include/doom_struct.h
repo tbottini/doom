@@ -162,7 +162,7 @@ struct					s_secteur
 
 typedef struct			s_editor
 {
-	int					status;
+	bool				status;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;
 	t_btn				btnarr[20];
