@@ -4,6 +4,15 @@
 #include "doom_struct.h"
 
 /*
+**	Color
+*/
+# define BLUE_SKY 0x4559a8ff
+# define RED_WALL 0xb30000ff
+# define PINK_FLOOR 0xdcc8c8ff
+# define ORANGE 0xf5c738ff
+
+
+/*
 **	disfonctionnement si l'ordre n'est pas respecte
 **	pour un carre a(up left) b(bottom left) c(up right) d(bot right)
 */
@@ -33,8 +42,8 @@ int						fish_bowl_px(t_designer *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 uint32_t				texture_interpolation2D(t_designer *arch);
 void					render_wall(t_designer *arch, t_player *player);
-void					draw_column(t_designer *arch, t_wall *wall, int numcol, t_fvct2 surface);
-
+void					draw_column(t_designer *arch, t_fvct2 surface);
+void					draw_portal(t_designer *arch, t_player *player, t_fvct2 surface);
 /*
 **	bunch
 */
