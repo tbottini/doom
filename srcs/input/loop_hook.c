@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/26 21:39:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/29 14:51:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ static void input_loop(t_doom *doom, int key)
 		sprint(&doom->player.stat);
 	else if (key == SDLK_SPACE && !doom->ui.m_status)
 		jump(&doom->player);
-	else if (key == SDLK_r && doom->player.hand && !doom->ui.m_status)
-		reload(&(doom->player.weapons[doom->player.hand]));
 	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
 		shoot(&doom->player);
 	else if (key == SDLK_p) //test tir
@@ -83,10 +81,8 @@ static void editor_loop(t_doom *doom, int key)
 		doom->player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
 	else if (key == SDLK_LSHIFT)
 		sprint(&doom->player.stat);
-	else if (key == SDLK_r)
-		reload(&(doom->player.weapons[doom->player.hand]));
-	else if (key == SDL_BUTTON_LEFT)
-		shoot(&doom->player);
+	else if (key == SDLK_r && !doom->ui.m_status)
+		reload(&doom->player.hand);
 	else if (key == SDLK_y)
 		fire(doom);
 }

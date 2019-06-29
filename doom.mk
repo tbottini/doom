@@ -68,6 +68,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						editor_manager.c								\
 						music_manager.c									\
 						effect_manager.c								\
+						weapon_manager.c								\
 						designer_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\

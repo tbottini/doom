@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/25 14:17:47 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/29 15:27:12 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		key_press(int key, t_doom *doom)
 			sdl_set_status(doom, 0);
 	}
 	else if (key == SDLK_r && !doom->ui.m_status)
-		reload(&(doom->player.weapons[doom->player.hand]));
+		reload(&doom->player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)
 		action(&doom->player, &doom->player.stat);
 	else if (key == SDLK_LGUI && !doom->ui.m_status)
@@ -52,8 +52,6 @@ int		key_press(int key, t_doom *doom)
 		describe_sector_recursif(*doom->sector);
 	else if (key == SDLK_9)
 		change_music(&doom->sound, 10, 5000);
-	else if (key == SDLK_o)
-		;//kick(doom, &doom->player);
 	else if (key == SDLK_b)
 		save_png(&doom->sdl);
 	else if (key == SDLK_v && !doom->ui.m_status)
@@ -99,19 +97,19 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 		else
 		{
 			if (doom->ui.m_status != 0)
-				btn_click(doom, x, y);/* Better wait from visual implementation
-			else if (!(doom->player.weapons[doom->player.hand].rate))
-				shoot(doom);
+				btn_click(doom, x, y);
+			else if (!(doom->player.hand.rate))
+				shoot(&doom->player);
 			else
-				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);*/
+				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
 		}
 	}
 	//else if (btn == SDL_BUTTON_RIGHT)
 		//fire_on_off(doom->sdl.screen, doom->sdl.size, 0); // Debug thing
 	else if (btn == SDL_BUTTON_X1)
-		next_weapon(&(doom->player));
+		next_weapon(&doom->player);
 	else if (btn == SDL_BUTTON_X2)
-		prev_weapon(&(doom->player));
+		prev_weapon(&doom->player);
 	return (0);
 }
 
@@ -127,8 +125,8 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 	(void)btn;
 	(void)x;
 	(void)y;
-//	if (btn == SDL_BUTTON_LEFT && doom->player.weapons[doom->player.hand].rate)
-//		ft_noderm_int(&(doom->sdl.keys), btn);
+	if (btn == SDL_BUTTON_LEFT && doom->player.hand.rate)
+		ft_noderm_int(&(doom->sdl.keys), btn);
 	return (0);
 }
 
