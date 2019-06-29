@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/27 16:55:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/29 14:52:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void		reload(t_weapon *weapon)
 
 void		shoot(t_player *player)
 {
-	if (player->weapons[player->hand].clip == 0)
-		reload(&(player->weapons[player->hand]));
+	if (player->hand.clip == 0)
+		reload(&player->hand);
 	else
 	{
-		//bullet(&player->stat);
-		player->weapons[player->hand].clip--;
+		bullet(&player->stat);
+		player->hand.clip--;
 	}
 }
 
