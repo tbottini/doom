@@ -118,7 +118,7 @@ void		draw_column(t_designer *arch, t_fvct2 surface)
 		surf.y = arch->sdl->size.y * arch->sdl->size.x;
 	else
 		surf.y = (int)surface.x * arch->sdl->size.x;
-	surf.x = draw_part(arch, surf, BLUE_SKY);
+	surf.x = draw_part(arch, surf, 0);
 	draw_part_texture(arch, surf.x, surface);
 	surf.x = ncol + ((int)surface.y) * arch->sdl->size.x;
 	if (surface.y < 0)
@@ -151,7 +151,7 @@ void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
 		surf.y = arch->sdl->size.y * arch->sdl->size.x;
 	else
 		surf.y = (int)surface.x * arch->sdl->size.x;
-	surf.x = draw_part(arch, surf, BLUE_SKY);
+	surf.x = draw_part(arch, surf, 0);
 	surface_tmp.x = surface.x;
 	surface_tmp.y = surface_portal.x;
 	surf.x = draw_part_texture(arch, surf.x, surface_tmp);
@@ -171,5 +171,3 @@ void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
 	surf.y = arch->sdl->size.y * arch->sdl->size.x;
 	draw_part(arch, surf, 0x272130ff);
 }
-
-

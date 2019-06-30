@@ -61,12 +61,40 @@ double		wall_angle_pers(t_wall wall)
 **	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
 **	determine si les bornes sont entre les angles des mur
 */
-int			borne_in_wall_angle(t_wall *wall)
+int			borne_in_wall_angle(t_designer *arch, t_wall *wall)
 {
-//	int		polarite;
+	int		polarite_left;
+	int		polarite_right;
+	t_fvct2	angles;
+	t_fvct2	borne;
 
-	//on determine si l'angle de pillar est a droite ou gauche du mur
-	//
+	angles.x = wall->pillar.angle;
+	angles.y = wall->next->angle;
+	borne.x = arch->borne.x;
+	borne.y = arch->borne.y;
+	if (arch->borne.x * arch->borne.y < 0)
+		return (0);
+	if (angles.x < 0)
+		angles.x += 360;
+	if (angles.y < 0)
+		angles.y += 360;
+	if (borne.x < 0)
+		borne.x += 360;
+	if (borne.y < 0)
+		borne.y += 360;
+	//si l'angle est superieur a la borne alors
+	//l'angle est a gauche de la borne
+
+	polarite_left = (angles.x > borne.x) ? 1 : -1;
+	polarite_right = (angles.y < borne.y) ? 1 : -1;
+	//if (polarite_left == polarite_right)
+	//	printf("pillar %f borne %f next %f borne right %f\n", wall->pillar.angle, arch->borne.x, wall->next->angle, arch->borne.y);
+	return ((polarite_left == polarite_right) ? 1 : 0);
+	//on determine si l'angle de pillar est a droite ou a gauche du mur
+	//si il est a gauche il faut verifier que le next est a droite de la borne droite
+	//		si oui alors on renvoie un on ajoute le mur au bunch
+	//si l'angle de pillar est a droite de la borne gauche alors l'angle de next
+		//doit etre a gauche de l'angle de next
 }
 
 /*
@@ -77,7 +105,7 @@ int			borne_in_wall_angle(t_wall *wall)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
-int			buncherisation(t_sector sector, t_wall **bunch)
+int			buncherisation(t_designer *arch, t_sector sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
@@ -95,6 +123,12 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 		}
 		else if (wall_angle_pers(wall[i_wall]) > 180)
 		{
+			bunch[i_bunch] = &wall[i_wall];
+			i_bunch++;
+		}
+		else if (borne_in_wall_angle(arch, &wall[i_wall]))
+		{
+			printf("borne wall\n");
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}

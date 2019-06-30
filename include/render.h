@@ -49,7 +49,7 @@ void					draw_portal(t_designer *arch, t_player *player, t_fvct2 surface);
 **	bunch
 */
 void					sector_frustum(t_designer *arch, t_sector *sector, t_player *player);
-int						buncherisation(t_sector sector, t_wall **bunch);
+int						buncherisation(t_designer *arch, t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 
 /*
