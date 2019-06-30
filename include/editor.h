@@ -7,6 +7,8 @@
 ** Editor
 */
 
+t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
+
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
@@ -19,6 +21,7 @@ t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 
 void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
+void					draw_inspect_menu(t_editor *editor);
 
 void					sector_menu(t_editor *edit, int pos, int del);
 int						ft_walllen(t_lstmur start);

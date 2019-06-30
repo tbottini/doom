@@ -33,8 +33,8 @@ enum 					e_window_id
 typedef struct			s_sloc
 {
 	SDL_Rect			area;
+	SDL_Rect			*parent;
 	int					snapx;
-	struct s_sloc		*parent;
 	int					snapy;
 	t_vct2				pos;
 }						t_sloc;
@@ -162,17 +162,17 @@ struct					s_secteur
 
 typedef struct			s_editor
 {
-	int					status;
+	bool				status;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;
+	t_ui				*ui;
 	t_btn				btnarr[20];
 	t_vct2				size;
 	t_vct2				mouse; //Mouse pos
 	t_vct2				mapmouse;
 	int					sectscroll; // Current scroll of sector menu
 	SDL_Rect			sectbox;
-	//SDL_Texture			*txture;
-	//Uint32				*screen;
+	SDL_Rect			inspectbox;
 	t_tab				keys;
 	t_lstpil			pillist;
 	t_pilier			*currpilier;

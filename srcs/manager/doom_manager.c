@@ -39,12 +39,12 @@ t_doom	*doom_init()
 	if (secure_doom(doom))
 		doom_exit(doom);
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
-		doom_exit(doom);
-	if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
-		doom_exit(doom);
-	if (!editor_init(&doom->edit))
-		doom_exit(doom);
 	if (!ui_init(&doom->ui))
+		doom_exit(doom);
+  if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
+		doom_exit(doom);
+	doom->edit.ui = &doom->ui;
+	if (!editor_init(&doom->edit))
 		doom_exit(doom);
 	player_init(&doom->player);
 	if (!music_init(&doom->sound))

@@ -58,5 +58,7 @@ int		editor_init(t_editor *editor)
 	editor->sectbox.x = -1;
 	editor->sectbox.y = -1;
 	editor->sectbox.w = 160;
+	editor->inspectbox.w = 200;
+	editor->btnarr[0] = add_test_button(editor, &editor->inspectbox);
 	return (1);
 }
