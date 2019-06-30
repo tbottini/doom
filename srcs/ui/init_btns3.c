@@ -118,7 +118,7 @@ t_btn	add_middle_music_button(t_doom *doom)
 }
 
 
-t_btn	add_left_music_button(t_doom *doom, t_sloc *parent)
+t_btn	add_left_music_button(t_doom *doom, SDL_Rect *parent)
 {
 	t_btn			tmp;
 
@@ -136,7 +136,7 @@ t_btn	add_left_music_button(t_doom *doom, t_sloc *parent)
 	return (tmp);
 }
 
-t_btn	add_right_music_button(t_doom *doom, t_sloc *parent)
+t_btn	add_right_music_button(t_doom *doom, SDL_Rect *parent)
 {
 	t_btn			tmp;
 

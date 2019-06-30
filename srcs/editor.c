@@ -172,7 +172,6 @@ void draw_map(t_editor *editor)
 		currwall = currsec->murs;
 		while (currwall)
 		{
-			//currwall->pil1 = currwall->pil1;
 			if (currsec == editor->map)
 			{
 				if (currwall == editor->currmur)
@@ -247,7 +246,6 @@ void draw_inspect_menu(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
-
 }
 
 void sector_menu_click(t_editor *edit, int pos, int del)
@@ -282,7 +280,6 @@ void sector_menu_click(t_editor *edit, int pos, int del)
 				else
 					edit->sectors = NULL;
 			}
-			//ft_clear_pillar_list(&sec->root);
 			ft_clear_secteur(&sec);
 		}
 		else
@@ -292,5 +289,4 @@ void sector_menu_click(t_editor *edit, int pos, int del)
 		edit->map = push_secteur(&(edit->sectors));
 	else
 		edit->map = NULL;
-	printf("%p\t%d\n", sec, pos);
 }
