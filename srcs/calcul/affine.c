@@ -5,6 +5,11 @@ double			affine_val(t_affine affine, int x)
 	return (affine.a * x + affine.b);
 }
 
+double			affine_val_index(t_affine affine, double y)
+{
+	return ((y - affine.b) / affine.a);
+}
+
 /*
 **	renvoie l'intersection des deux droite affine
 <<<<<<< HEAD
@@ -17,7 +22,7 @@ t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2)
 	//if ((int)fct1.a == -1)
 	//	inter.x = fct1.b;
 	////else
-		inter.x = (fct2.b - fct1.b) / (fct1.a - fct2.a);
+	inter.x = (fct2.b - fct1.b) / (fct1.a - fct2.a);
 	inter.y = affine_val(fct2, inter.x);
 	return (inter);
 }

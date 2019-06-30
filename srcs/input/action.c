@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/24 12:25:59 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/29 15:21:02 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,40 @@
 
 void		next_weapon(t_player *player)
 {
-	player->hand += (player->hand == WEAPON_MAX - 1) ? -player->hand : 1;
+	int i;
+
+	i = player->hand.id + 1;
+	while (i < NB_WEAPON)
+	{
+		if (player->weapons[i].on)
+			break;
+		i++;
+	}
+	if (i == NB_WEAPON)
+		player->hand = player->weapons[0];
+	else
+		player->hand = player->weapons[i];
 }
 
 void		prev_weapon(t_player *player)
 {
-	player->hand -= player->hand == 0 ? (WEAPON_MAX + 1) : 1;
+	int i;
+
+	if ((i = player->hand.id - 1) == -1)
+		player->hand = player->weapons[NB_WEAPON - 1];
+	while (i > 0)
+	{
+		if (player->weapons[i].on)
+			break;
+		i--;
+	}
+	player->hand = player->weapons[i];
 }
 
-void		change_weapon(t_player *player, int new_w)
+void		change_weapon(t_player *player, int id)
 {
-	if (new_w >= 0 && new_w < WEAPON_MAX)
-		player->hand = new_w;
+	if (player->weapons[id].id != -1)
+		player->hand = player->weapons[id];
 }
 ///////////////////////////////////////////////////////////////////////////////
 double			button_clipping(t_prop prop, t_fvct3 pos, double angle)
