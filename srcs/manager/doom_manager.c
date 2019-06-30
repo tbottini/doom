@@ -16,8 +16,7 @@ int		secure_doom(t_doom *doom)
 
 void	doom_exit(t_doom *doom)
 {
-	free(doom->tool.zline);
-	player_free(&doom->player);
+	free(doom->arch.zline);
 	ui_free(&doom->ui);
 	editor_free(&doom->edit);
 	sdl_free(&doom->sdl);
@@ -36,21 +35,20 @@ t_doom	*doom_init()
 	t_doom	*doom;
 
 	if (!(doom = (t_doom *)malloc(sizeof(t_doom))))
-		return (NULL);
+		doom_exit(doom);
 	if (secure_doom(doom))
-		return (NULL);
+		doom_exit(doom);
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
-		return (NULL);
-	if (!designer_init(&doom->tool, &doom->sdl, &doom->camera))
-		return (NULL);
+		doom_exit(doom);
+	if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
+		doom_exit(doom);
 	if (!editor_init(&doom->edit))
-		return (NULL);
+		doom_exit(doom);
 	if (!ui_init(&doom->ui))
-		return (NULL);
-	if (!player_init(&doom->player))
-		return (NULL);
+		doom_exit(doom);
+	player_init(&doom->player);
 	if (!music_init(&doom->sound))
-		return (NULL);
+		doom_exit(doom);
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
 	return (doom);

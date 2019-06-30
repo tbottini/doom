@@ -14,7 +14,7 @@ typedef enum			e_portal_id
 	WALL,
 	WINDOW,
 	PORTAL_DIRECT,
-	PORTAL_DIST,
+	PORTAL_DIST
 }						t_portal_id;
 
 typedef struct 			s_txtr
