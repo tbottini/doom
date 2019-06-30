@@ -6,14 +6,12 @@
 int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_wall)
 {
 	double	wall_angle;
-	double	limit_angle;
 	int px;
 	double	player_angle;
 
 
 	player_angle = (player->stat.rot.x - 90) * PI180;
 
-	limit_angle = (player->fov / 2) * (M_PI / 180.0);
 	wall_angle = atan2(h_diff, depth_wall);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
 	px += (player->stat.rot.x - 90) * 45;
@@ -52,7 +50,7 @@ t_fvct2		surface_pillar(t_designer *arch, t_player *player, double depth)
 	//	up = down + arch->sector->h_ceil;
 	//}
 	//else
-		up = down + player->stat.sector->h_ceil;
+	up = down + player->stat.sector->h_ceil;
 	wall_portion.x = px_point(arch, player, up, depth);
 	wall_portion.y = px_point(arch, player, down, depth);
 	return (wall_portion);
@@ -68,7 +66,6 @@ int		draw_part_texture(t_designer *arch, int numcol, t_fvct2 surface)
 	double	coef;
 	int		px;
 	double	buff;
-	int		ncol;
 
 	px = texture_interpolation2D(arch);
 	buff = 0;
@@ -177,8 +174,6 @@ void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
 		surf.x = arch->px.x;
 	surf.y = arch->sdl->size.y * arch->sdl->size.x;
 	draw_part(arch, surf, 0x272130ff);
-
-
 }
 
 

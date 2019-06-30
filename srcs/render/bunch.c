@@ -16,7 +16,11 @@ int			on_frustum(t_player player, t_pillar *pillar)
 	else if (angle > 180)
 		angle -= 360;
 	pillar->angle = angle;
-	if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
+
+	//!!!<---- ajout des bornes
+
+	//if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
+	if (angle >= -15 && angle <= 15)
 		pillar->frust = 1;
 	else
 		pillar->frust = 0;
@@ -35,6 +39,9 @@ void		sector_frustum(t_sector *sector, t_player player)
 	}
 }
 
+/*
+**	renvoie l'angle entre un pillier -> joueur -> pillier_next
+*/
 double		wall_angle_pers(t_wall wall)
 {
 	double	field;
@@ -51,7 +58,10 @@ double		wall_angle_pers(t_wall wall)
 }
 
 /*
-**	buncherisation mets les murs affichable d'un secteur dans une liste
+**	buncherisation mets les murs visible d'un secteur dans une liste
+**		un mur est visible si l'un des pillier est dans le frustrum ou
+**		ou si l'angle mur joueur est plus grand que le joueur (les pillier depasse mais passe
+**											devant le joueur)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
@@ -69,15 +79,14 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
-			++i_bunch;
+			i_bunch++;
 		}
 		else if (wall_angle_pers(wall[i_wall]) > 180)
 		{
-			wall_angle_pers(wall[i_wall]);
 			bunch[i_bunch] = &wall[i_wall];
-			++i_bunch;
+			i_bunch++;
 		}
-		++i_wall;
+		i_wall++;
 	}
 	bunch[i_bunch] = NULL;
 	return (1);

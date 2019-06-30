@@ -76,8 +76,14 @@ separation du rendu :
 
 affichage portal :
 	preaffichage du portail (les liaison avec le portail) si le prochain secteur est plus grand)
-	recursivite avec une limite de fenetre (2 * t_fvct3)
-		-buncherisation etc...
+	recursivite:
+	-adapter:
+		-buncherisation (on frustrum avec borne variable)
+		-wall_clipping (si le mur depasse la borne)
+		-implementation d'un occlusion_buffer -> borne haut bas
+		si portail adapter le rendu (stoper au occl_buffer (sup et inf))
+		-le zline buffer, ne change que a la fin de l'affichage du portail
+
 	
 
 perte de calcul

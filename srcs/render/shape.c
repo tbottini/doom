@@ -16,7 +16,6 @@ void			fvct2_sort_bubble(t_fvct2 *tab, int len)
 {
 	int			i;
 	int			sort;
-	t_fvct2		tmp;
 
 	sort = 0;
 	while (!sort)
