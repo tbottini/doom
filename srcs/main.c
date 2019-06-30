@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 12:26:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/06/27 16:06:18 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int			main(int ac, char **av)
 	if (!init())
 		return (0);
 	if (!(doom = doom_init()))
-		return (-1);
+		return (0);
 	if (ac == 2)
 	{
 		if (parsing(doom, av[1]))
