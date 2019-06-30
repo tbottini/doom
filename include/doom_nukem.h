@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/26 21:46:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/30 15:13:49 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,16 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 800
-# define WIDTH 1280
-# define HEIGHT 800
+# define WIDTH 1300
+# define HEIGHT 950
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
 
+# define ACCELERATION 8000.0
 # define RADIUS 500
-
-/*
-**	Color
-*/
-# define BLUE_SKY 0x4559a8ff
-# define RED_WALL 0xb30000ff
-# define PINK_FLOOR 0xdcc8c8ff
 
 # define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
@@ -91,7 +85,6 @@ void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
 void					move(t_stat *stat);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					draw_wall(t_designer *arch, t_player *player);
 void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);

@@ -23,6 +23,18 @@ void			save_png(t_sdl *sdl)
 	SDL_FreeSurface(s_shot);
 }
 
+void			clean_screen(t_sdl *sdl)
+{
+	int			i;
+	i = 0;
+
+	while (i < sdl->size.x * sdl->size.y)
+	{
+		sdl->screen[i] = 0;
+		i++;
+	}
+}
+
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
 ** Example :
@@ -56,6 +68,30 @@ int		key_press(int key, t_doom *doom)
 		save_png(&doom->sdl);
 	else if (key == SDLK_v && !doom->ui.m_status)
 		kick(doom, &doom->player);
+	else if (key == SDLK_j)
+	{
+		doom->arch.borne.x += 2;
+		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		clean_screen(&doom->sdl);
+	}
+	else if (key == SDLK_k)
+	{
+		doom->arch.borne.y += 2;
+		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		clean_screen(&doom->sdl);
+	}
+	else if (key == SDLK_u)
+	{
+		doom->arch.borne.x -= 2;
+		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		clean_screen(&doom->sdl);
+	}
+	else if (key == SDLK_i)
+	{
+		doom->arch.borne.y -= 2;
+		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		clean_screen(&doom->sdl);
+	}
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
 	return (0);

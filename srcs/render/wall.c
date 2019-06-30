@@ -18,7 +18,7 @@ double			wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle
 	diff2.x = wall->next->p.x - pos.x;
 	diff2.y = wall->next->p.y - pos.y;
 	coef_ang = tan(angle * PI180);
-	if (diff2.x - diff.x < 0.00001 && diff2.x - diff.x > -0.000001)
+	if (diff2.x == diff.x && diff2.x == diff.x)
 	{
 		inter.x = diff.x;
 		inter.y = diff.x * coef_ang;
