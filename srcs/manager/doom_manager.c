@@ -43,9 +43,10 @@ t_doom	*doom_init()
 		return (NULL);
 	if (!designer_init(&doom->tool, &doom->sdl, &doom->camera))
 		return (NULL);
-	if (!editor_init(&doom->edit))
-		return (NULL);
 	if (!ui_init(&doom->ui))
+		return (NULL);
+	doom->edit.ui = &doom->ui;
+	if (!editor_init(&doom->edit))
 		return (NULL);
 	if (!player_init(&doom->player))
 		return (NULL);

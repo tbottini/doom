@@ -165,6 +165,7 @@ typedef struct			s_editor
 	bool				status;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;
+	t_ui				*ui;
 	t_btn				btnarr[20];
 	t_vct2				size;
 	t_vct2				mouse; //Mouse pos

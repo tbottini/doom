@@ -246,6 +246,8 @@ void draw_inspect_menu(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+	update_loc(editor->size, &editor->btnarr[0].loc, *editor->btnarr[0].loc.parent);
+	SDL_RenderCopy(editor->rend, editor->btnarr[0].txture, NULL, &(editor->btnarr[0].loc.area));
 }
 
 void sector_menu_click(t_editor *edit, int pos, int del)
