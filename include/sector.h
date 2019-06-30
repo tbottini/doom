@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include "vector.h"
+#include "libft.h"
 #include <SDL.h>
 
 typedef struct s_doom 	t_doom;
@@ -11,9 +12,9 @@ typedef struct t_wall	t_portal;
 typedef enum			e_portal_id
 {
 	WALL,
+	WINDOW,
 	PORTAL_DIRECT,
-	PORTAL_DIST,
-	WINDOW
+	PORTAL_DIST
 }						t_portal_id;
 
 typedef struct 			s_txtr
@@ -53,6 +54,7 @@ typedef struct			s_wall
 	t_txtr				txtr;
 	t_portal_id			status;
 	t_portal			*link;
+	double				dist;
 }						t_wall;
 
 typedef struct			s_sector
@@ -60,6 +62,7 @@ typedef struct			s_sector
 	t_fvct3				gravity;
 	t_wall				*wall;
 	t_prop				*prop;
+	t_list				*enemys;
 	int					len_prop;
 	struct s_sector		*ssector;
 	int					len_sub;

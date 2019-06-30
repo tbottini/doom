@@ -39,13 +39,24 @@ void			pillar_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, 
 	}
 	else
 	{
+		//borne gauche 15 borne droite 15
 		*px = pillar_polarite(wall->next, wall->pillar, size - 1);
-		angle = (*px == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
+		if (*px == 0)
+		{
+			*px = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->borne.x;
+		}
+		else
+		{
+			*px = arch->sdl->size.x / 2.0 - (tan(arch->borne.y * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->borne.y;
+		}
 		*depth = wall_clipping(arch, wall, *(t_fvct2*)&p->stat.pos, angle);
 		*decal = sin((angle - p->stat.rot.y) * PI180) * *depth;
 		*depth = cos((angle - p->stat.rot.y) * PI180) * *depth;
 	}
 }
+
 
 void			wall_screen_info(t_designer *arch, t_player *p)
 {
@@ -57,7 +68,6 @@ void			wall_screen_info(t_designer *arch, t_player *p)
 	tmp = arch->shift_txtr.x;
 	wall.pillar = *arch->wall->next;
 	wall.next = &arch->wall->pillar;
-
 	arch->shift_txtr.x = 0;
 	pillar_screen_info(arch, &wall, p, &arch->px.y, &arch->depth.y, &arch->decal.y);
 	if (arch->shift_txtr.x == 0.0)
@@ -65,23 +75,4 @@ void			wall_screen_info(t_designer *arch, t_player *p)
 	else
 		arch->shift_txtr.y = 1 - arch->shift_txtr.x;
 	arch->shift_txtr.x = !tmp ? 1 : tmp;
-}
-
-/*
-**	on calcul la portion de l'ecran appartenant au mur
-**	sector : recup la hauteur au plafond,
-*/
-t_vct2			sector_starend(t_sector sector, double depth, t_doom doom)
-{
-	t_vct2		surface;
-	double		point;
-	double		alpha;
-
-	point = sector.h_ceil - doom.player.stat.height;
-	alpha = (doom.player.stat.rot.x - 90) * PI180 - atan(depth / point);
-	surface.x = doom.sdl.size.y / 2.0 - tan(alpha) * doom.camera.d_screen;
-	point = -doom.player.stat.height;
-	alpha = (doom.player.stat.rot.x - 90) * PI180 - atan(depth / point);
-	surface.y = doom.sdl.size.y / 2.0 - tan(alpha) * doom.camera.d_screen;
-	return (surface);
 }

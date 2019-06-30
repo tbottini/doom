@@ -26,6 +26,7 @@ SRCS_INPUT		:=		event_controller.c								\
 						action.c										\
 						move.c											\
 						shoot.c											\
+						shoot_walls.c									\
 						collision.c										\
 						keyboard_input.c								\
 						debug_input.c									\
@@ -34,15 +35,17 @@ SRCS_RENDER		:=		render.c										\
 						bunch.c											\
 						wall.c											\
 						bresenham.c										\
-						draw_wall.c										\
 						draw_line.c										\
 						draw_text.c										\
 						sector.c										\
 						minimap.c										\
 						backface.c										\
 						render_effect.c									\
+						render_wall.c									\
 						pillar_info.c									\
 						textures.c										\
+						shape.c											\
+						draw_column.c									\
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c										\
@@ -68,6 +71,8 @@ SRCS_GESTION	:=		doom_manager.c									\
 						editor_manager.c								\
 						music_manager.c									\
 						effect_manager.c								\
+						weapon_manager.c								\
+						enemy_manager.c									\
 						designer_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\

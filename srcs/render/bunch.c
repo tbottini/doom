@@ -1,40 +1,47 @@
 #include "doom_nukem.h"
 
-int			on_frustum(t_player player, t_pillar *pillar)
+int			on_frustum(t_designer *arch, t_player *player, t_pillar *pillar)
 {
 	t_fvct2	dist;
 	double	angle;
 
-	dist.x = pillar->p.x - player.stat.pos.x;
-	dist.y = pillar->p.y - player.stat.pos.y;
+	dist.x = pillar->p.x - player->stat.pos.x;
+	dist.y = pillar->p.y - player->stat.pos.y;
 	angle = atan2(dist.y, dist.x) * TOANGLE;
 	if (angle < 0)
 		angle = 360 + angle;
-	angle = double_modulo(angle - player.stat.rot.y);
+	angle = double_modulo(angle - player->stat.rot.y);
 	if (angle < -180)
 		angle += 360;
 	else if (angle > 180)
 		angle -= 360;
 	pillar->angle = angle;
-	if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
+
+	//!!!<---- ajout des bornes
+
+	//if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
+	if (angle >= arch->borne.y && angle <= arch->borne.x)
 		pillar->frust = 1;
 	else
 		pillar->frust = 0;
 	return (pillar->frust);
 }
 
-void		sector_frustum(t_sector *sector, t_player player)
+void		sector_frustum(t_designer *arch, t_sector *sector, t_player *player)
 {
 	int		i;
 
 	i = 0;
 	while (i < sector->len)
 	{
-		on_frustum(player, &sector->wall[i].pillar);
+		on_frustum(arch, player, &sector->wall[i].pillar);
 		i++;
 	}
 }
 
+/*
+**	renvoie l'angle entre un pillier -> joueur -> pillier_next
+*/
 double		wall_angle_pers(t_wall wall)
 {
 	double	field;
@@ -51,7 +58,22 @@ double		wall_angle_pers(t_wall wall)
 }
 
 /*
-**	buncherisation mets les murs affichable d'un secteur dans une liste
+**	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
+**	determine si les bornes sont entre les angles des mur
+*/
+int			borne_in_wall_angle(t_wall *wall)
+{
+	int		polarite;
+
+	//on determine si l'angle de pillar est a droite ou gauche du mur
+	//
+}
+
+/*
+**	buncherisation mets les murs visible d'un secteur dans une liste
+**		un mur est visible si l'un des pillier est dans le frustrum ou
+**		ou si l'angle mur joueur est plus grand que le joueur (les pillier depasse mais passe
+**											devant le joueur)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
@@ -69,15 +91,16 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
-			++i_bunch;
+			i_bunch++;
 		}
 		else if (wall_angle_pers(wall[i_wall]) > 180)
 		{
-			wall_angle_pers(wall[i_wall]);
 			bunch[i_bunch] = &wall[i_wall];
-			++i_bunch;
+			i_bunch++;
 		}
-		++i_wall;
+		//sinon si la borne est entre les angles de mur
+		else if ()
+		i_wall++;
 	}
 	bunch[i_bunch] = NULL;
 	return (1);
@@ -88,11 +111,11 @@ void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector)
 	int		i;
 
 	i = 0;
-	doom->tool.sector = sector;
+	doom->arch.sector = sector;
 	while (bunch[i] != NULL)
 	{
-		doom->tool.wall = bunch[i];
-		draw_wall(&doom->tool, &doom->player);
+		doom->arch.wall = bunch[i];
+		render_wall(&doom->arch, &doom->player);
 		i++;
 	}
 }
