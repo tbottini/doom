@@ -16,7 +16,7 @@ int		secure_doom(t_doom *doom)
 
 void	doom_exit(t_doom *doom)
 {
-	free(doom->tool.zline);
+	free(doom->arch.zline);
 	ui_free(&doom->ui);
 	editor_free(&doom->edit);
 	sdl_free(&doom->sdl);
@@ -40,7 +40,7 @@ t_doom	*doom_init()
 		doom_exit(doom);
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
 		doom_exit(doom);
-	if (!designer_init(&doom->tool, &doom->sdl, &doom->camera))
+	if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
 		doom_exit(doom);
 	if (!editor_init(&doom->edit))
 		doom_exit(doom);

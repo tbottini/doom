@@ -9,7 +9,7 @@ void				sector_render(t_doom *doom, t_sector *sector)
 {
 	t_wall			*bunch[50];
 
-	sector_frustum(sector, doom->player);
+	sector_frustum(&doom->arch, sector, &doom->player);
 	buncherisation(*sector, bunch);
 	bunch_comsuption(doom, bunch, sector);
 }
@@ -42,6 +42,6 @@ int					doom_render(t_doom *doom)
 	root_sector_render(doom, doom->sector);
 	minimap(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
-	zline_reset(&doom->tool);
+	zline_reset(&doom->arch);
 	return (1);
 }

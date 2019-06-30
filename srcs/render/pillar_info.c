@@ -43,20 +43,14 @@ void			pillar_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, 
 		*px = pillar_polarite(wall->next, wall->pillar, size - 1);
 		if (*px == 0)
 		{
-			*px = arch->sdl->size.x / 2.0 - (tan(15 * PI180) * arch->cam->d_screen);
-			printf("angle %f + 15\n", p->stat.rot.y);
-			angle = p->stat.rot.y + 15;
-			printf("angle %f\n", angle);
+			*px = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->borne.x;
 		}
 		else
 		{
-			*px = arch->sdl->size.x / 2.0 - (tan(-15 * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y - 15;
+			*px = arch->sdl->size.x / 2.0 - (tan(arch->borne.y * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->borne.y;
 		}
-		//printf("px %d\n", *px);
-		//<--- ajout des borne
-		//angle = (*px == 0) ? p->stat.rot.y + p->fov / 2.0 : p->stat.rot.y - p->fov / 2.0;
-		//angle = p->stat.rot.y + (*px == 0) ? 15 : -15;
 		*depth = wall_clipping(arch, wall, *(t_fvct2*)&p->stat.pos, angle);
 		*decal = sin((angle - p->stat.rot.y) * PI180) * *depth;
 		*depth = cos((angle - p->stat.rot.y) * PI180) * *depth;
