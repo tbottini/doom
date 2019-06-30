@@ -39,6 +39,7 @@ t_doom	*doom_init()
 	if (secure_doom(doom))
 		doom_exit(doom);
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
+		doom_exit(doom);
 	if (!ui_init(&doom->ui))
 		doom_exit(doom);
   if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))

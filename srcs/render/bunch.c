@@ -63,7 +63,7 @@ double		wall_angle_pers(t_wall wall)
 */
 int			borne_in_wall_angle(t_wall *wall)
 {
-	int		polarite;
+//	int		polarite;
 
 	//on determine si l'angle de pillar est a droite ou gauche du mur
 	//
@@ -99,7 +99,7 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 			i_bunch++;
 		}
 		//sinon si la borne est entre les angles de mur
-		else if ()
+		//else if ()
 		i_wall++;
 	}
 	bunch[i_bunch] = NULL;
