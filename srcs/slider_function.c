@@ -36,7 +36,7 @@ void		draw_slid(t_doom *doom, t_slid *tmp)
 	int size;
 
 	size = tmp->loc.area.h;
-	update_loc(doom->sdl.size, &tmp->loc, *tmp->loc.parent);
+	update_loc(doom->sdl.size, &tmp->loc, *(tmp->loc.parent));
 	tmp->griplabel.x = tmp->loc.area.x;
 	tmp->griplabel.y = tmp->loc.area.y;
 	tmp->grip.x = tmp->loc.area.x + ((tmp->loc.area.w - size)
