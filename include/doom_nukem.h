@@ -13,6 +13,7 @@
 #ifndef DOOM_NUKEM_H
 # define DOOM_NUKEM_H
 
+# include <stdbool.h>
 # include "render.h"
 # include "editor.h"
 # include "editor.h"
