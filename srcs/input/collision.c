@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/29 18:34:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/06/30 21:33:22 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ int			can_pass(t_stat *stat, int i)
 
 	//next = stat->sector->wall[i].link;
 	if (stat->sector->wall[i].status >= PORTAL_DIRECT)
+	{
+		//stat->sector = stat->sector->wall[i].link;
 		//if ((stat->pos.z + stat->height < link.h_floor + link.h_ceil) && (link.h_floor - stat.pos.z < STEP))
 			return (1);
+	}
 	return (0);
 }
 
