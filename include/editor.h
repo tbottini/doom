@@ -7,6 +7,8 @@
 ** Editor
 */
 
+t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
+
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
