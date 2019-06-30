@@ -33,15 +33,17 @@ SRCS_RENDER		:=		render.c										\
 						bunch.c											\
 						wall.c											\
 						bresenham.c										\
-						draw_wall.c										\
 						draw_line.c										\
 						draw_text.c										\
 						sector.c										\
 						minimap.c										\
 						backface.c										\
 						render_effect.c									\
+						render_wall.c									\
 						pillar_info.c									\
 						textures.c										\
+						shape.c											\
+						draw_column.c									\
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c										\

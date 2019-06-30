@@ -1,0 +1,29 @@
+TXTR
+ressources/textures/acier_sombre.jpg
+ressources/textures/dark_steel.jpg
+ressources/textures/portal.jpg
+END
+SCTR
+10.0
+15.00
+W0.0 0.0 0
+W20.0 0.0 0
+W20.0 20.0 0
+W0.0 20.0 0
+SCTR
+11.0
+5.0
+W7.5 7.5 2 
+P8.5 7.5 1
+W11.5 7.5 2
+W12.5 7.5 2
+W12.5 12.5 2
+W7.5 12.5 2
+END
+END
+PERS
+10.0 2.0
+2.0
+90.0 90.0
+90.0
+END
