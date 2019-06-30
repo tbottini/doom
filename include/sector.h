@@ -1,9 +1,9 @@
 #ifndef SECTOR_H
 # define SECTOR_H
 
-#include <stdlib.h>
-#include "vector.h"
-#include <SDL.h>
+# include <stdlib.h>
+# include "vector.h"
+# include <SDL.h>
 
 typedef struct s_doom 	t_doom;
 typedef struct t_wall	t_portal;
@@ -11,9 +11,9 @@ typedef struct t_wall	t_portal;
 typedef enum			e_portal_id
 {
 	WALL,
+	WINDOW,
 	PORTAL_DIRECT,
-	PORTAL_DIST,
-	WINDOW
+	PORTAL_DIST
 }						t_portal_id;
 
 typedef struct 			s_txtr

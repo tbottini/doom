@@ -1,0 +1,21 @@
+
+sector_render
+
+
+	sector_frustum			//info definit 
+		on_frustum
+	
+	buncherisation			//definit les mur visibles
+	
+	bunchcomsuption			//affichage du bunch
+
+		render_wall
+			
+			wall_screen_info	//info du mur par rapport a l'ecran
+				
+				pillar_screen_info
+					
+					pillar_polarite //quel bord de l'ecran (en px)
+					wall_clipping // a quel angle coupper le mur
+
+			pillar_to_pillar
