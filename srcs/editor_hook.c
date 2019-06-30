@@ -76,7 +76,10 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y))
 	{
-		sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
+		if (edit->currmur)
+			edit->currmur->portal_id = sector_menu_click(edit, e.y, 2);
+		else
+			sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
 	}
 	relpos = get_rel_mappos(edit, e.x, e.y);

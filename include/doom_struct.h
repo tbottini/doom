@@ -141,18 +141,18 @@ struct					s_pilier {
 typedef struct s_mur	t_mur;
 typedef t_mur			*t_lstmur;
 
+typedef struct s_secteur	t_secteur;
+typedef t_secteur		*t_lstsec;
+
 struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
 
-	t_portal_id			type;
+	t_secteur			*portal_id;
 
 	t_lstmur			prvs;
 	t_lstmur			next;
 };
-
-typedef struct s_secteur	t_secteur;
-typedef t_secteur		*t_lstsec;
 
 struct					s_secteur
 {
