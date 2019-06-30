@@ -61,7 +61,7 @@ int			parsing(t_doom *doom, char *filename)
 		{
 			chunk_texture(&doom->sdl, &doom->arch, fd);
 		}
-		if (!ft_strncmp(line, "SCTR", 4))
+		else if (!ft_strncmp(line, "SCTR", 4))
 		{
 			doom->sector = chunck_sector(fd, &doom->arch);
 		}

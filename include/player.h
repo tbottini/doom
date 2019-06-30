@@ -2,22 +2,25 @@
 #ifndef PLAYER_H
 # define PLAYER_H
 
+# include <stdbool.h>
 # include "vector.h"
 
-# define WEAPON_MAX 5
 # define CROUCH 16350.0
 # define WALK 32700.0
 # define SPRINT 49050.0
-
+# define G_EPSILON 0.01
+# define NB_WEAPON 4
 
 typedef	struct			s_weapon
 {
+	t_txtr				*sprites;
 	int					clip_max;
 	int					ammo;
 	int					clip;
 	int					rate;
 	int					dmg;
-	void				*sprites;
+	int					id;
+	bool				on;
 }						t_weapon;
 
 typedef struct 			s_stat
@@ -38,8 +41,8 @@ typedef struct 			s_player
 	t_stat				stat;
 	int					crouch;
 	int					fov;
-	int					hand;
-	t_weapon			weapons[WEAPON_MAX];
+	t_weapon			hand;
+	t_weapon			weapons[NB_WEAPON];
 }						t_player;
 
 /*
@@ -53,7 +56,9 @@ typedef struct 			s_player
 
 typedef struct 			s_enemy
 {
+	t_txtr				*sprites;
 	t_stat				stat;
+	double				dist;
 	int					dmg;
 	int					state;
 }						t_enemy;
@@ -75,13 +80,25 @@ void					sprint(t_stat *stat);
 void					gravity(t_stat *stat);
 void					inertie(t_stat *stat);
 void					jump(t_player *player);
-void					shoot(t_player *player);
-void					reload(t_weapon *weapon);
 void					crouch_release(t_player *player);
 void					crouch(t_player *player);
 void					next_weapon(t_player *player);
 void					prev_weapon(t_player *player);
 void					change_weapon(t_player *player, int new_w);
+
+/*
+** Weapon system
+*/
+
+t_weapon				hand_init(void);
+t_weapon				gun_init(void);
+t_weapon				shotgun_init(void);
+t_weapon				rifle_init(void);
+void					shoot(t_player *player);
+void					reload(t_weapon *weapon);
+t_wall					*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d);
+void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
+t_enemy					*possible_enemys(t_stat *stat, t_fvct3 d);
 
 /*
 **	Debug

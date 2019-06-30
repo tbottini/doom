@@ -25,6 +25,7 @@ SRCS_INPUT		:=		event_controller.c								\
 						action.c										\
 						move.c											\
 						shoot.c											\
+						shoot_walls.c									\
 						collision.c										\
 						keyboard_input.c								\
 						debug_input.c									\
@@ -69,6 +70,8 @@ SRCS_GESTION	:=		doom_manager.c									\
 						editor_manager.c								\
 						music_manager.c									\
 						effect_manager.c								\
+						weapon_manager.c								\
+						enemy_manager.c									\
 						designer_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\

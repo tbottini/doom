@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   collision.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
+/*   Updated: 2019/06/29 18:34:24 by akrache          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom_nukem.h"
 
 # define PADDING 0.30
 # define PADDING2 0.60
-# define EPSILON 0.001
+# define STEP 0.5
 
 static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 {
@@ -22,27 +34,38 @@ int vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 	return (0);
 }
 
+int			can_pass(t_stat *stat, int i)
+{
+	//t_sector next;
+
+	//next = stat->sector->wall[i].link;
+	if (stat->sector->wall[i].status >= PORTAL_DIRECT)
+		//if ((stat->pos.z + stat->height < link.h_floor + link.h_ceil) && (link.h_floor - stat.pos.z < STEP))
+			return (1);
+	return (0);
+}
+
 t_wall		*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 {
 	int		i;
 	int		j;
 
 	if (w)
-	{
-		if (vector_intersect(ori, pos, *(t_fvct3*)&w->pillar.p, *(t_fvct3*)&w->next->p))
-			return (w);
-		return (0);
-	}
+		return (vector_intersect(ori, pos, *(t_fvct3*)&w->pillar.p, *(t_fvct3*)&w->next->p) ? w : 0);
 	i = -1;
 	while (++i < stat->sector->len)
-		if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p, *(t_fvct3*)&stat->sector->wall[i].next->p))
+		if (!can_pass(stat, i)
+			&& vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p,
+			*(t_fvct3*)&stat->sector->wall[i].next->p))
 			return (&stat->sector->wall[i]);
 	j = -1;
 	while (++j < stat->sector->len_sub)
 	{
 		i = -1;
 		while (++i < stat->sector->ssector[j].len)
-			if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
+			if (!can_pass(stat, i)
+				&& vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->ssector[j].wall[i].pillar.p,
+				*(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
 				return (&stat->sector->ssector[j].wall[i]);
 	}
 	return (NULL);

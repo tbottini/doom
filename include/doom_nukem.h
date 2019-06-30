@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
 /*   Updated: 2019/06/30 15:13:49 by tbottini         ###   ########.fr       */
@@ -29,6 +29,8 @@
 # define TOANGLE 57.2957795131
 
 # define ACCELERATION 8000.0
+# define RADIUS 500
+
 # define DECELERATION 2500.0
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
