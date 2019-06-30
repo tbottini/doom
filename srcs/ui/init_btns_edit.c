@@ -19,13 +19,13 @@ t_btn	add_test_button(t_editor *edit, SDL_Rect *parent)
 	ft_bzero(&tmp, sizeof(t_btn));
 	tmp.func = NULL;
 	tmp.loc.parent = parent;
-	tmp.loc.pos.x = 50;
-	tmp.loc.pos.y = 5;
-	tmp.loc.snapx = 1;
-	tmp.loc.snapy = 0;
+	tmp.loc.pos.x = 10;
+	tmp.loc.pos.y = 10;
+	tmp.loc.snapx = 4;
+	tmp.loc.snapy = 4;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	updateText(edit->rend, edit->ui->fonts.s128, &tmp.txture, &tmp.loc.area,
-		"name", tmp.fgcolor, tmp.bgcolor);
+	updateText(edit->rend, edit->ui->fonts.s32, &tmp.txture, &tmp.loc.area,
+		"truc", tmp.fgcolor, tmp.bgcolor);
 	return (tmp);
 }

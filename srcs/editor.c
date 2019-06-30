@@ -13,8 +13,6 @@
 #include "doom_nukem.h"
 #define SECTORBOXHEIGHT 50
 
-#define EPSILON 0.1
-
 t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 {
 	t_vct2 pos;

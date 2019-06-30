@@ -145,6 +145,8 @@ struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
 
+	t_portal_id			type;
+
 	t_lstmur			prvs;
 	t_lstmur			next;
 };
