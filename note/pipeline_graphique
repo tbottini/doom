@@ -19,3 +19,9 @@ sector_render
 					wall_clipping // a quel angle coupper le mur
 
 			pillar_to_pillar
+
+				draw_column
+
+					draw_part
+					draw_textures
+					draw_portal

@@ -44,10 +44,11 @@ uint32_t				texture_interpolation2D(t_designer *arch);
 void					render_wall(t_designer *arch, t_player *player);
 void					draw_column(t_designer *arch, t_fvct2 surface);
 void					draw_portal(t_designer *arch, t_player *player, t_fvct2 surface);
+
 /*
 **	bunch
 */
-void					sector_frustum(t_sector *sector, t_player player);
+void					sector_frustum(t_designer *arch, t_sector *sector, t_player *player);
 int						buncherisation(t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 

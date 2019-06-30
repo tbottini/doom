@@ -1,16 +1,16 @@
 #include "doom_nukem.h"
 
-int			on_frustum(t_player player, t_pillar *pillar)
+int			on_frustum(t_designer *arch, t_player *player, t_pillar *pillar)
 {
 	t_fvct2	dist;
 	double	angle;
 
-	dist.x = pillar->p.x - player.stat.pos.x;
-	dist.y = pillar->p.y - player.stat.pos.y;
+	dist.x = pillar->p.x - player->stat.pos.x;
+	dist.y = pillar->p.y - player->stat.pos.y;
 	angle = atan2(dist.y, dist.x) * TOANGLE;
 	if (angle < 0)
 		angle = 360 + angle;
-	angle = double_modulo(angle - player.stat.rot.y);
+	angle = double_modulo(angle - player->stat.rot.y);
 	if (angle < -180)
 		angle += 360;
 	else if (angle > 180)
@@ -20,21 +20,21 @@ int			on_frustum(t_player player, t_pillar *pillar)
 	//!!!<---- ajout des bornes
 
 	//if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
-	if (angle >= -15 && angle <= 15)
+	if (angle >= arch->borne.y && angle <= arch->borne.x)
 		pillar->frust = 1;
 	else
 		pillar->frust = 0;
 	return (pillar->frust);
 }
 
-void		sector_frustum(t_sector *sector, t_player player)
+void		sector_frustum(t_designer *arch, t_sector *sector, t_player *player)
 {
 	int		i;
 
 	i = 0;
 	while (i < sector->len)
 	{
-		on_frustum(player, &sector->wall[i].pillar);
+		on_frustum(arch, player, &sector->wall[i].pillar);
 		i++;
 	}
 }
@@ -55,6 +55,18 @@ double		wall_angle_pers(t_wall wall)
 		angles.y += 360;
 	field = fabs(angles.y - angles.x);
 	return (field);
+}
+
+/*
+**	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
+**	determine si les bornes sont entre les angles des mur
+*/
+int			borne_in_wall_angle(t_wall *wall)
+{
+	int		polarite;
+
+	//on determine si l'angle de pillar est a droite ou gauche du mur
+	//
 }
 
 /*
@@ -86,6 +98,8 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
+		//sinon si la borne est entre les angles de mur
+		else if ()
 		i_wall++;
 	}
 	bunch[i_bunch] = NULL;
@@ -97,11 +111,11 @@ void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector)
 	int		i;
 
 	i = 0;
-	doom->tool.sector = sector;
+	doom->arch.sector = sector;
 	while (bunch[i] != NULL)
 	{
-		doom->tool.wall = bunch[i];
-		render_wall(&doom->tool, &doom->player);
+		doom->arch.wall = bunch[i];
+		render_wall(&doom->arch, &doom->player);
 		i++;
 	}
 }

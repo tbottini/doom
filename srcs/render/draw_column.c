@@ -84,8 +84,6 @@ int		draw_part_texture(t_designer *arch, int numcol, t_fvct2 surface)
 	}
 	while (surface.x < surface.y && surface.x < arch->sdl->size.y)
 	{
-		if (px < 0)
-			printf("px %d\n", px);
 		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
 		surface.x++;
 		numcol += arch->sdl->size.x;
@@ -131,8 +129,6 @@ void		draw_column(t_designer *arch, t_fvct2 surface)
 
 void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
 {
-	//t_fvct2	surface_up;
-	//t_fvct2	surface_down;
 	t_fvct2		surface_portal;
 	t_fvct2		surface_tmp;
 	t_vct2		surf;
