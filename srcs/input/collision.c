@@ -6,15 +6,15 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/29 18:34:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/01 16:16:09 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-# define PADDING 0.30
-# define PADDING2 0.60
-# define STEP 0.5
+#define PADDING 0.30
+#define PADDING2 0.60
+#define STEP 0.5
 
 static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 {
@@ -40,8 +40,11 @@ int			can_pass(t_stat *stat, int i)
 
 	//next = stat->sector->wall[i].link;
 	if (stat->sector->wall[i].status >= PORTAL_DIRECT)
+	{
+		//stat->sector = stat->sector->wall[i].link;
 		//if ((stat->pos.z + stat->height < link.h_floor + link.h_ceil) && (link.h_floor - stat.pos.z < STEP))
 			return (1);
+	}
 	return (0);
 }
 

@@ -7,6 +7,7 @@
 #include <SDL.h>
 
 typedef struct s_doom 	t_doom;
+typedef struct s_enemy 	t_enemy;
 typedef struct t_wall	t_portal;
 
 typedef enum			e_portal_id
@@ -47,6 +48,7 @@ typedef struct			s_prop
 **	si le mur est un portail defini dans status
 **	link donne le lien du portail si il est distant
 */
+
 typedef struct			s_wall
 {
 	t_pillar			pillar;
@@ -62,7 +64,7 @@ typedef struct			s_sector
 	t_fvct3				gravity;
 	t_wall				*wall;
 	t_prop				*prop;
-	t_list				*enemys;
+	t_enemy				*enemys;
 	int					len_prop;
 	struct s_sector		*ssector;
 	int					len_sub;
@@ -76,6 +78,7 @@ typedef struct			s_sector
 /*
 **	wall : draw, manipulation
 */
+
 void			describe_sector_recursif(t_sector sector);
 void			describe_bunch(t_wall **bunch);
 void			describe_sector(t_sector sector);

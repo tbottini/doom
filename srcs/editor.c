@@ -57,6 +57,21 @@ void sdl_draw_pixel_map(t_editor *editor, int x, int y)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 0);
 }
 
+t_stat *find_player(t_editor *edit, int x, int y)
+{
+	t_vct2 loc;
+	SDL_Rect ppos;
+
+	loc = get_screen_mappos(edit, edit->player.stat.pos.x, edit->player.stat.pos.y);
+	ppos.x = loc.x - 10;
+	ppos.y = loc.y - 10;
+	ppos.w = 20;
+	ppos.h = 20;
+	if (pos_in_rect(ppos, x, y))
+		return (&edit->player.stat);
+	return (NULL);
+}
+
 t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 {
 	t_pilier *curr;
@@ -118,10 +133,8 @@ t_mur *find_mur(t_editor *editor, t_lstsec start, int x, int y)
 
 static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, SDL_Color c)
 {
-	pos0.x = pos0.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
-	pos0.y = pos0.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
-	pos1.x = pos1.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
-	pos1.y = pos1.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
+	pos0 = get_screen_mappos(editor, pos0.x, pos0.y);
+	pos1 = get_screen_mappos(editor, pos1.x, pos1.y);
 	SDL_SetRenderDrawColor(editor->rend, c.r, c.g, c.b, c.a);
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
@@ -153,6 +166,29 @@ void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 	}
 }
 
+void draw_player(t_editor *editor)
+{
+	t_vct2 loc;
+	SDL_Rect tmp;
+
+	if (editor->currstat == &(editor->player.stat))
+		SDL_SetRenderDrawColor(editor->rend, 100, 255, 100, 255);
+	else if (editor->player.stat.sector == (t_sector *)editor->map)
+		SDL_SetRenderDrawColor(editor->rend, 100, 205, 100, 255);
+	else
+		SDL_SetRenderDrawColor(editor->rend, 100, 150, 100, 255);
+	loc = get_screen_mappos(editor, editor->player.stat.pos.x, editor->player.stat.pos.y);
+	tmp.x = loc.x - 10;
+	tmp.y = loc.y - 10;
+	tmp.w = 20;
+	tmp.h = 20;
+	SDL_RenderDrawRect(editor->rend, &tmp);
+	tmp.x = cos(editor->player.stat.rot.y * PI180) * 50.0;
+	tmp.y = sin(editor->player.stat.rot.y * PI180) * 50.0;
+	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
 void draw_map(t_editor *editor)
 {
 	t_lstsec currsec;
@@ -176,6 +212,8 @@ void draw_map(t_editor *editor)
 					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){200, 0, 70, 0xFF});
 				else if (currwall == editor->hovermur)
 					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
+				else if (currwall->portal_id)
+					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
 				else
 					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
 			}
@@ -188,8 +226,7 @@ void draw_map(t_editor *editor)
 	curr = editor->pillist;
 	while (curr)
 	{
-		loc.x = editor->mappos.x + curr->pos.x * editor->mappos.z / EDITORPRECISION;
-		loc.y = editor->mappos.y + curr->pos.y * editor->mappos.z / EDITORPRECISION;
+		loc = get_screen_mappos(editor, curr->pos.x, curr->pos.y);
 		tmp.x = loc.x - 5;
 		tmp.y = loc.y - 5;
 		tmp.w = 10;
@@ -203,6 +240,7 @@ void draw_map(t_editor *editor)
 		SDL_RenderFillRect(editor->rend, &tmp);
 		curr = curr->next;
 	}
+	draw_player(editor);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
@@ -214,7 +252,10 @@ void draw_sector_menu(t_editor *editor, t_font font)
 
 	x = 0;
 	box = editor->sectbox;
-	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
+	if (editor->currmur || editor->currstat)
+		SDL_SetRenderDrawColor(editor->rend, 99, 99, 99, 255);
+	else
+		SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
 	box.h = SECTORBOXHEIGHT;
@@ -223,16 +264,20 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	while (currsec)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
-		if (currsec == editor->map)
+		if (editor->currmur && editor->currmur->portal_id == currsec || editor->currstat && editor->currstat->sector == currsec)
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){180, 180, 150, 0xFF});
+		else if (currsec == editor->map)
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 		else
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
-		sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF});
+		if (!editor->currmur && !editor->currstat)
+			sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF});
 		box.y += box.h;
 		currsec = currsec->next;
 		++x;
 	}
-	sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
+	if (!editor->currmur && !editor->currstat)
+		sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
@@ -248,9 +293,16 @@ void draw_inspect_menu(t_editor *editor)
 	SDL_RenderCopy(editor->rend, editor->btnarr[0].txture, NULL, &(editor->btnarr[0].loc.area));
 }
 
-void sector_menu_click(t_editor *edit, int pos, int del)
+/*
+** cas == 0 : selectionne le nouveau secteur
+** cas == 1 : supprime le secteur selectionne
+** cas == 2 : renvoie le secteur selectionne
+*/
+
+t_secteur *sector_menu_click(t_editor *edit, int pos, int cas)
 {
 	t_lstsec sec;
+
 	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;
 	edit->currpilier = NULL;
 	sec = edit->sectors;
@@ -261,9 +313,11 @@ void sector_menu_click(t_editor *edit, int pos, int del)
 	}
 	if (pos == 0)
 	{
+		if (cas == 2)
+			return (sec);
 		if (!sec)
 			edit->map = push_secteur(&(edit->sectors));
-		else if (del)
+		else if (cas)
 		{
 			edit->map = NULL;
 			if (sec->prvs)
@@ -285,8 +339,9 @@ void sector_menu_click(t_editor *edit, int pos, int del)
 		else
 			edit->map = sec;
 	}
-	else if (pos == 1)
+	else if (pos == 1 && cas != 2)
 		edit->map = push_secteur(&(edit->sectors));
-	else
+	else if (cas != 2)
 		edit->map = NULL;
+	return (NULL);
 }
