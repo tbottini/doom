@@ -48,9 +48,9 @@ void					ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpi
 void					ft_clear_secteur(t_lstsec *sec);
 void					ft_clear_secteur_list(t_lstsec *start);
 
-t_enemy					*ft_newenemy(t_vct2 loc);
+t_enemy					*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr);
 void					ft_removeenemy(t_lstenn *start, t_enemy **pil);
-t_enemy					*ft_enemypushend(t_lstenn *start, t_vct2 loc);
+t_enemy					*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr);
 void					ft_nodeprint_enemy(t_lstenn node);
 void					ft_clear_enemy_list(t_lstenn *start);
 

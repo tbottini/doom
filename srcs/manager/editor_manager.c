@@ -17,6 +17,8 @@ int		close_editor(t_doom *doom)
 	ft_clear_pillar_list(&(doom->edit.pillist));
 	if (doom->edit.sectors)
 		ft_clear_secteur_list(&(doom->edit.sectors));
+	if (doom->edit.ennlist)
+		ft_clear_enemy_list(&(doom->edit.ennlist));
 	doom->edit.map = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
@@ -26,7 +28,7 @@ int		close_editor(t_doom *doom)
 
 void	open_editor(t_doom *doom)
 {
-	doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
+	//doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
 	doom->edit.sectors = ft_newsector();
 	doom->edit.map = doom->edit.sectors;
 	doom->edit.player.stat.sector = (t_sector *)doom->edit.map;

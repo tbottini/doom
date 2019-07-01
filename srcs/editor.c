@@ -61,6 +61,7 @@ t_stat *find_player(t_editor *edit, int x, int y)
 {
 	t_vct2 loc;
 	SDL_Rect ppos;
+	t_enemy *curr;
 
 	loc = get_screen_mappos(edit, edit->player.stat.pos.x, edit->player.stat.pos.y);
 	ppos.x = loc.x - 10;
@@ -69,6 +70,16 @@ t_stat *find_player(t_editor *edit, int x, int y)
 	ppos.h = 20;
 	if (pos_in_rect(ppos, x, y))
 		return (&edit->player.stat);
+	curr = edit->ennlist;
+	while (curr)
+	{
+		loc = get_screen_mappos(edit, curr->stat.pos.x, curr->stat.pos.y);
+		ppos.x = loc.x - 10;
+		ppos.y = loc.y - 10;
+		if (pos_in_rect(ppos, x, y))
+			return (&curr->stat);
+		curr = curr->next;
+	}
 	return (NULL);
 }
 
@@ -189,6 +200,35 @@ static void draw_player(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
+static void draw_enemy(t_editor *editor)
+{
+	t_enemy		*curr;
+	SDL_Rect	tmp;
+	t_vct2		loc;
+
+	curr = editor->ennlist;
+	while (curr)
+	{
+		if (editor->currstat == &(curr->stat))
+			SDL_SetRenderDrawColor(editor->rend, 220, 105, 255, 255);
+		else if (curr->stat.sector == (t_sector *)editor->map)
+			SDL_SetRenderDrawColor(editor->rend, 170, 100, 205, 255);
+		else
+			SDL_SetRenderDrawColor(editor->rend, 120, 100, 155, 255);
+		loc = get_screen_mappos(editor, curr->stat.pos.x, curr->stat.pos.y);
+		tmp.x = loc.x - 10;
+		tmp.y = loc.y - 10;
+		tmp.w = 20;
+		tmp.h = 20;
+		SDL_RenderDrawRect(editor->rend, &tmp);
+		tmp.x = cos(curr->stat.rot.y * PI180) * 35.0;
+		tmp.y = sin(curr->stat.rot.y * PI180) * 35.0;
+		SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
+		curr = curr->next;
+	}
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
 static void draw_pills(t_editor *editor)
 {
 	t_pilier	*curr;
@@ -254,6 +294,7 @@ void draw_map(t_editor *editor)
 	draw_grid(editor, loc, editor->mappos.z, 0);
 	draw_walls(editor);
 	draw_pills(editor);
+	draw_enemy(editor);
 	draw_player(editor);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }

@@ -71,6 +71,7 @@ typedef struct 			s_enemy
 	t_stat				stat;
 	double				dist;
 	int					dmg;
+	int					type;
 	int					state;
 	struct s_enemy		*next;
 	struct s_enemy		*prev;
