@@ -21,3 +21,8 @@ t_fvct2			interpolation_linear(t_affine d1, t_affine d2);
 t_affine		affine_points(t_fvct2 point1, t_fvct2 point2);
 t_affine		affine_def(double a, double b);
 double			affine_val_index(t_affine affine, double y);
+
+/*
+**	autres
+*/
+double			hypothenuse(t_fvct2 vct);

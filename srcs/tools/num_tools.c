@@ -108,6 +108,11 @@ double		distance(t_fvct2 vct1, t_fvct2 vct2)
 	return (sqrt((dist.x * dist.x) + (dist.y * dist.y)));
 }
 
+double		hypothenuse(t_fvct2 vct)
+{
+	return (sqrt(vct.x * vct.x + vct.y * vct.y));
+}
+
 //double		coeficient(t_fvct2 diff1, t_fvct2 diff2)
 //{
 //	return ((diff1.y - diff1.x) / (diff2.y - diff2.x));

@@ -29,8 +29,9 @@ typedef struct 		s_shape
 **	info function
 */
 t_fvct2					surface_pillar(t_designer *arch, t_player *player, double depth);
-double					wall_clipping(t_designer *arch, t_wall *wall, t_fvct2 pos, double angle);
+double					wall_clipping(t_designer *arch, t_player *p, t_fvct2 *inter_local, double angle);
 void					wall_screen_info(t_designer *arch, t_player *p);
+double					local_angle(double borne, double angle);
 
 /*
 **	render
@@ -49,7 +50,7 @@ void					draw_portal(t_designer *arch, t_player *player, t_fvct2 surface);
 **	bunch
 */
 void					sector_frustum(t_designer *arch, t_sector *sector, t_player *player);
-int						buncherisation(t_sector sector, t_wall **bunch);
+int						buncherisation(t_designer *arch, t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 
 /*

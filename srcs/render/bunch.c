@@ -42,13 +42,19 @@ void		sector_frustum(t_designer *arch, t_sector *sector, t_player *player)
 /*
 **	renvoie l'angle entre un pillier -> joueur -> pillier_next
 */
-double		wall_angle_pers(t_wall wall)
+double		wall_angle_pers(t_designer *arch, t_wall wall)
 {
 	double	field;
 	t_fvct2	angles;
+	double	middle;
 
+
+	if (arch->borne.x * arch->borne.y > 0)
+		return (0);
 	angles.x = wall.pillar.angle;
 	angles.y = wall.next->angle;
+
+
 	if (wall.pillar.angle < 0)
 		angles.x += 360;
 	if (wall.next->angle < 0)
@@ -58,15 +64,32 @@ double		wall_angle_pers(t_wall wall)
 }
 
 /*
+**	prend une autre reference pour les angles : ex
+**	la reference est la rotation du joueur ce qui est a gauche + a droite -
+**	ca sera utilise pour les borne de la fenetre
+*/
+double		local_angle(double borne, double angle)
+{
+	angle = angle - borne;
+	if (angle < 0)
+		angle += 360;
+	return (angle);
+}
+
+
+/*
 **	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
 **	determine si les bornes sont entre les angles des mur
 */
-int			borne_in_wall_angle(t_wall *wall)
+int			borne_in_wall_angle(t_designer *arch, t_wall *wall)
 {
-//	int		polarite;
+	t_fvct2	angles;
 
-	//on determine si l'angle de pillar est a droite ou gauche du mur
-	//
+	//if (arch->borne.x * arch->borne.y < 0)
+	//	return (0);
+	angles.x = local_angle(arch->borne.x, wall->pillar.angle);
+	angles.y = local_angle(arch->borne.x, wall->next->angle);
+	return ((fabs(angles.y - angles.x) > 180.0));
 }
 
 /*
@@ -77,11 +100,12 @@ int			borne_in_wall_angle(t_wall *wall)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
-int			buncherisation(t_sector sector, t_wall **bunch)
+int			buncherisation(t_designer *arch, t_sector sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
 	t_wall	*wall;
+	//static int i = 0;
 
 	i_bunch = 0;
 	i_wall = 0;
@@ -92,16 +116,19 @@ int			buncherisation(t_sector sector, t_wall **bunch)
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
+			printf("wall frustum\n");
 		}
-		else if (wall_angle_pers(wall[i_wall]) > 180)
+		else if (borne_in_wall_angle(arch, &wall[i_wall]))
 		{
+			printf("wall borne\n");
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
-		//sinon si la borne est entre les angles de mur
-		//else if ()
 		i_wall++;
 	}
+	//printf("passage %d\n", i);
+	//i = 0;
+	printf("%d\n", i_bunch);
 	bunch[i_bunch] = NULL;
 	return (1);
 }

@@ -6,73 +6,88 @@
 **	si l'angle entre le joueur est les deux pillier est superieur a 180
 **	la polarite de depart (position du premier pillier) s'inverse
 */
-double		pillar_polarite(t_pillar *pillar, t_pillar next, int max)
+double		pillar_polarite(t_pillar pillar, t_pillar *next, int max)
 {
 	t_fvct2	angle;
 	double	diff;
 	int		polarite;
 
-	polarite = 0;
-	angle.x = pillar->angle;
-	angle.y = next.angle;
-	if (angle.x < 0)
-		angle.x = 360 + angle.x;
-	if (angle.y < 0)
-		angle.y = 360 + angle.y;
+
+	//angle.x = local_angle(arch->borne.x, arch->wall->pillar.angle);
+	//angle.y = local_angle(arch->borne.x, arch->wall->next->angle);
+	angle.x = pillar.angle + ((pillar.angle < 0) ? 360 : 0);
+	angle.y = next->angle + ((next->angle < 0) ? 360 : 0);
+
 	diff = fabs(angle.x - angle.y);
-	polarite = (pillar->angle > 0 ? -1 : 1) * (diff < 180 ? 1 : -1);
+	polarite = (next->angle > 0 ? -1 : 1) * (diff < 180 ? 1 : -1);
 	return ((polarite == -1) ? 0 : max);
 }
 
-void			pillar_screen_info(t_designer *arch, t_wall *wall, t_player *p, int *px, double *depth, double *decal)
+void			pillar_screen_info(t_designer *arch, t_player *p)
 {
 	float		angle;
 	int			size;
+	t_fvct2		tmp;
 
 	size = arch->sdl->size.x;
-	if (wall->pillar.frust)
+	//pillar
+	if (arch->wall->pillar.frust)
 	{
-		*px = fish_bowl_px(arch, wall->pillar);
-		*depth = distance(*(t_fvct2*)&p->stat.pos, wall->pillar.p);
-		*decal = sin(wall->pillar.angle * PI180) * *depth;
-		*depth = cos(wall->pillar.angle * PI180) * *depth;
+		arch->px.x = fish_bowl_px(arch, arch->wall->pillar);
+		arch->depth.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar.p);
+		arch->decal.x = sin(arch->wall->pillar.angle * PI180) * arch->depth.x;
+		arch->depth.x = cos(arch->wall->pillar.angle * PI180) * arch->depth.x;
+		arch->shift_txtr.x = 1;
 	}
 	else
 	{
-		//borne gauche 15 borne droite 15
-		*px = pillar_polarite(wall->next, wall->pillar, size - 1);
-		if (*px == 0)
+		arch->px.x = pillar_polarite(arch->wall->pillar, arch->wall->next, size - 1);
+		if (arch->px.x == 0)
 		{
-			*px = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
+			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
 			angle = p->stat.rot.y + arch->borne.x;
 		}
 		else
 		{
-			*px = arch->sdl->size.x / 2.0 - (tan(arch->borne.y * PI180) * arch->cam->d_screen);
+			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->borne.y * PI180) * arch->cam->d_screen);
 			angle = p->stat.rot.y + arch->borne.y;
 		}
-		*depth = wall_clipping(arch, wall, *(t_fvct2*)&p->stat.pos, angle);
-		*decal = sin((angle - p->stat.rot.y) * PI180) * *depth;
-		*depth = cos((angle - p->stat.rot.y) * PI180) * *depth;
+		arch->shift_txtr.x = wall_clipping(arch, p, &tmp, angle);
+		arch->depth.x = tmp.x;
+		arch->decal.x = tmp.y;
+	}
+
+
+	//next
+	if (arch->wall->next->frust)
+	{
+		arch->px.y = fish_bowl_px(arch, *arch->wall->next);
+		arch->depth.y = distance(*(t_fvct2*)&p->stat.pos, arch->wall->next->p);
+		arch->decal.y = sin(arch->wall->next->angle * PI180) * arch->depth.y;
+		arch->depth.y = cos(arch->wall->next->angle * PI180) * arch->depth.y;
+		arch->shift_txtr.y = 0;
+	}
+	else
+	{
+		arch->px.y = pillar_polarite(*arch->wall->next, &arch->wall->pillar, size - 1);
+		if (arch->px.y == 0)
+		{
+			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->borne.x;
+		}
+		else
+		{
+			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->borne.y * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->borne.y;
+		}
+		arch->shift_txtr.y = wall_clipping(arch, p, &tmp, angle);
+		arch->depth.y = tmp.x;
+		arch->decal.y = tmp.y;
 	}
 }
 
 
 void			wall_screen_info(t_designer *arch, t_player *p)
 {
-	t_wall		wall;
-	double		tmp;
-
-	arch->shift_txtr = (t_fvct2){0, 0};
-	pillar_screen_info(arch, arch->wall, p, &arch->px.x, &arch->depth.x, &arch->decal.x);
-	tmp = arch->shift_txtr.x;
-	wall.pillar = *arch->wall->next;
-	wall.next = &arch->wall->pillar;
-	arch->shift_txtr.x = 0;
-	pillar_screen_info(arch, &wall, p, &arch->px.y, &arch->depth.y, &arch->decal.y);
-	if (arch->shift_txtr.x == 0.0)
-		arch->shift_txtr.y = 0.0;
-	else
-		arch->shift_txtr.y = 1 - arch->shift_txtr.x;
-	arch->shift_txtr.x = !tmp ? 1 : tmp;
+	pillar_screen_info(arch, p);
 }
