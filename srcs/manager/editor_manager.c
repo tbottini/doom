@@ -32,6 +32,7 @@ void	open_editor(t_doom *doom)
 	doom->edit.sectors = ft_newsector();
 	doom->edit.map = doom->edit.sectors;
 	doom->edit.player.stat.sector = (t_sector *)doom->edit.map;
+	doom->edit.player.stat.health = 100;
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;

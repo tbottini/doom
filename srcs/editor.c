@@ -344,8 +344,22 @@ void draw_inspect_menu(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
-	update_loc(editor->size, &editor->btnarr[0].loc, *editor->btnarr[0].loc.parent);
-	SDL_RenderCopy(editor->rend, editor->btnarr[0].txture, NULL, &(editor->btnarr[0].loc.area));
+	if (editor->currstat && &editor->player.stat == editor->currstat) // If Player
+	{
+		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+	}
+	else if (editor->currmur) // If mur
+	{
+		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Texture: ", 0, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		if (editor->currmur->portal_id)
+		{
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Type: ", 0, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		}
+	}
+	else if (editor->map) // If secteur
+	{
+		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Stuff: ", 0, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+	}
 }
 
 /*

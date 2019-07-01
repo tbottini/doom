@@ -112,7 +112,7 @@ static void editor_loop_hook(t_doom *doom)
 	SDL_RenderClear(doom->edit.rend);
 	draw_map(&doom->edit);
 	draw_sector_menu(&doom->edit, doom->ui.fonts);
-	if (doom->edit.map || doom->edit.currmur || doom->edit.currpilier)
+	if (doom->edit.map || doom->edit.currmur || (doom->edit.currstat && doom->edit.currstat == &doom->edit.player.stat))
 		draw_inspect_menu(&doom->edit);
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});

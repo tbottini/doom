@@ -83,16 +83,12 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
-		//edit->currstat = find_player(edit, e.x, e.y);
+		edit->currstat = NULL;
+		edit->currmur = NULL;
 		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
 		{
 			if (!(edit->currmur = find_mur(edit, edit->map, e.x, e.y)))
 				edit->currstat = find_player(edit, e.x, e.y);
-		}
-		else
-		{
-			edit->currstat = NULL;
-			edit->currmur = NULL;
 		}
 		if (e.clicks == 2)
 			if (!ft_pillarpushend(&edit->pillist, relpos))
