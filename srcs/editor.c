@@ -264,7 +264,7 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	while (currsec)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
-		if (editor->currmur && editor->currmur->portal_id == currsec || editor->currstat && editor->currstat->sector == currsec)
+		if ((editor->currmur && editor->currmur->portal_id == currsec) || (editor->currstat && editor->currstat->sector == (t_sector *)currsec))
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){180, 180, 150, 0xFF});
 		else if (currsec == editor->map)
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
