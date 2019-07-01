@@ -139,7 +139,7 @@ static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, SDL_Color 
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
 
-void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
+static void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 {
 	t_vct2 curr;
 
@@ -166,7 +166,7 @@ void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 	}
 }
 
-void draw_player(t_editor *editor)
+static void draw_player(t_editor *editor)
 {
 	t_vct2 loc;
 	SDL_Rect tmp;
@@ -189,17 +189,37 @@ void draw_player(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-void draw_map(t_editor *editor)
+static void draw_pills(t_editor *editor)
+{
+	t_pilier	*curr;
+	SDL_Rect	tmp;
+	t_vct2		loc;
+
+	curr = editor->pillist;
+	while (curr)
+	{
+		loc = get_screen_mappos(editor, curr->pos.x, curr->pos.y);
+		tmp.x = loc.x - 5;
+		tmp.y = loc.y - 5;
+		tmp.w = 10;
+		tmp.h = 10;
+		if (curr == editor->currpilier)
+			SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
+		else if (curr == editor->hoverpilier)
+			SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
+		else
+			SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+		SDL_RenderFillRect(editor->rend, &tmp);
+		curr = curr->next;
+	}
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
+static void draw_walls(t_editor *editor)
 {
 	t_lstsec currsec;
-	t_pilier *curr;
 	t_lstmur currwall;
-	t_vct2 loc;
-	SDL_Rect tmp;
 
-	loc.x = editor->mappos.x;
-	loc.y = editor->mappos.y;
-	draw_grid(editor, loc, editor->mappos.z, 0);
 	currsec = editor->sectors;
 	while (currsec)
 	{
@@ -223,23 +243,17 @@ void draw_map(t_editor *editor)
 		}
 		currsec = currsec->next;
 	}
-	curr = editor->pillist;
-	while (curr)
-	{
-		loc = get_screen_mappos(editor, curr->pos.x, curr->pos.y);
-		tmp.x = loc.x - 5;
-		tmp.y = loc.y - 5;
-		tmp.w = 10;
-		tmp.h = 10;
-		if (curr == editor->currpilier)
-			SDL_SetRenderDrawColor(editor->rend, 255, 0, 0, 255);
-		else if (curr == editor->hoverpilier)
-			SDL_SetRenderDrawColor(editor->rend, 0, 255, 0, 255);
-		else
-			SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
-		SDL_RenderFillRect(editor->rend, &tmp);
-		curr = curr->next;
-	}
+}
+
+void draw_map(t_editor *editor)
+{
+	t_vct2 loc;
+
+	loc.x = editor->mappos.x;
+	loc.y = editor->mappos.y;
+	draw_grid(editor, loc, editor->mappos.z, 0);
+	draw_walls(editor);
+	draw_pills(editor);
 	draw_player(editor);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
