@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/30 19:01:39 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/01 12:31:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct			s_minimap
 
 #define UNIT 8.0
 #define CWALL 0xDADADAFF
-#define CPORT 0xEE6002FF
+#define CPORT 0xE6E678FF
 #define CPERS 0xFFFFFFFF
 #define WHITE 0xFFFFFFFF
 

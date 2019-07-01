@@ -139,6 +139,69 @@ int			list_to_ssector(t_sector *parent, t_list *sub_sector)
 	return (0);
 }
 
+///////////////////////////////////////////////////////////////
+/*
+int			check_enemy(char *line)
+{
+	int i;
+
+	if (line[4] != ' ')
+		return (0);
+	i = 5;
+	while (line[i])
+	{
+		if (!ft_isdigit(line[i]) || (line[i] != ' ' && line[i] != '.'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+double		ft_atof_enemy(char *str, int *i, int *s)
+{
+	double	nb;
+	double	j;
+
+	j = 10.0;
+	nb = 0.0;
+	while (str[*i] && str[*i] != '.' && str[*i] != ' ' && str[*i] != '\n')
+	{
+		nb = nb * 10 + str[*i] - '0';
+		*i++;
+	}
+	if (str[*i])
+		*i++;
+	while (str[*i] && str[*i] != ' ' && str[*i] != '\n')
+	{
+		nb = nb + (str[*i] - '0') / j;
+		j *= 10.0;
+		*i++;
+	}
+	*++s;
+	return (nb);
+}
+
+int			parse_enemy(t_sector *sector, char *line)
+{
+	t_enemy	*enemy;
+	double	tmp;
+
+	if (!(enemy = enemy_init(ft_atoi(line + 5))))
+		return (NULL);
+	enemy->stat.pos.x = atof(line + 7);
+	enemy->stat.pos.y = atof(line + 12);
+	enemy->stat.rot.y = atof(line + 17);
+	enemy->stat.pos.z = sector->h_floor;
+	enemy->stat.rot.x = 90.0;
+	if (sector->enemys == NULL);
+		sector->enemys = enemy;
+	//else
+	//	;//
+	return (1);
+}
+*/
+////////////////////////////////////////////////////////////////
+
 t_sector	*chunck_sector(int fd, t_designer *ressources)
 {
 	t_sector	*sector;
@@ -174,9 +237,9 @@ t_sector	*chunck_sector(int fd, t_designer *ressources)
 			nline--;
 			free(line);
 		}
-		else if (!ft_strcmp(line, "ENEM"))
+		else if (!ft_strncmp(line, "ENEM", 4))
 		{
-			;//
+			;//parse_enemy(sector, line);
 		}
 		else
 		{
