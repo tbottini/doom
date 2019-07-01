@@ -85,11 +85,17 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
-		edit->player.crouch = find_player(edit, e.x, e.y);
+		//edit->currstat = find_player(edit, e.x, e.y);
 		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
-			edit->currmur = find_mur(edit, edit->map, e.x, e.y);
+		{
+			if (!(edit->currmur = find_mur(edit, edit->map, e.x, e.y)))
+				edit->currstat = find_player(edit, e.x, e.y);
+		}
 		else
+		{
+			edit->currstat = NULL;
 			edit->currmur = NULL;
+		}
 		if (e.clicks == 2)
 			if (!ft_pillarpushend(&edit->pillist, relpos))
 				ft_printf("Error adding pillar\n");
@@ -125,15 +131,14 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->sectscroll += e.y * 2;
 		return (0);
 	}
-	if (find_player(edit, edit->mouse.x, edit->mouse.y))
+	if (edit->currstat)
 	{
-		printf("Armand\t%f\n", edit->player.stat.rot.y);
-		if (edit->player.stat.rot.y + e.y < 0)
-			edit->player.stat.rot.y += e.y + 360.0;
-		else if (edit->player.stat.rot.y + e.y > 360)
-			edit->player.stat.rot.y += e.y - 360.0;
+		if (edit->currstat->rot.y + e.y < 0)
+			edit->currstat->rot.y += e.y + 360.0;
+		else if (edit->currstat->rot.y + e.y > 360)
+			edit->currstat->rot.y += e.y - 360.0;
 		else
-			edit->player.stat.rot.y += e.y;
+			edit->currstat->rot.y += e.y;
 		return (0);
 	}
 	if (edit->mappos.z + e.y < MINZOOM)
@@ -201,10 +206,10 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 			doom->edit.currmur->pil2->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
 			doom->edit.currmur->pil2->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
 		}
-		else if (doom->edit.player.crouch)
+		else if (doom->edit.currstat)
 		{
-			doom->edit.player.stat.pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
-			doom->edit.player.stat.pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currstat->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.currstat->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
 		}
 	}
 	else if (e.state == SDL_BUTTON_MMASK)

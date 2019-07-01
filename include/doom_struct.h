@@ -162,6 +162,8 @@ struct					s_secteur
 	t_lstsec			next;
 };
 
+typedef t_enemy		*t_lstenn;
+
 typedef struct			s_editor
 {
 	bool				status;
@@ -177,9 +179,11 @@ typedef struct			s_editor
 	SDL_Rect			inspectbox;
 	t_tab				keys;
 	t_lstpil			pillist;
+	t_lstenn			ennlist;
 	t_pilier			*currpilier;
-	t_pilier			*hoverpilier;
+	t_stat				*currstat;
 	t_mur				*currmur;
+	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
 	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstsec			map;

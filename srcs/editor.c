@@ -57,7 +57,7 @@ void sdl_draw_pixel_map(t_editor *editor, int x, int y)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 0);
 }
 
-int find_player(t_editor *edit, int x, int y)
+t_stat *find_player(t_editor *edit, int x, int y)
 {
 	t_vct2 loc;
 	SDL_Rect ppos;
@@ -67,7 +67,9 @@ int find_player(t_editor *edit, int x, int y)
 	ppos.y = loc.y - 10;
 	ppos.w = 20;
 	ppos.h = 20;
-	return (pos_in_rect(ppos, x, y));
+	if (pos_in_rect(ppos, x, y))
+		return (&edit->player.stat);
+	return (NULL);
 }
 
 t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
@@ -169,10 +171,12 @@ void draw_player(t_editor *editor)
 	t_vct2 loc;
 	SDL_Rect tmp;
 
-	if (editor->player.stat.sector == (t_sector *)editor->map)
+	if (editor->currstat == &(editor->player.stat))
 		SDL_SetRenderDrawColor(editor->rend, 100, 255, 100, 255);
+	else if (editor->player.stat.sector == (t_sector *)editor->map)
+		SDL_SetRenderDrawColor(editor->rend, 100, 205, 100, 255);
 	else
-		SDL_SetRenderDrawColor(editor->rend, 100, 155, 100, 255);
+		SDL_SetRenderDrawColor(editor->rend, 100, 150, 100, 255);
 	loc = get_screen_mappos(editor, editor->player.stat.pos.x, editor->player.stat.pos.y);
 	tmp.x = loc.x - 10;
 	tmp.y = loc.y - 10;
@@ -248,7 +252,7 @@ void draw_sector_menu(t_editor *editor, t_font font)
 
 	x = 0;
 	box = editor->sectbox;
-	if (editor->currmur)
+	if (editor->currmur || editor->currstat)
 		SDL_SetRenderDrawColor(editor->rend, 99, 99, 99, 255);
 	else
 		SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
@@ -260,19 +264,19 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	while (currsec)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
-		if (editor->currmur && editor->currmur->portal_id == currsec)
+		if (editor->currmur && editor->currmur->portal_id == currsec || editor->currstat && editor->currstat->sector == currsec)
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){180, 180, 150, 0xFF});
 		else if (currsec == editor->map)
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 		else
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
-		if (!editor->currmur)
+		if (!editor->currmur && !editor->currstat)
 			sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF});
 		box.y += box.h;
 		currsec = currsec->next;
 		++x;
 	}
-	if (!editor->currmur)
+	if (!editor->currmur && !editor->currstat)
 		sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
