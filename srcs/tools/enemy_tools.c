@@ -6,13 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 20:45:43 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 21:00:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/01 21:50:12 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-t_enemy *ft_newenemy(t_vct2 loc)
+t_enemy		*ft_newenemy(t_vct2 loc)
 {
 	t_enemy *t;
 
@@ -26,7 +26,7 @@ t_enemy *ft_newenemy(t_vct2 loc)
 	return (t);
 }
 
-void ft_removeenemy(t_lstenn *start, t_enemy **pil)
+void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
 {
 	if (!pil || !(*pil))
 		return ;
@@ -40,7 +40,7 @@ void ft_removeenemy(t_lstenn *start, t_enemy **pil)
 	*pil = NULL;
 }
 
-t_enemy *ft_enemypushend(t_lstenn *start, t_vct2 loc)
+t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc)
 {
 	t_enemy *t;
 
@@ -57,14 +57,14 @@ t_enemy *ft_enemypushend(t_lstenn *start, t_vct2 loc)
 	return (t->next);
 }
 
-static int check_diff(t_lstenn un, t_lstenn deux)
+static int	check_diff(t_lstenn un, t_lstenn deux)
 {
 	if (un->stat.pos.x != deux->stat.pos.x || un->stat.pos.y != deux->stat.pos.y)
 		return (0);
 	return (1);
 }
 
-void ft_nodeprint_enemy(t_lstenn node)
+void		ft_nodeprint_enemy(t_lstenn node)
 {
 	t_enemy *curr;
 
@@ -90,7 +90,7 @@ void ft_nodeprint_enemy(t_lstenn node)
 	ft_printf("\n");
 }
 
-void ft_clear_enemy_list(t_lstenn *start)
+void		ft_clear_enemy_list(t_lstenn *start)
 {
 	t_enemy *tmp;
 
