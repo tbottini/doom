@@ -57,6 +57,19 @@ void sdl_draw_pixel_map(t_editor *editor, int x, int y)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 0);
 }
 
+int find_player(t_editor *edit, int x, int y)
+{
+	t_vct2 loc;
+	SDL_Rect ppos;
+
+	loc = get_screen_mappos(edit, edit->player.stat.pos.x, edit->player.stat.pos.y);
+	ppos.x = loc.x - 10;
+	ppos.y = loc.y - 10;
+	ppos.w = 20;
+	ppos.h = 20;
+	return (pos_in_rect(ppos, x, y));
+}
+
 t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 {
 	t_pilier *curr;
@@ -118,10 +131,8 @@ t_mur *find_mur(t_editor *editor, t_lstsec start, int x, int y)
 
 static void map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, SDL_Color c)
 {
-	pos0.x = pos0.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
-	pos0.y = pos0.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
-	pos1.x = pos1.x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
-	pos1.y = pos1.y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
+	pos0 = get_screen_mappos(editor, pos0.x, pos0.y);
+	pos1 = get_screen_mappos(editor, pos1.x, pos1.y);
 	SDL_SetRenderDrawColor(editor->rend, c.r, c.g, c.b, c.a);
 	SDL_RenderDrawLine(editor->rend, pos0.x, pos0.y, pos1.x, pos1.y);
 }
@@ -151,6 +162,27 @@ void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 		SDL_RenderDrawLine(editor->rend, 0, curr.y, editor->size.x, curr.y);
 		curr.y += dist;
 	}
+}
+
+void draw_player(t_editor *editor)
+{
+	t_vct2 loc;
+	SDL_Rect tmp;
+
+	if (editor->player.stat.sector == (t_sector *)editor->map)
+		SDL_SetRenderDrawColor(editor->rend, 100, 255, 100, 255);
+	else
+		SDL_SetRenderDrawColor(editor->rend, 100, 155, 100, 255);
+	loc = get_screen_mappos(editor, editor->player.stat.pos.x, editor->player.stat.pos.y);
+	tmp.x = loc.x - 10;
+	tmp.y = loc.y - 10;
+	tmp.w = 20;
+	tmp.h = 20;
+	SDL_RenderDrawRect(editor->rend, &tmp);
+	tmp.x = cos(editor->player.stat.rot.y * PI180) * 50.0;
+	tmp.y = sin(editor->player.stat.rot.y * PI180) * 50.0;
+	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
 void draw_map(t_editor *editor)
@@ -190,8 +222,7 @@ void draw_map(t_editor *editor)
 	curr = editor->pillist;
 	while (curr)
 	{
-		loc.x = editor->mappos.x + curr->pos.x * editor->mappos.z / EDITORPRECISION;
-		loc.y = editor->mappos.y + curr->pos.y * editor->mappos.z / EDITORPRECISION;
+		loc = get_screen_mappos(editor, curr->pos.x, curr->pos.y);
 		tmp.x = loc.x - 5;
 		tmp.y = loc.y - 5;
 		tmp.w = 10;
@@ -205,6 +236,7 @@ void draw_map(t_editor *editor)
 		SDL_RenderFillRect(editor->rend, &tmp);
 		curr = curr->next;
 	}
+	draw_player(editor);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 

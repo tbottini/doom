@@ -38,6 +38,7 @@ void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 void 					ft_nodeprint_secteur(t_lstsec node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
+int						find_player(t_editor *edit, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
 

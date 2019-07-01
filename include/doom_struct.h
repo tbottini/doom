@@ -116,7 +116,6 @@ typedef struct			s_ui
 typedef struct			s_sdl
 {
 	SDL_Window			*win;
-	SDL_Window			*edwin;
 	SDL_Renderer		*rend;
 	t_vct2				size;
 	t_vct2				m_pos;
@@ -124,6 +123,7 @@ typedef struct			s_sdl
 	Uint32				*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
+	SDL_Surface			*textures[5];
 	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;
@@ -184,6 +184,8 @@ typedef struct			s_editor
 	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstsec			map;
 	t_vct3				mappos;
+	SDL_Surface			**textures;
+	t_player			player;
 }						t_editor;
 
 typedef struct 			s_camera

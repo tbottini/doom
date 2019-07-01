@@ -85,6 +85,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
+		edit->player.crouch = find_player(edit, e.x, e.y);
 		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
 			edit->currmur = find_mur(edit, edit->map, e.x, e.y);
 		else
@@ -122,6 +123,17 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->sectscroll = 0;
 		else
 			edit->sectscroll += e.y * 2;
+		return (0);
+	}
+	if (find_player(edit, edit->mouse.x, edit->mouse.y))
+	{
+		printf("Armand\t%f\n", edit->player.stat.rot.y);
+		if (edit->player.stat.rot.y + e.y < 0)
+			edit->player.stat.rot.y += e.y + 360.0;
+		else if (edit->player.stat.rot.y + e.y > 360)
+			edit->player.stat.rot.y += e.y - 360.0;
+		else
+			edit->player.stat.rot.y += e.y;
 		return (0);
 	}
 	if (edit->mappos.z + e.y < MINZOOM)
@@ -188,6 +200,11 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
 			doom->edit.currmur->pil1->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
 			doom->edit.currmur->pil2->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
 			doom->edit.currmur->pil2->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+		}
+		else if (doom->edit.player.crouch)
+		{
+			doom->edit.player.stat.pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			doom->edit.player.stat.pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
 		}
 	}
 	else if (e.state == SDL_BUTTON_MMASK)
