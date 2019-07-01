@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
+/*   Updated: 2019/07/01 17:18:27 by akrache          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PLAYER_H
 # define PLAYER_H
@@ -39,7 +50,7 @@ typedef struct 			s_stat
 typedef struct 			s_player
 {
 	t_stat				stat;
-	int					crouch;
+	bool				crouch;
 	int					fov;
 	t_weapon			hand;
 	t_weapon			weapons[NB_WEAPON];
@@ -61,13 +72,16 @@ typedef struct 			s_enemy
 	double				dist;
 	int					dmg;
 	int					state;
+	struct s_enemy		*next;
 }						t_enemy;
 
 /*
 **	Gestion
 */
+
 int						player_init(t_player *player);
 void					player_free(t_player *player);
+t_enemy					*enemy_init(int type);
 
 /*
 **	Gameplay

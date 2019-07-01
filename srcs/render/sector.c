@@ -13,5 +13,6 @@ t_sector		*sector_new()
 	new->gravity.x = 0;
 	new->gravity.y = 0;
 	new->gravity.z = -9.80665;
+	new->enemys = NULL;
 	return (new);
 }

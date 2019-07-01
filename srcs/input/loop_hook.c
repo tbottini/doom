@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/27 16:22:35 by magrab           ###   ########.fr       */
+/*   Updated: 2019/07/01 17:26:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void		benda(t_doom *doom, int key)
 			Mix_PlayChannel(1, doom->sound.tab_effect[2], -1);
 	}
 	prev = doom->player.stat.speed;
+	printf("speed = %f\n", doom->player.stat.speed);
 }
 
 static void input_loop(t_doom *doom, int key)
@@ -75,16 +76,7 @@ static void input_loop(t_doom *doom, int key)
 
 static void editor_loop(t_doom *doom, int key)
 {
-	if (key == SDLK_w || key == SDLK_s)
-		doom->player.stat.vel.x = (key == SDLK_w ? 32700 : -32700);
-	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
-	else if (key == SDLK_LSHIFT)
-		sprint(&doom->player.stat);
-	else if (key == SDLK_r && !doom->ui.m_status)
-		reload(&doom->player.hand);
-	else if (key == SDLK_y)
-		fire(doom);
+	;//
 }
 
 static void delaypcmasterrace(t_doom *doom)

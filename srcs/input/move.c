@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/27 16:25:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/01 17:20:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void		unfly(t_stat *stat)
 
 void		crouch(t_player *player)
 {
-	if (!(player->crouch) && player->stat.speed == WALK)
+	if (!player->crouch && player->stat.speed == WALK)
 	{
-		player->crouch = 1;
+		player->crouch = true;
 		player->stat.speed = CROUCH;
 		player->stat.height /= 2;
 	}
@@ -42,7 +42,7 @@ void		crouch_release(t_player *player)
 {
 	if (player->crouch)
 	{
-		player->crouch = 0;
+		player->crouch = false;
 		player->stat.speed = WALK;
 		player->stat.height *= 2;
 	}

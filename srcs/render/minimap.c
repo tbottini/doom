@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/19 14:59:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/01 12:31:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,31 @@ typedef struct			s_minimap
 	t_vct2	a;
 	t_vct2	size;
 	t_vct2	mid;
+	t_sdl	*sdl;
 }						t_minimap;
 
 #define UNIT 8.0
 #define CWALL 0xDADADAFF
+#define CPORT 0xE6E678FF
 #define CPERS 0xFFFFFFFF
 #define WHITE 0xFFFFFFFF
 
-int			bold_point2(t_doom *doom, t_minimap mini, t_vct2 pos, Uint32 color)
+int			bold_point2(t_minimap mini, t_vct2 pos, Uint32 color)
 {
 	int tmp;
 
-	tmp = pos.y * doom->sdl.size.x;
+	tmp = pos.y * mini.sdl->size.x;
 	if (pos.y > mini.d.y && pos.y < mini.a.y - 1 && pos.x < mini.a.x - 1 && pos.x > mini.d.x)
 	{
-		doom->sdl.screen[pos.x + tmp] = color;
-		doom->sdl.screen[pos.x + 1 + tmp] = color;
-		doom->sdl.screen[pos.x - 1 + tmp] = color;
-		doom->sdl.screen[pos.x + 1 + tmp + doom->sdl.size.x] = color;
-		doom->sdl.screen[pos.x - 1 + tmp + doom->sdl.size.x] = color;
-		doom->sdl.screen[pos.x + 1 + tmp - doom->sdl.size.x] = color;
-		doom->sdl.screen[pos.x - 1 + tmp - doom->sdl.size.x] = color;
-		doom->sdl.screen[pos.x + tmp + doom->sdl.size.x] = color;
-		doom->sdl.screen[pos.x + tmp - doom->sdl.size.x] = color;
+		mini.sdl->screen[pos.x + tmp] = color;
+		mini.sdl->screen[pos.x + 1 + tmp] = color;
+		mini.sdl->screen[pos.x - 1 + tmp] = color;
+		mini.sdl->screen[pos.x + 1 + tmp + mini.sdl->size.x] = color;
+		mini.sdl->screen[pos.x - 1 + tmp + mini.sdl->size.x] = color;
+		mini.sdl->screen[pos.x + 1 + tmp - mini.sdl->size.x] = color;
+		mini.sdl->screen[pos.x - 1 + tmp - mini.sdl->size.x] = color;
+		mini.sdl->screen[pos.x + tmp + mini.sdl->size.x] = color;
+		mini.sdl->screen[pos.x + tmp - mini.sdl->size.x] = color;
 	}
 	return (1);
 }
@@ -86,7 +88,7 @@ t_vct2		minipoint(t_doom *d, t_fvct2 vct, t_minimap mini)
 	return (px);
 }
 
-void	minibigline(t_doom *doom, t_vct2 pos0, t_vct2 pos1, t_minimap mini)
+void	minibigline(t_vct2 pos0, t_vct2 pos1, t_minimap mini, Uint32 color)
 {
 	t_vct3	decal;
 	t_vct2	orig;
@@ -98,9 +100,9 @@ void	minibigline(t_doom *doom, t_vct2 pos0, t_vct2 pos1, t_minimap mini)
 	decal.x = (pos0.x < pos1.x ? 1 : -1);
 	decal.y = (pos0.y < pos1.y ? 1 : -1);
 	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
-	bold_point2(doom, mini, pos0, CWALL);
+	bold_point2(mini, pos0, color);
 	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-			&& bold_point2(doom, mini, pos0, CWALL))
+			&& bold_point2(mini, pos0, color))
 	{
 		e2 = err;
 		if (e2 > -orig.x && ((err -= orig.y) || 1))
@@ -155,10 +157,10 @@ void        miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
 	while (++i < sector.len - 1)
 	{
 		cursor2 = minipoint(doom, wall[i + 1].pillar.p, mini);
-		minibigline(doom, cursor, cursor2, mini);
+		minibigline(cursor, cursor2, mini, wall[i + 1].status < PORTAL_DIRECT ? CWALL : CPORT);
 		cursor = cursor2;
 	}
-	minibigline(doom, cursor, tmp, mini);
+	minibigline(cursor, tmp, mini, wall[0].status < PORTAL_DIRECT ? CWALL : CPORT);
 }
 
 void		minifield(t_doom *d, t_minimap mini, double angle)
@@ -185,6 +187,7 @@ void		minimap(t_doom *d)
 	mini.size.y = mini.a.y - mini.d.y;
 	mini.mid.x = mini.a.x - (mini.size.x >> 1);
 	mini.mid.y = mini.a.y - (mini.size.y >> 1);
+	mini.sdl = &d->sdl;
 	i = mini.d.x;
 	while (i < mini.a.x)
 	{
@@ -206,5 +209,5 @@ void		minimap(t_doom *d)
 		i += d->player.fov >> 3;
 	}
 	minifield(d, mini, (d->player.stat.rot.y + (d->player.fov >> 1)));
-	bold_point2(d, mini, mini.mid, CPERS);
+	bold_point2(mini, mini.mid, CPERS);
 }
