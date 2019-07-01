@@ -42,13 +42,19 @@ void		sector_frustum(t_designer *arch, t_sector *sector, t_player *player)
 /*
 **	renvoie l'angle entre un pillier -> joueur -> pillier_next
 */
-double		wall_angle_pers(t_wall wall)
+double		wall_angle_pers(t_designer *arch, t_wall wall)
 {
 	double	field;
 	t_fvct2	angles;
+	double	middle;
 
+
+	if (arch->borne.x * arch->borne.y > 0)
+		return (0);
 	angles.x = wall.pillar.angle;
 	angles.y = wall.next->angle;
+
+
 	if (wall.pillar.angle < 0)
 		angles.x += 360;
 	if (wall.next->angle < 0)
@@ -58,43 +64,32 @@ double		wall_angle_pers(t_wall wall)
 }
 
 /*
+**	prend une autre reference pour les angles : ex
+**	la reference est la rotation du joueur ce qui est a gauche + a droite -
+**	ca sera utilise pour les borne de la fenetre
+*/
+double		local_angle(double borne, double angle)
+{
+	angle = angle - borne;
+	if (angle < 0)
+		angle += 360;
+	return (angle);
+}
+
+
+/*
 **	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
 **	determine si les bornes sont entre les angles des mur
 */
 int			borne_in_wall_angle(t_designer *arch, t_wall *wall)
 {
-	int		polarite_left;
-	int		polarite_right;
 	t_fvct2	angles;
-	t_fvct2	borne;
 
-	angles.x = wall->pillar.angle;
-	angles.y = wall->next->angle;
-	borne.x = arch->borne.x;
-	borne.y = arch->borne.y;
-	if (arch->borne.x * arch->borne.y < 0)
-		return (0);
-	if (angles.x < 0)
-		angles.x += 360;
-	if (angles.y < 0)
-		angles.y += 360;
-	if (borne.x < 0)
-		borne.x += 360;
-	if (borne.y < 0)
-		borne.y += 360;
-	//si l'angle est superieur a la borne alors
-	//l'angle est a gauche de la borne
-
-	polarite_left = (angles.x > borne.x) ? 1 : -1;
-	polarite_right = (angles.y < borne.y) ? 1 : -1;
-	//if (polarite_left == polarite_right)
-	//	printf("pillar %f borne %f next %f borne right %f\n", wall->pillar.angle, arch->borne.x, wall->next->angle, arch->borne.y);
-	return ((polarite_left == polarite_right) ? 1 : 0);
-	//on determine si l'angle de pillar est a droite ou a gauche du mur
-	//si il est a gauche il faut verifier que le next est a droite de la borne droite
-	//		si oui alors on renvoie un on ajoute le mur au bunch
-	//si l'angle de pillar est a droite de la borne gauche alors l'angle de next
-		//doit etre a gauche de l'angle de next
+	//if (arch->borne.x * arch->borne.y < 0)
+	//	return (0);
+	angles.x = local_angle(arch->borne.x, wall->pillar.angle);
+	angles.y = local_angle(arch->borne.x, wall->next->angle);
+	return ((fabs(angles.y - angles.x) > 180.0));
 }
 
 /*
@@ -110,6 +105,7 @@ int			buncherisation(t_designer *arch, t_sector sector, t_wall **bunch)
 	int		i_wall;
 	int		i_bunch;
 	t_wall	*wall;
+	//static int i = 0;
 
 	i_bunch = 0;
 	i_wall = 0;
@@ -120,22 +116,19 @@ int			buncherisation(t_designer *arch, t_sector sector, t_wall **bunch)
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
-		}
-		else if (wall_angle_pers(wall[i_wall]) > 180)
-		{
-			bunch[i_bunch] = &wall[i_wall];
-			i_bunch++;
+			printf("wall frustum\n");
 		}
 		else if (borne_in_wall_angle(arch, &wall[i_wall]))
 		{
-			printf("borne wall\n");
+			printf("wall borne\n");
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
-		//sinon si la borne est entre les angles de mur
-		//else if ()
 		i_wall++;
 	}
+	//printf("passage %d\n", i);
+	//i = 0;
+	printf("%d\n", i_bunch);
 	bunch[i_bunch] = NULL;
 	return (1);
 }
