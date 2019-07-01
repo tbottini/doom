@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-t_enemy		*ft_newenemy(t_vct2 loc)
+t_enemy		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 {
 	t_enemy *t;
 
@@ -21,6 +21,8 @@ t_enemy		*ft_newenemy(t_vct2 loc)
 	t->stat.pos.x = loc.x;
 	t->stat.pos.y = loc.y;
 	t->stat.rot.y = 0;
+	t->stat.sector = (t_sector *)sctr;
+	t->type = type;
 	t->prev = NULL;
 	t->next = NULL;
 	return (t);
@@ -40,18 +42,18 @@ void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
 	*pil = NULL;
 }
 
-t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc)
+t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr)
 {
 	t_enemy *t;
 
 	if (!start)
 		return (NULL);
 	if (!(*start))
-		return (*start = ft_newenemy(loc));
+		return (*start = ft_newenemy(loc, type, sctr));
 	t = *start;
 	while (t->next)
 		t = t->next;
-	if (!(t->next = ft_newenemy(loc)))
+	if (!(t->next = ft_newenemy(loc, type, sctr)))
 		return (NULL);
 	t->next->prev = t;
 	return (t->next);

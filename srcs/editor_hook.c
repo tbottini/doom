@@ -25,21 +25,17 @@
 
 int editor_key_press(int key, t_doom *doom)
 {
+	t_vct2 relpos;
+
 	if (key == SDLK_BACKQUOTE)
 	{
 		close_editor(doom);
 	}
-	else if (key == SDLK_3)
+	else if (key == SDLK_1)
 	{
-		doom->edit.map = push_secteur(&(doom->edit.sectors));
-	}
-	else if (key == SDLK_4)
-		printf("currpillar : %p\n", doom->edit.currpilier);
-	else if (key == SDLK_5)
-		ft_nodeprint_secteur(doom->edit.sectors);
-	else if (key == SDLK_6)
-	{
-		ft_clear_secteur_list(&doom->edit.sectors);
+		relpos = get_rel_mappos(&doom->edit, doom->edit.mouse.x, doom->edit.mouse.y);
+		if (!ft_enemypushend(&doom->edit.ennlist, relpos, 1, doom->edit.map))
+				ft_printf("Error adding Enemy\n");
 	}
 	else if (key == SDLK_r) // Reload position
 	{
@@ -78,6 +74,8 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	{
 		if (edit->currmur)
 			edit->currmur->portal_id = sector_menu_click(edit, e.y, 2);
+		else if (edit->currstat)
+			edit->currstat->sector = (t_sector *)sector_menu_click(edit, e.y, 2);
 		else
 			sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
@@ -85,16 +83,12 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
-		//edit->currstat = find_player(edit, e.x, e.y);
+		edit->currstat = NULL;
+		edit->currmur = NULL;
 		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
 		{
 			if (!(edit->currmur = find_mur(edit, edit->map, e.x, e.y)))
 				edit->currstat = find_player(edit, e.x, e.y);
-		}
-		else
-		{
-			edit->currstat = NULL;
-			edit->currmur = NULL;
 		}
 		if (e.clicks == 2)
 			if (!ft_pillarpushend(&edit->pillist, relpos))
