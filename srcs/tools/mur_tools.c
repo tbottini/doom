@@ -22,6 +22,7 @@ static t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2)
 	t->pil2 = pil2;
 	t->prvs = NULL;
 	t->next = NULL;
+	t->portal_id = NULL;
 	return (t);
 }
 

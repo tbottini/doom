@@ -29,7 +29,7 @@ void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
 void					ft_removewall(t_lstmur *start, t_mur **mur);
 t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
 void					ft_clear_wall_list(t_lstmur *start);
-void					sector_menu_click(t_editor *edit, int pos, int del);
+t_secteur				*sector_menu_click(t_editor *edit, int pos, int cas);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
 void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
@@ -38,6 +38,7 @@ void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 void 					ft_nodeprint_secteur(t_lstsec node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
+t_stat					*find_player(t_editor *edit, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
 

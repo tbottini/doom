@@ -116,7 +116,6 @@ typedef struct			s_ui
 typedef struct			s_sdl
 {
 	SDL_Window			*win;
-	SDL_Window			*edwin;
 	SDL_Renderer		*rend;
 	t_vct2				size;
 	t_vct2				m_pos;
@@ -124,6 +123,7 @@ typedef struct			s_sdl
 	Uint32				*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
+	SDL_Surface			*textures[5];
 	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;
@@ -141,18 +141,18 @@ struct					s_pilier {
 typedef struct s_mur	t_mur;
 typedef t_mur			*t_lstmur;
 
+typedef struct s_secteur	t_secteur;
+typedef t_secteur		*t_lstsec;
+
 struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
 
-	t_portal_id			type;
+	t_secteur			*portal_id;
 
 	t_lstmur			prvs;
 	t_lstmur			next;
 };
-
-typedef struct s_secteur	t_secteur;
-typedef t_secteur		*t_lstsec;
 
 struct					s_secteur
 {
@@ -161,6 +161,8 @@ struct					s_secteur
 	t_lstsec			prvs;
 	t_lstsec			next;
 };
+
+typedef t_enemy		*t_lstenn;
 
 typedef struct			s_editor
 {
@@ -177,13 +179,17 @@ typedef struct			s_editor
 	SDL_Rect			inspectbox;
 	t_tab				keys;
 	t_lstpil			pillist;
+	t_lstenn			ennlist;
 	t_pilier			*currpilier;
-	t_pilier			*hoverpilier;
+	t_stat				*currstat;
 	t_mur				*currmur;
+	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
 	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstsec			map;
 	t_vct3				mappos;
+	SDL_Surface			**textures;
+	t_player			player;
 }						t_editor;
 
 typedef struct 			s_camera
