@@ -69,17 +69,46 @@ int editor_key_release(int key, t_doom *doom)
 int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 {
 	t_vct2 relpos;
+	SDL_Texture *txtrclick;
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y))
 	{
 		if (edit->currmur)
-			edit->currmur->portal_id = sector_menu_click(edit, e.y, 2);
+		{
+			if ((edit->currmur->portal_ptr = sector_menu_click(edit, e.y, 2)))
+				edit->currmur->portal_id = 4;
+			else
+				edit->currmur->portal_id = 0;
+		}
 		else if (edit->currstat)
 			edit->currstat->sector = (t_sector *)sector_menu_click(edit, e.y, 2);
 		else
 			sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
 	}
+	else if (pos_in_rect(edit->optbox, e.x, e.y))
+	{
+		opt_menu_click(edit, e.y);
+		return (0);
+	}
+	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y))
+	{
+		if ((txtrclick = txtr_menu_click(edit, e.x, e.y)))
+		{
+			if (edit->currmur)
+				edit->currmur->txtr = txtrclick;
+			else if (edit->map)
+			{
+				if (edit->selecttxtr == 1)
+					edit->map->top = txtrclick;
+				else if (edit->selecttxtr == 2)
+					edit->map->sol = txtrclick;
+			}
+			edit->selecttxtr = false;
+		}
+		return (0);
+	}
+	edit->selecttxtr = false;
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
@@ -98,7 +127,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	{
 		if (edit->currpilier && edit->hoverpilier)
 		{
-			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier);
+			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier, edit->txtrgame[0]);
 		}
 		else if (e.clicks == 2)
 		{
@@ -125,7 +154,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->sectscroll += e.y * 2;
 		return (0);
 	}
-	else if (pos_in_rect(edit->inspectbox, edit->mouse.x, edit->mouse.y))
+	else if (pos_in_rect(edit->optbox, edit->mouse.x, edit->mouse.y))
 	{
 		if (edit->currstat && edit->currstat == &edit->player.stat)
 		{
@@ -136,6 +165,14 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			else
 				edit->currstat->health += e.y;
 		}
+		return (0);
+	}
+	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, edit->mouse.x, edit->mouse.y))
+	{
+		if (edit->txtrscroll + e.y * 2 > 0)
+			edit->txtrscroll = 0;
+		else
+			edit->txtrscroll += e.y * 2;
 		return (0);
 	}
 	if (edit->currstat)
@@ -188,12 +225,16 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 		return (0);
 	}
-	else if (pos_in_rect(edit->inspectbox, e.x, e.y))
+	else if (pos_in_rect(edit->optbox, e.x, e.y))
 	{
 		if (edit->currstat && edit->currstat == &edit->player.stat)
-			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENS));
+			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		else
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
+		return (0);
+	}
+	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y))
+	{
 		return (0);
 	}
 	edit->mapmouse = get_rel_mappos(edit, e.x, e.y);

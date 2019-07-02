@@ -42,6 +42,25 @@ void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
 	*pil = NULL;
 }
 
+void		ft_removeenemywithstat(t_lstenn *start, t_stat **pil)
+{
+	t_lstenn curr;
+
+	if (!pil || !(*pil))
+		return ;
+	curr = *start;
+	while (curr)
+	{
+		if (&curr->stat == *pil)
+		{
+			ft_removeenemy(start, &curr);
+			*pil = NULL;
+			return ;
+		}
+		curr = curr->next;
+	}
+}
+
 t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr)
 {
 	t_enemy *t;
