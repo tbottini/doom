@@ -202,9 +202,9 @@ static void draw_player(t_editor *editor)
 
 static void draw_enemy(t_editor *editor)
 {
-	t_enemy		*curr;
-	SDL_Rect	tmp;
-	t_vct2		loc;
+	t_enemy *curr;
+	SDL_Rect tmp;
+	t_vct2 loc;
 
 	curr = editor->ennlist;
 	while (curr)
@@ -216,13 +216,24 @@ static void draw_enemy(t_editor *editor)
 		else
 			SDL_SetRenderDrawColor(editor->rend, 120, 100, 155, 255);
 		loc = get_screen_mappos(editor, curr->stat.pos.x, curr->stat.pos.y);
-		tmp.x = loc.x - 10;
-		tmp.y = loc.y - 10;
-		tmp.w = 20;
-		tmp.h = 20;
-		SDL_RenderDrawRect(editor->rend, &tmp);
-		tmp.x = cos(curr->stat.rot.y * PI180) * 35.0;
-		tmp.y = sin(curr->stat.rot.y * PI180) * 35.0;
+		if (curr->stat.health <= 2)
+			tmp = (SDL_Rect){loc.x - 5, loc.y - 5, 10, 10};
+		else
+			tmp = (SDL_Rect){loc.x - curr->stat.health * 2 - 2, loc.y - curr->stat.health * 2 - 2, curr->stat.health * 4 + 4, curr->stat.health * 4 + 4};
+		if (curr->stat.health % 2)
+			SDL_RenderDrawRect(editor->rend, &tmp);
+		else
+			SDL_RenderFillRect(editor->rend, &tmp);
+		if (curr->stat.health <= 2)
+		{
+			tmp.x = cos(curr->stat.rot.y * PI180) * 20;
+			tmp.y = sin(curr->stat.rot.y * PI180) * 20;
+		}
+		else
+		{
+			tmp.x = cos(curr->stat.rot.y * PI180) * curr->stat.health * 8;
+			tmp.y = sin(curr->stat.rot.y * PI180) * curr->stat.health * 8;
+		}
 		SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 		curr = curr->next;
 	}
@@ -231,9 +242,9 @@ static void draw_enemy(t_editor *editor)
 
 static void draw_pills(t_editor *editor)
 {
-	t_pilier	*curr;
-	SDL_Rect	tmp;
-	t_vct2		loc;
+	t_pilier *curr;
+	SDL_Rect tmp;
+	t_vct2 loc;
 
 	curr = editor->pillist;
 	while (curr)
@@ -259,29 +270,38 @@ static void draw_walls(t_editor *editor)
 {
 	t_lstsec currsec;
 	t_lstmur currwall;
+	t_lstsec finalsec;
 
+	finalsec = NULL;
 	currsec = editor->sectors;
 	while (currsec)
 	{
 		currwall = currsec->murs;
+		if (currsec != editor->map)
+			while (currwall)
+			{
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
+				currwall = currwall->next;
+			}
+		else
+			finalsec = currsec;
+		currsec = currsec->next;
+	}
+	if (finalsec)
+	{
+		currwall = finalsec->murs;
 		while (currwall)
 		{
-			if (currsec == editor->map)
-			{
-				if (currwall == editor->currmur)
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){200, 0, 70, 0xFF});
-				else if (currwall == editor->hovermur)
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
-				else if (currwall->portal_id)
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
-				else
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
-			}
+			if (currwall == editor->currmur)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){200, 0, 70, 0xFF});
+			else if (currwall == editor->hovermur)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
+			else if (currwall->portal_id)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
 			else
-				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
 			currwall = currwall->next;
 		}
-		currsec = currsec->next;
 	}
 }
 
@@ -344,9 +364,12 @@ void draw_inspect_menu(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
-	if (editor->currstat && &editor->player.stat == editor->currstat) // If Player
+	if (editor->currstat) // If Player
 	{
-		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		if (&editor->player.stat == editor->currstat)
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		else
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 	}
 	else if (editor->currmur) // If mur
 	{

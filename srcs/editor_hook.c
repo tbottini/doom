@@ -31,10 +31,10 @@ int editor_key_press(int key, t_doom *doom)
 	{
 		close_editor(doom);
 	}
-	else if (key == SDLK_1)
+	else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 	{
 		relpos = get_rel_mappos(&doom->edit, doom->edit.mouse.x, doom->edit.mouse.y);
-		if (!ft_enemypushend(&doom->edit.ennlist, relpos, 1, doom->edit.map))
+		if (!ft_enemypushend(&doom->edit.ennlist, relpos, key - 48, doom->edit.map))
 				ft_printf("Error adding Enemy\n");
 	}
 	else if (key == SDLK_r) // Reload position

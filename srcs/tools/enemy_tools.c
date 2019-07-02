@@ -22,7 +22,7 @@ t_enemy		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 	t->stat.pos.y = loc.y;
 	t->stat.rot.y = 0;
 	t->stat.sector = (t_sector *)sctr;
-	t->type = type;
+	t->stat.health = type;
 	t->prev = NULL;
 	t->next = NULL;
 	return (t);
