@@ -99,3 +99,16 @@ determiner les sous secteur du plus proche au plus loingtain
 -mettre en place zbuffer pour les plafond et les enemis ?
 -devision des textures
 
+zline_buffer et borne_up / borne_down
+
+avant d'ecrire dans le portail
+-on passe avant pour determiner si le portail est plus proche que les autre mur de son secteur
+-on met tout les colonnes a 0 pour pas que l'on laisse ouvert les colonne (pour la lecture)
+-pblm si le un mur dans le secteur du portail est plus proche que l'un des 
+
+
+
+
+
+
+

@@ -19,14 +19,12 @@ int			z_line_buffer(t_arch *arch, double len_pillar, int px)
 	return (0);
 }
 
-void				zline_reset(t_arch *arch)
+int			clean_zline(t_arch *arch, double len_pillar, int px)
 {
-	int				i;
-
-	i = 0;
-	while (i < arch->sdl->size.x)
+	if (len_pillar > arch->zline[px])
 	{
-		arch->zline[i] = 0;
-		i++;
+		arch->zline[px] = 0;
+		return (1);
 	}
+	return (0);
 }

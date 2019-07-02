@@ -33,12 +33,17 @@ double					wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double
 void					wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);
 
+void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
+void					set_borne_horizontal(t_arch *arch);
+void					borne_reset(t_arch *arch);
+
 /*
 **	render
 */
 int						z_line_buffer(t_arch *arch, double len_pillar, int px);
+int						clean_zline(t_arch *arch, double len_pillar, int px);
+void					architect_reset(t_arch *arch);
 int						doom_render(t_doom *doom);
-void					zline_reset(t_arch *arch);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 uint32_t				texture_interpolation2D(t_arch *arch);

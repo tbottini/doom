@@ -1,18 +1,21 @@
 TXTR
-ressources/textures/wall.jpg
 ressources/textures/wall.xpm
+ressources/textures/wall.jpg
 ressources/textures/plaqueor.xpm
+ressources/textures/japon.png
+ressources/textures/cloud.jpg
+ressources/textures/debug.jpeg
+ressources/textures/wood.png
 END
 SCTR
-5.0
-90.0
-0.0 0.0 0
-0.0 10.0 1
-10.0 10.0 2
+10.5
+7.4
+W1.0 10.0 1
+W10.0 20.0 1
 END
 PERS
-0.5 0.5
-2.0
-90.0 90.0
+19.5 20.0
+1.0
+90.0 180.0
 90.0
 END

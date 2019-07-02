@@ -12,24 +12,13 @@ double		local_angle(double borne, double angle)
 
 int main(int ac, char **av)
 {
-	double	angle_pillar;
-	double	angle_next;
-	int		polarite;
-	double	borne_l;
-	double	borne_r;
+	int		px;
+	double	d_screen;
+	double	borne;
 
-	borne_r = atof(av[1]);
-	angle_pillar = atof(av[2]);
-	angle_next = atof(av[3]);
-	printf("borne 0 %f\npillar %f next %f\n", borne_r, angle_pillar, angle_next);
-	if (angle_pillar < borne_r - 180)
-		polarite = 0;
-	else if (angle_pillar > 180)
-		polarite = 1;
-	else if (fabs(angle_pillar - angle_next) > 180)
-		polarite = 0;
-	else
-		polarite = 1;
-	printf("%s\n", (polarite == 1) ? "droite" : "gauche");
-	return (0);
+	px = atoi(av[1]);
+	d_screen = 650.0;
+	printf("px hauteur %f px %d screenmid %d\n", (1300/2.0) - px, px, 1300);
+	borne = atan2((1300/2.0) - px, d_screen) * (180 / M_PI);
+	printf("%f\n", borne);
 }

@@ -201,6 +201,8 @@ typedef struct 			s_camera
 typedef struct 			s_designer
 {
 	t_sector			*sector;
+	uint16_t			*borne_down;
+	uint16_t			*borne_up;
 	t_wall				*wall;
 	t_camera			*cam;
 	t_sdl				*sdl;
@@ -225,7 +227,7 @@ struct					s_doom
 	SDL_GameController	*controller;
 	t_sector			*sector;
 	t_vct2				vel;
-	t_arch			arch;
+	t_arch				arch;
 	t_camera			camera;
 };
 

@@ -20,8 +20,16 @@ sector_render
 
 			pillar_to_pillar
 
-				draw_column
+				surface_pillar
+				z_line_buffer
+				|draw_column
 
 					draw_part
 					draw_textures
-					draw_portal
+					
+				|draw_portal
+				
+					draw_part
+					draw_textures
+				
+

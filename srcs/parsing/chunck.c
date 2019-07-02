@@ -72,13 +72,11 @@ t_player	chunck_player(int fd)
 }
 
 /*
-chunk sector
-
-on recupere les lignes
-on defini les premiere caracteristique lorsque qu'il y a un secteur
-on l'ajoute a une liste chaine
-
-
+**	chunk sector
+**
+**	on recupere les lignes
+**	on defini les premiere caracteristique lorsque qu'il y a un secteur
+**	on l'ajoute a une liste chaine
 */
 t_list		*add_subsector(t_list **list, t_arch *ressources, int fd)
 {

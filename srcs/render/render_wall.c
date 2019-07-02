@@ -25,6 +25,7 @@ void			reorder(t_arch *arch)
 	}
 }
 
+
 /*
 **	fait des coeficient pour rendre les colomnes entre les deux pilier
 */
@@ -33,31 +34,37 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	t_fvct2		pillar;
 	t_fvct2		pillar_next;
    	t_fvct2		neutre;
-	double		coef_surface;
-	double		coef_down;
+   	t_fvct2		coef_surface;
 	double		coef_neutre;
 
-	reorder(arch);
 	pillar = surface_pillar(arch, player, arch->depth.x);
 	pillar_next = surface_pillar(arch, player, arch->depth.y);
-
-	coef_surface = coef_diff(pillar.x - pillar_next.x, arch->px);
-	coef_down = coef_diff(pillar.y - pillar_next.y, arch->px);
+	coef_surface.x = coef_diff(pillar.x - pillar_next.x, arch->px);
+	coef_surface.y = coef_diff(pillar.y - pillar_next.y, arch->px);
 	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
 	coef_neutre = coef_vct(neutre, arch->px);
 
 	while (arch->px.x != arch->px.y)
 	{
-		if (z_line_buffer(arch, neutre.x, arch->px.x) > 0)
+		if (arch->wall->status == WALL)
 		{
-			if (arch->wall->status == WALL)
+			if (z_line_buffer(arch, neutre.x, arch->px.x))
 				draw_column(arch, pillar);
-			else if (arch->wall->status == PORTAL_DIRECT)
-				draw_portal(arch, player, pillar);
 		}
-		pillar.x -= coef_surface;
-		pillar.y -= coef_down;
+		else if (arch->wall->status == PORTAL_DIRECT)
+		{
+			set_borne_horizontal(arch);
+			if (clean_zline(arch, neutre.x, arch->px.x))
+			{
+				draw_portal(arch, player, pillar);
+
+				z_line_buffer(arch, neutre.x, arch->px.x);
+			}
+			borne_reset(arch);
+		}
+		pillar.x -= coef_surface.x;
+		pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
 	}
@@ -70,6 +77,8 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 */
 void		render_wall(t_arch *arch, t_player *player)
 {
+
 	wall_screen_info(arch, player);
+	reorder(arch);
 	pillar_to_pillar(arch, player);
 }
