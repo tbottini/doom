@@ -128,6 +128,15 @@ typedef struct			s_sdl
 	int					fps;
 }						t_sdl;
 
+typedef struct			s_minimap
+{
+	t_vct2	d;
+	t_vct2	a;
+	t_vct2	size;
+	t_vct2	mid;
+	t_sdl	*sdl;
+}						t_minimap;
+
 typedef struct s_pilier	t_pilier;
 typedef t_pilier		*t_lstpil;
 

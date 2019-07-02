@@ -39,6 +39,7 @@ SRCS_RENDER		:=		render.c										\
 						draw_text.c										\
 						sector.c										\
 						minimap.c										\
+						minimap_drawer.c								\
 						backface.c										\
 						render_effect.c									\
 						render_wall.c									\
