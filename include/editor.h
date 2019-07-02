@@ -14,7 +14,7 @@ int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
-int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
+int						editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit);
 int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 
 t_vct2					get_rel_mappos(t_editor *editor, int x, int y);

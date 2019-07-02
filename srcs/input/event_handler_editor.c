@@ -59,7 +59,7 @@ int event_handler_editor(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		editor_key_release(e.key.keysym.sym, doom);
 	else if (e.type == SDL_MOUSEMOTION)
-		editor_mouse_move(e.motion, doom);
+		editor_mouse_move(e.motion, &doom->edit);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		editor_mouse_press(e.button, &doom->edit);
 	else if (e.type == SDL_MOUSEWHEEL)

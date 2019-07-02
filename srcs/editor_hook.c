@@ -125,6 +125,19 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->sectscroll += e.y * 2;
 		return (0);
 	}
+	else if (pos_in_rect(edit->inspectbox, edit->mouse.x, edit->mouse.y))
+	{
+		if (edit->currstat && edit->currstat == &edit->player.stat)
+		{
+			if (edit->currstat->health + e.y < 10)
+				edit->currstat->health = 10;
+			else if (edit->currstat->health + e.y > 250)
+				edit->currstat->health = 250;
+			else
+				edit->currstat->health += e.y;
+		}
+		return (0);
+	}
 	if (edit->currstat)
 	{
 		if (edit->currstat->rot.y + e.y < 0)
@@ -166,50 +179,58 @@ int editor_mouse_release(int btn, int x, int y, t_doom *doom)
 ** x and y are relative postions when in gamemode
 */
 
-int editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom)
+int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 {
-	doom->edit.mouse.x = e.x;
-	doom->edit.mouse.y = e.y;
-	if (pos_in_rect(doom->edit.sectbox, e.x, e.y))
+	edit->mouse.x = e.x;
+	edit->mouse.y = e.y;
+	if (pos_in_rect(edit->sectbox, e.x, e.y))
 	{
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 		return (0);
 	}
-	doom->edit.mapmouse = get_rel_mappos(&doom->edit, e.x, e.y);
-	if (!(doom->edit.hoverpilier = find_pilier(&doom->edit, doom->edit.pillist, e.x, e.y)))
-		doom->edit.hovermur = find_mur(&doom->edit, doom->edit.map, e.x, e.y);
+	else if (pos_in_rect(edit->inspectbox, e.x, e.y))
+	{
+		if (edit->currstat && edit->currstat == &edit->player.stat)
+			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZENS));
+		else
+			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
+		return (0);
+	}
+	edit->mapmouse = get_rel_mappos(edit, e.x, e.y);
+	if (!(edit->hoverpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
+		edit->hovermur = find_mur(edit, edit->map, e.x, e.y);
 	else
-		doom->edit.hovermur = NULL;
-	if (doom->edit.hoverpilier || doom->edit.hovermur)
+		edit->hovermur = NULL;
+	if (edit->hoverpilier || edit->hovermur)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 	else
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (e.state == SDL_BUTTON_LMASK)
 	{
-		if (doom->edit.currpilier)
+		if (edit->currpilier)
 		{
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
-			doom->edit.currpilier->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
-			doom->edit.currpilier->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			edit->currpilier->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
+			edit->currpilier->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
 		}
-		else if (doom->edit.currmur)
+		else if (edit->currmur)
 		{
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
-			doom->edit.currmur->pil1->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
-			doom->edit.currmur->pil1->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
-			doom->edit.currmur->pil2->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
-			doom->edit.currmur->pil2->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			edit->currmur->pil1->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
+			edit->currmur->pil1->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
+			edit->currmur->pil2->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
+			edit->currmur->pil2->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
 		}
-		else if (doom->edit.currstat)
+		else if (edit->currstat)
 		{
-			doom->edit.currstat->pos.x += e.xrel * (EDITORPRECISION) / doom->edit.mappos.z;
-			doom->edit.currstat->pos.y += e.yrel * (EDITORPRECISION) / doom->edit.mappos.z;
+			edit->currstat->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
+			edit->currstat->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
 		}
 	}
 	else if (e.state == SDL_BUTTON_MMASK)
 	{
-		doom->edit.mappos.x += e.xrel;
-		doom->edit.mappos.y += e.yrel;
+		edit->mappos.x += e.xrel;
+		edit->mappos.y += e.yrel;
 	}
 	return (0);
 }
