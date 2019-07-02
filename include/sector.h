@@ -8,12 +8,13 @@
 
 typedef struct s_doom 	t_doom;
 typedef struct s_enemy 	t_enemy;
-typedef struct t_wall	t_portal;
+typedef struct t_sector	t_portal;
 
 typedef enum			e_portal_id
 {
 	WALL,
 	WINDOW,
+	DOOR,
 	PORTAL_DIRECT,
 	PORTAL_DIST
 }						t_portal_id;

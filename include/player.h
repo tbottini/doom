@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 20:56:11 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 17:45:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct 			s_stat
 	t_fvct3 			pos;
 	t_fvct2				rot;
 	double				height;
-	int					weight;
+	int					width;
 	double				speed;
 	int					health;
 	t_fvct3				vel;
@@ -69,6 +69,8 @@ typedef struct 			s_enemy
 {
 	t_txtr				*sprites;
 	t_stat				stat;
+	t_fvct3				e1;
+	t_fvct3				e2;
 	double				dist;
 	int					dmg;
 	int					type;
@@ -76,6 +78,18 @@ typedef struct 			s_enemy
 	struct s_enemy		*next;
 	struct s_enemy		*prev;
 }						t_enemy;
+
+typedef struct			s_super
+{
+	t_wall				*walls[50];
+	t_enemy				*enemys[50];
+	t_wall				*whit;
+	t_enemy				*ehit;
+	double				wdist;
+	double				edist;
+	int					i_w;
+	int					i_e;
+}						t_super;
 
 /*
 **	Gestion
@@ -110,11 +124,14 @@ t_weapon				hand_init(void);
 t_weapon				gun_init(void);
 t_weapon				shotgun_init(void);
 t_weapon				rifle_init(void);
-void					shoot(t_player *player);
 void					reload(t_weapon *weapon);
-t_wall					*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d);
-void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
-t_enemy					*possible_enemys(t_stat *stat, t_fvct3 d);
+void					shoot(t_player *player);
+void					bullet(t_stat *stat);
+void					super_real_hit(t_super *super, t_stat *stat);
+void					possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector);
+//t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);
+//void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
+//t_enemy				*possible_enemys(t_enemy **enemys, t_stat *stat, t_fvct3 d, int *index);
 
 /*
 **	Debug

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 16:49:26 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 15:46:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,12 @@ t_enemy	*enemy_init(int type)
 		fat_init(enemy);
 	else if (type == 4)
 		boss_init(enemy);
+	/*
+		e1.x = sin((stat->rot.y - 90.0) * PI180) * (tmp->stat.width / 2);
+		e1.y = cos((stat->rot.y - 90.0) * PI180) * (tmp->stat.width / 2);
+		e2.x = sin((stat->rot.y + 90.0) * PI180) * (tmp->stat.width / 2);
+		e2.y = cos((stat->rot.y + 90.0) * PI180) * (tmp->stat.width / 2);
+	*/
 	return (enemy);
 }
 

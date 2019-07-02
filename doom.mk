@@ -26,7 +26,7 @@ SRCS_INPUT		:=		event_controller.c								\
 						action.c										\
 						move.c											\
 						shoot.c											\
-						shoot_walls.c									\
+						shoot_tools.c									\
 						collision.c										\
 						keyboard_input.c								\
 						debug_input.c									\

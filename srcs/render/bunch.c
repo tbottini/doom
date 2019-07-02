@@ -116,11 +116,11 @@ int			buncherisation(t_designer *arch, t_sector sector, t_wall **bunch)
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
-			printf("wall frustum\n");
+			//printf("wall frustum\n");
 		}
 		else if (borne_in_wall_angle(arch, &wall[i_wall]))
 		{
-			printf("wall borne\n");
+			//printf("wall borne\n");
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
@@ -128,7 +128,7 @@ int			buncherisation(t_designer *arch, t_sector sector, t_wall **bunch)
 	}
 	//printf("passage %d\n", i);
 	//i = 0;
-	printf("%d\n", i_bunch);
+	//printf("%d\n", i_bunch);
 	bunch[i_bunch] = NULL;
 	return (1);
 }

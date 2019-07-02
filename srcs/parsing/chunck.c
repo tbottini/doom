@@ -35,6 +35,7 @@ t_wall		*chunck_walls(t_list *chunck_line, t_designer *ressource, size_t len)
 		wall[i].txtr.pixels = ressource->texture[index_info]->pixels;
 		wall[i].txtr.w = ressource->texture[index_info]->w;
 		wall[i].txtr.h = ressource->texture[index_info]->h;
+		wall[i].link = NULL;
 		chunck_line = chunck_line->next;
 		free(node->content);
 		free(node);
