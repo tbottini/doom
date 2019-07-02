@@ -6,7 +6,7 @@
 **	si l'angle entre le joueur est les deux pillier est superieur a 180
 **	la polarite de depart (position du premier pillier) s'inverse
 */
-void		px_polarite(t_designer *arch)
+void		px_polarite(t_arch *arch)
 {
 	t_fvct2	angle;
 	double	diff;
@@ -21,7 +21,7 @@ void		px_polarite(t_designer *arch)
 	arch->px.y = arch->sdl->size.x - 1 - arch->px.x;
 }
 
-int			pillar_polarite(t_designer *arch, t_pillar *pillar, t_pillar *next)
+int			pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
 {
 	double	angle;
 	double	angle_next;
@@ -43,15 +43,13 @@ int			pillar_polarite(t_designer *arch, t_pillar *pillar, t_pillar *next)
 }
 
 
-void			pillar_screen_info(t_designer *arch, t_player *p)
+void			pillar_screen_info(t_arch *arch, t_player *p)
 {
 	float		angle;
 	int			size;
 	t_fvct2		tmp;
 
 	size = arch->sdl->size.x;
-	//px_polarite(arch);
-	//pillar
 	if (arch->wall->pillar.frust)
 	{
 		arch->px.x = fish_bowl_px(arch, arch->wall->pillar);
@@ -62,8 +60,6 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 	}
 	else
 	{
-		//arch->px.x = pillar_polarite(arch, arch->wall->pillar, arch->wall->next, size - 1);
-		//arch->px.x = pillar_polarite(arch, *arch->wall->next, &arch->wall->pillar, size - 1);
 		arch->px.x = pillar_polarite(arch, &arch->wall->pillar, arch->wall->next);
 		if (arch->px.x == 0)
 		{
@@ -79,9 +75,6 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 		arch->depth.x = tmp.x;
 		arch->decal.x = tmp.y;
 	}
-
-
-	//next
 	if (arch->wall->next->frust)
 	{
 		arch->px.y = fish_bowl_px(arch, *arch->wall->next);
@@ -92,8 +85,6 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 	}
 	else
 	{
-		//arch->px.y = pillar_polarite(arch, arch->wall->pillar, arch->wall->next, size - 1);
-		//arch->px.y = pillar_polarite(arch, *arch->wall->next, &arch->wall->pillar, size - 1);
 		arch->px.y = pillar_polarite(arch, arch->wall->next, &arch->wall->pillar);
 		if (arch->px.y == 0)
 		{
@@ -112,7 +103,7 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 }
 
 
-void			wall_screen_info(t_designer *arch, t_player *p)
+void			wall_screen_info(t_arch *arch, t_player *p)
 {
 	pillar_screen_info(arch, p);
 }

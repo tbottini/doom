@@ -3,7 +3,7 @@
 /*
 **	renvoie la position en pixel d'un point
 */
-int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_wall)
+int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
 {
 	double	wall_angle;
 	int px;
@@ -31,7 +31,7 @@ int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_w
 **	up est la difference entre le point de vue de la camera
 **		et le haut du mur
 */
-t_fvct2		surface_pillar(t_designer *arch, t_player *player, double depth)
+t_fvct2		surface_pillar(t_arch *arch, t_player *player, double depth)
 {
 	t_fvct2	wall_portion;
 
@@ -61,7 +61,7 @@ t_fvct2		surface_pillar(t_designer *arch, t_player *player, double depth)
 **	surface : colonne de depart et colonne de fin, (sans la multiplication avec les range)
 **	-> renvoie l'index de fin
 */
-int		draw_part_texture(t_designer *arch, int numcol, t_fvct2 surface)
+int		draw_part_texture(t_arch *arch, int numcol, t_fvct2 surface)
 {
 	double	coef;
 	int		px;
@@ -97,7 +97,7 @@ int		draw_part_texture(t_designer *arch, int numcol, t_fvct2 surface)
 	return (numcol);
 }
 
-double		draw_part(t_designer *arch, t_vct2 surface, uint32_t color)
+double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 {
 	while (surface.x < surface.y)
 	{
@@ -107,7 +107,7 @@ double		draw_part(t_designer *arch, t_vct2 surface, uint32_t color)
 	return (surface.x);
 }
 
-void		draw_column(t_designer *arch, t_fvct2 surface)
+void		draw_column(t_arch *arch, t_fvct2 surface)
 {
 	t_vct2	surf;
 	int		ncol;
@@ -127,7 +127,7 @@ void		draw_column(t_designer *arch, t_fvct2 surface)
 	draw_part(arch, surf, 0x272130ff);
 }
 
-void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
+void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
 {
 	t_fvct2		surface_portal;
 	t_fvct2		surface_tmp;

@@ -8,7 +8,7 @@
 **		calculer et afficher la colomne
 **	tout est inverse car on ne recoit pas la distance mais la taille du pillier
 */
-int			z_line_buffer(t_designer *arch, double len_pillar, int px)
+int			z_line_buffer(t_arch *arch, double len_pillar, int px)
 {
 
 	if (len_pillar > arch->zline[px])
@@ -19,7 +19,7 @@ int			z_line_buffer(t_designer *arch, double len_pillar, int px)
 	return (0);
 }
 
-void				zline_reset(t_designer *arch)
+void				zline_reset(t_arch *arch)
 {
 	int				i;
 

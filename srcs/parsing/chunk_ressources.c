@@ -30,7 +30,7 @@ t_list		*list_chunk_line(int fd, uint32_t *nline)
 	return (start);
 }
 
-int			chunk_texture(t_sdl *sdl, t_designer *designer, int fd)
+int			chunk_texture(t_sdl *sdl, t_arch *designer, int fd)
 {
 	t_list		*file_list;
 	void		*tmp;

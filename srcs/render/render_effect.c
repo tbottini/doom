@@ -1,7 +1,7 @@
 #include "doom_nukem.h"
 
 
-int				fish_bowl_px(t_designer *arch, t_pillar pillar)
+int				fish_bowl_px(t_arch *arch, t_pillar pillar)
 {
 	int			px;
 	int			sx;

@@ -3,7 +3,7 @@
 /*
 **	rearrange les parametre pour que l'on rende les colonnes de gauche a droite
 */
-void			reorder(t_designer *arch)
+void			reorder(t_arch *arch)
 {
 	double		tmp;
 	int			tmpint;
@@ -28,7 +28,7 @@ void			reorder(t_designer *arch)
 /*
 **	fait des coeficient pour rendre les colomnes entre les deux pilier
 */
-void			pillar_to_pillar(t_designer *arch, t_player *player)
+void			pillar_to_pillar(t_arch *arch, t_player *player)
 {
 	t_fvct2		pillar;
 	t_fvct2		pillar_next;
@@ -68,7 +68,7 @@ void			pillar_to_pillar(t_designer *arch, t_player *player)
 **	recuperation d'information supplementaire
 **	affichage d'un pillier a un autre
 */
-void		render_wall(t_designer *arch, t_player *player)
+void		render_wall(t_arch *arch, t_player *player)
 {
 	wall_screen_info(arch, player);
 	pillar_to_pillar(arch, player);

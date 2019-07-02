@@ -28,29 +28,29 @@ typedef struct 		s_shape
 /*
 **	info function
 */
-t_fvct2					surface_pillar(t_designer *arch, t_player *player, double depth);
-double					wall_clipping(t_designer *arch, t_player *p, t_fvct2 *inter_local, double angle);
-void					wall_screen_info(t_designer *arch, t_player *p);
+t_fvct2					surface_pillar(t_arch *arch, t_player *player, double depth);
+double					wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle);
+void					wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);
 
 /*
 **	render
 */
-int						z_line_buffer(t_designer *arch, double len_pillar, int px);
+int						z_line_buffer(t_arch *arch, double len_pillar, int px);
 int						doom_render(t_doom *doom);
-void					zline_reset(t_designer *arch);
-int						fish_bowl_px(t_designer *arch, t_pillar pillar);
+void					zline_reset(t_arch *arch);
+int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
-uint32_t				texture_interpolation2D(t_designer *arch);
-void					render_wall(t_designer *arch, t_player *player);
-void					draw_column(t_designer *arch, t_fvct2 surface);
-void					draw_portal(t_designer *arch, t_player *player, t_fvct2 surface);
+uint32_t				texture_interpolation2D(t_arch *arch);
+void					render_wall(t_arch *arch, t_player *player);
+void					draw_column(t_arch *arch, t_fvct2 surface);
+void					draw_portal(t_arch *arch, t_player *player, t_fvct2 surface);
 
 /*
 **	bunch
 */
-void					sector_frustum(t_designer *arch, t_sector *sector, t_player *player);
-int						buncherisation(t_designer *arch, t_sector sector, t_wall **bunch);
+void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
+int						buncherisation(t_arch *arch, t_sector sector, t_wall **bunch);
 void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
 
 /*

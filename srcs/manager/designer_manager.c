@@ -1,6 +1,6 @@
 #include "doom_nukem.h"
 
-int			designer_init(t_designer *designer, t_sdl *sdl, t_camera *cam)
+int			designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam)
 {
 	size_t	curseur;
 
