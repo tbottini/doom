@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 18:53:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 21:15:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,17 +109,24 @@ void		super_real_hit(t_super *super, t_stat *stat)
 	super_super_real_hit(super, stat, toto);
 }
 
-static int	bullet_can_pass(t_stat *stat, int i, t_sector *sector)
+static int	bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 {
-	//t_sector next;
+	double		toto;
+	t_fvct3		mo;
+	t_fvct3		coord;
+	t_sector	next;
 
-	//next = sector->wall[i].link;
-	(void)stat;
-	if (sector->wall[i].status >= PORTAL_DIRECT)
+	//next = *sector->wall[i].link;
+	if (sector->wall[i].status >= OPEN_DOOR)
 	{
-		//bullet z pos;
-		//sector = sector->wall[i].link;
-		//if ((stat->pos.z + stat->height < next.h_floor + next.h_ceil) && (next.h_floor - stat.pos.z < STEP))
+		return (1);//virer auqnd c'est coder correctement
+		toto = cos((stat->rot.x - 90.0) * PI180);
+		toto = wall_bullet_clipping(sector->wall[i].pillar, *sector->wall[i].next, stat) / (toto < G_EPSILON ? 1 : toto);
+		mo.x = ori.x - stat->pos.x;
+		mo.y = ori.y - stat->pos.y;
+		mo.z = ori.y - stat->pos.z;
+		coord = real_coord(stat->pos, toto, ori);
+		if ((coord.z < next.h_floor + next.h_ceil) && (next.h_floor < coord.z))
 			return (1);
 	}
 	return (0);
@@ -151,7 +158,7 @@ void		possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector)
 		return ;
 	while (super->i_w < 50 && ++i < sector->len)
 	{
-		if (bullet_can_pass(stat, i, sector))
+		if (bullet_can_pass(stat, i, sector, ori))
 			possible(super, stat, ori, sector->wall[i].link);
 		else if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar.p, *(t_fvct3*)&sector->wall[i].next->p))
 		{

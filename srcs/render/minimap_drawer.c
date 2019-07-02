@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 11:48:30 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 20:48:29 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ void			miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
 	{
 		cursor2 = minipoint(doom, wall[i + 1].pillar.p, mini);
 		mbl(cursor, cursor2, mini, wall[i + 1].status
-			< PORTAL_DIRECT ? CWALL : CPORT);
+			!= PORTAL ? CWALL : CPORT);
 		cursor = cursor2;
 	}
-	mbl(cursor, tmp, mini, wall[0].status < PORTAL_DIRECT ? CWALL : CPORT);
+	mbl(cursor, tmp, mini, wall[0].status != PORTAL ? CWALL : CPORT);
 }
 
 void			minibord(t_doom *d, t_minimap mini)

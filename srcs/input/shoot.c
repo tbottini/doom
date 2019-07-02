@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 17:53:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 20:05:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,23 @@ void		shoot(t_player *player)
 	}
 }
 
+t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo)
+{
+	t_fvct3 res;
+
+	res.x = pos.x + dist * (mo.x / RADIUS);
+	res.y = pos.y + dist * (mo.y / RADIUS);
+	res.z = pos.z + dist * (mo.z / RADIUS);
+	return (res);
+}
+
 static void	apply(t_super *super, t_stat *stat, t_fvct3 mo)
 {
 	t_fvct3 waim;
 	t_fvct3 eaim;
 
-	waim.x = stat->pos.x + super->wdist * (mo.x / RADIUS);
-	waim.y = stat->pos.y + super->wdist * (mo.y / RADIUS);
-	waim.z = stat->pos.z + super->wdist * (mo.z / RADIUS);
-	eaim.x = stat->pos.x + super->edist * (mo.x / RADIUS);
-	eaim.y = stat->pos.y + super->edist * (mo.y / RADIUS);
-	eaim.z = stat->pos.z + super->edist * (mo.z / RADIUS);
+	waim = real_coord(stat->pos, super->wdist, mo);
+	eaim = real_coord(stat->pos, super->edist, mo);
 	//calcul enemy or wall is closer
 	printf("SUPER COORD : x = %f | y = %f | z = %f\n", waim.x, waim.y, waim.z);
 	printf("distance || %f ||\n\n", super->wdist);

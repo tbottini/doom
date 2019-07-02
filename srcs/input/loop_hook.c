@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/01 17:26:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 21:18:28 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void		benda(t_doom *doom, int key)
 			Mix_PlayChannel(1, doom->sound.tab_effect[2], -1);
 	}
 	prev = doom->player.stat.speed;
-	printf("speed = %f\n", doom->player.stat.speed);
 }
 
 static void input_loop(t_doom *doom, int key)

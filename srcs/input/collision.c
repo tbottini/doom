@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 16:16:09 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 20:23:00 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			can_pass(t_stat *stat, int i)
 	//t_sector next;
 
 	//next = stat->sector->wall[i].link;
-	if (stat->sector->wall[i].status >= PORTAL_DIRECT)
+	if (stat->sector->wall[i].status >= OPEN_DOOR)
 	{
 		//stat->sector = stat->sector->wall[i].link;
 		//if ((stat->pos.z + stat->height < link.h_floor + link.h_ceil) && (link.h_floor - stat.pos.z < STEP))
