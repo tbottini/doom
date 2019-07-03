@@ -4,7 +4,7 @@
 **	trouve l'intersection entre le mur et un angle donne
 **	renvoie le pourcentage de l'intersection par rapport au mur (debut pilier)
 */
-double			wall_clipping(t_designer *arch, t_player *p, t_fvct2 *inter_local, double angle)
+double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;

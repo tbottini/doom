@@ -3,7 +3,7 @@
 /*
 **	renvoie la position en pixel d'un point
 */
-int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_wall)
+int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
 {
 	double	wall_angle;
 	int px;
@@ -31,25 +31,14 @@ int			px_point(t_designer *arch, t_player *player, double h_diff, double depth_w
 **	up est la difference entre le point de vue de la camera
 **		et le haut du mur
 */
-t_fvct2		surface_pillar(t_designer *arch, t_player *player, double depth)
+t_fvct2		surface_pillar(t_arch *arch, t_player *player, double depth)
 {
 	t_fvct2	wall_portion;
 
 	double	up;
 	double	down;
 
-	//hauteur du mur - hauteur du perso - la difference de position par rapport au sol + la diff du sect joueur et sectr rendu
-	//si c'est un mur on prend tout
-	//si c'est un portail on determine la hauteur par rapport au prochain portail
-	//up = wall_height - player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
-	//printf ("player sector %f -- sector render %f\n", player->stat.sector->h_floor, arch->sector->h_floor);
 	down = -player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
-	//if (arch->wall->status == PORTAL_DIRECT)
-	//{
-	//	down += (arch->sector->h_floor - player->stat.sector->h_floor);
-	//	up = down + arch->sector->h_ceil;
-	//}
-	//else
 	up = down + player->stat.sector->h_ceil;
 	wall_portion.x = px_point(arch, player, up, depth);
 	wall_portion.y = px_point(arch, player, down, depth);
@@ -61,7 +50,7 @@ t_fvct2		surface_pillar(t_designer *arch, t_player *player, double depth)
 **	surface : colonne de depart et colonne de fin, (sans la multiplication avec les range)
 **	-> renvoie l'index de fin
 */
-int		draw_part_texture(t_designer *arch, int numcol, t_fvct2 surface)
+int		draw_part_texture(t_arch *arch, int numcol, t_fvct2 surface)
 {
 	double	coef;
 	int		px;
@@ -97,7 +86,7 @@ int		draw_part_texture(t_designer *arch, int numcol, t_fvct2 surface)
 	return (numcol);
 }
 
-double		draw_part(t_designer *arch, t_vct2 surface, uint32_t color)
+double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 {
 	while (surface.x < surface.y)
 	{
@@ -107,7 +96,7 @@ double		draw_part(t_designer *arch, t_vct2 surface, uint32_t color)
 	return (surface.x);
 }
 
-void		draw_column(t_designer *arch, t_fvct2 surface)
+void		draw_column(t_arch *arch, t_fvct2 surface)
 {
 	t_vct2	surf;
 	int		ncol;
@@ -127,7 +116,7 @@ void		draw_column(t_designer *arch, t_fvct2 surface)
 	draw_part(arch, surf, 0x272130ff);
 }
 
-void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
+void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
 {
 	t_fvct2		surface_portal;
 	t_fvct2		surface_tmp;
@@ -137,6 +126,8 @@ void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
 
 	child = arch->sector;
 	parent = player->stat.sector;
+
+	//on calcul la surface du portail
 	surface_portal.y = (child->h_floor - parent->h_floor) / parent->h_ceil;
 	surface_portal.y = surface.y - surface_portal.y * (surface.y - surface.x);
 	surface_portal.x = (child->h_floor - parent->h_floor + child->h_ceil) / parent->h_ceil;
@@ -147,14 +138,19 @@ void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
 		surface_portal.y = surface.y;
 	surf.x = arch->px.x;
 
+	//on dessine le ciel
 	if (surface.x > arch->sdl->size.y)
 		surf.y = arch->sdl->size.y * arch->sdl->size.x;
 	else
 		surf.y = (int)surface.x * arch->sdl->size.x;
 	surf.x = draw_part(arch, surf, 0);
+
+	//on dessine la liaison du haut
 	surface_tmp.x = surface.x;
 	surface_tmp.y = surface_portal.x;
 	surf.x = draw_part_texture(arch, surf.x, surface_tmp);
+
+	//on dessine le cache du portail
 	if (surface_tmp.y < 0)
 		surf.x = arch->px.x;
 	if (surface_portal.y > arch->sdl->size.y)
@@ -162,9 +158,16 @@ void		draw_portal(t_designer *arch, t_player *player, t_fvct2 surface)
 	else
 		surf.y = arch->px.x + ((int)surface_portal.y - 1) * arch->sdl->size.x;
 	surf.x = draw_part(arch, surf, ORANGE);
+
+	//on definit la borne verticale du pillier
+	set_borne_vertical(arch, surf, arch->px.x);
+
+	//on dessine liaison du bas
 	surface_tmp.y = surface.y;
 	surface_tmp.x = surface_portal.y;
 	draw_part_texture(arch, surf.x, surface_tmp);
+
+	//on dessine le sol
 	surf.x = arch->px.x + ((int)surface.y) * arch->sdl->size.x;
 	if (surface.y < 0)
 		surf.x = arch->px.x;

@@ -42,6 +42,6 @@ int					doom_render(t_doom *doom)
 	root_sector_render(doom, doom->sector);
 	minimap(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
-	zline_reset(&doom->arch);
+	architect_reset(&doom->arch);
 	return (1);
 }

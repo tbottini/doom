@@ -42,7 +42,8 @@ t_doom	*doom_init()
 		doom_exit(doom);
 	if (!ui_init(&doom->ui))
 		doom_exit(doom);
-  if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
+	doom->camera.fov = 90;
+	if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
 		doom_exit(doom);
 	doom->edit.ui = &doom->ui;
 	if (!editor_init(&doom->edit))

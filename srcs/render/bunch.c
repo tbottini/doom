@@ -1,6 +1,6 @@
 #include "doom_nukem.h"
 
-int			on_frustum(t_designer *arch, t_player *player, t_pillar *pillar)
+int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 {
 	t_fvct2	dist;
 	double	angle;
@@ -27,7 +27,7 @@ int			on_frustum(t_designer *arch, t_player *player, t_pillar *pillar)
 	return (pillar->frust);
 }
 
-void		sector_frustum(t_designer *arch, t_sector *sector, t_player *player)
+void		sector_frustum(t_arch *arch, t_sector *sector, t_player *player)
 {
 	int		i;
 
@@ -42,12 +42,10 @@ void		sector_frustum(t_designer *arch, t_sector *sector, t_player *player)
 /*
 **	renvoie l'angle entre un pillier -> joueur -> pillier_next
 */
-double		wall_angle_pers(t_designer *arch, t_wall wall)
+double		wall_angle_pers(t_arch *arch, t_wall wall)
 {
 	double	field;
 	t_fvct2	angles;
-	double	middle;
-
 
 	if (arch->borne.x * arch->borne.y > 0)
 		return (0);
@@ -81,12 +79,10 @@ double		local_angle(double borne, double angle)
 **	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
 **	determine si les bornes sont entre les angles des mur
 */
-int			borne_in_wall_angle(t_designer *arch, t_wall *wall)
+int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 {
 	t_fvct2	angles;
 
-	//if (arch->borne.x * arch->borne.y < 0)
-	//	return (0);
 	angles.x = local_angle(arch->borne.x, wall->pillar.angle);
 	angles.y = local_angle(arch->borne.x, wall->next->angle);
 	return ((fabs(angles.y - angles.x) > 180.0));
@@ -100,12 +96,11 @@ int			borne_in_wall_angle(t_designer *arch, t_wall *wall)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
-int			buncherisation(t_designer *arch, t_sector sector, t_wall **bunch)
+int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
 	t_wall	*wall;
-	//static int i = 0;
 
 	i_bunch = 0;
 	i_wall = 0;

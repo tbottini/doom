@@ -4,7 +4,7 @@
 **	on recupere le chunck en liste de string, chaque string est un pillier
 **	du mur
 */
-t_wall		*chunck_walls(t_list *chunck_line, t_designer *ressource, size_t len)
+t_wall		*chunck_walls(t_list *chunck_line, t_arch *ressource, size_t len)
 {
 	t_wall	*wall;
 	t_list	*node;
@@ -73,15 +73,13 @@ t_player	chunck_player(int fd)
 }
 
 /*
-chunk sector
-
-on recupere les lignes
-on defini les premiere caracteristique lorsque qu'il y a un secteur
-on l'ajoute a une liste chaine
-
-
+**	chunk sector
+**
+**	on recupere les lignes
+**	on defini les premiere caracteristique lorsque qu'il y a un secteur
+**	on l'ajoute a une liste chaine
 */
-t_list		*add_subsector(t_list **list, t_designer *ressources, int fd)
+t_list		*add_subsector(t_list **list, t_arch *ressources, int fd)
 {
 	t_list		*sub_sector;
 	t_sector	*sector;
@@ -203,7 +201,7 @@ int			parse_enemy(t_sector *sector, char *line)
 */
 ////////////////////////////////////////////////////////////////
 
-t_sector	*chunck_sector(int fd, t_designer *ressources)
+t_sector	*chunck_sector(int fd, t_arch *ressources)
 {
 	t_sector	*sector;
 	t_list		*files;

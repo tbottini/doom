@@ -6,7 +6,7 @@
 **	pblm on peut avoir un mur face au joueur formant
 **	une affine constante verticalement
 */
-uint32_t		texture_interpolation2D(t_designer *arch)
+uint32_t		texture_interpolation2D(t_arch *arch)
 {
 	t_affine	px_affine;
 	t_affine	wall_affine;

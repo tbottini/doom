@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/03 12:56:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 13:34:26 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 		else if (e.x == 2 && edit->map)
 		{
 			printf("hauteur %d\n", e.x);
-			if (edit->map->htop + e.y < 0)
+			if (edit->map->htop + e.y * 5 < 0)
 				edit->map->htop = 0;
 			else
 				edit->map->htop += e.y * 5;
@@ -177,7 +177,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 		else if (e.x == 3 && edit->map)
 		{
 			printf("sol %d\n", e.x);
-			if (edit->map->hsol + e.y < 0)
+			if (edit->map->hsol + e.y * 5 < 0)
 				edit->map->hsol = 0;
 			else
 				edit->map->hsol += e.y * 5;

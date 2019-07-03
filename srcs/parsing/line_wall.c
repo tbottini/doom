@@ -1,6 +1,6 @@
 #include "doom_nukem.h"
 
-int				line_wall(t_designer *rsrc, t_wall *wall, char *line)
+int				line_wall(t_arch *rsrc, t_wall *wall, char *line)
 {
 	int			txtr_index;
 

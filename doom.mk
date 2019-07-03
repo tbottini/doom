@@ -43,10 +43,12 @@ SRCS_RENDER		:=		render.c										\
 						backface.c										\
 						render_effect.c									\
 						render_wall.c									\
+						render_portal.c									\
 						pillar_info.c									\
 						textures.c										\
 						shape.c											\
 						draw_column.c									\
+						borne.c											\
 
 SRCS_PARSING	:=		parsing.c										\
 						chunck.c										\
