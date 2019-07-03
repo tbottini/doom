@@ -37,6 +37,12 @@ int editor_key_press(int key, t_doom *doom)
 		if (!ft_enemypushend(&doom->edit.ennlist, relpos, key - 48, doom->edit.map))
 				ft_printf("Error adding Enemy\n");
 	}
+	else if (key == SDLK_6)
+	{
+		relpos = get_rel_mappos(&doom->edit, doom->edit.mouse.x, doom->edit.mouse.y);
+		if (!ft_enemypushend(&doom->edit.ennlist, relpos, 10, doom->edit.map))
+				ft_printf("Error adding Prop\n");
+	}
 	else if (key == SDLK_r) // Reload position
 	{
 		doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
@@ -71,7 +77,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	t_vct2 relpos;
 	SDL_Texture *txtrclick;
 
-	if (pos_in_rect(edit->sectbox, e.x, e.y))
+	if (pos_in_rect(edit->sectbox, e.x, e.y)) // If menu left
 	{
 		if (edit->currmur)
 		{
@@ -86,29 +92,35 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 			sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
 	}
-	else if (pos_in_rect(edit->optbox, e.x, e.y))
+	else if (pos_in_rect(edit->optbox, e.x, e.y)) // If menu right
 	{
 		opt_menu_click(edit, e.y);
 		return (0);
 	}
-	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y))
+	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y)) // If menu texture
 	{
-		if ((txtrclick = txtr_menu_click(edit, e.x, e.y)))
+		if (edit->selecttxtr == FILL_PROP && edit->currstat && 10 <= edit->currstat->health
+			&& edit->currstat->health <= 10 + MAXPROPSNUMBER && (e.x = txtr_menu_click_int(edit, e.x, e.y)))
+		{
+				edit->currstat->health = e.x;
+				edit->selecttxtr = NOSELECT;
+		}
+		else if ((txtrclick = txtr_menu_click(edit, e.x, e.y)))
 		{
 			if (edit->currmur)
 				edit->currmur->txtr = txtrclick;
 			else if (edit->map)
 			{
-				if (edit->selecttxtr == 1)
+				if (edit->selecttxtr == FILL_TXTR)
 					edit->map->top = txtrclick;
-				else if (edit->selecttxtr == 2)
+				else if (edit->selecttxtr == FILL_SOL)
 					edit->map->sol = txtrclick;
 			}
-			edit->selecttxtr = false;
+			edit->selecttxtr = NOSELECT;
 		}
 		return (0);
 	}
-	edit->selecttxtr = false;
+	edit->selecttxtr = NOSELECT;
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
@@ -157,18 +169,29 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	else if (pos_in_rect(edit->optbox, edit->mouse.x, edit->mouse.y))
 	{
 		e.x = (edit->mouse.y - edit->sectscroll) / SECTORBOXHEIGHT;
-		if (e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
+		if (e.x == 0 && edit->currstat)
 		{
-			if (edit->currstat->health + e.y < 10)
-				edit->currstat->health = 10;
-			else if (edit->currstat->health + e.y > 250)
-				edit->currstat->health = 250;
-			else
-				edit->currstat->health += e.y;
+			if (edit->currstat == &edit->player.stat)
+			{
+				if (edit->currstat->health + e.y < 10)
+					edit->currstat->health = 10;
+				else if (edit->currstat->health + e.y > 250)
+					edit->currstat->health = 250;
+				else
+					edit->currstat->health += e.y;
+			}
+			if (10 <= edit->currstat->health && edit->currstat->health <= 10 + MAXPROPSNUMBER)
+			{
+				if (edit->currstat->health + e.y < 10)
+					edit->currstat->health = 10;
+				else if (edit->currstat->health + e.y >= 10 + MAXPROPSNUMBER)
+					edit->currstat->health = 9 + MAXPROPSNUMBER;
+				else
+					edit->currstat->health += e.y;
+			}
 		}
 		else if (e.x == 2 && edit->map)
 		{
-			printf("hauteur %d\n", e.x);
 			if (edit->map->htop + e.y * 5 < 0)
 				edit->map->htop = 0;
 			else
@@ -176,7 +199,6 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 		}
 		else if (e.x == 3 && edit->map)
 		{
-			printf("sol %d\n", e.x);
 			if (edit->map->hsol + e.y * 5 < 0)
 				edit->map->hsol = 0;
 			else
@@ -244,7 +266,10 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 	}
 	else if (pos_in_rect(edit->optbox, e.x, e.y))
 	{
-		if (edit->currstat && edit->currstat == &edit->player.stat)
+		e.x = (e.y - edit->sectscroll) / SECTORBOXHEIGHT;
+		if ((e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
+			|| (2 <= e.x && e.x <= 3 && edit->map && !edit->currstat && !edit->currmur)
+			|| (e.x == 0 && edit->currstat && 10 <= edit->currstat->health && edit->currstat->health <= 10 + MAXPROPSNUMBER))
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		else
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));

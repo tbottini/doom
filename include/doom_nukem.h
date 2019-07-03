@@ -16,7 +16,6 @@
 # include <stdbool.h>
 # include "render.h"
 # include "editor.h"
-# include "editor.h"
 # include "input.h"
 
 # define MINWIDTH 800

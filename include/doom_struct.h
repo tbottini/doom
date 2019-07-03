@@ -16,6 +16,14 @@ typedef struct s_doom	t_doom;
 
 # define MAXTXTRNUMBER 500
 
+# define MAXPROPSNUMBER 4
+# define PROPHEALTH "ressources/props/health.xpm"
+# define PROPCASS "ressources/props/cassette.png"
+# define PROPMUN "ressources/props/munition.xpm"
+# define PROPPILL "ressources/props/pill.png"
+# define MAXWPROPSNUMBER 1
+# define PROPBTN "ressources/props/button.ico"
+
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
@@ -100,6 +108,14 @@ typedef struct			s_pal {
 	int					height;
 }						t_pal;
 
+/*
+** 0 : pills
+** 1 : cassette
+** 2 : Health Pack
+** 3 : Munition Pack
+** 4 : Button
+*/
+
 typedef struct			s_ui
 {
 	t_font				fonts;
@@ -181,12 +197,21 @@ typedef t_enemy		*t_lstenn;
 /*
 ** selecttxtr 1 fill obvious
 ** selecttxtr 2 remplir sol de secteur
+** selecttxtr 3 remplir type de props
 */
+typedef enum		e_selecttxtr
+{
+	NOSELECT,
+	FILL_TXTR,
+	FILL_SOL,
+	FILL_PROP,
+	FILL_WPROP
+}					t_selecttxtr;
 
 typedef struct			s_editor
 {
 	bool				status;
-	int					selecttxtr;
+	t_selecttxtr		selecttxtr;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;
 	t_ui				*ui;
@@ -210,6 +235,7 @@ typedef struct			s_editor
 	t_lstsec			map;
 	t_vct3				mappos;
 	SDL_Texture			*txtrgame[MAXTXTRNUMBER];
+	SDL_Texture			*sprites[MAXPROPSNUMBER + MAXWPROPSNUMBER];
 	char				*txtrname[MAXTXTRNUMBER];
 	t_player			player;
 }						t_editor;

@@ -92,5 +92,15 @@ int		editor_init(t_editor *editor)
 	editor->optbox.w = 200;
 	editor->txtrbox.w = 620;
 	editor->txtrbox.h = MINHEIGHT - 20;
+	if (!(editor->sprites[0] = IMG_LoadTexture(editor->rend, PROPHEALTH)))
+		return (0);
+	if (!(editor->sprites[1] = IMG_LoadTexture(editor->rend, PROPCASS)))
+		return (0);
+	if (!(editor->sprites[2] = IMG_LoadTexture(editor->rend, PROPMUN)))
+		return (0);
+	if (!(editor->sprites[3] = IMG_LoadTexture(editor->rend, PROPPILL)))
+		return (0);
+	if (!(editor->sprites[4] = IMG_LoadTexture(editor->rend, PROPBTN)))
+		return (0);
 	return (load_textures_folder(editor->rend, editor->txtrgame, editor->txtrname));
 }
