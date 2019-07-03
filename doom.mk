@@ -57,6 +57,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 						debug_vector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
+						enemy_tools.c									\
 						mur_tools.c										\
 						little_tools.c									\
 						num_tools.c										\

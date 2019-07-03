@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-t_lstsec ft_newsector()
+t_lstsec ft_newsector(SDL_Texture *top, SDL_Texture *sol)
 {
 	t_lstsec t;
 
@@ -20,22 +20,26 @@ t_lstsec ft_newsector()
 		return (NULL);
 	t->murs = NULL;
 	t->prvs = NULL;
+	t->top = top;
+	t->sol = sol;
+	t->htop = 10;
+	t->hsol = 0;
 	t->next = NULL;
 	return (t);
 }
 
-t_lstsec push_secteur(t_lstsec *node)
+t_lstsec push_secteur(t_lstsec *node, SDL_Texture *top, SDL_Texture *sol)
 {
 	t_lstsec tmp;
 
 	if (!node)
 		return (NULL);
 	else if (!(*node))
-		return (*node = ft_newsector());
+		return (*node = ft_newsector(top, sol));
 	tmp = (*node);
 	while (tmp->next)
 		tmp = tmp->next;
-	if (!(tmp->next = ft_newsector()))
+	if (!(tmp->next = ft_newsector(top, sol)))
 		return (NULL);
 	tmp->next->prvs = tmp;
 	return tmp->next;

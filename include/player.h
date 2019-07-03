@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 17:18:27 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/01 20:56:11 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ typedef struct 			s_enemy
 	t_stat				stat;
 	double				dist;
 	int					dmg;
+	int					type;
 	int					state;
 	struct s_enemy		*next;
+	struct s_enemy		*prev;
 }						t_enemy;
 
 /*

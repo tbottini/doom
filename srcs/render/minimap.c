@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 12:31:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/01 23:59:07 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,22 @@ typedef struct			s_minimap
 	t_vct2	mid;
 	t_sdl	*sdl;
 }						t_minimap;
+
+t_minimap	miniinit(t_doom *d)
+{
+	t_minimap mini;
+
+	mini.d.x = (d->sdl.size.x >> 6);
+	mini.a.x = d->sdl.size.x >> 3;
+	mini.d.y = d->sdl.size.y - (d->sdl.size.y >> 2);
+	mini.a.y = d->sdl.size.y - (d->sdl.size.y >> 5);
+	mini.size.x = mini.a.x - mini.d.x;
+	mini.size.y = mini.a.y - mini.d.y;
+	mini.mid.x = mini.a.x - (mini.size.x >> 1);
+	mini.mid.y = mini.a.y - (mini.size.y >> 1);
+	mini.sdl = &d->sdl;
+	return (mini);
+}
 
 #define UNIT 8.0
 #define CWALL 0xDADADAFF
@@ -163,14 +179,39 @@ void        miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
 	minibigline(cursor, tmp, mini, wall[0].status < PORTAL_DIRECT ? CWALL : CPORT);
 }
 
-void		minifield(t_doom *d, t_minimap mini, double angle)
+void		minifield(t_doom *d, t_minimap mini)
 {
-
+	int i;
 	t_vct2	pix;
 
-	pix.x = 256 * cos(angle * PI180) + mini.mid.x;
-	pix.y = -256 * sin(angle * PI180) + mini.mid.y;
-	miniline(&d->sdl, mini.mid, pix, hcol(d->player.stat.health));
+	i = (d->player.stat.rot.y - (d->player.fov >> 1));
+	while (i < (d->player.stat.rot.y + (d->player.fov >> 1)))
+	{
+		pix.x = 256 * cos(i * PI180) + mini.mid.x;
+		pix.y = -256 * sin(i * PI180) + mini.mid.y;
+		miniline(&d->sdl, mini.mid, pix, hcol(d->player.stat.health));
+		i += d->player.fov >> 3;
+	}
+}
+
+void		minibord(t_doom *d, t_minimap mini)
+{
+	int i;
+	int j;
+
+	i = mini.d.x - 1;
+	j = mini.a.y - 1;
+	while (++i < mini.a.x - 1)
+	{
+		d->sdl.screen[i + mini.d.y * d->sdl.size.x] = WHITE;
+		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
+	}
+	j = d->sdl.size.y - (d->sdl.size.y >> 2) - 1;
+	while (++j < mini.a.y)
+	{
+		d->sdl.screen[mini.d.x + j * d->sdl.size.x] = WHITE;
+		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
+	}
 }
 
 void		minimap(t_doom *d)
@@ -179,35 +220,19 @@ void		minimap(t_doom *d)
 	int			i;
 	int			j;
 
-	mini.d.x = (d->sdl.size.x >> 6);
-	mini.a.x = d->sdl.size.x >> 3;
-	mini.d.y = d->sdl.size.y - (d->sdl.size.y >> 2);
-	mini.a.y = d->sdl.size.y - (d->sdl.size.y >> 5);
-	mini.size.x = mini.a.x - mini.d.x;
-	mini.size.y = mini.a.y - mini.d.y;
-	mini.mid.x = mini.a.x - (mini.size.x >> 1);
-	mini.mid.y = mini.a.y - (mini.size.y >> 1);
-	mini.sdl = &d->sdl;
+	mini = miniinit(d);
 	i = mini.d.x;
-	while (i < mini.a.x)
+	while (i < mini.a.x - 1)
 	{
 		j = d->sdl.size.y - (d->sdl.size.y >> 2);
-		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
 		while (++j < mini.a.y - 1)
 		{
-			d->sdl.screen[i + j * d->sdl.size.x] = (i == (d->sdl.size.x >> 6)
-				|| i == mini.a.x - 1) ? WHITE : opacity(hcol(d->player.stat.health), d->sdl.screen[i + j * d->sdl.size.x], 0.5);
+			d->sdl.screen[i + j * d->sdl.size.x] = opacity(hcol(d->player.stat.health), d->sdl.screen[i + j * d->sdl.size.x], 0.5);
 		}
-		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
 		++i;
 	}
 	miniwalls(d, *d->sector, mini);
-	i = (d->player.stat.rot.y - (d->player.fov >> 1));
-	while (i < (d->player.stat.rot.y + (d->player.fov >> 1)))
-	{
-		minifield(d, mini, i);
-		i += d->player.fov >> 3;
-	}
-	minifield(d, mini, (d->player.stat.rot.y + (d->player.fov >> 1)));
+	minibord(d, mini);
+	minifield(d, mini);
 	bold_point2(mini, mini.mid, CPERS);
 }

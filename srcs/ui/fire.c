@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 12:13:10 by akrache           #+#    #+#             */
-/*   Updated: 2019/05/14 14:33:39 by akrache          ###   ########.fr       */
+/*   Created: 2019/07/01 21:07:11 by akrache           #+#    #+#             */
+/*   Updated: 2019/07/01 21:19:31 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom_nukem.h"
+# include "doom_nukem.h"
 
 void fire_on_off(Uint32 *screen, t_vct2 size, int status)
 {

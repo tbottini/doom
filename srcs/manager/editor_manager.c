@@ -17,6 +17,8 @@ int		close_editor(t_doom *doom)
 	ft_clear_pillar_list(&(doom->edit.pillist));
 	if (doom->edit.sectors)
 		ft_clear_secteur_list(&(doom->edit.sectors));
+	if (doom->edit.ennlist)
+		ft_clear_enemy_list(&(doom->edit.ennlist));
 	doom->edit.map = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
@@ -26,10 +28,11 @@ int		close_editor(t_doom *doom)
 
 void	open_editor(t_doom *doom)
 {
-	doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
-	doom->edit.sectors = ft_newsector();
+	//doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
+	doom->edit.sectors = ft_newsector(doom->edit.txtrgame[0], doom->edit.txtrgame[0]);
 	doom->edit.map = doom->edit.sectors;
 	doom->edit.player.stat.sector = (t_sector *)doom->edit.map;
+	doom->edit.player.stat.health = 100;
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;
@@ -46,6 +49,33 @@ void	editor_free(t_editor *editor)
 		SDL_DestroyWindow(editor->win);
 }
 
+static int load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname)
+{
+	DIR				*txtrfolder;
+	struct dirent	*txtrdata;
+	int tot;
+	char			tmp[512];
+
+	if (!(txtrfolder = opendir("ressources/textures")))
+	{
+		ft_printf("Error loading folder 'textures'\n");
+		return (0);
+	}
+	tot = 0;
+	while ((txtrdata = readdir(txtrfolder)) && tot < MAXTXTRNUMBER)
+	{
+		if (txtrdata->d_type == 8)
+		{
+			ft_strcpy(tmp, "ressources/textures/");
+			ft_strcpy(&(tmp[20]), txtrdata->d_name);
+			if ((txtrs[tot] = IMG_LoadTexture(rend, tmp)))
+				if (!(txtrsname[++tot] = ft_strdup(tmp)))
+					return (0);
+		}
+	}
+	return (1);
+}
+
 int		editor_init(t_editor *editor)
 {
 	if (!(editor->win = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED,
@@ -59,7 +89,8 @@ int		editor_init(t_editor *editor)
 	editor->sectbox.x = -1;
 	editor->sectbox.y = -1;
 	editor->sectbox.w = 160;
-	editor->inspectbox.w = 200;
-	editor->btnarr[0] = add_test_button(editor, &editor->inspectbox);
-	return (1);
+	editor->optbox.w = 200;
+	editor->txtrbox.w = 620;
+	editor->txtrbox.h = MINHEIGHT - 20;
+	return (load_textures_folder(editor->rend, editor->txtrgame, editor->txtrname));
 }
