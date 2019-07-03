@@ -6,12 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/01 20:41:41 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 12:46:31 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-#define SECTORBOXHEIGHT 50
 
 t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 {
@@ -437,6 +436,8 @@ void draw_inspect_menu(t_editor *editor)
 		sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Sol:", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 		txtrpos = (SDL_Rect){box.x + 120, box.y + SECTORBOXHEIGHT + 4, SECTORBOXHEIGHT - 2, SECTORBOXHEIGHT - 2};
 		SDL_RenderCopy(editor->rend, editor->map->sol, NULL, &txtrpos);
+		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 2 + 5}, "Plafond: ", editor->map->htop, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 3 + 5}, "Sol: ", editor->map->hsol, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 	}
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
@@ -502,18 +503,35 @@ int opt_menu_click(t_editor *edit, int pos)
 		if (edit->currmur)
 			edit->selecttxtr = true;
 		else if (edit->map)
-			edit->selecttxtr = true;
+			edit->selecttxtr = 1;
 	}
-	else if (1 <= pos && pos <= 4)
+	else if (1 == pos)
 	{
 		if (edit->currmur)
 			edit->currmur->portal_id = pos;
 		else if (edit->currstat && edit->currstat != &edit->player.stat)
-		{
 			ft_removeenemywithstat(&edit->ennlist, &edit->currstat);
-		}
-		else if (edit->map && pos == 1)
+		else if (edit->map)
 			edit->selecttxtr = 2;
+	}
+	else if (pos == 2)
+	{
+		if (edit->currmur)
+			edit->currmur->portal_id = pos;
+		else if (edit->map)
+			ft_printf("Choose hauteur\n");
+	}
+	else if (pos == 3)
+	{
+		if (edit->currmur)
+			edit->currmur->portal_id = pos;
+		else if (edit->map)
+			ft_printf("Choose plafond\n");
+	}
+	else if (pos == 4)
+	{
+		if (edit->currmur)
+			edit->currmur->portal_id = pos;
 	}
 	else
 	{

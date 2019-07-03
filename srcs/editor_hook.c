@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/20 16:30:43 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/03 12:56:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	}
 	else if (pos_in_rect(edit->optbox, edit->mouse.x, edit->mouse.y))
 	{
-		if (edit->currstat && edit->currstat == &edit->player.stat)
+		e.x = (edit->mouse.y - edit->sectscroll) / SECTORBOXHEIGHT;
+		if (e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
 		{
 			if (edit->currstat->health + e.y < 10)
 				edit->currstat->health = 10;
@@ -164,6 +165,22 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 				edit->currstat->health = 250;
 			else
 				edit->currstat->health += e.y;
+		}
+		else if (e.x == 2 && edit->map)
+		{
+			printf("hauteur %d\n", e.x);
+			if (edit->map->htop + e.y < 0)
+				edit->map->htop = 0;
+			else
+				edit->map->htop += e.y * 5;
+		}
+		else if (e.x == 3 && edit->map)
+		{
+			printf("sol %d\n", e.x);
+			if (edit->map->hsol + e.y < 0)
+				edit->map->hsol = 0;
+			else
+				edit->map->hsol += e.y * 5;
 		}
 		return (0);
 	}
