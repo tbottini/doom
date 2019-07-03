@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 21:15:52 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 17:25:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,14 @@ static double	enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
 		inter.y = coef * inter.x + b;
 	}
 	return (distance((t_fvct2){0.0, 0.0}, inter));
+}
+
+static void			enemy_hitbox(t_enemy *enemy, double angle)
+{
+	enemy->e1.x = sin((angle - 90.0) * PI180) * (enemy->stat.width / 2);
+	enemy->e1.y = cos((angle - 90.0) * PI180) * (enemy->stat.width / 2);
+	enemy->e2.x = sin((angle + 90.0) * PI180) * (enemy->stat.width / 2);
+	enemy->e2.y = cos((angle + 90.0) * PI180) * (enemy->stat.width / 2);
 }
 
 static void		super_super_real_hit(t_super *super, t_stat *stat, double toto)
@@ -139,6 +147,7 @@ void		possible_enemys(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *secto
 	tmp = sector->enemys;
 	while (super->i_e < 50 && tmp)
 	{
+		enemy_hitbox(tmp, stat->rot.y);
 		if (vector_intersect(ori, stat->pos, tmp->e1, tmp->e2))
 		{
 			super->enemys[super->i_e] = tmp;

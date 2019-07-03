@@ -35,17 +35,6 @@ typedef struct			s_pillar
 	double				angle;
 }						t_pillar;
 
-typedef struct			s_prop
-{
-	double				x1;
-	double				x2;
-	double				y1;
-	double				y2;
-	double				z;
-	t_txtr				*tex;
-	void				(*func)(t_doom *doom);
-}						t_prop;
-
 /*
 **	rajouter un pointeur sur le prochain pillier ? pour le mur
 **	si le mur est un portail defini dans status
@@ -61,6 +50,19 @@ typedef struct			s_wall
 	t_sector			*link;
 	double				dist;
 }						t_wall;
+
+typedef struct			s_prop
+{
+	t_txtr				*tex;
+	void				(*func)(void *param);
+	t_fvct3				pos;
+	t_fvct3				e1;
+	t_fvct3				e2;
+	t_wall				*door;
+	int					width;
+	int					height;
+	int					type;
+}						t_prop;
 
 typedef struct			s_sector
 {

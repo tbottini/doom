@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 20:15:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 17:02:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,11 @@ typedef struct 			s_stat
 typedef struct 			s_player
 {
 	t_stat				stat;
-	bool				crouch;
-	int					fov;
 	t_weapon			hand;
 	t_weapon			weapons[NB_WEAPON];
+	Uint32				boost;
+	int					fov;
+	bool				crouch;
 }						t_player;
 
 /*

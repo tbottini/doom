@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 11:45:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 17:39:04 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 #define CPORT 0xE6E678FF
 #define WHITE 0xFFFFFFFF
 
-static Uint32		hcol(int health)
+static Uint32		hcol(int health, int boost)
 {
+	if (boost)
+		return (0x76F7FFFF);
 	if (health >= 100)
 		return (0x44FF7D64);
 	else if (health > 75)
@@ -31,7 +33,7 @@ static Uint32		hcol(int health)
 		return (0xFF764401);
 }
 
-static t_minimap	miniinit(t_doom *d, t_sdl *s)
+static t_minimap	miniinit(t_sdl *s, int health, int boost)
 {
 	t_minimap	mini;
 	int			i;
@@ -45,13 +47,13 @@ static t_minimap	miniinit(t_doom *d, t_sdl *s)
 	mini.size.y = mini.a.y - mini.d.y;
 	mini.mid.x = mini.a.x - (mini.size.x >> 1);
 	mini.mid.y = mini.a.y - (mini.size.y >> 1);
-	mini.sdl = &d->sdl;
+	mini.sdl = s;
 	i = mini.d.x;
 	while (i < mini.a.x - 1)
 	{
 		j = s->size.y - (s->size.y >> 2);
 		while (++j < mini.a.y - 1)
-			s->screen[i + j * s->size.x] = opacity(hcol(d->player.stat.health),
+			s->screen[i + j * s->size.x] = opacity(hcol(health, boost),
 				s->screen[i + j * s->size.x], 0.5);
 		++i;
 	}
@@ -94,7 +96,8 @@ static void			minifield(t_doom *d, t_minimap mini)
 	{
 		pix.x = 256 * cos(i * PI180) + mini.mid.x;
 		pix.y = -256 * sin(i * PI180) + mini.mid.y;
-		miniline(&d->sdl, mini.mid, pix, hcol(d->player.stat.health));
+		miniline(&d->sdl, mini.mid, pix,
+			hcol(d->player.stat.health, d->player.boost));
 		i += d->player.fov >> 3;
 	}
 }
@@ -103,7 +106,7 @@ void				minimap(t_doom *d)
 {
 	t_minimap	mini;
 
-	mini = miniinit(d, &d->sdl);
+	mini = miniinit(&d->sdl, d->player.stat.health, d->player.boost);
 	miniwalls(d, *d->player.stat.sector, mini);
 	minibord(d, mini);
 	minifield(d, mini);

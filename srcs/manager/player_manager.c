@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/02 15:19:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 17:39:29 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ int		player_init(t_player *player)
 	player->fov = 90;
 	player->stat.health = 100;
 	player->stat.width = 0;
+	player->boost = 0;
 	return (1);
 }
