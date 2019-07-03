@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/02 21:03:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/03 13:31:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define MAXZOOM 20000
 # define EDITORPRECISION 5000
 # define DEBUG 0
+#define SECTORBOXHEIGHT 50
 
 /*
 **	gestion
@@ -104,5 +105,13 @@ int						music_init(t_sound *sound);
 void					change_music(t_sound *sound, int n, int fade);
 void					cinematrique(t_doom *doom);
 void					effect_volume(t_sound *sound);
+
+/*
+** Minimap
+*/
+
+int						bold_point2(t_minimap mini, t_vct2 pos, Uint32 color);
+void					minibord(t_doom *d, t_minimap mini);
+void					miniwalls(t_doom *doom, t_sector sector, t_minimap mini);
 
 #endif

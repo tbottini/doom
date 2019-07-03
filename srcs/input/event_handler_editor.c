@@ -23,8 +23,10 @@ static void		window_event(t_doom *doom, SDL_Event e)
 		doom->edit.mappos.x += (doom->edit.size.x - tmp.x) / 2;
 		doom->edit.mappos.y += (doom->edit.size.y - tmp.y) / 2;
 		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y;
-		doom->edit.inspectbox.h = doom->edit.size.y - doom->edit.inspectbox.y;
-		doom->edit.inspectbox.x = doom->edit.size.x - doom->edit.inspectbox.w;
+		doom->edit.optbox.h = doom->edit.size.y - doom->edit.optbox.y;
+		doom->edit.optbox.x = doom->edit.size.x - doom->edit.optbox.w;
+		doom->edit.txtrbox.x = doom->edit.size.x / 2 - doom->edit.txtrbox.w / 2;
+		doom->edit.txtrbox.h = doom->edit.size.y - doom->edit.txtrbox.y;
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 	{
@@ -59,7 +61,7 @@ int event_handler_editor(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		editor_key_release(e.key.keysym.sym, doom);
 	else if (e.type == SDL_MOUSEMOTION)
-		editor_mouse_move(e.motion, doom);
+		editor_mouse_move(e.motion, &doom->edit);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		editor_mouse_press(e.button, &doom->edit);
 	else if (e.type == SDL_MOUSEWHEEL)

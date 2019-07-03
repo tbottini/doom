@@ -1,5 +1,5 @@
-#ifndef DOOM_STRUCT
-# define DOOM_STRUCT
+#ifndef DOOM_STRUCT_H
+# define DOOM_STRUCT_H
 
 # include <fcntl.h>
 # include <dirent.h>
@@ -13,6 +13,8 @@
 # include "libft.h"
 
 typedef struct s_doom	t_doom;
+
+# define MAXTXTRNUMBER 500
 
 /*
 ** Snap var behaviour
@@ -123,10 +125,18 @@ typedef struct			s_sdl
 	Uint32				*screen;
 	t_tab				keys;
 	SDL_PixelFormat		*format;
-	SDL_Surface			*textures[5];
 	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;
+
+typedef struct			s_minimap
+{
+	t_vct2	d;
+	t_vct2	a;
+	t_vct2	size;
+	t_vct2	mid;
+	t_sdl	*sdl;
+}						t_minimap;
 
 typedef struct s_pilier	t_pilier;
 typedef t_pilier		*t_lstpil;
@@ -147,9 +157,9 @@ typedef t_secteur		*t_lstsec;
 struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
-
-	t_secteur			*portal_id;
-
+	SDL_Texture			*txtr;
+	t_secteur			*portal_ptr;
+	t_portal_id			portal_id;
 	t_lstmur			prvs;
 	t_lstmur			next;
 };
@@ -157,6 +167,10 @@ struct					s_mur {
 struct					s_secteur
 {
 	t_lstmur			murs;
+	SDL_Texture			*top;
+	SDL_Texture			*sol;
+	int					hsol;
+	int					htop;
 
 	t_lstsec			prvs;
 	t_lstsec			next;
@@ -164,19 +178,26 @@ struct					s_secteur
 
 typedef t_enemy		*t_lstenn;
 
+/*
+** selecttxtr 1 fill obvious
+** selecttxtr 2 remplir sol de secteur
+*/
+
 typedef struct			s_editor
 {
 	bool				status;
+	int					selecttxtr;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;
 	t_ui				*ui;
-	t_btn				btnarr[20];
 	t_vct2				size;
 	t_vct2				mouse; //Mouse pos
 	t_vct2				mapmouse;
 	int					sectscroll; // Current scroll of sector menu
+	int					txtrscroll; // Current scroll of texture menu
 	SDL_Rect			sectbox;
-	SDL_Rect			inspectbox;
+	SDL_Rect			optbox;
+	SDL_Rect			txtrbox;
 	t_tab				keys;
 	t_lstpil			pillist;
 	t_lstenn			ennlist;
@@ -188,7 +209,8 @@ typedef struct			s_editor
 	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstsec			map;
 	t_vct3				mappos;
-	SDL_Surface			**textures;
+	SDL_Texture			*txtrgame[MAXTXTRNUMBER];
+	char				*txtrname[MAXTXTRNUMBER];
 	t_player			player;
 }						t_editor;
 

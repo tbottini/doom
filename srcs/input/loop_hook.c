@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/02 13:23:19 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/03 13:31:36 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ static void input_loop(t_doom *doom, int key)
 
 static void editor_loop(t_doom *doom, int key)
 {
-	;//
+	(void)doom;
+	(void)key;
 }
 
 static void delaypcmasterrace(t_doom *doom)
@@ -111,7 +112,7 @@ static void editor_loop_hook(t_doom *doom)
 	SDL_RenderClear(doom->edit.rend);
 	draw_map(&doom->edit);
 	draw_sector_menu(&doom->edit, doom->ui.fonts);
-	if (doom->edit.map || doom->edit.currmur || doom->edit.currpilier)
+	if (doom->edit.map || doom->edit.currmur || doom->edit.currstat)
 		draw_inspect_menu(&doom->edit);
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});

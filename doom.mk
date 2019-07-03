@@ -26,7 +26,7 @@ SRCS_INPUT		:=		event_controller.c								\
 						action.c										\
 						move.c											\
 						shoot.c											\
-						shoot_walls.c									\
+						shoot_tools.c									\
 						collision.c										\
 						keyboard_input.c								\
 						debug_input.c									\
@@ -39,6 +39,7 @@ SRCS_RENDER		:=		render.c										\
 						draw_text.c										\
 						sector.c										\
 						minimap.c										\
+						minimap_drawer.c								\
 						backface.c										\
 						render_effect.c									\
 						render_wall.c									\
@@ -59,6 +60,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 						debug_vector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
+						enemy_tools.c									\
 						mur_tools.c										\
 						little_tools.c									\
 						num_tools.c										\
