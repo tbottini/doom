@@ -1,4 +1,8 @@
-#include "vector.h"
+
+#ifndef CALCUL_H
+# define CALCUL_H
+
+# include "vector.h"
 
 typedef struct	s_affine
 {
@@ -26,3 +30,6 @@ double			affine_val_index(t_affine affine, double y);
 **	autres
 */
 double			hypothenuse(t_fvct2 vct);
+int				opacity(int s, int c, double f);
+
+#endif

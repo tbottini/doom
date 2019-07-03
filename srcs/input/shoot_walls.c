@@ -6,12 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 21:41:46 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/27 19:35:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 16:28:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
+/*
 static double	bullet_clipping(t_wall wall, t_stat *stat)
 {
 	t_fvct2		inter;
@@ -67,36 +68,20 @@ static t_wall	*real_hit(t_wall **walls, t_stat *stat)
 	return (hit);
 }
 
-t_wall			*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 ori)
+t_wall			*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 ori, int *index)
 {
 	int		i;
-	int		j;
-	int		index;
 
-	j = -1;
-	index = 0;
-	while (index < 49 && ++j < stat->sector->len_sub)
-	{
-		i = -1;
-		while (index < 49 && ++i < stat->sector->ssector[j].len)
-		{
-			if (vector_intersect(ori, stat->pos, *(t_fvct3*)&stat->sector->ssector[j].wall[i].pillar.p, *(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
-			{
-				walls[index] = &stat->sector->ssector[j].wall[i];
-				index++;
-			}
-		}
-	}
 	i = -1;
-	while (index < 49 && ++i < stat->sector->len)
+	while (*index < 50 && ++i < stat->sector->len)
 	{
 		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p, *(t_fvct3*)&stat->sector->wall[i].next->p))
 		{
-			walls[index] = &stat->sector->wall[i];
-			index++;
+			walls[*index] = &stat->sector->wall[i];
+			*index++;
 		}
 	}
-	walls[index] = NULL;
+	walls[*index] = NULL;
 	return (real_hit(walls, stat));
 }
 
@@ -111,3 +96,26 @@ void			apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo)
 	printf("SUPER COORD : x = %f | y = %f | z = %f\n", aim.x, aim.y, aim.z);
 	printf("distance || %f ||\n\n", wall->dist);
 }
+*/
+
+/*
+void			apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo)
+{
+	t_fvct3 aim;
+
+	aim.x = stat->pos.x + wall->dist * (mo.x / RADIUS);
+	aim.y = stat->pos.y + wall->dist * (mo.y / RADIUS);
+	aim.z = stat->pos.z + wall->dist * (mo.z / RADIUS);
+	(void)wall;//apply texture on wall
+	printf("SUPER COORD : x = %f | y = %f | z = %f\n", aim.x, aim.y, aim.z);
+	printf("distance || %f ||\n\n", wall->dist);
+}
+
+void		supa_shoota(t_stat *stat, t_fvct3 d, t_fvct3 mo)
+{
+	t_super	super;
+
+	possible(&super, stat, d);
+	super_real_hit(&super, stat);
+	apply(&super, stat, mo);
+}*/

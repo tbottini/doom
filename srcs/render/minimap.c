@@ -6,82 +6,18 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 23:59:07 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/02 11:45:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-typedef struct			s_minimap
-{
-	t_vct2	d;
-	t_vct2	a;
-	t_vct2	size;
-	t_vct2	mid;
-	t_sdl	*sdl;
-}						t_minimap;
-
-t_minimap	miniinit(t_doom *d)
-{
-	t_minimap mini;
-
-	mini.d.x = (d->sdl.size.x >> 6);
-	mini.a.x = d->sdl.size.x >> 3;
-	mini.d.y = d->sdl.size.y - (d->sdl.size.y >> 2);
-	mini.a.y = d->sdl.size.y - (d->sdl.size.y >> 5);
-	mini.size.x = mini.a.x - mini.d.x;
-	mini.size.y = mini.a.y - mini.d.y;
-	mini.mid.x = mini.a.x - (mini.size.x >> 1);
-	mini.mid.y = mini.a.y - (mini.size.y >> 1);
-	mini.sdl = &d->sdl;
-	return (mini);
-}
-
 #define UNIT 8.0
 #define CWALL 0xDADADAFF
 #define CPORT 0xE6E678FF
-#define CPERS 0xFFFFFFFF
 #define WHITE 0xFFFFFFFF
 
-int			bold_point2(t_minimap mini, t_vct2 pos, Uint32 color)
-{
-	int tmp;
-
-	tmp = pos.y * mini.sdl->size.x;
-	if (pos.y > mini.d.y && pos.y < mini.a.y - 1 && pos.x < mini.a.x - 1 && pos.x > mini.d.x)
-	{
-		mini.sdl->screen[pos.x + tmp] = color;
-		mini.sdl->screen[pos.x + 1 + tmp] = color;
-		mini.sdl->screen[pos.x - 1 + tmp] = color;
-		mini.sdl->screen[pos.x + 1 + tmp + mini.sdl->size.x] = color;
-		mini.sdl->screen[pos.x - 1 + tmp + mini.sdl->size.x] = color;
-		mini.sdl->screen[pos.x + 1 + tmp - mini.sdl->size.x] = color;
-		mini.sdl->screen[pos.x - 1 + tmp - mini.sdl->size.x] = color;
-		mini.sdl->screen[pos.x + tmp + mini.sdl->size.x] = color;
-		mini.sdl->screen[pos.x + tmp - mini.sdl->size.x] = color;
-	}
-	return (1);
-}
-
-/*
-** returns the color c as if it passes throught a transparent screen of color s.
-** double f determines the opacity of the "screen".
-** f must be between 0 and 1, returning the color s, 0 the color c.
-*/
-
-int			opacity(int s, int c, double f)
-{
-	if (f == 1)
-		return (s);
-	else if (!f)
-		return (c);
-	return (((int)((c >> 8 & 255) + f * ((s >> 8 & 255) - (c >> 8 & 255))) << 8)
-	+ ((int)((c >> 16 & 255) + f * ((s >> 16 & 255) - (c >> 16 & 255))) << 16)
-	+ ((int)((c >> 24 & 255) + f * ((s >> 24 & 255) - (c >> 24 & 255))) << 24)
-	+ 255);
-}
-
-Uint32			hcol(int health)
+static Uint32		hcol(int health)
 {
 	if (health >= 100)
 		return (0x44FF7D64);
@@ -95,40 +31,34 @@ Uint32			hcol(int health)
 		return (0xFF764401);
 }
 
-t_vct2		minipoint(t_doom *d, t_fvct2 vct, t_minimap mini)
+static t_minimap	miniinit(t_doom *d, t_sdl *s)
 {
-	t_vct2	px;
+	t_minimap	mini;
+	int			i;
+	int			j;
 
-	px.x = (mini.a.x - (mini.size.x / 2)) + ((vct.x - d->player.stat.pos.x)) * (UNIT);
-	px.y = (mini.a.y - (mini.size.y / 2)) + ((d->player.stat.pos.y - vct.y)) * (UNIT);
-	return (px);
-}
-
-void	minibigline(t_vct2 pos0, t_vct2 pos1, t_minimap mini, Uint32 color)
-{
-	t_vct3	decal;
-	t_vct2	orig;
-	int		err;
-	int		e2;
-
-	orig.x = ft_abs(pos1.x - pos0.x);
-	orig.y = ft_abs(pos1.y - pos0.y);
-	decal.x = (pos0.x < pos1.x ? 1 : -1);
-	decal.y = (pos0.y < pos1.y ? 1 : -1);
-	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
-	bold_point2(mini, pos0, color);
-	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-			&& bold_point2(mini, pos0, color))
+	mini.d.x = (s->size.x >> 6);
+	mini.a.x = s->size.x >> 3;
+	mini.d.y = s->size.y - (s->size.y >> 2);
+	mini.a.y = s->size.y - (s->size.y >> 5);
+	mini.size.x = mini.a.x - mini.d.x;
+	mini.size.y = mini.a.y - mini.d.y;
+	mini.mid.x = mini.a.x - (mini.size.x >> 1);
+	mini.mid.y = mini.a.y - (mini.size.y >> 1);
+	mini.sdl = &d->sdl;
+	i = mini.d.x;
+	while (i < mini.a.x - 1)
 	{
-		e2 = err;
-		if (e2 > -orig.x && ((err -= orig.y) || 1))
-			pos0.x += decal.x;
-		if (e2 < orig.y && ((err += orig.x) || 1))
-			pos0.y += decal.y;
+		j = s->size.y - (s->size.y >> 2);
+		while (++j < mini.a.y - 1)
+			s->screen[i + j * s->size.x] = opacity(hcol(d->player.stat.health),
+				s->screen[i + j * s->size.x], 0.5);
+		++i;
 	}
+	return (mini);
 }
 
-void	miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
+static void			miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 {
 	t_vct3	decal;
 	t_vct2	orig;
@@ -154,34 +84,9 @@ void	miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	}
 }
 
-void        miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
+static void			minifield(t_doom *d, t_minimap mini)
 {
-	int i;
-	t_vct2		cursor;
-	t_vct2		tmp;
-	t_vct2		cursor2;
-	t_wall		*wall;
-
-
-	i = -1;
-	while (++i < sector.len_sub)
-		miniwalls(doom, sector.ssector[i], mini);
-	wall = sector.wall;
-	cursor = minipoint(doom, wall[0].pillar.p, mini);
-	tmp = cursor;
-	i = -1;
-	while (++i < sector.len - 1)
-	{
-		cursor2 = minipoint(doom, wall[i + 1].pillar.p, mini);
-		minibigline(cursor, cursor2, mini, wall[i + 1].status < PORTAL_DIRECT ? CWALL : CPORT);
-		cursor = cursor2;
-	}
-	minibigline(cursor, tmp, mini, wall[0].status < PORTAL_DIRECT ? CWALL : CPORT);
-}
-
-void		minifield(t_doom *d, t_minimap mini)
-{
-	int i;
+	int		i;
 	t_vct2	pix;
 
 	i = (d->player.stat.rot.y - (d->player.fov >> 1));
@@ -194,45 +99,13 @@ void		minifield(t_doom *d, t_minimap mini)
 	}
 }
 
-void		minibord(t_doom *d, t_minimap mini)
-{
-	int i;
-	int j;
-
-	i = mini.d.x - 1;
-	j = mini.a.y - 1;
-	while (++i < mini.a.x - 1)
-	{
-		d->sdl.screen[i + mini.d.y * d->sdl.size.x] = WHITE;
-		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
-	}
-	j = d->sdl.size.y - (d->sdl.size.y >> 2) - 1;
-	while (++j < mini.a.y)
-	{
-		d->sdl.screen[mini.d.x + j * d->sdl.size.x] = WHITE;
-		d->sdl.screen[i + j * d->sdl.size.x] = WHITE;
-	}
-}
-
-void		minimap(t_doom *d)
+void				minimap(t_doom *d)
 {
 	t_minimap	mini;
-	int			i;
-	int			j;
 
-	mini = miniinit(d);
-	i = mini.d.x;
-	while (i < mini.a.x - 1)
-	{
-		j = d->sdl.size.y - (d->sdl.size.y >> 2);
-		while (++j < mini.a.y - 1)
-		{
-			d->sdl.screen[i + j * d->sdl.size.x] = opacity(hcol(d->player.stat.health), d->sdl.screen[i + j * d->sdl.size.x], 0.5);
-		}
-		++i;
-	}
-	miniwalls(d, *d->sector, mini);
+	mini = miniinit(d, &d->sdl);
+	miniwalls(d, *d->player.stat.sector, mini);
 	minibord(d, mini);
 	minifield(d, mini);
-	bold_point2(mini, mini.mid, CPERS);
+	bold_point2(mini, mini.mid, WHITE);
 }
