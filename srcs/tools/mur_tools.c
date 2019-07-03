@@ -24,6 +24,7 @@ static t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr)
 	t->prvs = NULL;
 	t->next = NULL;
 	t->portal_ptr = NULL;
+	t->wproplist = NULL;
 	return (t);
 }
 

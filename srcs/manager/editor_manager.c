@@ -100,7 +100,7 @@ int		editor_init(t_editor *editor)
 		return (0);
 	if (!(editor->sprites[3] = IMG_LoadTexture(editor->rend, PROPPILL)))
 		return (0);
-	if (!(editor->sprites[4] = IMG_LoadTexture(editor->rend, PROPBTN)))
+	if (!(editor->wsprites[0] = IMG_LoadTexture(editor->rend, PROPBTN)))
 		return (0);
 	return (load_textures_folder(editor->rend, editor->txtrgame, editor->txtrname));
 }

@@ -40,7 +40,7 @@ int editor_key_press(int key, t_doom *doom)
 	else if (key == SDLK_6)
 	{
 		relpos = get_rel_mappos(&doom->edit, doom->edit.mouse.x, doom->edit.mouse.y);
-		if (!ft_enemypushend(&doom->edit.ennlist, relpos, 10, doom->edit.map))
+		if (!ft_enemypushend(&doom->edit.ennlist, relpos, MINPROPSPOS, doom->edit.map))
 				ft_printf("Error adding Prop\n");
 	}
 	else if (key == SDLK_r) // Reload position
@@ -99,13 +99,20 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y)) // If menu texture
 	{
-		if (edit->selecttxtr == FILL_PROP && edit->currstat && 10 <= edit->currstat->health
-			&& edit->currstat->health <= 10 + MAXPROPSNUMBER && (e.x = txtr_menu_click_int(edit, e.x, e.y)))
+		ft_printf("Armand : %d\n", edit->selecttxtr);
+		if (edit->selecttxtr == FILL_PROP && edit->currstat && MINPROPSPOS <= edit->currstat->health
+			&& edit->currstat->health <= MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXPROPSNUMBER)))
 		{
-				edit->currstat->health = e.x;
-				edit->selecttxtr = NOSELECT;
+			edit->currstat->health = e.x;
+			edit->selecttxtr = NOSELECT;
 		}
-		else if ((txtrclick = txtr_menu_click(edit, e.x, e.y)))
+/*		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && MINPROPSPOS <= edit->currstat->health
+			&& edit->currstat->health <= MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXWPROPSNUMBER)))
+		{
+			edit->currstat->health = e.x;
+			edit->selecttxtr = NOSELECT;
+		}*/
+		else if ((txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
 		{
 			if (edit->currmur)
 				edit->currmur->txtr = txtrclick;
@@ -180,12 +187,12 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 				else
 					edit->currstat->health += e.y;
 			}
-			if (10 <= edit->currstat->health && edit->currstat->health <= 10 + MAXPROPSNUMBER)
+			if (MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS)
 			{
-				if (edit->currstat->health + e.y < 10)
-					edit->currstat->health = 10;
-				else if (edit->currstat->health + e.y >= 10 + MAXPROPSNUMBER)
-					edit->currstat->health = 9 + MAXPROPSNUMBER;
+				if (edit->currstat->health + e.y < MINPROPSPOS)
+					edit->currstat->health = MINPROPSPOS;
+				else if (edit->currstat->health + e.y >= MAXPROPSPOS)
+					edit->currstat->health = MAXPROPSPOS - 1;
 				else
 					edit->currstat->health += e.y;
 			}
@@ -214,7 +221,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->txtrscroll += e.y * 2;
 		return (0);
 	}
-	if (edit->currstat)
+	if (edit->currstat && !(MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS))
 	{
 		if (edit->currstat->rot.y + e.y < 0)
 			edit->currstat->rot.y += e.y + 360.0;
@@ -269,7 +276,7 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		e.x = (e.y - edit->sectscroll) / SECTORBOXHEIGHT;
 		if ((e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
 			|| (2 <= e.x && e.x <= 3 && edit->map && !edit->currstat && !edit->currmur)
-			|| (e.x == 0 && edit->currstat && 10 <= edit->currstat->health && edit->currstat->health <= 10 + MAXPROPSNUMBER))
+			|| (e.x == 0 && edit->currstat && MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS))
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		else
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));

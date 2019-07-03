@@ -213,7 +213,7 @@ static void draw_props(t_editor *editor, t_enemy *curr)
 		SDL_SetRenderDrawColor(editor->rend, 50, 75, 100, 255);
 	loc = get_screen_mappos(editor, curr->stat.pos.x, curr->stat.pos.y);
 	tmp = (SDL_Rect){loc.x - 10, loc.y - 10, 20, 20};
-	type = curr->stat.health - 10;
+	type = curr->stat.health - MINPROPSPOS;
 	SDL_RenderCopy(editor->rend, editor->sprites[type], NULL, &tmp);
 	tmp = (SDL_Rect){tmp.x - 1, tmp.y - 1, tmp.w + 2, tmp.h + 2};
 	SDL_RenderDrawRect(editor->rend, &tmp);
@@ -256,14 +256,14 @@ static void draw_enemies(t_editor *editor, t_enemy *curr)
 	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 }
 
-static void draw_objs(t_editor *editor)
+static void draw_objs(t_editor *editor, t_enemy *start)
 {
 	t_enemy *curr;
 
-	curr = editor->ennlist;
+	curr = start;
 	while (curr)
 	{
-		if (10 <= curr->stat.health && curr->stat.health <= 10 + MAXPROPSNUMBER)
+		if (MINPROPSPOS <= curr->stat.health && curr->stat.health <= MAXPROPSPOS)
 			draw_props(editor, curr);
 		else
 			draw_enemies(editor, curr);
@@ -342,6 +342,7 @@ static void draw_walls(t_editor *editor)
 			while (currwall)
 			{
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
+				draw_objs(editor, currwall->wproplist);
 				currwall = currwall->next;
 			}
 		else
@@ -361,6 +362,7 @@ static void draw_walls(t_editor *editor)
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
 			else
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
+			draw_objs(editor, currwall->wproplist);
 			currwall = currwall->next;
 		}
 	}
@@ -375,10 +377,12 @@ void draw_map(t_editor *editor)
 	draw_grid(editor, loc, editor->mappos.z, 0);
 	draw_walls(editor);
 	draw_pills(editor);
-	draw_objs(editor);
+	draw_objs(editor, editor->ennlist);
 	draw_player(editor);
 	if (editor->selecttxtr == FILL_PROP)
 		draw_txtrselector(editor, MAXPROPSNUMBER, editor->sprites);
+	else if (editor->selecttxtr == FILL_WPROP)
+		draw_txtrselector(editor, MAXWPROPSNUMBER, editor->wsprites);
 	else if (editor->selecttxtr)
 		draw_txtrselector(editor, MAXTXTRNUMBER, editor->txtrgame);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
@@ -410,6 +414,8 @@ void draw_sector_menu(t_editor *editor, t_font font)
 		{
 			if (editor->currstat == &editor->player.stat)
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){100, 205, 100, 0xFF});
+			else if (MINPROPSPOS <= editor->currstat->health && editor->currstat->health <= MAXPROPSPOS)
+				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){100, 125, 240, 0xFF});
 			else
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){170, 100, 205, 0xFF});
 		}
@@ -440,9 +446,9 @@ void draw_inspect_menu(t_editor *editor)
 	{
 		if (&editor->player.stat == editor->currstat) // If Player
 			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
-		else if (10 <= editor->currstat->health && editor->currstat->health <= 10 + MAXPROPSNUMBER) // If Prop
+		else if (MINPROPSPOS <= editor->currstat->health && editor->currstat->health <= MAXPROPSPOS) // If Prop
 		{
-			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->health - 10, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->health - MINPROPSPOS, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
 		}
 		else
@@ -539,6 +545,15 @@ t_secteur *sector_menu_click(t_editor *edit, int pos, int cas)
 	return (NULL);
 }
 
+t_vct2 line_percent(t_vct2 pos1, t_vct2 pos2, double percent)
+{
+	t_vct2 middle;
+
+	middle.x = pos1.x - (pos1.x - pos2.x) * percent;
+	middle.y = pos1.y - (pos1.y - pos2.y) * percent;
+	return (middle);
+}
+
 int opt_menu_click(t_editor *edit, int pos)
 {
 	pos = pos / SECTORBOXHEIGHT;
@@ -548,7 +563,7 @@ int opt_menu_click(t_editor *edit, int pos)
 			edit->selecttxtr = FILL_TXTR;
 		else if (edit->map && !edit->currstat)
 			edit->selecttxtr = FILL_TXTR;
-		else if (edit->currstat && 10 <= edit->currstat->health && edit->currstat->health <= 10 + MAXPROPSNUMBER)
+		else if (edit->currstat && MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS)
 			edit->selecttxtr = FILL_PROP;
 	}
 	else if (pos == 1)
@@ -556,7 +571,9 @@ int opt_menu_click(t_editor *edit, int pos)
 		if (edit->currmur->portal_ptr)
 			edit->currmur->portal_id = pos;
 		else if (edit->currmur)
-			ft_printf("Lolilo?\n");
+		{
+			ft_enemypushend(&edit->currmur->wproplist, line_percent(edit->currmur->pil1->pos, edit->currmur->pil2->pos, 0.50), MINWPROPSPOS, NULL)->stat.height = 0.50;
+		}
 		else if (edit->currstat && edit->currstat != &edit->player.stat)
 			ft_removeenemywithstat(&edit->ennlist, &edit->currstat);
 		else if (edit->map && !edit->currstat)
@@ -584,7 +601,7 @@ int opt_menu_click(t_editor *edit, int pos)
 	return (0);
 }
 
-SDL_Texture *txtr_menu_click(t_editor *editor, int x, int y)
+SDL_Texture *txtr_menu_click(t_editor *editor, int x, int y, int max)
 {
 	SDL_Rect tmp;
 	int i;
@@ -594,7 +611,7 @@ SDL_Texture *txtr_menu_click(t_editor *editor, int x, int y)
 	tmp.w = 200;
 	tmp.h = 200;
 	i = 0;
-	while (i < MAXTXTRNUMBER && editor->txtrgame[i])
+	while (i < max && editor->txtrgame[i])
 	{
 		if (pos_in_rect(tmp, x, y))
 			return (editor->txtrgame[i]);
@@ -609,7 +626,7 @@ SDL_Texture *txtr_menu_click(t_editor *editor, int x, int y)
 	return (NULL);
 }
 
-int txtr_menu_click_int(t_editor *editor, int x, int y)
+int txtr_menu_click_int(t_editor *editor, int x, int y, int max)
 {
 	SDL_Rect tmp;
 	int i;
@@ -619,10 +636,10 @@ int txtr_menu_click_int(t_editor *editor, int x, int y)
 	tmp.w = 200;
 	tmp.h = 200;
 	i = 0;
-	while (i < MAXPROPSNUMBER)
+	while (i < max)
 	{
 		if (pos_in_rect(tmp, x, y))
-			return (i + 10);
+			return (i + MINPROPSPOS);
 		tmp.x += tmp.w + PADDING;
 		if (editor->txtrbox.x + editor->txtrbox.w < tmp.x + tmp.w)
 		{
@@ -631,5 +648,6 @@ int txtr_menu_click_int(t_editor *editor, int x, int y)
 		}
 		++i;
 	}
+	ft_printf("%d\n", i);
 	return (0);
 }

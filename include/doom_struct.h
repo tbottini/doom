@@ -13,15 +13,21 @@
 # include "libft.h"
 
 typedef struct s_doom	t_doom;
+typedef t_enemy			*t_lstenn;
 
 # define MAXTXTRNUMBER 500
 
+# define MINPROPSPOS 20
 # define MAXPROPSNUMBER 4
+# define MAXPROPSPOS MINPROPSPOS + MAXPROPSNUMBER
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
 # define PROPMUN "ressources/props/munition.xpm"
 # define PROPPILL "ressources/props/pill.png"
+
+# define MINWPROPSPOS MAXPROPSPOS + 1
 # define MAXWPROPSNUMBER 1
+# define MAXWPROPSPOS MAXPROPSPOS + MAXWPROPSNUMBER
 # define PROPBTN "ressources/props/button.ico"
 
 /*
@@ -176,6 +182,7 @@ struct					s_mur {
 	SDL_Texture			*txtr;
 	t_secteur			*portal_ptr;
 	t_portal_id			portal_id;
+	t_lstenn			wproplist;
 	t_lstmur			prvs;
 	t_lstmur			next;
 };
@@ -191,8 +198,6 @@ struct					s_secteur
 	t_lstsec			prvs;
 	t_lstsec			next;
 };
-
-typedef t_enemy		*t_lstenn;
 
 /*
 ** selecttxtr 1 fill obvious
@@ -235,7 +240,8 @@ typedef struct			s_editor
 	t_lstsec			map;
 	t_vct3				mappos;
 	SDL_Texture			*txtrgame[MAXTXTRNUMBER];
-	SDL_Texture			*sprites[MAXPROPSNUMBER + MAXWPROPSNUMBER];
+	SDL_Texture			*sprites[MAXPROPSNUMBER];
+	SDL_Texture			*wsprites[MAXWPROPSNUMBER];
 	char				*txtrname[MAXTXTRNUMBER];
 	t_player			player;
 }						t_editor;

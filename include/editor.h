@@ -31,8 +31,8 @@ t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2, SDL
 void					ft_clear_wall_list(t_lstmur *start);
 t_secteur				*sector_menu_click(t_editor *edit, int pos, int cas);
 int						opt_menu_click(t_editor *edit, int pos);
-SDL_Texture				*txtr_menu_click(t_editor *edit, int x, int y);
-int						txtr_menu_click_int(t_editor *editor, int x, int y);
+SDL_Texture				*txtr_menu_click(t_editor *edit, int x, int y, int max);
+int						txtr_menu_click_int(t_editor *editor, int x, int y, int max);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
 void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
