@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/03 16:27:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 19:19:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 
 static void	superhot(t_player *player)
 {
-	player->boost = SDL_GetTicks() + 5000;
+	if (player->boost)
+		player->boost += 5000;
+	else
+		player->boost = SDL_GetTicks() + 5000;
 }
 
 static void	superhotpill_init(t_prop *prop)
