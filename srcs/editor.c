@@ -6,12 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/01 20:41:41 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 12:46:31 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-#define SECTORBOXHEIGHT 50
 
 t_vct2 get_rel_mappos(t_editor *editor, int x, int y)
 {
@@ -156,7 +155,7 @@ static void draw_grid(t_editor *editor, t_vct2 center, int dist, int master)
 
 	(void)master;
 	//if (master)
-	//	printf("%d\n", master);
+	//	printf("%d\n", master % dist);
 	if (dist >= 400)
 		draw_grid(editor, center, dist / 10, dist);
 	if (dist >= 400)
@@ -202,9 +201,9 @@ static void draw_player(t_editor *editor)
 
 static void draw_enemy(t_editor *editor)
 {
-	t_enemy		*curr;
-	SDL_Rect	tmp;
-	t_vct2		loc;
+	t_enemy *curr;
+	SDL_Rect tmp;
+	t_vct2 loc;
 
 	curr = editor->ennlist;
 	while (curr)
@@ -216,13 +215,24 @@ static void draw_enemy(t_editor *editor)
 		else
 			SDL_SetRenderDrawColor(editor->rend, 120, 100, 155, 255);
 		loc = get_screen_mappos(editor, curr->stat.pos.x, curr->stat.pos.y);
-		tmp.x = loc.x - 10;
-		tmp.y = loc.y - 10;
-		tmp.w = 20;
-		tmp.h = 20;
-		SDL_RenderDrawRect(editor->rend, &tmp);
-		tmp.x = cos(curr->stat.rot.y * PI180) * 35.0;
-		tmp.y = sin(curr->stat.rot.y * PI180) * 35.0;
+		if (curr->stat.health <= 2)
+			tmp = (SDL_Rect){loc.x - 5, loc.y - 5, 10, 10};
+		else
+			tmp = (SDL_Rect){loc.x - curr->stat.health * 2 - 2, loc.y - curr->stat.health * 2 - 2, curr->stat.health * 4 + 4, curr->stat.health * 4 + 4};
+		if (curr->stat.health % 2)
+			SDL_RenderDrawRect(editor->rend, &tmp);
+		else
+			SDL_RenderFillRect(editor->rend, &tmp);
+		if (curr->stat.health <= 2)
+		{
+			tmp.x = cos(curr->stat.rot.y * PI180) * 20;
+			tmp.y = sin(curr->stat.rot.y * PI180) * 20;
+		}
+		else
+		{
+			tmp.x = cos(curr->stat.rot.y * PI180) * curr->stat.health * 8;
+			tmp.y = sin(curr->stat.rot.y * PI180) * curr->stat.health * 8;
+		}
 		SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 		curr = curr->next;
 	}
@@ -231,9 +241,9 @@ static void draw_enemy(t_editor *editor)
 
 static void draw_pills(t_editor *editor)
 {
-	t_pilier	*curr;
-	SDL_Rect	tmp;
-	t_vct2		loc;
+	t_pilier *curr;
+	SDL_Rect tmp;
+	t_vct2 loc;
 
 	curr = editor->pillist;
 	while (curr)
@@ -255,33 +265,71 @@ static void draw_pills(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
+#define PADDING 5
+
+static void draw_txtrselector(t_editor *editor)
+{
+	SDL_Rect tmp;
+	int x;
+
+	SDL_SetRenderDrawColor(editor->rend, 50, 50, 50, 255);
+	SDL_RenderFillRect(editor->rend, &editor->txtrbox);
+	x = 0;
+	tmp.x = editor->txtrbox.x + PADDING;
+	tmp.y = editor->txtrbox.y + PADDING + editor->txtrscroll;
+	tmp.w = 200;
+	tmp.h = 200;
+	SDL_SetRenderDrawColor(editor->rend, 255,200,200,255);
+	while (x < MAXTXTRNUMBER && editor->txtrgame[x])
+	{
+		SDL_RenderCopy(editor->rend, editor->txtrgame[x], NULL, &tmp);
+		tmp.x += tmp.w + PADDING;
+		if (editor->txtrbox.x + editor->txtrbox.w < tmp.x + tmp.w)
+		{
+			tmp.x = editor->txtrbox.x + PADDING;
+			tmp.y += tmp.h + PADDING;
+		}
+		++x;
+	}
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+}
+
 static void draw_walls(t_editor *editor)
 {
 	t_lstsec currsec;
 	t_lstmur currwall;
+	t_lstsec finalsec;
 
+	finalsec = NULL;
 	currsec = editor->sectors;
 	while (currsec)
 	{
 		currwall = currsec->murs;
+		if (currsec != editor->map)
+			while (currwall)
+			{
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
+				currwall = currwall->next;
+			}
+		else
+			finalsec = currsec;
+		currsec = currsec->next;
+	}
+	if (finalsec)
+	{
+		currwall = finalsec->murs;
 		while (currwall)
 		{
-			if (currsec == editor->map)
-			{
-				if (currwall == editor->currmur)
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){200, 0, 70, 0xFF});
-				else if (currwall == editor->hovermur)
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
-				else if (currwall->portal_id)
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
-				else
-					map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
-			}
+			if (currwall == editor->currmur)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){200, 0, 70, 0xFF});
+			else if (currwall == editor->hovermur)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
+			else if (currwall->portal_ptr)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
 			else
-				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){150, 150, 150, 0xFF});
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
 			currwall = currwall->next;
 		}
-		currsec = currsec->next;
 	}
 }
 
@@ -296,6 +344,8 @@ void draw_map(t_editor *editor)
 	draw_pills(editor);
 	draw_enemy(editor);
 	draw_player(editor);
+	if (editor->selecttxtr)
+		draw_txtrselector(editor);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
@@ -319,8 +369,15 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	while (currsec)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
-		if ((editor->currmur && editor->currmur->portal_id == currsec) || (editor->currstat && editor->currstat->sector == (t_sector *)currsec))
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){180, 180, 150, 0xFF});
+		if (editor->currmur && editor->currmur->portal_ptr == currsec)
+			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){200, 200, 150, 0xFF});
+		else if (editor->currstat && editor->currstat->sector == (t_sector *)currsec)
+		{
+			if (editor->currstat == &editor->player.stat)
+				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){100, 205, 100, 0xFF});
+			else
+				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){170, 100, 205, 0xFF});
+		}
 		else if (currsec == editor->map)
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 		else
@@ -339,27 +396,50 @@ void draw_sector_menu(t_editor *editor, t_font font)
 void draw_inspect_menu(t_editor *editor)
 {
 	SDL_Rect box;
+	SDL_Rect txtrpos;
 
-	box = editor->inspectbox;
+	box = editor->optbox;
 	SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
-	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
-	if (editor->currstat && &editor->player.stat == editor->currstat) // If Player
+	
+	if (editor->currstat) // If Character
 	{
-		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		if (&editor->player.stat == editor->currstat) // If Player
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		else
+		{
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
+		}
 	}
 	else if (editor->currmur) // If mur
 	{
-		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Texture: ", 0, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
-		if (editor->currmur->portal_id)
+		sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Texture:", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		txtrpos = (SDL_Rect){box.x + 120, box.y + 4, SECTORBOXHEIGHT - 2, SECTORBOXHEIGHT - 2};
+		SDL_RenderCopy(editor->rend, editor->currmur->txtr, NULL, &txtrpos);
+		if (editor->currmur->portal_ptr)
 		{
-			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Type: ", 0, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			SDL_SetRenderDrawColor(editor->rend, 133, 133, 133, 255);
+			SDL_RenderDrawLine(editor->rend, box.x, box.y + SECTORBOXHEIGHT + 5, box.x + box.w, box.y + SECTORBOXHEIGHT + 5);
+			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 1 + 5}, "Type: Window", (editor->currmur->portal_id == 1 ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 2 + 5}, " Close Door", (editor->currmur->portal_id == 2 ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 3 + 5}, " Open Door", (editor->currmur->portal_id == 3 ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 4 + 5}, " Portal", (editor->currmur->portal_id == 4 ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+			SDL_RenderDrawLine(editor->rend, box.x, box.y + SECTORBOXHEIGHT * 5, box.x + box.w, box.y + SECTORBOXHEIGHT * 5);
 		}
 	}
 	else if (editor->map) // If secteur
 	{
-		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Stuff: ", 0, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Plafond:", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		txtrpos = (SDL_Rect){box.x + 120, box.y + 4, SECTORBOXHEIGHT - 2, SECTORBOXHEIGHT - 2};
+		SDL_RenderCopy(editor->rend, editor->map->top, NULL, &txtrpos);
+		sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Sol:", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		txtrpos = (SDL_Rect){box.x + 120, box.y + SECTORBOXHEIGHT + 4, SECTORBOXHEIGHT - 2, SECTORBOXHEIGHT - 2};
+		SDL_RenderCopy(editor->rend, editor->map->sol, NULL, &txtrpos);
+		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 2 + 5}, "Plafond: ", editor->map->htop, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 3 + 5}, "Sol: ", editor->map->hsol, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 	}
+	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
 /*
@@ -385,7 +465,7 @@ t_secteur *sector_menu_click(t_editor *edit, int pos, int cas)
 		if (cas == 2)
 			return (sec);
 		if (!sec)
-			edit->map = push_secteur(&(edit->sectors));
+			edit->map = push_secteur(&(edit->sectors), edit->txtrgame[0], edit->txtrgame[0]);
 		else if (cas)
 		{
 			edit->map = NULL;
@@ -409,8 +489,78 @@ t_secteur *sector_menu_click(t_editor *edit, int pos, int cas)
 			edit->map = sec;
 	}
 	else if (pos == 1 && cas != 2)
-		edit->map = push_secteur(&(edit->sectors));
+		edit->map = push_secteur(&(edit->sectors), edit->txtrgame[0], edit->txtrgame[0]);
 	else if (cas != 2)
 		edit->map = NULL;
+	return (NULL);
+}
+
+int opt_menu_click(t_editor *edit, int pos)
+{
+	pos = pos / SECTORBOXHEIGHT;
+	if (pos == 0)
+	{
+		if (edit->currmur)
+			edit->selecttxtr = true;
+		else if (edit->map)
+			edit->selecttxtr = 1;
+	}
+	else if (1 == pos)
+	{
+		if (edit->currmur)
+			edit->currmur->portal_id = pos;
+		else if (edit->currstat && edit->currstat != &edit->player.stat)
+			ft_removeenemywithstat(&edit->ennlist, &edit->currstat);
+		else if (edit->map)
+			edit->selecttxtr = 2;
+	}
+	else if (pos == 2)
+	{
+		if (edit->currmur)
+			edit->currmur->portal_id = pos;
+		else if (edit->map)
+			ft_printf("Choose hauteur\n");
+	}
+	else if (pos == 3)
+	{
+		if (edit->currmur)
+			edit->currmur->portal_id = pos;
+		else if (edit->map)
+			ft_printf("Choose plafond\n");
+	}
+	else if (pos == 4)
+	{
+		if (edit->currmur)
+			edit->currmur->portal_id = pos;
+	}
+	else
+	{
+		edit->selecttxtr = false;
+	}
+	return (0);
+}
+
+SDL_Texture *txtr_menu_click(t_editor *editor, int x, int y)
+{
+	SDL_Rect tmp;
+	int i;
+
+	tmp.x = editor->txtrbox.x + PADDING;
+	tmp.y = editor->txtrbox.y + PADDING + editor->txtrscroll;
+	tmp.w = 200;
+	tmp.h = 200;
+	i = 0;
+	while (i < MAXTXTRNUMBER && editor->txtrgame[i])
+	{
+		if (pos_in_rect(tmp, x, y))
+			return (editor->txtrgame[i]);
+		tmp.x += tmp.w + PADDING;
+		if (editor->txtrbox.x + editor->txtrbox.w < tmp.x + tmp.w)
+		{
+			tmp.x = editor->txtrbox.x + PADDING;
+			tmp.y += tmp.h + PADDING;
+		}
+		++i;
+	}
 	return (NULL);
 }

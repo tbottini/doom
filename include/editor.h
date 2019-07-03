@@ -14,7 +14,7 @@ int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
 int						editor_mouse_release(int button, int x, int y,
 																t_doom *doom);
-int						editor_mouse_move(SDL_MouseMotionEvent e, t_doom *doom);
+int						editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit);
 int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 
 t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
@@ -27,9 +27,11 @@ void					sector_menu(t_editor *edit, int pos, int del);
 int						ft_walllen(t_lstmur start);
 void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
 void					ft_removewall(t_lstmur *start, t_mur **mur);
-t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2);
+t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr);
 void					ft_clear_wall_list(t_lstmur *start);
 t_secteur				*sector_menu_click(t_editor *edit, int pos, int cas);
+int						opt_menu_click(t_editor *edit, int pos);
+SDL_Texture				*txtr_menu_click(t_editor *edit, int x, int y);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
 void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
@@ -42,8 +44,8 @@ t_stat					*find_player(t_editor *edit, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
 
-t_lstsec				ft_newsector();
-t_lstsec				push_secteur(t_lstsec *node);
+t_lstsec				ft_newsector(SDL_Texture *top, SDL_Texture *sol);
+t_lstsec				push_secteur(t_lstsec *node, SDL_Texture *top, SDL_Texture *sol);
 void					ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpil *pil);
 void					ft_clear_secteur(t_lstsec *sec);
 void					ft_clear_secteur_list(t_lstsec *start);
@@ -51,6 +53,7 @@ void					ft_clear_secteur_list(t_lstsec *start);
 t_enemy					*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr);
 void					ft_removeenemy(t_lstenn *start, t_enemy **pil);
 t_enemy					*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr);
+void					ft_removeenemywithstat(t_lstenn *start, t_stat **pil);
 void					ft_nodeprint_enemy(t_lstenn node);
 void					ft_clear_enemy_list(t_lstenn *start);
 

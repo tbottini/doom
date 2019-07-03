@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include <doom_nukem.h>
 
 /*
 **	si au moins l'un des pilier est hors frustum il passe pas l'extremite de
@@ -6,22 +6,21 @@
 **	si l'angle entre le joueur est les deux pillier est superieur a 180
 **	la polarite de depart (position du premier pillier) s'inverse
 */
-double		pillar_polarite(t_pillar pillar, t_pillar *next, int max)
+void		px_polarite(t_designer *arch)
 {
 	t_fvct2	angle;
 	double	diff;
 	int		polarite;
 
-
-	//angle.x = local_angle(arch->borne.x, arch->wall->pillar.angle);
-	//angle.y = local_angle(arch->borne.x, arch->wall->next->angle);
-	angle.x = pillar.angle + ((pillar.angle < 0) ? 360 : 0);
-	angle.y = next->angle + ((next->angle < 0) ? 360 : 0);
+	angle.x = local_angle(arch->borne.x, arch->wall->pillar.angle);
+	angle.y = local_angle(arch->borne.x, arch->wall->next->angle);
 
 	diff = fabs(angle.x - angle.y);
-	polarite = (next->angle > 0 ? -1 : 1) * (diff < 180 ? 1 : -1);
-	return ((polarite == -1) ? 0 : max);
+	polarite = (arch->wall->next->angle > arch->borne.x ? -1 : 1) * (diff < 180 ? 1 : -1);
+	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x -1;
+	arch->px.y = arch->sdl->size.x - 1 - arch->px.x;
 }
+
 
 void			pillar_screen_info(t_designer *arch, t_player *p)
 {
@@ -30,6 +29,7 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 	t_fvct2		tmp;
 
 	size = arch->sdl->size.x;
+	px_polarite(arch);
 	//pillar
 	if (arch->wall->pillar.frust)
 	{
@@ -41,7 +41,8 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 	}
 	else
 	{
-		arch->px.x = pillar_polarite(arch->wall->pillar, arch->wall->next, size - 1);
+		//arch->px.x = pillar_polarite(arch, arch->wall->pillar, arch->wall->next, size - 1);
+		//arch->px.x = pillar_polarite(arch, *arch->wall->next, &arch->wall->pillar, size - 1);
 		if (arch->px.x == 0)
 		{
 			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
@@ -69,7 +70,8 @@ void			pillar_screen_info(t_designer *arch, t_player *p)
 	}
 	else
 	{
-		arch->px.y = pillar_polarite(*arch->wall->next, &arch->wall->pillar, size - 1);
+		//arch->px.y = pillar_polarite(arch, arch->wall->pillar, arch->wall->next, size - 1);
+		//arch->px.y = pillar_polarite(arch, *arch->wall->next, &arch->wall->pillar, size - 1);
 		if (arch->px.y == 0)
 		{
 			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
@@ -91,3 +93,4 @@ void			wall_screen_info(t_designer *arch, t_player *p)
 {
 	pillar_screen_info(arch, p);
 }
+

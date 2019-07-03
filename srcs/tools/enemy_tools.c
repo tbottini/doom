@@ -22,7 +22,7 @@ t_enemy		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 	t->stat.pos.y = loc.y;
 	t->stat.rot.y = 0;
 	t->stat.sector = (t_sector *)sctr;
-	t->type = type;
+	t->stat.health = type;
 	t->prev = NULL;
 	t->next = NULL;
 	return (t);
@@ -40,6 +40,25 @@ void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
 		(*pil)->prev->next = (*pil)->next;
 	free(*pil);
 	*pil = NULL;
+}
+
+void		ft_removeenemywithstat(t_lstenn *start, t_stat **pil)
+{
+	t_lstenn curr;
+
+	if (!pil || !(*pil))
+		return ;
+	curr = *start;
+	while (curr)
+	{
+		if (&curr->stat == *pil)
+		{
+			ft_removeenemy(start, &curr);
+			*pil = NULL;
+			return ;
+		}
+		curr = curr->next;
+	}
 }
 
 t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr)

@@ -1,11 +1,5 @@
 #include "doom_nukem.h"
 
-#define ACIERTXT "ressources/textures/acier_sombre.jpg"
-#define CLOUDTXT "ressources/textures/cloud.jpg"
-#define DEBUGTXT "ressources/textures/debug.jpg"
-#define JAPONTXT "ressources/textures/acier_sombre.jpg"
-#define WOODTXT "ressources/textures/acier_sombre.jpg"
-
 void	sdl_free(t_sdl *sdl)
 {
 	if (sdl->txture)
@@ -83,10 +77,5 @@ int		sdl_init(t_sdl *sdl, const char *title)
 	sdl->screen = (Uint32*)tmp;
 	if (!(sdl->format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888)))
 		return (0);
-	sdl->textures[0] = IMG_Load(ACIERTXT);
-	sdl->textures[1] = IMG_Load(CLOUDTXT);
-	sdl->textures[2] = IMG_Load(DEBUGTXT);
-	sdl->textures[3] = IMG_Load(JAPONTXT);
-	sdl->textures[4] = IMG_Load(WOODTXT);
 	return (1);
 }

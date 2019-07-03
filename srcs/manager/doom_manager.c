@@ -45,7 +45,6 @@ t_doom	*doom_init()
   if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
 		doom_exit(doom);
 	doom->edit.ui = &doom->ui;
-	doom->edit.textures = doom->sdl.textures;
 	if (!editor_init(&doom->edit))
 		doom_exit(doom);
 	player_init(&doom->player);

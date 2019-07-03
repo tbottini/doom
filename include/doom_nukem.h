@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/02 11:50:05 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 13:22:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define MAXZOOM 20000
 # define EDITORPRECISION 5000
 # define DEBUG 0
+#define SECTORBOXHEIGHT 50
 
 /*
 **	gestion
