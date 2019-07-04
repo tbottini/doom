@@ -87,7 +87,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 				edit->currmur->portal_id = 0;
 		}
 		else if (edit->currstat)
-			edit->currstat->sector = (t_sector *)sector_menu_click(edit, e.y, 2);
+			edit->currstat->sector = sector_menu_click(edit, e.y, 2);
 		else
 			sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
@@ -99,19 +99,18 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y)) // If menu texture
 	{
-		ft_printf("Armand : %d\n", edit->selecttxtr);
-		if (edit->selecttxtr == FILL_PROP && edit->currstat && MINPROPSPOS <= edit->currstat->health
-			&& edit->currstat->health <= MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXPROPSNUMBER)))
+		if (edit->selecttxtr == FILL_PROP && edit->currstat && MINPROPSPOS <= edit->currstat->type
+			&& edit->currstat->type <= MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXPROPSNUMBER)))
 		{
-			edit->currstat->health = e.x;
+			edit->currstat->type = e.x;
 			edit->selecttxtr = NOSELECT;
 		}
-/*		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && MINPROPSPOS <= edit->currstat->health
-			&& edit->currstat->health <= MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXWPROPSNUMBER)))
+		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && MINWPROPSPOS <= edit->currstat->type
+			&& edit->currstat->type <= MAXWPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXWPROPSNUMBER)))
 		{
-			edit->currstat->health = e.x;
+			edit->currstat->type = e.x;
 			edit->selecttxtr = NOSELECT;
-		}*/
+		}
 		else if ((txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
 		{
 			if (edit->currmur)
@@ -135,8 +134,10 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 		edit->currmur = NULL;
 		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
 		{
-			if (!(edit->currmur = find_mur(edit, edit->map, e.x, e.y)))
-				edit->currstat = find_player(edit, e.x, e.y);
+			if (!(edit->currstat = find_player(edit, e.x, e.y)))
+				edit->currmur = find_mur(edit, edit->map, e.x, e.y);
+			else
+				edit->currmur = edit->hovermur;
 		}
 		if (e.clicks == 2)
 			if (!ft_pillarpushend(&edit->pillist, relpos))
@@ -180,21 +181,21 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 		{
 			if (edit->currstat == &edit->player.stat)
 			{
-				if (edit->currstat->health + e.y < 10)
-					edit->currstat->health = 10;
-				else if (edit->currstat->health + e.y > 250)
-					edit->currstat->health = 250;
+				if (edit->currstat->type + e.y < 10)
+					edit->currstat->type = 10;
+				else if (edit->currstat->type + e.y > 250)
+					edit->currstat->type = 250;
 				else
-					edit->currstat->health += e.y;
+					edit->currstat->type += e.y;
 			}
-			if (MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS)
+			if (MINPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXPROPSPOS)
 			{
-				if (edit->currstat->health + e.y < MINPROPSPOS)
-					edit->currstat->health = MINPROPSPOS;
-				else if (edit->currstat->health + e.y >= MAXPROPSPOS)
-					edit->currstat->health = MAXPROPSPOS - 1;
+				if (edit->currstat->type + e.y < MINPROPSPOS)
+					edit->currstat->type = MINPROPSPOS;
+				else if (edit->currstat->type + e.y >= MAXPROPSPOS)
+					edit->currstat->type = MAXPROPSPOS - 1;
 				else
-					edit->currstat->health += e.y;
+					edit->currstat->type += e.y;
 			}
 		}
 		else if (e.x == 2 && edit->map)
@@ -221,14 +222,25 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->txtrscroll += e.y * 2;
 		return (0);
 	}
-	if (edit->currstat && !(MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS))
+	if (edit->currstat && edit->currmur && (MINWPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXWPROPSPOS))
 	{
-		if (edit->currstat->rot.y + e.y < 0)
-			edit->currstat->rot.y += e.y + 360.0;
-		else if (edit->currstat->rot.y + e.y > 360)
-			edit->currstat->rot.y += e.y - 360.0;
+		if (edit->currstat->roty + e.y < 0)
+			edit->currstat->roty = 0.0;
+		else if (edit->currstat->roty + e.y > 100)
+			edit->currstat->roty = 100.0;
 		else
-			edit->currstat->rot.y += e.y;
+			edit->currstat->roty += e.y;
+		edit->currstat->pos = line_percent(edit->currmur->pil1->pos, edit->currmur->pil2->pos, edit->currstat->roty / 100);
+		return (0);
+	}
+	else if (edit->currstat && !(MINPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXPROPSPOS))
+	{
+		if (edit->currstat->roty + e.y < 0)
+			edit->currstat->roty += e.y + 360.0;
+		else if (edit->currstat->roty + e.y > 360)
+			edit->currstat->roty += e.y - 360.0;
+		else
+			edit->currstat->roty += e.y;
 		return (0);
 	}
 	if (edit->mappos.z + e.y < MINZOOM)
@@ -276,7 +288,7 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		e.x = (e.y - edit->sectscroll) / SECTORBOXHEIGHT;
 		if ((e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
 			|| (2 <= e.x && e.x <= 3 && edit->map && !edit->currstat && !edit->currmur)
-			|| (e.x == 0 && edit->currstat && MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS))
+			|| (e.x == 0 && edit->currstat && MINPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXPROPSPOS))
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		else
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
@@ -300,21 +312,21 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		if (edit->currpilier)
 		{
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
-			edit->currpilier->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
-			edit->currpilier->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
+			ft_movepillar(edit->sectors, edit->currpilier, e.xrel, e.yrel, edit->mappos.z);
+		}
+		else if (edit->currstat)
+		{
+			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
+			if (!(edit->currmur))
+			{
+				edit->currstat->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
+				edit->currstat->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
+			}
 		}
 		else if (edit->currmur)
 		{
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
-			edit->currmur->pil1->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
-			edit->currmur->pil1->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
-			edit->currmur->pil2->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
-			edit->currmur->pil2->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
-		}
-		else if (edit->currstat)
-		{
-			edit->currstat->pos.x += e.xrel * (EDITORPRECISION) / edit->mappos.z;
-			edit->currstat->pos.y += e.yrel * (EDITORPRECISION) / edit->mappos.z;
+			ft_movewall(edit->currmur, e.xrel, e.yrel, edit->mappos.z);
 		}
 	}
 	else if (e.state == SDL_BUTTON_MMASK)

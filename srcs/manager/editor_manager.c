@@ -31,8 +31,8 @@ void	open_editor(t_doom *doom)
 	//doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
 	doom->edit.sectors = ft_newsector(doom->edit.txtrgame[0], doom->edit.txtrgame[0]);
 	doom->edit.map = doom->edit.sectors;
-	doom->edit.player.stat.sector = (t_sector *)doom->edit.map;
-	doom->edit.player.stat.health = 100;
+	doom->edit.player.stat.sector = doom->edit.map;
+	doom->edit.player.stat.type = 100;
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;

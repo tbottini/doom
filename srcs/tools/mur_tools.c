@@ -23,9 +23,26 @@ static t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr)
 	t->txtr = txtr;
 	t->prvs = NULL;
 	t->next = NULL;
+	t->portal_id = 0;
 	t->portal_ptr = NULL;
 	t->wproplist = NULL;
 	return (t);
+}
+
+void ft_movewall(t_mur *wall, int addx, int addy, int zoom)
+{
+	t_lstenn wprops;
+
+	wall->pil1->pos.x += addx * (EDITORPRECISION) / zoom;
+	wall->pil1->pos.y += addy * (EDITORPRECISION) / zoom;
+	wall->pil2->pos.x += addx * (EDITORPRECISION) / zoom;
+	wall->pil2->pos.y += addy * (EDITORPRECISION) / zoom;
+	wprops = wall->wproplist;
+	while (wprops)
+	{
+		wprops->stat.pos = line_percent(wall->pil1->pos, wall->pil2->pos, wprops->stat.roty / 100);
+		wprops = wprops->next;
+	}
 }
 
 void ft_removewall(t_lstmur *start, t_mur **mur)

@@ -27,6 +27,7 @@ void					sector_menu(t_editor *edit, int pos, int del);
 int						ft_walllen(t_lstmur start);
 void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
 void					ft_removewall(t_lstmur *start, t_mur **mur);
+void					ft_movewall(t_mur *wall, int addx, int addy, int zoom);
 t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr);
 void					ft_clear_wall_list(t_lstmur *start);
 t_secteur				*sector_menu_click(t_editor *edit, int pos, int cas);
@@ -35,13 +36,14 @@ SDL_Texture				*txtr_menu_click(t_editor *edit, int x, int y, int max);
 int						txtr_menu_click_int(t_editor *editor, int x, int y, int max);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
+void					ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom);
 void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
 void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
 void 					ft_nodeprint_secteur(t_lstsec node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
-t_stat					*find_player(t_editor *edit, int x, int y);
+t_ecoord				*find_player(t_editor *edit, int x, int y);
 
 int						add_pillar(t_editor *edit, int x, int y);
 
@@ -51,11 +53,13 @@ void					ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpi
 void					ft_clear_secteur(t_lstsec *sec);
 void					ft_clear_secteur_list(t_lstsec *start);
 
-t_enemy					*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr);
-void					ft_removeenemy(t_lstenn *start, t_enemy **pil);
-t_enemy					*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr);
-void					ft_removeenemywithstat(t_lstenn *start, t_stat **pil);
+t_enemi					*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr);
+void					ft_removeenemy(t_lstenn *start, t_enemi **pil);
+t_enemi					*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr);
+void					ft_removeenemywithstat(t_lstenn *start, t_ecoord **pil);
 void					ft_nodeprint_enemy(t_lstenn node);
 void					ft_clear_enemy_list(t_lstenn *start);
+
+t_vct2					line_percent(t_vct2 pos1, t_vct2 pos2, double percent);
 
 #endif

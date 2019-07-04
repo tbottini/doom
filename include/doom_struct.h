@@ -13,7 +13,6 @@
 # include "libft.h"
 
 typedef struct s_doom	t_doom;
-typedef t_enemy			*t_lstenn;
 
 # define MAXTXTRNUMBER 500
 
@@ -44,6 +43,38 @@ enum 					e_window_id
 {
 	DOOM_WINDOW = 1,
 	EDITOR_WINDOW = 2
+};
+
+typedef struct s_enemi	t_enemi;
+typedef t_enemi			*t_lstenn;
+
+typedef struct s_mur	t_mur;
+typedef t_mur			*t_lstmur;
+
+typedef struct s_secteur	t_secteur;
+typedef t_secteur		*t_lstsec;
+
+/*
+** editor coord on map
+*/
+typedef struct 			s_ecoord
+{
+	t_secteur			*sector;
+	t_vct2				pos;
+	int					type; //Health
+	double				roty;
+}						t_ecoord;
+
+typedef struct			s_eplayer
+{
+	t_ecoord			stat;
+}						t_eplayer;
+
+struct					s_enemi
+{
+	t_ecoord			stat;
+	struct s_enemi		*next;
+	struct s_enemi		*prev;
 };
 
 typedef struct			s_sloc
@@ -170,12 +201,6 @@ struct					s_pilier {
 	t_lstpil			next;
 };
 
-typedef struct s_mur	t_mur;
-typedef t_mur			*t_lstmur;
-
-typedef struct s_secteur	t_secteur;
-typedef t_secteur		*t_lstsec;
-
 struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
@@ -232,7 +257,7 @@ typedef struct			s_editor
 	t_lstpil			pillist;
 	t_lstenn			ennlist;
 	t_pilier			*currpilier;
-	t_stat				*currstat;
+	t_ecoord			*currstat;
 	t_mur				*currmur;
 	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
@@ -243,7 +268,7 @@ typedef struct			s_editor
 	SDL_Texture			*sprites[MAXPROPSNUMBER];
 	SDL_Texture			*wsprites[MAXWPROPSNUMBER];
 	char				*txtrname[MAXTXTRNUMBER];
-	t_player			player;
+	t_eplayer			player;
 }						t_editor;
 
 typedef struct 			s_camera

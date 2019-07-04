@@ -12,23 +12,27 @@
 
 #include "doom_nukem.h"
 
-t_enemy		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
+t_enemi		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 {
-	t_enemy *t;
+	t_enemi *t;
 
-	if (!(t = malloc(sizeof(t_enemy))))
+	if (!(t = malloc(sizeof(t_enemi))))
 		return (NULL);
 	t->stat.pos.x = loc.x;
 	t->stat.pos.y = loc.y;
-	t->stat.rot.y = 0;
-	t->stat.sector = (t_sector *)sctr;
-	t->stat.health = type;
+	if (MINWPROPSPOS <= type && type <= MAXWPROPSPOS)
+		t->stat.roty = 50;
+	else
+		t->stat.roty = 0;
+	t->stat.sector = sctr;
+	ft_printf("%d\n", type);
+	t->stat.type = type;
 	t->prev = NULL;
 	t->next = NULL;
 	return (t);
 }
 
-void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
+void		ft_removeenemy(t_lstenn *start, t_enemi **pil)
 {
 	if (!pil || !(*pil))
 		return ;
@@ -42,7 +46,7 @@ void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
 	*pil = NULL;
 }
 
-void		ft_removeenemywithstat(t_lstenn *start, t_stat **pil)
+void		ft_removeenemywithstat(t_lstenn *start, t_ecoord **pil)
 {
 	t_lstenn curr;
 
@@ -61,9 +65,9 @@ void		ft_removeenemywithstat(t_lstenn *start, t_stat **pil)
 	}
 }
 
-t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr)
+t_enemi		*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr)
 {
-	t_enemy *t;
+	t_enemi *t;
 
 	if (!start)
 		return (NULL);
@@ -87,7 +91,7 @@ static int	check_diff(t_lstenn un, t_lstenn deux)
 
 void		ft_nodeprint_enemy(t_lstenn node)
 {
-	t_enemy *curr;
+	t_enemi *curr;
 
 	if (!node)
 	{
@@ -113,7 +117,7 @@ void		ft_nodeprint_enemy(t_lstenn node)
 
 void		ft_clear_enemy_list(t_lstenn *start)
 {
-	t_enemy *tmp;
+	t_enemi *tmp;
 
 	if (!start || !(*start))
 		return;

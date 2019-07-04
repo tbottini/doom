@@ -56,11 +56,11 @@ void sdl_draw_pixel_map(t_editor *editor, int x, int y)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 0);
 }
 
-t_stat *find_player(t_editor *edit, int x, int y)
+t_ecoord *find_player(t_editor *edit, int x, int y)
 {
 	t_vct2 loc;
 	SDL_Rect ppos;
-	t_enemy *curr;
+	t_enemi *curr;
 
 	loc = get_screen_mappos(edit, edit->player.stat.pos.x, edit->player.stat.pos.y);
 	ppos.x = loc.x - 10;
@@ -69,7 +69,10 @@ t_stat *find_player(t_editor *edit, int x, int y)
 	ppos.h = 20;
 	if (pos_in_rect(ppos, x, y))
 		return (&edit->player.stat);
-	curr = edit->ennlist;
+	if (edit->hovermur)
+		curr = edit->hovermur->wproplist;
+	else
+		curr = edit->ennlist;
 	while (curr)
 	{
 		loc = get_screen_mappos(edit, curr->stat.pos.x, curr->stat.pos.y);
@@ -183,7 +186,7 @@ static void draw_player(t_editor *editor)
 
 	if (editor->currstat == &(editor->player.stat))
 		SDL_SetRenderDrawColor(editor->rend, 100, 255, 100, 255);
-	else if (editor->player.stat.sector == (t_sector *)editor->map)
+	else if (editor->player.stat.sector == editor->map)
 		SDL_SetRenderDrawColor(editor->rend, 100, 205, 100, 255);
 	else
 		SDL_SetRenderDrawColor(editor->rend, 100, 150, 100, 255);
@@ -193,13 +196,13 @@ static void draw_player(t_editor *editor)
 	tmp.w = 20;
 	tmp.h = 20;
 	SDL_RenderDrawRect(editor->rend, &tmp);
-	tmp.x = cos(editor->player.stat.rot.y * PI180) * 50.0;
-	tmp.y = sin(editor->player.stat.rot.y * PI180) * 50.0;
+	tmp.x = cos(editor->player.stat.roty * PI180) * 50.0;
+	tmp.y = sin(editor->player.stat.roty * PI180) * 50.0;
 	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-static void draw_props(t_editor *editor, t_enemy *curr)
+static void draw_props(t_editor *editor, t_enemi *curr, SDL_Texture **sprites, int proppos)
 {
 	SDL_Rect tmp;
 	t_vct2 loc;
@@ -207,14 +210,14 @@ static void draw_props(t_editor *editor, t_enemy *curr)
 
 	if (editor->currstat == &(curr->stat))
 		SDL_SetRenderDrawColor(editor->rend, 75, 100, 255, 255);
-	else if (curr->stat.sector == (t_sector *)editor->map)
+	else if (curr->stat.sector == editor->map)
 		SDL_SetRenderDrawColor(editor->rend, 50, 75, 150, 255);
 	else
 		SDL_SetRenderDrawColor(editor->rend, 50, 75, 100, 255);
 	loc = get_screen_mappos(editor, curr->stat.pos.x, curr->stat.pos.y);
 	tmp = (SDL_Rect){loc.x - 10, loc.y - 10, 20, 20};
-	type = curr->stat.health - MINPROPSPOS;
-	SDL_RenderCopy(editor->rend, editor->sprites[type], NULL, &tmp);
+	type = curr->stat.type - proppos;
+	SDL_RenderCopy(editor->rend, sprites[type], NULL, &tmp);
 	tmp = (SDL_Rect){tmp.x - 1, tmp.y - 1, tmp.w + 2, tmp.h + 2};
 	SDL_RenderDrawRect(editor->rend, &tmp);
 	tmp = (SDL_Rect){tmp.x - 1, tmp.y - 1, tmp.w + 2, tmp.h + 2};
@@ -223,48 +226,50 @@ static void draw_props(t_editor *editor, t_enemy *curr)
 	SDL_RenderDrawRect(editor->rend, &tmp);
 }
 
-static void draw_enemies(t_editor *editor, t_enemy *curr)
+static void draw_enemies(t_editor *editor, t_enemi *curr)
 {
 	SDL_Rect tmp;
 	t_vct2 loc;
 
 	if (editor->currstat == &(curr->stat))
 		SDL_SetRenderDrawColor(editor->rend, 220, 105, 255, 255);
-	else if (curr->stat.sector == (t_sector *)editor->map)
+	else if (curr->stat.sector == editor->map)
 		SDL_SetRenderDrawColor(editor->rend, 170, 100, 205, 255);
 	else
 		SDL_SetRenderDrawColor(editor->rend, 120, 100, 155, 255);
 	loc = get_screen_mappos(editor, curr->stat.pos.x, curr->stat.pos.y);
-	if (curr->stat.health <= 2)
+	if (curr->stat.type <= 2)
 		tmp = (SDL_Rect){loc.x - 5, loc.y - 5, 10, 10};
 	else
-		tmp = (SDL_Rect){loc.x - curr->stat.health * 2 - 2, loc.y - curr->stat.health * 2 - 2, curr->stat.health * 4 + 4, curr->stat.health * 4 + 4};
-	if (curr->stat.health % 2)
+		tmp = (SDL_Rect){loc.x - curr->stat.type * 2 - 2, loc.y - curr->stat.type * 2 - 2, curr->stat.type * 4 + 4, curr->stat.type * 4 + 4};
+	if (curr->stat.type % 2)
 		SDL_RenderDrawRect(editor->rend, &tmp);
 	else
 		SDL_RenderFillRect(editor->rend, &tmp);
-	if (curr->stat.health <= 2)
+	if (curr->stat.type <= 2)
 	{
-		tmp.x = cos(curr->stat.rot.y * PI180) * 20;
-		tmp.y = sin(curr->stat.rot.y * PI180) * 20;
+		tmp.x = cos(curr->stat.roty * PI180) * 20;
+		tmp.y = sin(curr->stat.roty * PI180) * 20;
 	}
 	else
 	{
-		tmp.x = cos(curr->stat.rot.y * PI180) * curr->stat.health * 8;
-		tmp.y = sin(curr->stat.rot.y * PI180) * curr->stat.health * 8;
+		tmp.x = cos(curr->stat.roty * PI180) * curr->stat.type * 8;
+		tmp.y = sin(curr->stat.roty * PI180) * curr->stat.type * 8;
 	}
 	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 }
 
-static void draw_objs(t_editor *editor, t_enemy *start)
+static void draw_objs(t_editor *editor, t_enemi *start)
 {
-	t_enemy *curr;
+	t_enemi *curr;
 
 	curr = start;
 	while (curr)
 	{
-		if (MINPROPSPOS <= curr->stat.health && curr->stat.health <= MAXPROPSPOS)
-			draw_props(editor, curr);
+		if (MINPROPSPOS <= curr->stat.type && curr->stat.type <= MAXPROPSPOS)
+			draw_props(editor, curr, editor->sprites, MINPROPSPOS);
+		else if (MINWPROPSPOS <= curr->stat.type && curr->stat.type <= MAXWPROPSPOS)
+			draw_props(editor, curr, editor->wsprites, MINWPROPSPOS);
 		else
 			draw_enemies(editor, curr);
 		curr = curr->next;
@@ -410,11 +415,11 @@ void draw_sector_menu(t_editor *editor, t_font font)
 		SDL_RenderDrawRect(editor->rend, &box);
 		if (editor->currmur && editor->currmur->portal_ptr == currsec)
 			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){200, 200, 150, 0xFF});
-		else if (editor->currstat && editor->currstat->sector == (t_sector *)currsec)
+		else if (editor->currstat && editor->currstat->sector == currsec)
 		{
 			if (editor->currstat == &editor->player.stat)
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){100, 205, 100, 0xFF});
-			else if (MINPROPSPOS <= editor->currstat->health && editor->currstat->health <= MAXPROPSPOS)
+			else if (MINPROPSPOS <= editor->currstat->type && editor->currstat->type <= MAXPROPSPOS)
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){100, 125, 240, 0xFF});
 			else
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){170, 100, 205, 0xFF});
@@ -445,15 +450,21 @@ void draw_inspect_menu(t_editor *editor)
 	if (editor->currstat) // If Character
 	{
 		if (&editor->player.stat == editor->currstat) // If Player
-			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
-		else if (MINPROPSPOS <= editor->currstat->health && editor->currstat->health <= MAXPROPSPOS) // If Prop
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "type: ", editor->currstat->type, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		else if (MINPROPSPOS <= editor->currstat->type && editor->currstat->type <= MAXPROPSPOS) // If Prop
 		{
-			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->health - MINPROPSPOS, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->type - MINPROPSPOS, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
+		}
+		else if (MINWPROPSPOS <= editor->currstat->type && editor->currstat->type <= MAXWPROPSPOS) // If Wall Prop
+		{
+			ft_printf("%d\t%d\n", editor->currstat->type,  MINWPROPSPOS);
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->type - MINWPROPSPOS, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
 		}
 		else
 		{
-			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->health, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->type, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
 		}
 	}
@@ -563,35 +574,41 @@ int opt_menu_click(t_editor *edit, int pos)
 			edit->selecttxtr = FILL_TXTR;
 		else if (edit->map && !edit->currstat)
 			edit->selecttxtr = FILL_TXTR;
-		else if (edit->currstat && MINPROPSPOS <= edit->currstat->health && edit->currstat->health <= MAXPROPSPOS)
+		else if (edit->currstat && MINPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXPROPSPOS)
 			edit->selecttxtr = FILL_PROP;
 	}
 	else if (pos == 1)
 	{
-		if (edit->currmur->portal_ptr)
-			edit->currmur->portal_id = pos;
+		if (edit->currstat && edit->currstat != &edit->player.stat)
+		{
+			if(edit->currmur)
+				ft_removeenemywithstat(&edit->currmur->wproplist, &edit->currstat);
+			else
+				ft_removeenemywithstat(&edit->ennlist, &edit->currstat);
+		}
 		else if (edit->currmur)
 		{
-			ft_enemypushend(&edit->currmur->wproplist, line_percent(edit->currmur->pil1->pos, edit->currmur->pil2->pos, 0.50), MINWPROPSPOS, NULL)->stat.height = 0.50;
+			if (edit->currmur->portal_ptr)
+				edit->currmur->portal_id = pos;
+			else
+				ft_enemypushend(&edit->currmur->wproplist, line_percent(edit->currmur->pil1->pos, edit->currmur->pil2->pos, 0.50), MINWPROPSPOS, NULL);
 		}
-		else if (edit->currstat && edit->currstat != &edit->player.stat)
-			ft_removeenemywithstat(&edit->ennlist, &edit->currstat);
 		else if (edit->map && !edit->currstat)
 			edit->selecttxtr = FILL_SOL;
 	}
 	else if (pos == 2)
 	{
-		if (edit->currmur->portal_ptr)
+		if (edit->currmur && edit->currmur->portal_ptr)
 			edit->currmur->portal_id = pos;
 	}
 	else if (pos == 3)
 	{
-		if (edit->currmur->portal_ptr)
+		if (edit->currmur && edit->currmur->portal_ptr)
 			edit->currmur->portal_id = pos;
 	}
 	else if (pos == 4)
 	{
-		if (edit->currmur->portal_ptr)
+		if (edit->currmur && edit->currmur->portal_ptr)
 			edit->currmur->portal_id = pos;
 	}
 	else
