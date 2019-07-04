@@ -100,13 +100,13 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y)) // If menu texture
 	{
 		if (edit->selecttxtr == FILL_PROP && edit->currstat && MINPROPSPOS <= edit->currstat->type
-			&& edit->currstat->type <= MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXPROPSNUMBER)))
+			&& edit->currstat->type < MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
 		{
 			edit->currstat->type = e.x;
 			edit->selecttxtr = NOSELECT;
 		}
 		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && MINWPROPSPOS <= edit->currstat->type
-			&& edit->currstat->type <= MAXWPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MAXWPROPSNUMBER)))
+			&& edit->currstat->type < MAXWPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINWPROPSPOS, MAXWPROPSNUMBER)))
 		{
 			edit->currstat->type = e.x;
 			edit->selecttxtr = NOSELECT;
@@ -188,12 +188,21 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 				else
 					edit->currstat->type += e.y;
 			}
-			if (MINPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXPROPSPOS)
+			if (MINPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXPROPSPOS)
 			{
 				if (edit->currstat->type + e.y < MINPROPSPOS)
 					edit->currstat->type = MINPROPSPOS;
 				else if (edit->currstat->type + e.y >= MAXPROPSPOS)
 					edit->currstat->type = MAXPROPSPOS - 1;
+				else
+					edit->currstat->type += e.y;
+			}
+			else if (MINWPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXWPROPSPOS)
+			{
+				if (edit->currstat->type + e.y < MINWPROPSPOS)
+					edit->currstat->type = MINWPROPSPOS;
+				else if (edit->currstat->type + e.y >= MAXWPROPSPOS)
+					edit->currstat->type = MAXWPROPSPOS - 1;
 				else
 					edit->currstat->type += e.y;
 			}
@@ -222,7 +231,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->txtrscroll += e.y * 2;
 		return (0);
 	}
-	if (edit->currstat && edit->currmur && (MINWPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXWPROPSPOS))
+	if (edit->currstat && edit->currmur && (MINWPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXWPROPSPOS))
 	{
 		if (edit->currstat->roty + e.y < 0)
 			edit->currstat->roty = 0.0;
@@ -233,7 +242,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 		edit->currstat->pos = line_percent(edit->currmur->pil1->pos, edit->currmur->pil2->pos, edit->currstat->roty / 100);
 		return (0);
 	}
-	else if (edit->currstat && !(MINPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXPROPSPOS))
+	else if (edit->currstat && !(MINPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXPROPSPOS))
 	{
 		if (edit->currstat->roty + e.y < 0)
 			edit->currstat->roty += e.y + 360.0;
@@ -288,7 +297,7 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		e.x = (e.y - edit->sectscroll) / SECTORBOXHEIGHT;
 		if ((e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
 			|| (2 <= e.x && e.x <= 3 && edit->map && !edit->currstat && !edit->currmur)
-			|| (e.x == 0 && edit->currstat && MINPROPSPOS <= edit->currstat->type && edit->currstat->type <= MAXPROPSPOS))
+			|| (e.x == 0 && edit->currstat && MINPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXPROPSPOS))
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		else
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));

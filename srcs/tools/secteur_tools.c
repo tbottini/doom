@@ -24,6 +24,7 @@ t_lstsec ft_newsector(SDL_Texture *top, SDL_Texture *sol)
 	t->sol = sol;
 	t->htop = 10;
 	t->hsol = 0;
+	t->gravity = 0;
 	t->next = NULL;
 	return (t);
 }

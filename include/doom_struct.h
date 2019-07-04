@@ -18,15 +18,15 @@ typedef struct s_doom	t_doom;
 
 # define MINPROPSPOS 20
 # define MAXPROPSNUMBER 4
-# define MAXPROPSPOS MINPROPSPOS + MAXPROPSNUMBER
+# define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
 # define PROPMUN "ressources/props/munition.xpm"
 # define PROPPILL "ressources/props/pill.png"
 
-# define MINWPROPSPOS MAXPROPSPOS + 1
+# define MINWPROPSPOS (MAXPROPSPOS + 1)
 # define MAXWPROPSNUMBER 1
-# define MAXWPROPSPOS MAXPROPSPOS + MAXWPROPSNUMBER
+# define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/button.ico"
 
 /*
@@ -217,9 +217,9 @@ struct					s_secteur
 	t_lstmur			murs;
 	SDL_Texture			*top;
 	SDL_Texture			*sol;
-	int					hsol;
-	int					htop;
-
+	int					hsol; // Hauteur du sol par rapport a 0
+	int					htop; // Hauteur du plafond par rapport au sol
+	int					gravity; // 0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍
 	t_lstsec			prvs;
 	t_lstsec			next;
 };

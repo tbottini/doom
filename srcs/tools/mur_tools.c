@@ -55,6 +55,7 @@ void ft_removewall(t_lstmur *start, t_mur **mur)
 		(*mur)->next->prvs = (*mur)->prvs;
 	if ((*mur)->prvs)
 		(*mur)->prvs->next = (*mur)->next;
+	ft_clear_enemy_list(&((*mur)->wproplist));
 	free(*mur);
 	*mur = NULL;
 }
@@ -142,6 +143,7 @@ void ft_clear_wall_list(t_lstmur *start)
 	while (tmp->prvs && tmp->prvs != *start)
 	{
 		tmp = tmp->prvs;
+		ft_clear_enemy_list(&(tmp->wproplist));
 		free(tmp->next);
 	}
 	if (tmp != *start)
