@@ -16,6 +16,21 @@ typedef struct s_doom	t_doom;
 
 # define MAXTXTRNUMBER 500
 
+# define MINPROPSPOS 20
+# define MAXPROPSNUMBER 6
+# define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
+# define PROPHEALTH "ressources/props/health.xpm"
+# define PROPCASS "ressources/props/cassette.png"
+# define PROPMUN "ressources/props/munition.xpm"
+# define PROPRPILL "ressources/props/pill.png"
+# define PROPGPILL "ressources/props/greenpill.png"
+# define PROPBPILL "ressources/props/bluepill.png"
+
+# define MINWPROPSPOS (MAXPROPSPOS + 1)
+# define MAXWPROPSNUMBER 1
+# define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
+# define PROPBTN "ressources/props/button.ico"
+
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
@@ -30,6 +45,38 @@ enum 					e_window_id
 {
 	DOOM_WINDOW = 1,
 	EDITOR_WINDOW = 2
+};
+
+typedef struct s_entity	t_entity;
+typedef t_entity			*t_lstent;
+
+typedef struct s_mur	t_mur;
+typedef t_mur			*t_lstmur;
+
+typedef struct s_secteur	t_secteur;
+typedef t_secteur		*t_lstsec;
+
+/*
+** editor coord on map
+*/
+typedef struct 			s_ecoord
+{
+	t_secteur			*sector;
+	t_vct2				pos;
+	int					type; //Health
+	double				roty;
+}						t_ecoord;
+
+typedef struct			s_eplayer
+{
+	t_ecoord			stat;
+}						t_eplayer;
+
+struct					s_entity
+{
+	t_ecoord			stat;
+	struct s_entity		*next;
+	struct s_entity		*prev;
 };
 
 typedef struct			s_sloc
@@ -100,6 +147,14 @@ typedef struct			s_pal {
 	int					height;
 }						t_pal;
 
+/*
+** 0 : pills
+** 1 : cassette
+** 2 : Health Pack
+** 3 : Munition Pack
+** 4 : Button
+*/
+
 typedef struct			s_ui
 {
 	t_font				fonts;
@@ -148,18 +203,13 @@ struct					s_pilier {
 	t_lstpil			next;
 };
 
-typedef struct s_mur	t_mur;
-typedef t_mur			*t_lstmur;
-
-typedef struct s_secteur	t_secteur;
-typedef t_secteur		*t_lstsec;
-
 struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
 	SDL_Texture			*txtr;
 	t_secteur			*portal_ptr;
 	t_portal_id			portal_id;
+	t_lstent			wproplist;
 	t_lstmur			prvs;
 	t_lstmur			next;
 };
@@ -169,24 +219,31 @@ struct					s_secteur
 	t_lstmur			murs;
 	SDL_Texture			*top;
 	SDL_Texture			*sol;
-	int					hsol;
-	int					htop;
-
+	int					hsol; // Hauteur du sol par rapport a 0
+	int					htop; // Hauteur du plafond par rapport au sol
+	int					gravity; // 0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍
 	t_lstsec			prvs;
 	t_lstsec			next;
 };
 
-typedef t_enemy		*t_lstenn;
-
 /*
 ** selecttxtr 1 fill obvious
 ** selecttxtr 2 remplir sol de secteur
+** selecttxtr 3 remplir type de props
 */
+typedef enum		e_selecttxtr
+{
+	NOSELECT,
+	FILL_TXTR,
+	FILL_SOL,
+	FILL_PROP,
+	FILL_WPROP
+}					t_selecttxtr;
 
 typedef struct			s_editor
 {
 	bool				status;
-	int					selecttxtr;
+	t_selecttxtr		selecttxtr;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;
 	t_ui				*ui;
@@ -200,9 +257,9 @@ typedef struct			s_editor
 	SDL_Rect			txtrbox;
 	t_tab				keys;
 	t_lstpil			pillist;
-	t_lstenn			ennlist;
+	t_lstent			ennlist;
 	t_pilier			*currpilier;
-	t_stat				*currstat;
+	t_ecoord			*currstat;
 	t_mur				*currmur;
 	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
@@ -210,8 +267,10 @@ typedef struct			s_editor
 	t_lstsec			map;
 	t_vct3				mappos;
 	SDL_Texture			*txtrgame[MAXTXTRNUMBER];
+	SDL_Texture			*sprites[MAXPROPSNUMBER];
+	SDL_Texture			*wsprites[MAXWPROPSNUMBER];
 	char				*txtrname[MAXTXTRNUMBER];
-	t_player			player;
+	t_eplayer			player;
 }						t_editor;
 
 typedef struct 			s_camera

@@ -18,7 +18,7 @@ int		close_editor(t_doom *doom)
 	if (doom->edit.sectors)
 		ft_clear_secteur_list(&(doom->edit.sectors));
 	if (doom->edit.ennlist)
-		ft_clear_enemy_list(&(doom->edit.ennlist));
+		ft_clear_entity_list(&(doom->edit.ennlist));
 	doom->edit.map = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
@@ -31,8 +31,8 @@ void	open_editor(t_doom *doom)
 	//doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
 	doom->edit.sectors = ft_newsector(doom->edit.txtrgame[0], doom->edit.txtrgame[0]);
 	doom->edit.map = doom->edit.sectors;
-	doom->edit.player.stat.sector = (t_sector *)doom->edit.map;
-	doom->edit.player.stat.health = 100;
+	doom->edit.player.stat.sector = doom->edit.map;
+	doom->edit.player.stat.type = 100;
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
 	doom->edit.status = 1;
@@ -70,9 +70,13 @@ static int load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **
 			ft_strcpy(&(tmp[20]), txtrdata->d_name);
 			if ((txtrs[tot] = IMG_LoadTexture(rend, tmp)))
 				if (!(txtrsname[++tot] = ft_strdup(tmp)))
+				{
+					closedir(txtrfolder);
 					return (0);
+				}
 		}
 	}
+	closedir(txtrfolder);
 	return (1);
 }
 
@@ -83,7 +87,7 @@ int		editor_init(t_editor *editor)
 		return (0);
 	if (!(editor->rend = SDL_CreateRenderer(editor->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
-	SDL_SetWindowMinimumSize(editor->win, MINWIDTH, MINHEIGHT);
+	SDL_SetWindowMinimumSize(editor->win, EDITMINWIDTH, EDITMINHEIGHT);
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
 	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
 	editor->sectbox.x = -1;
@@ -92,5 +96,19 @@ int		editor_init(t_editor *editor)
 	editor->optbox.w = 200;
 	editor->txtrbox.w = 620;
 	editor->txtrbox.h = MINHEIGHT - 20;
+	if (!(editor->sprites[0] = IMG_LoadTexture(editor->rend, PROPHEALTH)))
+		return (0);
+	if (!(editor->sprites[1] = IMG_LoadTexture(editor->rend, PROPCASS)))
+		return (0);
+	if (!(editor->sprites[2] = IMG_LoadTexture(editor->rend, PROPMUN)))
+		return (0);
+	if (!(editor->sprites[3] = IMG_LoadTexture(editor->rend, PROPRPILL)))
+		return (0);
+	if (!(editor->sprites[4] = IMG_LoadTexture(editor->rend, PROPGPILL)))
+		return (0);
+	if (!(editor->sprites[5] = IMG_LoadTexture(editor->rend, PROPBPILL)))
+		return (0);
+	if (!(editor->wsprites[0] = IMG_LoadTexture(editor->rend, PROPBTN)))
+		return (0);
 	return (load_textures_folder(editor->rend, editor->txtrgame, editor->txtrname));
 }
