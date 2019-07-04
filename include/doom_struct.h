@@ -17,12 +17,14 @@ typedef struct s_doom	t_doom;
 # define MAXTXTRNUMBER 500
 
 # define MINPROPSPOS 20
-# define MAXPROPSNUMBER 4
+# define MAXPROPSNUMBER 6
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
 # define PROPMUN "ressources/props/munition.xpm"
-# define PROPPILL "ressources/props/pill.png"
+# define PROPRPILL "ressources/props/pill.png"
+# define PROPGPILL "ressources/props/greenpill.png"
+# define PROPBPILL "ressources/props/bluepill.png"
 
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
 # define MAXWPROPSNUMBER 1

@@ -70,9 +70,13 @@ static int load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **
 			ft_strcpy(&(tmp[20]), txtrdata->d_name);
 			if ((txtrs[tot] = IMG_LoadTexture(rend, tmp)))
 				if (!(txtrsname[++tot] = ft_strdup(tmp)))
+				{
+					closedir(txtrfolder);
 					return (0);
+				}
 		}
 	}
+	closedir(txtrfolder);
 	return (1);
 }
 
@@ -98,7 +102,11 @@ int		editor_init(t_editor *editor)
 		return (0);
 	if (!(editor->sprites[2] = IMG_LoadTexture(editor->rend, PROPMUN)))
 		return (0);
-	if (!(editor->sprites[3] = IMG_LoadTexture(editor->rend, PROPPILL)))
+	if (!(editor->sprites[3] = IMG_LoadTexture(editor->rend, PROPRPILL)))
+		return (0);
+	if (!(editor->sprites[4] = IMG_LoadTexture(editor->rend, PROPGPILL)))
+		return (0);
+	if (!(editor->sprites[5] = IMG_LoadTexture(editor->rend, PROPBPILL)))
 		return (0);
 	if (!(editor->wsprites[0] = IMG_LoadTexture(editor->rend, PROPBTN)))
 		return (0);
