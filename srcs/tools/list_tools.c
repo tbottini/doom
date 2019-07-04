@@ -38,6 +38,33 @@ void ft_removepillar(t_lstpil *start, t_pilier **pil)
 	*pil = NULL;
 }
 
+void ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom)
+{
+	t_lstent wprops;
+	t_lstmur murs;
+
+	pil->pos.x += addx * (EDITORPRECISION) / zoom;
+	pil->pos.y += addy * (EDITORPRECISION) / zoom;
+	while (sectors)
+	{
+		murs = sectors->murs;
+		while (murs)
+		{
+			if (murs->pil1 == pil || murs->pil2 == pil)
+			{
+				wprops = murs->wproplist;
+				while (wprops)
+				{
+					wprops->stat.pos = line_percent(murs->pil1->pos, murs->pil2->pos, wprops->stat.roty / 100);
+					wprops = wprops->next;
+				}
+			}
+			murs = murs->next;
+		}
+		sectors = sectors->next;
+	}
+}
+
 t_pilier *ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 {
 	t_pilier *t;

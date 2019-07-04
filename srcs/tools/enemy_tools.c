@@ -12,23 +12,26 @@
 
 #include "doom_nukem.h"
 
-t_enemy		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
+t_entity		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 {
-	t_enemy *t;
+	t_entity *t;
 
-	if (!(t = malloc(sizeof(t_enemy))))
+	if (!(t = malloc(sizeof(t_entity))))
 		return (NULL);
 	t->stat.pos.x = loc.x;
 	t->stat.pos.y = loc.y;
-	t->stat.rot.y = 0;
-	t->stat.sector = (t_sector *)sctr;
-	t->stat.health = type;
+	if (MINWPROPSPOS <= type && type < MAXWPROPSPOS)
+		t->stat.roty = 50;
+	else
+		t->stat.roty = 0;
+	t->stat.sector = sctr;
+	t->stat.type = type;
 	t->prev = NULL;
 	t->next = NULL;
 	return (t);
 }
 
-void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
+void		ft_removeenemy(t_lstent *start, t_entity **pil)
 {
 	if (!pil || !(*pil))
 		return ;
@@ -42,9 +45,9 @@ void		ft_removeenemy(t_lstenn *start, t_enemy **pil)
 	*pil = NULL;
 }
 
-void		ft_removeenemywithstat(t_lstenn *start, t_stat **pil)
+void		ft_removeenemywithstat(t_lstent *start, t_ecoord **pil)
 {
-	t_lstenn curr;
+	t_lstent curr;
 
 	if (!pil || !(*pil))
 		return ;
@@ -61,9 +64,9 @@ void		ft_removeenemywithstat(t_lstenn *start, t_stat **pil)
 	}
 }
 
-t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr)
+t_entity		*ft_enemypushend(t_lstent *start, t_vct2 loc, int type, t_secteur *sctr)
 {
-	t_enemy *t;
+	t_entity *t;
 
 	if (!start)
 		return (NULL);
@@ -78,16 +81,16 @@ t_enemy		*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr
 	return (t->next);
 }
 
-static int	check_diff(t_lstenn un, t_lstenn deux)
+static int	check_diff(t_lstent un, t_lstent deux)
 {
 	if (un->stat.pos.x != deux->stat.pos.x || un->stat.pos.y != deux->stat.pos.y)
 		return (0);
 	return (1);
 }
 
-void		ft_nodeprint_enemy(t_lstenn node)
+void		ft_nodeprint_enemy(t_lstent node)
 {
-	t_enemy *curr;
+	t_entity *curr;
 
 	if (!node)
 	{
@@ -111,9 +114,9 @@ void		ft_nodeprint_enemy(t_lstenn node)
 	ft_printf("\n");
 }
 
-void		ft_clear_enemy_list(t_lstenn *start)
+void		ft_clear_entity_list(t_lstent *start)
 {
-	t_enemy *tmp;
+	t_entity *tmp;
 
 	if (!start || !(*start))
 		return;

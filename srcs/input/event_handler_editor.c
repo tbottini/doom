@@ -25,7 +25,7 @@ static void		window_event(t_doom *doom, SDL_Event e)
 		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y;
 		doom->edit.optbox.h = doom->edit.size.y - doom->edit.optbox.y;
 		doom->edit.optbox.x = doom->edit.size.x - doom->edit.optbox.w;
-		doom->edit.txtrbox.x = doom->edit.size.x / 2 - doom->edit.txtrbox.w / 2;
+		doom->edit.txtrbox.x = doom->edit.size.x / 2.1 - doom->edit.txtrbox.w / 2;
 		doom->edit.txtrbox.h = doom->edit.size.y - doom->edit.txtrbox.y;
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
