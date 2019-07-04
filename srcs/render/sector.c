@@ -12,7 +12,7 @@ t_sector		*sector_new()
 	new->len_sub = 0;
 	new->gravity.x = 0;
 	new->gravity.y = 0;
-	new->gravity.z = -9.80665;
+	new->gravity.z = G_MOON;
 	new->enemys = NULL;
 	return (new);
 }

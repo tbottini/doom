@@ -6,13 +6,20 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/04 15:29:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/04 17:44:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-/*============cassette=================*/
+/*============jetpack=================*/
+
+static void	jetpack(t_stat *stat)
+{
+	stat->jetpack = 1;
+}
+
+/*============weapon=================*/
 
 static void	add_weapon(t_weapon *weapon)
 {

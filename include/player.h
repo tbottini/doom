@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/03 17:02:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/04 17:48:53 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,21 @@ typedef struct 			s_stat
 {
 	t_fvct3 			pos;
 	t_fvct2				rot;
-	double				height;
-	int					width;
-	double				speed;
-	int					health;
 	t_fvct3				vel;
 	t_fvct3				rotvel;
 	t_sector			*sector;
+	double				height;
+	double				speed;
+	int					width;
+	int					health;
+	int					jetpack;
 }						t_stat;
 
+/* Jetpack
+** -1 : pas ramasse
+** 0 : actif
+** 1 : inactif
+*/
 typedef struct 			s_player
 {
 	t_stat				stat;
@@ -104,6 +110,7 @@ t_enemy					*enemy_init(int type);
 **	Gameplay
 */
 
+void					jetpack_on_off(t_player *player);
 void					fly(t_stat *stat);
 void					unfly(t_stat *stat);
 void					sprint_release(t_stat *stat);

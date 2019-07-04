@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/03 15:35:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/04 15:47:02 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
 
-# define ACCELERATION 8000.0
 # define RADIUS 500
 # define TOTALMUSIC 10
 

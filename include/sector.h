@@ -6,6 +6,9 @@
 #include "libft.h"
 #include <SDL.h>
 
+# define G_EARTH -9.80665
+# define G_MOON -1.62200
+
 typedef struct s_doom 	t_doom;
 typedef struct s_enemy 	t_enemy;
 typedef struct s_sector	t_sector;

@@ -6,11 +6,24 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 17:20:03 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/04 18:01:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+void		jetpack_on_off(t_player *player)
+{
+	if (player->stat.jetpack == 1)
+	{
+		player->stat.jetpack = 0;
+		player->stat.vel.x = 0;
+		player->stat.vel.y = 0;
+		player->stat.vel.z = 0;
+	}
+	else if (player->stat.jetpack == 0)
+		player->stat.jetpack = 1;
+}
 
 void		fly(t_stat *stat)
 {
@@ -40,7 +53,7 @@ void		crouch(t_player *player)
 
 void		crouch_release(t_player *player)
 {
-	if (player->crouch)
+	if (player->crouch && player->stat.jetpack)
 	{
 		player->crouch = false;
 		player->stat.speed = WALK;
@@ -68,9 +81,12 @@ void		sprint_release(t_stat *stat)
 
 void		gravity(t_stat *stat)
 {
-	stat->vel.x += stat->sector->gravity.x;
-	stat->vel.y += stat->sector->gravity.y;
-	stat->vel.z += stat->sector->gravity.z * 450.0;
+	if (stat->jetpack)
+	{
+		stat->vel.x += stat->sector->gravity.x;
+		stat->vel.y += stat->sector->gravity.y;
+		stat->vel.z += stat->sector->gravity.z * 450.0;
+	}
 }
 
 void		update_rotation(t_stat *stat)
@@ -87,10 +103,11 @@ void		update_rotation(t_stat *stat)
 	else if (stat->rot.y > 360)
 		stat->rot.y -= 360.0;
 	// Update Position
-	if ((stat->sector->h_floor >= stat->pos.z
+	if (((stat->sector->h_floor >= stat->pos.z
 		&& stat->sector->gravity.z < 0) || (stat->pos.z
 		>= stat->sector->h_floor + stat->sector->h_ceil
 		- stat->height && stat->sector->gravity.z > 0))
+		|| !stat->jetpack)
 		inertie(stat);
 	else
 		gravity(stat);

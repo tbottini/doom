@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/01 21:25:21 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/04 17:47:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		key_press(int key, t_doom *doom)
 		reload(&doom->player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)
 		action(&doom->player, &doom->player.stat);
-	else if (key == SDLK_LGUI && !doom->ui.m_status)
+	else if (key == SDLK_LGUI && !doom->ui.m_status && doom->player.stat.jetpack)
 		crouch(&doom->player);
 	else if (key == SDLK_g)
 		describe_player(doom->player);
@@ -68,6 +68,10 @@ int		key_press(int key, t_doom *doom)
 		save_png(&doom->sdl);
 	else if (key == SDLK_v && !doom->ui.m_status)
 		kick(doom, &doom->player);
+	else if (key == SDLK_l && !doom->ui.m_status)
+		doom->player.stat.jetpack = 1;
+	else if (key == SDLK_z && !doom->ui.m_status)
+		jetpack_on_off(&doom->player);
 	else if (key == SDLK_PERIOD)
 		doom->ui.fire = (t_pal){{0, 0x10003101, 0x14073702, 0x190f3d03, 0x1e164304,
 		0x221e4905, 0x27254f06, 0x2c2c5507, 0x30345b08, 0x353c6109, 0x3a43670A,

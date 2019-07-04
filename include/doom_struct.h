@@ -16,6 +16,18 @@ typedef struct s_doom	t_doom;
 
 # define MAXTXTRNUMBER 500
 
+# define MINPROPSPOS 20
+# define MAXPROPSNUMBER 4
+# define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
+# define PROPHEALTH "ressources/props/health.xpm"
+# define PROPCASS "ressources/props/cassette.png"
+# define PROPMUN "ressources/props/munition.xpm"
+# define PROPPILL "ressources/props/pill.png"
+
+# define MINWPROPSPOS (MAXPROPSPOS + 1)
+# define MAXWPROPSNUMBER 1
+# define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
+# define PROPBTN "ressources/props/button.ico"
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
