@@ -30,7 +30,6 @@ typedef struct s_doom	t_doom;
 # define MAXWPROPSNUMBER 1
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/button.ico"
-
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;

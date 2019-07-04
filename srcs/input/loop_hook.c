@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/03 13:31:36 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/04 17:50:15 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void input_loop(t_doom *doom, int key)
 		benda(doom, key);
 	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed && !doom->ui.m_status)
 		sprint(&doom->player.stat);
-	else if (key == SDLK_SPACE && !doom->ui.m_status)
+	else if (key == SDLK_SPACE && !doom->ui.m_status && doom->player.stat.jetpack)
 		jump(&doom->player);
 	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
 		shoot(&doom->player);
@@ -67,9 +67,9 @@ static void input_loop(t_doom *doom, int key)
 		play_effect(&doom->sound, 8);
 	else if (key == SDLK_y)
 		fire(doom);
-	else if (key == SDLK_u)
+	else if (key == SDLK_SPACE && !doom->ui.m_status && !doom->player.stat.jetpack)
 		fly(&doom->player.stat);
-	else if (key == SDLK_j)
+	else if (key == SDLK_LGUI && !doom->ui.m_status && !doom->player.stat.jetpack)
 		unfly(&doom->player.stat);
 }
 

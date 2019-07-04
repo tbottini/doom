@@ -6,6 +6,9 @@
 #include "libft.h"
 #include <SDL.h>
 
+# define G_EARTH -9.80665
+# define G_MOON -1.62200
+
 typedef struct s_doom 	t_doom;
 typedef struct s_enemy 	t_enemy;
 typedef struct s_sector	t_sector;
@@ -35,17 +38,6 @@ typedef struct			s_pillar
 	double				angle;
 }						t_pillar;
 
-typedef struct			s_prop
-{
-	double				x1;
-	double				x2;
-	double				y1;
-	double				y2;
-	double				z;
-	t_txtr				*tex;
-	void				(*func)(t_doom *doom);
-}						t_prop;
-
 /*
 **	rajouter un pointeur sur le prochain pillier ? pour le mur
 **	si le mur est un portail defini dans status
@@ -61,6 +53,19 @@ typedef struct			s_wall
 	t_sector			*link;
 	double				dist;
 }						t_wall;
+
+typedef struct			s_prop
+{
+	t_txtr				*tex;
+	void				(*func)(void *param);
+	t_fvct3				pos;
+	t_fvct3				e1;
+	t_fvct3				e2;
+	t_wall				*door;
+	int					width;
+	int					height;
+	int					type;
+}						t_prop;
 
 typedef struct			s_sector
 {

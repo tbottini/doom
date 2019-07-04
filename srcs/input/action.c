@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/29 15:21:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/03 17:35:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,15 @@ double			button_clipping(t_prop prop, t_fvct3 pos, double angle)
 	double		coef_wall;
 	double		b;
 
-	diff.x = prop.x1 - pos.x;
-	diff.y = prop.y1 - pos.y;
-	diff2.x = prop.x2 - pos.x;
-	diff2.y = prop.y2 - pos.y;
+	//diff.x = prop.x1 - pos.x;
+	//diff.y = prop.y1 - pos.y;
+	//diff2.x = prop.x2 - pos.x;
+	//diff2.y = prop.y2 - pos.y;
+	(void)pos;
+	diff.x = sin((angle - 90.0) * PI180) * (prop.width / 2);
+	diff.y = cos((angle - 90.0) * PI180) * (prop.width / 2);
+	diff2.x = sin((angle + 90.0) * PI180) * (prop.width / 2);
+	diff2.y = cos((angle + 90.0) * PI180) * (prop.width / 2);
 	if (diff2.x - diff.x < 0.00001 && diff2.x - diff.x > -0.000001)
 	{
 		inter.x = diff.x;
@@ -107,35 +112,30 @@ int			is_button(t_prop *prop)
 	return (prop->func ? 1 : 0);
 }
 
+static void			prop_hitbox(t_prop *prop, double angle)
+{
+	prop->e1.x = sin((angle - 90.0) * PI180) * (prop->width / 2);
+	prop->e1.y = cos((angle - 90.0) * PI180) * (prop->width / 2);
+	prop->e2.x = sin((angle + 90.0) * PI180) * (prop->width / 2);
+	prop->e2.y = cos((angle + 90.0) * PI180) * (prop->width / 2);
+}
+
 t_prop		*possible_button(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
 {
 	t_prop		*but[10];
 	t_prop		*b;
 	int			i;
-	int			j;
 	int			index;
 
-	j = -1;
 	index = 0;
 	b = NULL;
-	while (++j < stat->sector->len_sub)
-	{
-		i = -1;
-		while (++i < stat->sector->ssector[j].len_prop)
-		{
-			if (is_button(b = &stat->sector->ssector[j].prop[i]) && vector_intersect(ori, pos, (t_fvct3){b->x1, b->y1, 0.0}, (t_fvct3){b->x2, b->y2, 0.0}))
-			{
-				but[index] = b;
-				if (++index > 9)
-					return (button_hit(but, pos, stat->rot.y));
-				printf("sub wall %d\n", i);
-			}
-		}
-	}
 	i = -1;
 	while (++i < stat->sector->len)
 	{
-		if (is_button(b = &stat->sector->prop[i]) && vector_intersect(ori, pos, (t_fvct3){b->x1, b->y1, 0.0}, (t_fvct3){b->x2, b->y2, 0.0}))
+		b = &stat->sector->prop[i];
+		prop_hitbox(b, stat->rot.y);
+		//if (is_button(b = &stat->sector->prop[i]) && vector_intersect(ori, pos, (t_fvct3){b->x1, b->y1, 0.0}, (t_fvct3){b->x2, b->y2, 0.0}))
+		if (b->func && vector_intersect(ori, pos, (t_fvct3){b->e1.x, b->e1.y, 0.0}, (t_fvct3){b->e2.x, b->e2.y, 0.0}))
 		{
 			but[index] = b;
 			if (++index > 9)
