@@ -31,6 +31,10 @@ int editor_key_press(int key, t_doom *doom)
 	{
 		close_editor(doom);
 	}
+	else if (key == SDLK_RETURN)
+	{
+		save_editor_to_file(&doom->edit);
+	}
 	else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 	{
 		relpos = get_rel_mappos(&doom->edit, doom->edit.mouse.x, doom->edit.mouse.y);
