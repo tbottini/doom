@@ -20,6 +20,8 @@
 
 # define MINWIDTH 800
 # define MINHEIGHT 800
+# define EDITMINWIDTH 1024
+# define EDITMINHEIGHT 800
 # define WIDTH 1300
 # define HEIGHT 950
 # define MAXWIDTH 1920

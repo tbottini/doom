@@ -60,7 +60,7 @@ t_ecoord *find_player(t_editor *edit, int x, int y)
 {
 	t_vct2 loc;
 	SDL_Rect ppos;
-	t_enemi *curr;
+	t_entity *curr;
 
 	loc = get_screen_mappos(edit, edit->player.stat.pos.x, edit->player.stat.pos.y);
 	ppos.x = loc.x - 10;
@@ -202,7 +202,7 @@ static void draw_player(t_editor *editor)
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 
-static void draw_props(t_editor *editor, t_enemi *curr, SDL_Texture **sprites, int proppos)
+static void draw_props(t_editor *editor, t_entity *curr, SDL_Texture **sprites, int proppos)
 {
 	SDL_Rect tmp;
 	t_vct2 loc;
@@ -226,7 +226,7 @@ static void draw_props(t_editor *editor, t_enemi *curr, SDL_Texture **sprites, i
 	SDL_RenderDrawRect(editor->rend, &tmp);
 }
 
-static void draw_enemies(t_editor *editor, t_enemi *curr)
+static void draw_enemies(t_editor *editor, t_entity *curr)
 {
 	SDL_Rect tmp;
 	t_vct2 loc;
@@ -259,9 +259,9 @@ static void draw_enemies(t_editor *editor, t_enemi *curr)
 	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 }
 
-static void draw_objs(t_editor *editor, t_enemi *start)
+static void draw_objs(t_editor *editor, t_entity *start)
 {
-	t_enemi *curr;
+	t_entity *curr;
 
 	curr = start;
 	while (curr)

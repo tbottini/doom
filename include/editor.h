@@ -25,7 +25,7 @@ void					draw_inspect_menu(t_editor *editor);
 
 void					sector_menu(t_editor *edit, int pos, int del);
 int						ft_walllen(t_lstmur start);
-void					ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil);
+void					ft_remove_walls_with_pillar(t_lstmur *start, t_pilier *pil);
 void					ft_removewall(t_lstmur *start, t_mur **mur);
 void					ft_movewall(t_mur *wall, int addx, int addy, int zoom);
 t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr);
@@ -53,12 +53,12 @@ void					ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpi
 void					ft_clear_secteur(t_lstsec *sec);
 void					ft_clear_secteur_list(t_lstsec *start);
 
-t_enemi					*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr);
-void					ft_removeenemy(t_lstenn *start, t_enemi **pil);
-t_enemi					*ft_enemypushend(t_lstenn *start, t_vct2 loc, int type, t_secteur *sctr);
-void					ft_removeenemywithstat(t_lstenn *start, t_ecoord **pil);
-void					ft_nodeprint_enemy(t_lstenn node);
-void					ft_clear_enemy_list(t_lstenn *start);
+t_entity					*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr);
+void					ft_removeenemy(t_lstent *start, t_entity **pil);
+t_entity					*ft_enemypushend(t_lstent *start, t_vct2 loc, int type, t_secteur *sctr);
+void					ft_removeenemywithstat(t_lstent *start, t_ecoord **pil);
+void					ft_nodeprint_enemy(t_lstent node);
+void					ft_clear_entity_list(t_lstent *start);
 
 t_vct2					line_percent(t_vct2 pos1, t_vct2 pos2, double percent);
 

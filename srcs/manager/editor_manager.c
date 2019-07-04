@@ -18,7 +18,7 @@ int		close_editor(t_doom *doom)
 	if (doom->edit.sectors)
 		ft_clear_secteur_list(&(doom->edit.sectors));
 	if (doom->edit.ennlist)
-		ft_clear_enemy_list(&(doom->edit.ennlist));
+		ft_clear_entity_list(&(doom->edit.ennlist));
 	doom->edit.map = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
@@ -87,7 +87,7 @@ int		editor_init(t_editor *editor)
 		return (0);
 	if (!(editor->rend = SDL_CreateRenderer(editor->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
-	SDL_SetWindowMinimumSize(editor->win, MINWIDTH, MINHEIGHT);
+	SDL_SetWindowMinimumSize(editor->win, EDITMINWIDTH, EDITMINHEIGHT);
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
 	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
 	editor->sectbox.x = -1;

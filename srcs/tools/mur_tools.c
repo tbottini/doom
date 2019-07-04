@@ -31,7 +31,7 @@ static t_lstmur ft_newwall(t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr)
 
 void ft_movewall(t_mur *wall, int addx, int addy, int zoom)
 {
-	t_lstenn wprops;
+	t_lstent wprops;
 
 	wall->pil1->pos.x += addx * (EDITORPRECISION) / zoom;
 	wall->pil1->pos.y += addy * (EDITORPRECISION) / zoom;
@@ -55,12 +55,12 @@ void ft_removewall(t_lstmur *start, t_mur **mur)
 		(*mur)->next->prvs = (*mur)->prvs;
 	if ((*mur)->prvs)
 		(*mur)->prvs->next = (*mur)->next;
-	ft_clear_enemy_list(&((*mur)->wproplist));
+	ft_clear_entity_list(&((*mur)->wproplist));
 	free(*mur);
 	*mur = NULL;
 }
 
-void ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil)
+void ft_remove_walls_with_pillar(t_lstmur *start, t_pilier *pil)
 {
 	t_lstmur t;
 	t_lstmur tmp;
@@ -68,25 +68,13 @@ void ft_remove_pillar_fromwalls(t_lstmur *start, t_pilier *pil)
 	if (!start || !(*start))
 		return;
 	t = *start;
+	tmp = NULL;
 	while (t)
 	{
 		if (t->pil1 == pil || t->pil2 == pil)
 		{
-			if (*start == t)
-			{
-				*start = t->next;
-				tmp = *start;
-				free(t);
-			}
-			else
-			{
-				if (t->prvs)
-					t->prvs->next = t->next;
-				if (t->next)
-					t->next->prvs = t->prvs;
-				tmp = t->next;
-				free(t);
-			}
+			tmp = t->next;
+			ft_removewall(start, &t);
 			t = tmp;
 		}
 		else
@@ -143,7 +131,7 @@ void ft_clear_wall_list(t_lstmur *start)
 	while (tmp->prvs && tmp->prvs != *start)
 	{
 		tmp = tmp->prvs;
-		ft_clear_enemy_list(&(tmp->wproplist));
+		ft_clear_entity_list(&(tmp->wproplist));
 		free(tmp->next);
 	}
 	if (tmp != *start)

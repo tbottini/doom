@@ -47,8 +47,8 @@ enum 					e_window_id
 	EDITOR_WINDOW = 2
 };
 
-typedef struct s_enemi	t_enemi;
-typedef t_enemi			*t_lstenn;
+typedef struct s_entity	t_entity;
+typedef t_entity			*t_lstent;
 
 typedef struct s_mur	t_mur;
 typedef t_mur			*t_lstmur;
@@ -72,11 +72,11 @@ typedef struct			s_eplayer
 	t_ecoord			stat;
 }						t_eplayer;
 
-struct					s_enemi
+struct					s_entity
 {
 	t_ecoord			stat;
-	struct s_enemi		*next;
-	struct s_enemi		*prev;
+	struct s_entity		*next;
+	struct s_entity		*prev;
 };
 
 typedef struct			s_sloc
@@ -209,7 +209,7 @@ struct					s_mur {
 	SDL_Texture			*txtr;
 	t_secteur			*portal_ptr;
 	t_portal_id			portal_id;
-	t_lstenn			wproplist;
+	t_lstent			wproplist;
 	t_lstmur			prvs;
 	t_lstmur			next;
 };
@@ -257,7 +257,7 @@ typedef struct			s_editor
 	SDL_Rect			txtrbox;
 	t_tab				keys;
 	t_lstpil			pillist;
-	t_lstenn			ennlist;
+	t_lstent			ennlist;
 	t_pilier			*currpilier;
 	t_ecoord			*currstat;
 	t_mur				*currmur;

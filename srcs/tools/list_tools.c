@@ -40,7 +40,7 @@ void ft_removepillar(t_lstpil *start, t_pilier **pil)
 
 void ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom)
 {
-	t_lstenn wprops;
+	t_lstent wprops;
 	t_lstmur murs;
 
 	pil->pos.x += addx * (EDITORPRECISION) / zoom;
