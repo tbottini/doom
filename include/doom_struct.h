@@ -61,8 +61,9 @@ typedef t_secteur		*t_lstsec;
 typedef struct 			s_ecoord
 {
 	t_secteur			*sector;
+	t_mur				*mur;
 	t_vct2				pos;
-	int					type; //Health
+	int					type; // Health if player
 	double				roty;
 }						t_ecoord;
 
@@ -255,21 +256,21 @@ typedef struct			s_editor
 	SDL_Rect			optbox;
 	SDL_Rect			txtrbox;
 	t_tab				keys;
-	t_lstpil			pillist;
-	t_lstent			ennlist;
 	t_pilier			*currpilier;
 	t_ecoord			*currstat;
 	t_mur				*currmur;
 	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
-	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstsec			map;
 	t_vct3				mappos;
-	SDL_Texture			*txtrgame[MAXTXTRNUMBER];
-	SDL_Texture			*sprites[MAXPROPSNUMBER];
-	SDL_Texture			*wsprites[MAXWPROPSNUMBER];
-	char				*txtrname[MAXTXTRNUMBER];
-	t_eplayer			player;
+	t_eplayer			player; // [map] donnees sur le player
+	t_lstpil			pillist; // [map] Liste de pilliers
+	t_lstent			ennlist; // [map] Liste d'ennemis
+	t_lstsec			sectors;  // [map] Liste des secteurs (contenant les murs)
+	SDL_Texture			*txtrgame[MAXTXTRNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID de la texture du mur
+	SDL_Texture			*sprites[MAXPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du prop
+	SDL_Texture			*wsprites[MAXWPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du wallprop
+	char				*txtrname[MAXTXTRNUMBER]; // [map] Contient le path de la texture
 }						t_editor;
 
 typedef struct 			s_camera

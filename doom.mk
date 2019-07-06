@@ -4,6 +4,7 @@ SRCS_DOOM		:=		editor.c										\
 						slider_function.c								\
 						main.c											\
 						savefile.c										\
+						readfile.c										\
 						cinematri.c										\
 
 SRCS_UI			:=		button_action.c									\
@@ -62,6 +63,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
 						enemy_tools.c									\
+						file_tools.c									\
 						mur_tools.c										\
 						little_tools.c									\
 						num_tools.c										\

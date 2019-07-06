@@ -1,0 +1,45 @@
+README
+
+le parsing de doom
+
+sizeof(long) : balise "💎🇩🇿🍉💩"
+sizeof(int) : balise (Texture) "🌅"
+sizeof(int) : number of textures in map (currently number loaded in editor)
+foreach {
+	sizeof(char) * strlen(path de texture) : Path de la Texture
+	sizeof(char) : '\v'
+}
+sizeof(int) : balise (End Texture) "🌌"
+sizeof(int) : balise (Pillars) "⛩"
+sizeof(int) : number of Pillars
+foreach {
+	sizeof(double) x pos
+	sizeof(double) y pos
+}
+sizeof(int) : balise (End Pillars) "💊"
+sizeof(int) : balise (Sectors) "🚧"
+sizeof(int) : number of Sectors
+foreach {
+	sizeof(char) : Gravity type (0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍)
+	sizeof(int) : Hauteur sol par rapport a 0
+	sizeof(int) : Hauteur plafond par rapport a sol
+	sizeof(int) : ID Texture Sol (Must be less than number of textures in map)
+	sizeof(int) : ID Texture Plafond (Must be less than number of textures in map)
+	sizeof(int) : balise (Walls) "💦"
+	sizeof(int) : number of Walls
+	foreach {
+		sizeof(int) : Pillar start ID (Must be less than number of Pillars)
+		sizeof(int) : Pillar end ID (Must be less than number of Pillars)
+		sizeof(int) : Texture ID (Must be less than number of textures in map)
+		sizeof(int) : Portal type (Enum e_portal_id)
+		sizeof(int) : Sector ID (Ignored if Portal type is 0) (Must still be read)
+		sizeof(int) : balise (Wall Props) "🖼"
+		sizeof(int) : number of Wall Props
+		foreach {
+			
+		}
+		sizeof(int) : balise (End Wall Props) "📅"
+	}
+	sizeof(int) : balise (End Walls) "⛱"
+}
+sizeof(int) : balise (Emd Sectors) "🏠"

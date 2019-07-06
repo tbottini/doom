@@ -52,6 +52,8 @@ int		key_press(int key, t_doom *doom)
 		else if (doom->ui.m_status == 4)
 			sdl_set_status(doom, 0);
 	}
+	else if (key ==SDLK_g)
+		read_file(doom, "ressources/map/editor.map");
 	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&doom->player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)

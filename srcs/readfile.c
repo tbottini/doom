@@ -12,28 +12,25 @@
 
 #include "doom_nukem.h"
 
-int writing_map(int fd, t_editor *edit)
-{
-	(void)fd;
-	(void)edit;
-	return (0);
-}
-
-int	save_editor_to_file(t_editor *edit)
+int	read_file(t_doom *doom, const char *file)
 {
 	int fd;
 	long x;
+	long y;
 
-	if ((fd = open("ressources/map/editor.map", O_CREAT | /*O_EXCL |*/ O_WRONLY, 0777 /*S_IRUSR | S_IRGRP| S_IROTH*/)) == -1)
+	if ((fd = open(file, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) == -1)
 	{
-		write(2, "Error writting to ressources/map/editor.map\n", 44);
+		write(2, "Error opening file\n", 19);
 		return (-1);
 	}
-	x = (long)"💎🇩🇿🍉💩";
-	write(fd, &x, sizeof(x));
-
-	writing_map(fd, edit);
+	read(fd, &x, sizeof(x));
+	y = (long)"💎🇩🇿🍉💩";
+	if (x != y)
+	{
+		ft_printf("Invalid file : %s\n", file);
+		return (-1);
+	}
 	close(fd);
-	write(1, "Successfully wrote to ressources/map/editor.map\n", 48);
+	write(1, "Successfully read ressources/map/editor.map\n", 48);
 	return (0);
 }

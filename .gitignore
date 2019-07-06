@@ -6,3 +6,4 @@ doom-nukem
 .vscode
 *.dSYM
 out.png
+ressources/map/editor.map
