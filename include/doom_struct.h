@@ -16,6 +16,10 @@ typedef struct s_doom	t_doom;
 
 # define MAXTXTRNUMBER 500
 
+# define MINENEMYPOS 1
+# define MAXENEMYNUMBER 4
+# define MAXENEMYPOS (MINENEMYPOS + MAXENEMYNUMBER)
+
 # define MINPROPSPOS 20
 # define MAXPROPSNUMBER 6
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
@@ -30,6 +34,11 @@ typedef struct s_doom	t_doom;
 # define MAXWPROPSNUMBER 1
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/button.ico"
+
+# define ISENEMY(x) (MINENEMYPOS <= x && x < MAXENEMYPOS)
+# define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
+# define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
+
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
@@ -60,8 +69,8 @@ typedef t_secteur		*t_lstsec;
 */
 typedef struct 			s_ecoord
 {
-	t_secteur			*sector;
-	t_mur				*mur;
+	t_secteur			*sector; // Linked Sector
+	t_mur				*mur; // Linked Wall
 	t_vct2				pos;
 	int					type; // Health if player
 	double				roty;

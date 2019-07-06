@@ -20,7 +20,7 @@ t_entity		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 		return (NULL);
 	t->stat.pos.x = loc.x;
 	t->stat.pos.y = loc.y;
-	if (MINWPROPSPOS <= type && type < MAXWPROPSPOS)
+	if (ISWALLPROP(type))
 		t->stat.roty = 50;
 	else
 		t->stat.roty = 0;
