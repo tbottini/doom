@@ -20,7 +20,7 @@ sizeof(int) : balise (End Pillars) "💊"
 sizeof(int) : balise (Sectors) "🚧"
 sizeof(int) : number of Sectors
 foreach {
-	sizeof(char) : Gravity type (0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍)
+	sizeof(char) : Gravity type (0 : Moon | 1 : Earth)
 	sizeof(int) : Hauteur sol par rapport a 0
 	sizeof(int) : Hauteur plafond par rapport a sol
 	sizeof(int) : ID Texture Sol (Must be less than number of textures in map)
@@ -36,10 +36,36 @@ foreach {
 		sizeof(int) : balise (Wall Props) "🖼"
 		sizeof(int) : number of Wall Props
 		foreach {
-			
+			sizeof(int) : type
+			sizeof(int) : Sector ID (Must be less than number of Sector)
+			sizeof(int) : Wall ID (of current sector) (Must be less than number of Walls in Sector)
+			sizeof(double) : pos x
+			sizeof(double) : pos y
 		}
 		sizeof(int) : balise (End Wall Props) "📅"
 	}
 	sizeof(int) : balise (End Walls) "⛱"
+
+	sizeof(int) : balise (Props) "🚽"
+	sizeof(int) : number of Props
+	foreach {
+		sizeof(int) : type
+		sizeof(int) : Sector ID (Must be less than number of Sector)
+		sizeof(int) : Wall ID (of current sector) (Must be less than number of Walls in Sector)
+		sizeof(double) : pos x
+		sizeof(double) : pos y
+	}
+	sizeof(int) : balise (End Props) "💩"
 }
-sizeof(int) : balise (Emd Sectors) "🏠"
+sizeof(int) : balise (End Sectors) "🏠"
+sizeof(int) : balise (Enemy) "🔪"
+sizeof(int) : number of Enemy
+foreach {
+	sizeof(int) : type
+	sizeof(int) : Sector ID (Must be less than number of Sector)
+	sizeof(double) : pos x
+	sizeof(double) : pos y
+	sizeof(double) : rotation y
+}
+sizeof(int) : balise (End Enemy) "🍹"
+sizeof(long) : balise "👨🏻🤠🍑"
