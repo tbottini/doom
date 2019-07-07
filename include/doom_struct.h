@@ -292,7 +292,7 @@ typedef struct			s_editor
 	t_lstent			ennlist; // [map] Liste d'ennemis
 	t_lstsec			sectors;  // [map] Liste des secteurs (contenant les murs)
 	SDL_Texture			*txtrgame[MAXTXTRNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID de la texture du mur
-	SDL_Texture			*txtrreal[MAXTXTRNUMBER];
+	SDL_Texture			*txtrreal[MAXTXTRNUMBER]; // [map] Used when saving map
 	SDL_Texture			*sprites[MAXPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du prop
 	SDL_Texture			*wsprites[MAXWPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du wallprop
 	char				*txtrname[MAXTXTRNUMBER]; // [map] Contient le path de la texture

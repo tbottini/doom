@@ -28,6 +28,7 @@ void	write_pillars(int fd, t_editor *edit)
 	int			nb_pillars;
 
 	write_balise(fd, "⛩");
+	nb_pillars = 0;
 	nbp = edit->pillist;
 	while (nbp)
 	{
@@ -145,7 +146,7 @@ void	write_one_sector(int fd, t_secteur *sec, t_lstent props)
 	write(fd, &sec->htop, sizeof(int));
 	write(fd, &sec->idsol, sizeof(int));
 	write(fd, &sec->idtop, sizeof(int));
-	write_sec_walls(fd, sec->id, &sec->murs);
+	write_sec_walls(fd, sec->id, sec->murs);
 	write_sec_props(fd, sec, props);
 }
 
@@ -181,7 +182,9 @@ int		push_texture(t_editor *edit, SDL_Texture *txtr)
 	while (x < MAXTXTRNUMBER && edit->txtrreal[x])
 	{
 		if (edit->txtrreal[x] == txtr)
+		{
 			return (x);
+		}
 		x++;
 	}
 	if (x < MAXTXTRNUMBER && !(edit->txtrreal[x]))
@@ -242,6 +245,7 @@ void	write_textures(int fd, t_editor *edit)
 
 	load_used_textures(edit);
 	write_balise(fd, "🌅");
+	nb_textures = 0;
 	while (nb_textures < MAXTXTRNUMBER && edit->txtrreal[nb_textures])
 		nb_textures++;
 	write(fd, &nb_textures, sizeof(int));
@@ -273,6 +277,7 @@ void	write_enemies(int fd, t_lstent enn)
 	t_lstent	tmp;
 	int			c;
 
+	c = 0;
 	tmp = enn;
 	while (tmp)
 	{
