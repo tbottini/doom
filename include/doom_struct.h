@@ -93,8 +93,8 @@ typedef struct			s_eplayer
 struct					s_entity
 {
 	t_ecoord			stat;
-	struct s_entity		*next;
-	struct s_entity		*prev;
+	t_entity			*next;
+	t_entity			*prev;
 };
 
 typedef struct			s_sloc
@@ -215,6 +215,7 @@ typedef struct s_pilier	t_pilier;
 typedef t_pilier		*t_lstpil;
 
 struct					s_pilier {
+	int					id;
 	t_vct2				pos;
 
 	t_lstpil			prvs;
@@ -225,21 +226,26 @@ struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
 	SDL_Texture			*txtr;
+	int					idtxtr;
 	t_secteur			*portal_ptr;
 	t_portal_id			portal_id;
 	t_lstent			wproplist;
 	t_lstmur			prvs;
 	t_lstmur			next;
+	int					id;
 };
 
 struct					s_secteur
 {
+	int					id;
 	t_lstmur			murs;
 	SDL_Texture			*top;
+	int					idtop;
 	SDL_Texture			*sol;
+	int					idsol;
 	int					hsol; // Hauteur du sol par rapport a 0
 	int					htop; // Hauteur du plafond par rapport au sol
-	int					gravity; // 0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍
+	char				gravity; // 0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍
 	t_lstsec			prvs;
 	t_lstsec			next;
 };
@@ -286,6 +292,7 @@ typedef struct			s_editor
 	t_lstent			ennlist; // [map] Liste d'ennemis
 	t_lstsec			sectors;  // [map] Liste des secteurs (contenant les murs)
 	SDL_Texture			*txtrgame[MAXTXTRNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID de la texture du mur
+	SDL_Texture			*txtrreal[MAXTXTRNUMBER];
 	SDL_Texture			*sprites[MAXPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du prop
 	SDL_Texture			*wsprites[MAXWPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du wallprop
 	char				*txtrname[MAXTXTRNUMBER]; // [map] Contient le path de la texture

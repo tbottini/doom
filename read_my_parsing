@@ -20,7 +20,7 @@ sizeof(int) : balise (End Pillars) "💊"
 sizeof(int) : balise (Sectors) "🚧"
 sizeof(int) : number of Sectors
 foreach {
-	sizeof(char) : Gravity type (0 : Moon | 1 : Earth) // sizeof(int) ?
+	sizeof(char) : Gravity type (0 : Moon | 1 : Earth)
 	sizeof(int) : Hauteur sol par rapport a 0
 	sizeof(int) : Hauteur plafond par rapport a sol
 	sizeof(int) : ID Texture Sol (Must be less than number of textures in map)
