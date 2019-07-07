@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 20:45:43 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/01 21:50:12 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/07 22:24:09 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_entity		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 
 	if (!(t = malloc(sizeof(t_entity))))
 		return (NULL);
+	t->stat.mur = NULL;
 	t->stat.pos.x = loc.x;
 	t->stat.pos.y = loc.y;
 	if (ISWALLPROP(type))

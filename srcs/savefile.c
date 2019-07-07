@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/07 21:05:01 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/07 22:49:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,20 @@
 
 void	write_balise(int fd, char *balise)
 {
-	int x;
+	int *x;
 
-	x = (int)balise;
-	write(fd, &x, sizeof(int));
+	x = (int *)balise;
+	if (*x == -2054381584 || *x == -1936941072 || *x == 11115490 || *x == -1970102288 || *x == -1483038736 || *x == -1601200144 || *x == -1433100304 || *x == -1181900816)
+		printf("Writing %s:\n", balise);
+	else if (*x == -1500340240 || *x == 11639778 || *x == -1113939984 || *x == -1450008592)
+		printf("\tWriting %s:\n", balise);
+	else if (*x == -1130979344 || *x == -2053922832)
+		printf("\t\tWriting %s:\n", balise);
+	else
+		printf("Writing %d %s:\n", *x, balise);
+	if (*x == -1936941072 || *x == -1970102288 || *x == 11639778 || *x == -2053922832 || *x == -1601200144 || *x == -1181900816)
+		printf("\n");
+	write(fd, x, sizeof(int));
 }
 
 void	write_pillars(int fd, t_editor *edit)
@@ -36,13 +46,16 @@ void	write_pillars(int fd, t_editor *edit)
 		nb_pillars++;
 		nbp = nbp->next;
 	}
+	printf("Found %d Pillars\n", nb_pillars);
 	write(fd, &nb_pillars, sizeof(int));
 	nbp = edit->pillist;
 	while (nbp)
 	{
 		tmp = (double)nbp->pos.x / EDITORSTEP;
 		write(fd, &tmp, sizeof(double));
+		printf("\tNew Pillars at %f", tmp);
 		tmp = (double)nbp->pos.y / EDITORSTEP;
+		printf("\t%f\n", tmp);
 		write(fd, &tmp, sizeof(double));
 		nbp = nbp->next;
 	}
@@ -51,11 +64,36 @@ void	write_pillars(int fd, t_editor *edit)
 
 void	write_one_prop(int fd, t_entity *prop)
 {
+	double	pos;
+
+	printf("\t\t\tProp type: %d\n", prop->stat.type);
 	write(fd, &prop->stat.type, sizeof(int));
-	write(fd, &prop->stat.sector->id, sizeof(int));
-	write(fd, &prop->stat.mur->id, sizeof(int));
-	write(fd, &prop->stat.pos.x, sizeof(double));
-	write(fd, &prop->stat.pos.y, sizeof(double));
+	if (prop->stat.sector)
+	{
+		printf("\t\t\tSector ID: %d\n", prop->stat.sector->id);
+		write(fd, &prop->stat.sector->id, sizeof(int));
+	}
+	else
+	{
+		printf("\t\t\tSector ID: null\n");
+		write(fd, "\0\0\0\0", sizeof(int));
+	}
+	if (prop->stat.mur)
+	{
+		printf("\t\t\tWall ID: %d\n", prop->stat.mur->id);
+		write(fd, &prop->stat.mur->id, sizeof(int));
+	}
+	else
+	{
+		printf("\t\t\tWall ID: null\n");
+		write(fd, "\0\0\0\0", sizeof(int));
+	}
+	pos = (double)prop->stat.pos.x / EDITORSTEP;
+	printf("\t\t\tPosition: %f", pos);
+	write(fd, &pos, sizeof(double));
+	pos = (double)prop->stat.pos.y / EDITORSTEP;
+	printf("\t%f\n", pos);
+	write(fd, &pos, sizeof(double));
 }
 
 void	write_wall_props(int fd, t_lstent props)
@@ -71,6 +109,8 @@ void	write_wall_props(int fd, t_lstent props)
 		x++;
 		tmp = tmp->next;
 	}
+	printf("\t\tFound %d wall props\n", x);
+	write(fd, &x, sizeof(int));
 	tmp = props;
 	while (tmp)
 	{
@@ -82,10 +122,15 @@ void	write_wall_props(int fd, t_lstent props)
 
 void	write_one_wall(int fd, int idsec, t_lstmur wall)
 {
+	printf("\t\tID Pillar 1: %d\n", wall->pil1->id);
 	write(fd, &wall->pil1->id, sizeof(int));
+	printf("\t\tID Pillar 2: %d\n", wall->pil2->id);
 	write(fd, &wall->pil2->id, sizeof(int));
+	printf("\t\tID Texture: %d\n", wall->idtxtr);
 	write(fd, &wall->idtxtr, sizeof(int));
+	printf("\t\tID Portal Type: %d\n", wall->portal_id);
 	write(fd, &wall->portal_id, sizeof(t_portal_id));
+	printf("\t\tID Sector: %d\n", idsec);
 	write(fd, &idsec, sizeof(int));
 	write_wall_props(fd, wall->wproplist);
 }
@@ -93,18 +138,19 @@ void	write_one_wall(int fd, int idsec, t_lstmur wall)
 void	write_sec_walls(int fd, int idsec, t_lstmur wall)
 {
 	t_lstmur tmp;
-	int x;
+	int nbwalls;
 	
 	write_balise(fd, "💦");
 	tmp = wall;
-	x = 0;
+	nbwalls = 0;
 	while (tmp)
 	{
-		tmp->id = x;
-		x++;
+		tmp->id = nbwalls;
+		nbwalls++;
 		tmp = tmp->next;
 	}
-	write(fd, &x, sizeof(int));
+	printf("\tFound %d walls\n", nbwalls);
+	write(fd, &nbwalls, sizeof(int));
 	tmp = wall;
 	while (tmp)
 	{
@@ -128,6 +174,7 @@ void	write_sec_props(int fd, t_secteur *sect, t_lstent props)
 			c++;
 		tmp = tmp->next;
 	}
+	printf("\t\tFound %d props\n", c);
 	write(fd, &c, sizeof(int));
 	tmp = props;
 	while (tmp)
@@ -141,10 +188,15 @@ void	write_sec_props(int fd, t_secteur *sect, t_lstent props)
 
 void	write_one_sector(int fd, t_secteur *sec, t_lstent props)
 {
+	printf("\tGravity: %d\n", (int)sec->gravity);
 	write(fd, &sec->gravity, sizeof(char));
+	printf("\tHauteur Sol: %d\n", (int)sec->hsol);
 	write(fd, &sec->hsol, sizeof(int));
+	printf("\tHauteur Plafond: %d\n", (int)sec->htop);
 	write(fd, &sec->htop, sizeof(int));
+	printf("\tID Image sol: %d\n", (int)sec->idsol);
 	write(fd, &sec->idsol, sizeof(int));
+	printf("\tID Image plafond: %d\n", (int)sec->idsol);
 	write(fd, &sec->idtop, sizeof(int));
 	write_sec_walls(fd, sec->id, sec->murs);
 	write_sec_props(fd, sec, props);
@@ -164,6 +216,7 @@ void	write_sectors(int fd, t_editor *edit)
 		nbsectors++;
 		sec = sec->next;
 	}
+	printf("Found %d Sectors\n", nbsectors);
 	write(fd, &nbsectors, sizeof(int));
 	sec = edit->sectors;
 	while (sec)
@@ -192,6 +245,7 @@ int		push_texture(t_editor *edit, SDL_Texture *txtr)
 		edit->txtrreal[x] = txtr;
 		return (x);
 	}
+	printf("\tError Adding Texture: %d\n", x);
 	return (-1);
 }
 
@@ -234,6 +288,7 @@ void	write_one_texture(int fd, t_editor *edit, SDL_Texture *txtr)
 	char *path;
 
 	path = get_path(edit, txtr);
+	printf("\tWrote path: %s\n", path);
 	write(fd, path, sizeof(char) * ft_strlen(path));
 	write(fd, "\v", sizeof(char));
 }
@@ -243,11 +298,12 @@ void	write_textures(int fd, t_editor *edit)
 	int i;
 	int nb_textures;
 
-	load_used_textures(edit);
 	write_balise(fd, "🌅");
+	load_used_textures(edit);
 	nb_textures = 0;
 	while (nb_textures < MAXTXTRNUMBER && edit->txtrreal[nb_textures])
 		nb_textures++;
+	printf("\t Found %d Textures\n", nb_textures);
 	write(fd, &nb_textures, sizeof(int));
 	i = 0;
 	while (i < nb_textures)
@@ -262,14 +318,28 @@ void	write_one_enemy(int fd, t_entity *enn)
 {
 	double tmp;
 
+	printf("\t\tEnemy type: %d\n", enn->stat.type);
 	write(fd, &enn->stat.type, sizeof(int));
-	write(fd, &enn->stat.sector->id, sizeof(int));
+	if (enn->stat.sector)
+	{
+		printf("\t\tEnemy Sector ID: %d\n", enn->stat.sector->id);
+		write(fd, &enn->stat.sector->id, sizeof(int));
+	}
+	else
+	{
+		printf("\t\tEnemy Sector ID: null\n");
+		write(fd, "\0\0\0\0", sizeof(int));
+	}
 	tmp = (double)(enn->stat.pos.x / EDITORSTEP);
+	printf("\t\tEnemy pos: %f", tmp);
 	write(fd, &tmp, sizeof(double));
 	tmp = (double)(enn->stat.pos.y / EDITORSTEP);
+	printf("\t%f", tmp);
 	write(fd, &tmp, sizeof(double));
 	tmp = enn->stat.roty / EDITORSTEP;
+	printf("\trot: %f\n", tmp);
 	write(fd, &tmp, sizeof(double));
+	printf("\n");
 }
 
 void	write_enemies(int fd, t_lstent enn)
@@ -277,6 +347,7 @@ void	write_enemies(int fd, t_lstent enn)
 	t_lstent	tmp;
 	int			c;
 
+	write_balise(fd, "🔪");
 	c = 0;
 	tmp = enn;
 	while (tmp)
@@ -285,7 +356,7 @@ void	write_enemies(int fd, t_lstent enn)
 			c++;
 		tmp = tmp->next;
 	}
-	write_balise(fd, "🔪");
+	printf("\tFound %d Enemies\n", c);
 	write(fd, &c, sizeof(int));
 	tmp = enn;
 	while (tmp)
@@ -309,18 +380,18 @@ int writing_map(int fd, t_editor *edit)
 int	save_editor_to_file(t_editor *edit)
 {
 	int fd;
-	long x;
+	long *x;
 
 	if ((fd = open("ressources/map/editor.map", O_CREAT | /*O_EXCL |*/ O_WRONLY, 0777 /*S_IRUSR | S_IRGRP| S_IROTH*/)) == -1)
 	{
 		write(2, "Error writting to ressources/map/editor.map\n", 44);
 		return (-1);
 	}
-	x = (long)"💎🇩🇿🍉💩";
-	write(fd, &x, sizeof(long));
+	x = (long *)"💎🇩🇿🍉💩";
+	write(fd, x, sizeof(long));
 	writing_map(fd, edit);
-	x = (long)"👨🏻🤠🍑";
-	write(fd, &x, sizeof(long));
+	x = (long *)"👨🏻🤠🍑";
+	write(fd, x, sizeof(long));
 	close(fd);
 	write(1, "Successfully wrote to ressources/map/editor.map\n", 48);
 	return (0);

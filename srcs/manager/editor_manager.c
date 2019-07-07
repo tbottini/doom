@@ -69,8 +69,9 @@ static int load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **
 			ft_strcpy(tmp, "ressources/textures/");
 			ft_strcpy(&(tmp[20]), txtrdata->d_name);
 			if ((txtrs[tot] = IMG_LoadTexture(rend, tmp)))
-				if (!(txtrsname[++tot] = ft_strdup(tmp)))
+				if (!(txtrsname[tot++] = ft_strdup(tmp)))
 				{
+					ft_printf("Error Adding texture\n");
 					closedir(txtrfolder);
 					return (0);
 				}

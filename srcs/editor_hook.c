@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/03 13:34:26 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/07 22:26:53 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,15 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y)) // If menu left
 	{
-		if (edit->currmur)
+		if (edit->currstat)
+			edit->currstat->sector = sector_menu_click(edit, e.y, 2);
+		else if (edit->currmur)
 		{
 			if ((edit->currmur->portal_ptr = sector_menu_click(edit, e.y, 2)))
 				edit->currmur->portal_id = 4;
 			else
 				edit->currmur->portal_id = 0;
 		}
-		else if (edit->currstat)
-			edit->currstat->sector = sector_menu_click(edit, e.y, 2);
 		else
 			sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
