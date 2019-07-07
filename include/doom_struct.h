@@ -64,6 +64,15 @@ typedef t_mur			*t_lstmur;
 typedef struct s_secteur	t_secteur;
 typedef t_secteur		*t_lstsec;
 
+typedef struct			s_slen
+{
+	int	nb_pillars;
+	int	nb_textures;
+	int	nb_sectors;
+	int	nb_walls;
+	int	nb_props;
+}						t_slen;
+
 /*
 ** editor coord on map
 */
