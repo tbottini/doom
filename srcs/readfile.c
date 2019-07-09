@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 22:50:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 23:00:51 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,10 +339,8 @@ int	read_one_enemy(int fd, t_game *game, t_slen *len)
 		return (-101);
 	enemy = enemy_init(tmp);
 	printf("\tEnemy type: %d\n", tmp);
-	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= nb)
+	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)))
 		return (-102);
-	if (tmp >= 0 && tmp < len->nb_sects)
-		pushfront_enemy(&game->sectors[tmp], enemy);
 	printf("\tEnemy Sector: %d\n", tmp);
 	if ((read(fd, &enemy->stat.pos.x, sizeof(double)) != sizeof(double)))
 		return (-103);
@@ -352,7 +350,9 @@ int	read_one_enemy(int fd, t_game *game, t_slen *len)
 	if ((read(fd, &enemy->stat.rot.y, sizeof(double)) != sizeof(double)))
 		return (-105);
 	printf("Enemy Rot: %f\n", enemy->stat.rot.y);
-	if (tmp < 0)
+	if (0 <= tmp && tmp < len->nb_sects)
+		pushfront_enemy(&game->sectors[tmp], enemy);
+	else
 		free(enemy);
 	return (0);
 }
