@@ -6,7 +6,8 @@ sizeof(long) : balise "💎🇩🇿🍉💩"
 sizeof(int) : balise (Texture) "🌅"
 sizeof(int) : number of textures in map (currently number loaded in editor)
 foreach {
-	sizeof(char) * strlen(path de texture) : Path de la Texture
+	sizeof(int) : strlen(path de texture) + sizeof(char)
+	sizeof(char) * strlen(path de texture) + 1 : Path de la Texture
 	sizeof(char) : '\v'
 }
 sizeof(int) : balise (End Texture) "🌌"
@@ -21,8 +22,8 @@ sizeof(int) : balise (Sectors) "🚧"
 sizeof(int) : number of Sectors
 foreach {
 	sizeof(char) : Gravity type (0 : Moon | 1 : Earth)
-	sizeof(int) : Hauteur sol par rapport a 0
-	sizeof(int) : Hauteur plafond par rapport a sol
+	sizeof(double) : Hauteur sol par rapport a 0
+	sizeof(double) : Hauteur plafond par rapport a sol
 	sizeof(int) : ID Texture Sol (Must be less than number of textures in map)
 	sizeof(int) : ID Texture Plafond (Must be less than number of textures in map)
 	sizeof(int) : balise (Walls) "💦"
@@ -31,13 +32,14 @@ foreach {
 		sizeof(int) : Pillar start ID (Must be less than number of Pillars)
 		sizeof(int) : Pillar end ID (Must be less than number of Pillars)
 		sizeof(int) : Texture ID (Must be less than number of textures in map)
-		sizeof(int) : Portal type (Enum e_portal_id)
+		sizeof(t_portal_id) : Portal type (Enum e_portal_id)
 		sizeof(int) : Sector ID (Ignored if Portal type is 0) (Must still be read)
 		sizeof(int) : balise (Wall Props) "🖼"
 		sizeof(int) : number of Wall Props
 		foreach {
 			sizeof(int) : type
 			sizeof(int) : Sector ID (Must be less than number of Sector)
+			sizeof(int) : Sector ID of Wall (Must be less than number of Sector)
 			sizeof(int) : Wall ID (of current sector) (Must be less than number of Walls in Sector)
 			sizeof(double) : pos x
 			sizeof(double) : pos y

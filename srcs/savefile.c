@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 14:37:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 18:40:34 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	write_wall_props(int fd, t_lstent props)
 	write_balise(fd, "📅");
 }
 
-void	write_one_wall(int fd, int idsec, t_lstmur wall)
+void	write_one_wall(int fd, t_lstmur wall)
 {
 	printf("\t\tID Pillar 1: %d\n", wall->pil1->id);
 	write(fd, &wall->pil1->id, sizeof(int));
@@ -134,12 +134,20 @@ void	write_one_wall(int fd, int idsec, t_lstmur wall)
 	write(fd, &wall->idtxtr, sizeof(int));
 	printf("\t\tID Portal Type: %d\n", wall->portal_id);
 	write(fd, &wall->portal_id, sizeof(t_portal_id));
-	printf("\t\tID Sector: %d\n", idsec);
-	write(fd, &idsec, sizeof(int));
+	if (wall->portal_ptr)
+	{
+		printf("\t\tID Sector: %d\n", wall->portal_ptr->id);
+		write(fd, &wall->portal_ptr->id, sizeof(int));
+	}
+	else
+	{
+		printf("\t\tID Sector: null\n");
+		write(fd, "\xff\xff\xff\xff", sizeof(int));
+	}
 	write_wall_props(fd, wall->wproplist);
 }
 
-void	write_sec_walls(int fd, int idsec, t_lstmur wall)
+void	write_sec_walls(int fd, t_lstmur wall)
 {
 	t_lstmur tmp;
 	int nbwalls;
@@ -158,7 +166,7 @@ void	write_sec_walls(int fd, int idsec, t_lstmur wall)
 	tmp = wall;
 	while (tmp)
 	{
-		write_one_wall(fd, idsec, tmp);
+		write_one_wall(fd, tmp);
 		tmp = tmp->next;
 	}
 	write_balise(fd, "⛱");
@@ -192,17 +200,21 @@ void	write_sec_props(int fd, t_secteur *sect, t_lstent props)
 
 void	write_one_sector(int fd, t_secteur *sec, t_lstent props)
 {
+	double tmp;
+
 	printf("\tGravity: %d\n", (int)sec->gravity);
 	write(fd, &sec->gravity, sizeof(char));
-	printf("\tHauteur Sol: %d\n", (int)sec->hsol);
-	write(fd, &sec->hsol, sizeof(int));
-	printf("\tHauteur Plafond: %d\n", (int)sec->htop);
-	write(fd, &sec->htop, sizeof(int));
-	printf("\tID Image sol: %d\n", (int)sec->idsol);
+	tmp = sec->hsol / EDITORSTEP;
+	printf("\tHauteur Sol: %f\n", tmp);
+	write(fd, &tmp, sizeof(double));
+	tmp = sec->htop / EDITORSTEP;
+	printf("\tHauteur Plafond: %f\n", tmp);
+	write(fd, &tmp, sizeof(double));
+	printf("\tID Image sol: %d\n", sec->idsol);
 	write(fd, &sec->idsol, sizeof(int));
-	printf("\tID Image plafond: %d\n", (int)sec->idsol);
+	printf("\tID Image plafond: %d\n", sec->idtop);
 	write(fd, &sec->idtop, sizeof(int));
-	write_sec_walls(fd, sec->id, sec->murs);
+	write_sec_walls(fd, sec->murs);
 	write_sec_props(fd, sec, props);
 }
 
@@ -290,10 +302,13 @@ char	*get_path(t_editor *edit, SDL_Texture *txtr)
 void	write_one_texture(int fd, t_editor *edit, SDL_Texture *txtr)
 {
 	char *path;
+	int	pathlen;
 
 	path = get_path(edit, txtr);
-	printf("\tWrote path: %s\n", path);
-	write(fd, path, sizeof(char) * ft_strlen(path));
+	pathlen = ft_strlen(path);
+	printf("\tWrote path(%d): %s\n", pathlen, path);
+	write(fd, &pathlen, sizeof(int));
+	write(fd, path, sizeof(char) * (pathlen + 1));
 	write(fd, "\v", sizeof(char));
 }
 

@@ -13,6 +13,7 @@ typedef struct s_doom 	t_doom;
 typedef struct s_enemy 	t_enemy;
 typedef struct s_sector	t_sector;
 typedef struct s_wall	t_portal;
+typedef struct s_prop	t_prop;
 
 typedef enum			e_portal_id
 {
@@ -51,6 +52,7 @@ typedef struct			s_wall
 	t_txtr				txtr;
 	t_portal_id			status;
 	t_sector			*link;
+	t_prop				*props;
 	double				dist;
 }						t_wall;
 
@@ -61,7 +63,8 @@ typedef struct			s_prop
 	t_fvct3				pos;
 	t_fvct3				e1;
 	t_fvct3				e2;
-	t_wall				*door;
+	t_wall				*wall;
+	t_sector			*sector;
 	int					width;
 	int					height;
 	int					type;
@@ -71,7 +74,7 @@ typedef struct			s_sector
 {
 	t_fvct3				gravity;
 	t_wall				*wall;
-	t_prop				*prop;
+	t_prop				*props;
 	t_enemy				*enemys;
 	int					len_prop;
 	struct s_sector		*ssector;
@@ -79,6 +82,8 @@ typedef struct			s_sector
 	double				h_floor;
 	double				h_ceil;
 	int					len;
+	t_txtr				txtrtop;
+	t_txtr				txtrsol;
 	//sector effector *fonction
 	//list things (shapes, objets, deco, enemis)
 }						t_sector;

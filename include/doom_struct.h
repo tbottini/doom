@@ -66,11 +66,9 @@ typedef t_secteur		*t_lstsec;
 
 typedef struct			s_slen
 {
-	int	nb_pillars;
-	int	nb_textures;
-	int	nb_sectors;
-	int	nb_walls;
-	int	nb_props;
+	int	nb_pills;
+	int	nb_txtrs;
+	int	nb_sects;
 }						t_slen;
 
 /*
@@ -323,6 +321,14 @@ typedef struct 			s_designer
 	//uint16			occl_buffer
 }						t_arch;
 
+typedef struct			s_game
+{
+	t_sector			*sectors;
+	t_pillar			*pillars;
+	SDL_Surface			**gamesurf;
+
+}						t_game;
+
 struct					s_doom
 {
 	t_sdl				sdl;
@@ -333,6 +339,7 @@ struct					s_doom
 	t_sound				sound;
 	SDL_GameController	*controller;
 	t_sector			*sector;
+	t_game				game;
 	t_vct2				vel;
 	t_arch				arch;
 	t_camera			camera;
