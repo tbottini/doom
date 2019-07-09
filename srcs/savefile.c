@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 12:24:41 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 14:37:55 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,21 @@ void	write_one_prop(int fd, t_entity *prop)
 	else
 	{
 		printf("\t\t\tSector ID: null\n");
-		write(fd, "\0\0\0\0", sizeof(int));
+		write(fd, "\xff\xff\xff\xff", sizeof(int));
 	}
-	if (prop->stat.mur)
+	if (prop->stat.mur && prop->stat.mursec)
 	{
+		printf("\t\t\tWall Sector ID: %d\n", prop->stat.mursec->id);
 		printf("\t\t\tWall ID: %d\n", prop->stat.mur->id);
+		write(fd, &prop->stat.mursec->id, sizeof(int));
 		write(fd, &prop->stat.mur->id, sizeof(int));
 	}
 	else
 	{
+		printf("\t\t\tWall Sector ID: null\n");
 		printf("\t\t\tWall ID: null\n");
-		write(fd, "\0\0\0\0", sizeof(int));
+		write(fd, "\xff\xff\xff\xff", sizeof(int));
+		write(fd, "\xff\xff\xff\xff", sizeof(int));
 	}
 	pos = (double)prop->stat.pos.x / EDITORSTEP;
 	printf("\t\t\tPosition: %f", pos);
@@ -328,7 +332,7 @@ void	write_one_enemy(int fd, t_entity *enn)
 	else
 	{
 		printf("\t\tEnemy Sector ID: null\n");
-		write(fd, "\0\0\0\0", sizeof(int));
+		write(fd, "\xff\xff\xff\xff", sizeof(int));
 	}
 	tmp = (double)(enn->stat.pos.x / EDITORSTEP);
 	write(fd, &tmp, sizeof(double));
@@ -380,7 +384,7 @@ void	write_player(int fd, t_eplayer *player)
 	else
 	{
 		printf("\t\tplayer Sector ID: null\n");
-		write(fd, "\0\0\0\0", sizeof(int));
+		write(fd, "\xff\xff\xff\xff", sizeof(int));
 	}
 	printf("\t\tplayer HP: %d\n", player->stat.type);
 	write(fd, &player->stat.type, sizeof(int));
@@ -400,29 +404,31 @@ void	write_player(int fd, t_eplayer *player)
 
 int writing_map(int fd, t_editor *edit)
 {
+	long *x;
+	
+	x = (long *)"💎🇩🇿🍉💩";
+	write(fd, x, sizeof(long));
 	write_textures(fd, edit);
 	write_pillars(fd, edit);
 	write_sectors(fd, edit);
 	write_player(fd, &edit->player);
 	write_enemies(fd, edit->ennlist);
+	x = (long *)"👨🏻🤠🍑";
+	write(fd, x, sizeof(long));
 	return (0);
 }
 
 int	save_editor_to_file(t_editor *edit)
 {
 	int fd;
-	long *x;
+
 
 	if ((fd = open("ressources/map/editor.map", O_CREAT | /*O_EXCL |*/ O_WRONLY, 0777 /*S_IRUSR | S_IRGRP| S_IROTH*/)) == -1)
 	{
 		write(2, "Error writting to ressources/map/editor.map\n", 44);
 		return (-1);
 	}
-	x = (long *)"💎🇩🇿🍉💩";
-	write(fd, x, sizeof(long));
 	writing_map(fd, edit);
-	x = (long *)"👨🏻🤠🍑";
-	write(fd, x, sizeof(long));
 	close(fd);
 	write(1, "Successfully wrote to ressources/map/editor.map\n", 48);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/07 22:26:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 14:26:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +153,13 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 		}
 		else if (edit->currstat)
 		{
-			if (!(ISENEMY(edit->currstat->type)))
-				edit->currstat->mur = edit->hovermur;
+			if (!(ISENEMY(edit->currstat->type)) && &edit->player.stat != edit->currstat)
+			{
+				if (!(edit->currstat->mur = edit->hovermur))
+					edit->currstat->mursec = NULL;
+				else
+					edit->currstat->mursec = edit->map;
+			}
 		}
 		else if (e.clicks == 2)
 		{

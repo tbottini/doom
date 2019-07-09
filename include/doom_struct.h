@@ -80,6 +80,7 @@ typedef struct 			s_ecoord
 {
 	t_secteur			*sector; // Linked Sector
 	t_mur				*mur; // Linked Wall
+	t_secteur			*mursec; // Linked Wall sector
 	t_vct2				pos;
 	int					type; // Health if player
 	double				roty;

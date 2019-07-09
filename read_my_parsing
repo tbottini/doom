@@ -51,6 +51,7 @@ foreach {
 	foreach {
 		sizeof(int) : type
 		sizeof(int) : Sector ID (Must be less than number of Sector)
+		sizeof(int) : Sector ID of Wall (Must be less than number of Sector)
 		sizeof(int) : Wall ID (of current sector) (Must be less than number of Walls in Sector)
 		sizeof(double) : pos x
 		sizeof(double) : pos y
