@@ -1,16 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sector.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
+/*   Updated: 2019/07/09 22:46:45 by akrache          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SECTOR_H
 # define SECTOR_H
 
-#include <stdlib.h>
-#include "vector.h"
-#include "libft.h"
-#include <SDL.h>
+# include "vector.h"
+# include "libft.h"
+# include <SDL.h>
+# include <stdlib.h>
 
 # define G_EARTH -9.80665
 # define G_MOON -1.62200
 
-typedef struct s_doom 	t_doom;
-typedef struct s_enemy 	t_enemy;
+typedef struct s_doom	t_doom;
+typedef struct s_enemy	t_enemy;
 typedef struct s_sector	t_sector;
 typedef struct s_wall	t_portal;
 typedef struct s_prop	t_prop;
@@ -25,7 +37,7 @@ typedef enum			e_portal_id
 	PORTAL_DIRECT
 }						t_portal_id;
 
-typedef struct 			s_txtr
+typedef struct			s_txtr
 {
 	uint32_t			*pixels;
 	uint32_t			w;
@@ -56,10 +68,10 @@ typedef struct			s_wall
 	double				dist;
 }						t_wall;
 
-typedef struct			s_prop
+struct					s_prop
 {
 	t_txtr				*tex;
-	void				(*func)(void *param);
+	void				(*func)();
 	t_fvct3				pos;
 	t_fvct3				e1;
 	t_fvct3				e2;
@@ -68,9 +80,9 @@ typedef struct			s_prop
 	int					width;
 	int					height;
 	int					type;
-}						t_prop;
+};
 
-typedef struct			s_sector
+struct					s_sector
 {
 	t_fvct3				gravity;
 	t_wall				*wall;
@@ -86,7 +98,7 @@ typedef struct			s_sector
 	t_txtr				txtrsol;
 	//sector effector *fonction
 	//list things (shapes, objets, deco, enemis)
-}						t_sector;
+};
 
 /*
 **	wall : draw, manipulation
@@ -96,5 +108,6 @@ void			describe_sector_recursif(t_sector sector);
 void			describe_bunch(t_wall **bunch);
 void			describe_sector(t_sector sector);
 void			describe_wall(t_wall wall);
+void			init_prop(t_prop *prop);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/03 17:35:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 21:36:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ t_prop		*possible_button(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
 	i = -1;
 	while (++i < stat->sector->len)
 	{
-		b = &stat->sector->prop[i];
+		b = &stat->sector->props[i];
 		prop_hitbox(b, stat->rot.y);
 		//if (is_button(b = &stat->sector->prop[i]) && vector_intersect(ori, pos, (t_fvct3){b->x1, b->y1, 0.0}, (t_fvct3){b->x2, b->y2, 0.0}))
 		if (b->func && vector_intersect(ori, pos, (t_fvct3){b->e1.x, b->e1.y, 0.0}, (t_fvct3){b->e2.x, b->e2.y, 0.0}))

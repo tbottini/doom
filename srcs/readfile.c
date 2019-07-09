@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 19:48:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 22:50:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 	if (read(fd, &prop->type, sizeof(int)) != sizeof(int))
 		return (-72);
 	printf("\t\tFound Prop type: %d\n", prop->type);
-	//create_prop(prop);
 	if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a >= len->nb_sects)
 		return (-73);
 	printf("\t\tFound Prop Sector ID: %d\n", var_a);
@@ -141,6 +140,7 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 		return (-76);
 	if ((read(fd, &prop->pos.y, sizeof(double)) != sizeof(double)))
 		return (-77);
+	init_prop(prop);
 	printf("\t\tSet Wall Prop position %f %f\n", prop->pos.x, prop->pos.y);
 	return (0);
 }
@@ -225,7 +225,7 @@ int	read_sec_walls(int fd, t_game *game, t_sector *sector, t_slen *len)
 	return (0);
 }
 
-int	read_sec_props(int fd, t_game *game, t_sector *sector, *len)
+int	read_sec_props(int fd, t_game *game, t_sector *sector, t_slen *len)
 {
 	int x;
 	int	nbp;
@@ -235,7 +235,8 @@ int	read_sec_props(int fd, t_game *game, t_sector *sector, *len)
 		return (-8);
 	if ((read(fd, &nbp, sizeof(int)) != sizeof(int)))
 		return (-81);
-	if (!(sector->props = (t_props *)malloc(sizeof(t_prop) * (nbp + 1))))
+	printf("\tFound %d Props\n", nbp);
+	if (!(sector->props = (t_prop *)malloc(sizeof(t_prop) * (nbp + 1))))
 		return (-428);
 	ft_bzero(sector->wall, sizeof(t_prop) * (nbp + 1));
 	x = 0;
@@ -303,7 +304,7 @@ int	read_sectors(int fd, t_game *game, t_slen *len)
 	return (0);
 }
 
-int	read_player(fd, t_game *game, t_player *player)
+int	read_player(int fd, t_game *game, t_player *player, t_slen *len)
 {
 	int tmp;
 
@@ -311,22 +312,71 @@ int	read_player(fd, t_game *game, t_player *player)
 		return (-9);
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects)
 		return (-91);
-	player->sector = &game->sectors[tmp];
-	if ((read(fd, &player->health, sizeof(int)) != sizeof(int)))
+	printf("Found Player at %d\n", tmp);
+	player->stat.sector = &game->sectors[tmp];
+	if ((read(fd, &player->stat.health, sizeof(int)) != sizeof(int)))
 		return (-92);
+	printf("Player Health: %d\n", player->stat.health);
 	if ((read(fd, &player->stat.pos.x, sizeof(double)) != sizeof(double)))
 		return (-93);
 	if ((read(fd, &player->stat.pos.y, sizeof(double)) != sizeof(double)))
 		return (-94);
+	printf("Player Pos: %f %f\n", player->stat.pos.x, player->stat.pos.y);
 	if ((read(fd, &player->stat.rot.y, sizeof(double)) != sizeof(double)))
 		return (-95);
+	printf("Player Rot: %f\n", player->stat.rot.y);
 	if (read_balise(fd, "🍌", 9))
 		return (9);
 	return (0);
 }
 
-int	read_ennemies(int fd, t_game *game)
+int	read_one_enemy(int fd, t_game *game, t_slen *len)
 {
+	t_enemy *enemy;
+	int tmp;
+
+	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || !(ISENEMY(tmp)))
+		return (-101);
+	enemy = enemy_init(tmp);
+	printf("\tEnemy type: %d\n", tmp);
+	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= nb)
+		return (-102);
+	if (tmp >= 0 && tmp < len->nb_sects)
+		pushfront_enemy(&game->sectors[tmp], enemy);
+	printf("\tEnemy Sector: %d\n", tmp);
+	if ((read(fd, &enemy->stat.pos.x, sizeof(double)) != sizeof(double)))
+		return (-103);
+	if ((read(fd, &enemy->stat.pos.y, sizeof(double)) != sizeof(double)))
+		return (-104);
+	printf("Enemy Pos: %f %f\n", enemy->stat.pos.x, enemy->stat.pos.y);
+	if ((read(fd, &enemy->stat.rot.y, sizeof(double)) != sizeof(double)))
+		return (-105);
+	printf("Enemy Rot: %f\n", enemy->stat.rot.y);
+	if (tmp < 0)
+		free(enemy);
+	return (0);
+}
+
+int	read_enemies(int fd, t_game *game, t_slen *len)
+{
+	int	x;
+	int	rtn;
+	int	nbe;
+
+	if (read_balise(fd, "🔪", -10))
+		return (-10);
+	if ((read(fd, &nbe, sizeof(int)) != sizeof(int)))
+		return (-11);
+	printf("Found %d enemies\n", nbe);
+	x = 0;
+	while (x < nbe)
+	{
+		if ((rtn = read_one_enemy(fd, game, len)))
+			return (rtn);
+		x++;
+	}
+	if (read_balise(fd, "🍹", 10))
+		return (10);
 	return (0);
 }
 
@@ -346,8 +396,10 @@ int reading_map(int fd, t_doom *doom, t_slen *len)
 		return (rtn);
 	if ((rtn = read_sectors(fd, &doom->game, len)))
 		return (rtn);
-	read_player(fd, &doom->game, &doom->player);
-	read_enemies(fd, &doom->game);
+	if ((rtn = read_player(fd, &doom->game, &doom->player, len)))
+		return (rtn);
+	if ((rtn = read_enemies(fd, &doom->game, len)))
+		return (rtn);
 	read(fd, &x, sizeof(x));
 	tmp = (long *)"👨🏻🤠🍑";
 	if (x != *tmp)

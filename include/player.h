@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/04 17:48:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 22:31:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct			s_super
 
 int						player_init(t_player *player);
 void					player_free(t_player *player);
+t_enemy					*pushfront_enemy(t_sector *sector, t_enemy *enemy);
 t_enemy					*enemy_init(int type);
 
 /*

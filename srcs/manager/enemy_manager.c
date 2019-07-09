@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 15:46:59 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 21:41:34 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,25 @@ t_enemy	*enemy_init(int type)
 
 //////////////////////////////////////////////////////
 
-void		add_enemy(t_sector *sector, t_enemy *enemy)
+t_enemy		*pushfront_enemy(t_sector *sector, t_enemy *enemy)
 {
 	t_enemy *tmp;
 
-	if (enemy)
+	if (!(sector)|| !(enemy))
+		return (NULL);
+	if (sector->enemys)
 	{
 		tmp = sector->enemys;
-		while (tmp->next)
-		tmp = tmp->next;
-		tmp->next = enemy;
+		tmp->prev = enemy;
+		enemy->next = tmp;
+		enemy->prev = NULL;
+		sector->enemys = enemy;
+		return (enemy);
 	}
+	sector->enemys = enemy;
+	enemy->next = NULL;
+	enemy->prev = NULL;
+	return (enemy);
 }
 
 void		del_enemy(t_sector *sector, t_enemy *enemy)

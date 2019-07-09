@@ -62,7 +62,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 						debug_vector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
-						enemy_tools.c									\
+						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\
 						little_tools.c									\
@@ -80,6 +80,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						effect_manager.c								\
 						weapon_manager.c								\
 						enemy_manager.c									\
+						prop_manager.c									\
 						designer_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\
