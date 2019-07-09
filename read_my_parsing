@@ -58,6 +58,13 @@ foreach {
 	sizeof(int) : balise (End Props) "💩"
 }
 sizeof(int) : balise (End Sectors) "🏠"
+sizeof(int) : balise (Player) "🍆"
+	sizeof(int) : Sector ID (Must be less than number of Sector)
+	sizeof(int) : Max Health
+	sizeof(double) : pos x
+	sizeof(double) : pos y
+	sizeof(double) : rotation y
+sizeof(int) : balise (End Player) "🍌"
 sizeof(int) : balise (Enemy) "🔪"
 sizeof(int) : number of Enemy
 foreach {

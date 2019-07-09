@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/07 22:49:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 12:24:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,14 +331,13 @@ void	write_one_enemy(int fd, t_entity *enn)
 		write(fd, "\0\0\0\0", sizeof(int));
 	}
 	tmp = (double)(enn->stat.pos.x / EDITORSTEP);
+	write(fd, &tmp, sizeof(double));
 	printf("\t\tEnemy pos: %f", tmp);
-	write(fd, &tmp, sizeof(double));
 	tmp = (double)(enn->stat.pos.y / EDITORSTEP);
+	write(fd, &tmp, sizeof(double));
 	printf("\t%f", tmp);
-	write(fd, &tmp, sizeof(double));
-	tmp = enn->stat.roty / EDITORSTEP;
-	printf("\trot: %f\n", tmp);
-	write(fd, &tmp, sizeof(double));
+	write(fd, &enn->stat.roty, sizeof(double));
+	printf("\trot: %f\n", enn->stat.roty);
 	printf("\n");
 }
 
@@ -368,11 +367,43 @@ void	write_enemies(int fd, t_lstent enn)
 	write_balise(fd, "🍹");
 }
 
+void	write_player(int fd, t_eplayer *player)
+{
+	double tmp;
+
+	write_balise(fd , "🍆");
+	if (player->stat.sector)
+	{
+		printf("\t\tplayer Sector ID: %d\n", player->stat.sector->id);
+		write(fd, &player->stat.sector->id, sizeof(int));
+	}
+	else
+	{
+		printf("\t\tplayer Sector ID: null\n");
+		write(fd, "\0\0\0\0", sizeof(int));
+	}
+	printf("\t\tplayer HP: %d\n", player->stat.type);
+	write(fd, &player->stat.type, sizeof(int));
+
+	tmp = (double)(player->stat.pos.x / EDITORSTEP);
+	write(fd, &tmp, sizeof(double));
+	printf("\t\tplayer pos: %f\t", tmp);
+
+	tmp = (double)(player->stat.pos.y / EDITORSTEP);
+	write(fd, &tmp, sizeof(double));
+	printf("%f\n", tmp);
+
+	write(fd, &player->stat.roty, sizeof(double));
+	printf("\trot: %f\n", player->stat.roty);
+	write_balise(fd , "🍌");
+}
+
 int writing_map(int fd, t_editor *edit)
 {
 	write_textures(fd, edit);
 	write_pillars(fd, edit);
 	write_sectors(fd, edit);
+	write_player(fd, &edit->player);
 	write_enemies(fd, edit->ennlist);
 	return (0);
 }
