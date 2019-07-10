@@ -13,7 +13,7 @@ int				line_wall(t_arch *rsrc, t_wall *wall, char *line)
 	//else
 	//	return (0);
 	printf("line %s\n", line);
-	line = double_atof(line, &wall->pillar.p);
+	line = double_atof(line, &wall->pillar->p);
 	//line = double_afo
 	txtr_index = atoi(line);
 	printf("%d txtr_index\n", txtr_index);

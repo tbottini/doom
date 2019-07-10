@@ -1,5 +1,5 @@
 #include "doom_nukem.h"
-
+/*
 t_list		*ft_lstn(void *content)
 {
 	t_list *n;
@@ -78,3 +78,4 @@ int			parsing(t_doom *doom, char *filename)
 	free(line);
 	return (1);
 }
+*/

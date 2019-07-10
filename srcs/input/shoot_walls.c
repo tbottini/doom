@@ -21,8 +21,8 @@ static double	bullet_clipping(t_wall wall, t_stat *stat)
 	double		coef_wall;
 	double		b;
 
-	diff.x = wall.pillar.p.x - stat->pos.x;
-	diff.y = wall.pillar.p.y - stat->pos.y;
+	diff.x = wall.pillar->p.x - stat->pos.x;
+	diff.y = wall.pillar->p.y - stat->pos.y;
 	diff2.x = wall.next->p.x - stat->pos.x;
 	diff2.y = wall.next->p.y - stat->pos.y;
 	if (diff2.x - diff.x < 0.0001 && diff2.x - diff.x > -0.0001)
@@ -75,7 +75,7 @@ t_wall			*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 ori, int *index)
 	i = -1;
 	while (*index < 50 && ++i < stat->sector->len)
 	{
-		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p, *(t_fvct3*)&stat->sector->wall[i].next->p))
+		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&stat->sector->wall[i].pillar->p, *(t_fvct3*)&stat->sector->wall[i].next->p))
 		{
 			walls[*index] = &stat->sector->wall[i];
 			*index++;

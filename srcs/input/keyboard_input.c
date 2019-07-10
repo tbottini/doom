@@ -36,7 +36,7 @@ void	debug_input(t_doom *doom, SDL_Keycode key)
 {
 	if (key == SDLK_f)
 	{
-		describe_sector_recursif(*doom->sector);
+		//describe_sector_recursif(*doom->sector);
 	}
 }
 

@@ -332,7 +332,8 @@ typedef struct			s_game
 	t_sector			*sectors;
 	t_pillar			*pillars;
 	SDL_Surface			**gamesurf;
-
+	t_arch				arch;
+	t_camera			camera;
 }						t_game;
 
 struct					s_doom
@@ -342,11 +343,7 @@ struct					s_doom
 	t_ui				ui;
 	Uint32				timestamp;
 	SDL_GameController	*controller;
-	t_sector			*sector;
 	t_game				game;
-	t_vct2				vel;
-	t_arch				arch;
-	t_camera			camera;
 };
 
 #endif

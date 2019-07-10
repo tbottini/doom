@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 14:09:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:48:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,10 +178,9 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_pills))
 		return (-61);
 	printf("\t\tFound Pillar1 ID: %d\n", tmp);
-	wall->pillar = /* & */game->pillars[tmp];
+	wall->pillar = &game->pillars[tmp];
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_pills))
 		return (-62);
-	/* 💩 Rename next parce que c'est pas logique 💩 */
 	printf("\t\tFound Pillar2 ID: %d\n", tmp);
 	wall->next = &game->pillars[tmp];
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_txtrs))

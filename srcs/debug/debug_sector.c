@@ -20,7 +20,7 @@ void		describe_sector(t_sector sector)
 {
 	int		i;
 	t_wall	*wall;
-	t_pillar	a;
+	//t_pillar	a;
 
 	i = 0;
 	ft_putendl("-------sector-------");
@@ -28,6 +28,7 @@ void		describe_sector(t_sector sector)
 	double_msg("height ceil :", sector.h_ceil);
 	int_msg("son sector :", sector.len_sub);
 	wall = sector.wall;
+	/*
 	a = sector.wall[i].pillar;
 	while (i < sector.len)
 	{
@@ -40,6 +41,7 @@ void		describe_sector(t_sector sector)
 		//ft_putchar('\n');
 		i++;
 	}
+	*/
 	ft_putendl("--------------------");
 }
 
@@ -52,7 +54,7 @@ void		describe_bunch(t_wall **bunch)
 	ft_putendl("----bunch----");
 	while (bunch[i] != NULL)
 	{
-		ft_putchar(bunch[i]->pillar.frust + '0');
+		ft_putchar(bunch[i]->pillar->frust + '0');
 		ft_putchar(' ');
 		fvct2_print(*(t_fvct2*)&bunch[i]->pillar);
 		ft_putstr(" --> ");
@@ -82,7 +84,7 @@ void		describe_player(t_player player)
 void		describe_wall(t_wall wall)
 {
 	printf("pillar %f %f ang %f\nnext %f %f ang %f\n",
-		wall.pillar.p.x, wall.pillar.p.y, wall.pillar.angle,
+		wall.pillar->p.x, wall.pillar->p.y, wall.pillar->angle,
 		wall.next->p.x, wall.next->p.y, wall.next->angle);
 
 }
@@ -117,7 +119,7 @@ void		describe_sub_sector(t_sector sector, int sub)
 		else if (sector.wall[i].status == WINDOW)
 			printf("WIND\t");
 		ft_putnchar('\t', sub);
-		printf("%f %f --> %f %f\n", sector.wall[i].pillar.p.x, sector.wall[i].pillar.p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
+		printf("%f %f --> %f %f\n", sector.wall[i].pillar->p.x, sector.wall[i].pillar->p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
 		i++;
 	}
 }
@@ -134,11 +136,13 @@ void		sector_recursif(t_sector sector, int sub)
 		ft_putnchar('\t', sub);
 		ft_putendl("--->son");
 	}
+	/*
 	while (i < sector.len_sub)
 	{
 		sector_recursif(sector.ssector[i], sub + 1);
 		++i;
 	}
+	*/
 	ft_putnchar('\t', sub);
 	ft_putendl("--------------------");
 }

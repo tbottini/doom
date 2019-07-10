@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 14:18:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 15:03:34 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		key_press(int key, t_doom *doom)
 	else if (key == SDLK_g)
 		describe_player(doom->game.player);
 	else if (key == SDLK_h)
-		describe_sector_recursif(*doom->sector);
+		describe_sector_recursif(*doom->game.sectors);
 	else if (key == SDLK_9)
 		change_music(&doom->game.sound, 10, 5000);
 	else if (key == SDLK_b)
@@ -92,26 +92,26 @@ int		key_press(int key, t_doom *doom)
 		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80)};
 	else if (key == SDLK_j)
 	{
-		doom->arch.borne.x += 2;
-		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		doom->game.arch.borne.x += 2;
+		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_k)
 	{
-		doom->arch.borne.y += 2;
-		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		doom->game.arch.borne.y += 2;
+		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_u)
 	{
-		doom->arch.borne.x -= 2;
-		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		doom->game.arch.borne.x -= 2;
+		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_i)
 	{
-		doom->arch.borne.y -= 2;
-		printf("borne %f %f\n", doom->arch.borne.x, doom->arch.borne.y);
+		doom->game.arch.borne.y -= 2;
+		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
 		clean_screen(&doom->sdl);
 	}
 	else
@@ -215,7 +215,7 @@ int		mouse_move(int x, int y, t_doom *doom)
 		tmp = doom->ui.currslid;
 		update_slider_value(doom, tmp, x);
 		if (tmp == &(doom->ui.slidopt[0]))
-			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
+			doom->game.camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
 		else if (tmp == &(doom->ui.slidopt[1]))
 			Mix_VolumeMusic(doom->game.sound.musicvolume);
 		else if (tmp == &(doom->ui.slidopt[2]))

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:05:38 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 14:15:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 15:09:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void	return_button(t_doom *doom)
 
 void	start_map_button(t_doom *doom)
 {
-//	if (!(read_file(doom, doom->ui.curr_btn->data)))
-	if (parsing(doom, doom->ui.curr_btn->data))
+	if (!(read_file(doom, doom->ui.curr_btn->data)))
 	{
 		player_init(&doom->game.player);
 		change_music(&doom->game.sound, doom->game.sound.on, 5000);

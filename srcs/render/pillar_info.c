@@ -12,7 +12,7 @@ void		px_polarite(t_arch *arch)
 	double	diff;
 	int		polarite;
 
-	angle.x = local_angle(arch->borne.x, arch->wall->pillar.angle);
+	angle.x = local_angle(arch->borne.x, arch->wall->pillar->angle);
 	angle.y = local_angle(arch->borne.x, arch->wall->next->angle);
 
 	diff = fabs(angle.x - angle.y);
@@ -50,12 +50,12 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 	t_fvct2		tmp;
 
 	size = arch->sdl->size.x;
-	if (arch->wall->pillar.frust)
+	if (arch->wall->pillar->frust)
 	{
-		arch->px.x = fish_bowl_px(arch, arch->wall->pillar);
-		arch->depth.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar.p);
-		arch->decal.x = sin(arch->wall->pillar.angle * PI180) * arch->depth.x;
-		arch->depth.x = cos(arch->wall->pillar.angle * PI180) * arch->depth.x;
+		arch->px.x = fish_bowl_px(arch, *arch->wall->pillar);
+		arch->depth.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar->p);
+		arch->decal.x = sin(arch->wall->pillar->angle * PI180) * arch->depth.x;
+		arch->depth.x = cos(arch->wall->pillar->angle * PI180) * arch->depth.x;
 		arch->shift_txtr.x = 1;
 	}
 	else
@@ -107,4 +107,3 @@ void			wall_screen_info(t_arch *arch, t_player *p)
 {
 	pillar_screen_info(arch, p);
 }
-

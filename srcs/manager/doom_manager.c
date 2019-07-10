@@ -16,7 +16,6 @@ int		secure_doom(t_doom *doom)
 
 void	doom_exit(t_doom *doom)
 {
-	free(doom->arch.zline);
 	ui_free(&doom->ui);
 	editor_free(&doom->edit);
 	sdl_free(&doom->sdl);
@@ -42,8 +41,8 @@ t_doom	*doom_init()
 		doom_exit(doom);
 	if (!ui_init(&doom->ui))
 		doom_exit(doom);
-	doom->camera.fov = 90;
-	if (!designer_init(&doom->arch, &doom->sdl, &doom->camera))
+	doom->game.camera.fov = 90;
+	if (!designer_init(&doom->game.arch, &doom->sdl, &doom->game.camera))
 		doom_exit(doom);
 	doom->edit.ui = &doom->ui;
 	if (!editor_init(&doom->edit))

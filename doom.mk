@@ -52,7 +52,7 @@ SRCS_RENDER		:=		render.c										\
 						draw_column.c									\
 						borne.c											\
 
-SRCS_PARSING	:=		parsing.c										\
+#SRCS_PARSING	:=		parsing.c										\
 						chunck.c										\
 						chunk_ressources.c								\
 						line_wall.c

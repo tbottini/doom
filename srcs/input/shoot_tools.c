@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/03 17:25:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 15:05:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void		super_real_hit(t_super *super, t_stat *stat)
 	i = -1;
 	while (super->walls[++i])
 	{
-		if ((tmp = wall_bullet_clipping(super->walls[i]->pillar, *super->walls[i]->next, stat)) / toto < res)
+		if ((tmp = wall_bullet_clipping(*super->walls[i]->pillar, *super->walls[i]->next, stat)) / toto < res)
 		{
 			res = tmp;
 			super->whit = super->walls[i];
@@ -129,7 +129,7 @@ static int	bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 	{
 		return (1);//virer auqnd c'est coder correctement
 		toto = cos((stat->rot.x - 90.0) * PI180);
-		toto = wall_bullet_clipping(sector->wall[i].pillar, *sector->wall[i].next, stat) / (toto < G_EPSILON ? 1 : toto);
+		toto = wall_bullet_clipping(*sector->wall[i].pillar, *sector->wall[i].next, stat) / (toto < G_EPSILON ? 1 : toto);
 		mo.x = ori.x - stat->pos.x;
 		mo.y = ori.y - stat->pos.y;
 		mo.z = ori.y - stat->pos.z;
@@ -169,7 +169,7 @@ void		possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector)
 	{
 		if (bullet_can_pass(stat, i, sector, ori))
 			possible(super, stat, ori, sector->wall[i].link);
-		else if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar.p, *(t_fvct3*)&sector->wall[i].next->p))
+		else if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
 		{
 			super->walls[super->i_w] = &sector->wall[i];
 			super->i_w++;
