@@ -5,6 +5,7 @@ SRCS_DOOM		:=		editor.c										\
 						main.c											\
 						savefile.c										\
 						readfile.c										\
+						checkfile.c										\
 						cinematri.c										\
 
 SRCS_UI			:=		button_action.c									\
