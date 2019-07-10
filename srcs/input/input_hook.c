@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 15:03:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 17:11:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void			save_png(t_sdl *sdl)
 	SDL_Surface	*s_shot;
 
 	s_shot = SDL_CreateRGBSurfaceWithFormatFrom(sdl->screen, sdl->size.x,
-		sdl->size.y, 8, sizeof(uint32_t) * sdl->size.x, sdl->format->format);
+		sdl->size.y, 8, sizeof(uint32_t) * sdl->size.x, SDL_PIXELFORMAT_RGBA8888);
 	IMG_SavePNG(s_shot, "out.png");
 	ft_printf("png save\n");
 	SDL_FreeSurface(s_shot);

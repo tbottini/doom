@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 14:48:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 17:09:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	read_one_texture(int fd, SDL_Surface **surf)
 {
 	int pathlen;
 	char path[512];
+	SDL_Surface *tmp;
 
 	if (read(fd, &pathlen, sizeof(int)) != sizeof(int) || pathlen >= 512 || pathlen <= 0)
 		return (-23);
@@ -43,8 +44,10 @@ int	read_one_texture(int fd, SDL_Surface **surf)
 		return (-24);
 	path[pathlen] = '\0';
 	printf("\tString : %s\n", path);
-	if (!(*surf = IMG_Load(path)))
+	if (!(tmp = IMG_Load(path)))
 		return (-25);
+	*surf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
+	SDL_FreeSurface(tmp);
 	if (read(fd, path, sizeof(char)) != sizeof(char) || *path != '\v')
 		return (-26);
 	printf("\tGOOD\n\n");
@@ -237,7 +240,7 @@ int	read_sec_props(int fd, t_game *game, t_sector *sector, t_slen *len)
 	printf("\tFound %d Props\n", nbp);
 	if (!(sector->props = (t_prop *)malloc(sizeof(t_prop) * (nbp + 1))))
 		return (-428);
-	ft_bzero(sector->wall, sizeof(t_prop) * (nbp + 1));
+	ft_bzero(sector->props, sizeof(t_prop) * (nbp + 1));
 	x = 0;
 	while (x < nbp)
 	{

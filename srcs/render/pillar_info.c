@@ -60,7 +60,7 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 	}
 	else
 	{
-		arch->px.x = pillar_polarite(arch, &arch->wall->pillar, arch->wall->next);
+		arch->px.x = pillar_polarite(arch, arch->wall->pillar, arch->wall->next);
 		if (arch->px.x == 0)
 		{
 			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
@@ -85,7 +85,7 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 	}
 	else
 	{
-		arch->px.y = pillar_polarite(arch, arch->wall->next, &arch->wall->pillar);
+		arch->px.y = pillar_polarite(arch, arch->wall->next, arch->wall->pillar);
 		if (arch->px.y == 0)
 		{
 			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);

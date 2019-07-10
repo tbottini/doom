@@ -116,7 +116,6 @@ typedef struct			s_btn
 	SDL_Color			fgcolor;
 	SDL_Color			bgcolor;
 	char				*data;
-	SDL_PixelFormat		*format;
 	void				(*func)(t_doom *doom);
 }						t_btn;
 
@@ -200,7 +199,6 @@ typedef struct			s_sdl
 	SDL_Texture			*txture;
 	Uint32				*screen;
 	t_tab				keys;
-	SDL_PixelFormat		*format;
 	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;

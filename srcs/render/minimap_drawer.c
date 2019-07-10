@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 14:56:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 16:50:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,25 +75,18 @@ void			miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
 {
 	int			i;
 	t_vct2		cursor;
-	t_vct2		tmp;
 	t_vct2		cursor2;
 	t_wall		*wall;
 
-	//i = -1;
-	//while (++i < sector.len_sub)
-	//	miniwalls(doom, sector.ssector[i], mini);
 	wall = sector.wall;
-	cursor = minipoint(&doom->game.player, wall[0].pillar->p, mini);
-	tmp = cursor;
 	i = -1;
-	while (++i < sector.len - 1)
+	while (++i < sector.len)
 	{
-		cursor2 = minipoint(&doom->game.player, wall[i + 1].pillar->p, mini);
+		cursor = minipoint(&doom->game.player, wall[i].pillar->p, mini);
+		cursor2 = minipoint(&doom->game.player, wall[i].next->p, mini);
 		mbl(cursor, cursor2, mini, wall[i + 1].status
 			!= PORTAL ? CWALL : CPORT);
-		cursor = cursor2;
 	}
-	mbl(cursor, tmp, mini, wall[0].status != PORTAL ? CWALL : CPORT);
 }
 
 void			minibord(t_doom *d, t_minimap mini)

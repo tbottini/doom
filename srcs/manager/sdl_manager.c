@@ -8,8 +8,6 @@ void	sdl_free(t_sdl *sdl)
 		SDL_DestroyRenderer(sdl->rend);
 	if (sdl->win)
 		SDL_DestroyWindow(sdl->win);
-	if (sdl->format)
-		SDL_FreeFormat(sdl->format);
 }
 
 int		sdl_set_status(t_doom *doom, int status)
@@ -75,7 +73,5 @@ int		sdl_init(t_sdl *sdl, const char *title)
 	if (SDL_LockTexture(sdl->txture, NULL, &tmp, &pitch))
 		return (0);
 	sdl->screen = (Uint32*)tmp;
-	if (!(sdl->format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888)))
-		return (0);
 	return (1);
 }
