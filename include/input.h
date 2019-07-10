@@ -60,7 +60,7 @@ unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
 void					*listdel(t_list **list);
 
 char					**tab_new(int y);
-void					controller_handler(t_doom *doom, SDL_Event event);
+void					controller_handler(t_doom *doom, t_player *player, SDL_Event event);
 void					lst_del_node(t_list **node);
 void					open_editor(t_doom *doom);
 int						close_editor(t_doom *doom);

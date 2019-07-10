@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 23:00:51 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 17:09:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	read_one_texture(int fd, SDL_Surface **surf)
 {
 	int pathlen;
 	char path[512];
+	SDL_Surface *tmp;
 
 	if (read(fd, &pathlen, sizeof(int)) != sizeof(int) || pathlen >= 512 || pathlen <= 0)
 		return (-23);
@@ -43,8 +44,10 @@ int	read_one_texture(int fd, SDL_Surface **surf)
 		return (-24);
 	path[pathlen] = '\0';
 	printf("\tString : %s\n", path);
-	if (!(*surf = IMG_Load(path)))
+	if (!(tmp = IMG_Load(path)))
 		return (-25);
+	*surf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
+	SDL_FreeSurface(tmp);
 	if (read(fd, path, sizeof(char)) != sizeof(char) || *path != '\v')
 		return (-26);
 	printf("\tGOOD\n\n");
@@ -178,10 +181,9 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_pills))
 		return (-61);
 	printf("\t\tFound Pillar1 ID: %d\n", tmp);
-	wall->pillar = /* & */game->pillars[tmp];
+	wall->pillar = &game->pillars[tmp];
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_pills))
 		return (-62);
-	/* 💩 Rename next parce que c'est pas logique 💩 */
 	printf("\t\tFound Pillar2 ID: %d\n", tmp);
 	wall->next = &game->pillars[tmp];
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_txtrs))
@@ -238,7 +240,7 @@ int	read_sec_props(int fd, t_game *game, t_sector *sector, t_slen *len)
 	printf("\tFound %d Props\n", nbp);
 	if (!(sector->props = (t_prop *)malloc(sizeof(t_prop) * (nbp + 1))))
 		return (-428);
-	ft_bzero(sector->wall, sizeof(t_prop) * (nbp + 1));
+	ft_bzero(sector->props, sizeof(t_prop) * (nbp + 1));
 	x = 0;
 	while (x < nbp)
 	{
@@ -396,7 +398,7 @@ int reading_map(int fd, t_doom *doom, t_slen *len)
 		return (rtn);
 	if ((rtn = read_sectors(fd, &doom->game, len)))
 		return (rtn);
-	if ((rtn = read_player(fd, &doom->game, &doom->player, len)))
+	if ((rtn = read_player(fd, &doom->game, &doom->game.player, len)))
 		return (rtn);
 	if ((rtn = read_enemies(fd, &doom->game, len)))
 		return (rtn);

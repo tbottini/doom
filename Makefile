@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
+#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/06/26 13:13:26 by tbottini         ###   ########.fr        #
+#    Updated: 2019/07/10 15:10:55 by akrache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,6 @@ HEADERS			:=		libft/libft.h							\
 
 
 FOLDER			:=		objs									\
-						objs/parsing							\
 						objs/render								\
 						objs/debug								\
 						objs/tools								\

@@ -27,7 +27,7 @@ t_wall		*chunck_walls(t_list *chunck_line, t_arch *ressource, size_t len)
 			wall[i].status = PORTAL_DIRECT;
 		else if (p[0] == 'O')
 			wall[i].status = WINDOW;
-		p = double_atof(p+1, &wall[i].pillar.p);
+		p = double_atof(p+1, &wall[i].pillar->p);
 		//printf("%s\n", p);
 		index_info = atoi(p);
 		//verifier que index info n'est pas superieur a la taille ni inferieur a 0
@@ -115,7 +115,7 @@ size_t		list_len(t_list *list)
 	}
 	return (len);
 }
-
+/*
 int			list_to_ssector(t_sector *parent, t_list *sub_sector)
 {
 	int			i;
@@ -137,7 +137,7 @@ int			list_to_ssector(t_sector *parent, t_list *sub_sector)
 	}
 	return (0);
 }
-
+*/
 ///////////////////////////////////////////////////////////////
 /*
 int			check_enemy(char *line)

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   button_action.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/05 15:43:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/10 15:10:28 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
+/*
 static void		map_btn_click(t_doom *doom, int x, int y)
 {
 	t_btn	tmp;
@@ -34,7 +34,7 @@ static void		map_btn_click(t_doom *doom, int x, int y)
 		}
 	}
 }
-
+*/
 static void		use_slider(t_doom *doom, int x, int y)
 {
 	t_slid	stmp;
@@ -52,8 +52,9 @@ static void		use_slider(t_doom *doom, int x, int y)
 
 void			btn_click(t_doom *doom, int x, int y)
 {
+	/*
 	if (doom->ui.m_status == 2)
 		map_btn_click(doom, x, y);
-	else if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
+	else */if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
 		use_slider(doom, x, y);
 }

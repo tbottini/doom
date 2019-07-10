@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:05:38 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/07 05:58:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 15:09:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ignoption_button(t_doom *doom)
 
 void	main_menu_button(t_doom *doom)
 {
-	change_music(&doom->sound, 0, 0);
+	change_music(&doom->game.sound, 0, 0);
 	doom->ui.curr_btn = NULL;
 	sdl_set_status(doom, 1);
 }
@@ -49,9 +49,10 @@ void	return_button(t_doom *doom)
 
 void	start_map_button(t_doom *doom)
 {
-	if (parsing(doom, doom->ui.curr_btn->data))
+	if (!(read_file(doom, doom->ui.curr_btn->data)))
 	{
-		change_music(&doom->sound, doom->sound.on, 5000);
+		player_init(&doom->game.player);
+		change_music(&doom->game.sound, doom->game.sound.on, 5000);
 		sdl_set_status(doom, 0);
 	}
 	else

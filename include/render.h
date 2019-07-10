@@ -56,7 +56,7 @@ void					draw_portal(t_arch *arch, t_player *player, t_fvct2 surface);
 */
 void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
 int						buncherisation(t_arch *arch, t_sector sector, t_wall **bunch);
-void					bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector);
+void					bunch_comsuption(t_game *game, t_wall **bunch, t_sector *sector);
 
 /*
 ** Drawer functions

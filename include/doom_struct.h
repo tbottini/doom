@@ -116,7 +116,6 @@ typedef struct			s_btn
 	SDL_Color			fgcolor;
 	SDL_Color			bgcolor;
 	char				*data;
-	SDL_PixelFormat		*format;
 	void				(*func)(t_doom *doom);
 }						t_btn;
 
@@ -200,7 +199,6 @@ typedef struct			s_sdl
 	SDL_Texture			*txture;
 	Uint32				*screen;
 	t_tab				keys;
-	SDL_PixelFormat		*format;
 	Uint32				timp; // A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	int					fps;
 }						t_sdl;
@@ -327,10 +325,13 @@ typedef struct 			s_designer
 
 typedef struct			s_game
 {
+	t_player			player;
+	t_sound				sound;
 	t_sector			*sectors;
 	t_pillar			*pillars;
 	SDL_Surface			**gamesurf;
-
+	t_arch				arch;
+	t_camera			camera;
 }						t_game;
 
 struct					s_doom
@@ -339,14 +340,8 @@ struct					s_doom
 	t_editor			edit;
 	t_ui				ui;
 	Uint32				timestamp;
-	t_player			player;
-	t_sound				sound;
 	SDL_GameController	*controller;
-	t_sector			*sector;
 	t_game				game;
-	t_vct2				vel;
-	t_arch				arch;
-	t_camera			camera;
 };
 
 #endif

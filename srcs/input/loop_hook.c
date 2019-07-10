@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/04 17:50:15 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:19:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,53 +24,53 @@ void		benda(t_doom *doom, int key)
 	static int prev = 32700.0;
 
 	if (key == SDLK_s)
-		doom->player.stat.vel.x = -doom->player.stat.speed;
+		doom->game.player.stat.vel.x = -doom->game.player.stat.speed;
 	else if (key == SDLK_w)
-		doom->player.stat.vel.x = doom->player.stat.speed;
+		doom->game.player.stat.vel.x = doom->game.player.stat.speed;
 	else if (key == SDLK_a)
-		doom->player.stat.vel.y = -doom->player.stat.speed;
+		doom->game.player.stat.vel.y = -doom->game.player.stat.speed;
 	else if (key == SDLK_d)
-		doom->player.stat.vel.y = doom->player.stat.speed;
-	if (!Mix_Playing(1) || prev != doom->player.stat.speed)
+		doom->game.player.stat.vel.y = doom->game.player.stat.speed;
+	if (!Mix_Playing(1) || prev != doom->game.player.stat.speed)
 	{
-		if (doom->player.stat.speed == 32700.0)
-			Mix_PlayChannel(1, doom->sound.tab_effect[0], -1);
-		else if (doom->player.stat.speed == 49050.0)
-			Mix_PlayChannel(1, doom->sound.tab_effect[1], -1);
-		else if (doom->player.stat.speed == 16350.0)
-			Mix_PlayChannel(1, doom->sound.tab_effect[2], -1);
+		if (doom->game.player.stat.speed == 32700.0)
+			Mix_PlayChannel(1, doom->game.sound.tab_effect[0], -1);
+		else if (doom->game.player.stat.speed == 49050.0)
+			Mix_PlayChannel(1, doom->game.sound.tab_effect[1], -1);
+		else if (doom->game.player.stat.speed == 16350.0)
+			Mix_PlayChannel(1, doom->game.sound.tab_effect[2], -1);
 	}
-	prev = doom->player.stat.speed;
+	prev = doom->game.player.stat.speed;
 }
 
 static void input_loop(t_doom *doom, int key)
 {
 	//if (key == SDLK_w || key == SDLK_s)
-	//	doom->player.stat.vel.x = (key == SDLK_w ? 32700 : -32700);
+	//	doom->game.player.stat.vel.x = (key == SDLK_w ? 32700 : -32700);
 	//else if (key == SDLK_a || key == SDLK_d)
-	//	doom->player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
+	//	doom->game.player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
 	/*if (key == SDLK_w || key == SDLK_s)
-		doom->player.stat.vel.x = (key == SDLK_w ? doom->player.stat.speed : -doom->player.stat.speed);
+		doom->game.player.stat.vel.x = (key == SDLK_w ? doom->game.player.stat.speed : -doom->game.player.stat.speed);
 	else if (key == SDLK_a || key == SDLK_d)
-		doom->player.stat.vel.y = (key == SDLK_a ? -doom->player.stat.speed : doom->player.stat.speed);*/
+		doom->game.player.stat.vel.y = (key == SDLK_a ? -doom->game.player.stat.speed : doom->game.player.stat.speed);*/
 	if ((key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d) && !doom->ui.m_status)
 		benda(doom, key);
-	else if (key == SDLK_LSHIFT && doom->player.stat.vel.x == doom->player.stat.speed && !doom->ui.m_status)
-		sprint(&doom->player.stat);
-	else if (key == SDLK_SPACE && !doom->ui.m_status && doom->player.stat.jetpack)
-		jump(&doom->player);
+	else if (key == SDLK_LSHIFT && doom->game.player.stat.vel.x == doom->game.player.stat.speed && !doom->ui.m_status)
+		sprint(&doom->game.player.stat);
+	else if (key == SDLK_SPACE && !doom->ui.m_status && doom->game.player.stat.jetpack)
+		jump(&doom->game.player);
 	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
-		shoot(&doom->player);
+		shoot(&doom->game.player);
 	else if (key == SDLK_p) //test tir
-		bullet(&doom->player.stat);
+		bullet(&doom->game.player.stat);
 	else if (key == SDLK_0)//test effects
-		play_effect(&doom->sound, 8);
+		play_effect(&doom->game.sound, 8);
 	else if (key == SDLK_y)
 		fire(doom);
-	else if (key == SDLK_SPACE && !doom->ui.m_status && !doom->player.stat.jetpack)
-		fly(&doom->player.stat);
-	else if (key == SDLK_LGUI && !doom->ui.m_status && !doom->player.stat.jetpack)
-		unfly(&doom->player.stat);
+	else if (key == SDLK_SPACE && !doom->ui.m_status && !doom->game.player.stat.jetpack)
+		fly(&doom->game.player.stat);
+	else if (key == SDLK_LGUI && !doom->ui.m_status && !doom->game.player.stat.jetpack)
+		unfly(&doom->game.player.stat);
 }
 
 static void editor_loop(t_doom *doom, int key)
@@ -139,7 +139,7 @@ int loop_hook(t_doom *doom)
 		if (doom->ui.m_status == 0)
 		{
 			/// Place here functions that need to be launch every frame while the game is running
-			move(&doom->player.stat);
+			move(&doom->game.player.stat);
 			doom_render(doom);
 			/// End Comment
 		}

@@ -45,6 +45,11 @@ void				architect_reset(t_arch *arch)
 	zline_reset(arch);
 }
 
+int designer_free(t_arch *designer)
+{
+	free(designer->zline);
+}
+
 int			designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam)
 {
 	size_t	curseur;

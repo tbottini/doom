@@ -34,7 +34,7 @@ void		sector_frustum(t_arch *arch, t_sector *sector, t_player *player)
 	i = 0;
 	while (i < sector->len)
 	{
-		on_frustum(arch, player, &sector->wall[i].pillar);
+		on_frustum(arch, player, sector->wall[i].pillar);
 		i++;
 	}
 }
@@ -49,11 +49,11 @@ double		wall_angle_pers(t_arch *arch, t_wall wall)
 
 	if (arch->borne.x * arch->borne.y > 0)
 		return (0);
-	angles.x = wall.pillar.angle;
+	angles.x = wall.pillar->angle;
 	angles.y = wall.next->angle;
 
 
-	if (wall.pillar.angle < 0)
+	if (wall.pillar->angle < 0)
 		angles.x += 360;
 	if (wall.next->angle < 0)
 		angles.y += 360;
@@ -83,7 +83,7 @@ int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 {
 	t_fvct2	angles;
 
-	angles.x = local_angle(arch->borne.x, wall->pillar.angle);
+	angles.x = local_angle(arch->borne.x, wall->pillar->angle);
 	angles.y = local_angle(arch->borne.x, wall->next->angle);
 	return ((fabs(angles.y - angles.x) > 180.0));
 }
@@ -107,7 +107,7 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 	wall = sector.wall;
 	while (i_wall < sector.len)
 	{
-		if (wall[i_wall].pillar.frust || wall[i_wall].next->frust)
+		if (wall[i_wall].pillar->frust || wall[i_wall].next->frust)
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
@@ -128,16 +128,16 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 	return (1);
 }
 
-void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector)
+void		bunch_comsuption(t_game *game, t_wall **bunch, t_sector *sector)
 {
 	int		i;
 
 	i = 0;
-	doom->arch.sector = sector;
+	game->arch.sector = sector;
 	while (bunch[i] != NULL)
 	{
-		doom->arch.wall = bunch[i];
-		render_wall(&doom->arch, &doom->player);
+		game->arch.wall = bunch[i];
+		render_wall(&game->arch, &game->player);
 		i++;
 	}
 }

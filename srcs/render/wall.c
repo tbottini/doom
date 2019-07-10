@@ -14,8 +14,8 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 	double		b;
 	double		percent;
 
-	diff.x = arch->wall->pillar.p.x - p->stat.pos.x;
-	diff.y = arch->wall->pillar.p.y - p->stat.pos.y;
+	diff.x = arch->wall->pillar->p.x - p->stat.pos.x;
+	diff.y = arch->wall->pillar->p.y - p->stat.pos.y;
 	diff2.x = arch->wall->next->p.x - p->stat.pos.x;
 	diff2.y = arch->wall->next->p.y - p->stat.pos.y;
 	coef_ang = tan(angle * PI180);

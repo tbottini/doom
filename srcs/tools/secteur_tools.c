@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   secteur_tools.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:36:28 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/27 13:13:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/10 16:48:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_lstsec ft_newsector(SDL_Texture *top, SDL_Texture *sol)
 	t->prvs = NULL;
 	t->top = top;
 	t->sol = sol;
-	t->htop = 10;
+	t->htop = 500;
 	t->hsol = 0;
 	t->gravity = 0;
 	t->next = NULL;

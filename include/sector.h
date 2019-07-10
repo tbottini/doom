@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/09 22:46:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:47:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,9 @@ typedef struct			s_pillar
 **	si le mur est un portail defini dans status
 **	link donne le lien du portail si il est distant
 */
-
 typedef struct			s_wall
 {
-	t_pillar			pillar;
+	t_pillar			*pillar;
 	t_pillar			*next;
 	t_txtr				txtr;
 	t_portal_id			status;
@@ -89,7 +88,6 @@ struct					s_sector
 	t_prop				*props;
 	t_enemy				*enemys;
 	int					len_prop;
-	struct s_sector		*ssector;
 	int					len_sub;
 	double				h_floor;
 	double				h_ceil;
