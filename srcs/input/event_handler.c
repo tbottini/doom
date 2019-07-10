@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 12:52:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/10 14:08:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int				event_handler(t_doom *doom)
 		else if (event.type == SDL_CONTROLLERAXISMOTION
 			|| event.type == SDL_CONTROLLERBUTTONDOWN
 				|| event.type == SDL_CONTROLLERBUTTONUP)
-			controller_handler(doom, event);
+			controller_handler(doom, &doom->game.player, event);
 	}
 	return (1);
 }

@@ -43,19 +43,19 @@ void	debug_input(t_doom *doom, SDL_Keycode key)
 void	rot_input(t_doom *doom, SDL_Keycode key)
 {
 	if (key == SDLK_e)
-		doom->player.stat.rot.y -= 5;
+		doom->game.player.stat.rot.y -= 5;
 	else if (key == SDLK_q)
-		doom->player.stat.rot.y += 5;
-	//else if (key == SDLK_r && doom->player.stat.rot.x + 5 < 180)
-	//	doom->player.stat.rot.x += 5;
-	//else if (key == SDLK_f && doom->player.stat.rot.x - 5 > 0)
-	//	doom->player.stat.rot.x -= 5;
+		doom->game.player.stat.rot.y += 5;
+	//else if (key == SDLK_r && doom->game.player.stat.rot.x + 5 < 180)
+	//	doom->game.player.stat.rot.x += 5;
+	//else if (key == SDLK_f && doom->game.player.stat.rot.x - 5 > 0)
+	//	doom->game.player.stat.rot.x -= 5;
 	else if (key == SDLK_r)
-		doom->player.stat.sector->h_ceil += 0.5;
+		doom->game.player.stat.sector->h_ceil += 0.5;
 	else if (key == SDLK_f)
-		doom->player.stat.sector->h_ceil -= 0.5;
-	printf("player rot %f\n", doom->player.stat.sector->h_ceil);
-	doom->player.stat.rot.y = double_modulo(doom->player.stat.rot.y);
+		doom->game.player.stat.sector->h_ceil -= 0.5;
+	printf("player rot %f\n", doom->game.player.stat.sector->h_ceil);
+	doom->game.player.stat.rot.y = double_modulo(doom->game.player.stat.rot.y);
 }
 
 int		keyboard_input(t_doom *doom, SDL_Event event)
@@ -66,7 +66,7 @@ int		keyboard_input(t_doom *doom, SDL_Event event)
 	if (is_rotkey(key))
 		rot_input(doom, key);
 	else if (is_movekey(key))
-		mvt_input(&doom->player, key);
+		mvt_input(&doom->game.player, key);
 	else if (key == SDLK_f)
 		debug_input(doom, key);
 	else if (key == SDLK_ESCAPE)

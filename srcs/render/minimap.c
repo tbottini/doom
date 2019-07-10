@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/03 17:39:04 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:04:20 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,19 @@ static void			miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	}
 }
 
-static void			minifield(t_doom *d, t_minimap mini)
+static void			minifield(t_player *player, t_minimap mini)
 {
 	int		i;
 	t_vct2	pix;
 
-	i = (d->player.stat.rot.y - (d->player.fov >> 1));
-	while (i < (d->player.stat.rot.y + (d->player.fov >> 1)))
+	i = (player->stat.rot.y - (player->fov >> 1));
+	while (i < (player->stat.rot.y + (player->fov >> 1)))
 	{
 		pix.x = 256 * cos(i * PI180) + mini.mid.x;
 		pix.y = -256 * sin(i * PI180) + mini.mid.y;
-		miniline(&d->sdl, mini.mid, pix,
-			hcol(d->player.stat.health, d->player.boost));
-		i += d->player.fov >> 3;
+		miniline(mini.sdl, mini.mid, pix,
+			hcol(player->stat.health, player->boost));
+		i += player->fov >> 3;
 	}
 }
 
@@ -106,9 +106,9 @@ void				minimap(t_doom *d)
 {
 	t_minimap	mini;
 
-	mini = miniinit(&d->sdl, d->player.stat.health, d->player.boost);
-	miniwalls(d, *d->player.stat.sector, mini);
+	mini = miniinit(&d->sdl, d->game.player.stat.health, d->game.player.boost);
+	miniwalls(d, *d->game.player.stat.sector, mini);
 	minibord(d, mini);
-	minifield(d, mini);
+	minifield(&d->game.player, mini);
 	bold_point2(mini, mini.mid, WHITE);
 }

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 20:48:29 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:05:48 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ int				bold_point2(t_minimap mini, t_vct2 pos, Uint32 color)
 	return (1);
 }
 
-static t_vct2	minipoint(t_doom *d, t_fvct2 v, t_minimap m)
+static t_vct2	minipoint(t_player *player, t_fvct2 v, t_minimap m)
 {
 	t_vct2	px;
 
-	px.x = (m.a.x - (m.size.x / 2)) + ((v.x - d->player.stat.pos.x)) * (UNIT);
-	px.y = (m.a.y - (m.size.y / 2)) + ((d->player.stat.pos.y - v.y)) * (UNIT);
+	px.x = (m.a.x - (m.size.x / 2)) + ((v.x - player->stat.pos.x)) * (UNIT);
+	px.y = (m.a.y - (m.size.y / 2)) + ((player->stat.pos.y - v.y)) * (UNIT);
 	return (px);
 }
 
@@ -83,12 +83,12 @@ void			miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
 	while (++i < sector.len_sub)
 		miniwalls(doom, sector.ssector[i], mini);
 	wall = sector.wall;
-	cursor = minipoint(doom, wall[0].pillar.p, mini);
+	cursor = minipoint(&doom->game.player, wall[0].pillar.p, mini);
 	tmp = cursor;
 	i = -1;
 	while (++i < sector.len - 1)
 	{
-		cursor2 = minipoint(doom, wall[i + 1].pillar.p, mini);
+		cursor2 = minipoint(&doom->game.player, wall[i + 1].pillar.p, mini);
 		mbl(cursor, cursor2, mini, wall[i + 1].status
 			!= PORTAL ? CWALL : CPORT);
 		cursor = cursor2;

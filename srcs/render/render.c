@@ -9,7 +9,7 @@ void				sector_render(t_doom *doom, t_sector *sector)
 {
 	t_wall			*bunch[50];
 
-	sector_frustum(&doom->arch, sector, &doom->player);
+	sector_frustum(&doom->arch, sector, &doom->game.player);
 	buncherisation(&doom->arch, *sector, bunch);
 	bunch_comsuption(doom, bunch, sector);
 }

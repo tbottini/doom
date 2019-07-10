@@ -327,6 +327,8 @@ typedef struct 			s_designer
 
 typedef struct			s_game
 {
+	t_player			player;
+	t_sound				sound;
 	t_sector			*sectors;
 	t_pillar			*pillars;
 	SDL_Surface			**gamesurf;
@@ -339,8 +341,6 @@ struct					s_doom
 	t_editor			edit;
 	t_ui				ui;
 	Uint32				timestamp;
-	t_player			player;
-	t_sound				sound;
 	SDL_GameController	*controller;
 	t_sector			*sector;
 	t_game				game;

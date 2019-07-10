@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_controller.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/02 16:23:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/10 14:08:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,47 +54,47 @@ static void controller_input(t_doom *doom, SDL_Event e)
 	ft_printf("%d\t%d\tcurr : %d\tStatus : %d\n", e.jbutton.button, e.jbutton.state, doom->ui.curr_btn_controller, doom->ui.m_status);
 }
 
-void controller_handler(t_doom *doom, SDL_Event e)
+void controller_handler(t_doom *doom, t_player *player, SDL_Event e)
 {
 	if (e.type == SDL_CONTROLLERAXISMOTION)
 	{
 		if (e.jaxis.axis == 0) // Move x
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				doom->player.stat.vel.y = e.jaxis.value;
+				player->stat.vel.y = e.jaxis.value;
 			else
-				doom->player.stat.vel.y = 0;
+				player->stat.vel.y = 0;
 		}
 		else if (e.jaxis.axis == 1) // Move y
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				doom->player.stat.vel.x = -e.jaxis.value;
+				player->stat.vel.x = -e.jaxis.value;
 			else
-				doom->player.stat.vel.x = 0;
+				player->stat.vel.x = 0;
 		}
 		else if (e.jaxis.axis == 2) // Cam y
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
 			{
 				if (ft_abs(e.jaxis.value) > 30000)
-					doom->player.stat.rotvel.y = -e.jaxis.value / 5000.0;
+					player->stat.rotvel.y = -e.jaxis.value / 5000.0;
 				else
-					doom->player.stat.rotvel.y = -e.jaxis.value / 10000.0;
+					player->stat.rotvel.y = -e.jaxis.value / 10000.0;
 			}
 			else
-				doom->player.stat.rotvel.y = 0.0;
+				player->stat.rotvel.y = 0.0;
 		}
 		else if (e.jaxis.axis == 3) // Cam x
 		{
 			if (JOYSTICK_DEAD_ZONE < e.jaxis.value || e.jaxis.value < -JOYSTICK_DEAD_ZONE)
 			{
 				if (ft_abs(e.jaxis.value) > 30000)
-					doom->player.stat.rotvel.x = -e.jaxis.value / 5000.0;
+					player->stat.rotvel.x = -e.jaxis.value / 5000.0;
 				else
-					doom->player.stat.rotvel.x = -e.jaxis.value / 10000.0;
+					player->stat.rotvel.x = -e.jaxis.value / 10000.0;
 			}
 			else
-				doom->player.stat.rotvel.x = 0.0;
+				player->stat.rotvel.x = 0.0;
 		}
 	}
 	else

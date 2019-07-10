@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/04 17:47:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:18:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,25 @@ int		key_press(int key, t_doom *doom)
 	else if (key ==SDLK_g)
 		read_file(doom, "ressources/map/editor.map");
 	else if (key == SDLK_r && !doom->ui.m_status)
-		reload(&doom->player.hand);
+		reload(&doom->game.player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)
-		action(&doom->player, &doom->player.stat);
-	else if (key == SDLK_LGUI && !doom->ui.m_status && doom->player.stat.jetpack)
-		crouch(&doom->player);
+		action(&doom->game.player, &doom->game.player.stat);
+	else if (key == SDLK_LGUI && !doom->ui.m_status && doom->game.player.stat.jetpack)
+		crouch(&doom->game.player);
 	else if (key == SDLK_g)
-		describe_player(doom->player);
+		describe_player(doom->game.player);
 	else if (key == SDLK_h)
 		describe_sector_recursif(*doom->sector);
 	else if (key == SDLK_9)
-		change_music(&doom->sound, 10, 5000);
+		change_music(&doom->game.sound, 10, 5000);
 	else if (key == SDLK_b)
 		save_png(&doom->sdl);
 	else if (key == SDLK_v && !doom->ui.m_status)
-		kick(doom, &doom->player);
+		kick(doom, &doom->game.player);
 	else if (key == SDLK_l && !doom->ui.m_status)
-		doom->player.stat.jetpack = 1;
+		doom->game.player.stat.jetpack = 1;
 	else if (key == SDLK_z && !doom->ui.m_status)
-		jetpack_on_off(&doom->player);
+		jetpack_on_off(&doom->game.player);
 	else if (key == SDLK_PERIOD)
 		doom->ui.fire = (t_pal){{0, 0x10003101, 0x14073702, 0x190f3d03, 0x1e164304,
 		0x221e4905, 0x27254f06, 0x2c2c5507, 0x30345b08, 0x353c6109, 0x3a43670A,
@@ -129,9 +129,9 @@ int		key_release(int key, t_doom *doom)
 {
 	ft_noderm_int(&(doom->sdl.keys), key);
 	if (key == SDLK_w || key == SDLK_LSHIFT)
-		sprint_release(&doom->player.stat);
+		sprint_release(&doom->game.player.stat);
 	else if (key == SDLK_LGUI)
-		crouch_release(&doom->player);
+		crouch_release(&doom->game.player);
 	return (0);
 }
 
@@ -156,8 +156,8 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 		{
 			if (doom->ui.m_status != 0)
 				btn_click(doom, x, y);
-			else if (!(doom->player.hand.rate))
-				shoot(&doom->player);
+			else if (!(doom->game.player.hand.rate))
+				shoot(&doom->game.player);
 			else
 				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
 		}
@@ -165,9 +165,9 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 	//else if (btn == SDL_BUTTON_RIGHT)
 		//fire_on_off(doom->sdl.screen, doom->sdl.size, 0); // Debug thing
 	else if (btn == SDL_BUTTON_X1)
-		next_weapon(&doom->player);
+		next_weapon(&doom->game.player);
 	else if (btn == SDL_BUTTON_X2)
-		prev_weapon(&doom->player);
+		prev_weapon(&doom->game.player);
 	return (0);
 }
 
@@ -183,7 +183,7 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 	(void)btn;
 	(void)x;
 	(void)y;
-	if (btn == SDL_BUTTON_LEFT && doom->player.hand.rate)
+	if (btn == SDL_BUTTON_LEFT && doom->game.player.hand.rate)
 		ft_noderm_int(&(doom->sdl.keys), btn);
 	return (0);
 }
@@ -205,8 +205,8 @@ int		mouse_move(int x, int y, t_doom *doom)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (doom->ui.m_status == 0)
 	{
-		doom->player.stat.rot.y -= x / SENSIBILITY;
-		doom->player.stat.rot.x -= y / (SENSIBILITY * 2);
+		doom->game.player.stat.rot.y -= x / SENSIBILITY;
+		doom->game.player.stat.rot.x -= y / (SENSIBILITY * 2);
 		return (0);
 	}
 	if (doom->ui.currslid)
@@ -215,11 +215,11 @@ int		mouse_move(int x, int y, t_doom *doom)
 		tmp = doom->ui.currslid;
 		update_slider_value(doom, tmp, x);
 		if (tmp == &(doom->ui.slidopt[0]))
-			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->player.fov / 2.0 * PI180);
+			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
 		else if (tmp == &(doom->ui.slidopt[1]))
-			Mix_VolumeMusic(doom->sound.musicvolume);
+			Mix_VolumeMusic(doom->game.sound.musicvolume);
 		else if (tmp == &(doom->ui.slidopt[2]))
-			effect_volume(&doom->sound);
+			effect_volume(&doom->game.sound);
 	}
 	return (0);
 }

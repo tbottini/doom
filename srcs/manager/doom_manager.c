@@ -20,8 +20,8 @@ void	doom_exit(t_doom *doom)
 	ui_free(&doom->ui);
 	editor_free(&doom->edit);
 	sdl_free(&doom->sdl);
-	music_free(&doom->sound);
-	effect_free(&doom->sound);
+	music_free(&doom->game.sound);
+	effect_free(&doom->game.sound);
 	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
@@ -48,9 +48,9 @@ t_doom	*doom_init()
 	doom->edit.ui = &doom->ui;
 	if (!editor_init(&doom->edit))
 		doom_exit(doom);
-	player_init(&doom->player);
-	if (!music_init(&doom->sound))
+	if (!music_init(&doom->game.sound))
 		doom_exit(doom);
+	doom->game.player.fov = 90;
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
 	return (doom);

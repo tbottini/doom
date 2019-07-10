@@ -137,7 +137,7 @@ void		bunch_comsuption(t_doom *doom, t_wall **bunch, t_sector *sector)
 	while (bunch[i] != NULL)
 	{
 		doom->arch.wall = bunch[i];
-		render_wall(&doom->arch, &doom->player);
+		render_wall(&doom->arch, &doom->game.player);
 		i++;
 	}
 }

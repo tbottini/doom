@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/02 20:23:00 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 13:04:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,16 @@ int vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 
 int			can_pass(t_stat *stat, int i)
 {
-	//t_sector next;
+	t_sector *next;
 
-	//next = stat->sector->wall[i].link;
+	next = stat->sector->wall[i].link;
 	if (stat->sector->wall[i].status >= OPEN_DOOR)
 	{
-		//stat->sector = stat->sector->wall[i].link;
-		//if ((stat->pos.z + stat->height < link.h_floor + link.h_ceil) && (link.h_floor - stat.pos.z < STEP))
+		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil) && (next->h_floor - stat->pos.z < STEP))
+		{
+			stat->sector = stat->sector->wall[i].link;
 			return (1);
+		}
 	}
 	return (0);
 }
@@ -61,6 +63,7 @@ t_wall		*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 			&& vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar.p,
 			*(t_fvct3*)&stat->sector->wall[i].next->p))
 			return (&stat->sector->wall[i]);
+	/*
 	j = -1;
 	while (++j < stat->sector->len_sub)
 	{
@@ -71,6 +74,7 @@ t_wall		*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 				*(t_fvct3*)&stat->sector->ssector[j].wall[i].next->p))
 				return (&stat->sector->ssector[j].wall[i]);
 	}
+	*/
 	return (NULL);
 }
 

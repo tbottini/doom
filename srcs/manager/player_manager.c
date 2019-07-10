@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/04 17:45:30 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:21:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,15 @@ int		player_init(t_player *player)
 	player->hand = player->weapons[0];
 	player->crouch = false;
 	player->stat.speed = 32700.0;
-	player->fov = 90;
-	player->stat.health = 100;
 	player->stat.width = 0;
 	player->boost = 0;
 	player->stat.jetpack = -1;
+	player->stat.height = 1.80;
+	player->stat.rot.x = 90;
+	player->stat.rotvel.x = 0;
+	player->stat.rotvel.y = 0;
+	player->stat.vel.x = 0;
+	player->stat.vel.y = 0;
+	player->stat.vel.z = 0;
 	return (1);
 }

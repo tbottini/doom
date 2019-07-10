@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/29 15:29:07 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:09:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void window_event(t_doom *doom, SDL_Event e)
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			doom_exit(doom);
 		doom->sdl.screen = (Uint32 *)tmp;
-		doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->player.fov / 2.0 * PI180);
+		doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
 		fire_init(doom);
 		draw_menu(doom);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_slids.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 21:55:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/10 14:18:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_slid		add_fov_slider(t_doom *doom)
 	tmp.grip.w = tmp.loc.area.h;
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 30;
-	tmp.val = &doom->player.fov;
+	tmp.val = &doom->game.player.fov;
 	tmp.max = 110;
 	update_slider_txt(doom, &tmp);
 	return (tmp);
@@ -60,7 +60,7 @@ t_slid		add_music_slider(t_doom *doom)
 	tmp.grip.w = tmp.loc.area.h;
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 0;
-	tmp.val = &doom->sound.musicvolume;
+	tmp.val = &doom->game.sound.musicvolume;
 	tmp.max = 128;
 	update_slider_txt(doom, &tmp);
 	return (tmp);
@@ -87,7 +87,7 @@ t_slid		add_effect_slider(t_doom *doom)
 	tmp.grip.w = tmp.loc.area.h;
 	tmp.grip.h = tmp.loc.area.h;
 	tmp.min = 0;
-	tmp.val = &doom->sound.effectvolume;
+	tmp.val = &doom->game.sound.effectvolume;
 	tmp.max = 128;
 	update_slider_txt(doom, &tmp);
 	return (tmp);

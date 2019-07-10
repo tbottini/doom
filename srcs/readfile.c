@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 23:00:51 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 14:09:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,7 +396,7 @@ int reading_map(int fd, t_doom *doom, t_slen *len)
 		return (rtn);
 	if ((rtn = read_sectors(fd, &doom->game, len)))
 		return (rtn);
-	if ((rtn = read_player(fd, &doom->game, &doom->player, len)))
+	if ((rtn = read_player(fd, &doom->game, &doom->game.player, len)))
 		return (rtn);
 	if ((rtn = read_enemies(fd, &doom->game, len)))
 		return (rtn);
