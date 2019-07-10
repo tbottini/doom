@@ -28,16 +28,16 @@ int	check_one_texture(int fd)
 {
 	int pathlen;
 	char path[512];
-	SDL_Surface *tmp;
+	int imgfd;
 
 	if (read(fd, &pathlen, sizeof(int)) != sizeof(int) || pathlen >= 512 || pathlen <= 0)
 		return (-23);
 	if (read(fd, path, sizeof(char) * (pathlen + 1)) != sizeof(char) * (pathlen + 1))
 		return (-24);
 	path[pathlen] = '\0';
-	if (!(tmp = IMG_Load(path)))
+	if ((imgfd = open(path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) == -1)
 		return (-25);
-	SDL_FreeSurface(tmp);
+	close(imgfd);
 	if (read(fd, path, sizeof(char)) != sizeof(char) || *path != '\v')
 		return (-26);
 	return (0);
