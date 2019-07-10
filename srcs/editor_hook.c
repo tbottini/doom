@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/03 13:34:26 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 14:26:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ int editor_key_press(int key, t_doom *doom)
 	if (key == SDLK_BACKQUOTE)
 	{
 		close_editor(doom);
+	}
+	else if (key == SDLK_RETURN)
+	{
+		save_editor_to_file(&doom->edit);
 	}
 	else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 	{
@@ -79,15 +83,15 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 
 	if (pos_in_rect(edit->sectbox, e.x, e.y)) // If menu left
 	{
-		if (edit->currmur)
+		if (edit->currstat)
+			edit->currstat->sector = sector_menu_click(edit, e.y, 2);
+		else if (edit->currmur)
 		{
 			if ((edit->currmur->portal_ptr = sector_menu_click(edit, e.y, 2)))
 				edit->currmur->portal_id = 4;
 			else
 				edit->currmur->portal_id = 0;
 		}
-		else if (edit->currstat)
-			edit->currstat->sector = sector_menu_click(edit, e.y, 2);
 		else
 			sector_menu_click(edit, e.y, e.x > edit->sectbox.x + edit->sectbox.w - 50);
 		return (0);
@@ -99,14 +103,12 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y)) // If menu texture
 	{
-		if (edit->selecttxtr == FILL_PROP && edit->currstat && MINPROPSPOS <= edit->currstat->type
-			&& edit->currstat->type < MAXPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
+		if (edit->selecttxtr == FILL_PROP && edit->currstat && ISPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
 		{
 			edit->currstat->type = e.x;
 			edit->selecttxtr = NOSELECT;
 		}
-		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && MINWPROPSPOS <= edit->currstat->type
-			&& edit->currstat->type < MAXWPROPSPOS && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINWPROPSPOS, MAXWPROPSNUMBER)))
+		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && ISWALLPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINWPROPSPOS, MAXWPROPSNUMBER)))
 		{
 			edit->currstat->type = e.x;
 			edit->selecttxtr = NOSELECT;
@@ -130,8 +132,8 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
-		edit->currstat = NULL;
 		edit->currmur = NULL;
+		edit->currstat = NULL;
 		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
 		{
 			if (!(edit->currstat = find_player(edit, e.x, e.y)))
@@ -148,6 +150,16 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 		if (edit->currpilier && edit->hoverpilier)
 		{
 			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier, edit->txtrgame[0]);
+		}
+		else if (edit->currstat)
+		{
+			if (!(ISENEMY(edit->currstat->type)) && &edit->player.stat != edit->currstat)
+			{
+				if (!(edit->currstat->mur = edit->hovermur))
+					edit->currstat->mursec = NULL;
+				else
+					edit->currstat->mursec = edit->map;
+			}
 		}
 		else if (e.clicks == 2)
 		{
@@ -188,7 +200,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 				else
 					edit->currstat->type += e.y;
 			}
-			if (MINPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXPROPSPOS)
+			if (ISPROP(edit->currstat->type))
 			{
 				if (edit->currstat->type + e.y < MINPROPSPOS)
 					edit->currstat->type = MINPROPSPOS;
@@ -197,7 +209,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 				else
 					edit->currstat->type += e.y;
 			}
-			else if (MINWPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXWPROPSPOS)
+			else if (ISWALLPROP(edit->currstat->type))
 			{
 				if (edit->currstat->type + e.y < MINWPROPSPOS)
 					edit->currstat->type = MINWPROPSPOS;
@@ -231,7 +243,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->txtrscroll += e.y * 2;
 		return (0);
 	}
-	if (edit->currstat && edit->currmur && (MINWPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXWPROPSPOS))
+	if (edit->currstat && edit->currmur && (ISWALLPROP(edit->currstat->type)))
 	{
 		if (edit->currstat->roty + e.y < 0)
 			edit->currstat->roty = 0.0;
@@ -242,7 +254,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 		edit->currstat->pos = line_percent(edit->currmur->pil1->pos, edit->currmur->pil2->pos, edit->currstat->roty / 100);
 		return (0);
 	}
-	else if (edit->currstat && !(MINPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXPROPSPOS))
+	else if (edit->currstat && !(ISPROP(edit->currstat->type)))
 	{
 		if (edit->currstat->roty + e.y < 0)
 			edit->currstat->roty += e.y + 360.0;
@@ -297,7 +309,7 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		e.x = (e.y - edit->sectscroll) / SECTORBOXHEIGHT;
 		if ((e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
 			|| (2 <= e.x && e.x <= 3 && edit->map && !edit->currstat && !edit->currmur)
-			|| (e.x == 0 && edit->currstat && MINPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXPROPSPOS))
+			|| (e.x == 0 && edit->currstat && ISPROP(edit->currstat->type)))
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE));
 		else
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));

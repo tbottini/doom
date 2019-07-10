@@ -3,6 +3,8 @@ SRCS_DOOM		:=		editor.c										\
 						button_function.c								\
 						slider_function.c								\
 						main.c											\
+						savefile.c										\
+						readfile.c										\
 						cinematri.c										\
 
 SRCS_UI			:=		button_action.c									\
@@ -60,7 +62,8 @@ SRCS_DEBUG		:=		debug_sector.c									\
 						debug_vector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
-						enemy_tools.c									\
+						entity_tools.c									\
+						file_tools.c									\
 						mur_tools.c										\
 						little_tools.c									\
 						num_tools.c										\
@@ -77,6 +80,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						effect_manager.c								\
 						weapon_manager.c								\
 						enemy_manager.c									\
+						prop_manager.c									\
 						designer_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\

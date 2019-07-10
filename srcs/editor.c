@@ -266,9 +266,9 @@ static void draw_objs(t_editor *editor, t_entity *start)
 	curr = start;
 	while (curr)
 	{
-		if (MINPROPSPOS <= curr->stat.type && curr->stat.type < MAXPROPSPOS)
+		if (ISPROP(curr->stat.type))
 			draw_props(editor, curr, editor->sprites, MINPROPSPOS);
-		else if (MINWPROPSPOS <= curr->stat.type && curr->stat.type < MAXWPROPSPOS)
+		else if (ISWALLPROP(curr->stat.type))
 			draw_props(editor, curr, editor->wsprites, MINWPROPSPOS);
 		else
 			draw_enemies(editor, curr);
@@ -365,6 +365,8 @@ static void draw_walls(t_editor *editor)
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
 			else if (currwall->portal_ptr)
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
+			else if (editor->currstat && editor->currstat->mur == currwall)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){75, 100, 255, 0xFF});
 			else
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
 			draw_objs(editor, currwall->wproplist);
@@ -419,7 +421,7 @@ void draw_sector_menu(t_editor *editor, t_font font)
 		{
 			if (editor->currstat == &editor->player.stat)
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){100, 205, 100, 0xFF});
-			else if (MINPROPSPOS <= editor->currstat->type && editor->currstat->type < MAXPROPSPOS)
+			else if (ISPROP(editor->currstat->type))
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){100, 125, 240, 0xFF});
 			else
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Murs: ", ft_walllen(currsec->murs), (SDL_Color){170, 100, 205, 0xFF});
@@ -451,12 +453,12 @@ void draw_inspect_menu(t_editor *editor)
 	{
 		if (&editor->player.stat == editor->currstat) // If Player
 			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Health: ", editor->currstat->type, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
-		else if (MINPROPSPOS <= editor->currstat->type && editor->currstat->type < MAXPROPSPOS) // If Prop
+		else if (ISPROP(editor->currstat->type)) // If Prop
 		{
 			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->type - MINPROPSPOS, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
 		}
-		else if (MINWPROPSPOS <= editor->currstat->type && editor->currstat->type < MAXWPROPSPOS) // If Wall Prop
+		else if (ISWALLPROP(editor->currstat->type)) // If Wall Prop
 		{
 			sdl_int_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Type: ", editor->currstat->type - MINWPROPSPOS, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
 			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
@@ -575,9 +577,9 @@ int opt_menu_click(t_editor *edit, int pos)
 	{
 		if (edit->map && !edit->currstat)
 			edit->selecttxtr = FILL_TXTR;
-		else if (edit->currstat && MINPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXPROPSPOS)
+		else if (edit->currstat && ISPROP(edit->currstat->type))
 			edit->selecttxtr = FILL_PROP;
-		else if (edit->currstat && MINWPROPSPOS <= edit->currstat->type && edit->currstat->type < MAXWPROPSPOS)
+		else if (edit->currstat && ISWALLPROP(edit->currstat->type))
 			edit->selecttxtr = FILL_WPROP;
 		else if (edit->currmur)
 			edit->selecttxtr = FILL_TXTR;

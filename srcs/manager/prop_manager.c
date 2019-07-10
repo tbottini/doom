@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/04 17:44:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/09 22:27:31 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static void	new_music(t_sound *sound)
 static void	open_close(t_wall *wall)
 {
 	if (wall->status == OPEN_DOOR)
-		close_door(wall);//a faire avec animation
+		;//close_door(wall);//a faire avec animation
 	else if (wall->status == CLOSE_DOOR)
-		open_door(wall);//a faire avaec animation
+		;//open_door(wall);//a faire avaec animation
 }
 
 /*===============ammo===================*/
@@ -95,7 +95,9 @@ void		func_prop(t_prop *prop, int type)
 		prop->func = &superpunch;
 	else if (type == MINPROPSPOS + 5)//Add new weapon
 		prop->func = &add_weapon;
-	else if (type == MINPROPSPOS + 6)// Deco sector
+	else if (type == MINPROPSPOS + 6)//Add new weapon
+		prop->func = &jetpack;
+	else if (type == MINPROPSPOS + 7)// Deco sector
 		prop->func = NULL;
 	else if (type == MINWPROPSPOS) // Wall button
 		prop->func = &open_close;
@@ -104,14 +106,10 @@ void		func_prop(t_prop *prop, int type)
 }
 
 ////////////////////////////////
-t_prop		prop_init(int type, t_wall *door)
-{
-	t_prop prop;
 
-	//if (!(prop = (t_prop *)malloc(sizeof(t_prop))))
-	//	return (0);
-	prop.door = door;
-	prop.type = type;
-	func_prop(&prop, type);
-	return (prop);
+void		init_prop(t_prop *prop)
+{
+	prop->pos.z = prop->sector->h_floor;
+	func_prop(prop, prop->type);
+	//txtr_prop(prop, prop->type);
 }

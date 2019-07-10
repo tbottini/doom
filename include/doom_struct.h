@@ -13,8 +13,16 @@
 # include "libft.h"
 
 typedef struct s_doom	t_doom;
+typedef struct s_enemy	t_enemy;
+typedef struct s_sector	t_sector;
+typedef struct s_wall	t_portal;
+typedef struct s_prop	t_prop;
 
 # define MAXTXTRNUMBER 500
+
+# define MINENEMYPOS 1
+# define MAXENEMYNUMBER 4
+# define MAXENEMYPOS (MINENEMYPOS + MAXENEMYNUMBER)
 
 # define MINPROPSPOS 20
 # define MAXPROPSNUMBER 6
@@ -30,6 +38,11 @@ typedef struct s_doom	t_doom;
 # define MAXWPROPSNUMBER 1
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/button.ico"
+
+# define ISENEMY(x) (MINENEMYPOS <= x && x < MAXENEMYPOS)
+# define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
+# define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
+
 /*
 ** Snap var behaviour
 ** 0 = center of object is its left;
@@ -55,14 +68,23 @@ typedef t_mur			*t_lstmur;
 typedef struct s_secteur	t_secteur;
 typedef t_secteur		*t_lstsec;
 
+typedef struct			s_slen
+{
+	int	nb_pills;
+	int	nb_txtrs;
+	int	nb_sects;
+}						t_slen;
+
 /*
 ** editor coord on map
 */
 typedef struct 			s_ecoord
 {
-	t_secteur			*sector;
+	t_secteur			*sector; // Linked Sector
+	t_mur				*mur; // Linked Wall
+	t_secteur			*mursec; // Linked Wall sector
 	t_vct2				pos;
-	int					type; //Health
+	int					type; // Health if player
 	double				roty;
 }						t_ecoord;
 
@@ -74,8 +96,8 @@ typedef struct			s_eplayer
 struct					s_entity
 {
 	t_ecoord			stat;
-	struct s_entity		*next;
-	struct s_entity		*prev;
+	t_entity			*next;
+	t_entity			*prev;
 };
 
 typedef struct			s_sloc
@@ -196,6 +218,7 @@ typedef struct s_pilier	t_pilier;
 typedef t_pilier		*t_lstpil;
 
 struct					s_pilier {
+	int					id;
 	t_vct2				pos;
 
 	t_lstpil			prvs;
@@ -206,21 +229,26 @@ struct					s_mur {
 	t_pilier			*pil1;
 	t_pilier			*pil2;
 	SDL_Texture			*txtr;
+	int					idtxtr;
 	t_secteur			*portal_ptr;
 	t_portal_id			portal_id;
 	t_lstent			wproplist;
 	t_lstmur			prvs;
 	t_lstmur			next;
+	int					id;
 };
 
 struct					s_secteur
 {
+	int					id;
 	t_lstmur			murs;
 	SDL_Texture			*top;
+	int					idtop;
 	SDL_Texture			*sol;
+	int					idsol;
 	int					hsol; // Hauteur du sol par rapport a 0
 	int					htop; // Hauteur du plafond par rapport au sol
-	int					gravity; // 0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍
+	char				gravity; // 0 : gravite Lunaire 🌝 | 1 : Gravite Terrestre 🌍
 	t_lstsec			prvs;
 	t_lstsec			next;
 };
@@ -255,21 +283,22 @@ typedef struct			s_editor
 	SDL_Rect			optbox;
 	SDL_Rect			txtrbox;
 	t_tab				keys;
-	t_lstpil			pillist;
-	t_lstent			ennlist;
 	t_pilier			*currpilier;
 	t_ecoord			*currstat;
 	t_mur				*currmur;
 	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
-	t_lstsec			sectors; // list of all root pillards in sector
 	t_lstsec			map;
 	t_vct3				mappos;
-	SDL_Texture			*txtrgame[MAXTXTRNUMBER];
-	SDL_Texture			*sprites[MAXPROPSNUMBER];
-	SDL_Texture			*wsprites[MAXWPROPSNUMBER];
-	char				*txtrname[MAXTXTRNUMBER];
-	t_eplayer			player;
+	t_eplayer			player; // [map] donnees sur le player
+	t_lstpil			pillist; // [map] Liste de pilliers
+	t_lstent			ennlist; // [map] Liste d'ennemis
+	t_lstsec			sectors;  // [map] Liste des secteurs (contenant les murs)
+	SDL_Texture			*txtrgame[MAXTXTRNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID de la texture du mur
+	SDL_Texture			*txtrreal[MAXTXTRNUMBER]; // [map] Used when saving map
+	SDL_Texture			*sprites[MAXPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du prop
+	SDL_Texture			*wsprites[MAXWPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du wallprop
+	char				*txtrname[MAXTXTRNUMBER]; // [map] Contient le path de la texture
 }						t_editor;
 
 typedef struct 			s_camera
@@ -296,6 +325,14 @@ typedef struct 			s_designer
 	//uint16			occl_buffer
 }						t_arch;
 
+typedef struct			s_game
+{
+	t_sector			*sectors;
+	t_pillar			*pillars;
+	SDL_Surface			**gamesurf;
+
+}						t_game;
+
 struct					s_doom
 {
 	t_sdl				sdl;
@@ -306,6 +343,7 @@ struct					s_doom
 	t_sound				sound;
 	SDL_GameController	*controller;
 	t_sector			*sector;
+	t_game				game;
 	t_vct2				vel;
 	t_arch				arch;
 	t_camera			camera;

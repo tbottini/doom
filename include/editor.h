@@ -7,6 +7,8 @@
 ** Editor
 */
 
+int						save_editor_to_file(t_editor *edit);
+
 t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
 
 int						editor_key_press(int key, t_doom *doom);
