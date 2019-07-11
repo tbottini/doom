@@ -52,17 +52,17 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 			if (z_line_buffer(arch, neutre.x, arch->px.x))
 				draw_column(arch, pillar);
 		}
-		else if (arch->wall->status == PORTAL_DIRECT)
-		{
-			set_borne_horizontal(arch);
-			if (clean_zline(arch, neutre.x, arch->px.x))
-			{
-				draw_portal(arch, player, pillar);
+		///else if (arch->wall->status == PORTAL_DIRECT)
+		//{
+		//	set_borne_horizontal(arch);
+		//	if (clean_zline(arch, neutre.x, arch->px.x))
+		//	{
+		//		draw_portal(arch, player, pillar);
 
-				z_line_buffer(arch, neutre.x, arch->px.x);
-			}
-			borne_reset(arch);
-		}
+		//		z_line_buffer(arch, neutre.x, arch->px.x);
+		//	}
+		//	borne_reset(arch);
+		//}
 		pillar.x -= coef_surface.x;
 		pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;

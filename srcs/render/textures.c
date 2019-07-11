@@ -15,7 +15,7 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 
 	px_affine.a = ((arch->sdl->size.x / 2) - arch->px.x) / arch->cam->d_screen;
 	px_affine.b = 0;
-	if ((int)((arch->depth.y - arch->depth.x) * 100) == 0)
+	if (arch->depth.y == arch->depth.x)
 	{
 		inter.x = arch->depth.y;
 		inter.y = px_affine.a * inter.x;
@@ -30,7 +30,9 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 	}
 	percent = percent * (arch->shift_txtr.y -  arch->shift_txtr.x) + arch->shift_txtr.x;
 	if (percent < 0)
-		percent = 0;
-	return (percent * arch->wall->txtr.w);
+		return (0);
+	else if (percent > 1)
+		return (arch->wall->txtr.w);
+	else
+		return (percent * arch->wall->txtr.w);
 }
-

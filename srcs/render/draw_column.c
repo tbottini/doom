@@ -53,7 +53,7 @@ t_fvct2		surface_pillar(t_arch *arch, t_player *player, double depth)
 int		draw_part_texture(t_arch *arch, int numcol, t_fvct2 surface)
 {
 	double	coef;
-	int		px;
+	unsigned int		px;
 	double	buff;
 
 	px = texture_interpolation2D(arch);

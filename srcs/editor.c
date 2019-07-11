@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/03 13:31:36 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/11 21:01:47 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ t_pilier *find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	p = get_rel_mappos(editor, x, y);
 	while (curr)
 	{
-		if (p.x - MAXZOOM / editor->mappos.z * 2 <= curr->pos.x && curr->pos.x <= p.x + MAXZOOM / editor->mappos.z * 2 && p.y - MAXZOOM / editor->mappos.z * 2 <= curr->pos.y && curr->pos.y <= p.y + MAXZOOM / editor->mappos.z * 2)
+		if (p.x - MAXZOOM / editor->mappos.z * 2 <= curr->pos.x
+			&& curr->pos.x <= p.x + MAXZOOM / editor->mappos.z * 2
+			&& p.y - MAXZOOM / editor->mappos.z * 2 <= curr->pos.y
+			&& curr->pos.y <= p.y + MAXZOOM / editor->mappos.z * 2)
 			return (curr);
 		if (curr->next != start)
 			curr = curr->next;
@@ -492,7 +495,7 @@ void draw_inspect_menu(t_editor *editor)
 		{
 			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 1 + 5}, "Add Prop", (SDL_Color){75, 100, 200, 0xFF});
 		}
-		
+
 	}
 	else if (editor->map) // If secteur
 	{

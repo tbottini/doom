@@ -1,0 +1,15 @@
+srcs/editor.c:438:			sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF});
+srcs/editor.c:444:		sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
+srcs/editor.c:463:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
+srcs/editor.c:468:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
+srcs/editor.c:473:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Delete", (SDL_Color){255, 100, 100, 0xFF});
+srcs/editor.c:478:		sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Texture:", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+srcs/editor.c:485:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 1 + 5}, "Type: Window", (editor->currmur->portal_id == WINDOW ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+srcs/editor.c:486:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 2 + 5}, " Close Door", (editor->currmur->portal_id == CLOSE_DOOR ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+srcs/editor.c:487:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 3 + 5}, " Open Door", (editor->currmur->portal_id == OPEN_DOOR ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+srcs/editor.c:488:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 4 + 5}, " Portal", (editor->currmur->portal_id == PORTAL ? (SDL_Color){255, 255, 200, 0xFF} : (SDL_Color){200, 200, 200, 0xFF}));
+srcs/editor.c:493:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 1 + 5}, "Add Prop", (SDL_Color){75, 100, 200, 0xFF});
+srcs/editor.c:499:		sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + 5}, "Plafond:", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+srcs/editor.c:502:		sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT + 5}, "Sol:", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+srcs/editor.c:508:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 4 + 5}, "Gravity: Moon", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+srcs/editor.c:510:			sdl_string_put(editor->rend, editor->ui->fonts.s32, (t_vct2){box.x + 5, box.y + SECTORBOXHEIGHT * 4 + 5}, "Gravity: Earth", (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
