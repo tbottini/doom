@@ -73,7 +73,7 @@ int		draw_part_texture(t_arch *arch, int numcol, t_fvct2 surface)
 	}
 	while (surface.x < surface.y && surface.x < arch->sdl->size.y)
 	{
-		//arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
+		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
 		surface.x++;
 		numcol += arch->sdl->size.x;
 		buff += coef;
