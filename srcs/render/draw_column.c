@@ -53,7 +53,7 @@ t_fvct2		surface_pillar(t_arch *arch, t_player *player, double depth)
 int		draw_part_texture(t_arch *arch, int numcol, t_fvct2 surface)
 {
 	double	coef;
-	unsigned int		px;
+	uint32_t		px;
 	double	buff;
 
 	px = texture_interpolation2D(arch);
@@ -71,7 +71,7 @@ int		draw_part_texture(t_arch *arch, int numcol, t_fvct2 surface)
 		}
 		surface.x = 0;
 	}
-	while (surface.x < surface.y && surface.x < arch->sdl->size.y)
+	while ((int)surface.x < (int)surface.y && (int)surface.x < arch->sdl->size.y)
 	{
 		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
 		surface.x++;
