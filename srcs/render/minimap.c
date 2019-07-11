@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 14:04:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 20:43:21 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void				minimap(t_doom *d)
 	t_minimap	mini;
 
 	mini = miniinit(&d->sdl, d->game.player.stat.health, d->game.player.boost);
-	miniwalls(d, *d->game.player.stat.sector, mini);
+	miniwalls(d, d->game.player.stat.sector, mini);
 	minibord(d, mini);
 	minifield(&d->game.player, mini);
 	bold_point2(mini, mini.mid, WHITE);

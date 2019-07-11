@@ -438,7 +438,7 @@ int	save_editor_to_file(t_editor *edit)
 	int fd;
 
 
-	if ((fd = open("ressources/map/editor.map", O_CREAT | /*O_EXCL |*/ O_WRONLY, 0777 /*S_IRUSR | S_IRGRP| S_IROTH*/)) == -1)
+	if ((fd = open("ressources/map/editor.map", O_CREAT | O_EXCL | O_WRONLY, S_IRUSR | S_IRGRP| S_IROTH)) == -1)
 	{
 		write(2, "Error writting to ressources/map/editor.map\n", 44);
 		return (-1);

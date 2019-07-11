@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 16:50:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 20:57:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,20 @@ static void		mbl(t_vct2 pos0, t_vct2 pos1, t_minimap mini, Uint32 color)
 	}
 }
 
-void			miniwalls(t_doom *doom, t_sector sector, t_minimap mini)
+void			miniwalls(t_doom *doom, t_sector *sector, t_minimap mini)
 {
 	int			i;
 	t_vct2		cursor;
 	t_vct2		cursor2;
 	t_wall		*wall;
 
-	wall = sector.wall;
+	wall = sector->wall;
 	i = -1;
-	while (++i < sector.len)
+	while (++i < sector->len)
 	{
 		cursor = minipoint(&doom->game.player, wall[i].pillar->p, mini);
 		cursor2 = minipoint(&doom->game.player, wall[i].next->p, mini);
-		mbl(cursor, cursor2, mini, wall[i + 1].status
+		mbl(cursor, cursor2, mini, wall[i].status
 			!= PORTAL ? CWALL : CPORT);
 	}
 }

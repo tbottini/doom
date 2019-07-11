@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/04 15:47:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/10 20:43:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 */
 
 int						read_file(t_doom *doom, const char *file);
+int						check_file(const char *file);
 
 t_wall					*chunck_walls(t_list *chunck_line, t_arch *ressources, size_t len);
 int						chunk_texture(t_sdl *sdl, t_arch *designer, int fd);
@@ -115,6 +116,6 @@ void					effect_volume(t_sound *sound);
 
 int						bold_point2(t_minimap mini, t_vct2 pos, Uint32 color);
 void					minibord(t_doom *d, t_minimap mini);
-void					miniwalls(t_doom *doom, t_sector sector, t_minimap mini);
+void					miniwalls(t_doom *doom, t_sector *sector, t_minimap mini);
 
 #endif

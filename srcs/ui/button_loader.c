@@ -29,7 +29,7 @@ static int		read_directory(t_doom *doom, DIR *maps, int y)
 	{
 		ft_strcpy(tmp, "ressources/map/");
 		ft_strcpy(&(tmp[15]), mapdata->d_name);
-		if (mapdata->d_type == 8 /*&& map_check(doom, tmp)*/)
+		if (mapdata->d_type == 8 && check_file(tmp))
 		{
 			if (doom->ui.btnmap[y].txture)
 				free_btnmap(doom, y);

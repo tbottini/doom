@@ -96,6 +96,7 @@ void					trait(t_doom *doom, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_stat *stat, t_fvct3 pos, t_wall *w);
 t_wall					*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w);
+int						colli_teleport(t_stat *stat, t_fvct3 ori, t_fvct3 pos);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 void					bulletV42(t_doom *doom, t_player *player);
 

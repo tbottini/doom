@@ -36,6 +36,8 @@ static void window_event(t_doom *doom, SDL_Event e)
 		fire_init(doom);
 		draw_menu(doom);
 	}
+	else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && doom->ui.m_status == 0)
+		sdl_set_status(doom, 4);
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 		doom_exit(doom);
 	if (doom->ui.m_status == 2)
