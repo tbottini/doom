@@ -35,6 +35,7 @@ void		sector_frustum(t_arch *arch, t_sector *sector, t_player *player)
 	while (i < sector->len)
 	{
 		on_frustum(arch, player, sector->wall[i].pillar);
+		on_frustum(arch, player, sector->wall[i].next);
 		i++;
 	}
 }

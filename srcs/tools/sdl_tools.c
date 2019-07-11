@@ -114,7 +114,12 @@ static int bottom_right_d(void *ptr)
 
 void	sdl_MultiRenderCopy(t_sdl *sdl)
 {
+	int pitch;
+	void *pixels;
+
 	SDL_Thread *rend_ths[8];
+
+	SDL_UnlockTexture(sdl->txture);
 
 	rend_ths[0] = SDL_CreateThread(&upper_left_g, "Upper Left screen", sdl);
 	rend_ths[1] = SDL_CreateThread(&upper_left_d, "Upper Left screen", sdl);
@@ -132,6 +137,9 @@ void	sdl_MultiRenderCopy(t_sdl *sdl)
 	SDL_WaitThread(rend_ths[5], NULL);
 	SDL_WaitThread(rend_ths[6], NULL);
 	SDL_WaitThread(rend_ths[7], NULL);
+
+	SDL_LockTexture(sdl->txture, NULL, &pixels, &pitch);
+	sdl->screen = (uint32_t*)pixels;
 }
 
 
