@@ -14,28 +14,31 @@
 
 int		close_editor(t_doom *doom)
 {
-	ft_clear_pillar_list(&(doom->edit.pillist));
-	if (doom->edit.sectors)
-		ft_clear_secteur_list(&(doom->edit.sectors));
 	if (doom->edit.ennlist)
 		ft_clear_entity_list(&(doom->edit.ennlist));
+	if (doom->edit.sectors)
+		ft_clear_secteur_list(&(doom->edit.sectors));
+	if (doom->edit.pillist)
+		ft_clear_pillar_list(&(doom->edit.pillist));
 	doom->edit.map = NULL;
+	doom->edit.currmur = NULL;
+	doom->edit.currstat = NULL;
+	doom->edit.currpilier = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
-	doom->edit.status = 0;
+	doom->edit.status = false;
 	return (0);
 }
 
 void	open_editor(t_doom *doom)
 {
-	//doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
 	doom->edit.sectors = ft_newsector(doom->edit.txtrgame[0], doom->edit.txtrgame[0]);
 	doom->edit.map = doom->edit.sectors;
 	doom->edit.player.stat.sector = doom->edit.map;
 	doom->edit.player.stat.type = 100;
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
-	doom->edit.status = 1;
+	doom->edit.status = true;
 }
 
 void	editor_free(t_editor *editor)
