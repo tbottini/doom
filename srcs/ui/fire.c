@@ -43,24 +43,36 @@ void fire_init(t_doom *doom)
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 }
 
+//#define OPTI
+
 void fire(t_pal *fire)
 {
 	int i;
 	int p;
-	int pix;
+	unsigned char pix;
 
 	i = fire->size->x * 2;
+#ifdef OPTI
+	while ((i += 2) < fire->size->x * fire->size->y)
+#else
 	while (++i < fire->size->x * fire->size->y)
+#endif
 	{
 		pix = fire->screen[i] & 0xFF;
 		if (pix == 0)
 		{
 			fire->screen[i - fire->size->x] = fire->pal[1];
+#ifdef OPTI
+			fire->screen[i + 1 - fire->size->x] = fire->pal[1];
+#endif
 		}
 		else
 		{
 			p = (rand()) % fire->height;
 			fire->screen[i - (p & 3) + 1 - fire->size->x] = fire->pal[pix - (p ? 0 : 1)];
+#ifdef OPTI
+			fire->screen[i + 2 - (p & 3) - fire->size->x] = fire->pal[pix - (p ? 0 : 1)];
+#endif
 		}
 	}
 }
