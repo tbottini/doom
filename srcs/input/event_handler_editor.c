@@ -45,8 +45,6 @@ int event_handler_editor(t_doom *doom, SDL_Event e)
 		doom->edit.status = 1;
 	if (e.type == SDL_QUIT)
 		return (close_editor(doom));
-	else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
-		doom_exit(doom);
 	else if (e.type == SDL_WINDOWEVENT)
 		window_event(doom, e);
 	else if (e.type == SDL_CONTROLLERDEVICEADDED)

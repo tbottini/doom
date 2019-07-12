@@ -12,29 +12,33 @@
 
 #include "doom_nukem.h"
 
+void		resize_event(t_doom *doom)
+{
+	doom->game.camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
+	fire_init(doom);
+	draw_menu(doom);
+}
+
 static void window_event(t_doom *doom, SDL_Event e)
 {
 	void *tmp;
 	int pitch;
 
 	//PrintEvent(&e);
-	SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
-	if (doom->sdl.size.x % 4)
-		SDL_SetWindowSize(doom->sdl.win, doom->sdl.size.x + doom->sdl.size.x % 4,
-			doom->sdl.size.y);
 	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || e.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
+		SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
+		if (doom->sdl.size.x % 4) // Pour le Multithreading (Lignes noires si pas fait)
+			SDL_SetWindowSize(doom->sdl.win, doom->sdl.size.x += doom->sdl.size.x % 4, doom->sdl.size.y);
 		if (doom->sdl.txture)
 			SDL_DestroyTexture(doom->sdl.txture);
 		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
-											 SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
-											 doom->sdl.size.x, doom->sdl.size.y);
+				SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
+						doom->sdl.size.x, doom->sdl.size.y);
 		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
 			doom_exit(doom);
 		doom->sdl.screen = (Uint32 *)tmp;
-		doom->game.camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
-		fire_init(doom);
-		draw_menu(doom);
+		resize_event(doom);
 	}
 	else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && doom->ui.m_status == 0)
 		sdl_set_status(doom, 4);
@@ -75,7 +79,7 @@ int event_handler_doom(t_doom *doom, SDL_Event e)
 {
 	if (doom->edit.status == 1)
 		doom->edit.status = 0;
-	if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
+	if (e.type == SDL_QUIT)
 		doom_exit(doom);
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 		key_press(e.key.keysym.sym, doom);
