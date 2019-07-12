@@ -124,10 +124,21 @@ void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
 	t_sector	*parent;
 	t_sector	*child;
 
-	child = arch->sector;
-	parent = player->stat.sector;
 
-	//on calcul la surface du portail
+	//il faut garder la reference du secteur racine de rendu
+
+	//parent = arch->sector;
+	//parent = player->stat.sector;
+
+	parent = arch->sector;		//le secteur actuel de rendu
+	child = arch->wall->link;	//le secteur qui va subir une recursivite
+
+	//le parent sera garder (le secteur actuellement rendu sera garder en temporaire durant la recursivite)
+	//et redonne a la fin a arch->sector
+
+	/*
+	**	on calcul la surface du portail
+	*/
 	surface_portal.y = (child->h_floor - parent->h_floor) / parent->h_ceil;
 	surface_portal.y = surface.y - surface_portal.y * (surface.y - surface.x);
 	surface_portal.x = (child->h_floor - parent->h_floor + child->h_ceil) / parent->h_ceil;
@@ -138,19 +149,25 @@ void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
 		surface_portal.y = surface.y;
 	surf.x = arch->px.x;
 
-	//on dessine le ciel
+	/*
+	**	on dessine le ciel
+	*/
 	if (surface.x > arch->sdl->size.y)
 		surf.y = arch->sdl->size.y * arch->sdl->size.x;
 	else
 		surf.y = (int)surface.x * arch->sdl->size.x;
 	surf.x = draw_part(arch, surf, 0);
 
-	//on dessine la liaison du haut
+	/*
+	**	on dessine la liaison du haut
+	*/
 	surface_tmp.x = surface.x;
 	surface_tmp.y = surface_portal.x;
 	surf.x = draw_part_texture(arch, surf.x, surface_tmp);
 
-	//on dessine le cache du portail
+	/*
+	**	on dessine le cache du portail
+	*/
 	if (surface_tmp.y < 0)
 		surf.x = arch->px.x;
 	if (surface_portal.y > arch->sdl->size.y)
@@ -159,15 +176,21 @@ void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
 		surf.y = arch->px.x + ((int)surface_portal.y - 1) * arch->sdl->size.x;
 	surf.x = draw_part(arch, surf, ORANGE);
 
-	//on definit la borne verticale du pillier
+	/*
+	**	on definit la borne verticale du pillier
+	*/
 	set_borne_vertical(arch, surf, arch->px.x);
 
-	//on dessine liaison du bas
+	/*
+	**	on dessine liaison du bas
+	*/
 	surface_tmp.y = surface.y;
 	surface_tmp.x = surface_portal.y;
 	draw_part_texture(arch, surf.x, surface_tmp);
 
-	//on dessine le sol
+	/*
+	**	on dessine le sol
+	*/
 	surf.x = arch->px.x + ((int)surface.y) * arch->sdl->size.x;
 	if (surface.y < 0)
 		surf.x = arch->px.x;

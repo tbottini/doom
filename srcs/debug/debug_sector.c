@@ -16,35 +16,6 @@ void		int_msg(char *msg, int num)
 	ft_putchar('\n');
 }
 
-void		describe_sector(t_sector sector)
-{
-	int		i;
-	t_wall	*wall;
-	//t_pillar	a;
-
-	i = 0;
-	ft_putendl("-------sector-------");
-	double_msg("height floor :", sector.h_floor);
-	double_msg("height ceil :", sector.h_ceil);
-	int_msg("son sector :", sector.len_sub);
-	wall = sector.wall;
-	/*
-	a = sector.wall[i].pillar;
-	while (i < sector.len)
-	{
-		//fvct2_print(*(t_fvct2*)&sector.wall[i].pillar);
-		//ft_putstr(" --> ");
-		printf("%f %f -->", a.p.x, a.p.y);
-		a = *sector.wall[i].next;
-		printf(" %f %f\n", a.p.x, a.p.y);
-		//fvct2_print(*(t_fvct2*)&a);
-		//ft_putchar('\n');
-		i++;
-	}
-	*/
-	ft_putendl("--------------------");
-}
-
 void		describe_bunch(t_wall **bunch)
 {
 	int		i;
@@ -95,6 +66,49 @@ void		ft_putnchar(char c, int i)
 		ft_putchar(c);
 }
 
+void		describe_sector(t_sector sector)
+{
+	int		i;
+	t_wall	*wall;
+
+	i = 0;
+	ft_putstr(WGREY);
+	ft_putnchar('\t', 1);
+	ft_putendl("-------sector-------");
+	ft_putnchar('\t', 1);
+	double_msg("height floor :", sector.h_floor);
+	ft_putnchar('\t', 1);
+	double_msg("height ceil :", sector.h_ceil);
+	ft_putnchar('\t', 1);
+	int_msg("son sector :", sector.len_sub);
+	wall = sector.wall;
+	while (i < sector.len)
+	{
+		if (sector.wall[i].status == WALL)
+			printf("WALL\t");
+		else if (sector.wall[i].status == PORTAL)
+		{
+			ft_putstr(WYELLOW);
+			printf("PORT\t");
+		}
+		else if (sector.wall[i].status == PORTAL_DIRECT)
+			printf("PORD\t");
+		else if (sector.wall[i].status == WINDOW)
+			printf("WIND\t");
+		ft_putnchar('\t', 1);
+		printf("%f %f --> %f %f\n", sector.wall[i].pillar->p.x, sector.wall[i].pillar->p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
+		if (sector.wall[i].status == PORTAL)
+		{
+			ft_putstr(WEND);
+			ft_putstr(WGREY);
+		}
+		i++;
+	}
+	ft_putnchar('\t', 1);
+	ft_putendl("--------------------");
+	ft_putstr(WEND);
+}
+
 void		describe_sub_sector(t_sector sector, int sub)
 {
 	int		i;
@@ -114,12 +128,22 @@ void		describe_sub_sector(t_sector sector, int sub)
 	{
 		if (sector.wall[i].status == WALL)
 			printf("WALL\t");
-		else if (sector.wall[i].status == PORTAL_DIRECT)
+		else if (sector.wall[i].status == PORTAL)
+		{
+			ft_putstr(WYELLOW);
 			printf("PORT\t");
+		}
+		else if (sector.wall[i].status == PORTAL_DIRECT)
+			printf("PORD\t");
 		else if (sector.wall[i].status == WINDOW)
 			printf("WIND\t");
 		ft_putnchar('\t', sub);
 		printf("%f %f --> %f %f\n", sector.wall[i].pillar->p.x, sector.wall[i].pillar->p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
+		if (sector.wall[i].status == PORTAL)
+		{
+			ft_putstr(WEND);
+			describe_sector(*sector.wall[i].link);
+		}
 		i++;
 	}
 }
@@ -133,7 +157,7 @@ void		sector_recursif(t_sector sector, int sub)
 	describe_sub_sector(sector, sub);
 	if (sector.len_sub)
 	{
-		ft_putnchar('\t', sub);
+		ft_putnchar('\t', sub );
 		ft_putendl("--->son");
 	}
 	/*
