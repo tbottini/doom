@@ -166,6 +166,8 @@ typedef struct			s_font
 typedef struct			s_pal {
 	Uint32				pal[38];
 	int					height;
+	Uint32				*screen;
+	t_vct2				*size;
 }						t_pal;
 
 /*

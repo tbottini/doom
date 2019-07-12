@@ -65,8 +65,6 @@ static void input_loop(t_doom *doom, int key)
 		bullet(&doom->game.player.stat);
 	else if (key == SDLK_0)//test effects
 		play_effect(&doom->game.sound, 8);
-	else if (key == SDLK_y)
-		fire(doom);
 	else if (key == SDLK_SPACE && !doom->ui.m_status && !doom->game.player.stat.jetpack)
 		fly(&doom->game.player.stat);
 	else if (key == SDLK_LGUI && !doom->ui.m_status && !doom->game.player.stat.jetpack)
@@ -151,7 +149,10 @@ int loop_hook(t_doom *doom)
 			else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
 				sdl_MultiRenderCopy(&doom->sdl);
 			else
-				fire(doom);
+			{
+				fire(&doom->ui.fire);
+				sdl_MultiRenderCopy(&doom->sdl);
+			}
 			draw_menu(doom);
 			/// End Comment
 		}

@@ -9,7 +9,7 @@
 int						parsing(t_doom *doom, char *filename);
 
 void					fire_init(t_doom *doom);
-void					fire(t_doom *doom);
+void					fire(t_pal *fire);
 void					fire_on_off(Uint32 *screen, t_vct2 size, int status);
 
 void					btn_click(t_doom *doom, int x, int y);
