@@ -20,3 +20,4 @@ void		set_borne_horizontal(t_arch *arch)
 	arch->borne.x = atan2((arch->sdl->size.x / 2) - arch->px.x, arch->cam->d_screen);
 	arch->borne.y = atan2((arch->sdl->size.x / 2) - arch->px.y, arch->cam->d_screen);
 }
+

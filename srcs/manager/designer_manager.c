@@ -13,8 +13,10 @@ void		borne_reset(t_arch *arch)
 	i = 0;
 	while (i < max)
 	{
-		borne_up[i] = 0;
-		borne_down[i] = arch->sdl->size.y - 1;
+		//borne_up[i] = 0;
+		//borne_down[i] = arch->sdl->size.y - 1;
+		borne_up[i] = arch->sdl->size.y / 4;
+		borne_down[i] = arch->sdl->size.y / 2 + arch->sdl->size.y / 4;
 		i++;
 	}
 	i *= 4;
@@ -25,6 +27,8 @@ void		borne_reset(t_arch *arch)
 	}
 	arch->borne.x = arch->cam->fov / 2.0;
 	arch->borne.y = -arch->cam->fov / 2.0;
+	//arch->borne.x = 15;
+	//arch->borne.y = -15;
 }
 
 void				zline_reset(t_arch *arch)

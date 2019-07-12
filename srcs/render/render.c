@@ -14,6 +14,18 @@ void				sector_render(t_game *game, t_sector *sector)
 	bunch_comsuption(game, bunch, sector);
 }
 
+void				clear_screen(t_sdl *sdl)
+{
+	int			i;
+
+	i = 0;
+	while (i < sdl->size.x * sdl->size.y)
+	{
+		sdl->screen[i] = 0;
+		i++;
+	}
+}
+
 /*
 **	les etapes de rendu du jeu
 */
@@ -26,5 +38,6 @@ int					doom_render(t_doom *doom)
 	minimap(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
 	architect_reset(&doom->game.arch);
+	//clear_screen(&doom->sdl);
 	return (1);
 }
