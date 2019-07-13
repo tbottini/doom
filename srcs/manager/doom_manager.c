@@ -17,7 +17,7 @@ int		secure_doom(t_doom *doom)
 void	doom_exit(t_doom *doom)
 {
 	ui_free(&doom->ui);
-	editor_free(&doom->edit);
+	editor_free(doom);
 	sdl_free(&doom->sdl);
 	music_free(&doom->game.sound);
 	effect_free(&doom->game.sound);
