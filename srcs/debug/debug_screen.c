@@ -54,3 +54,8 @@ void		debug_up(t_doom *doom)
 	init_debug(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
 }
+
+void		pause_debug(t_doom *doom)
+{
+
+}

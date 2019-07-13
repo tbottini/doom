@@ -311,8 +311,8 @@ typedef struct 			s_camera
 typedef struct 			s_designer
 {
 	t_sector			*sector;
-	uint16_t			*borne_down;
-	uint16_t			*borne_up;
+	uint32_t			*borne_down;
+	uint32_t			*borne_up;
 	t_wall				*wall;
 	t_camera			*cam;
 	t_sdl				*sdl;

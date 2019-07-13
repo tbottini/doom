@@ -37,6 +37,8 @@ void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
 void					set_borne_horizontal(t_arch *arch);
 void					borne_reset(t_arch *arch);
 
+void					reorder(t_arch *arch);
+int						zline_portal(t_arch *arch, double *zline_tmp, double len_pillar);
 /*
 **	render
 */

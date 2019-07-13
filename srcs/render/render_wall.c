@@ -37,6 +37,11 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
    	t_fvct2		coef_surface;
 	double		coef_neutre;
 
+	//solution avec zbuffer alloue sans second parcours
+	int			start;
+	double		*zline_tmp;
+
+
 	pillar = surface_pillar(arch, player, arch->depth.x);
 	pillar_next = surface_pillar(arch, player, arch->depth.y);
 	coef_surface.x = coef_diff(pillar.x - pillar_next.x, arch->px);
@@ -44,6 +49,14 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
 	coef_neutre = coef_vct(neutre, arch->px);
+
+	if (arch->wall->status == PORTAL)
+	{
+		zline_tmp = (double*)malloc((arch->px.y - arch->px.x) * sizeof(double));
+		if (!zline_tmp)
+			return ;
+		start = arch->px.x;
+	}
 
 	while (arch->px.x != arch->px.y)
 	{
@@ -54,7 +67,7 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		}
 		else if (arch->wall->status == PORTAL)
 		{
-			if (z_line_buffer(arch, neutre.x, arch->px.x))
+			if (clean_zline(arch, neutre.x, arch->px.x))
 				draw_portal(arch, player, pillar);
 			//set_borne_horizontal(arch);
 			//if (clean_zline(arch, neutre.x, arch->px.x))
@@ -68,6 +81,12 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
+	}
+
+	if (arch->wall->status == PORTAL)
+	{
+
+		free(zline_tmp);
 	}
 }
 
