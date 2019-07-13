@@ -28,21 +28,34 @@ int		close_editor(t_doom *doom)
 	doom->edit.currpilier = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
-	doom->edit.status = false;
+	doom->edit.status = ED_CLOSED;
+	return (0);
+}
+
+int	asynchronous_txtr_load(void *param)
+{
+	t_editor *edit;
+
+	edit = param;
+	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
+	edit->sectors = ft_newsector(edit->txtrgame[0], edit->txtrgame[0]);
+	edit->map = edit->sectors;
+	edit->player.stat.sector = edit->map;
+	edit->player.stat.type = 100;
+	edit->status = ED_LOADED;
 	return (0);
 }
 
 void	open_editor(t_doom *doom)
 {
+	SDL_Thread *th;
+
+	doom->edit.status = ED_LOADING;
+	th = SDL_CreateThread(&asynchronous_txtr_load, "Texture Load", &doom->edit);
+	SDL_DetachThread(th);
 	doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
-	load_textures_folder(doom->edit.rend, doom->edit.txtrgame, doom->edit.txtrname);
-	doom->edit.sectors = ft_newsector(doom->edit.txtrgame[0], doom->edit.txtrgame[0]);
-	doom->edit.map = doom->edit.sectors;
-	doom->edit.player.stat.sector = doom->edit.map;
-	doom->edit.player.stat.type = 100;
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
-	doom->edit.status = true;
 }
 
 void	editor_free(t_doom *doom)
@@ -117,7 +130,7 @@ int		editor_init(t_editor *editor)
 		return (0);
 	SDL_SetWindowMinimumSize(editor->win, EDITMINWIDTH, EDITMINHEIGHT);
 	SDL_GetWindowSize(editor->win, &(editor->size.x), &(editor->size.y));
-	//editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
+	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
 	editor->sectbox.x = -1;
 	editor->sectbox.y = -1;
 	editor->sectbox.w = 160;

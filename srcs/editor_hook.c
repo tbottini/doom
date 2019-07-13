@@ -81,6 +81,8 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	t_vct2 relpos;
 	SDL_Texture *txtrclick;
 
+	if (edit->status != ED_LOADED)
+		return (0);
 	if (pos_in_rect(edit->sectbox, e.x, e.y)) // If menu left
 	{
 		if (edit->currstat)
@@ -292,9 +294,7 @@ int editor_mouse_release(int btn, int x, int y, t_doom *doom)
 
 /*
 ** Add here function that need to be done when mouse if moved in window
-** x and y are relative postions when in gamemode
 */
-
 int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 {
 	edit->mouse.x = e.x;

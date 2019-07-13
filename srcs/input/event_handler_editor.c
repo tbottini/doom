@@ -41,8 +41,8 @@ static void		window_event(t_doom *doom, SDL_Event e)
 
 int event_handler_editor(t_doom *doom, SDL_Event e)
 {
-	if (doom->edit.status != 1)
-		doom->edit.status = 1;
+	if (!doom->edit.status)
+		doom->edit.status = ED_LOADED;
 	if (e.type == SDL_QUIT)
 		return (close_editor(doom));
 	else if (e.type == SDL_WINDOWEVENT)

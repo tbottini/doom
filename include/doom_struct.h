@@ -268,9 +268,21 @@ typedef enum		e_selecttxtr
 	FILL_WPROP
 }					t_selecttxtr;
 
+/*
+** 0 : Window is closed
+** 1 : Textures are loading
+** 2 : Textures are loaded
+*/
+typedef enum		e_editorstatus
+{
+	ED_CLOSED,
+	ED_LOADING,
+	ED_LOADED
+}					t_editorstatus;
+
 typedef struct			s_editor
 {
-	bool				status;
+	t_editorstatus		status;
 	t_selecttxtr		selecttxtr;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;

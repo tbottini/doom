@@ -77,8 +77,8 @@ void dropfile_event(t_doom *doom, SDL_Event e)
 
 int event_handler_doom(t_doom *doom, SDL_Event e)
 {
-	if (doom->edit.status == 1)
-		doom->edit.status = 0;
+	if (doom->edit.status)
+		doom->edit.status = ED_CLOSED;
 	if (e.type == SDL_QUIT)
 		doom_exit(doom);
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)

@@ -128,7 +128,7 @@ int loop_hook(t_doom *doom)
 		pos = pos->next;
 	}
 	SDL_RenderClear(doom->sdl.rend);
-	if (doom->edit.status == 1)
+	if (doom->edit.status)
 	{
 		editor_loop_hook(doom);
 	}

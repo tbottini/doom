@@ -55,7 +55,7 @@ void fire(t_pal *fire)
 #ifdef OPTI
 	while ((i += 2) < fire->size->x * fire->size->y)
 #else
-	while (++i < fire->size->x * fire->size->y)
+	while (i < fire->size->x * fire->size->y)
 #endif
 	{
 		pix = fire->screen[i] & 0xFF;
@@ -74,5 +74,6 @@ void fire(t_pal *fire)
 			fire->screen[i + 2 - (p & 3) - fire->size->x] = fire->pal[pix - (p ? 0 : 1)];
 #endif
 		}
+		++i;
 	}
 }
