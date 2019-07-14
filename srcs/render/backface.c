@@ -36,14 +36,34 @@ int			clean_zline(t_arch *arch, double len_pillar, int px)
 **	stocke la plus grande valeur dans le zline tmp qui sera reaffecter
 **		apres la recursivite
 */
-int			zline_portal(t_arch *arch, double *zline_tmp, double len_pillar)
+int			zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start)
 {
 	if (len_pillar > arch->zline[arch->px.x])
 	{
-		zline_tmp[arch->px.x] = len_pillar;
+		zline_tmp[arch->px.x - start] = len_pillar;
 		arch->zline[arch->px.x] = 0;
 		return (1);
 	}
-	zline_tmp[arch->px.x] = arch->zline[arch->px.x];
+	zline_tmp[arch->px.x - start] = arch->zline[arch->px.x];
 	return (0);
+}
+
+/*
+**	recupere l'index de depart (ancien px perdu avec le parcours)
+**	copy et delete le zline_tmp dans le zline_buffer
+*/
+void		zline_cut(t_arch *arch, double *zline_cut, int start)
+{
+	int		i;
+
+	i = 0;
+	if (!zline_cut)
+		return ;
+	while (start < arch->px.y)
+	{
+		arch->zline[start] = zline_cut[i];
+		i++;
+		start++;
+	}
+	//free(zline_cut);
 }

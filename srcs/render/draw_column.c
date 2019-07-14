@@ -31,14 +31,14 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
 **	up est la difference entre le point de vue de la camera
 **		et le haut du mur
 */
-t_fvct2		surface_pillar(t_arch *arch, t_player *player, double depth)
+t_fvct2			surface_pillar(t_arch *arch, t_player *player, double depth)
 {
-	t_fvct2	wall_portion;
+	t_fvct2		wall_portion;
 
-	double	up;
-	double	down;
+	double		up;
+	double		down;
 
-	down = -player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
+	down = -player->stat.height - (player->stat.pos.z - arch->sector->h_floor);
 	up = down + player->stat.sector->h_ceil;
 	wall_portion.x = px_point(arch, player, up, depth);
 	wall_portion.y = px_point(arch, player, down, depth);
@@ -150,16 +150,16 @@ t_fvct2		surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child)
 /*
 **	on determine la surface du portail
 **	on dessine : le ciel, la liaison haute du mur, le portail, la liaison basse, le sol
+**	on prepare la recursivite avec les borne, tout en sauvegardant les actuelles configuration
+**		dans parent borne
 */
-void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
+void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start)
 {
 	t_fvct2		s_portal;
 	t_vct2		surf;
 	t_vct2		tmp;
 
 	s_portal = surface_portal(surface, arch->sector, arch->wall->link);
-
-	(void)player;
 
 	tmp = (t_vct2){arch->borne_up[arch->px.x], surface.x};
 	surf.x = draw_part(arch, tmp, 0);
@@ -172,6 +172,8 @@ void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
 	surf.x = draw_part_texture(arch, surf.x, tmp);
 	tmp = (t_vct2){surface.y, arch->borne_down[arch->px.x]};
 	draw_part(arch, tmp, 0x272130ff);
+	parent_borne->b_up[arch->px.x - start] = arch->borne_up[arch->px.x];
+	parent_borne->b_down[arch->px.x - start] = arch->borne_down[arch->px.x];
 	tmp = (t_vct2){s_portal.x, s_portal.y};
 	set_borne_vertical(arch, tmp, arch->px.x);
 }

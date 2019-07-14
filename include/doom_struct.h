@@ -308,6 +308,16 @@ typedef struct 			s_camera
 	double				d_screen;
 }						t_camera;
 
+typedef struct 			s_borne
+{
+	double				*zline;
+	uint32_t			*b_down;
+	uint32_t			*b_up;
+	double				b_left;
+	double				b_right;
+
+}						t_borne;
+
 typedef struct 			s_designer
 {
 	t_sector			*sector;

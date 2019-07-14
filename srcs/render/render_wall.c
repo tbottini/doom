@@ -29,6 +29,7 @@ void			reorder(t_arch *arch)
 /*
 **	fait des coeficient pour rendre les colomnes entre les deux pilier
 */
+//zline temporaire pour ne pas refaire un passage pillar_to_pillar
 void			pillar_to_pillar(t_arch *arch, t_player *player)
 {
 	t_fvct2		pillar;
@@ -37,9 +38,11 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
    	t_fvct2		coef_surface;
 	double		coef_neutre;
 
-	//solution avec zbuffer alloue sans second parcours
 	int			start;
-	double		*zline_tmp;
+	t_borne		borne_tmp;
+	t_sector	*sector_tmp;
+
+	static int  i = 0;
 
 
 	pillar = surface_pillar(arch, player, arch->depth.x);
@@ -50,16 +53,13 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
 	coef_neutre = coef_vct(neutre, arch->px);
 
+	start = arch->px.x;
 	if (arch->wall->status == PORTAL)
-	{
-		zline_tmp = (double*)malloc((arch->px.y - arch->px.x) * sizeof(double));
-		if (!zline_tmp)
-			return ;
-		start = arch->px.x;
-	}
+		borne_svg(arch, &borne_tmp);
 
 	while (arch->px.x != arch->px.y)
 	{
+		i++;
 		if (arch->wall->status == WALL)
 		{
 			if (z_line_buffer(arch, neutre.x, arch->px.x))
@@ -67,26 +67,39 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		}
 		else if (arch->wall->status == PORTAL)
 		{
-			if (clean_zline(arch, neutre.x, arch->px.x))
-				draw_portal(arch, player, pillar);
-			//set_borne_horizontal(arch);
-			//if (clean_zline(arch, neutre.x, arch->px.x))
+			if (zline_portal(arch, borne_tmp.zline, neutre.x, start))
+				draw_portal(arch, pillar, &borne_tmp, start);
+			//if (z_line_buffer(arch, neutre.x, arch->px.x))
 			//{
 			//	draw_portal(arch, player, pillar);
-			//	z_line_buffer(arch, neutre.x, arch->px.x);
 			//}
-			//borne_reset(arch);
 		}
 		pillar.x -= coef_surface.x;
 		pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
+		//if (i % 4 == 0)
+		//{
+		//	sdl_MultiRenderCopy(arch->sdl);
+		//	SDL_RenderPresent(arch->sdl->rend);
+		//}
 	}
-
 	if (arch->wall->status == PORTAL)
 	{
+		//les borne up et down sont mise
+		//on calcul les borne left et right
+		//le zline est sauvegarde
+		//on sauvegarde le sector
+		//printf("arch->borne parent x %f y %f\n", arch->borne.x, arch->borne.y);
+		arch->px.x = start;
+		set_borne_horizontal(arch);
+		//printf("arch->borne child x %f y %f\n", arch->borne.x, arch->borne.y);
+		sector_tmp = arch->sector;
+		sector_render(arch, player, arch->wall->link);
+		arch->sector = sector_tmp;
+		borne_load(arch, &borne_tmp, start);
+		//printf("arch->borne parent dans le futur x %f y %f\n", arch->borne.x, arch->borne.y);
 
-		free(zline_tmp);
 	}
 }
 

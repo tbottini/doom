@@ -24,7 +24,6 @@ typedef struct 		s_shape
 	t_fvct2			bot;
 }					t_shape;
 
-
 /*
 **	info function
 */
@@ -32,33 +31,35 @@ t_fvct2					surface_pillar(t_arch *arch, t_player *player, double depth);
 double					wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle);
 void					wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);
-
-void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
-void					set_borne_horizontal(t_arch *arch);
-void					borne_reset(t_arch *arch);
-
 void					reorder(t_arch *arch);
-int						zline_portal(t_arch *arch, double *zline_tmp, double len_pillar);
+
+/*
+**	backface
+*/
+void					zline_cut(t_arch *arch, double *zline_cut, int start);
+int						zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start);
+int						z_line_buffer(t_arch *arch, double len_pillar, int px);
+int						clean_zline(t_arch *arch, double len_pillar, int px);
+
 /*
 **	render
 */
-int						z_line_buffer(t_arch *arch, double len_pillar, int px);
-int						clean_zline(t_arch *arch, double len_pillar, int px);
-void					architect_reset(t_arch *arch);
 int						doom_render(t_doom *doom);
+void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
+void					architect_reset(t_arch *arch);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 uint32_t				texture_interpolation2D(t_arch *arch);
 void					render_wall(t_arch *arch, t_player *player);
 void					draw_column(t_arch *arch, t_fvct2 surface);
-void					draw_portal(t_arch *arch, t_player *player, t_fvct2 surface);
+void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
 
 /*
 **	bunch
 */
 void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
 int						buncherisation(t_arch *arch, t_sector sector, t_wall **bunch);
-void					bunch_comsuption(t_game *game, t_wall **bunch, t_sector *sector);
+void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
 
 /*
 ** Drawer functions
@@ -76,4 +77,15 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 */
 void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
 t_shape					shape_reajust(t_shape shape);
+
+/*
+**	borne
+*/
+t_borne					*borne_svg(t_arch *arch, t_borne *borne);
+void					borne_free(t_borne *borne);
+void					borne_load(t_arch *arch, t_borne *borne, int start);
+void					borne_reset(t_arch *arch);
+void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
+void					set_borne_horizontal(t_arch *arch);
+
 #endif
