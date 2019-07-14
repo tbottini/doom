@@ -76,10 +76,38 @@ int editor_key_release(int key, t_doom *doom)
 **		action();
 */
 
+void texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
+{
+	SDL_Texture *txtrclick;
+
+	if (edit->selecttxtr == FILL_PROP && edit->currstat && ISPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
+	{
+		edit->currstat->type = e.x;
+		edit->selecttxtr = NOSELECT;
+	}
+	else if (edit->selecttxtr == FILL_WPROP && edit->currstat && ISWALLPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINWPROPSPOS, MAXWPROPSNUMBER)))
+	{
+		edit->currstat->type = e.x;
+		edit->selecttxtr = NOSELECT;
+	}
+	else if ((txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
+	{
+		if (edit->currmur)
+			edit->currmur->txtr = txtrclick;
+		else if (edit->map)
+		{
+			if (edit->selecttxtr == FILL_TXTR)
+				edit->map->top = txtrclick;
+			else if (edit->selecttxtr == FILL_SOL)
+				edit->map->sol = txtrclick;
+		}
+		edit->selecttxtr = NOSELECT;
+	}
+}
+
 int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 {
 	t_vct2 relpos;
-	SDL_Texture *txtrclick;
 
 	if (edit->status != ED_LOADED)
 		return (0);
@@ -105,29 +133,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y)) // If menu texture
 	{
-		if (edit->selecttxtr == FILL_PROP && edit->currstat && ISPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
-		{
-			edit->currstat->type = e.x;
-			edit->selecttxtr = NOSELECT;
-		}
-		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && ISWALLPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINWPROPSPOS, MAXWPROPSNUMBER)))
-		{
-			edit->currstat->type = e.x;
-			edit->selecttxtr = NOSELECT;
-		}
-		else if ((txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
-		{
-			if (edit->currmur)
-				edit->currmur->txtr = txtrclick;
-			else if (edit->map)
-			{
-				if (edit->selecttxtr == FILL_TXTR)
-					edit->map->top = txtrclick;
-				else if (edit->selecttxtr == FILL_SOL)
-					edit->map->sol = txtrclick;
-			}
-			edit->selecttxtr = NOSELECT;
-		}
+		texturebox_click(edit, e);
 		return (0);
 	}
 	edit->selecttxtr = NOSELECT;

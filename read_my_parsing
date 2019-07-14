@@ -4,7 +4,7 @@ le parsing de doom
 
 sizeof(long) : balise "💎🇩🇿🍉💩"
 sizeof(int) : balise (Texture) "🌅"
-sizeof(int) : number of textures in map (currently number loaded in editor)
+sizeof(int) : number of textures in map
 foreach {
 	sizeof(int) : strlen(path de texture) + sizeof(char)
 	sizeof(char) * strlen(path de texture) + 1 : Path de la Texture
