@@ -138,7 +138,8 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 	else if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a >= game->sectors[var_b].len)
 		return (-75);
 	printf("\t\tFound wall %d in sector %d\n", var_a, var_b);
-	prop->wall = &game->sectors[var_b].wall[var_a];
+	if (var_b != -1 && var_a != -1)
+		prop->wall = &game->sectors[var_b].wall[var_a];
 	if ((read(fd, &prop->pos.x, sizeof(double)) != sizeof(double)))
 		return (-76);
 	if ((read(fd, &prop->pos.y, sizeof(double)) != sizeof(double)))
@@ -427,6 +428,6 @@ int	read_file(t_doom *doom, const char *file)
 		return (-1);
 	}
 	close(fd);
-	write(1, "Successfully read ressources/map/editor.map\n", 48);
+	ft_putendl("Successfully read ressources/map/editor.map\n");
 	return (0);
 }

@@ -356,6 +356,7 @@ int	check_file(const char *file)
 		return (0);
 	}
 	close(fd);
-	write(1, "Successfully read ressources/map/editor.map\n", 48);
+	
+	ft_putendl("Successfully read ressources/map/editor.map\n");
 	return (1);
 }
