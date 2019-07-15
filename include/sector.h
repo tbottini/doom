@@ -87,7 +87,7 @@ struct					s_sector
 	t_wall				*wall;
 	t_prop				*props;
 	t_enemy				*enemys;
-	int					len_prop;
+	int					len_prop; // Nb de props dans le sector
 	int					len_sub;
 	double				h_floor;
 	double				h_ceil;

@@ -76,8 +76,9 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 **	parsing
 */
 
-int						read_file(t_doom *doom, const char *file);
+int						read_file(t_game *game, const char *file);
 int						check_file(const char *file);
+void					free_gamemap(t_game *game);
 
 t_wall					*chunck_walls(t_list *chunck_line, t_arch *ressources, size_t len);
 int						chunk_texture(t_sdl *sdl, t_arch *designer, int fd);

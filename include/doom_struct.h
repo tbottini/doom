@@ -341,6 +341,7 @@ typedef struct 			s_designer
 
 typedef struct			s_game
 {
+	t_slen				len;
 	t_player			player;
 	t_sound				sound;
 	t_sector			*sectors;

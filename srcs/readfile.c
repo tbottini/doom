@@ -410,32 +410,30 @@ int reading_map(int fd, t_game *game, t_slen *len)
 	return (0);
 }
 
-int	read_file(t_doom *doom, const char *file)
+int	read_file(t_game *game, const char *file)
 {
 	int		fd;
 	int		returncode;
-	t_slen	len;
 
 	if ((fd = open(file, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) == -1)
 	{
 		write(2, "Error opening file\n", 19);
 		return (-1);
 	}
-	if ((returncode = reading_map(fd, &doom->game, &len)))
+	if ((returncode = reading_map(fd, game, &game->len)))
 	{
 		ft_printf("Error : %d\n", returncode);
 		close(fd);
 		return (-1);
 	}
 	close(fd);
-	ft_putendl("Successfully read ressources/map/editor.map\n");
 	return (0);
 }
 
 void free_gamemap(t_game *game)
 {
 	int x;
-	int y;
+	//int y;
 
 	if (game->gamesurf)
 	{
@@ -456,10 +454,10 @@ void free_gamemap(t_game *game)
 	//if (game->sectors)
 	//{
 	//	x = 0;
-	//	while (game->sectors[x].len > x)
+	//	while (x < game->len.nb_sects)
 	//	{
-	//		y = 0;
-	//		while (game->sectors[x].wall[y].props)
+	//		
+	//		x++;
 	//	}
 	//}
 }

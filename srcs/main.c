@@ -47,7 +47,7 @@ int			main(int ac, char **av)
 		return (0);
 	if (ac == 2)
 	{
-		if (!read_file(doom, av[1]))
+		if (!read_file(&doom->game, av[1]))
 			sdl_set_status(doom, 0);
 		else
 			sdl_set_status(doom, 1);
