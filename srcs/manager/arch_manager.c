@@ -9,16 +9,10 @@ void		borne_reset(t_arch *arch)
 	{
 		arch->bound.b_up[i] = 0;
 		arch->bound.b_down[i] = arch->sdl->size.y;
-		//printf("arch->borne %d\n", arch->bound.b_down[i]);
-		//arch->bound.b_up[i] = arch->sdl->size.y / 4;
-		//arch->bound.b_down[i] = arch->sdl->size.y / 2 + arch->sdl->size.y / 4;
 		i++;
 	}
 	arch->bound.b_left = arch->cam->fov / 2.0;
 	arch->bound.b_right = -arch->cam->fov / 2.0;
-
-	//arch->bound.b_left = 15;
-	//arch->bound.b_right = -15;
 }
 
 void				zline_reset(t_arch *arch)
@@ -61,6 +55,7 @@ int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 	arch->bound.b_up = (uint32_t*)malloc(sizeof(uint32_t) * sdl->size.x);
 	if (!arch->bound.b_up)
 		return (0);
+	arch->wall = NULL;
 	zline_reset(arch);
 	return (1);
 }

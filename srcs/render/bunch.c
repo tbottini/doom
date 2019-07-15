@@ -89,6 +89,22 @@ int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 	return ((fabs(angles.y - angles.x) > 180.0));
 }
 
+int			equal_pillar(t_wall *wall1, t_wall *wall2)
+{
+	if (!wall1 || !wall2)
+	{
+		//printf("wall == NULL\n");
+		return (1);
+	}
+	if (wall1->pillar == wall2->pillar && wall1->next == wall2->next)
+		return (0);
+	if (wall1->pillar == wall2->next && wall1->next == wall2->pillar)
+		return (0);
+	//printf("wall != NULL\n");
+	return (1);
+}
+
+
 /*
 **	buncherisation mets les murs visible d'un secteur dans un tableau
 **	-un mur est visible si l'un des pillier est dans le frustrum
@@ -111,13 +127,15 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 	wall = sector.wall;
 	while (i_wall < sector.len)
 	{
-		if (wall[i_wall].pillar->frust || wall[i_wall].next->frust)
+		if ((wall[i_wall].pillar->frust || wall[i_wall].next->frust)
+			&& equal_pillar(&wall[i_wall], arch->wall))
 		{
 			//on verifie que le mur choisit n'a pas les meme pillier que le mur
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
-		else if (borne_in_wall_angle(arch, &wall[i_wall]))
+		else if (borne_in_wall_angle(arch, &wall[i_wall])
+			&& equal_pillar(&wall[i_wall], arch->wall))
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;

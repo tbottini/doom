@@ -28,12 +28,18 @@ void				clear_screen(t_sdl *sdl)
 
 /*
 **	les etapes de rendu du jeu
+**	on initialise arch wall a null
+**	(NULL est un signal pour indiquer que le rendu du secteur ne se fait
+**		pas a travers un portail)
+**	doom_render fait le premier rendu de secteur (celui dans lequel le joueur se trouve)
 */
+
 int					doom_render(t_doom *doom)
 {
 	int				i;
 
 	i = 0;
+	doom->game.arch.wall = NULL;
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	minimap(doom);
 	sdl_MultiRenderCopy(&doom->sdl);
