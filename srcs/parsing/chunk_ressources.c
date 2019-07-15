@@ -30,7 +30,7 @@ t_list		*list_chunk_line(int fd, uint32_t *nline)
 	return (start);
 }
 /*
-int			chunk_texture(t_sdl *sdl, t_arch *designer, int fd)
+int			chunk_texture(t_sdl *sdl, t_arch *arch, int fd)
 {
 	t_list		*file_list;
 	void		*tmp;
@@ -40,18 +40,18 @@ int			chunk_texture(t_sdl *sdl, t_arch *designer, int fd)
 	file_list = list_chunk_line(fd, &size);
 	if (!file_list)
 		return (0);
-	designer->texture = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * (size + 1));
-	if (!designer->texture)
+	arch->texture = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * (size + 1));
+	if (!arch->texture)
 		return (0);
-	designer->texture[size] = NULL;
+	arch->texture[size] = NULL;
 	i = 0;
 	while (i < size)
 	{
 		tmp = IMG_Load((char*)file_list->content);
 		if (!tmp)
 			return (0);
-		designer->texture[i] = SDL_ConvertSurface((SDL_Surface*)tmp, sdl->format, 0);
-		if (!designer->texture[i])
+		arch->texture[i] = SDL_ConvertSurface((SDL_Surface*)tmp, sdl->format, 0);
+		if (!arch->texture[i])
 			return (0);
 		SDL_FreeSurface((SDL_Surface*)tmp);
 		tmp = file_list;

@@ -1,51 +1,6 @@
 #include "doom_nukem.h"
 
 /*
-**	renvoie la position en pixel d'un point
-*/
-int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
-{
-	double	wall_angle;
-	int px;
-	double	player_angle;
-
-
-	player_angle = (player->stat.rot.x - 90) * PI180;
-
-	wall_angle = atan2(h_diff, depth_wall);
-	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
-	px += (player->stat.rot.x - 90) * 45;
-
-	//vraies cervicales
-	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
-	//px = arch->sdl->size.y / 2 - px;
-
-	return (px);
-}
-
-/*
-**	renvoie la surface en px qu'un pillier prend
-**	en fonction de la hauteur du joueur (player)
-**	de la hauteur du mur (wall_height)
-**	et de la distance par rapport au mur (depth)
-**	up est la difference entre le point de vue de la camera
-**		et le haut du mur
-*/
-t_fvct2		surface_pillar(t_arch *arch, t_player *player, double depth)
-{
-	t_fvct2	wall_portion;
-
-	double	up;
-	double	down;
-
-	down = -player->stat.height - (player->stat.pos.z - player->stat.sector->h_floor);
-	up = down + player->stat.sector->h_ceil;
-	wall_portion.x = px_point(arch, player, up, depth);
-	wall_portion.y = px_point(arch, player, down, depth);
-	return (wall_portion);
-}
-
-/*
 **	numcol index de depart
 **	surface : colonne de depart et colonne de fin, (sans la multiplication avec les range)
 **	-> renvoie l'index de fin
@@ -59,19 +14,19 @@ int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 	px = texture_interpolation2D(arch);
 	buff = 0;
 	coef = (double)arch->wall->txtr.h / (surface.y - surface.x);
-	if (surface.y < 0)
+	if (surface.y < (int)arch->bound.b_up[arch->px.x])
 		return (numcol + surface.y * arch->sdl->size.x);
-	if (surface.x < 0)
+	if (surface.x < (int)arch->bound.b_up[arch->px.x])
 	{
-		buff = -surface.x * coef;
+		buff = (-surface.x + arch->bound.b_up[arch->px.x]) * coef;
 		if (buff > 1.0)
 		{
 			px += (int)buff * arch->wall->txtr.w;
 			buff = buff - (int)buff;
 		}
-		surface.x = 0;
+		surface.x = arch->bound.b_up[arch->px.x];
 	}
-	while (surface.x < surface.y && surface.x < arch->sdl->size.y)
+	while (surface.x < surface.y && surface.x < (int)arch->bound.b_down[arch->px.x])
 	{
 		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
 		surface.x++;
@@ -94,15 +49,12 @@ int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 */
 double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 {
-	if (surface.x <= 0)
-		surface.x = arch->px.x;
+	if (surface.x <= (int)arch->bound.b_up[arch->px.x])
+		surface.x = arch->px.x + arch->bound.b_up[arch->px.x] * arch->sdl->size.x;
 	else
-	{
 		surface.x = surface.x * arch->sdl->size.x + arch->px.x;
-		//surface.x = surface.x * arch->sdl->size.x;
-	}
-	if (surface.y > arch->sdl->size.y)
-		surface.y = arch->px.x + (arch->sdl->size.y - 1) * arch->sdl->size.x;
+	if (surface.y > (int)arch->bound.b_down[arch->px.x])
+		surface.y = arch->px.x + (arch->bound.b_down[arch->px.x] - 1) * arch->sdl->size.x;
 	else
 		surface.y = surface.y * arch->sdl->size.x;
 	//printf("depassement %d %d\n", surface.x, surface.y);
@@ -119,11 +71,11 @@ void		draw_column(t_arch *arch, t_fvct2 surface)
 	double	cursor;
 	t_vct2	surface_tmp;
 
-	surface_tmp = (t_vct2){0, surface.x};
+	surface_tmp = (t_vct2){arch->bound.b_up[arch->px.x], surface.x};
 	cursor = draw_part(arch, surface_tmp, 0);
 	surface_tmp = (t_vct2){surface.x, surface.y};
 	draw_part_texture(arch, cursor, surface_tmp);
-	surface_tmp = (t_vct2){surface.y, arch->sdl->size.y};
+	surface_tmp = (t_vct2){surface.y, arch->bound.b_down[arch->px.x]};
 	draw_part(arch, surface_tmp, 0x272130ff);
 }
 
@@ -150,80 +102,34 @@ t_fvct2		surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child)
 }
 
 
-void		draw_portal(t_arch *arch, t_player *player, t_fvct2 surface)
+/*
+**	on determine la surface du portail
+**	on dessine : le ciel, la liaison haute du mur, le portail, la liaison basse, le sol
+**	on prepare la recursivite avec les borne, tout en sauvegardant les actuelles configuration
+**		dans parent borne
+*/
+void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start)
 {
 	t_fvct2		s_portal;
-	t_fvct2		surface_tmp;
 	t_vct2		surf;
 	t_vct2		tmp;
 
-	t_sector	*child;
-	t_sector	*parent;
+	s_portal = surface_portal(surface, arch->sector, arch->wall->link);
 
-	parent = arch->sector;
-	child = arch->wall->link;
-	//le parent sera garder (le secteur actuellement rendu sera garder en temporaire durant la recursivite)
-	//et redonne a la fin a arch->sector
-
-
-	s_portal.y = (child->h_floor - parent->h_floor) / parent->h_ceil;
-	s_portal.x = (child->h_floor - parent->h_floor + child->h_ceil) / parent->h_ceil;
-	s_portal.y = surface.y - s_portal.y * (surface.y - surface.x);
-	s_portal.x = surface.y - s_portal.x * (surface.y - surface.x);
-	if (s_portal.x < surface.x)
-		s_portal.x = surface.x;
-	if (s_portal.y > surface.y)
-		s_portal.y = surface.y;
-
-	/*
-	**	on dessine le ciel
-	*/
-	tmp = (t_vct2){0, surface.x};
-	//if (surface.x > arch->sdl->size.y)
-	//	surf.y = arch->sdl->size.y * arch->sdl->size.x;
-	//else
-	//	surf.y = (int)surface.x * arch->sdl->size.x;
+	tmp = (t_vct2){arch->bound.b_up[arch->px.x], surface.x};
 	surf.x = draw_part(arch, tmp, 0);
 	tmp = (t_vct2){surface.x, s_portal.x};
 	surf.x = draw_part_texture(arch, surf.x, tmp);
+	tmp = (t_vct2){s_portal.x, s_portal.y};
+	//set_borne_vertical(arch, tmp, arch->px.x);
+	surf.x = draw_part(arch, tmp, ORANGE);
+	tmp = (t_vct2){s_portal.y, surface.y};
+	surf.x = draw_part_texture(arch, surf.x, tmp);
+	tmp = (t_vct2){surface.y, arch->bound.b_down[arch->px.x]};
+	draw_part(arch, tmp, 0x272130ff);
+	parent_borne->b_up[arch->px.x - start] = arch->bound.b_up[arch->px.x];
+	parent_borne->b_down[arch->px.x - start] = arch->bound.b_down[arch->px.x];
 
-
-	// /*
-	// **	on dessine la liaison du haut
-	// */
-	// surface_tmp.x = surface.x;
-	// surface_tmp.y = s_portal.x;
-	// surf.x = draw_part_texture(arch, surf.x, surface_tmp);
-
-	// /*
-	// **	on dessine le cache du portail
-	// */
-	// if (surface_tmp.y < 0)
-	// 	surf.x = arch->px.x;
-	// if (s_portal.y > arch->sdl->size.y)
-	// 	surf.y = (arch->sdl->size.y - 1) * arch->sdl->size.x + arch->px.x;
-	// else
-	// 	surf.y = arch->px.x + ((int)s_portal.y - 1) * arch->sdl->size.x;
-	// surf.x = draw_part(arch, surf, ORANGE);
-
-	// /*
-	// **	on definit la borne verticale du pillier
-	// */
-	// set_borne_vertical(arch, surf, arch->px.x);
-
-	// /*
-	// **	on dessine liaison du bas
-	// */
-	// surface_tmp.y = surface.y;
-	// surface_tmp.x = s_portal.y;
-	// draw_part_texture(arch, surf.x, surface_tmp);
-
-	// /*
-	// **	on dessine le sol
-	// */
-	// surf.x = arch->px.x + ((int)surface.y) * arch->sdl->size.x;
-	// if (surface.y < 0)
-	// 	surf.x = arch->px.x;
-	// surf.y = arch->sdl->size.y * arch->sdl->size.x;
-	// draw_part(arch, surf, 0x272130ff);
+	tmp = (t_vct2){(int)s_portal.x, (int)s_portal.y};
+	set_borne_vertical(arch, tmp, arch->px.x);
 }

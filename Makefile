@@ -6,7 +6,7 @@
 #    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/07/12 14:14:07 by tbottini         ###   ########.fr        #
+#    Updated: 2019/07/14 17:44:42 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g#-fsanitize=address#-Werror
+CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\

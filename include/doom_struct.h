@@ -321,11 +321,19 @@ typedef struct 			s_camera
 	double				d_screen;
 }						t_camera;
 
-typedef struct 			s_designer
+typedef struct 			s_borne
+{
+	double				*zline;
+	uint32_t			*b_down;
+	uint32_t			*b_up;
+	double				b_left;
+	double				b_right;
+
+}						t_borne;
+
+typedef struct 			s_arch
 {
 	t_sector			*sector;
-	uint16_t			*borne_down;
-	uint16_t			*borne_up;
 	t_wall				*wall;
 	t_camera			*cam;
 	t_sdl				*sdl;
@@ -334,9 +342,7 @@ typedef struct 			s_designer
 	t_fvct2				decal;
 	t_vct2				px;
 	t_fvct2				shift_txtr;
-	double				*zline;
-	t_fvct2				borne;
-	//uint16			occl_buffer
+	t_borne				bound;
 }						t_arch;
 
 typedef struct			s_game
@@ -353,6 +359,7 @@ typedef struct			s_game
 
 struct					s_doom
 {
+	int					debug;
 	t_sdl				sdl;
 	t_editor			edit;
 	t_ui				ui;
