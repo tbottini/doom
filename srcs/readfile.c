@@ -383,7 +383,7 @@ int	read_enemies(int fd, t_game *game, t_slen *len)
 	return (0);
 }
 
-int reading_map(int fd, t_doom *doom, t_slen *len)
+int reading_map(int fd, t_game *game, t_slen *len)
 {
 	long	x;
 	long	*tmp;
@@ -393,15 +393,15 @@ int reading_map(int fd, t_doom *doom, t_slen *len)
 	tmp = (long *)"💎🇩🇿🍉💩";
 	if (x != *tmp)
 		return (1);
-	if ((rtn = read_textures(fd, &(doom->game.gamesurf), len)))
+	if ((rtn = read_textures(fd, &(game->gamesurf), len)))
 		return (rtn);
-	if ((rtn = read_pillars(fd, &doom->game.pillars, len)))
+	if ((rtn = read_pillars(fd, &game->pillars, len)))
 		return (rtn);
-	if ((rtn = read_sectors(fd, &doom->game, len)))
+	if ((rtn = read_sectors(fd, game, len)))
 		return (rtn);
-	if ((rtn = read_player(fd, &doom->game, &doom->game.player, len)))
+	if ((rtn = read_player(fd, game, &game->player, len)))
 		return (rtn);
-	if ((rtn = read_enemies(fd, &doom->game, len)))
+	if ((rtn = read_enemies(fd, game, len)))
 		return (rtn);
 	read(fd, &x, sizeof(x));
 	tmp = (long *)"👨🏻🤠🍑";
@@ -421,7 +421,7 @@ int	read_file(t_doom *doom, const char *file)
 		write(2, "Error opening file\n", 19);
 		return (-1);
 	}
-	if ((returncode = reading_map(fd, doom, &len)))
+	if ((returncode = reading_map(fd, &doom->game, &len)))
 	{
 		ft_printf("Error : %d\n", returncode);
 		close(fd);
@@ -430,4 +430,36 @@ int	read_file(t_doom *doom, const char *file)
 	close(fd);
 	ft_putendl("Successfully read ressources/map/editor.map\n");
 	return (0);
+}
+
+void free_gamemap(t_game *game)
+{
+	int x;
+	int y;
+
+	if (game->gamesurf)
+	{
+		x = 0;
+		while (game->gamesurf[x])
+		{
+			SDL_FreeSurface(game->gamesurf[x]);
+			x++;
+		}
+		free(game->gamesurf);
+		game->gamesurf = NULL;
+	}
+	if (game->pillars)
+	{
+		free(game->pillars);
+		game->pillars = NULL;
+	}
+	//if (game->sectors)
+	//{
+	//	x = 0;
+	//	while (game->sectors[x].len > x)
+	//	{
+	//		y = 0;
+	//		while (game->sectors[x].wall[y].props)
+	//	}
+	//}
 }
