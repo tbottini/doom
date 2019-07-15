@@ -38,10 +38,16 @@ int	asynchronous_txtr_load(void *param)
 
 	edit = param;
 	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
-	edit->sectors = ft_newsector(edit->txtrgame[0], edit->txtrgame[0]);
+	if (read_file_to_editor(edit, "ressources/map/editor.map") != 0)
+	{
+		edit->sectors = ft_newsector(edit->txtrgame[0], edit->txtrgame[0]);
+		edit->player.stat.sector = edit->map;
+		edit->player.stat.pos = (t_vct2){0, 0};
+		edit->player.stat.type = 100;
+	}
 	edit->map = edit->sectors;
-	edit->player.stat.sector = edit->map;
-	edit->player.stat.type = 100;
+	if (!(edit->player.stat.sector))
+		edit->player.stat.sector = edit->map;
 	edit->status = ED_LOADED;
 	return (0);
 }

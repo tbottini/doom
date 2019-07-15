@@ -77,6 +77,7 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 */
 
 int						read_file(t_game *game, const char *file);
+int						read_file_to_editor(t_editor *edit, const char *file);
 int						check_file(const char *file);
 void					free_gamemap(t_game *game);
 

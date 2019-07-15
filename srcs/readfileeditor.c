@@ -11,9 +11,56 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#define EDITORSTEPX 100.0
+#define EDITORSTEPY -100.0
+
+t_pilier *find_pillar_from_game(t_pillar *pillars, t_pillar *to_find, t_lstpil pillst)
+{
+	int x;
+
+	x = 0;
+	while (&(pillars[x]) != to_find)
+	{
+		pillst = pillst->next;
+		x++;
+	}
+	return (pillst);
+}
 
 int game_to_editor(t_game *game, t_editor *edit)
 {
+	int x;
+	int y;
+	t_vct2 pos;
+	t_secteur *sec;
+
+	x = 0;
+	while (x < game->len.nb_pills)
+	{
+		pos.x = game->pillars[x].p.x * EDITORSTEPX;
+		pos.y = game->pillars[x].p.y * EDITORSTEPY;
+		ft_pillarpushend(&edit->pillist, pos);
+		x++;
+	}
+	x = 0;
+	while (x < game->len.nb_sects)
+	{
+		push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
+		x++;
+	}
+	sec = edit->sectors;
+	x = 0;
+	while (x < game->len.nb_sects)
+	{
+		y = 0;
+		while (y < game->sectors[x].len)
+		{
+			ft_wallpushend(&sec->murs, find_pillar_from_game(game->pillars, game->sectors[x].wall[y].pillar, edit->pillist), find_pillar_from_game(game->pillars, game->sectors[x].wall[y].next, edit->pillist), edit->txtrgame[0]);
+			y++;
+		}
+		sec = sec->next;
+		x++;
+	}
 	return (0);
 }
 

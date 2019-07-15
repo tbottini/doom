@@ -5,6 +5,7 @@ SRCS_DOOM		:=		editor.c										\
 						main.c											\
 						savefile.c										\
 						readfile.c										\
+						readfileeditor.c								\
 						checkfile.c										\
 						cinematri.c										\
 
