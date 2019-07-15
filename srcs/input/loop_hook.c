@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 14:19:08 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/14 17:42:44 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,6 @@ int loop_hook(t_doom *doom)
 		}
 		SDL_RenderPresent(doom->sdl.rend);
 	}
-	delaypcmasterrace(doom);
+	//delaypcmasterrace(doom);
 	return (0);
 }

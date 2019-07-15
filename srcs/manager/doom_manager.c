@@ -52,5 +52,6 @@ t_doom	*doom_init()
 	doom->game.player.fov = 90;
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
+	doom->debug = 0;
 	return (doom);
 }

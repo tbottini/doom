@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/13 11:20:18 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/14 15:57:40 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		key_press(int key, t_doom *doom)
 			sdl_set_status(doom, 0);
 	}
 	else if (key ==SDLK_g)
-		read_file(doom, "ressources/map/editor.map");
+		doom->debug = 1;
 	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&doom->game.player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)

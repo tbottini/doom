@@ -349,6 +349,7 @@ typedef struct			s_game
 
 struct					s_doom
 {
+	int					debug;
 	t_sdl				sdl;
 	t_editor			edit;
 	t_ui				ui;

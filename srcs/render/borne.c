@@ -11,8 +11,8 @@ int			trunc_int(int value, int min, int max)
 
 void		set_borne_vertical(t_arch *arch, t_vct2 surface, int i)
 {
-	arch->borne_up[i] = trunc_int(surface.x, 0, arch->px.y - 1);
-	arch->borne_down[i] = trunc_int(surface.y, 0, arch->px.y - 1);
+	arch->borne_up[i] = (uint32_t)trunc_int(surface.x, 0, arch->borne_up[arch->px.x] - 1);
+	arch->borne_down[i] = (uint32_t)trunc_int(surface.y, 0, arch->borne_down[arch->px.x] - 1);
 }
 
 void		set_borne_horizontal(t_arch *arch)

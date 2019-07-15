@@ -1,51 +1,6 @@
 #include "doom_nukem.h"
 
 /*
-**	renvoie la position en pixel d'un point
-*/
-int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
-{
-	double	wall_angle;
-	int px;
-	double	player_angle;
-
-
-	player_angle = (player->stat.rot.x - 90) * PI180;
-
-	wall_angle = atan2(h_diff, depth_wall);
-	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
-	px += (player->stat.rot.x - 90) * 45;
-
-	//vraies cervicales
-	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
-	//px = arch->sdl->size.y / 2 - px;
-
-	return (px);
-}
-
-/*
-**	renvoie la surface en px qu'un pillier prend
-**	en fonction de la hauteur du joueur (player)
-**	de la hauteur du mur (wall_height)
-**	et de la distance par rapport au mur (depth)
-**	up est la difference entre le point de vue de la camera
-**		et le haut du mur
-*/
-t_fvct2			surface_pillar(t_arch *arch, t_player *player, double depth)
-{
-	t_fvct2		wall_portion;
-
-	double		up;
-	double		down;
-
-	down = -player->stat.height - (player->stat.pos.z - arch->sector->h_floor);
-	up = down + player->stat.sector->h_ceil;
-	wall_portion.x = px_point(arch, player, up, depth);
-	wall_portion.y = px_point(arch, player, down, depth);
-	return (wall_portion);
-}
-
-/*
 **	numcol index de depart
 **	surface : colonne de depart et colonne de fin, (sans la multiplication avec les range)
 **	-> renvoie l'index de fin
@@ -174,6 +129,7 @@ void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int star
 	draw_part(arch, tmp, 0x272130ff);
 	parent_borne->b_up[arch->px.x - start] = arch->borne_up[arch->px.x];
 	parent_borne->b_down[arch->px.x - start] = arch->borne_down[arch->px.x];
-	tmp = (t_vct2){s_portal.x, s_portal.y};
+
+	tmp = (t_vct2){(int)s_portal.x, (int)s_portal.y};
 	set_borne_vertical(arch, tmp, arch->px.x);
 }

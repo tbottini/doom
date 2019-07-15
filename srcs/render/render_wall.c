@@ -1,6 +1,51 @@
 #include "doom_nukem.h"
 
 /*
+**	renvoie la position en pixel d'un point
+*/
+int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
+{
+	double	wall_angle;
+	int px;
+	double	player_angle;
+
+
+	player_angle = (player->stat.rot.x - 90) * PI180;
+
+	wall_angle = atan2(h_diff, depth_wall);
+	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
+	px += (player->stat.rot.x - 90) * 45;
+
+	//vraies cervicales
+	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
+	//px = arch->sdl->size.y / 2 - px;
+
+	return (px);
+}
+
+/*
+**	renvoie la surface en px qu'un pillier prend
+**	en fonction de la hauteur du joueur (player)
+**	de la hauteur du mur (wall_height)
+**	et de la distance par rapport au mur (depth)
+**	up est la difference entre le point de vue de la camera
+**		et le haut du mur
+*/
+t_fvct2			surface_pillar(t_arch *arch, t_player *player, double depth)
+{
+	t_fvct2		wall_portion;
+
+	double		up;
+	double		down;
+
+	down = -player->stat.height - (player->stat.pos.z - arch->sector->h_floor);
+	up = down + arch->sector->h_ceil;
+	wall_portion.x = px_point(arch, player, up, depth);
+	wall_portion.y = px_point(arch, player, down, depth);
+	return (wall_portion);
+}
+
+/*
 **	rearrange les parametre pour que l'on rende les colonnes de gauche a droite
 */
 void			reorder(t_arch *arch)
@@ -69,38 +114,22 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		{
 			if (zline_portal(arch, borne_tmp.zline, neutre.x, start))
 				draw_portal(arch, pillar, &borne_tmp, start);
-			//if (z_line_buffer(arch, neutre.x, arch->px.x))
-			//{
-			//	draw_portal(arch, player, pillar);
-			//}
 		}
 		pillar.x -= coef_surface.x;
 		pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
-		//if (i % 4 == 0)
-		//{
-		//	sdl_MultiRenderCopy(arch->sdl);
-		//	SDL_RenderPresent(arch->sdl->rend);
-		//}
 	}
 	if (arch->wall->status == PORTAL)
 	{
-		//les borne up et down sont mise
-		//on calcul les borne left et right
-		//le zline est sauvegarde
-		//on sauvegarde le sector
-		//printf("arch->borne parent x %f y %f\n", arch->borne.x, arch->borne.y);
 		arch->px.x = start;
 		set_borne_horizontal(arch);
-		//printf("arch->borne child x %f y %f\n", arch->borne.x, arch->borne.y);
 		sector_tmp = arch->sector;
 		sector_render(arch, player, arch->wall->link);
 		arch->sector = sector_tmp;
 		borne_load(arch, &borne_tmp, start);
-		//printf("arch->borne parent dans le futur x %f y %f\n", arch->borne.x, arch->borne.y);
-
 	}
+
 }
 
 /*
@@ -110,7 +139,6 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 */
 void		render_wall(t_arch *arch, t_player *player)
 {
-
 	wall_screen_info(arch, player);
 	reorder(arch);
 	pillar_to_pillar(arch, player);

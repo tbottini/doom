@@ -90,10 +90,13 @@ int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 }
 
 /*
-**	buncherisation mets les murs visible d'un secteur dans une liste
-**		un mur est visible si l'un des pillier est dans le frustrum ou
-**		ou si l'angle mur joueur est plus grand que le joueur (les pillier depasse mais passe
-**											devant le joueur)
+**	buncherisation mets les murs visible d'un secteur dans un tableau
+**	-un mur est visible si l'un des pillier est dans le frustrum
+**		ou si l'angle mur/joueur est plus grand que 180 (signifiant
+**		que le mur passe devant le champ de vision du joueur)
+**
+**	un mur n'est pas ajoute au bunch si c'est un portail
+**		ou commence une recursivite
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
@@ -110,6 +113,7 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 	{
 		if (wall[i_wall].pillar->frust || wall[i_wall].next->frust)
 		{
+			//on verifie que le mur choisit n'a pas les meme pillier que le mur
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
