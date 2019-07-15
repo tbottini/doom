@@ -12,11 +12,11 @@ void		px_polarite(t_arch *arch)
 	double	diff;
 	int		polarite;
 
-	angle.x = local_angle(arch->borne.x, arch->wall->pillar->angle);
-	angle.y = local_angle(arch->borne.x, arch->wall->next->angle);
+	angle.x = local_angle(arch->bound.b_left, arch->wall->pillar->angle);
+	angle.y = local_angle(arch->bound.b_left, arch->wall->next->angle);
 
 	diff = fabs(angle.x - angle.y);
-	polarite = (arch->wall->next->angle > arch->borne.x ? -1 : 1) * (diff < 180 ? 1 : -1);
+	polarite = (arch->wall->next->angle > arch->bound.b_left ? -1 : 1) * (diff < 180 ? 1 : -1);
 	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x -1;
 	arch->px.y = arch->sdl->size.x - 1 - arch->px.x;
 }
@@ -27,9 +27,9 @@ int			pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
 	double	angle_next;
 	double	borne;
 
-	angle = local_angle(arch->borne.x, pillar->angle);
-	angle_next = local_angle(arch->borne.x, next->angle);
-	borne = local_angle(arch->borne.x, arch->borne.y);
+	angle = local_angle(arch->bound.b_left, pillar->angle);
+	angle_next = local_angle(arch->bound.b_left, next->angle);
+	borne = local_angle(arch->bound.b_left, arch->bound.b_right);
 
 
 	if (angle < borne - 180)
@@ -63,13 +63,13 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 		arch->px.x = pillar_polarite(arch, arch->wall->pillar, arch->wall->next);
 		if (arch->px.x == 0)
 		{
-			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->borne.x;
+			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_left * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->bound.b_left;
 		}
 		else
 		{
-			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->borne.y * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->borne.y;
+			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_right * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->bound.b_right;
 		}
 		arch->shift_txtr.x = wall_clipping(arch, p, &tmp, angle);
 		arch->depth.x = tmp.x;
@@ -88,13 +88,13 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 		arch->px.y = pillar_polarite(arch, arch->wall->next, arch->wall->pillar);
 		if (arch->px.y == 0)
 		{
-			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->borne.x * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->borne.x;
+			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_left * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->bound.b_left;
 		}
 		else
 		{
-			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->borne.y * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->borne.y;
+			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_right * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->bound.b_right;
 		}
 		arch->shift_txtr.y = wall_clipping(arch, p, &tmp, angle);
 		arch->depth.y = tmp.x;

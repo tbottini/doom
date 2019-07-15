@@ -318,11 +318,9 @@ typedef struct 			s_borne
 
 }						t_borne;
 
-typedef struct 			s_designer
+typedef struct 			s_arch
 {
 	t_sector			*sector;
-	uint32_t			*borne_down;
-	uint32_t			*borne_up;
 	t_wall				*wall;
 	t_camera			*cam;
 	t_sdl				*sdl;
@@ -331,9 +329,7 @@ typedef struct 			s_designer
 	t_fvct2				decal;
 	t_vct2				px;
 	t_fvct2				shift_txtr;
-	double				*zline;
-	t_fvct2				borne;
-	//uint16			occl_buffer
+	t_borne				bound;
 }						t_arch;
 
 typedef struct			s_game

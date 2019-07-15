@@ -11,9 +11,9 @@
 int			z_line_buffer(t_arch *arch, double len_pillar, int px)
 {
 
-	if (len_pillar > arch->zline[px])
+	if (len_pillar > arch->bound.zline[px])
 	{
-		arch->zline[px] = len_pillar;
+		arch->bound.zline[px] = len_pillar;
 		return (1);
 	}
 	return (0);
@@ -22,9 +22,9 @@ int			z_line_buffer(t_arch *arch, double len_pillar, int px)
 
 int			clean_zline(t_arch *arch, double len_pillar, int px)
 {
-	if (len_pillar > arch->zline[px])
+	if (len_pillar > arch->bound.zline[px])
 	{
-		arch->zline[px] = 0;
+		arch->bound.zline[px] = 0;
 		return (1);
 	}
 	return (0);
@@ -38,13 +38,13 @@ int			clean_zline(t_arch *arch, double len_pillar, int px)
 */
 int			zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start)
 {
-	if (len_pillar > arch->zline[arch->px.x])
+	if (len_pillar > arch->bound.zline[arch->px.x])
 	{
 		zline_tmp[arch->px.x - start] = len_pillar;
-		arch->zline[arch->px.x] = 0;
+		arch->bound.zline[arch->px.x] = 0;
 		return (1);
 	}
-	zline_tmp[arch->px.x - start] = arch->zline[arch->px.x];
+	zline_tmp[arch->px.x - start] = arch->bound.zline[arch->px.x];
 	return (0);
 }
 
@@ -61,7 +61,7 @@ void		zline_cut(t_arch *arch, double *zline_cut, int start)
 		return ;
 	while (start < arch->px.y)
 	{
-		arch->zline[start] = zline_cut[i];
+		arch->bound.zline[start] = zline_cut[i];
 		i++;
 		start++;
 	}

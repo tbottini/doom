@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/12 11:10:34 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/15 13:51:01 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_
 void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
-int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);
+int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
 void					editor_free(t_editor *editor);
 int						editor_init(t_editor *editor);
 void					sdl_free(t_sdl *sdl);
@@ -78,7 +78,7 @@ int						read_file(t_doom *doom, const char *file);
 int						check_file(const char *file);
 
 t_wall					*chunck_walls(t_list *chunck_line, t_arch *ressources, size_t len);
-int						chunk_texture(t_sdl *sdl, t_arch *designer, int fd);
+int						chunk_texture(t_sdl *sdl, t_arch *arch, int fd);
 t_player				chunck_player(int fd);
 t_sector				*chunck_sector(int fd, t_arch *ressources);
 t_sector				*sector_new();

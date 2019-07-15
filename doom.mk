@@ -82,7 +82,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						weapon_manager.c								\
 						enemy_manager.c									\
 						prop_manager.c									\
-						designer_manager.c								\
+						arch_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\
