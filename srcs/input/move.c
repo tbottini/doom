@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 22:07:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:15:15 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void		gravity(t_stat *stat)
 	{
 		stat->vel.x += stat->sector->gravity.x;
 		stat->vel.y += stat->sector->gravity.y;
+		//if (fabs((stat->sector->h_floor + stat->sector->h_ceil) - (stat->pos.z + stat->height)) == 0.0)
+		//	stat->vel.z = 0;
 		stat->vel.z += stat->sector->gravity.z * 450.0;
 	}
 }
@@ -118,7 +120,7 @@ void		update_position(t_stat *stat, t_fvct3 npos)
 	t_fvct3	tmp;
 	t_wall	*w;
 
-	if (colli_teleport(stat, npos, stat->pos))
+	if (!colli_teleport(stat, npos, stat->pos))
 	{
 		stat->pos.x = npos.x;
 		stat->pos.y = npos.y;
@@ -154,14 +156,16 @@ void		move(t_stat *stat)
 	npos.x = stat->pos.x + d.x * stat->vel.y / 35000.0 + d.y * stat->vel.x / 35000.0;
 	npos.y = stat->pos.y - d.x * -stat->vel.x / 35000.0 - d.y * stat->vel.y / 35000.0;
 	npos.z = stat->pos.z + stat->vel.z / 35000.0;
-	//printf("%f\t%f\t%f\n", npos.x, npos.y, npos.z);
 	if (npos.z < stat->sector->h_floor)
 	{
 		stat->pos.z = stat->sector->h_floor;
 		Mix_Resume(1);
 	}
 	else if (npos.z > stat->sector->h_ceil - stat->height + stat->sector->h_floor)
-		stat->pos.z = stat->sector->h_ceil - stat->height + stat->sector->h_floor;//fall_damage(stat);
+	{
+		stat->pos.z = stat->sector->h_ceil - stat->height + stat->sector->h_floor - 0.10;
+		stat->vel.z = 0;
+	}
 	else
 		stat->pos.z = npos.z;
 	update_position(stat, npos);
