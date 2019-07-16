@@ -48,6 +48,7 @@
 /*
 ** Editor Stuff
 */
+# define EDPADDING 5
 # define MAXZOOM 20000
 # define EDITORPRECISION 5000
 # define DEBUG 0

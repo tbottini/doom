@@ -1,4 +1,6 @@
 SRCS_DOOM		:=		editor.c										\
+						editor_render.c									\
+						editor_input.c									\
 						editor_hook.c									\
 						button_function.c								\
 						slider_function.c								\
@@ -64,6 +66,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 						debug_vector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
+						editor_tools.c									\
 						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\

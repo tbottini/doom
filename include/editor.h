@@ -64,4 +64,7 @@ void					ft_clear_entity_list(t_lstent *start);
 
 t_vct2					line_percent(t_vct2 pos1, t_vct2 pos2, double percent);
 
+t_vct2					get_screen_mappos(t_editor *editor, int x, int y);
+t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
+
 #endif
