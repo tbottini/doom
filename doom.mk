@@ -1,4 +1,4 @@
-SRCS_DOOM		:=		editor.c										\
+SRCS_DOOM		:=		editor_finder.c									\
 						editor_render.c									\
 						editor_input.c									\
 						editor_hook.c									\
