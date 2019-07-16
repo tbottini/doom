@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 22:12:51 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 14:17:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #define PADDING 0.30
 #define PADDING2 0.60
-#define STEP 0.5
+#define STEP 0.025
 
 static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 {
@@ -31,11 +31,15 @@ int			can_pass(t_stat *stat, int i)
 	t_sector *next;
 
 	next = stat->sector->wall[i].link;
+	printf("can pass ?\n");
 	if (stat->sector->wall[i].status >= OPEN_DOOR)
 	{
-		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil) && (next->h_floor - stat->pos.z < STEP))
+		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil) && (next->h_floor <= stat->pos.z + STEP))
 		{
 			stat->sector = next;
+			if (stat->pos.z <= next->h_floor)
+				stat->pos.z = next->h_floor;
+			printf("new pos z = %f\n", stat->pos.z);
 			return (1);
 		}
 	}
@@ -59,7 +63,7 @@ t_wall		*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 	i = -1;
 	while (++i < stat->sector->len)
 	{
-		if (!ISPORTAL(stat->sector->wall[i].status) && vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar->p,
+		if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar->p,
 			*(t_fvct3*)&stat->sector->wall[i].next->p))
 				return (&stat->sector->wall[i]);
 	}
@@ -84,13 +88,6 @@ int			colli_teleport(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
 	}
 	return (0);
 }
-
-/*
-if (!can_pass(stat, i))
-	return (&stat->sector->wall[i]);
-else
-	return (NULL);
-*/
 
 t_wall		*collision(t_stat *stat, t_fvct3 pos, t_wall *w)
 {
