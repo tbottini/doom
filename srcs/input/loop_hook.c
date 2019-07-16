@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/14 17:42:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/16 15:46:48 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,41 @@ static void delaypcmasterrace(t_doom *doom)
 	doom->timestamp = SDL_GetTicks();
 }
 
+static void game_loop_hook(t_doom *doom)
+{
+	t_tab pos;
+	
+	if (doom->ui.m_status == 0)
+	{
+		pos = doom->sdl.keys;
+		while (pos)
+		{
+			input_loop(doom, pos->data);
+			pos = pos->next;
+		}
+		/// Place here functions that need to be launch every frame while the game is running
+		move(&doom->game.player.stat);
+		doom_render(doom);
+		/// End Comment
+	}
+	else
+	{
+		/// Place here functions that need to be launch every frame while in the menu
+		if (doom->ui.m_status == 5 && doom->ui.currslid == &(doom->ui.slidopt[0]))
+			doom_render(doom);
+		else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+			sdl_MultiRenderCopy(&doom->sdl);
+		else
+		{
+			fire(&doom->ui.fire);
+			sdl_MultiRenderCopy(&doom->sdl);
+		}
+		draw_menu(doom);
+		/// End Comment
+	}
+	SDL_RenderPresent(doom->sdl.rend);
+}
+
 static void editor_loop_hook(t_doom *doom)
 {
 	t_tab pos;
@@ -119,14 +154,6 @@ static void editor_loop_hook(t_doom *doom)
 
 int loop_hook(t_doom *doom)
 {
-	t_tab pos;
-
-	pos = doom->sdl.keys;
-	while (pos)
-	{
-		input_loop(doom, pos->data);
-		pos = pos->next;
-	}
 	SDL_RenderClear(doom->sdl.rend);
 	if (doom->edit.status)
 	{
@@ -134,30 +161,8 @@ int loop_hook(t_doom *doom)
 	}
 	else
 	{
-		if (doom->ui.m_status == 0)
-		{
-			/// Place here functions that need to be launch every frame while the game is running
-			move(&doom->game.player.stat);
-			doom_render(doom);
-			/// End Comment
-		}
-		else
-		{
-			/// Place here functions that need to be launch every frame while in the menu
-			if (doom->ui.m_status == 5 && doom->ui.currslid == &(doom->ui.slidopt[0]))
-				doom_render(doom);
-			else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
-				sdl_MultiRenderCopy(&doom->sdl);
-			else
-			{
-				fire(&doom->ui.fire);
-				sdl_MultiRenderCopy(&doom->sdl);
-			}
-			draw_menu(doom);
-			/// End Comment
-		}
-		SDL_RenderPresent(doom->sdl.rend);
+		game_loop_hook(doom);
 	}
-	//delaypcmasterrace(doom);
+	delaypcmasterrace(doom);
 	return (0);
 }
