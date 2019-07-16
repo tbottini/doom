@@ -308,6 +308,10 @@ typedef struct 			s_camera
 	double				d_screen;
 }						t_camera;
 
+
+/*
+**	structure principale pour la recursivite
+*/
 typedef struct 			s_borne
 {
 	double				*zline;
@@ -315,7 +319,8 @@ typedef struct 			s_borne
 	uint32_t			*b_up;
 	double				b_left;
 	double				b_right;
-
+	t_fvct2				decal_portal;
+	t_fvct2				depth_portal;
 }						t_borne;
 
 typedef struct 			s_arch
@@ -325,6 +330,7 @@ typedef struct 			s_arch
 	t_camera			*cam;
 	t_sdl				*sdl;
 	SDL_Surface			**texture;
+	uint16_t			depth_portal;
 	t_fvct2				depth;
 	t_fvct2				decal;
 	t_vct2				px;

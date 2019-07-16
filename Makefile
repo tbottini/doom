@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
+#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/07/14 17:44:42 by tbottini         ###   ########.fr        #
+#    Updated: 2019/07/15 15:36:32 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror
+CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror #-Ofast -fno-builtin -flto
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\

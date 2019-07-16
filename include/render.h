@@ -29,7 +29,7 @@ typedef struct 		s_shape
 */
 t_fvct2					surface_pillar(t_arch *arch, t_player *player, double depth);
 double					wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle);
-void					wall_screen_info(t_arch *arch, t_player *p);
+int						wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);
 void					reorder(t_arch *arch);
 

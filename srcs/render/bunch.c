@@ -101,6 +101,8 @@ int			equal_pillar(t_wall *wall1, t_wall *wall2)
 	if (wall1->pillar == wall2->next && wall1->next == wall2->pillar)
 		return (0);
 	//printf("wall != NULL\n");
+
+	//futur check de profondeur
 	return (1);
 }
 

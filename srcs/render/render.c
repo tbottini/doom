@@ -39,6 +39,7 @@ int					doom_render(t_doom *doom)
 	int				i;
 
 	i = 0;
+	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	minimap(doom);

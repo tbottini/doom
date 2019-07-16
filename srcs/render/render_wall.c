@@ -9,9 +9,7 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
 	int px;
 	double	player_angle;
 
-
 	player_angle = (player->stat.rot.x - 90) * PI180;
-
 	wall_angle = atan2(h_diff, depth_wall);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
 	px += (player->stat.rot.x - 90) * 45;
@@ -19,7 +17,6 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
 	//vraies cervicales
 	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
 	//px = arch->sdl->size.y / 2 - px;
-
 	return (px);
 }
 
@@ -87,9 +84,6 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	t_borne		borne_tmp;
 	t_sector	*sector_tmp;
 
-	static int  i = 0;
-
-
 	pillar = surface_pillar(arch, player, arch->depth.x);
 	pillar_next = surface_pillar(arch, player, arch->depth.y);
 	coef_surface.x = coef_diff(pillar.x - pillar_next.x, arch->px);
@@ -104,7 +98,6 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 
 	while (arch->px.x != arch->px.y)
 	{
-		i++;
 		if (arch->wall->status == WALL)
 		{
 			if (z_line_buffer(arch, neutre.x, arch->px.x))
@@ -124,7 +117,10 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	{
 		arch->px.x = start;
 		set_borne_horizontal(arch);
+		arch->bound.decal_portal = arch->decal;
+		arch->bound.depth_portal = arch->depth;
 		sector_tmp = arch->sector;
+		arch->depth_portal++;
 		sector_render(arch, player, arch->wall->link);
 		arch->sector = sector_tmp;
 		borne_load(arch, &borne_tmp, start);
@@ -139,7 +135,9 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 */
 void		render_wall(t_arch *arch, t_player *player)
 {
-	wall_screen_info(arch, player);
-	reorder(arch);
-	pillar_to_pillar(arch, player);
+	if (wall_screen_info(arch, player))
+	{
+		reorder(arch);
+		pillar_to_pillar(arch, player);
+	}
 }
