@@ -346,17 +346,17 @@ int	check_file(const char *file)
 
 	if ((fd = open(file, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) == -1)
 	{
-		write(2, "Error opening file\n", 19);
+		ft_putendl_fd("Error opening file", 2);
 		return (0);
 	}
 	if ((returncode = check_map(fd, &len)))
 	{
-		ft_printf("Error : %d\n", returncode);
+		ft_printf("%s ❌  : %d\n", file, returncode);
 		close(fd);
 		return (0);
 	}
 	close(fd);
-	
-	ft_putendl("Successfully read ressources/map/editor.map\n");
+	ft_putstr(file);
+	ft_putendl(" ✅");
 	return (1);
 }
