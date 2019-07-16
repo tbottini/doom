@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:45:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 18:03:12 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 {
 	if (ft_isalnum(e.keysym.sym))
 	{
-		if (e.keysym.mod & (KMOD_LSHIFT | KMOD_RSHIFT))
+		if (e.keysym.mod & (KMOD_LSHIFT | KMOD_RSHIFT | KMOD_CAPS))
 			push_char(str, e.keysym.sym - 32);
 		else
 			push_char(str, e.keysym.sym);
@@ -48,6 +48,11 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 		}
 		close_editor(doom);
 		ft_bzero(str, sizeof(char) * MAXFILENAMELEN);
+	}
+	else if (e.keysym.sym == SDLK_BACKQUOTE)
+	{
+		ft_bzero(str, sizeof(char) * MAXFILENAMELEN);
+		doom->edit.status = ED_LOADED;
 	}
 	return (0);
 }

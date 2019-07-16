@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 16:35:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 18:10:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int editor_key_press(int key, t_doom *doom)
 	{
 		if (doom->edit.status != ED_SAVING)
 		{
-			doom->edit.map = NULL;
 			doom->edit.currmur = NULL;
 			doom->edit.currstat = NULL;
 			doom->edit.status = ED_SAVING;
@@ -161,7 +160,7 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (e.button == SDL_BUTTON_RIGHT)
 	{
-		if (edit->currpilier && edit->hoverpilier)
+		if (edit->map && edit->currpilier && edit->hoverpilier)
 		{
 			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier, edit->txtrgame[0]);
 		}

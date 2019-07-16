@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:51:12 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 18:07:46 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ static void editor_loop_hook(t_doom *doom)
 	draw_sector_menu(&doom->edit, doom->ui.fonts);
 	if (doom->edit.map || doom->edit.currmur || doom->edit.currstat)
 		draw_inspect_menu(&doom->edit);
-	else if (doom->edit.status == ED_SAVING)
+	if (doom->edit.status == ED_SAVING)
 		draw_writer(doom);
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
