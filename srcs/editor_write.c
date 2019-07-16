@@ -46,7 +46,8 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 		{
 			return (-1);
 		}
-		close_editor(doom);
+		if (e.keysym.mod == 0)
+			close_editor(doom);
 		ft_bzero(str, sizeof(char) * MAXFILENAMELEN);
 	}
 	else if (e.keysym.sym == SDLK_BACKQUOTE)
