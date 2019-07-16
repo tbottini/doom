@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 18:40:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 17:35:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,8 +440,11 @@ int writing_map(int fd, t_editor *edit)
 int	save_editor_to_file(t_editor *edit)
 {
 	int fd;
+	char path[512];
 
-	if ((fd = open("ressources/map/editor.map", O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU | S_IRGRP| S_IROTH)) == -1)
+	ft_strcpy(path, "ressources/map/");
+	ft_strcpy(&(path[15]), edit->filename);
+	if ((fd = open(path, O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU | S_IRGRP| S_IROTH)) == -1)
 	{
 		write(2, "Error writting to ressources/map/editor.map\n", 44);
 		return (-1);

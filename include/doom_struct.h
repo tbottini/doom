@@ -19,6 +19,7 @@ typedef struct s_wall	t_portal;
 typedef struct s_prop	t_prop;
 
 # define MAXTXTRNUMBER 500
+# define MAXFILENAMELEN 20
 
 # define MINENEMYPOS 1
 # define MAXENEMYNUMBER 4
@@ -43,16 +44,6 @@ typedef struct s_prop	t_prop;
 # define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
 # define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
 # define ISPORTAL(x) (x >= OPEN_DOOR)
-
-/*
-** Snap var behaviour
-** 0 = center of object is its left;
-** 1 = center of object is its center;
-** 2 = center of object is its right;
-** 3 = under the object before + (pos) px
-** 4 = center of the object before + (pos) px
-** 5 = over the object before + (pos) px
-*/
 
 enum 					e_window_id
 {
@@ -101,6 +92,15 @@ struct					s_entity
 	t_entity			*prev;
 };
 
+/*
+** Snap var behaviour
+** 0 = center of object is its left;
+** 1 = center of object is its center;
+** 2 = center of object is its right;
+** 3 = under the object before + (pos) px
+** 4 = center of the object before + (pos) px
+** 5 = over the object before + (pos) px
+*/
 typedef struct			s_sloc
 {
 	SDL_Rect			area;
@@ -277,7 +277,8 @@ typedef enum		e_editorstatus
 {
 	ED_CLOSED,
 	ED_LOADING,
-	ED_LOADED
+	ED_LOADED,
+	ED_SAVING
 }					t_editorstatus;
 
 typedef struct			s_editor
@@ -313,6 +314,7 @@ typedef struct			s_editor
 	SDL_Texture			*sprites[MAXPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du prop
 	SDL_Texture			*wsprites[MAXWPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du wallprop
 	char				*txtrname[MAXTXTRNUMBER]; // [map] Contient le path de la texture
+	char				filename[MAXFILENAMELEN]; // Truc que Thomas voulait
 }						t_editor;
 
 typedef struct 			s_camera

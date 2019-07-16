@@ -7,6 +7,9 @@
 ** Editor
 */
 
+int						write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e);
+void					draw_writer(t_doom *doom);
+
 int						save_editor_to_file(t_editor *edit);
 
 t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 14:26:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 16:35:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,13 @@ int editor_key_press(int key, t_doom *doom)
 	}
 	else if (key == SDLK_RETURN)
 	{
-		save_editor_to_file(&doom->edit);
+		if (doom->edit.status != ED_SAVING)
+		{
+			doom->edit.map = NULL;
+			doom->edit.currmur = NULL;
+			doom->edit.currstat = NULL;
+			doom->edit.status = ED_SAVING;
+		}
 	}
 	else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 	{

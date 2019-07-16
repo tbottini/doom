@@ -2,6 +2,7 @@ SRCS_DOOM		:=		editor_finder.c									\
 						editor_render.c									\
 						editor_input.c									\
 						editor_hook.c									\
+						editor_write.c									\
 						button_function.c								\
 						slider_function.c								\
 						main.c											\
