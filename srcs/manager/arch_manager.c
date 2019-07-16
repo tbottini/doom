@@ -56,6 +56,7 @@ int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 	if (!arch->bound.b_up)
 		return (0);
 	arch->wall = NULL;
+	arch->depth_portal = 0;
 	zline_reset(arch);
 	return (1);
 }

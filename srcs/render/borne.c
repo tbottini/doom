@@ -34,6 +34,10 @@ t_borne		*borne_svg(t_arch *arch, t_borne *borne)
 	len = arch->px.y - arch->px.x;
 	borne->b_left = arch->bound.b_left;
 	borne->b_right = arch->bound.b_right;
+	borne->decal_portal.x = arch->decal.x;
+	borne->decal_portal.y = arch->decal.y;
+	borne->depth_portal.x = arch->depth.x;
+	borne->depth_portal.y = arch->depth.y;
 	borne->b_down = (uint32_t*)malloc(sizeof(uint32_t) * len);
 	if (!borne->b_down)
 		return (NULL);
@@ -75,5 +79,7 @@ void		borne_load(t_arch *arch, t_borne *borne, int start)
 		start++;
 		i++;
 	}
+	arch->decal = borne->decal_portal;
+	arch->depth = borne->depth_portal;
 	borne_free(borne);
 }

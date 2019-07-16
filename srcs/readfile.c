@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 17:09:52 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 15:01:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,7 @@ int	read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
 
 	if (read(fd, &ctmp, sizeof(char)) != sizeof(char))
 		return (-51);
-	sector->gravity.z = (ctmp ? G_EARTH : G_MOON);
+	sector->gravity.z = (ctmp ? G_MOON : G_EARTH);
 	printf("\tSector gravit at %d\n", ctmp);
 	if (read(fd, &sector->h_floor, sizeof(double)) != sizeof(double))
 		return (-52);

@@ -102,8 +102,51 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 	}
 }
 
+/*
+**	renvoie la position du mur par rapport au portail de rendu
+**	0 si le portail est devant le portail
+**	1 si le portail est derriere le portail
+*/
+int				wall_behind_portal(t_arch *arch)
+{
+	t_affine	a_wall;
+	t_affine	a_portal;
 
-void			wall_screen_info(t_arch *arch, t_player *p)
+	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
+	{
+		printf("%f\n", arch->bound.depth_portal.x);
+		if (arch->depth.x > arch->bound.depth_portal.x)
+			return (0);
+		else if (arch->depth.y > arch->bound.depth_portal.x)
+			return (0);
+		return (1);
+	}
+
+	//verif si le mur a un coeficient directeur
+	a_wall.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
+	a_wall.b = arch->decal.y - a_wall.a * arch->depth.y;
+	a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x) /
+		(arch->bound.depth_portal.y - arch->bound.depth_portal.x);
+	a_portal.b = arch->bound.decal_portal.y - a_portal.a * arch->bound.depth_portal.y;
+	if (arch->depth.x < affine_val_index(a_portal, arch->depth.x))
+	{
+		return (0);
+	}
+	else if (arch->depth.y < affine_val_index(a_portal, arch->depth.y))
+	{
+		return (0);
+	}
+	return (1);
+
+}
+
+int			wall_screen_info(t_arch *arch, t_player *p)
 {
 	pillar_screen_info(arch, p);
+	if (arch->depth_portal > 0)
+	{
+		printf("wall_behind_portal %d\n", wall_behind_portal(arch));
+		return (wall_behind_portal(arch));
+	}
+	return (1);
 }

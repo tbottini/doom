@@ -32,9 +32,6 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 	if (percent < 0)
 		return (0);
 	else if (percent > 1)
-	{
-		//printf("depassement\n");
 		return (arch->wall->txtr.w);
-	}
 	return (percent * arch->wall->txtr.w);
 }
