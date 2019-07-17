@@ -34,36 +34,16 @@ t_borne		*borne_svg(t_arch *arch, t_borne *borne)
 	len = arch->px.y - arch->px.x;
 	borne->b_left = arch->bound.b_left;
 	borne->b_right = arch->bound.b_right;
-	borne->decal_portal.x = arch->decal.x;
-	borne->decal_portal.y = arch->decal.y;
-	borne->depth_portal.x = arch->depth.x;
-	borne->depth_portal.y = arch->depth.y;
-	borne->b_down = (uint32_t*)malloc(sizeof(uint32_t) * len);
-	if (!borne->b_down)
-		return (NULL);
-	borne->b_up = (uint32_t*)malloc(sizeof(uint32_t) * len);
-	if (!borne->b_up)
-	{
-		free(borne->b_down);
-		return (NULL);
-	}
-	borne->zline = (double*)malloc(sizeof(double) * len);
-	if (!borne->zline)
-	{
-		free(borne->b_down);
-		free(borne->b_up);
-		return (NULL);
-	}
+	borne->decal_portal = arch->bound.decal_portal;
+	borne->decal_portal = arch->bound.depth_portal;
+	borne_init(borne, len);
 	return (borne);
 }
 
-void		borne_free(t_borne *borne)
-{
-	free(borne->b_down);
-	free(borne->b_up);
-	free(borne->zline);
-}
-
+/*
+**	recharge une borne dans la borne arch
+*	(une borne anciennement sauvegarde...)
+*/
 void		borne_load(t_arch *arch, t_borne *borne, int start)
 {
 	int		i;
@@ -79,7 +59,7 @@ void		borne_load(t_arch *arch, t_borne *borne, int start)
 		start++;
 		i++;
 	}
-	arch->decal = borne->decal_portal;
-	arch->depth = borne->depth_portal;
+	arch->bound.decal_portal = borne->decal_portal;
+	arch->bound.depth_portal = borne->depth_portal;
 	borne_free(borne);
 }

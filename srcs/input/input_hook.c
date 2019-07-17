@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/15 13:57:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/16 17:28:36 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,21 @@ int		key_press(int key, t_doom *doom)
 		else if (doom->ui.m_status == 4)
 			sdl_set_status(doom, 0);
 	}
-	else if (key ==SDLK_g)
-		doom->debug = 1;
+	else if (key == SDLK_g)
+	{
+		debug = 2;
+	}
 	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&doom->game.player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)
 		action(&doom->game.player, &doom->game.player.stat);
 	else if (key == SDLK_LGUI && !doom->ui.m_status && doom->game.player.stat.jetpack)
 		crouch(&doom->game.player);
-	else if (key == SDLK_g)
-		describe_player(doom->game.player);
 	else if (key == SDLK_h)
+	{
+		describe_player(doom->game.player);
 		describe_sector_recursif(*doom->game.sectors);
+	}
 	else if (key == SDLK_9)
 		change_music(&doom->game.sound, 10, 5000);
 	else if (key == SDLK_b)

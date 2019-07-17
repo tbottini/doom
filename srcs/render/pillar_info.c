@@ -42,7 +42,6 @@ int			pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
 		return (arch->sdl->size.x - 1);
 }
 
-
 void			pillar_screen_info(t_arch *arch, t_player *p)
 {
 	float		angle;
@@ -112,9 +111,11 @@ int				wall_behind_portal(t_arch *arch)
 	t_affine	a_wall;
 	t_affine	a_portal;
 
+	if (debug)
+		d_wall(arch->wall);
 	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
 	{
-		printf("%f\n", arch->bound.depth_portal.x);
+
 		if (arch->depth.x > arch->bound.depth_portal.x)
 			return (0);
 		else if (arch->depth.y > arch->bound.depth_portal.x)
@@ -128,11 +129,13 @@ int				wall_behind_portal(t_arch *arch)
 	a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x) /
 		(arch->bound.depth_portal.y - arch->bound.depth_portal.x);
 	a_portal.b = arch->bound.decal_portal.y - a_portal.a * arch->bound.depth_portal.y;
-	if (arch->depth.x < affine_val_index(a_portal, arch->depth.x))
+	if (debug)
 	{
-		return (0);
+		printf(WBLUE"pillier %.2f %.2f --> %.2f %2.f\n"WEND, arch->depth.x, arch->decal.x, arch->depth.y, arch->decal.y);
+		printf("wall_affine .a %f .b %f\nportal_affine .a %f .b %f\n", a_wall.a, a_wall.b, a_portal.a, a_portal.b);
 	}
-	else if (arch->depth.y < affine_val_index(a_portal, arch->depth.y))
+	if (arch->depth.x < affine_val_index(a_portal, arch->decal.x)
+		&& arch->depth.y < affine_val_index(a_portal, arch->decal.y))
 	{
 		return (0);
 	}
@@ -142,11 +145,17 @@ int				wall_behind_portal(t_arch *arch)
 
 int			wall_screen_info(t_arch *arch, t_player *p)
 {
+	int		result;
+
 	pillar_screen_info(arch, p);
+	if (debug)
+		printf(WRED"portal:\n%f %f --> %f %f\n"WEND, arch->bound.depth_portal.x, arch->bound.decal_portal.x, arch->bound.depth_portal.y, arch->bound.decal_portal.y);
 	if (arch->depth_portal > 0)
 	{
-		printf("wall_behind_portal %d\n", wall_behind_portal(arch));
-		return (wall_behind_portal(arch));
+		result = wall_behind_portal(arch);
+		if (debug)
+			printf("wall_behind_portal %d\n\n", result);
+		return (result);
 	}
 	return (1);
 }

@@ -81,6 +81,7 @@ t_shape					shape_reajust(t_shape shape);
 /*
 **	borne
 */
+t_borne					*borne_init(t_borne *borne, int len);
 t_borne					*borne_svg(t_arch *arch, t_borne *borne);
 void					borne_free(t_borne *borne);
 void					borne_load(t_arch *arch, t_borne *borne, int start);

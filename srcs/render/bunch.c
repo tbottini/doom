@@ -16,10 +16,6 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	else if (angle > 180)
 		angle -= 360;
 	pillar->angle = angle;
-
-	//!!!<---- ajout des bornes
-
-	//if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
 	if (angle >= arch->bound.b_right && angle <= arch->bound.b_left)
 		pillar->frust = 1;
 	else
@@ -132,7 +128,6 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 		if ((wall[i_wall].pillar->frust || wall[i_wall].next->frust)
 			&& equal_pillar(&wall[i_wall], arch->wall))
 		{
-			//on verifie que le mur choisit n'a pas les meme pillier que le mur
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
@@ -144,6 +139,8 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 		}
 		i_wall++;
 	}
+	if (debug == 1)
+		printf("deep_portal %d i_bunch %d\n", arch->depth_portal, i_bunch);
 	bunch[i_bunch] = NULL;
 	return (1);
 }

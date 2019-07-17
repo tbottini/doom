@@ -20,5 +20,16 @@
 # define WBBLUE 	"\e[44m"
 # define WBMAGENTA 	"\e[45m"
 # define WBCYAN 	"\e[46m"
+
+# define RED		0xff0000ff
+# define BLUE		0xffff00ff
+
+
+
 void					sector_recursif(t_sector sector, int sub);
+void		d_wall(t_wall *wall);
+void		draw_borne(t_arch *arch, uint32_t color);
+void		draw_wall(t_arch *arch, uint32_t color);
+void		fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
+void		debug_screen_copy(t_arch *arch);
 #endif

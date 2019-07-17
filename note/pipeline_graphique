@@ -1,3 +1,6 @@
+(bunch = une grappe de mur visible)
+(sector = une piece)
+(borne = les limites de l'ecran)
 
 sector_render
 
@@ -5,31 +8,41 @@ sector_render
 	sector_frustum			//info definit 
 		on_frustum
 	
-	buncherisation			//definit les mur visibles
-	
-	bunchcomsuption			//affichage du bunch
+	buncherisation			//definit les mur visibles (frustum culling)
+!
+	bunchcomsuption			//affichage du bunch (mur par mur)
 
 		render_wall
 			
-			wall_screen_info	//info du mur par rapport a l'ecran
+			wall_screen_info			//info du mur par rapport a l'ecran
 				
 				pillar_screen_info
 					
-					pillar_polarite //quel bord de l'ecran (en px)
-					wall_clipping // a quel angle coupper le mur
+					pillar_polarite		//quel bord de l'ecran (en px)
+					wall_clipping		// a quel angle coupper le mur
+
+				/portal_depth > 0		//dans une recursivite
+				wall_behind_portal		//check mur plus loin que portail de rendu
 
 			pillar_to_pillar
 
-				surface_pillar
-				z_line_buffer
-				|draw_column
+				surface_pillar			//determine les differente dimension du mur
 
+				/portal
+					borne_svg			//svg borne, (pour eviter l'ecrasement)
+
+				|zline_buffer
+				|draw_column
 					draw_part
 					draw_textures
 					
+				|zline_portal
 				|draw_portal
-				
 					draw_part
 					draw_textures
+
+				/portal
+				|sector_render			//recursivite
+				|borne_load				//recharge une borne dans la structure
 				
 
