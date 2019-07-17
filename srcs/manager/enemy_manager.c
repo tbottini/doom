@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/09 21:41:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/17 16:22:05 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ static void	boss_init(t_enemy *enemy)
 	enemy->sprites = NULL;//
 }
 
-void	enemy_free(t_enemy *enemy)
+void	free_enemys(t_enemy *enemy)
 {
-	//sprites_free(sprites);
+	if (!(enemy))
+		return ;
 	if (enemy->next)
-		enemy_free(enemy->next);
+		free_enemys(enemy->next);
 	free(enemy);
 }
 
@@ -131,6 +132,6 @@ void		del_enemy(t_sector *sector, t_enemy *enemy)
 		else
 			sector->enemys = NULL;
 		tmp->next = NULL;
-		enemy_free(tmp);
+		free_enemys(tmp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 15:01:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/17 16:10:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,9 +212,9 @@ int	read_sec_walls(int fd, t_game *game, t_sector *sector, t_slen *len)
 	if ((read(fd, &nbw, sizeof(int)) != sizeof(int)))
 		return (-61);
 	printf("\t\tFound %d Walls\n", nbw);
-	if (!(sector->wall = (t_wall *)malloc(sizeof(t_wall) * (nbw + 1))))
+	if (!(sector->wall = (t_wall *)malloc(sizeof(t_wall) * (nbw))))
 		return (-423);
-	ft_bzero(sector->wall, sizeof(t_wall) * (nbw + 1));
+	ft_bzero(sector->wall, sizeof(t_wall) * (nbw));
 	x = 0;
 	while (x < nbw)
 	{
@@ -430,34 +430,58 @@ int	read_file(t_game *game, const char *file)
 	return (0);
 }
 
-void free_gamemap(t_game *game)
+void	free_gamesurf(SDL_Surface ***gamesurf)
 {
-	int x;
-	//int y;
+	SDL_Surface	**tmp;
+	int 		x;
 
+	tmp = *gamesurf;
+	x = 0;
+	while (tmp[x])
+	{
+		SDL_FreeSurface(tmp[x]);
+		x++;
+	}
+	free(tmp);
+	*gamesurf = NULL;
+}
+
+void	free_sectors(t_sector **sectors, int sec_len)
+{
+	int			x;
+	int			y;
+	t_sector	*tmp;
+
+	x = 0;
+	tmp = *sectors;
+	while (x < sec_len)
+	{
+		y = 0;
+		while (y < tmp[x].len)
+		{
+			//free_props(&tmp[x].wall[y].props);
+			y++;
+		}
+		free(tmp[x].wall);
+		//free_props(&tmp[x].props);
+		free_enemys(tmp[x].enemys);
+		x++;
+	}
+	free(tmp);
+	*sectors = NULL;
+}
+
+void	free_game(t_game *game)
+{
 	if (game->gamesurf)
 	{
-		x = 0;
-		while (game->gamesurf[x])
-		{
-			SDL_FreeSurface(game->gamesurf[x]);
-			x++;
-		}
-		free(game->gamesurf);
-		game->gamesurf = NULL;
+		free_gamesurf(&game->gamesurf);
 	}
 	if (game->pillars)
 	{
 		free(game->pillars);
 		game->pillars = NULL;
 	}
-	//if (game->sectors)
-	//{
-	//	x = 0;
-	//	while (x < game->len.nb_sects)
-	//	{
-	//		
-	//		x++;
-	//	}
-	//}
+	if (game->sectors)
+		free_sectors(&game->sectors, game->len.nb_sects);
 }

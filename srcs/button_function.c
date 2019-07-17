@@ -35,7 +35,7 @@ void	ignoption_button(t_doom *doom)
 void	main_menu_button(t_doom *doom)
 {
 	change_music(&doom->game.sound, 0, 0);
-	free_gamemap(&doom->game);
+	free_game(&doom->game);
 	doom->ui.curr_btn = NULL;
 	sdl_set_status(doom, 1);
 }

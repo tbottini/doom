@@ -1,6 +1,8 @@
 SRCS_DOOM		:=		editor_finder.c									\
 						editor_render.c									\
 						editor_input.c									\
+						editor_optionbox.c								\
+						editor_txtrbox.c								\
 						editor_hook.c									\
 						editor_write.c									\
 						button_function.c								\

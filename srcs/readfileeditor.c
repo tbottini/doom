@@ -76,10 +76,10 @@ int	read_file_to_editor(t_editor *edit, const char *file)
 	}
 	if (game_to_editor(&game, edit))
 	{
-		free_gamemap(&game);
+		free_game(&game);
 		return (-2);
 	}
-	free_gamemap(&game);
+	free_game(&game);
 	ft_putendl("Successfully read ressources/map/editor.map\n");
 	return (0);
 }

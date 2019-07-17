@@ -106,6 +106,7 @@ int						player_init(t_player *player);
 void					player_free(t_player *player);
 t_enemy					*pushfront_enemy(t_sector *sector, t_enemy *enemy);
 t_enemy					*enemy_init(int type);
+void					free_enemys(t_enemy *enemy);
 
 /*
 **	Gameplay
