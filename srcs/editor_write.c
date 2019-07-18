@@ -27,6 +27,8 @@ void push_char(char *str, char c)
 
 int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 {
+	unsigned int x;
+
 	if (ft_isalnum(e.keysym.sym))
 	{
 		if (e.keysym.mod & (KMOD_LSHIFT | KMOD_RSHIFT | KMOD_CAPS))
@@ -58,7 +60,11 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 		}
 		else if (doom->edit.status == ED_WRITING)
 		{
-			*doom->edit.currwriter = ft_atoi(str);
+			x = ft_atoi(str);
+			if (x < MAXEDITVAR)
+				*doom->edit.currwriter = x;
+			else
+				*doom->edit.currwriter = MAXEDITVAR;
 			doom->edit.status = ED_LOADED;
 		}
 		ft_bzero(str, sizeof(char) * MAXFILENAMELEN);
@@ -93,8 +99,8 @@ int	sdl_draw_filename(t_editor *edit, const char *text)
 void draw_writer(t_editor *edit)
 {
 	if (edit->status == ED_WRITING)
-		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 3, 20}, "Editing Variable", (SDL_Color){250, 250, 250, 255});
+		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 50, 20}, "HEIGHT", (SDL_Color){250, 250, 250, 255});
 	else if (edit->status == ED_SAVING)
-		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 3, 20}, "Saving", (SDL_Color){250, 250, 250, 255});
+		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 50, 20}, "Saving", (SDL_Color){250, 250, 250, 255});
 	sdl_draw_filename(edit, edit->filename);
 }
