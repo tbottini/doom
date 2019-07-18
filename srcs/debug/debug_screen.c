@@ -1,5 +1,12 @@
 #include "doom_nukem.h"
 
+t_vct2		conv_sc_debug(t_arch *arch, t_vct2 vct)
+{
+	vct.x = arch->sdl->size.x / 2.0 + vct.x * arch->zoom;
+	vct.y = arch->sdl->size.y / 2.0 - vct.y * arch->zoom;
+	return (vct);
+}
+
 t_vct2		hot_point(t_fvct2 vct, t_vct2 size_s)
 {
 	t_vct2	px;
@@ -30,29 +37,19 @@ void		bold_point(t_vct2 v, Uint32 color, t_doom *doom)
 	}
 }
 
-void		init_debug(t_doom *doom)
+void		b_point_debug(t_arch *arch, t_fvct2 v, Uint32 color)
 {
-	t_vct2	c1;
-	t_vct2	c2;
+	t_vct2	b;
 
-	c1.x = 0;
-	c1.y = doom->sdl.size.y / 2;
-	c2.x = doom->sdl.size.x;
-	c2.y = doom->sdl.size.y / 2;
-	ft_bzero(doom->sdl.screen, sizeof(uint32_t) * doom->sdl.size.x * doom->sdl.size.y);
-	trait(doom, c1, c2, 0xffffffff);
-	c1.x = doom->sdl.size.x / 2;
-	c1.y = 0;
-	c2.x = doom->sdl.size.x / 2;
-	c2.y = doom->sdl.size.y;
-	trait(doom, c1, c2, 0xffffffff);
-	bold_point((t_vct2){doom->sdl.size.x / 2 + 1, doom->sdl.size.y / 2 + 1}, 0xff0000ff, doom);
-}
-
-void		debug_up(t_doom *doom)
-{
-	init_debug(doom);
-	sdl_MultiRenderCopy(&doom->sdl);
+	b.x = arch->sdl->size.x / 2.0 + (v.x * arch->zoom) - 2;
+	b.y = arch->sdl->size.y / 2.0 - (v.y * arch->zoom) - 2;
+	bold_point_debug(b, color, arch);
+	b.x += 2;
+	bold_point_debug(b, color, arch);
+	b.y += 2;
+	bold_point_debug(b, color, arch);
+	b.x -= 2;
+	bold_point_debug(b, color, arch);
 }
 
 /*
@@ -96,14 +93,51 @@ void		draw_wall(t_arch *arch, uint32_t color)
 	t_vct2	point1;
 	t_vct2	point2;
 
-	point1.x = arch->sdl->size.x / 2.0 + (arch->depth.x * 40);
-	point1.y = arch->sdl->size.y / 2.0 - (arch->decal.x * 40);
-	point2.x = arch->sdl->size.x / 2.0 + (arch->depth.y * 40);
-	point2.y = arch->sdl->size.y / 2.0 - (arch->decal.y * 40);
+	//une unite == arch->pixel
+	point1.x = arch->sdl->size.x / 2.0 + (arch->depth.x * arch->zoom);
+	point1.y = arch->sdl->size.y / 2.0 - (arch->decal.x * arch->zoom);
+	point2.x = arch->sdl->size.x / 2.0 + (arch->depth.y * arch->zoom);
+	point2.y = arch->sdl->size.y / 2.0 - (arch->decal.y * arch->zoom);
 
 	fill_line_debug(arch, arch->sdl, point1, point2, color);
 
 }
+
+void		p_debug(t_fvct2 a, Uint32 color, t_arch *arch)
+{
+	t_vct2	v;
+	t_vct2 mid;
+
+	mid.x = arch->sdl->size.x / 2.0;
+	mid.y = arch->sdl->size.y / 2.0;
+
+	v.x = arch->sdl->size.x / 2.0 + a.x * arch->zoom;
+	v.y = arch->sdl->size.y / 2.0 - a.y * arch->zoom;
+
+	fill_line_debug(arch, arch->sdl, mid, v, color);
+}
+
+void		draw_affine(t_arch *arch, t_affine affine, uint32_t color)
+{
+	t_vct2	point1;
+	t_vct2	point2;
+
+	double	x_value;
+
+	x_value = (arch->sdl->size.x / 2.0) / arch->zoom;
+
+
+	point1.x = arch->sdl->size.x - 1;
+	printf("x_value %f affine.b %f %f\n", x_value, affine.b, affine.a * x_value + affine.b);
+	point1.y = arch->sdl->size.y / 2.0 - (affine.a * x_value + affine.b) * arch->zoom;
+
+	point2.x = 0;
+	point2.y = arch->sdl->size.y / 2.0 - (affine.a * -x_value + affine.b) * arch->zoom;
+
+
+	trait(arch, point1, point2, color);
+}
+
 
 void		debug_screen_copy(t_arch *arch)
 {
