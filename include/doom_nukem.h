@@ -57,7 +57,8 @@ extern int debug;
 # define MAXZOOM 20000
 # define EDITORPRECISION 5000
 # define DEBUG 0
-#define SECTORBOXHEIGHT 50
+# define SECTORBOXHEIGHT 50
+# define MAXEDITVAR 999999
 
 /*
 **	gestion

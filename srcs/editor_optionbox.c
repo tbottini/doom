@@ -49,6 +49,8 @@ int opt_menu_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	{
 		if (edit->map->htop + e.y * 5 < 0)
 			edit->map->htop = 0;
+		else if (edit->map->htop + e.y * 5 > MAXEDITVAR)
+			edit->map->htop = MAXEDITVAR;
 		else
 			edit->map->htop += e.y * 5;
 	}
@@ -56,6 +58,8 @@ int opt_menu_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	{
 		if (edit->map->hsol + e.y * 5 < 0)
 			edit->map->hsol = 0;
+		else if (edit->map->hsol + e.y * 5 > MAXEDITVAR)
+			edit->map->hsol = MAXEDITVAR;
 		else
 			edit->map->hsol += e.y * 5;
 	}
