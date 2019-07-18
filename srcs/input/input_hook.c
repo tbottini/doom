@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:28:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/17 18:44:32 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ int		key_press(int key, t_doom *doom)
 		describe_player(doom->game.player);
 		describe_sector_recursif(*doom->game.sectors);
 	}
+	else if (key == SDLK_KP_MINUS)
+		doom->game.arch.zoom /= 2;
+	else if (key == SDLK_KP_PLUS)
+		doom->game.arch.zoom *= 2;
 	else if (key == SDLK_9)
 		change_music(&doom->game.sound, 10, 5000);
 	else if (key == SDLK_b)

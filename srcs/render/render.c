@@ -9,6 +9,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 {
 	t_wall			*bunch[50];
 
+	draw_borne(arch, 0xff0000ff);
 	sector_frustum(arch, sector, player);
 	buncherisation(arch, *sector, bunch);
 	bunch_comsuption(arch, player, bunch, sector);

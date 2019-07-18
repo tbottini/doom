@@ -111,36 +111,44 @@ int				wall_behind_portal(t_arch *arch)
 	t_affine	a_wall;
 	t_affine	a_portal;
 
+	t_affine	a_pillar;
+	t_affine	a_pillar2;
+	t_fvct2		inter;
+
 	if (debug)
 		d_wall(arch->wall);
-	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
-	{
+	//if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
+	//{
+//
+	//	if (arch->depth.x > arch->bound.depth_portal.x)
+	//		return (0);
+	//	else if (arch->depth.y > arch->bound.depth_portal.x)
+	//		return (0);
+	//	return (1);
+	//}
 
-		if (arch->depth.x > arch->bound.depth_portal.x)
-			return (0);
-		else if (arch->depth.y > arch->bound.depth_portal.x)
-			return (0);
-		return (1);
-	}
+	a_pillar.a = arch->decal.x / arch->depth.x;
+	a_pillar.b = 0;
+	a_pillar2.a = arch->decal.y / arch->depth.y;
+	a_pillar2.b = 0;
+	draw_affine(arch, a_pillar, GREEN);
+	draw_affine(arch, a_pillar2, GREEN);
 
-	//verif si le mur a un coeficient directeur
-	a_wall.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
-	a_wall.b = arch->decal.y - a_wall.a * arch->depth.y;
-	a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x) /
-		(arch->bound.depth_portal.y - arch->bound.depth_portal.x);
-	a_portal.b = arch->bound.decal_portal.y - a_portal.a * arch->bound.depth_portal.y;
-	if (debug)
-	{
-		printf(WBLUE"pillier %.2f %.2f --> %.2f %2.f\n"WEND, arch->depth.x, arch->decal.x, arch->depth.y, arch->decal.y);
-		printf("wall_affine .a %f .b %f\nportal_affine .a %f .b %f\n", a_wall.a, a_wall.b, a_portal.a, a_portal.b);
-	}
-	if (arch->depth.x < affine_val_index(a_portal, arch->decal.x)
-		&& arch->depth.y < affine_val_index(a_portal, arch->decal.y))
-	{
+
+	a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x)
+		/ (arch->bound.depth_portal.y - arch->bound.depth_portal.x);
+	a_portal.b = arch->bound.decal_portal.x - (arch->bound.depth_portal.x * a_portal.a);
+	inter = interpolation_linear(a_portal, a_pillar);
+	//draw_affine(arch, a_portal, 0x0000ffff);
+
+	b_point_debug(arch, inter, RED);
+	if (inter.x > arch->depth.x)
 		return (0);
-	}
+	inter = interpolation_linear(a_portal, a_pillar2);
+	b_point_debug(arch, inter, RED);
+	if (inter.x > arch->depth.y)
+		return (0);
 	return (1);
-
 }
 
 int			wall_screen_info(t_arch *arch, t_player *p)
@@ -157,5 +165,6 @@ int			wall_screen_info(t_arch *arch, t_player *p)
 			printf("wall_behind_portal %d\n\n", result);
 		return (result);
 	}
+
 	return (1);
 }

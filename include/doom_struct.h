@@ -344,6 +344,7 @@ typedef struct 			s_arch
 
 	//debug
 	Uint32			sc_debug[WIDTH * HEIGHT];
+	uint32_t			zoom;
 }						t_arch;
 
 typedef struct			s_game

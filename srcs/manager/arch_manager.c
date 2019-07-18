@@ -57,6 +57,7 @@ int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 		return (0);
 	arch->wall = NULL;
 	arch->depth_portal = 0;
+	arch->zoom = 40;
 	zline_reset(arch);
 	return (1);
 }

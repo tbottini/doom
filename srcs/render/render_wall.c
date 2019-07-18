@@ -153,7 +153,6 @@ void		render_wall(t_arch *arch, t_player *player)
 {
 	if (wall_screen_info(arch, player))
 	{
-		draw_borne(arch, 0xff0000ff);
 		if (arch->wall->status == PORTAL)
 			draw_wall(arch, 0xffff00ff);
 		else if (arch->wall->status == WALL)
@@ -161,4 +160,6 @@ void		render_wall(t_arch *arch, t_player *player)
 		reorder(arch);
 		pillar_to_pillar(arch, player);
 	}
+	else
+		draw_wall(arch, RED);
 }

@@ -12,7 +12,6 @@ double			affine_val_index(t_affine affine, double y)
 
 /*
 **	renvoie l'intersection des deux droite affine
-<<<<<<< HEAD
 **	si .a == -1 alors la fonction verticale
 */
 t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2)
