@@ -283,6 +283,7 @@ typedef enum		e_editorstatus
 	ED_CLOSED,
 	ED_LOADING,
 	ED_LOADED,
+	ED_WRITING,
 	ED_SAVING
 }					t_editorstatus;
 
@@ -305,6 +306,7 @@ typedef struct			s_editor
 	t_pilier			*currpilier;
 	t_ecoord			*currstat;
 	t_mur				*currmur;
+	int					*currwriter;
 	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
 	t_lstsec			map;

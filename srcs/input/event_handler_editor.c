@@ -47,7 +47,7 @@ int event_handler_editor(t_doom *doom, SDL_Event e)
 		return (close_editor(doom));
 	else if (e.type == SDL_WINDOWEVENT)
 		window_event(doom, e);
-	else if (doom->edit.status == ED_SAVING)
+	else if (doom->edit.status == ED_WRITING || doom->edit.status == ED_SAVING)
 	{
 		if (e.type == SDL_KEYDOWN)
 			write_hook(doom, doom->edit.filename, e.key);

@@ -100,11 +100,21 @@ int opt_menu_click(t_editor *edit, int pos)
 	{
 		if (edit->currmur && edit->currmur->portal_ptr)
 			edit->currmur->portal_id = pos;
+		else if (edit->map && !edit->currmur && !edit->currstat)
+		{
+			edit->currwriter = &edit->map->htop;
+			edit->status = ED_WRITING;
+		}
 	}
 	else if (pos == 3)
 	{
 		if (edit->currmur && edit->currmur->portal_ptr)
 			edit->currmur->portal_id = pos;
+		else if (edit->map && !edit->currmur && !edit->currstat)
+		{
+			edit->currwriter = &edit->map->hsol;
+			edit->status = ED_WRITING;
+		}
 	}
 	else if (pos == 4)
 	{

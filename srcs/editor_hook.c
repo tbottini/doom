@@ -31,12 +31,9 @@ int		editor_key_press(int key, t_doom *doom)
 		close_editor(doom);
 	else if (key == SDLK_RETURN)
 	{
-		if (doom->edit.status != ED_SAVING)
-		{
-			doom->edit.currmur = NULL;
-			doom->edit.currstat = NULL;
-			doom->edit.status = ED_SAVING;
-		}
+		doom->edit.currmur = NULL;
+		doom->edit.currstat = NULL;
+		doom->edit.status = ED_SAVING;
 	}
 	else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 	{
