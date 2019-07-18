@@ -57,7 +57,6 @@ double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 		surface.y = arch->px.x + (arch->bound.b_down[arch->px.x] - 1) * arch->sdl->size.x;
 	else
 		surface.y = surface.y * arch->sdl->size.x;
-	//printf("depassement %d %d\n", surface.x, surface.y);
 	while (surface.x < surface.y)
 	{
 		arch->sdl->screen[surface.x] = color;
@@ -121,7 +120,6 @@ void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int star
 	tmp = (t_vct2){surface.x, s_portal.x};
 	surf.x = draw_part_texture(arch, surf.x, tmp);
 	tmp = (t_vct2){s_portal.x, s_portal.y};
-	//set_borne_vertical(arch, tmp, arch->px.x);
 	surf.x = draw_part(arch, tmp, ORANGE);
 	tmp = (t_vct2){s_portal.y, surface.y};
 	surf.x = draw_part_texture(arch, surf.x, tmp);

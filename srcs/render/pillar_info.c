@@ -103,8 +103,8 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 
 /*
 **	renvoie la position du mur par rapport au portail de rendu
-**	0 si le portail est devant le portail
-**	1 si le portail est derriere le portail
+**		0 si le portail est devant le portail
+**		1 si le portail est derriere le portail
 */
 int				wall_behind_portal(t_arch *arch)
 {
@@ -115,32 +115,19 @@ int				wall_behind_portal(t_arch *arch)
 	t_affine	a_pillar2;
 	t_fvct2		inter;
 
-	if (debug)
+	if (debug == 1)
 		d_wall(arch->wall);
-	//if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
-	//{
-//
-	//	if (arch->depth.x > arch->bound.depth_portal.x)
-	//		return (0);
-	//	else if (arch->depth.y > arch->bound.depth_portal.x)
-	//		return (0);
-	//	return (1);
-	//}
 
 	a_pillar.a = arch->decal.x / arch->depth.x;
 	a_pillar.b = 0;
 	a_pillar2.a = arch->decal.y / arch->depth.y;
 	a_pillar2.b = 0;
-	draw_affine(arch, a_pillar, GREEN);
-	draw_affine(arch, a_pillar2, GREEN);
-
-
+	draw_affine(arch, a_pillar, BLUE_SOFT);
+	draw_affine(arch, a_pillar2, BLUE_SOFT);
 	a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x)
 		/ (arch->bound.depth_portal.y - arch->bound.depth_portal.x);
 	a_portal.b = arch->bound.decal_portal.x - (arch->bound.depth_portal.x * a_portal.a);
 	inter = interpolation_linear(a_portal, a_pillar);
-	//draw_affine(arch, a_portal, 0x0000ffff);
-
 	b_point_debug(arch, inter, RED);
 	if (inter.x > arch->depth.x)
 		return (0);
@@ -156,12 +143,12 @@ int			wall_screen_info(t_arch *arch, t_player *p)
 	int		result;
 
 	pillar_screen_info(arch, p);
-	if (debug)
+	if (debug == 1)
 		printf(WRED"portal:\n%f %f --> %f %f\n"WEND, arch->bound.depth_portal.x, arch->bound.decal_portal.x, arch->bound.depth_portal.y, arch->bound.decal_portal.y);
 	if (arch->depth_portal > 0)
 	{
 		result = wall_behind_portal(arch);
-		if (debug)
+		if (debug == 1)
 			printf("wall_behind_portal %d\n\n", result);
 		return (result);
 	}

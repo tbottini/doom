@@ -133,10 +133,10 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		arch->bound.depth_portal = arch->depth;
 		sector_tmp = arch->sector;
 		arch->depth_portal++;
-		if (debug)
+		if (debug == 1)
 			printf("--->\n");
 		sector_render(arch, player, arch->wall->link);
-		if (debug)
+		if (debug == 1)
 			printf("<---\n");
 		arch->depth_portal--;
 		arch->sector = sector_tmp;

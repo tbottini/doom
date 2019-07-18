@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/17 18:44:32 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/18 18:22:26 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void			clean_screen(t_sdl *sdl)
 	}
 }
 
+void			debug_code(int key)
+{
+	debug = key - SDLK_KP_1 + 1;
+	printf("debug keycode %d\n", debug);
+}
+
+
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
 ** Example :
@@ -52,10 +59,8 @@ int		key_press(int key, t_doom *doom)
 		else if (doom->ui.m_status == 4)
 			sdl_set_status(doom, 0);
 	}
-	else if (key == SDLK_g)
-	{
-		debug = 2;
-	}
+	else if (key <= SDLK_KP_9 && key >= SDLK_KP_1)
+		debug_code(key);
 	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&doom->game.player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)

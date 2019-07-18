@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:33:12 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/18 17:42:41 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,17 @@ static void delaypcmasterrace(t_doom *doom)
 {
 	int wait;
 
+	debug = 0;
 	// A Supprimer lorqu'il n'y aura plus besoin d'afficher les FPS
 	if (doom->sdl.timp / 1000 == SDL_GetTicks() / 1000)
 	{
 		++doom->sdl.fps;
-		if (debug == 2)
-		{
-			debug = 3;
-		}
-		else
-			debug = 0;
 	}
 	else
 	{
 		ft_printf("\r%d FPS", doom->sdl.fps);
 		doom->sdl.fps = 0;
 		doom->sdl.timp = SDL_GetTicks();
-		debug = 1;
 	}
 	// END A Supprimer
 	wait = SDL_GetTicks() - doom->timestamp - 16; // Nombre de ms min entre chaque frame

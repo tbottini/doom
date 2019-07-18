@@ -40,7 +40,7 @@ int					doom_render(t_doom *doom)
 	int				i;
 
 	i = 0;
-	if (debug)
+	if (debug == 1)
 		printf("\n-------start render-------\n");
 	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
@@ -51,7 +51,7 @@ int					doom_render(t_doom *doom)
 	architect_reset(&doom->game.arch);
 	clear_screen(&doom->sdl);
 	ft_bzero(&doom->game.arch.sc_debug, sizeof(Uint32) * doom->sdl.size.x * doom->sdl.size.y);
-	if (debug)
+	if (debug == 1)
 		printf("\n--------------------------\n");
 	return (1);
 }
