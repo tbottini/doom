@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/17 16:10:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/18 21:51:11 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,7 +340,7 @@ int	read_one_enemy(int fd, t_game *game, t_slen *len)
 
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || !(ISENEMY(tmp)))
 		return (-101);
-	enemy = enemy_init(tmp);
+	enemy = enemy_init(tmp, game->difficulty);
 	printf("\tEnemy type: %d\n", tmp);
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)))
 		return (-102);

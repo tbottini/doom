@@ -373,6 +373,7 @@ typedef struct			s_game
 	SDL_Surface			**gamesurf;//
 	t_arch				arch;//a voir aveec tbottini
 	t_camera			camera;//
+	int					difficulty;
 }						t_game;
 
 struct					s_doom
