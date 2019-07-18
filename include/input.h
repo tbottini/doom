@@ -17,9 +17,16 @@ t_btn					add_start_button(t_doom *doom);
 t_btn					add_mapmenu_button(t_doom *doom);
 t_btn					add_map_button(t_doom *doom, const char *str);
 t_btn					add_pause_button(t_doom *doom);
+
 t_btn					add_left_music_button(t_doom *doom, SDL_Rect *parent);
 t_btn					add_middle_music_button(t_doom *doom);
 t_btn					add_right_music_button(t_doom *doom, SDL_Rect *parent);
+
+t_btn					add_left_difficulty_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_middle_difficulty_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_right_difficulty_button(t_doom *doom, SDL_Rect *parent);
+
+
 t_btn					add_resume_button(t_doom *doom);
 t_btn					add_doom_button(t_doom *doom, const char *name);
 t_btn					add_opt_button(t_doom *doom);
@@ -77,6 +84,10 @@ void					option_button(t_doom *doom);
 void					ignoption_button(t_doom *doom);
 void					main_menu_button(t_doom *doom);
 void					return_button(t_doom *doom);
+
+void					set_easy(t_doom *doom);
+void					set_medium(t_doom *doom);
+void					set_hard(t_doom *doom);
 
 /*
 **	simple input

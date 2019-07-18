@@ -363,6 +363,13 @@ typedef struct 			s_arch
 	Uint32			sc_debug[WIDTH * HEIGHT];
 }						t_arch;
 
+typedef enum		e_difficulty
+{
+	EASY,
+	MEDIUM,
+	HARD
+}					t_difficulty;
+
 typedef struct			s_game
 {
 	t_slen				len;
@@ -373,7 +380,7 @@ typedef struct			s_game
 	SDL_Surface			**gamesurf;//
 	t_arch				arch;//a voir aveec tbottini
 	t_camera			camera;//
-	int					difficulty;
+	t_difficulty		difficulty;
 }						t_game;
 
 struct					s_doom

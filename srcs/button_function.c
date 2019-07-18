@@ -59,3 +59,18 @@ void	start_map_button(t_doom *doom)
 	else
 		ft_printf("Error reading file\n");
 }
+
+void	set_easy(t_doom *doom)
+{
+	doom->game.difficulty = EASY;
+}
+
+void	set_medium(t_doom *doom)
+{
+	doom->game.difficulty = MEDIUM;
+}
+
+void	set_hard(t_doom *doom)
+{
+	doom->game.difficulty = HARD;
+}

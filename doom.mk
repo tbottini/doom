@@ -22,6 +22,7 @@ SRCS_UI			:=		button_action.c									\
 						init_btns.c										\
 						init_btns2.c									\
 						init_btns3.c									\
+						init_btns4.c									\
 						init_slids.c									\
 						fire.c											\
 
