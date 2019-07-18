@@ -41,20 +41,20 @@ void		describe_bunch(t_wall **bunch)
 
 void		describe_player(t_player player)
 {
-	ft_putendl("------player------");
-	printf("Player :\n");
-	fvct3_msg("Pos", player.stat.pos);
-	fvct3_msg("Vel", player.stat.vel);
-	double_msg("Height", player.stat.height);
-	printf("Rot : %f\t%f\n", player.stat.rot.x, player.stat.rot.y);
-	printf("Fov : %d\n", player.fov);
-	printf("Speed : %f\n", player.stat.speed);
-	ft_putendl("------------------");
+	ft_putendl(WBLUE"------player------"WEND);
+	printf(WBLUE"Player "WEND":\n");
+	fvct3_msg(WBLUE"Pos"WEND, player.stat.pos);
+	fvct3_msg(WBLUE"Vel"WEND, player.stat.vel);
+	double_msg(WBLUE"Height"WEND" :", player.stat.height);
+	printf(WBLUE"Rot "WEND": %f\t%f\n", player.stat.rot.x, player.stat.rot.y);
+	printf(WBLUE"Fov "WEND": %d\n", player.fov);
+	printf(WBLUE"Speed "WEND": %f\n", player.stat.speed);
+	ft_putendl(WBLUE"------------------"WEND);
 }
 
 void		describe_wall(t_wall wall)
 {
-	printf("pillar %f %f ang %f\nnext %f %f ang %f\n",
+	printf("pillar %.2f %.2f ang %.2f\nnext %.2f %.2f ang %f.2\n",
 		wall.pillar->p.x, wall.pillar->p.y, wall.pillar->angle,
 		wall.next->p.x, wall.next->p.y, wall.next->angle);
 
@@ -64,6 +64,13 @@ void		ft_putnchar(char c, int i)
 {
 	while (--i != -1)
 		ft_putchar(c);
+}
+
+void		d_wall(t_wall *wall)
+{
+	printf(WBLUE"frust %d"WEND" %.2f %.2f -->, ", wall->pillar->frust, wall->pillar->p.x, wall->pillar->p.y);
+	printf("%.2f %.2f "WBLUE"%d frust"WEND"\n", wall->next->p.x, wall->next->p.y, wall->pillar->frust);
+
 }
 
 void		describe_sector(t_sector sector)
@@ -96,7 +103,7 @@ void		describe_sector(t_sector sector)
 		else if (sector.wall[i].status == WINDOW)
 			printf("WIND\t");
 		ft_putnchar('\t', 1);
-		printf("%f %f --> %f %f\n", sector.wall[i].pillar->p.x, sector.wall[i].pillar->p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
+		printf("%.2f %.2f --> %.2f %.2f\n", sector.wall[i].pillar->p.x, sector.wall[i].pillar->p.y, sector.wall[i].next->p.x, sector.wall[i].next->p.y);
 		if (sector.wall[i].status == PORTAL)
 		{
 			ft_putstr(WEND);

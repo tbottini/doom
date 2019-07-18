@@ -55,7 +55,69 @@ void		debug_up(t_doom *doom)
 	sdl_MultiRenderCopy(&doom->sdl);
 }
 
-void		pause_debug(t_doom *doom)
+/*
+**	dessine les borne actuel
+*/
+void		draw_borne(t_arch *arch, uint32_t color)
 {
+	t_affine	borne_up;
+	t_affine	borne_down;
+	t_vct2		point1;
+	t_vct2		point2;
+
+
+	borne_up.a = tan(PI180 * arch->bound.b_left);
+	borne_down.a = tan(PI180 * arch->bound.b_right);
+	borne_up.b = 0;
+	borne_down.b = 0;
+
+	//on soustrait chaque valeurs qui devrait etre ajoute pcq screen est inverse
+
+
+
+	point1.x = arch->sdl->size.x / 2.0;
+	point1.y = arch->sdl->size.y / 2.0;
+
+	point2.x = arch->sdl->size.x - 1;
+	point2.y = arch->sdl->size.y / 2 - affine_val(borne_up, point2.x / 2.0);
+
+	fill_line_debug(arch, arch->sdl, point1, point2, color);
+
+	point2.y = arch->sdl->size.y / 2 - affine_val(borne_down, point2.x / 2.0);
+
+	fill_line_debug(arch, arch->sdl, point1, point2, color);
+
+	//on recupere le decalage sur quand on atteint le bord de l'ecran a partir du millieu
 
 }
+
+void		draw_wall(t_arch *arch, uint32_t color)
+{
+	t_vct2	point1;
+	t_vct2	point2;
+
+	point1.x = arch->sdl->size.x / 2.0 + (arch->depth.x * 40);
+	point1.y = arch->sdl->size.y / 2.0 - (arch->decal.x * 40);
+	point2.x = arch->sdl->size.x / 2.0 + (arch->depth.y * 40);
+	point2.y = arch->sdl->size.y / 2.0 - (arch->decal.y * 40);
+
+	fill_line_debug(arch, arch->sdl, point1, point2, color);
+
+}
+
+void		debug_screen_copy(t_arch *arch)
+{
+	int		i;
+
+	i = 0;
+	while (i < arch->sdl->size.x * arch->sdl->size.y)
+	{
+		if (arch->sc_debug[i] != 0)
+		{
+			//printf("pixel ecrit\n");
+			arch->sdl->screen[i] = arch->sc_debug[i];
+		}
+		i++;
+	}
+}
+

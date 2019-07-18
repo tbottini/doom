@@ -67,9 +67,12 @@ void			reorder(t_arch *arch)
 	}
 }
 
-
 /*
 **	fait des coeficient pour rendre les colomnes entre les deux pilier
+**	et si c'est un portail prepare
+**		-sauvegarde la borne actuel dans borne_tmp
+**		-la borne pour la recursivite arch->bound
+**		-recharge borne_tmp dans arch->bound
 */
 //zline temporaire pour ne pas refaire un passage pillar_to_pillar
 void			pillar_to_pillar(t_arch *arch, t_player *player)
@@ -79,6 +82,8 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
    	t_fvct2		neutre;
    	t_fvct2		coef_surface;
 	double		coef_neutre;
+
+	static		int i = 0;
 
 	int			start;
 	t_borne		borne_tmp;
@@ -112,20 +117,31 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
+		i++;
+		if (debug == 3 && i % 5 == 0)
+		{
+			sdl_MultiRenderCopy(arch->sdl);
+			SDL_RenderPresent(arch->sdl->rend);
+		}
 	}
 	if (arch->wall->status == PORTAL)
 	{
 		arch->px.x = start;
 		set_borne_horizontal(arch);
+		//on affecte aux borne les position des mur
 		arch->bound.decal_portal = arch->decal;
 		arch->bound.depth_portal = arch->depth;
 		sector_tmp = arch->sector;
 		arch->depth_portal++;
+		if (debug)
+			printf("--->\n");
 		sector_render(arch, player, arch->wall->link);
+		if (debug)
+			printf("<---\n");
+		arch->depth_portal--;
 		arch->sector = sector_tmp;
 		borne_load(arch, &borne_tmp, start);
 	}
-
 }
 
 /*
@@ -137,6 +153,11 @@ void		render_wall(t_arch *arch, t_player *player)
 {
 	if (wall_screen_info(arch, player))
 	{
+		draw_borne(arch, 0xff0000ff);
+		if (arch->wall->status == PORTAL)
+			draw_wall(arch, 0xffff00ff);
+		else if (arch->wall->status == WALL)
+			draw_wall(arch, 0xffffffff);
 		reorder(arch);
 		pillar_to_pillar(arch, player);
 	}

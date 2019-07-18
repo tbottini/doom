@@ -12,6 +12,11 @@
 # include "calcul.h"
 # include "libft.h"
 
+
+# define WIDTH 1300
+# define HEIGHT 950
+
+
 typedef struct s_doom	t_doom;
 typedef struct s_enemy	t_enemy;
 typedef struct s_sector	t_sector;
@@ -351,6 +356,9 @@ typedef struct 			s_arch
 	t_vct2				px;
 	t_fvct2				shift_txtr;
 	t_borne				bound;
+
+	//debug
+	Uint32			sc_debug[WIDTH * HEIGHT];
 }						t_arch;
 
 typedef struct			s_game

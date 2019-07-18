@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/15 13:51:01 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/17 17:39:23 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,17 @@
 # include "input.h"
 # include "debug.h"
 
+/*
+**		!!! global de debug a enlever
+*/
+extern int debug;
+
+# define DEBUG_VISUAL 1
+
 # define MINWIDTH 800
 # define MINHEIGHT 800
 # define EDITMINWIDTH 1024
 # define EDITMINHEIGHT 800
-# define WIDTH 1300
-# define HEIGHT 950
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
