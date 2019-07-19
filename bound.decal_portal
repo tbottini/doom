@@ -1,0 +1,274 @@
+srcs/debug/debug_screen.c:5:	vct.x = arch->sdl->size.x / 2.0 + vct.x * arch->zoom;
+srcs/debug/debug_screen.c:6:	vct.y = arch->sdl->size.y / 2.0 - vct.y * arch->zoom;
+srcs/debug/debug_screen.c:44:	b.x = arch->sdl->size.x / 2.0 + (v.x * (double)arch->zoom) - 1;
+srcs/debug/debug_screen.c:45:	b.y = arch->sdl->size.y / 2.0 - (v.y * (double)arch->zoom) - 1;
+srcs/debug/debug_screen.c:66:	borne_up.a = tan(PI180 * arch->bound.b_left);
+srcs/debug/debug_screen.c:67:	borne_down.a = tan(PI180 * arch->bound.b_right);
+srcs/debug/debug_screen.c:75:	point1.x = arch->sdl->size.x / 2.0;
+srcs/debug/debug_screen.c:76:	point1.y = arch->sdl->size.y / 2.0;
+srcs/debug/debug_screen.c:78:	point2.x = arch->sdl->size.x - 1;
+srcs/debug/debug_screen.c:79:	point2.y = arch->sdl->size.y / 2 - affine_val(borne_up, point2.x / 2.0);
+srcs/debug/debug_screen.c:81:	fill_line_debug(arch, arch->sdl, point1, point2, color);
+srcs/debug/debug_screen.c:83:	point2.y = arch->sdl->size.y / 2 - affine_val(borne_down, point2.x / 2.0);
+srcs/debug/debug_screen.c:85:	fill_line_debug(arch, arch->sdl, point1, point2, color);
+srcs/debug/debug_screen.c:96:	//une unite == arch->pixel
+srcs/debug/debug_screen.c:97:	point1.x = arch->sdl->size.x / 2.0 + (arch->depth.x * arch->zoom);
+srcs/debug/debug_screen.c:98:	point1.y = arch->sdl->size.y / 2.0 - (arch->decal.x * arch->zoom);
+srcs/debug/debug_screen.c:99:	point2.x = arch->sdl->size.x / 2.0 + (arch->depth.y * arch->zoom);
+srcs/debug/debug_screen.c:100:	point2.y = arch->sdl->size.y / 2.0 - (arch->decal.y * arch->zoom);
+srcs/debug/debug_screen.c:102:	fill_line_debug(arch, arch->sdl, point1, point2, color);
+srcs/debug/debug_screen.c:111:	mid.x = arch->sdl->size.x / 2.0;
+srcs/debug/debug_screen.c:112:	mid.y = arch->sdl->size.y / 2.0;
+srcs/debug/debug_screen.c:114:	v.x = arch->sdl->size.x / 2.0 + a.x * arch->zoom;
+srcs/debug/debug_screen.c:115:	v.y = arch->sdl->size.y / 2.0 - a.y * arch->zoom;
+srcs/debug/debug_screen.c:117:	fill_line_debug(arch, arch->sdl, mid, v, color);
+srcs/debug/debug_screen.c:129:	x_value = (arch->sdl->size.x / 2.0) / arch->zoom;
+srcs/debug/debug_screen.c:132:	point1.x = arch->sdl->size.x - 1;
+srcs/debug/debug_screen.c:133:	point1.y = arch->sdl->size.y / 2.0 - (affine.a * x_value + affine.b) * arch->zoom;
+srcs/debug/debug_screen.c:136:	point2.y = arch->sdl->size.y / 2.0 - (affine.a * -x_value + affine.b) * arch->zoom;
+srcs/debug/debug_screen.c:148:	while (i < arch->sdl->size.x * arch->sdl->size.y)
+srcs/debug/debug_screen.c:150:		if (arch->sc_debug[i] != 0)
+srcs/debug/debug_screen.c:153:			arch->sdl->screen[i] = arch->sc_debug[i];
+srcs/manager/arch_manager.c:8:	while (i < arch->sdl->size.x)
+srcs/manager/arch_manager.c:10:		arch->bound.b_up[i] = 0;
+srcs/manager/arch_manager.c:11:		arch->bound.b_down[i] = arch->sdl->size.y;
+srcs/manager/arch_manager.c:14:	arch->bound.b_left = arch->cam->fov / 2.0;
+srcs/manager/arch_manager.c:15:	arch->bound.b_right = -arch->cam->fov / 2.0;
+srcs/manager/arch_manager.c:23:	while (i < arch->sdl->size.x)
+srcs/manager/arch_manager.c:25:		arch->bound.zline[i] = 0;
+srcs/manager/arch_manager.c:38:	free(arch->bound.zline);
+srcs/manager/arch_manager.c:46:	arch->bound.zline = (double*)malloc(sizeof(double) * sdl->size.x);
+srcs/manager/arch_manager.c:47:	if (!arch->bound.zline)
+srcs/manager/arch_manager.c:50:	arch->sdl = sdl;
+srcs/manager/arch_manager.c:51:	arch->cam = cam;
+srcs/manager/arch_manager.c:52:	arch->bound.b_down = (uint32_t*)malloc(sizeof(uint32_t) * sdl->size.x);
+srcs/manager/arch_manager.c:53:	if (!arch->bound.b_down)
+srcs/manager/arch_manager.c:55:	arch->bound.b_up = (uint32_t*)malloc(sizeof(uint32_t) * sdl->size.x);
+srcs/manager/arch_manager.c:56:	if (!arch->bound.b_up)
+srcs/manager/arch_manager.c:58:	arch->wall = NULL;
+srcs/manager/arch_manager.c:59:	arch->depth_portal = 0;
+srcs/manager/arch_manager.c:60:	arch->zoom = 40;
+srcs/parsing/chunk_ressources.c:43:	arch->texture = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * (size + 1));
+srcs/parsing/chunk_ressources.c:44:	if (!arch->texture)
+srcs/parsing/chunk_ressources.c:46:	arch->texture[size] = NULL;
+srcs/parsing/chunk_ressources.c:53:		arch->texture[i] = SDL_ConvertSurface((SDL_Surface*)tmp, sdl->format, 0);
+srcs/parsing/chunk_ressources.c:54:		if (!arch->texture[i])
+srcs/render/backface.c:14:	if (len_pillar > arch->bound.zline[px])
+srcs/render/backface.c:16:		arch->bound.zline[px] = len_pillar;
+srcs/render/backface.c:25:	if (len_pillar > arch->bound.zline[px])
+srcs/render/backface.c:27:		arch->bound.zline[px] = 0;
+srcs/render/backface.c:41:	if (len_pillar > arch->bound.zline[arch->px.x])
+srcs/render/backface.c:43:		zline_tmp[arch->px.x - start] = len_pillar;
+srcs/render/backface.c:44:		arch->bound.zline[arch->px.x] = 0;
+srcs/render/backface.c:47:	zline_tmp[arch->px.x - start] = arch->bound.zline[arch->px.x];
+srcs/render/backface.c:62:	while (start < arch->px.y)
+srcs/render/backface.c:64:		arch->bound.zline[start] = zline_cut[i];
+srcs/render/borne.c:14:	arch->bound.b_up[i] = (uint32_t)trunc_int(surface.x, 0, arch->bound.b_up[arch->px.x] - 1);
+srcs/render/borne.c:15:	arch->bound.b_down[i] = (uint32_t)trunc_int(surface.y, 0, arch->bound.b_down[arch->px.x] - 1);
+srcs/render/borne.c:20:	arch->bound.b_left = atan2((arch->sdl->size.x / 2) - arch->px.x, arch->cam->d_screen);
+srcs/render/borne.c:21:	arch->bound.b_right = atan2((arch->sdl->size.x / 2) - arch->px.y, arch->cam->d_screen);
+srcs/render/borne.c:22:	arch->bound.b_left *= TOANGLE;
+srcs/render/borne.c:23:	arch->bound.b_right *= TOANGLE;
+srcs/render/borne.c:34:	len = arch->px.y - arch->px.x;
+srcs/render/borne.c:35:	borne->b_left = arch->bound.b_left;
+srcs/render/borne.c:36:	borne->b_right = arch->bound.b_right;
+srcs/render/borne.c:37:	borne->decal_portal = arch->bound.decal_portal;
+srcs/render/borne.c:38:	borne->depth_portal = arch->bound.depth_portal;
+srcs/render/borne.c:52:	arch->bound.b_left = borne->b_left;
+srcs/render/borne.c:53:	arch->bound.b_right = borne->b_right;
+srcs/render/borne.c:54:	while (start < arch->px.y)
+srcs/render/borne.c:56:		arch->bound.b_up[start] = borne->b_up[i];
+srcs/render/borne.c:57:		arch->bound.b_down[start] = borne->b_down[i];
+srcs/render/borne.c:58:		arch->bound.zline[start] = borne->zline[i];
+srcs/render/borne.c:62:	arch->bound.decal_portal = borne->decal_portal;
+srcs/render/borne.c:63:	arch->bound.depth_portal = borne->depth_portal;
+srcs/render/bresenham.c:19:	tmp = v.y * arch->sdl->size.x;
+srcs/render/bresenham.c:20:	if (v.y > 0 && v.y < (arch->sdl->size.y - 1) && (v.x < arch->sdl->size.x - 1) && v.x > 0)
+srcs/render/bresenham.c:22:		arch->sc_debug[v.x + tmp] = color;
+srcs/render/bresenham.c:23:		arch->sc_debug[v.x + 1 + tmp] = color;
+srcs/render/bresenham.c:24:		arch->sc_debug[v.x - 1 + tmp] = color;
+srcs/render/bresenham.c:25:		arch->sc_debug[v.x + 1 + tmp + arch->sdl->size.x] = color;
+srcs/render/bresenham.c:26:		arch->sc_debug[v.x - 1 + tmp + arch->sdl->size.x] = color;
+srcs/render/bresenham.c:27:		arch->sc_debug[v.x + 1 + tmp - arch->sdl->size.x] = color;
+srcs/render/bresenham.c:28:		arch->sc_debug[v.x - 1 + tmp - arch->sdl->size.x] = color;
+srcs/render/bresenham.c:29:		arch->sc_debug[v.x + tmp + arch->sdl->size.x] = color;
+srcs/render/bresenham.c:30:		arch->sc_debug[v.x + tmp - arch->sdl->size.x] = color;
+srcs/render/bresenham.c:36:	if (v.x > 0 && v.y > 0 && v.x < arch->sdl->size.x && v.y < arch->sdl->size.y)
+srcs/render/bresenham.c:37:		arch->sc_debug[v.x + v.y * arch->sdl->size.x] = color;
+srcs/render/bunch.c:19:	if (angle >= arch->bound.b_right && angle <= arch->bound.b_left)
+srcs/render/bunch.c:47:	if (arch->bound.b_left * arch->bound.b_right > 0)
+srcs/render/bunch.c:83:	angles.x = local_angle(arch->bound.b_left, wall->pillar->angle);
+srcs/render/bunch.c:84:	angles.y = local_angle(arch->bound.b_left, wall->next->angle);
+srcs/render/bunch.c:129:			&& equal_pillar(&wall[i_wall], arch->wall))
+srcs/render/bunch.c:135:			&& equal_pillar(&wall[i_wall], arch->wall))
+srcs/render/bunch.c:143:		printf("deep_portal %d i_bunch %d\n", arch->depth_portal, i_bunch);
+srcs/render/bunch.c:167:	arch->sector = sector;
+srcs/render/bunch.c:172:		arch->wall = bunch[i];
+srcs/render/draw_column.c:16:	coef = (double)arch->wall->txtr.h / (surface.y - surface.x);
+srcs/render/draw_column.c:17:	if (surface.y < (int)arch->bound.b_up[arch->px.x])
+srcs/render/draw_column.c:18:		return (numcol + surface.y * arch->sdl->size.x);
+srcs/render/draw_column.c:19:	if (surface.x < (int)arch->bound.b_up[arch->px.x])
+srcs/render/draw_column.c:21:		buff = (-surface.x + arch->bound.b_up[arch->px.x]) * coef;
+srcs/render/draw_column.c:24:			px += (int)buff * arch->wall->txtr.w;
+srcs/render/draw_column.c:27:		surface.x = arch->bound.b_up[arch->px.x];
+srcs/render/draw_column.c:29:	while (surface.x < surface.y && surface.x < (int)arch->bound.b_down[arch->px.x])
+srcs/render/draw_column.c:31:		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
+srcs/render/draw_column.c:33:		numcol += arch->sdl->size.x;
+srcs/render/draw_column.c:37:			px += (int)buff * arch->wall->txtr.w;
+srcs/render/draw_column.c:52:	if (surface.x <= (int)arch->bound.b_up[arch->px.x])
+srcs/render/draw_column.c:53:		surface.x = arch->px.x + arch->bound.b_up[arch->px.x] * arch->sdl->size.x;
+srcs/render/draw_column.c:55:		surface.x = surface.x * arch->sdl->size.x + arch->px.x;
+srcs/render/draw_column.c:56:	if (surface.y > (int)arch->bound.b_down[arch->px.x])
+srcs/render/draw_column.c:57:		surface.y = arch->px.x + (arch->bound.b_down[arch->px.x] - 1) * arch->sdl->size.x;
+srcs/render/draw_column.c:59:		surface.y = surface.y * arch->sdl->size.x;
+srcs/render/draw_column.c:62:		arch->sdl->screen[surface.x] = color;
+srcs/render/draw_column.c:63:		surface.x += arch->sdl->size.x;
+srcs/render/draw_column.c:73:	surface_tmp = (t_vct2){arch->bound.b_up[arch->px.x], surface.x};
+srcs/render/draw_column.c:77:	surface_tmp = (t_vct2){surface.y, arch->bound.b_down[arch->px.x]};
+srcs/render/draw_column.c:86:**	-->renvoie sans le facteur largeur (arch->sdl->size.x)
+srcs/render/draw_column.c:116:	s_portal = surface_portal(surface, arch->sector, arch->wall->link);
+srcs/render/draw_column.c:118:	tmp = (t_vct2){arch->bound.b_up[arch->px.x], surface.x};
+srcs/render/draw_column.c:126:	tmp = (t_vct2){surface.y, arch->bound.b_down[arch->px.x]};
+srcs/render/draw_column.c:128:	parent_borne->b_up[arch->px.x - start] = arch->bound.b_up[arch->px.x];
+srcs/render/draw_column.c:129:	parent_borne->b_down[arch->px.x - start] = arch->bound.b_down[arch->px.x];
+srcs/render/draw_column.c:132:	set_borne_vertical(arch, tmp, arch->px.x);
+srcs/render/draw_line.c:77:	screen = arch->sc_debug;
+srcs/render/pillar_info.c:15:	angle.x = local_angle(arch->bound.b_left, arch->wall->pillar->angle);
+srcs/render/pillar_info.c:16:	angle.y = local_angle(arch->bound.b_left, arch->wall->next->angle);
+srcs/render/pillar_info.c:19:	polarite = (arch->wall->next->angle > arch->bound.b_left ? -1 : 1) * (diff < 180 ? 1 : -1);
+srcs/render/pillar_info.c:20:	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x -1;
+srcs/render/pillar_info.c:21:	arch->px.y = arch->sdl->size.x - 1 - arch->px.x;
+srcs/render/pillar_info.c:30:	angle = local_angle(arch->bound.b_left, pillar->angle);
+srcs/render/pillar_info.c:31:	angle_next = local_angle(arch->bound.b_left, next->angle);
+srcs/render/pillar_info.c:32:	borne = local_angle(arch->bound.b_left, arch->bound.b_right);
+srcs/render/pillar_info.c:38:		return (arch->sdl->size.x - 1);
+srcs/render/pillar_info.c:42:		return (arch->sdl->size.x - 1);
+srcs/render/pillar_info.c:51:	size = arch->sdl->size.x;
+srcs/render/pillar_info.c:52:	if (arch->wall->pillar->frust)
+srcs/render/pillar_info.c:54:		arch->px.x = fish_bowl_px(arch, *arch->wall->pillar);
+srcs/render/pillar_info.c:55:		arch->depth.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar->p);
+srcs/render/pillar_info.c:56:		arch->decal.x = sin(arch->wall->pillar->angle * PI180) * arch->depth.x;
+srcs/render/pillar_info.c:57:		arch->depth.x = cos(arch->wall->pillar->angle * PI180) * arch->depth.x;
+srcs/render/pillar_info.c:58:		arch->shift_txtr.x = 1;
+srcs/render/pillar_info.c:62:		arch->px.x = pillar_polarite(arch, arch->wall->pillar, arch->wall->next);
+srcs/render/pillar_info.c:63:		if (arch->px.x == 0)
+srcs/render/pillar_info.c:65:			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_left * PI180) * arch->cam->d_screen);
+srcs/render/pillar_info.c:66:			angle = p->stat.rot.y + arch->bound.b_left;
+srcs/render/pillar_info.c:70:			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_right * PI180) * arch->cam->d_screen);
+srcs/render/pillar_info.c:71:			angle = p->stat.rot.y + arch->bound.b_right;
+srcs/render/pillar_info.c:73:		arch->shift_txtr.x = wall_clipping(arch, p, &tmp, angle);
+srcs/render/pillar_info.c:74:		arch->depth.x = tmp.x;
+srcs/render/pillar_info.c:75:		arch->decal.x = tmp.y;
+srcs/render/pillar_info.c:77:	if (arch->wall->next->frust)
+srcs/render/pillar_info.c:79:		arch->px.y = fish_bowl_px(arch, *arch->wall->next);
+srcs/render/pillar_info.c:80:		arch->depth.y = distance(*(t_fvct2*)&p->stat.pos, arch->wall->next->p);
+srcs/render/pillar_info.c:81:		arch->decal.y = sin(arch->wall->next->angle * PI180) * arch->depth.y;
+srcs/render/pillar_info.c:82:		arch->depth.y = cos(arch->wall->next->angle * PI180) * arch->depth.y;
+srcs/render/pillar_info.c:83:		arch->shift_txtr.y = 0;
+srcs/render/pillar_info.c:87:		arch->px.y = pillar_polarite(arch, arch->wall->next, arch->wall->pillar);
+srcs/render/pillar_info.c:88:		if (arch->px.y == 0)
+srcs/render/pillar_info.c:90:			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_left * PI180) * arch->cam->d_screen);
+srcs/render/pillar_info.c:91:			angle = p->stat.rot.y + arch->bound.b_left;
+srcs/render/pillar_info.c:95:			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_right * PI180) * arch->cam->d_screen);
+srcs/render/pillar_info.c:96:			angle = p->stat.rot.y + arch->bound.b_right;
+srcs/render/pillar_info.c:98:		arch->shift_txtr.y = wall_clipping(arch, p, &tmp, angle);
+srcs/render/pillar_info.c:99:		arch->depth.y = tmp.x;
+srcs/render/pillar_info.c:100:		arch->decal.y = tmp.y;
+srcs/render/pillar_info.c:120:		d_wall(arch->wall);
+srcs/render/pillar_info.c:121:	a_pillar.a = arch->decal.x / arch->depth.x;
+srcs/render/pillar_info.c:123:	a_pillar2.a = arch->decal.y / arch->depth.y;
+srcs/render/pillar_info.c:126:		printf(WBLUE"pos portal %f %f - %f %f\n"WEND, arch->bound.depth_portal.x, arch->bound.decal_portal.x,
+srcs/render/pillar_info.c:127:			arch->bound.depth_portal.y, arch->bound.decal_portal.y);
+srcs/render/pillar_info.c:128:	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
+srcs/render/pillar_info.c:131:		a_portal.b = arch->bound.depth_portal.x;
+srcs/render/pillar_info.c:136:		a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x)
+srcs/render/pillar_info.c:137:			/ (arch->bound.depth_portal.y - arch->bound.depth_portal.x);
+srcs/render/pillar_info.c:138:		a_portal.b = arch->bound.decal_portal.x - (arch->bound.depth_portal.x * a_portal.a);
+srcs/render/pillar_info.c:150:	if (inter.x > arch->depth.x && inter2.x > arch->depth.y)
+srcs/render/pillar_info.c:152:	if (arch->depth.x == arch->depth.y)
+srcs/render/pillar_info.c:155:		a_wall.b = arch->depth.x;
+srcs/render/pillar_info.c:160:		a_wall.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
+srcs/render/pillar_info.c:161:		a_wall.b = arch->decal.x - a_wall.a * arch->depth.x;
+srcs/render/pillar_info.c:163:	if (inter.x > arch->depth.x)
+srcs/render/pillar_info.c:168:		a_pillar.a = arch->decal.x / arch->depth.x;
+srcs/render/pillar_info.c:170:		arch->px.x = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
+srcs/render/pillar_info.c:172:	else if (inter2.x > arch->depth.y)
+srcs/render/pillar_info.c:177:		a_pillar.a = arch->decal.y / arch->depth.x;
+srcs/render/pillar_info.c:179:		arch->px.y = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
+srcs/render/pillar_info.c:190:		printf(WRED"portal:\n%f %f --> %f %f\n"WEND, arch->bound.depth_portal.x, arch->bound.decal_portal.x, arch->bound.depth_portal.y, arch->bound.decal_portal.y);
+srcs/render/pillar_info.c:191:	if (arch->depth_portal > 0)
+srcs/render/render_effect.c:9:	sx = arch->sdl->size.x / 2.0;
+srcs/render/render_effect.c:10:	px = sx - (tan(pillar.angle * PI180) * arch->cam->d_screen);
+srcs/render/render_wall.c:14:	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
+srcs/render/render_wall.c:18:	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
+srcs/render/render_wall.c:19:	//px = arch->sdl->size.y / 2 - px;
+srcs/render/render_wall.c:38:	down = -player->stat.height - (player->stat.pos.z - arch->sector->h_floor);
+srcs/render/render_wall.c:39:	up = down + arch->sector->h_ceil;
+srcs/render/render_wall.c:53:	if (arch->px.x > arch->px.y)
+srcs/render/render_wall.c:55:		tmpint = arch->px.x;
+srcs/render/render_wall.c:56:		arch->px.x = arch->px.y;
+srcs/render/render_wall.c:57:		arch->px.y = tmpint;
+srcs/render/render_wall.c:58:		tmp = arch->depth.x;
+srcs/render/render_wall.c:59:		arch->depth.x = arch->depth.y;
+srcs/render/render_wall.c:60:		arch->depth.y = tmp;
+srcs/render/render_wall.c:61:		tmp = arch->decal.x;
+srcs/render/render_wall.c:62:		arch->decal.x = arch->decal.y;
+srcs/render/render_wall.c:63:		arch->decal.y = tmp;
+srcs/render/render_wall.c:64:		tmp = arch->shift_txtr.x;
+srcs/render/render_wall.c:65:		arch->shift_txtr.x = arch->shift_txtr.y;
+srcs/render/render_wall.c:66:		arch->shift_txtr.y = tmp;
+srcs/render/render_wall.c:74:**		-la borne pour la recursivite arch->bound
+srcs/render/render_wall.c:75:**		-recharge borne_tmp dans arch->bound
+srcs/render/render_wall.c:92:	pillar = surface_pillar(arch, player, arch->depth.x);
+srcs/render/render_wall.c:93:	pillar_next = surface_pillar(arch, player, arch->depth.y);
+srcs/render/render_wall.c:94:	coef_surface.x = coef_diff(pillar.x - pillar_next.x, arch->px);
+srcs/render/render_wall.c:95:	coef_surface.y = coef_diff(pillar.y - pillar_next.y, arch->px);
+srcs/render/render_wall.c:96:	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
+srcs/render/render_wall.c:97:	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
+srcs/render/render_wall.c:98:	coef_neutre = coef_vct(neutre, arch->px);
+srcs/render/render_wall.c:100:	start = arch->px.x;
+srcs/render/render_wall.c:101:	if (arch->wall->status == PORTAL)
+srcs/render/render_wall.c:106:			borne_print(arch->bound);
+srcs/render/render_wall.c:111:	while (arch->px.x != arch->px.y)
+srcs/render/render_wall.c:113:		if (arch->wall->status == WALL)
+srcs/render/render_wall.c:115:			if (z_line_buffer(arch, neutre.x, arch->px.x))
+srcs/render/render_wall.c:118:		else if (arch->wall->status == PORTAL)
+srcs/render/render_wall.c:126:		arch->px.x++;
+srcs/render/render_wall.c:130:			sdl_MultiRenderCopy(arch->sdl);
+srcs/render/render_wall.c:131:			SDL_RenderPresent(arch->sdl->rend);
+srcs/render/render_wall.c:134:	if (arch->wall->status == PORTAL)
+srcs/render/render_wall.c:136:		arch->px.x = start;
+srcs/render/render_wall.c:139:		arch->bound.decal_portal = arch->decal;
+srcs/render/render_wall.c:140:		arch->bound.depth_portal = arch->depth;
+srcs/render/render_wall.c:141:		sector_tmp = arch->sector;
+srcs/render/render_wall.c:142:		arch->depth_portal++;
+srcs/render/render_wall.c:145:		sector_render(arch, player, arch->wall->link);
+srcs/render/render_wall.c:148:		arch->depth_portal--;
+srcs/render/render_wall.c:149:		arch->sector = sector_tmp;
+srcs/render/render_wall.c:154:			borne_print(arch->bound);
+srcs/render/render_wall.c:168:		if (arch->wall->status == PORTAL)
+srcs/render/render_wall.c:170:		else if (arch->wall->status == WALL)
+srcs/render/textures.c:16:	px_affine.a = ((arch->sdl->size.x / 2) - arch->px.x) / arch->cam->d_screen;
+srcs/render/textures.c:18:	if (arch->depth.y == arch->depth.x)
+srcs/render/textures.c:20:		inter.x = arch->depth.y;
+srcs/render/textures.c:22:		percent = (inter.y - arch->decal.x) / (arch->decal.y - arch->decal.x);
+srcs/render/textures.c:26:		wall_affine.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
+srcs/render/textures.c:27:		wall_affine.b = arch->decal.x - wall_affine.a * arch->depth.x;
+srcs/render/textures.c:29:		percent = (inter.x - arch->depth.x) / (arch->depth.y - arch->depth.x);
+srcs/render/textures.c:31:	percent = percent * (arch->shift_txtr.y -  arch->shift_txtr.x) + arch->shift_txtr.x;
+srcs/render/textures.c:35:		return (arch->wall->txtr.w);
+srcs/render/textures.c:36:	return (percent * arch->wall->txtr.w);
+srcs/render/textures.c:53:		percent = &arch->shift_txtr.x;
+srcs/render/textures.c:54:		depth = &arch->depth.x;
+srcs/render/textures.c:55:		decal = &arch->decal.x;
+srcs/render/textures.c:59:		percent = &arch->shift_txtr.y;
+srcs/render/textures.c:60:		depth = &arch->depth.y;
+srcs/render/textures.c:61:		decal = &arch->decal.y;
+srcs/render/textures.c:63:	if (arch->depth.x == arch->depth.y)
+srcs/render/textures.c:64:		percent_tmp = (inter.y - arch->decal.x) / (arch->decal.y - arch->decal.x);
+srcs/render/textures.c:66:		percent_tmp = (inter.x - arch->depth.x) / (arch->depth.y - arch->depth.x);
+srcs/render/textures.c:67:	*percent = percent_tmp * (arch->shift_txtr.y - arch->shift_txtr.x) + arch->shift_txtr.x;
+srcs/render/wall.c:17:	diff.x = arch->wall->pillar->p.x - p->stat.pos.x;
+srcs/render/wall.c:18:	diff.y = arch->wall->pillar->p.y - p->stat.pos.y;
+srcs/render/wall.c:19:	diff2.x = arch->wall->next->p.x - p->stat.pos.x;
+srcs/render/wall.c:20:	diff2.y = arch->wall->next->p.y - p->stat.pos.y;

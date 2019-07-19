@@ -62,30 +62,17 @@ void		draw_borne(t_arch *arch, uint32_t color)
 	t_vct2		point1;
 	t_vct2		point2;
 
-
 	borne_up.a = tan(PI180 * arch->bound.b_left);
 	borne_down.a = tan(PI180 * arch->bound.b_right);
 	borne_up.b = 0;
 	borne_down.b = 0;
-
-	//on soustrait chaque valeurs qui devrait etre ajoute pcq screen est inverse
-
-
-
 	point1.x = arch->sdl->size.x / 2.0;
 	point1.y = arch->sdl->size.y / 2.0;
-
 	point2.x = arch->sdl->size.x - 1;
 	point2.y = arch->sdl->size.y / 2 - affine_val(borne_up, point2.x / 2.0);
-
 	fill_line_debug(arch, arch->sdl, point1, point2, color);
-
 	point2.y = arch->sdl->size.y / 2 - affine_val(borne_down, point2.x / 2.0);
-
 	fill_line_debug(arch, arch->sdl, point1, point2, color);
-
-	//on recupere le decalage sur quand on atteint le bord de l'ecran a partir du millieu
-
 }
 
 void		draw_wall(t_arch *arch, uint32_t color)
@@ -93,12 +80,10 @@ void		draw_wall(t_arch *arch, uint32_t color)
 	t_vct2	point1;
 	t_vct2	point2;
 
-	//une unite == arch->pixel
 	point1.x = arch->sdl->size.x / 2.0 + (arch->depth.x * arch->zoom);
 	point1.y = arch->sdl->size.y / 2.0 - (arch->decal.x * arch->zoom);
 	point2.x = arch->sdl->size.x / 2.0 + (arch->depth.y * arch->zoom);
 	point2.y = arch->sdl->size.y / 2.0 - (arch->decal.y * arch->zoom);
-
 	fill_line_debug(arch, arch->sdl, point1, point2, color);
 
 }
@@ -110,10 +95,8 @@ void		p_debug(t_fvct2 a, Uint32 color, t_arch *arch)
 
 	mid.x = arch->sdl->size.x / 2.0;
 	mid.y = arch->sdl->size.y / 2.0;
-
 	v.x = arch->sdl->size.x / 2.0 + a.x * arch->zoom;
 	v.y = arch->sdl->size.y / 2.0 - a.y * arch->zoom;
-
 	fill_line_debug(arch, arch->sdl, mid, v, color);
 }
 
@@ -123,19 +106,11 @@ void		draw_affine(t_arch *arch, t_affine affine, uint32_t color)
 	t_vct2	point2;
 
 	double	x_value;
-
-
-
 	x_value = (arch->sdl->size.x / 2.0) / arch->zoom;
-
-
 	point1.x = arch->sdl->size.x - 1;
 	point1.y = arch->sdl->size.y / 2.0 - (affine.a * x_value + affine.b) * arch->zoom;
-
 	point2.x = 0;
 	point2.y = arch->sdl->size.y / 2.0 - (affine.a * -x_value + affine.b) * arch->zoom;
-
-
 	trait(arch, point1, point2, color);
 }
 
@@ -148,10 +123,7 @@ void		debug_screen_copy(t_arch *arch)
 	while (i < arch->sdl->size.x * arch->sdl->size.y)
 	{
 		if (arch->sc_debug[i] != 0)
-		{
-			//printf("pixel ecrit\n");
 			arch->sdl->screen[i] = arch->sc_debug[i];
-		}
 		i++;
 	}
 }

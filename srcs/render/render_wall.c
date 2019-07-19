@@ -97,10 +97,16 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
 	coef_neutre = coef_vct(neutre, arch->px);
 
+	if (debug == 3)
+	{
+		d_wall(arch->wall);
+		borne_print(&arch->bound);
+	}
+
+
 	start = arch->px.x;
 	if (arch->wall->status == PORTAL)
 		borne_svg(arch, &borne_tmp);
-
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->wall->status == WALL)
@@ -118,7 +124,7 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		neutre.x += coef_neutre;
 		arch->px.x++;
 		i++;
-		if (debug == 3 && i % 5 == 0)
+		if (debug == 2 && i % 5 == 0)
 		{
 			sdl_MultiRenderCopy(arch->sdl);
 			SDL_RenderPresent(arch->sdl->rend);
@@ -126,11 +132,14 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	}
 	if (arch->wall->status == PORTAL)
 	{
+		//sinon mauvais calcul de borne gauche
 		arch->px.x = start;
 		set_borne_horizontal(arch);
-		//on affecte aux borne les position des mur
+
+		//set portal borne
 		arch->bound.decal_portal = arch->decal;
 		arch->bound.depth_portal = arch->depth;
+
 		sector_tmp = arch->sector;
 		arch->depth_portal++;
 		if (debug == 1)

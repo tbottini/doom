@@ -34,14 +34,23 @@
 # define RED_SOFT	0x831a1aff
 # define GREEN_SOFT	0x548528ff
 
-void					sector_recursif(t_sector sector, int sub);
-void		d_wall(t_wall *wall);
+/*
+**	debug screen, visual
+*/
+void		bold_point(t_vct2 v, Uint32 color, t_doom *doom);
+void		b_point_debug(t_arch *arch, t_fvct2 v, Uint32 color);
 void		draw_borne(t_arch *arch, uint32_t color);
 void		draw_wall(t_arch *arch, uint32_t color);
-void		fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
-void		debug_screen_copy(t_arch *arch);
-void		draw_affine(t_arch *arch, t_affine affine, uint32_t color);
 void		p_debug(t_fvct2 a, Uint32 color, t_arch *arch);
-void		b_point_d(t_arch *arch, t_fvct2 v, Uint32 color);
+void		draw_affine(t_arch *arch, t_affine affine, uint32_t color);
+void		debug_screen_copy(t_arch *arch);
+void		fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
+
+/*
+**	debug txt
+*/
+void		d_wall(t_wall *wall);
+void		sector_recursif(t_sector sector, int sub);
+void		borne_print(t_borne *borne);
 
 #endif

@@ -19,13 +19,18 @@
 **	disfonctionnement si l'ordre n'est pas respecte
 **	pour un carre a(up left) b(bottom left) c(up right) d(bot right)
 */
-typedef struct 		s_shape
+typedef struct 			s_shape
 {
-	t_fvct2			up;
-	t_fvct2			left;
-	t_fvct2			right;
-	t_fvct2			bot;
-}					t_shape;
+	t_fvct2				up;
+	t_fvct2				left;
+	t_fvct2				right;
+	t_fvct2				bot;
+}						t_shape;
+
+/*
+**	pillar
+*/
+void					pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag);
 
 /*
 **	info function

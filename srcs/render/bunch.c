@@ -5,6 +5,10 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	t_fvct2	dist;
 	double	angle;
 
+	//si on est dans un portail on et que le pillier appartient au portail alors on ne le calcul pas
+
+	if (arch->wall && (pillar == arch->wall->pillar || pillar == arch->wall->next))
+		return (0);
 	dist.x = pillar->p.x - player->stat.pos.x;
 	dist.y = pillar->p.y - player->stat.pos.y;
 	angle = atan2(dist.y, dist.x) * TOANGLE;
