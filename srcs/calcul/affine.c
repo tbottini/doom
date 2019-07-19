@@ -43,7 +43,7 @@ t_affine		affine_points(t_fvct2 point1, t_fvct2 point2)
 
 t_affine		affine_def(double a, double b)
 {
-	return ((t_affine){a, b});
+	return ((t_affine){a, b, 0});
 }
 
 

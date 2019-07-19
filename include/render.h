@@ -11,6 +11,9 @@
 # define PINK_FLOOR 0xdcc8c8ff
 # define ORANGE 0xf5c738ff
 
+# define PILLAR 1
+# define NEXT 2
+
 
 /*
 **	disfonctionnement si l'ordre n'est pas respecte

@@ -28,6 +28,7 @@
 # define BROWN		0xff00ffff
 # define YELLOW		0xffff00ff
 # define PURPLE		0xff00ffff
+# define WHITE		0xffffffff
 
 # define BLUE_SOFT	0x138fa2ff
 # define RED_SOFT	0x831a1aff

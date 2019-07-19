@@ -35,3 +35,37 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 		return (arch->wall->txtr.w);
 	return (percent * arch->wall->txtr.w);
 }
+
+/*
+**	redefinit le pourcentage de textures (en donnant le pourcentage actuel)
+**	les deux distance et le nouveau point d'intersection
+**	-flag definit quel pillier doit changer
+*/
+void			pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag)
+{
+	double		percent_tmp;
+	double		*percent;
+	double		*depth;
+	double		*decal;
+
+	if (flag == PILLAR)
+	{
+		percent = &arch->shift_txtr.x;
+		depth = &arch->depth.x;
+		decal = &arch->decal.x;
+	}
+	else
+	{
+		percent = &arch->shift_txtr.y;
+		depth = &arch->depth.y;
+		decal = &arch->decal.y;
+	}
+	if (arch->depth.x == arch->depth.y)
+		percent_tmp = (inter.y - arch->decal.x) / (arch->decal.y - arch->decal.x);
+	else
+		percent_tmp = (inter.x - arch->depth.x) / (arch->depth.y - arch->depth.x);
+	*percent = percent_tmp * (arch->shift_txtr.y - arch->shift_txtr.x) + arch->shift_txtr.x;
+	*depth = inter.x;
+	*decal = inter.y;
+	//recupere le pixel de depart
+}

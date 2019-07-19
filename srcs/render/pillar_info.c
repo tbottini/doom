@@ -118,16 +118,10 @@ int				wall_behind_portal(t_arch *arch)
 
 	if (debug == 1)
 		d_wall(arch->wall);
-
 	a_pillar.a = arch->decal.x / arch->depth.x;
 	a_pillar.b = 0;
 	a_pillar2.a = arch->decal.y / arch->depth.y;
 	a_pillar2.b = 0;
-	draw_affine(arch, a_pillar, BLUE_SOFT);
-	draw_affine(arch, a_pillar2, BLUE_SOFT);
-
-
-
 	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
 	{
 		a_portal.lock = 1;
@@ -142,9 +136,12 @@ int				wall_behind_portal(t_arch *arch)
 	}
 	inter = interpolation_linear(a_portal, a_pillar);
 	inter2 = interpolation_linear(a_portal, a_pillar2);
-	//b_point_debug(arch, inter, RED);
-
-	//si les deux pillier sont en dehors du portail on n'affiche pas la fonction
+	draw_affine(arch, a_pillar, BLUE_SOFT);
+	draw_affine(arch, a_pillar2, BLUE_SOFT);
+	b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, WHITE);
+	b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, WHITE);
+	b_point_debug(arch, inter, RED);
+	b_point_debug(arch, inter2, BLUE_SOFT);
 	if (inter.x > arch->depth.x && inter2.x > arch->depth.y)
 		return (0);
 	if (arch->depth.x == arch->depth.y)
@@ -158,41 +155,24 @@ int				wall_behind_portal(t_arch *arch)
 		a_wall.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
 		a_wall.b = arch->decal.x - a_wall.a * arch->depth.x;
 	}
-	if (interpolation_linear_secur(a_portal, a_wall, &inter))
-		return (0);
-
-	draw_affine(arch, a_portal, YELLOW);
-	draw_affine(arch, a_wall, GREEN);
 	if (inter.x > arch->depth.x)
 	{
-		//le pillier x (!= y) est en dehors du portail
-		b_point_debug(arch, inter, RED);
-		//arch->depth.x = inter.x
-		//arch->decal.x = inter.y;
+		if (interpolation_linear_secur(a_portal, a_wall, &inter))
+			return (0);
+		pillar_virtual_move(arch, inter, PILLAR);
+		a_pillar.a = arch->decal.x / arch->depth.x;
+		a_pillar.b = 0;
+		arch->px.x = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
 	}
-	else
+	else if (inter2.x > arch->depth.y)
 	{
-		//arch->depth.y = inter.x;
-		//arch->decal.y = inter.y;
+		if (interpolation_linear_secur(a_portal, a_wall, &inter))
+			return (0);
+		pillar_virtual_move(arch, inter, NEXT);
+		a_pillar.a = arch->decal.y / arch->depth.x;
+		a_pillar.b = 0;
+		arch->px.y = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
 	}
-	//else
-	//{
-	//	arch->depth.y = inter2.x;
-	//	arch->decal.y = inter2.y;
-	//	arch->shift_txtr.y =
-	//	//depth.y decal.y shift_txtr.y
-	//}
-
-	/*
-
-	inter = interpolation_linear(a_portal, a_pillar2);
-	b_point_debug(arch, inter, RED);
-	if (inter.x > arch->depth.y)
-	{
-		//le pillier de droite est en dehors du secteur
-		//on modifie shift_txtr.y, decal.y, depth.y
-		return (0);
-	}*/
 	return (1);
 }
 
