@@ -4,10 +4,14 @@
 
 # include "vector.h"
 
+/*
+**	lock == 1 si la droite affine est constante sur l'absice (x)
+*/
 typedef struct	s_affine
 {
 	double		a;
 	double		b;
+	char		lock;
 }				t_affine;
 
 /*
@@ -20,8 +24,9 @@ double			coef_vct2(t_fvct2 value, t_fvct2 value2);
 /*
 **	affine fonctions
 */
-double			affine_val(t_affine affine, int x);
+double			affine_val(t_affine affine, double x);
 t_fvct2			interpolation_linear(t_affine d1, t_affine d2);
+int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *inter);
 t_affine		affine_points(t_fvct2 point1, t_fvct2 point2);
 t_affine		affine_def(double a, double b);
 double			affine_val_index(t_affine affine, double y);

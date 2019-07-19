@@ -41,8 +41,14 @@ void		b_point_debug(t_arch *arch, t_fvct2 v, Uint32 color)
 {
 	t_vct2	b;
 
-	b.x = arch->sdl->size.x / 2.0 + (v.x * (double)arch->zoom);
-	b.y = arch->sdl->size.y / 2.0 - (v.y * (double)arch->zoom);
+	b.x = arch->sdl->size.x / 2.0 + (v.x * (double)arch->zoom) - 1;
+	b.y = arch->sdl->size.y / 2.0 - (v.y * (double)arch->zoom) - 1;
+	bold_point_debug(b, color, arch);
+	b.x += 2;
+	bold_point_debug(b, color, arch);
+	b.y += 2;
+	bold_point_debug(b, color, arch);
+	b.x -= 2;
 	bold_point_debug(b, color, arch);
 }
 
@@ -117,6 +123,8 @@ void		draw_affine(t_arch *arch, t_affine affine, uint32_t color)
 	t_vct2	point2;
 
 	double	x_value;
+
+
 
 	x_value = (arch->sdl->size.x / 2.0) / arch->zoom;
 

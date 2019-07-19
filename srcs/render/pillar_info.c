@@ -114,6 +114,7 @@ int				wall_behind_portal(t_arch *arch)
 	t_affine	a_pillar;
 	t_affine	a_pillar2;
 	t_fvct2		inter;
+	t_fvct2		inter2;
 
 	if (debug == 1)
 		d_wall(arch->wall);
@@ -124,17 +125,74 @@ int				wall_behind_portal(t_arch *arch)
 	a_pillar2.b = 0;
 	draw_affine(arch, a_pillar, BLUE_SOFT);
 	draw_affine(arch, a_pillar2, BLUE_SOFT);
-	a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x)
-		/ (arch->bound.depth_portal.y - arch->bound.depth_portal.x);
-	a_portal.b = arch->bound.decal_portal.x - (arch->bound.depth_portal.x * a_portal.a);
+
+
+
+	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
+	{
+		a_portal.lock = 1;
+		a_portal.b = arch->bound.depth_portal.x;
+	}
+	else
+	{
+		a_portal.lock = 0;
+		a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x)
+			/ (arch->bound.depth_portal.y - arch->bound.depth_portal.x);
+		a_portal.b = arch->bound.decal_portal.x - (arch->bound.depth_portal.x * a_portal.a);
+	}
 	inter = interpolation_linear(a_portal, a_pillar);
-	b_point_debug(arch, inter, RED);
-	if (inter.x > arch->depth.x)
+	inter2 = interpolation_linear(a_portal, a_pillar2);
+	//b_point_debug(arch, inter, RED);
+
+	//si les deux pillier sont en dehors du portail on n'affiche pas la fonction
+	if (inter.x > arch->depth.x && inter2.x > arch->depth.y)
 		return (0);
+	if (arch->depth.x == arch->depth.y)
+	{
+		a_wall.lock = 1;
+		a_wall.b = arch->depth.x;
+	}
+	else
+	{
+		a_wall.lock = 0;
+		a_wall.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
+		a_wall.b = arch->decal.x - a_wall.a * arch->depth.x;
+	}
+	if (interpolation_linear_secur(a_portal, a_wall, &inter))
+		return (0);
+
+	draw_affine(arch, a_portal, YELLOW);
+	draw_affine(arch, a_wall, GREEN);
+	if (inter.x > arch->depth.x)
+	{
+		//le pillier x (!= y) est en dehors du portail
+		b_point_debug(arch, inter, RED);
+		//arch->depth.x = inter.x
+		//arch->decal.x = inter.y;
+	}
+	else
+	{
+		//arch->depth.y = inter.x;
+		//arch->decal.y = inter.y;
+	}
+	//else
+	//{
+	//	arch->depth.y = inter2.x;
+	//	arch->decal.y = inter2.y;
+	//	arch->shift_txtr.y =
+	//	//depth.y decal.y shift_txtr.y
+	//}
+
+	/*
+
 	inter = interpolation_linear(a_portal, a_pillar2);
 	b_point_debug(arch, inter, RED);
 	if (inter.x > arch->depth.y)
+	{
+		//le pillier de droite est en dehors du secteur
+		//on modifie shift_txtr.y, decal.y, depth.y
 		return (0);
+	}*/
 	return (1);
 }
 
