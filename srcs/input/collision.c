@@ -6,15 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/16 14:17:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 15:18:27 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-#define PADDING 0.30
-#define PADDING2 0.60
-#define STEP 0.025
 
 static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 {

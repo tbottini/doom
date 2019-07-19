@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/19 12:32:42 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 15:29:34 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ int		player_init(t_player *player)
 	player->stat.vel.x = 0;
 	player->stat.vel.y = 0;
 	player->stat.vel.z = 0;
+	player->stat.health = 15;//a degager
 	return (1);
 }

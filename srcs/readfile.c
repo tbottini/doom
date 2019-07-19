@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/19 12:18:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 16:14:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ int	read_sec_props(int fd, t_game *game, t_sector *sector, t_slen *len)
 			return (rtn);
 		x++;
 	}
+	sector->len_prop = nbp;
 	if (read_balise(fd, "💩", 8))
 		return (8);
 	return (0);

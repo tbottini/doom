@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:33:12 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/19 14:30:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ static void game_loop_hook(t_doom *doom)
 		}
 		/// Place here functions that need to be launch every frame while the game is running
 		move(&doom->game.player.stat);
+		pickup_prop(&doom->game);
 		doom_render(doom);
 		/// End Comment
 	}
