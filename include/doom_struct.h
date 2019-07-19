@@ -365,9 +365,9 @@ typedef struct 			s_arch
 
 typedef enum		e_difficulty
 {
-	EASY,
-	MEDIUM,
-	HARD
+	EASY = 1,
+	MEDIUM = 2,
+	HARD = 4
 }					t_difficulty;
 
 typedef struct			s_game

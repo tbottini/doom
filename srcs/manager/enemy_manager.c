@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/18 21:49:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 12:17:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	free_enemys(t_enemy *enemy)
 	free(enemy);
 }
 
-t_enemy	*enemy_init(int type, double difficulty)
+t_enemy	*enemy_init(int type, int difficulty)
 {
 	t_enemy *enemy;
 

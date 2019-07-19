@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/09 22:27:31 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 12:34:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ static void	add_weapon(t_weapon *weapon)
 }
 
 /*============super pill=================*/
+
+static void	supersmol(t_player *player)
+{
+	if (!player->boost)
+	{
+		if (player->stat.height == H_NORMAL)
+			player->stat.height = H_SMOL;
+		player->boost = SDL_GetTicks() + 30000;
+	}
+}
 
 static void	superpunch(t_player *player)
 {

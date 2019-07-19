@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   button_loader.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 18:19:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/04 22:15:01 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/19 12:24:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int		read_directory(t_doom *doom, DIR *maps, int y)
 	char			tmp[512];
 
 	ft_printf("Reading\n");
-	while ((mapdata = readdir(maps)) && y < 9)
+	while ((mapdata = readdir(maps)) && y < 19)
 	{
 		ft_strcpy(tmp, "ressources/map/");
 		ft_strcpy(&(tmp[15]), mapdata->d_name);

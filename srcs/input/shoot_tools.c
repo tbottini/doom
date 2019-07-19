@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 15:05:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 12:12:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,9 @@ static int	bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 	t_fvct3		coord;
 	t_sector	next;
 
-	//next = *sector->wall[i].link;
+	next = *sector->wall[i].link;
 	if (sector->wall[i].status >= OPEN_DOOR)
 	{
-		return (1);//virer auqnd c'est coder correctement
 		toto = cos((stat->rot.x - 90.0) * PI180);
 		toto = wall_bullet_clipping(*sector->wall[i].pillar, *sector->wall[i].next, stat) / (toto < G_EPSILON ? 1 : toto);
 		mo.x = ori.x - stat->pos.x;
@@ -165,14 +164,17 @@ void		possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector)
 	i = -1;
 	if (!sector)
 		return ;
-	while (super->i_w < 50 && ++i < sector->len)
+	while (super->i_w < 49 && ++i < sector->len)
 	{
-		if (bullet_can_pass(stat, i, sector, ori))
-			possible(super, stat, ori, sector->wall[i].link);
-		else if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
+		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
 		{
-			super->walls[super->i_w] = &sector->wall[i];
-			super->i_w++;
+			if (bullet_can_pass(stat, i, sector, ori))
+				possible(super, stat, ori, sector->wall[i].link);
+			else
+			{
+				super->walls[super->i_w] = &sector->wall[i];
+				super->i_w++;
+			}
 		}
 	}
 	super->walls[super->i_w] = NULL;
