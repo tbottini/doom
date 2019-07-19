@@ -35,7 +35,7 @@ t_borne		*borne_svg(t_arch *arch, t_borne *borne)
 	borne->b_left = arch->bound.b_left;
 	borne->b_right = arch->bound.b_right;
 	borne->decal_portal = arch->bound.decal_portal;
-	borne->decal_portal = arch->bound.depth_portal;
+	borne->depth_portal = arch->bound.depth_portal;
 	borne_init(borne, len);
 	return (borne);
 }

@@ -122,6 +122,9 @@ int				wall_behind_portal(t_arch *arch)
 	a_pillar.b = 0;
 	a_pillar2.a = arch->decal.y / arch->depth.y;
 	a_pillar2.b = 0;
+	if (debug == 6)
+		printf(WBLUE"pos portal %f %f - %f %f\n"WEND, arch->bound.depth_portal.x, arch->bound.decal_portal.x,
+			arch->bound.depth_portal.y, arch->bound.decal_portal.y);
 	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
 	{
 		a_portal.lock = 1;
@@ -134,14 +137,16 @@ int				wall_behind_portal(t_arch *arch)
 			/ (arch->bound.depth_portal.y - arch->bound.depth_portal.x);
 		a_portal.b = arch->bound.decal_portal.x - (arch->bound.depth_portal.x * a_portal.a);
 	}
+	if (debug == 2)
+		printf(WGREEN"a_portal %f %f a_pillar %f %f\n"WEND, a_portal.a, a_portal.b, a_pillar.a, a_pillar.b);
 	inter = interpolation_linear(a_portal, a_pillar);
 	inter2 = interpolation_linear(a_portal, a_pillar2);
 	draw_affine(arch, a_pillar, BLUE_SOFT);
 	draw_affine(arch, a_pillar2, BLUE_SOFT);
-	b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, WHITE);
-	b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, WHITE);
 	b_point_debug(arch, inter, RED);
 	b_point_debug(arch, inter2, BLUE_SOFT);
+	if (debug == 4)
+		printf("inter2: %f %f inter: %f %f\n", inter.x, inter.y, inter2.x, inter2.y);
 	if (inter.x > arch->depth.x && inter2.x > arch->depth.y)
 		return (0);
 	if (arch->depth.x == arch->depth.y)
