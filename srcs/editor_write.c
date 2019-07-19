@@ -6,11 +6,26 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 18:03:12 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 11:39:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+unsigned int ft_lil_super_atoi(const char *str)
+{
+	unsigned int ret;
+
+	if (!*str)
+		return (0);
+	ret = 0;
+	while (*str && ft_isdigit(*str))
+	{
+		ret = ret * 10 + *str - 48;
+		str++;
+	}
+	return (*str ? 0 : ret);
+}
 
 void push_char(char *str, char c)
 {
@@ -60,7 +75,8 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 		}
 		else if (doom->edit.status == ED_WRITING)
 		{
-			x = ft_atoi(str);
+			//x = ft_atoi(str);
+			x = ft_lil_super_atoi(str);
 			if (x < MAXEDITVAR)
 				*doom->edit.currwriter = x;
 			else

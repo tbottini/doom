@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   button_drawer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:29:18 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 17:29:19 by magrab           ###   ########.fr       */
+/*   Updated: 2019/07/19 11:43:06 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void		draw_difficulty(t_doom *doom, t_btn *arr)
 	tmp.y -= 5;
 	tmp.w += 10;
 	tmp.h += 10;
-	SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 50, 255);
+	SDL_SetRenderDrawColor(doom->sdl.rend, 225, 15, 15, 255);
 	SDL_RenderDrawRect(doom->sdl.rend, &tmp);
 	tmp.x -= 1;
 	tmp.y -= 1;
