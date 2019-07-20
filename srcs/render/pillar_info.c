@@ -101,6 +101,7 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 	}
 }
 
+
 /*
 **	renvoie la position du mur par rapport au portail de rendu
 **		0 si le portail est devant le portail
@@ -138,8 +139,8 @@ int				wall_behind_portal(t_arch *arch)
 	inter2 = interpolation_linear(a_portal, a_pillar2);
 	draw_affine(arch, a_pillar, BLUE_SOFT);
 	draw_affine(arch, a_pillar2, BLUE_SOFT);
-	b_point_debug(arch, inter, RED);
-	b_point_debug(arch, inter2, BLUE_SOFT);
+	if (debug == 4)
+		printf("---verif---\n");
 	if (inter.x > arch->depth.x && inter2.x > arch->depth.y)
 		return (0);
 	if (arch->depth.x == arch->depth.y)
@@ -155,22 +156,43 @@ int				wall_behind_portal(t_arch *arch)
 	}
 	if (inter.x > arch->depth.x)
 	{
+		b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, GREEN);
+		b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, GREEN);
 		if (interpolation_linear_secur(a_portal, a_wall, &inter))
 			return (0);
 		pillar_virtual_move(arch, inter, PILLAR);
 		a_pillar.a = arch->decal.x / arch->depth.x;
 		a_pillar.b = 0;
 		arch->px.x = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
+
+		draw_affine(arch, a_wall, GREEN_SOFT);
+		//b_point_debug(arch, inter, GREEN);
+
+		b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, BLUE_SOFT);
+		b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, BLUE_SOFT);
 	}
 	else if (inter2.x > arch->depth.y)
 	{
+		b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, GREEN);
+		b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, GREEN);
+		if (debug == 4)
+			printf("inter2.x > arch->depth.y\n");
 		if (interpolation_linear_secur(a_portal, a_wall, &inter))
 			return (0);
+		//draw_affine(arch, a_wall, RED_SOFT);
+		//b_point_debug(arch, inter, RED);
 		pillar_virtual_move(arch, inter, NEXT);
-		a_pillar.a = arch->decal.y / arch->depth.x;
+
+		//decal
+		a_pillar.a = arch->decal.y / arch->depth.y;
 		a_pillar.b = 0;
+		//prblm pas mauvais decalage
 		arch->px.y = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
 	}
+	if (debug == 4)
+		printf("----end-verif----\n");
+	b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, BLUE_SOFT);
+	b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, BLUE_SOFT);
 	return (1);
 }
 
