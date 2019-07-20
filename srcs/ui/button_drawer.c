@@ -81,7 +81,7 @@ void		draw_difficulty(t_doom *doom, t_btn *arr)
 	tmp.y -= 5;
 	tmp.w += 10;
 	tmp.h += 10;
-	SDL_SetRenderDrawColor(doom->sdl.rend, 225, 15, 15, 255);
+	SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
 	SDL_RenderDrawRect(doom->sdl.rend, &tmp);
 	tmp.x -= 1;
 	tmp.y -= 1;
