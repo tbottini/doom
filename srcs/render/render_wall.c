@@ -31,7 +31,6 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
 t_fvct2			surface_pillar(t_arch *arch, t_player *player, double depth)
 {
 	t_fvct2		wall_portion;
-
 	double		up;
 	double		down;
 
@@ -50,17 +49,16 @@ void			reorder(t_arch *arch)
 	double		tmp;
 	int			tmpint;
 
+	t_fvct2		pillar_tmp;
+
 	if (arch->px.x > arch->px.y)
 	{
 		tmpint = arch->px.x;
 		arch->px.x = arch->px.y;
 		arch->px.y = tmpint;
-		tmp = arch->depth.x;
-		arch->depth.x = arch->depth.y;
-		arch->depth.y = tmp;
-		tmp = arch->decal.x;
-		arch->decal.x = arch->decal.y;
-		arch->decal.y = tmp;
+		pillar_tmp = arch->pillar;
+		arch->pillar = arch->next;
+		arch->next = pillar_tmp;
 		tmp = arch->shift_txtr.x;
 		arch->shift_txtr.x = arch->shift_txtr.y;
 		arch->shift_txtr.y = tmp;
@@ -71,8 +69,8 @@ void			reorder(t_arch *arch)
 **	fait des coeficient pour rendre les colomnes entre les deux pilier
 **	et si c'est un portail prepare
 **		-sauvegarde la borne actuel dans borne_tmp
-**		-la borne pour la recursivite arch->bound
-**		-recharge borne_tmp dans arch->bound
+**		-la borne pour la recursivite arch->portal
+**		-recharge borne_tmp dans arch->portal
 */
 //zline temporaire pour ne pas refaire un passage pillar_to_pillar
 void			pillar_to_pillar(t_arch *arch, t_player *player)
@@ -89,18 +87,21 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	t_borne		borne_tmp;
 	t_sector	*sector_tmp;
 
-	pillar = surface_pillar(arch, player, arch->depth.x);
-	pillar_next = surface_pillar(arch, player, arch->depth.y);
+	pillar = surface_pillar(arch, player, arch->pillar.x);
+	pillar_next = surface_pillar(arch, player, arch->next.x);
 	coef_surface.x = coef_diff(pillar.x - pillar_next.x, arch->px);
 	coef_surface.y = coef_diff(pillar.y - pillar_next.y, arch->px);
-	neutre.x = (double)(arch->sdl->size.y) / arch->depth.x;
-	neutre.y = (double)(arch->sdl->size.y) / arch->depth.y;
+	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
+	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
-
+	if (debug == 3)
+	{
+		d_wall(arch->wall);
+		borne_print(&arch->portal);
+	}
 	start = arch->px.x;
 	if (arch->wall->status == PORTAL)
 		borne_svg(arch, &borne_tmp);
-
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->wall->status == WALL)
@@ -118,7 +119,7 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		neutre.x += coef_neutre;
 		arch->px.x++;
 		i++;
-		if (debug == 3 && i % 5 == 0)
+		if (debug == 2 && i % 5 == 0)
 		{
 			sdl_MultiRenderCopy(arch->sdl);
 			SDL_RenderPresent(arch->sdl->rend);
@@ -126,17 +127,22 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	}
 	if (arch->wall->status == PORTAL)
 	{
+		//sinon mauvais calcul de borne gauche
 		arch->px.x = start;
 		set_borne_horizontal(arch);
-		//on affecte aux borne les position des mur
-		arch->bound.decal_portal = arch->decal;
-		arch->bound.depth_portal = arch->depth;
+		//set portal borne
+
+		//----arch->portal.decal_portal = (t_fvct2){arch->pillar.y, arch->next.y};
+		//----arch->portal.depth_portal = (t_fvct2){arch->pillar.x, arch->next.x};
+		arch->portal.pillar = arch->pillar;
+		arch->portal.next = arch->next;
+
 		sector_tmp = arch->sector;
 		arch->depth_portal++;
-		if (debug)
+		if (debug == 1)
 			printf("--->\n");
 		sector_render(arch, player, arch->wall->link);
-		if (debug)
+		if (debug == 1)
 			printf("<---\n");
 		arch->depth_portal--;
 		arch->sector = sector_tmp;
@@ -153,7 +159,6 @@ void		render_wall(t_arch *arch, t_player *player)
 {
 	if (wall_screen_info(arch, player))
 	{
-		draw_borne(arch, 0xff0000ff);
 		if (arch->wall->status == PORTAL)
 			draw_wall(arch, 0xffff00ff);
 		else if (arch->wall->status == WALL)
@@ -161,4 +166,6 @@ void		render_wall(t_arch *arch, t_player *player)
 		reorder(arch);
 		pillar_to_pillar(arch, player);
 	}
+	else
+		draw_wall(arch, RED);
 }

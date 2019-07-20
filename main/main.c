@@ -1,33 +1,21 @@
 #include "doom_nukem.h"
 
-static int	init(void)
-{
-	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMECONTROLLER) != 0)
-	{
-		ft_printf("SDL_Init: %s\n", SDL_GetError());
-		return (0);
-	}
-	if (TTF_Init() == -1)
-	{
-		ft_printf("TTF_Init: %s\n", TTF_GetError());
-		return (0);
-	}
-	if (IMG_Init(IMG_INIT_PNG) == -1)
-	{
-		ft_printf("IMG: %s\n", IMG_GetError());
-		return (0);
-	}
-	return (1);
-}
-
 int			main(int ac, char **av)
 {
-	printf("test\n");
+	t_affine a;
+
+
+	a.a = atof(av[1]);
+	a.b = atof(av[2]);
+
+	t_fvct2	point;
+
+	point.x = atof(av[3]);
+	point.y = atof(av[4]);
+
+	printf(WGREEN"affine %f %f point %f %f\n"WEND, a.a, a.b, point.x, point.y);
+	printf("point behind portal %d\n", point_behind_portal(a, point));
 	//test de l'interpolation
-
-
-
-
 
 	return (0);
 }

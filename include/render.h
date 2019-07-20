@@ -11,18 +11,26 @@
 # define PINK_FLOOR 0xdcc8c8ff
 # define ORANGE 0xf5c738ff
 
+# define PILLAR 1
+# define NEXT 2
+
 
 /*
 **	disfonctionnement si l'ordre n'est pas respecte
 **	pour un carre a(up left) b(bottom left) c(up right) d(bot right)
 */
-typedef struct 		s_shape
+typedef struct 			s_shape
 {
-	t_fvct2			up;
-	t_fvct2			left;
-	t_fvct2			right;
-	t_fvct2			bot;
-}					t_shape;
+	t_fvct2				up;
+	t_fvct2				left;
+	t_fvct2				right;
+	t_fvct2				bot;
+}						t_shape;
+
+/*
+**	pillar
+*/
+void					pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag);
 
 /*
 **	info function
@@ -58,8 +66,11 @@ void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int s
 **	bunch
 */
 void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
-int						buncherisation(t_arch *arch, t_sector sector, t_wall **bunch);
+int						buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch);
 void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
+
+int			borne_in_wall_angle(t_arch *arch, t_wall *wall);
+int			equal_pillar(t_wall *wall1, t_wall *wall2);
 
 /*
 ** Drawer functions

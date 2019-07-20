@@ -69,7 +69,14 @@ void		ft_putnchar(char c, int i)
 void		d_wall(t_wall *wall)
 {
 	printf(WBLUE"frust %d"WEND" %.2f %.2f -->, ", wall->pillar->frust, wall->pillar->p.x, wall->pillar->p.y);
-	printf("%.2f %.2f "WBLUE"%d frust"WEND"\n", wall->next->p.x, wall->next->p.y, wall->pillar->frust);
+	printf("%.2f %.2f "WBLUE"%d frust"WEND, wall->next->p.x, wall->next->p.y, wall->pillar->frust);
+	if (wall->status == WALL)
+		printf(WBLUE" WALL"WEND);
+	else if (wall->status == PORTAL)
+		printf(WGREEN" PORTAL"WEND);
+
+	printf(" angle %f %f", wall->pillar->angle, wall->next->angle);
+	printf("\n");
 
 }
 
@@ -167,13 +174,6 @@ void		sector_recursif(t_sector sector, int sub)
 		ft_putnchar('\t', sub );
 		ft_putendl("--->son");
 	}
-	/*
-	while (i < sector.len_sub)
-	{
-		sector_recursif(sector.ssector[i], sub + 1);
-		++i;
-	}
-	*/
 	ft_putnchar('\t', sub);
 	ft_putendl("--------------------");
 }
@@ -183,4 +183,13 @@ void		describe_sector_recursif(t_sector sector)
 	printf("\e[31m\e[1m=============sector_recursivite===============\033[0m\n");
 	sector_recursif(sector, 0);
 	printf("\e[31m\e[1m==============================================\033[0m\n");
+}
+
+void	borne_print(t_borne *borne)
+{
+	printf("-------borne------\n");
+	printf("left %f right %f\nportal: %f %f - %f %f\n", borne->b_left, borne->b_right,
+		borne->pillar.x, borne->pillar.y,
+		borne->next.x, borne->next.y);
+	printf("------------------\n");
 }

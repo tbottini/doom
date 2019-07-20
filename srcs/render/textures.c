@@ -15,18 +15,19 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 
 	px_affine.a = ((arch->sdl->size.x / 2) - arch->px.x) / arch->cam->d_screen;
 	px_affine.b = 0;
-	if (arch->depth.y == arch->depth.x)
+	if (arch->pillar.y == arch->next.y)
 	{
-		inter.x = arch->depth.y;
+		inter.x = arch->next.x;
 		inter.y = px_affine.a * inter.x;
-		percent = (inter.y - arch->decal.x) / (arch->decal.y - arch->decal.x);
+		percent = (inter.y - arch->pillar.y) / (arch->next.y - arch->pillar.y);
 	}
 	else
 	{
-		wall_affine.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
-		wall_affine.b = arch->decal.x - wall_affine.a * arch->depth.x;
+
+		wall_affine.a = (arch->next.y - arch->pillar.y) / (arch->next.x - arch->pillar.x);
+		wall_affine.b = arch->pillar.y - wall_affine.a * arch->pillar.x;
 		inter = interpolation_linear(wall_affine, px_affine);
-		percent = (inter.x - arch->depth.x) / (arch->depth.y - arch->depth.x);
+		percent = (inter.x - arch->pillar.x) / (arch->next.x - arch->pillar.x);
 	}
 	percent = percent * (arch->shift_txtr.y -  arch->shift_txtr.x) + arch->shift_txtr.x;
 	if (percent < 0)
@@ -34,4 +35,34 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 	else if (percent > 1)
 		return (arch->wall->txtr.w);
 	return (percent * arch->wall->txtr.w);
+}
+
+/*
+**	redefinit le pourcentage de textures (en donnant le pourcentage actuel)
+**	les deux distance et le nouveau point d'intersection
+**	-flag definit quel pillier doit changer
+*/
+void			pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag)
+{
+	double		percent_tmp;
+	double		*percent;
+	t_fvct2		*pillar;
+
+	if (flag == PILLAR)
+	{
+		percent = &arch->shift_txtr.x;
+		pillar = &arch->pillar;
+	}
+	else
+	{
+		percent = &arch->shift_txtr.y;
+		pillar = &arch->next;
+	}
+	if (arch->pillar.x == arch->next.x)
+		percent_tmp = (inter.y - arch->pillar.y) / (arch->next.y - arch->pillar.y);
+	else
+		percent_tmp = (inter.x - arch->pillar.x) / (arch->next.x - arch->pillar.x);
+	*percent = percent_tmp * (arch->shift_txtr.y - arch->shift_txtr.x) + arch->shift_txtr.x;
+	*pillar = inter;
+	//recupere le pixel de depart
 }

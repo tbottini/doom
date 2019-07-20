@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:28:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/20 15:29:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void			clean_screen(t_sdl *sdl)
 	}
 }
 
+void			debug_code(int key)
+{
+	debug = key - SDLK_KP_1 + 1;
+	printf("debug keycode %d\n", debug);
+}
+
+
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
 ** Example :
@@ -52,10 +59,8 @@ int		key_press(int key, t_doom *doom)
 		else if (doom->ui.m_status == 4)
 			sdl_set_status(doom, 0);
 	}
-	else if (key == SDLK_g)
-	{
-		debug = 2;
-	}
+	else if (key <= SDLK_KP_9 && key >= SDLK_KP_1)
+		debug_code(key);
 	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&doom->game.player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)
@@ -67,6 +72,10 @@ int		key_press(int key, t_doom *doom)
 		describe_player(doom->game.player);
 		describe_sector_recursif(*doom->game.sectors);
 	}
+	else if (key == SDLK_KP_MINUS)
+		doom->game.arch.zoom /= 2;
+	else if (key == SDLK_KP_PLUS)
+		doom->game.arch.zoom *= 2;
 	else if (key == SDLK_9)
 		change_music(&doom->game.sound, 10, 5000);
 	else if (key == SDLK_b)
@@ -95,26 +104,26 @@ int		key_press(int key, t_doom *doom)
 		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80), doom->sdl.screen, &doom->sdl.size};
 	else if (key == SDLK_j)
 	{
-		doom->game.arch.bound.b_left += 2;
-		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+		doom->game.arch.portal.b_left += 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_k)
 	{
-		doom->game.arch.bound.b_right += 2;
-		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+		doom->game.arch.portal.b_right += 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_u)
 	{
-		doom->game.arch.bound.b_left -= 2;
-		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+		doom->game.arch.portal.b_left -= 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_i)
 	{
-		doom->game.arch.bound.b_right -= 2;
-		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+		doom->game.arch.portal.b_right -= 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else

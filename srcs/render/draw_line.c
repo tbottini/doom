@@ -6,13 +6,12 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/07/17 17:43:47 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/18 14:56:49 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 #define BIGPIXELSIZE 5
-
 
 int		fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color)
 {
