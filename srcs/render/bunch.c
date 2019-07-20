@@ -118,7 +118,7 @@ int			equal_pillar(t_wall *wall1, t_wall *wall2)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
-int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
+int			buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
@@ -126,8 +126,8 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 
 	i_bunch = 0;
 	i_wall = 0;
-	wall = sector.wall;
-	while (i_wall < sector.len)
+	wall = sector->wall;
+	while (i_wall < sector->len)
 	{
 		if ((wall[i_wall].pillar->frust || wall[i_wall].next->frust)
 			&& equal_pillar(&wall[i_wall], arch->wall))

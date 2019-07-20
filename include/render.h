@@ -66,8 +66,11 @@ void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int s
 **	bunch
 */
 void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
-int						buncherisation(t_arch *arch, t_sector sector, t_wall **bunch);
+int						buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch);
 void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
+
+int			borne_in_wall_angle(t_arch *arch, t_wall *wall);
+int			equal_pillar(t_wall *wall1, t_wall *wall2);
 
 /*
 ** Drawer functions
