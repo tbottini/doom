@@ -80,10 +80,10 @@ void		draw_wall(t_arch *arch, uint32_t color)
 	t_vct2	point1;
 	t_vct2	point2;
 
-	point1.x = arch->sdl->size.x / 2.0 + (arch->depth.x * arch->zoom);
-	point1.y = arch->sdl->size.y / 2.0 - (arch->decal.x * arch->zoom);
-	point2.x = arch->sdl->size.x / 2.0 + (arch->depth.y * arch->zoom);
-	point2.y = arch->sdl->size.y / 2.0 - (arch->decal.y * arch->zoom);
+	point1.x = arch->sdl->size.x / 2.0 + (arch->pillar.x * arch->zoom);
+	point1.y = arch->sdl->size.y / 2.0 - (arch->pillar.y * arch->zoom);
+	point2.x = arch->sdl->size.x / 2.0 + (arch->next.x * arch->zoom);
+	point2.y = arch->sdl->size.y / 2.0 - (arch->next.y * arch->zoom);
 	fill_line_debug(arch, arch->sdl, point1, point2, color);
 
 }

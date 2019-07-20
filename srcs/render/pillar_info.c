@@ -52,9 +52,9 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 	if (arch->wall->pillar->frust)
 	{
 		arch->px.x = fish_bowl_px(arch, *arch->wall->pillar);
-		arch->depth.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar->p);
-		arch->decal.x = sin(arch->wall->pillar->angle * PI180) * arch->depth.x;
-		arch->depth.x = cos(arch->wall->pillar->angle * PI180) * arch->depth.x;
+		arch->pillar.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar->p);
+		arch->pillar.y = sin(arch->wall->pillar->angle * PI180) * arch->pillar.x;
+		arch->pillar.x = cos(arch->wall->pillar->angle * PI180) * arch->pillar.x;
 		arch->shift_txtr.x = 1;
 	}
 	else
@@ -71,15 +71,15 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 			angle = p->stat.rot.y + arch->bound.b_right;
 		}
 		arch->shift_txtr.x = wall_clipping(arch, p, &tmp, angle);
-		arch->depth.x = tmp.x;
-		arch->decal.x = tmp.y;
+		arch->pillar = tmp;
 	}
 	if (arch->wall->next->frust)
 	{
 		arch->px.y = fish_bowl_px(arch, *arch->wall->next);
-		arch->depth.y = distance(*(t_fvct2*)&p->stat.pos, arch->wall->next->p);
-		arch->decal.y = sin(arch->wall->next->angle * PI180) * arch->depth.y;
-		arch->depth.y = cos(arch->wall->next->angle * PI180) * arch->depth.y;
+		arch->next.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->next->p);
+		arch->next.y = sin(arch->wall->next->angle * PI180) * arch->next.x;
+		arch->next.x = cos(arch->wall->next->angle * PI180) * arch->next.x;
+
 		arch->shift_txtr.y = 0;
 	}
 	else
@@ -96,8 +96,7 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 			angle = p->stat.rot.y + arch->bound.b_right;
 		}
 		arch->shift_txtr.y = wall_clipping(arch, p, &tmp, angle);
-		arch->depth.y = tmp.x;
-		arch->decal.y = tmp.y;
+		arch->next = tmp;
 	}
 }
 
@@ -119,9 +118,9 @@ int				wall_behind_portal(t_arch *arch)
 
 	if (debug == 1)
 		d_wall(arch->wall);
-	a_pillar.a = arch->decal.x / arch->depth.x;
+	a_pillar.a = arch->pillar.y / arch->pillar.x;
 	a_pillar.b = 0;
-	a_pillar2.a = arch->decal.y / arch->depth.y;
+	a_pillar2.a = arch->next.y / arch->next.x;
 	a_pillar2.b = 0;
 	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
 	{
@@ -139,60 +138,37 @@ int				wall_behind_portal(t_arch *arch)
 	inter2 = interpolation_linear(a_portal, a_pillar2);
 	draw_affine(arch, a_pillar, BLUE_SOFT);
 	draw_affine(arch, a_pillar2, BLUE_SOFT);
-	if (debug == 4)
-		printf("---verif---\n");
-	if (inter.x > arch->depth.x && inter2.x > arch->depth.y)
+	if (inter.x > arch->pillar.x && inter2.x > arch->next.x)
 		return (0);
-	if (arch->depth.x == arch->depth.y)
+	if (arch->pillar.x == arch->next.x)
 	{
 		a_wall.lock = 1;
-		a_wall.b = arch->depth.x;
+		a_wall.b = arch->pillar.x;
 	}
 	else
 	{
 		a_wall.lock = 0;
-		a_wall.a = (arch->decal.y - arch->decal.x) / (arch->depth.y - arch->depth.x);
-		a_wall.b = arch->decal.x - a_wall.a * arch->depth.x;
+		a_wall.a = (arch->next.y - arch->pillar.y) / (arch->next.x - arch->pillar.x);
+		a_wall.b = arch->pillar.y - a_wall.a * arch->pillar.x;
 	}
-	if (inter.x > arch->depth.x)
+	if (inter.x > arch->pillar.x)
 	{
-		b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, GREEN);
-		b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, GREEN);
 		if (interpolation_linear_secur(a_portal, a_wall, &inter))
 			return (0);
 		pillar_virtual_move(arch, inter, PILLAR);
-		a_pillar.a = arch->decal.x / arch->depth.x;
+		a_pillar.a = arch->pillar.y / arch->pillar.x;
 		a_pillar.b = 0;
 		arch->px.x = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
-
-		draw_affine(arch, a_wall, GREEN_SOFT);
-		//b_point_debug(arch, inter, GREEN);
-
-		b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, BLUE_SOFT);
-		b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, BLUE_SOFT);
 	}
-	else if (inter2.x > arch->depth.y)
+	else if (inter2.x > arch->next.x)
 	{
-		b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, GREEN);
-		b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, GREEN);
-		if (debug == 4)
-			printf("inter2.x > arch->depth.y\n");
 		if (interpolation_linear_secur(a_portal, a_wall, &inter))
 			return (0);
-		//draw_affine(arch, a_wall, RED_SOFT);
-		//b_point_debug(arch, inter, RED);
 		pillar_virtual_move(arch, inter, NEXT);
-
-		//decal
-		a_pillar.a = arch->decal.y / arch->depth.y;
+		a_pillar.a = arch->next.y / arch->next.x;
 		a_pillar.b = 0;
-		//prblm pas mauvais decalage
 		arch->px.y = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
 	}
-	if (debug == 4)
-		printf("----end-verif----\n");
-	b_point_debug(arch, (t_fvct2){arch->depth.x, arch->decal.x}, BLUE_SOFT);
-	b_point_debug(arch, (t_fvct2){arch->depth.y, arch->decal.y}, BLUE_SOFT);
 	return (1);
 }
 
@@ -210,6 +186,5 @@ int			wall_screen_info(t_arch *arch, t_player *p)
 			printf("wall_behind_portal %d\n\n", result);
 		return (result);
 	}
-
 	return (1);
 }

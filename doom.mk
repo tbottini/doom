@@ -31,7 +31,6 @@ SRCS_INPUT		:=		event_controller.c								\
 						shoot.c											\
 						shoot_tools.c									\
 						collision.c										\
-						keyboard_input.c								\
 						debug_input.c									\
 
 SRCS_RENDER		:=		render.c										\

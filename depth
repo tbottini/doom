@@ -1,0 +1,407 @@
+srcs/button_function.c:37:	change_music(&doom->game.sound, 0, 0);
+srcs/button_function.c:38:	doom->ui.curr_btn = NULL;
+srcs/button_function.c:44:	if (doom->ui.m_status == 5)
+srcs/button_function.c:52:	if (!(read_file(doom, doom->ui.curr_btn->data)))
+srcs/button_function.c:54:		player_init(&doom->game.player);
+srcs/button_function.c:55:		change_music(&doom->game.sound, doom->game.sound.on, 5000);
+srcs/cinematri.c:40:			doom->controller = SDL_GameControllerOpen(0);
+srcs/cinematri.c:54:	wait = SDL_GetTicks() - doom->timestamp - 39; // Nombre de ms entre chaque frames
+srcs/cinematri.c:57:	doom->timestamp = SDL_GetTicks();
+srcs/cinematri.c:81:		if (!(texture = SDL_CreateTextureFromSurface(doom->sdl.rend, image)))
+srcs/cinematri.c:83:		SDL_RenderCopy(doom->sdl.rend, texture, NULL, NULL);
+srcs/cinematri.c:84:		SDL_RenderPresent(doom->sdl.rend);
+srcs/cinematri.c:107:	if (!(texture = SDL_CreateTextureFromSurface(doom->sdl.rend, image)))
+srcs/cinematri.c:109:	SDL_RenderCopy(doom->sdl.rend, texture, NULL, NULL);
+srcs/cinematri.c:110:	SDL_RenderPresent(doom->sdl.rend);
+srcs/debug/debug_screen.c:25:	tmp = v.y * doom->sdl.size.x;
+srcs/debug/debug_screen.c:26:	if (v.y > 0 && v.y < (doom->sdl.size.y - 1) && (v.x < doom->sdl.size.x - 1) && v.x > 0)
+srcs/debug/debug_screen.c:28:		doom->sdl.screen[v.x + tmp] = color;
+srcs/debug/debug_screen.c:29:		doom->sdl.screen[v.x + 1 + tmp] = color;
+srcs/debug/debug_screen.c:30:		doom->sdl.screen[v.x - 1 + tmp] = color;
+srcs/debug/debug_screen.c:31:		doom->sdl.screen[v.x + 1 + tmp + doom->sdl.size.x] = color;
+srcs/debug/debug_screen.c:32:		doom->sdl.screen[v.x - 1 + tmp + doom->sdl.size.x] = color;
+srcs/debug/debug_screen.c:33:		doom->sdl.screen[v.x + 1 + tmp - doom->sdl.size.x] = color;
+srcs/debug/debug_screen.c:34:		doom->sdl.screen[v.x - 1 + tmp - doom->sdl.size.x] = color;
+srcs/debug/debug_screen.c:35:		doom->sdl.screen[v.x + tmp + doom->sdl.size.x] = color;
+srcs/debug/debug_screen.c:36:		doom->sdl.screen[v.x + tmp - doom->sdl.size.x] = color;
+srcs/editor_hook.c:36:		save_editor_to_file(&doom->edit);
+srcs/editor_hook.c:40:		relpos = get_rel_mappos(&doom->edit, doom->edit.mouse.x, doom->edit.mouse.y);
+srcs/editor_hook.c:41:		if (!ft_enemypushend(&doom->edit.ennlist, relpos, key - 48, doom->edit.map))
+srcs/editor_hook.c:46:		relpos = get_rel_mappos(&doom->edit, doom->edit.mouse.x, doom->edit.mouse.y);
+srcs/editor_hook.c:47:		if (!ft_enemypushend(&doom->edit.ennlist, relpos, MINPROPSPOS, doom->edit.map))
+srcs/editor_hook.c:52:		doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
+srcs/editor_hook.c:55:		ft_nodeadd_int(&(doom->edit.keys), key);
+srcs/editor_hook.c:68:	ft_noderm_int(&(doom->edit.keys), key);
+srcs/input/action.c:191:	Mix_PlayChannel(2, doom->game.sound.tab_effect[6], 0);
+srcs/input/event_controller.c:17:	if (doom->ui.curr_btn_controller < 0)
+srcs/input/event_controller.c:18:		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
+srcs/input/event_controller.c:19:	else if (doom->ui.m_status > 0)
+srcs/input/event_controller.c:23:			if (doom->ui.m_status == 1 && doom->ui.curr_btn_controller > 2)
+srcs/input/event_controller.c:24:				--doom->ui.curr_btn_controller;
+srcs/input/event_controller.c:25:			else if (doom->ui.m_status == 2)
+srcs/input/event_controller.c:27:				if (doom->ui.curr_btn_controller == 3)
+srcs/input/event_controller.c:28:					doom->ui.curr_btn_controller -= 2;
+srcs/input/event_controller.c:29:				else if (doom->ui.curr_btn_controller > 3)
+srcs/input/event_controller.c:30:					--doom->ui.curr_btn_controller;
+srcs/input/event_controller.c:35:			doom->ui.curr_btn->func(doom);
+srcs/input/event_controller.c:39:			if (doom->ui.m_status == 1 && doom->ui.btnarr[doom->ui.curr_btn_controller].func)
+srcs/input/event_controller.c:40:				++doom->ui.curr_btn_controller;
+srcs/input/event_controller.c:41:			else if (doom->ui.m_status == 2)
+srcs/input/event_controller.c:43:				if (doom->ui.curr_btn_controller == 1 && doom->ui.btnmap[doom->ui.curr_btn_controller + 1].txture)
+srcs/input/event_controller.c:44:					doom->ui.curr_btn_controller += 2;
+srcs/input/event_controller.c:45:				else if (doom->ui.btnmap[doom->ui.curr_btn_controller].txture)
+srcs/input/event_controller.c:46:					++doom->ui.curr_btn_controller;
+srcs/input/event_controller.c:48:			else if (doom->ui.m_status == 3 && doom->ui.btnopt[doom->ui.curr_btn_controller].func)
+srcs/input/event_controller.c:49:				++doom->ui.curr_btn_controller;
+srcs/input/event_controller.c:54:	ft_printf("%d\t%d\tcurr : %d\tStatus : %d\n", e.jbutton.button, e.jbutton.state, doom->ui.curr_btn_controller, doom->ui.m_status);
+srcs/input/event_handler.c:101:			doom->controller = SDL_GameControllerOpen(0);
+srcs/input/event_handler.c:110:			controller_handler(doom, &doom->game.player, event);
+srcs/input/event_handler_doom.c:17:	doom->game.camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
+srcs/input/event_handler_doom.c:30:		SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
+srcs/input/event_handler_doom.c:31:		if (doom->sdl.size.x % 4) // Pour le Multithreading (Lignes noires si pas fait)
+srcs/input/event_handler_doom.c:32:			SDL_SetWindowSize(doom->sdl.win, doom->sdl.size.x += doom->sdl.size.x % 4, doom->sdl.size.y);
+srcs/input/event_handler_doom.c:33:		if (doom->sdl.txture)
+srcs/input/event_handler_doom.c:34:			SDL_DestroyTexture(doom->sdl.txture);
+srcs/input/event_handler_doom.c:35:		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
+srcs/input/event_handler_doom.c:37:						doom->sdl.size.x, doom->sdl.size.y);
+srcs/input/event_handler_doom.c:38:		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
+srcs/input/event_handler_doom.c:40:		doom->sdl.screen = (Uint32 *)tmp;
+srcs/input/event_handler_doom.c:43:	else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && doom->ui.m_status == 0)
+srcs/input/event_handler_doom.c:47:	if (doom->ui.m_status == 2)
+srcs/input/event_handler_doom.c:52:	else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+srcs/input/event_handler_doom.c:59:	//if (doom->map)
+srcs/input/event_handler_doom.c:80:	if (doom->edit.status == 1)
+srcs/input/event_handler_doom.c:81:		doom->edit.status = 0;
+srcs/input/event_handler_doom.c:92:		if (!(doom->controller) && SDL_NumJoysticks() && SDL_IsGameController(0))
+srcs/input/event_handler_doom.c:93:			doom->controller = SDL_GameControllerOpen(0);
+srcs/input/event_handler_doom.c:95:	else if (e.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
+srcs/input/event_handler_doom.c:96:		SDL_GameControllerClose(doom->controller);
+srcs/input/event_handler_doom.c:99:		if (doom->ui.m_status == 0)
+srcs/input/event_handler_doom.c:109:		mouse_press((e.wheel.y > 0 ? 4 : 5), doom->sdl.m_pos.x, doom->sdl.m_pos.y, doom);
+srcs/input/event_handler_editor.c:21:		tmp = doom->edit.size;
+srcs/input/event_handler_editor.c:22:		SDL_GetWindowSize(doom->edit.win, &(doom->edit.size.x), &(doom->edit.size.y));
+srcs/input/event_handler_editor.c:23:		doom->edit.mappos.x += (doom->edit.size.x - tmp.x) / 2;
+srcs/input/event_handler_editor.c:24:		doom->edit.mappos.y += (doom->edit.size.y - tmp.y) / 2;
+srcs/input/event_handler_editor.c:25:		doom->edit.sectbox.h = doom->edit.size.y - doom->edit.sectbox.y;
+srcs/input/event_handler_editor.c:26:		doom->edit.optbox.h = doom->edit.size.y - doom->edit.optbox.y;
+srcs/input/event_handler_editor.c:27:		doom->edit.optbox.x = doom->edit.size.x - doom->edit.optbox.w;
+srcs/input/event_handler_editor.c:28:		doom->edit.txtrbox.x = doom->edit.size.x / 2.1 - doom->edit.txtrbox.w / 2;
+srcs/input/event_handler_editor.c:29:		doom->edit.txtrbox.h = doom->edit.size.y - doom->edit.txtrbox.y;
+srcs/input/event_handler_editor.c:44:	if (doom->edit.status != 1)
+srcs/input/event_handler_editor.c:45:		doom->edit.status = 1;
+srcs/input/event_handler_editor.c:52:		if (!(doom->controller) && SDL_NumJoysticks() && SDL_IsGameController(0))
+srcs/input/event_handler_editor.c:53:			doom->controller = SDL_GameControllerOpen(0);
+srcs/input/event_handler_editor.c:55:	else if (e.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
+srcs/input/event_handler_editor.c:56:		SDL_GameControllerClose(doom->controller);
+srcs/input/event_handler_editor.c:62:		editor_mouse_move(e.motion, &doom->edit);
+srcs/input/event_handler_editor.c:64:		editor_mouse_press(e.button, &doom->edit);
+srcs/input/event_handler_editor.c:66:		editor_mouse_wheel(e.wheel, &(doom->edit));
+srcs/input/input_hook.c:53:	if (doom->ui.curr_btn_controller > 0)
+srcs/input/input_hook.c:54:		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
+srcs/input/input_hook.c:57:		if (doom->ui.m_status == 0)
+srcs/input/input_hook.c:59:		else if (doom->ui.m_status == 4)
+srcs/input/input_hook.c:64:	else if (key == SDLK_r && !doom->ui.m_status)
+srcs/input/input_hook.c:65:		reload(&doom->game.player.hand);
+srcs/input/input_hook.c:66:	else if (key == SDLK_e && !doom->ui.m_status)
+srcs/input/input_hook.c:67:		action(&doom->game.player, &doom->game.player.stat);
+srcs/input/input_hook.c:68:	else if (key == SDLK_LGUI && !doom->ui.m_status && doom->game.player.stat.jetpack)
+srcs/input/input_hook.c:69:		crouch(&doom->game.player);
+srcs/input/input_hook.c:72:		describe_player(doom->game.player);
+srcs/input/input_hook.c:73:		describe_sector_recursif(*doom->game.sectors);
+srcs/input/input_hook.c:76:		doom->game.arch.zoom /= 2;
+srcs/input/input_hook.c:78:		doom->game.arch.zoom *= 2;
+srcs/input/input_hook.c:80:		change_music(&doom->game.sound, 10, 5000);
+srcs/input/input_hook.c:82:		save_png(&doom->sdl);
+srcs/input/input_hook.c:83:	else if (key == SDLK_v && !doom->ui.m_status)
+srcs/input/input_hook.c:84:		kick(doom, &doom->game.player);
+srcs/input/input_hook.c:85:	else if (key == SDLK_l && !doom->ui.m_status)
+srcs/input/input_hook.c:86:		doom->game.player.stat.jetpack = 1;
+srcs/input/input_hook.c:87:	else if (key == SDLK_z && !doom->ui.m_status)
+srcs/input/input_hook.c:88:		jetpack_on_off(&doom->game.player);
+srcs/input/input_hook.c:90:		doom->ui.fire = (t_pal){{0, 0x10003101, 0x14073702, 0x190f3d03, 0x1e164304,
+srcs/input/input_hook.c:96:		0xafffff23, 0xcfffff24, 0xFFFFFF25}, (doom->sdl.size.y / 80), doom->sdl.screen, &doom->sdl.size};
+srcs/input/input_hook.c:98:		doom->ui.fire = (t_pal){{0, 0x07070701, 0x1F070702, 0x2F0F0703, 0x470F0704,
+srcs/input/input_hook.c:104:		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80), doom->sdl.screen, &doom->sdl.size};
+srcs/input/input_hook.c:107:		doom->game.arch.bound.b_left += 2;
+srcs/input/input_hook.c:108:		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+srcs/input/input_hook.c:109:		clean_screen(&doom->sdl);
+srcs/input/input_hook.c:113:		doom->game.arch.bound.b_right += 2;
+srcs/input/input_hook.c:114:		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+srcs/input/input_hook.c:115:		clean_screen(&doom->sdl);
+srcs/input/input_hook.c:119:		doom->game.arch.bound.b_left -= 2;
+srcs/input/input_hook.c:120:		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+srcs/input/input_hook.c:121:		clean_screen(&doom->sdl);
+srcs/input/input_hook.c:125:		doom->game.arch.bound.b_right -= 2;
+srcs/input/input_hook.c:126:		printf("borne %f %f\n", doom->game.arch.bound.b_left, doom->game.arch.bound.b_right);
+srcs/input/input_hook.c:127:		clean_screen(&doom->sdl);
+srcs/input/input_hook.c:130:		ft_nodeadd_int(&(doom->sdl.keys), key);
+srcs/input/input_hook.c:142:	ft_noderm_int(&(doom->sdl.keys), key);
+srcs/input/input_hook.c:144:		sprint_release(&doom->game.player.stat);
+srcs/input/input_hook.c:146:		crouch_release(&doom->game.player);
+srcs/input/input_hook.c:163:		//doom->ui.curr_btn = NULL;
+srcs/input/input_hook.c:169:			if (doom->ui.m_status != 0)
+srcs/input/input_hook.c:171:			else if (!(doom->game.player.hand.rate))
+srcs/input/input_hook.c:172:				shoot(&doom->game.player);
+srcs/input/input_hook.c:174:				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
+srcs/input/input_hook.c:178:		//fire_on_off(doom->sdl.screen, doom->sdl.size, 0); // Debug thing
+srcs/input/input_hook.c:180:		next_weapon(&doom->game.player);
+srcs/input/input_hook.c:182:		prev_weapon(&doom->game.player);
+srcs/input/input_hook.c:194:	doom->ui.currslid = NULL;
+srcs/input/input_hook.c:198:	if (btn == SDL_BUTTON_LEFT && doom->game.player.hand.rate)
+srcs/input/input_hook.c:199:		ft_noderm_int(&(doom->sdl.keys), btn);
+srcs/input/input_hook.c:211:	doom->sdl.m_pos.x = x;
+srcs/input/input_hook.c:212:	doom->sdl.m_pos.y = y;
+srcs/input/input_hook.c:213:	doom->ui.curr_btn = btn_hover(doom, x, y);
+srcs/input/input_hook.c:214:	if (doom->ui.curr_btn && doom->ui.curr_btn->func)
+srcs/input/input_hook.c:218:	if (doom->ui.m_status == 0)
+srcs/input/input_hook.c:220:		doom->game.player.stat.rot.y -= x / SENSIBILITY;
+srcs/input/input_hook.c:221:		doom->game.player.stat.rot.x -= y / (SENSIBILITY * 2);
+srcs/input/input_hook.c:224:	if (doom->ui.currslid)
+srcs/input/input_hook.c:227:		tmp = doom->ui.currslid;
+srcs/input/input_hook.c:229:		if (tmp == &(doom->ui.slidopt[0]))
+srcs/input/input_hook.c:230:			doom->game.camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
+srcs/input/input_hook.c:231:		else if (tmp == &(doom->ui.slidopt[1]))
+srcs/input/input_hook.c:232:			Mix_VolumeMusic(doom->game.sound.musicvolume);
+srcs/input/input_hook.c:233:		else if (tmp == &(doom->ui.slidopt[2]))
+srcs/input/input_hook.c:234:			effect_volume(&doom->game.sound);
+srcs/input/keyboard_input.c:39:		//describe_sector_recursif(*doom->sector);
+srcs/input/keyboard_input.c:46:		doom->game.player.stat.rot.y -= 5;
+srcs/input/keyboard_input.c:48:		doom->game.player.stat.rot.y += 5;
+srcs/input/keyboard_input.c:49:	//else if (key == SDLK_r && doom->game.player.stat.rot.x + 5 < 180)
+srcs/input/keyboard_input.c:50:	//	doom->game.player.stat.rot.x += 5;
+srcs/input/keyboard_input.c:51:	//else if (key == SDLK_f && doom->game.player.stat.rot.x - 5 > 0)
+srcs/input/keyboard_input.c:52:	//	doom->game.player.stat.rot.x -= 5;
+srcs/input/keyboard_input.c:54:		doom->game.player.stat.sector->h_ceil += 0.5;
+srcs/input/keyboard_input.c:56:		doom->game.player.stat.sector->h_ceil -= 0.5;
+srcs/input/keyboard_input.c:57:	printf("player rot %f\n", doom->game.player.stat.sector->h_ceil);
+srcs/input/keyboard_input.c:58:	doom->game.player.stat.rot.y = double_modulo(doom->game.player.stat.rot.y);
+srcs/input/keyboard_input.c:69:		mvt_input(&doom->game.player, key);
+srcs/input/loop_hook.c:29:		doom->game.player.stat.vel.x = -doom->game.player.stat.speed;
+srcs/input/loop_hook.c:31:		doom->game.player.stat.vel.x = doom->game.player.stat.speed;
+srcs/input/loop_hook.c:33:		doom->game.player.stat.vel.y = -doom->game.player.stat.speed;
+srcs/input/loop_hook.c:35:		doom->game.player.stat.vel.y = doom->game.player.stat.speed;
+srcs/input/loop_hook.c:36:	if (!Mix_Playing(1) || prev != doom->game.player.stat.speed)
+srcs/input/loop_hook.c:38:		if (doom->game.player.stat.speed == 32700.0)
+srcs/input/loop_hook.c:39:			Mix_PlayChannel(1, doom->game.sound.tab_effect[0], -1);
+srcs/input/loop_hook.c:40:		else if (doom->game.player.stat.speed == 49050.0)
+srcs/input/loop_hook.c:41:			Mix_PlayChannel(1, doom->game.sound.tab_effect[1], -1);
+srcs/input/loop_hook.c:42:		else if (doom->game.player.stat.speed == 16350.0)
+srcs/input/loop_hook.c:43:			Mix_PlayChannel(1, doom->game.sound.tab_effect[2], -1);
+srcs/input/loop_hook.c:45:	prev = doom->game.player.stat.speed;
+srcs/input/loop_hook.c:51:	//	doom->game.player.stat.vel.x = (key == SDLK_w ? 32700 : -32700);
+srcs/input/loop_hook.c:53:	//	doom->game.player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
+srcs/input/loop_hook.c:55:		doom->game.player.stat.vel.x = (key == SDLK_w ? doom->game.player.stat.speed : -doom->game.player.stat.speed);
+srcs/input/loop_hook.c:57:		doom->game.player.stat.vel.y = (key == SDLK_a ? -doom->game.player.stat.speed : doom->game.player.stat.speed);*/
+srcs/input/loop_hook.c:58:	if ((key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d) && !doom->ui.m_status)
+srcs/input/loop_hook.c:60:	else if (key == SDLK_LSHIFT && doom->game.player.stat.vel.x == doom->game.player.stat.speed && !doom->ui.m_status)
+srcs/input/loop_hook.c:61:		sprint(&doom->game.player.stat);
+srcs/input/loop_hook.c:62:	else if (key == SDLK_SPACE && !doom->ui.m_status && doom->game.player.stat.jetpack)
+srcs/input/loop_hook.c:63:		jump(&doom->game.player);
+srcs/input/loop_hook.c:64:	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
+srcs/input/loop_hook.c:65:		shoot(&doom->game.player);
+srcs/input/loop_hook.c:67:		bullet(&doom->game.player.stat);
+srcs/input/loop_hook.c:69:		play_effect(&doom->game.sound, 8);
+srcs/input/loop_hook.c:70:	else if (key == SDLK_SPACE && !doom->ui.m_status && !doom->game.player.stat.jetpack)
+srcs/input/loop_hook.c:71:		fly(&doom->game.player.stat);
+srcs/input/loop_hook.c:72:	else if (key == SDLK_LGUI && !doom->ui.m_status && !doom->game.player.stat.jetpack)
+srcs/input/loop_hook.c:73:		unfly(&doom->game.player.stat);
+srcs/input/loop_hook.c:88:	if (doom->sdl.timp / 1000 == SDL_GetTicks() / 1000)
+srcs/input/loop_hook.c:90:		++doom->sdl.fps;
+srcs/input/loop_hook.c:94:		ft_printf("\r%d FPS", doom->sdl.fps);
+srcs/input/loop_hook.c:95:		doom->sdl.fps = 0;
+srcs/input/loop_hook.c:96:		doom->sdl.timp = SDL_GetTicks();
+srcs/input/loop_hook.c:99:	wait = SDL_GetTicks() - doom->timestamp - 16; // Nombre de ms min entre chaque frame
+srcs/input/loop_hook.c:102:	doom->timestamp = SDL_GetTicks();
+srcs/input/loop_hook.c:109:	pos = doom->edit.keys;
+srcs/input/loop_hook.c:115:	SDL_RenderClear(doom->edit.rend);
+srcs/input/loop_hook.c:116:	draw_map(&doom->edit);
+srcs/input/loop_hook.c:117:	draw_sector_menu(&doom->edit, doom->ui.fonts);
+srcs/input/loop_hook.c:118:	if (doom->edit.map || doom->edit.currmur || doom->edit.currstat)
+srcs/input/loop_hook.c:119:		draw_inspect_menu(&doom->edit);
+srcs/input/loop_hook.c:120:	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
+srcs/input/loop_hook.c:121:	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
+srcs/input/loop_hook.c:122:	SDL_RenderPresent(doom->edit.rend);
+srcs/input/loop_hook.c:129:	pos = doom->sdl.keys;
+srcs/input/loop_hook.c:135:	SDL_RenderClear(doom->sdl.rend);
+srcs/input/loop_hook.c:136:	if (doom->edit.status == 1)
+srcs/input/loop_hook.c:142:		if (doom->ui.m_status == 0)
+srcs/input/loop_hook.c:145:			move(&doom->game.player.stat);
+srcs/input/loop_hook.c:152:			if (doom->ui.m_status == 5 && doom->ui.currslid == &(doom->ui.slidopt[0]))
+srcs/input/loop_hook.c:154:			else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+srcs/input/loop_hook.c:155:				sdl_MultiRenderCopy(&doom->sdl);
+srcs/input/loop_hook.c:158:				fire(&doom->ui.fire);
+srcs/input/loop_hook.c:159:				sdl_MultiRenderCopy(&doom->sdl);
+srcs/input/loop_hook.c:164:		SDL_RenderPresent(doom->sdl.rend);
+srcs/main.c:58:	Mix_FadeInMusic(doom->game.sound.tab_music[0], -1, 18000);
+srcs/manager/doom_manager.c:19:	ui_free(&doom->ui);
+srcs/manager/doom_manager.c:20:	editor_free(&doom->edit);
+srcs/manager/doom_manager.c:21:	sdl_free(&doom->sdl);
+srcs/manager/doom_manager.c:22:	music_free(&doom->game.sound);
+srcs/manager/doom_manager.c:23:	effect_free(&doom->game.sound);
+srcs/manager/doom_manager.c:40:	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
+srcs/manager/doom_manager.c:42:	if (!ui_init(&doom->ui))
+srcs/manager/doom_manager.c:44:	doom->game.camera.fov = 90;
+srcs/manager/doom_manager.c:45:	if (!arch_init(&doom->game.arch, &doom->sdl, &doom->game.camera))
+srcs/manager/doom_manager.c:47:	doom->edit.ui = &doom->ui;
+srcs/manager/doom_manager.c:48:	if (!editor_init(&doom->edit))
+srcs/manager/doom_manager.c:50:	if (!music_init(&doom->game.sound))
+srcs/manager/doom_manager.c:52:	doom->game.player.fov = 90;
+srcs/manager/doom_manager.c:53:	ui_by_sdl(doom, &doom->ui);
+srcs/manager/doom_manager.c:54:	SDL_RaiseWindow(doom->sdl.win);
+srcs/manager/doom_manager.c:55:	doom->debug = 0;
+srcs/manager/editor_manager.c:17:	ft_clear_pillar_list(&(doom->edit.pillist));
+srcs/manager/editor_manager.c:18:	if (doom->edit.sectors)
+srcs/manager/editor_manager.c:19:		ft_clear_secteur_list(&(doom->edit.sectors));
+srcs/manager/editor_manager.c:20:	if (doom->edit.ennlist)
+srcs/manager/editor_manager.c:21:		ft_clear_entity_list(&(doom->edit.ennlist));
+srcs/manager/editor_manager.c:22:	doom->edit.map = NULL;
+srcs/manager/editor_manager.c:23:	SDL_HideWindow(doom->edit.win);
+srcs/manager/editor_manager.c:24:	SDL_RaiseWindow(doom->sdl.win);
+srcs/manager/editor_manager.c:25:	doom->edit.status = 0;
+srcs/manager/editor_manager.c:31:	//doom->edit.pillist = ft_newpillar((t_vct2){0, 0});
+srcs/manager/editor_manager.c:32:	doom->edit.sectors = ft_newsector(doom->edit.txtrgame[0], doom->edit.txtrgame[0]);
+srcs/manager/editor_manager.c:33:	doom->edit.map = doom->edit.sectors;
+srcs/manager/editor_manager.c:34:	doom->edit.player.stat.sector = doom->edit.map;
+srcs/manager/editor_manager.c:35:	doom->edit.player.stat.type = 100;
+srcs/manager/editor_manager.c:36:	SDL_ShowWindow(doom->edit.win);
+srcs/manager/editor_manager.c:37:	SDL_RaiseWindow(doom->edit.win);
+srcs/manager/editor_manager.c:38:	doom->edit.status = 1;
+srcs/manager/sdl_manager.c:16:	doom->ui.curr_btn = NULL;
+srcs/manager/sdl_manager.c:19:		doom->ui.m_status = 0;
+srcs/manager/sdl_manager.c:25:		doom->ui.m_status = 1;
+srcs/manager/sdl_manager.c:26:		doom->ui.curr_btn_controller = -2;
+srcs/manager/sdl_manager.c:28:		fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
+srcs/manager/sdl_manager.c:33:		doom->ui.m_status = 2;
+srcs/manager/sdl_manager.c:34:		doom->ui.curr_btn_controller = -3;
+srcs/manager/sdl_manager.c:40:		doom->ui.m_status = 3;
+srcs/manager/sdl_manager.c:41:		doom->ui.curr_btn_controller = -1;
+srcs/manager/sdl_manager.c:46:		doom->ui.m_status = 4;
+srcs/manager/sdl_manager.c:47:		doom->ui.curr_btn_controller = -1;
+srcs/manager/sdl_manager.c:51:		doom->ui.m_status = 5;
+srcs/manager/sdl_manager.c:52:		doom->ui.curr_btn_controller = -1;
+srcs/parsing/load_textures.c:17://	if (!(surf = SDL_ConvertSurface(tmp, doom->sdl.format, 0)))
+srcs/parsing/parsing.c:62:			chunk_texture(&doom->sdl, &doom->arch, fd);
+srcs/parsing/parsing.c:66:			doom->sector = chunck_sector(fd, &doom->arch);
+srcs/parsing/parsing.c:70:			doom->game.player = chunck_player(fd);
+srcs/parsing/parsing.c:71:			doom->game.player.stat.sector = search_sector(doom->sector, line + 5);
+srcs/parsing/parsing.c:72:			doom->game.player.stat.pos.z = doom->game.player.stat.sector->h_floor;
+srcs/parsing/parsing.c:73:			doom->camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
+srcs/parsing/parsing.c:74:			printf("%d\n", doom->sdl.size.x);
+srcs/readfile.c:395:	if ((rtn = read_textures(fd, &(doom->game.gamesurf), len)))
+srcs/readfile.c:397:	if ((rtn = read_pillars(fd, &doom->game.pillars, len)))
+srcs/readfile.c:399:	if ((rtn = read_sectors(fd, &doom->game, len)))
+srcs/readfile.c:401:	if ((rtn = read_player(fd, &doom->game, &doom->game.player, len)))
+srcs/readfile.c:403:	if ((rtn = read_enemies(fd, &doom->game, len)))
+srcs/render/minimap_drawer.c:85:		cursor = minipoint(&doom->game.player, wall[i].pillar->p, mini);
+srcs/render/minimap_drawer.c:86:		cursor2 = minipoint(&doom->game.player, wall[i].next->p, mini);
+srcs/render/render.c:45:	doom->game.arch.depth_portal = 0;
+srcs/render/render.c:46:	doom->game.arch.wall = NULL;
+srcs/render/render.c:47:	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
+srcs/render/render.c:49:	debug_screen_copy(&doom->game.arch);
+srcs/render/render.c:50:	sdl_MultiRenderCopy(&doom->sdl);
+srcs/render/render.c:51:	architect_reset(&doom->game.arch);
+srcs/render/render.c:52:	clear_screen(&doom->sdl);
+srcs/render/render.c:53:	ft_bzero(&doom->game.arch.sc_debug, sizeof(Uint32) * doom->sdl.size.x * doom->sdl.size.y);
+srcs/slider_function.c:19:	updateText(doom->sdl.rend, doom->ui.fonts.s32, &slid->txture, NULL,
+srcs/slider_function.c:39:	update_loc(doom->sdl.size, &tmp->loc, *(tmp->loc.parent));
+srcs/slider_function.c:45:	SDL_RenderFillRect(doom->sdl.rend, &tmp->loc.area);
+srcs/slider_function.c:46:	SDL_RenderCopy(doom->sdl.rend, tmp->label, NULL, &tmp->griplabel);
+srcs/slider_function.c:47:	if (doom->ui.currslid == tmp)
+srcs/slider_function.c:48:		SDL_SetRenderDrawColor(doom->sdl.rend, 191, 35, 54, 255);
+srcs/slider_function.c:50:		SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
+srcs/slider_function.c:51:	SDL_RenderDrawRect(doom->sdl.rend, &tmp->loc.area);
+srcs/slider_function.c:52:	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
+srcs/slider_function.c:53:	SDL_RenderCopy(doom->sdl.rend, tmp->txture, NULL, &tmp->grip);
+srcs/tools/musi.c:54:	doom->game.sound.on += 1;
+srcs/tools/musi.c:55:	if (!(doom->game.sound.on % doom->game.sound.maxmusic))
+srcs/tools/musi.c:56:		doom->game.sound.on = 1;
+srcs/tools/musi.c:57:	change_music(&doom->game.sound, doom->game.sound.on, 5000);
+srcs/tools/musi.c:58:	tmp[7] = doom->game.sound.on + '0';
+srcs/tools/musi.c:59:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
+srcs/tools/musi.c:67:	doom->game.sound.on -= 1;
+srcs/tools/musi.c:68:	if (!(doom->game.sound.on))
+srcs/tools/musi.c:69:		doom->game.sound.on = doom->game.sound.maxmusic - 1;
+srcs/tools/musi.c:70:	change_music(&doom->game.sound, doom->game.sound.on, 5000);
+srcs/tools/musi.c:71:	tmp[7] = doom->game.sound.on + '0';
+srcs/tools/musi.c:72:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
+srcs/tools/sdl_tools.c:168:	printf(" %s %u |", str, SDL_GetTicks() - doom->timestamp);
+srcs/tools/sdl_tools.c:169:	doom->timestamp = SDL_GetTicks();
+srcs/ui/button_action.c:21:	while (doom->ui.btnmap[++i].txture)
+srcs/ui/button_action.c:23:		tmp = doom->ui.btnmap[i];
+srcs/ui/button_action.c:44:	while (doom->ui.slidopt[++i].txture)
+srcs/ui/button_action.c:46:		stmp = doom->ui.slidopt[i];
+srcs/ui/button_action.c:49:			doom->ui.currslid = &(doom->ui.slidopt[i]);
+srcs/ui/button_action.c:56:	if (doom->ui.m_status == 2)
+srcs/ui/button_action.c:58:	else */if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
+srcs/ui/button_drawer.c:21:		SDL_RenderCopy(doom->sdl.rend, btnarr[x].txture,
+srcs/ui/button_drawer.c:74:	status = doom->ui.m_status;
+srcs/ui/button_drawer.c:77:		update_loc_buttons(doom->sdl.size, doom->ui.btnarr);
+srcs/ui/button_drawer.c:78:		draw_buttons(doom, doom->ui.btnarr);
+srcs/ui/button_drawer.c:79:		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnarr[doom->ui.curr_btn_controller - 1].func)
+srcs/ui/button_drawer.c:80:			doom->ui.curr_btn = &(doom->ui.btnarr[doom->ui.curr_btn_controller - 1]);
+srcs/ui/button_drawer.c:84:		update_loc_buttons(doom->sdl.size, doom->ui.btnmap);
+srcs/ui/button_drawer.c:85:		draw_buttons(doom, doom->ui.btnmap);
+srcs/ui/button_drawer.c:86:		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnmap[doom->ui.curr_btn_controller - 1].txture)
+srcs/ui/button_drawer.c:87:			doom->ui.curr_btn = &(doom->ui.btnmap[doom->ui.curr_btn_controller - 1]);
+srcs/ui/button_drawer.c:91:		update_loc_buttons(doom->sdl.size, doom->ui.btnopt);
+srcs/ui/button_drawer.c:92:		draw_buttons(doom, doom->ui.btnopt);
+srcs/ui/button_drawer.c:93:		draw_slid(doom, &doom->ui.slidopt[0]);
+srcs/ui/button_drawer.c:94:		draw_slid(doom, &doom->ui.slidopt[1]);
+srcs/ui/button_drawer.c:95:		draw_slid(doom, &doom->ui.slidopt[2]);
+srcs/ui/button_drawer.c:96:		if (doom->ui.curr_btn_controller > 0 && doom->ui.btnopt[doom->ui.curr_btn_controller - 1].func)
+srcs/ui/button_drawer.c:97:			doom->ui.curr_btn = &(doom->ui.btnopt[doom->ui.curr_btn_controller - 1]);
+srcs/ui/button_drawer.c:101:		update_loc_buttons(doom->sdl.size, doom->ui.btnpse);
+srcs/ui/button_drawer.c:102:		draw_buttons(doom, doom->ui.btnpse);
+srcs/ui/button_drawer.c:104:	if (doom->ui.curr_btn)
+srcs/ui/button_drawer.c:106:		if (((doom->ui.curr_btn->func || doom->ui.curr_btn->data)))
+srcs/ui/button_drawer.c:107:			draw_hover(doom, doom->ui.curr_btn, NULL);
+srcs/ui/button_hover.c:35:	if (doom->ui.m_status == 1)
+srcs/ui/button_hover.c:36:		return (on_menu(doom->ui.btnarr, x, y));
+srcs/ui/button_hover.c:37:	else if (doom->ui.m_status == 2)
+srcs/ui/button_hover.c:38:		return(on_menu(doom->ui.btnmap, x, y));
+srcs/ui/button_hover.c:39:	else if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
+srcs/ui/button_hover.c:40:		return(on_menu(doom->ui.btnopt, x, y));
+srcs/ui/button_hover.c:41:	else if (doom->ui.m_status == 4)
+srcs/ui/button_hover.c:42:		return(on_menu(doom->ui.btnpse, x, y));
+srcs/ui/button_hover.c:57:		SDL_RenderDrawRect(doom->sdl.rend, &rect);
+srcs/ui/button_hover.c:66:		SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
+srcs/ui/button_hover.c:67:		SDL_RenderCopy(doom->sdl.rend, new->txture, NULL, &(rect));
+srcs/ui/button_hover.c:68:		//SDL_RenderDrawRect(doom->sdl.rend, &rect);
+srcs/ui/button_hover.c:69:		SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
+srcs/ui/button_loader.c:17:	SDL_DestroyTexture(doom->ui.btnmap[y].txture);
+srcs/ui/button_loader.c:18:	doom->ui.btnmap[y].txture = NULL;
+srcs/ui/button_loader.c:19:	free(doom->ui.btnmap[y].data);
+srcs/ui/button_loader.c:34:			if (doom->ui.btnmap[y].txture)
+srcs/ui/button_loader.c:36:			doom->ui.btnmap[y] = add_map_button(doom, &(tmp[15]));
+srcs/ui/button_loader.c:37:			doom->ui.btnmap[y].data = ft_strdup(tmp);
+srcs/ui/button_loader.c:52:		if (doom->ui.btnmap[y].txture)
+srcs/ui/button_loader.c:59:	if (doom->ui.btnmap[y].txture)
+srcs/ui/fire.c:36:	doom->ui.fire = (t_pal){{0, 0x07070701, 0x1F070702, 0x2F0F0703, 0x470F0704,
+srcs/ui/fire.c:42:		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80), doom->sdl.screen, &doom->sdl.size};
+srcs/ui/fire.c:43:	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
+srcs/ui/init_btns.c:31:	updateText(doom->sdl.rend, doom->ui.fonts.s128, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns.c:52:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns.c:73:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns.c:94:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns2.c:32:	updateText(doom->sdl.rend, doom->ui.fonts.s32, &tmp.txture, &rect,
+srcs/ui/init_btns2.c:54:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns2.c:75:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns3.c:31:	updateText(doom->sdl.rend, doom->ui.fonts.s128, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns3.c:52:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns3.c:73:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns3.c:94:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns3.c:115:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns3.c:134:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_btns3.c:152:	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
+srcs/ui/init_slids.c:22:	tmp.txture = SDL_CreateTexture(doom->sdl.rend,
+srcs/ui/init_slids.c:24:	slidtext = TTF_RenderText_Solid(doom->ui.fonts.s32, " FOVNITE",
+srcs/ui/init_slids.c:27:	tmp.label = SDL_CreateTextureFromSurface(doom->sdl.rend, slidtext);
+srcs/ui/init_slids.c:36:	tmp.val = &doom->game.player.fov;
+srcs/ui/init_slids.c:49:	tmp.txture = SDL_CreateTexture(doom->sdl.rend,
+srcs/ui/init_slids.c:51:	slidtext = TTF_RenderText_Solid(doom->ui.fonts.s32, " Music Volume",
+srcs/ui/init_slids.c:54:	tmp.label = SDL_CreateTextureFromSurface(doom->sdl.rend, slidtext);
+srcs/ui/init_slids.c:63:	tmp.val = &doom->game.sound.musicvolume;
+srcs/ui/init_slids.c:76:	tmp.txture = SDL_CreateTexture(doom->sdl.rend,
+srcs/ui/init_slids.c:78:	slidtext = TTF_RenderText_Solid(doom->ui.fonts.s32, " Effects Volume",
+srcs/ui/init_slids.c:81:	tmp.label = SDL_CreateTextureFromSurface(doom->sdl.rend, slidtext);
+srcs/ui/init_slids.c:90:	tmp.val = &doom->game.sound.effectvolume;
