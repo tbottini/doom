@@ -46,32 +46,23 @@ void			pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag)
 {
 	double		percent_tmp;
 	double		*percent;
-	double		*depth;
-	double		*decal;
 	t_fvct2		*pillar;
 
 	if (flag == PILLAR)
 	{
 		percent = &arch->shift_txtr.x;
-		depth = &arch->depth.x;
-		decal = &arch->decal.x;
 		pillar = &arch->pillar;
 	}
 	else
 	{
 		percent = &arch->shift_txtr.y;
-		depth = &arch->depth.y;
-		decal = &arch->decal.y;
 		pillar = &arch->next;
 	}
-	if (arch->depth.x == arch->depth.y)
+	if (arch->pillar.x == arch->next.x)
 		percent_tmp = (inter.y - arch->pillar.y) / (arch->next.y - arch->pillar.y);
 	else
 		percent_tmp = (inter.x - arch->pillar.x) / (arch->next.x - arch->pillar.x);
 	*percent = percent_tmp * (arch->shift_txtr.y - arch->shift_txtr.x) + arch->shift_txtr.x;
-
-	*depth = inter.x;
-	*decal = inter.y;
 	*pillar = inter;
 	//recupere le pixel de depart
 }

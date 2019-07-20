@@ -337,9 +337,6 @@ typedef struct 			s_arch
 	SDL_Surface			**texture;
 	uint16_t			depth_portal;
 
-	t_fvct2				depth;
-	t_fvct2				decal;
-
 	t_fvct2				pillar;
 	t_fvct2				next;
 
