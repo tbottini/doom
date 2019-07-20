@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 14:17:05 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 19:01:20 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 	return (val > 0) ? 1 : 2;
 }
 
-int			can_pass(t_stat *stat, int i)
+int			can_pass(t_stat *stat, int i, t_wall **port)
 {
 	t_sector *next;
 
@@ -36,10 +36,13 @@ int			can_pass(t_stat *stat, int i)
 				stat->sector = next;
 				if (stat->pos.z <= next->h_floor)
 					stat->pos.z = next->h_floor;
+				*port = NULL;
 				return (1);
 			}
 		}
+		return (-1);
 	}
+	*port = &stat->sector->wall[i];
 	return (0);
 }
 
@@ -67,17 +70,17 @@ t_wall		*collisionV21(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 	return (NULL);
 }
 
-int			colli_teleport(t_stat *stat, t_sector *sector, t_fvct3 ori, t_fvct3 pos)
+int			colli_teleport(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **wall)
 {
 	int		i;
 
 	i = -1;
 	while (++i < sector->len)
 	{
-		if (vector_intersect(ori, pos, *(t_fvct3*)&sector->wall[i].pillar->p,
+		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p,
 			*(t_fvct3*)&sector->wall[i].next->p))
 		{
-			return (can_pass(stat, i));
+			return (can_pass(stat, i, wall));
 		}
 	}
 	return (0);
