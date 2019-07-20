@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_handler_editor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/21 12:52:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/16 16:34:12 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,32 +41,31 @@ static void		window_event(t_doom *doom, SDL_Event e)
 
 int event_handler_editor(t_doom *doom, SDL_Event e)
 {
-	if (doom->edit.status != 1)
-		doom->edit.status = 1;
+	if (!doom->edit.status)
+		doom->edit.status = ED_LOADED;
 	if (e.type == SDL_QUIT)
 		return (close_editor(doom));
-	else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
-		doom_exit(doom);
 	else if (e.type == SDL_WINDOWEVENT)
 		window_event(doom, e);
-	else if (e.type == SDL_CONTROLLERDEVICEADDED)
+	else if (doom->edit.status == ED_WRITING || doom->edit.status == ED_SAVING)
 	{
-		if (!(doom->controller) && SDL_NumJoysticks() && SDL_IsGameController(0))
-			doom->controller = SDL_GameControllerOpen(0);
+		if (e.type == SDL_KEYDOWN)
+			write_hook(doom, doom->edit.filename, e.key);
 	}
-	else if (e.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
-		SDL_GameControllerClose(doom->controller);
-	else if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
-		editor_key_press(e.key.keysym.sym, doom);
-	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
-		editor_key_release(e.key.keysym.sym, doom);
-	else if (e.type == SDL_MOUSEMOTION)
-		editor_mouse_move(e.motion, &doom->edit);
-	else if (e.type == SDL_MOUSEBUTTONDOWN)
-		editor_mouse_press(e.button, &doom->edit);
-	else if (e.type == SDL_MOUSEWHEEL)
-		editor_mouse_wheel(e.wheel, &(doom->edit));
-	else if (e.type == SDL_MOUSEBUTTONUP)
-		editor_mouse_release(e.button.button, e.button.x, e.button.y, doom);
+	else
+	{
+		if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+			editor_key_press(e.key.keysym.sym, doom);
+		else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+			editor_key_release(e.key.keysym.sym, doom);
+		else if (e.type == SDL_MOUSEMOTION)
+			editor_mouse_move(e.motion, &doom->edit);
+		else if (e.type == SDL_MOUSEBUTTONDOWN)
+			editor_mouse_press(e.button, &doom->edit);
+		else if (e.type == SDL_MOUSEWHEEL)
+			editor_mouse_wheel(e.wheel, &(doom->edit));
+		else if (e.type == SDL_MOUSEBUTTONUP)
+			editor_mouse_release(e.button.button, e.button.x, e.button.y, doom);
+	}
 	return (0);
 }

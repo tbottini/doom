@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   gameover.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/05/09 20:14:03 by tbottini         ###   ########.fr       */
+/*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
+/*   Updated: 2019/07/20 18:33:48 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-int	main(int ac, char **av)
+void		game_over(t_doom *doom, bool win)
 {
-	t_doom		*doom;
-
-	if (ac < 2)
-	{
-		ft_putendl("no args");
-		return (0);
-	}
-	doom = (t_doom*)malloc(sizeof(t_doom));
-	if (!parsing(doom, av[1]))
-	{
-		ft_putendl("bad parsing");
-		return (0);
-	}
-	return (0);
+	//changer m status
+	free_game(&doom->game);
+	if (win)
+		;//Afficher Fin du Jeu
+	else
+		;//Afficher Game over sur X frames;
+	//lancer menu principal
 }

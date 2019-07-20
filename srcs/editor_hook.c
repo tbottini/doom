@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 14:26:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 18:10:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@
 **		action();
 */
 
-int editor_key_press(int key, t_doom *doom)
+int		editor_key_press(int key, t_doom *doom)
 {
 	t_vct2 relpos;
 
 	if (key == SDLK_BACKQUOTE)
-	{
 		close_editor(doom);
-	}
 	else if (key == SDLK_RETURN)
 	{
-		save_editor_to_file(&doom->edit);
+		doom->edit.currmur = NULL;
+		doom->edit.currstat = NULL;
+		doom->edit.status = ED_SAVING;
 	}
 	else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 	{
@@ -76,11 +76,56 @@ int editor_key_release(int key, t_doom *doom)
 **		action();
 */
 
-int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
+void editor_mouse_left(SDL_MouseButtonEvent e, t_editor *edit)
 {
 	t_vct2 relpos;
-	SDL_Texture *txtrclick;
 
+	edit->currmur = NULL;
+	edit->currstat = NULL;
+	if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
+	{
+		if (!(edit->currstat = find_player(edit, e.x, e.y)))
+			edit->currmur = find_mur(edit, edit->map, e.x, e.y);
+		else
+			edit->currmur = edit->hovermur;
+	}
+	if (e.clicks == 2)
+	{
+		relpos = get_rel_mappos(edit, e.x, e.y);
+		if (!ft_pillarpushend(&edit->pillist, relpos))
+			ft_printf("Error adding pillar\n");
+	}
+}
+
+void editor_mouse_right(SDL_MouseButtonEvent e, t_editor *edit)
+{
+	if (edit->map && edit->currpilier && edit->hoverpilier)
+	{
+		ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier, edit->txtrgame[0]);
+	}
+	else if (edit->currstat)
+	{
+		if (!(ISENEMY(edit->currstat->type)) && &edit->player.stat != edit->currstat)
+		{
+			if (!(edit->currstat->mur = edit->hovermur))
+				edit->currstat->mursec = NULL;
+			else
+				edit->currstat->mursec = edit->map;
+		}
+	}
+	else if (e.clicks == 2)
+	{
+		ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
+		if (edit->currmur == edit->hovermur)
+			edit->currmur = NULL;
+		ft_removewall(&edit->map->murs, &edit->hovermur);
+	}
+}
+
+int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
+{
+	if (edit->status != ED_LOADED)
+		return (0);
 	if (pos_in_rect(edit->sectbox, e.x, e.y)) // If menu left
 	{
 		if (edit->currstat)
@@ -103,71 +148,17 @@ int editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit)
 	}
 	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, e.x, e.y)) // If menu texture
 	{
-		if (edit->selecttxtr == FILL_PROP && edit->currstat && ISPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
-		{
-			edit->currstat->type = e.x;
-			edit->selecttxtr = NOSELECT;
-		}
-		else if (edit->selecttxtr == FILL_WPROP && edit->currstat && ISWALLPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINWPROPSPOS, MAXWPROPSNUMBER)))
-		{
-			edit->currstat->type = e.x;
-			edit->selecttxtr = NOSELECT;
-		}
-		else if ((txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
-		{
-			if (edit->currmur)
-				edit->currmur->txtr = txtrclick;
-			else if (edit->map)
-			{
-				if (edit->selecttxtr == FILL_TXTR)
-					edit->map->top = txtrclick;
-				else if (edit->selecttxtr == FILL_SOL)
-					edit->map->sol = txtrclick;
-			}
-			edit->selecttxtr = NOSELECT;
-		}
+		texturebox_click(edit, e);
 		return (0);
 	}
 	edit->selecttxtr = NOSELECT;
-	relpos = get_rel_mappos(edit, e.x, e.y);
 	if (e.button == SDL_BUTTON_LEFT)
 	{
-		edit->currmur = NULL;
-		edit->currstat = NULL;
-		if (!(edit->currpilier = find_pilier(edit, edit->pillist, e.x, e.y)))
-		{
-			if (!(edit->currstat = find_player(edit, e.x, e.y)))
-				edit->currmur = find_mur(edit, edit->map, e.x, e.y);
-			else
-				edit->currmur = edit->hovermur;
-		}
-		if (e.clicks == 2)
-			if (!ft_pillarpushend(&edit->pillist, relpos))
-				ft_printf("Error adding pillar\n");
+		editor_mouse_left(e, edit);
 	}
 	else if (e.button == SDL_BUTTON_RIGHT)
 	{
-		if (edit->currpilier && edit->hoverpilier)
-		{
-			ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier, edit->txtrgame[0]);
-		}
-		else if (edit->currstat)
-		{
-			if (!(ISENEMY(edit->currstat->type)) && &edit->player.stat != edit->currstat)
-			{
-				if (!(edit->currstat->mur = edit->hovermur))
-					edit->currstat->mursec = NULL;
-				else
-					edit->currstat->mursec = edit->map;
-			}
-		}
-		else if (e.clicks == 2)
-		{
-			ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
-			if (edit->currmur == edit->hovermur)
-				edit->currmur = NULL;
-			ft_removewall(&edit->map->murs, &edit->hovermur);
-		}
+		editor_mouse_right(e, edit);
 	}
 	return (0);
 }
@@ -188,51 +179,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	}
 	else if (pos_in_rect(edit->optbox, edit->mouse.x, edit->mouse.y))
 	{
-		e.x = (edit->mouse.y - edit->sectscroll) / SECTORBOXHEIGHT;
-		if (e.x == 0 && edit->currstat)
-		{
-			if (edit->currstat == &edit->player.stat)
-			{
-				if (edit->currstat->type + e.y < 10)
-					edit->currstat->type = 10;
-				else if (edit->currstat->type + e.y > 250)
-					edit->currstat->type = 250;
-				else
-					edit->currstat->type += e.y;
-			}
-			if (ISPROP(edit->currstat->type))
-			{
-				if (edit->currstat->type + e.y < MINPROPSPOS)
-					edit->currstat->type = MINPROPSPOS;
-				else if (edit->currstat->type + e.y >= MAXPROPSPOS)
-					edit->currstat->type = MAXPROPSPOS - 1;
-				else
-					edit->currstat->type += e.y;
-			}
-			else if (ISWALLPROP(edit->currstat->type))
-			{
-				if (edit->currstat->type + e.y < MINWPROPSPOS)
-					edit->currstat->type = MINWPROPSPOS;
-				else if (edit->currstat->type + e.y >= MAXWPROPSPOS)
-					edit->currstat->type = MAXWPROPSPOS - 1;
-				else
-					edit->currstat->type += e.y;
-			}
-		}
-		else if (e.x == 2 && edit->map)
-		{
-			if (edit->map->htop + e.y * 5 < 0)
-				edit->map->htop = 0;
-			else
-				edit->map->htop += e.y * 5;
-		}
-		else if (e.x == 3 && edit->map)
-		{
-			if (edit->map->hsol + e.y * 5 < 0)
-				edit->map->hsol = 0;
-			else
-				edit->map->hsol += e.y * 5;
-		}
+		opt_menu_wheel(e, edit);
 		return (0);
 	}
 	else if (edit->selecttxtr && pos_in_rect(edit->txtrbox, edit->mouse.x, edit->mouse.y))
@@ -292,9 +239,7 @@ int editor_mouse_release(int btn, int x, int y, t_doom *doom)
 
 /*
 ** Add here function that need to be done when mouse if moved in window
-** x and y are relative postions when in gamemode
 */
-
 int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 {
 	edit->mouse.x = e.x;

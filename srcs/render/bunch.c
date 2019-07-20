@@ -5,6 +5,10 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	t_fvct2	dist;
 	double	angle;
 
+	//si on est dans un portail on et que le pillier appartient au portail alors on ne le calcul pas
+
+	if (arch->wall && (pillar == arch->wall->pillar || pillar == arch->wall->next))
+		return (0);
 	dist.x = pillar->p.x - player->stat.pos.x;
 	dist.y = pillar->p.y - player->stat.pos.y;
 	angle = atan2(dist.y, dist.x) * TOANGLE;
@@ -16,11 +20,7 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	else if (angle > 180)
 		angle -= 360;
 	pillar->angle = angle;
-
-	//!!!<---- ajout des bornes
-
-	//if (angle >= -player.fov / 2.0 && angle <= player.fov / 2.0)
-	if (angle >= arch->borne.y && angle <= arch->borne.x)
+	if (angle >= arch->portal.b_right && angle <= arch->portal.b_left)
 		pillar->frust = 1;
 	else
 		pillar->frust = 0;
@@ -48,7 +48,7 @@ double		wall_angle_pers(t_arch *arch, t_wall wall)
 	double	field;
 	t_fvct2	angles;
 
-	if (arch->borne.x * arch->borne.y > 0)
+	if (arch->portal.b_left * arch->portal.b_right > 0)
 		return (0);
 	angles.x = wall.pillar->angle;
 	angles.y = wall.next->angle;
@@ -84,20 +84,41 @@ int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 {
 	t_fvct2	angles;
 
-	angles.x = local_angle(arch->borne.x, wall->pillar->angle);
-	angles.y = local_angle(arch->borne.x, wall->next->angle);
+	angles.x = local_angle(arch->portal.b_left, wall->pillar->angle);
+	angles.y = local_angle(arch->portal.b_left, wall->next->angle);
 	return ((fabs(angles.y - angles.x) > 180.0));
 }
 
+int			equal_pillar(t_wall *wall1, t_wall *wall2)
+{
+	if (!wall1 || !wall2)
+	{
+		//printf("wall == NULL\n");
+		return (1);
+	}
+	if (wall1->pillar == wall2->pillar && wall1->next == wall2->next)
+		return (0);
+	if (wall1->pillar == wall2->next && wall1->next == wall2->pillar)
+		return (0);
+	//printf("wall != NULL\n");
+
+	//futur check de profondeur
+	return (1);
+}
+
+
 /*
-**	buncherisation mets les murs visible d'un secteur dans une liste
-**		un mur est visible si l'un des pillier est dans le frustrum ou
-**		ou si l'angle mur joueur est plus grand que le joueur (les pillier depasse mais passe
-**											devant le joueur)
+**	buncherisation mets les murs visible d'un secteur dans un tableau
+**	-un mur est visible si l'un des pillier est dans le frustrum
+**		ou si l'angle mur/joueur est plus grand que 180 (signifiant
+**		que le mur passe devant le champ de vision du joueur)
+**
+**	un mur n'est pas ajoute au bunch si c'est un portail
+**		ou commence une recursivite
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
-int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
+int			buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch)
 {
 	int		i_wall;
 	int		i_bunch;
@@ -105,40 +126,39 @@ int			buncherisation(t_arch *arch, t_sector sector, t_wall **bunch)
 
 	i_bunch = 0;
 	i_wall = 0;
-	wall = sector.wall;
-	while (i_wall < sector.len)
+	wall = sector->wall;
+	while (i_wall < sector->len)
 	{
-		if (wall[i_wall].pillar->frust || wall[i_wall].next->frust)
+		if ((wall[i_wall].pillar->frust || wall[i_wall].next->frust)
+			&& equal_pillar(&wall[i_wall], arch->wall))
 		{
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
-			//printf("wall frustum\n");
 		}
-		else if (borne_in_wall_angle(arch, &wall[i_wall]))
+		else if (borne_in_wall_angle(arch, &wall[i_wall])
+			&& equal_pillar(&wall[i_wall], arch->wall))
 		{
-			//printf("wall borne\n");
 			bunch[i_bunch] = &wall[i_wall];
 			i_bunch++;
 		}
 		i_wall++;
 	}
-	//printf("passage %d\n", i);
-	//i = 0;
-	//printf("%d\n", i_bunch);
+	if (debug == 1)
+		printf("deep_portal %d i_bunch %d\n", arch->depth_portal, i_bunch);
 	bunch[i_bunch] = NULL;
 	return (1);
 }
 
-void		bunch_comsuption(t_game *game, t_wall **bunch, t_sector *sector)
+void		bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector)
 {
 	int		i;
 
 	i = 0;
-	game->arch.sector = sector;
+	arch->sector = sector;
 	while (bunch[i] != NULL)
 	{
-		game->arch.wall = bunch[i];
-		render_wall(&game->arch, &game->player);
+		arch->wall = bunch[i];
+		render_wall(arch, player);
 		i++;
 	}
 }

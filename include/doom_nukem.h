@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 20:43:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 16:20:48 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@
 # include "render.h"
 # include "editor.h"
 # include "input.h"
+# include "debug.h"
+
+/*
+**		!!! global de debug a enlever
+*/
+extern int debug;
+
+# define DEBUG_VISUAL 1
 
 # define MINWIDTH 800
 # define MINHEIGHT 800
 # define EDITMINWIDTH 1024
 # define EDITMINHEIGHT 800
-# define WIDTH 1300
-# define HEIGHT 950
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 # define PI 3.1415926535897932
@@ -33,7 +39,17 @@
 # define RADIUS 500
 # define TOTALMUSIC 10
 
+# define UNIT 8.0
+# define CWALL 0xDADADAFF
+# define CPORT 0xE6E678FF
+# define WHITE 0xFFFFFFFF
+# define DEEPBLUE  0x0000FFFF
+
 # define DECELERATION 2500.0
+# define PADDING 0.30
+# define PADDING2 0.60
+# define STEP 0.25
+# define HITBOXSIZE 1//0.5
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 # define MAX_FAR 10000
@@ -47,10 +63,12 @@
 /*
 ** Editor Stuff
 */
+# define EDPADDING 5
 # define MAXZOOM 20000
 # define EDITORPRECISION 5000
 # define DEBUG 0
-#define SECTORBOXHEIGHT 50
+# define SECTORBOXHEIGHT 50
+# define MAXEDITVAR 999999
 
 /*
 **	gestion
@@ -61,7 +79,10 @@ void					dropfile_event(t_doom *doom, SDL_Event e);
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
 int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);
-void					editor_free(t_editor *editor);
+int						load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname);
+void					free_textures_folder(SDL_Texture **txtrs, char **txtrsname);
+void					editor_free(t_doom *doom);
+int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
 int						editor_init(t_editor *editor);
 void					sdl_free(t_sdl *sdl);
 int						sdl_init(t_sdl *sdl, const char *title);
@@ -73,11 +94,13 @@ int						ui_by_sdl(t_doom *doom, t_ui *ui);
 **	parsing
 */
 
-int						read_file(t_doom *doom, const char *file);
+int						read_file(t_game *game, const char *file);
+int						read_file_to_editor(t_editor *edit, const char *file);
 int						check_file(const char *file);
+void					free_game(t_game *game);
 
 t_wall					*chunck_walls(t_list *chunck_line, t_arch *ressources, size_t len);
-int						chunk_texture(t_sdl *sdl, t_arch *designer, int fd);
+int						chunk_texture(t_sdl *sdl, t_arch *arch, int fd);
 t_player				chunck_player(int fd);
 t_sector				*chunck_sector(int fd, t_arch *ressources);
 t_sector				*sector_new();

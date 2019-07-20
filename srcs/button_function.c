@@ -35,6 +35,7 @@ void	ignoption_button(t_doom *doom)
 void	main_menu_button(t_doom *doom)
 {
 	change_music(&doom->game.sound, 0, 0);
+	free_game(&doom->game);
 	doom->ui.curr_btn = NULL;
 	sdl_set_status(doom, 1);
 }
@@ -49,7 +50,7 @@ void	return_button(t_doom *doom)
 
 void	start_map_button(t_doom *doom)
 {
-	if (!(read_file(doom, doom->ui.curr_btn->data)))
+	if (!(read_file(&doom->game, doom->ui.curr_btn->data)))
 	{
 		player_init(&doom->game.player);
 		change_music(&doom->game.sound, doom->game.sound.on, 5000);
@@ -57,4 +58,19 @@ void	start_map_button(t_doom *doom)
 	}
 	else
 		ft_printf("Error reading file\n");
+}
+
+void	set_easy(t_doom *doom)
+{
+	doom->game.difficulty = EASY;
+}
+
+void	set_medium(t_doom *doom)
+{
+	doom->game.difficulty = MEDIUM;
+}
+
+void	set_hard(t_doom *doom)
+{
+	doom->game.difficulty = HARD;
 }

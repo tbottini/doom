@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 15:09:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/12 13:46:11 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			main(int ac, char **av)
 		return (0);
 	if (ac == 2)
 	{
-		if (read_file(doom, av[1]))
+		if (!read_file(&doom->game, av[1]))
 			sdl_set_status(doom, 0);
 		else
 			sdl_set_status(doom, 1);

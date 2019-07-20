@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/09 21:41:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 12:17:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,49 +19,54 @@
 ** 4 = BOSS
 */
 
-static void	cac_init(t_enemy *enemy)
+static void	cac_init(t_enemy *enemy, double difficulty)
 {
 	enemy->stat.speed = 37700.0;
 	enemy->stat.height = 1.4;
-	enemy->stat.health = 50;
+	enemy->stat.health = 50 * difficulty;
+	enemy->dmg = 1 * difficulty;//
 	enemy->sprites = NULL;//
 }
 
-static void	egun_init(t_enemy *enemy)
+static void	egun_init(t_enemy *enemy, double difficulty)
 {
 
 	enemy->stat.speed = 32700.0;
 	enemy->stat.height = 1.8;
-	enemy->stat.health = 75;
+	enemy->stat.health = 75 * difficulty;
+	enemy->dmg = 1 * difficulty;//
 	enemy->sprites = NULL;//
 }
 
-static void	fat_init(t_enemy *enemy)
+static void	fat_init(t_enemy *enemy, double difficulty)
 {
 	enemy->stat.speed = 18350.0;
 	enemy->stat.height = 2.0;
-	enemy->stat.health = 125;
+	enemy->stat.health = 125 * difficulty;
+	enemy->dmg = 1 * difficulty;//
 	enemy->sprites = NULL;//
 }
 
-static void	boss_init(t_enemy *enemy)
+static void	boss_init(t_enemy *enemy, double difficulty)
 {
 
-	enemy->stat.speed = 16350.0;
+	enemy->stat.speed = 14350.0;
 	enemy->stat.height = 4.0;
-	enemy->stat.health = 500;
+	enemy->stat.health = 750 * difficulty;//
+	enemy->dmg = 1 * difficulty;//
 	enemy->sprites = NULL;//
 }
 
-void	enemy_free(t_enemy *enemy)
+void	free_enemys(t_enemy *enemy)
 {
-	//sprites_free(sprites);
+	if (!(enemy))
+		return ;
 	if (enemy->next)
-		enemy_free(enemy->next);
+		free_enemys(enemy->next);
 	free(enemy);
 }
 
-t_enemy	*enemy_init(int type)
+t_enemy	*enemy_init(int type, int difficulty)
 {
 	t_enemy *enemy;
 
@@ -71,13 +76,13 @@ t_enemy	*enemy_init(int type)
 	enemy->dist = 0;
 	enemy->next = NULL;
 	if (type == 1)
-		cac_init(enemy);
+		cac_init(enemy, difficulty);
 	else if (type == 2)
-		egun_init(enemy);
+		egun_init(enemy, difficulty);
 	else if (type == 3)
-		fat_init(enemy);
+		fat_init(enemy, difficulty);
 	else if (type == 4)
-		boss_init(enemy);
+		boss_init(enemy, difficulty);
 	/*
 		e1.x = sin((stat->rot.y - 90.0) * PI180) * (tmp->stat.width / 2);
 		e1.y = cos((stat->rot.y - 90.0) * PI180) * (tmp->stat.width / 2);
@@ -131,6 +136,6 @@ void		del_enemy(t_sector *sector, t_enemy *enemy)
 		else
 			sector->enemys = NULL;
 		tmp->next = NULL;
-		enemy_free(tmp);
+		free_enemys(tmp);
 	}
 }

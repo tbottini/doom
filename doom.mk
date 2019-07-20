@@ -1,10 +1,16 @@
-SRCS_DOOM		:=		editor.c										\
+SRCS_DOOM		:=		editor_finder.c									\
+						editor_render.c									\
+						editor_input.c									\
+						editor_optionbox.c								\
+						editor_txtrbox.c								\
 						editor_hook.c									\
+						editor_write.c									\
 						button_function.c								\
 						slider_function.c								\
 						main.c											\
 						savefile.c										\
 						readfile.c										\
+						readfileeditor.c								\
 						checkfile.c										\
 						cinematri.c										\
 
@@ -16,6 +22,7 @@ SRCS_UI			:=		button_action.c									\
 						init_btns.c										\
 						init_btns2.c									\
 						init_btns3.c									\
+						init_btns4.c									\
 						init_slids.c									\
 						fire.c											\
 
@@ -31,7 +38,6 @@ SRCS_INPUT		:=		event_controller.c								\
 						shoot.c											\
 						shoot_tools.c									\
 						collision.c										\
-						keyboard_input.c								\
 						debug_input.c									\
 
 SRCS_RENDER		:=		render.c										\
@@ -63,6 +69,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 						debug_vector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
+						editor_tools.c									\
 						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\
@@ -82,7 +89,8 @@ SRCS_GESTION	:=		doom_manager.c									\
 						weapon_manager.c								\
 						enemy_manager.c									\
 						prop_manager.c									\
-						designer_manager.c								\
+						arch_manager.c									\
+						borne_manager.c									\
 
 SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\

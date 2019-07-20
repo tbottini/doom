@@ -6,12 +6,14 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/09 18:40:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/16 17:35:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-#define EDITORSTEP 100.0
+#define EDITORSTEPX 100.0
+#define EDITORSTEPY -100.0
+#define CACATRIGO -90.0
 
 void	write_balise(int fd, char *balise)
 {
@@ -51,10 +53,10 @@ void	write_pillars(int fd, t_editor *edit)
 	nbp = edit->pillist;
 	while (nbp)
 	{
-		tmp = (double)nbp->pos.x / EDITORSTEP;
+		tmp = (double)nbp->pos.x / EDITORSTEPX;
 		write(fd, &tmp, sizeof(double));
 		printf("\tNew Pillars at %f", tmp);
-		tmp = (double)nbp->pos.y / EDITORSTEP;
+		tmp = (double)nbp->pos.y / EDITORSTEPY;
 		printf("\t%f\n", tmp);
 		write(fd, &tmp, sizeof(double));
 		nbp = nbp->next;
@@ -92,10 +94,10 @@ void	write_one_prop(int fd, t_entity *prop)
 		write(fd, "\xff\xff\xff\xff", sizeof(int));
 		write(fd, "\xff\xff\xff\xff", sizeof(int));
 	}
-	pos = (double)prop->stat.pos.x / EDITORSTEP;
+	pos = (double)prop->stat.pos.x / EDITORSTEPX;
 	printf("\t\t\tPosition: %f", pos);
 	write(fd, &pos, sizeof(double));
-	pos = (double)prop->stat.pos.y / EDITORSTEP;
+	pos = (double)prop->stat.pos.y / EDITORSTEPY;
 	printf("\t%f\n", pos);
 	write(fd, &pos, sizeof(double));
 }
@@ -204,10 +206,10 @@ void	write_one_sector(int fd, t_secteur *sec, t_lstent props)
 
 	printf("\tGravity: %d\n", (int)sec->gravity);
 	write(fd, &sec->gravity, sizeof(char));
-	tmp = sec->hsol / EDITORSTEP;
+	tmp = sec->hsol / EDITORSTEPX;
 	printf("\tHauteur Sol: %f\n", tmp);
 	write(fd, &tmp, sizeof(double));
-	tmp = sec->htop / EDITORSTEP;
+	tmp = sec->htop / EDITORSTEPX;
 	printf("\tHauteur Plafond: %f\n", tmp);
 	write(fd, &tmp, sizeof(double));
 	printf("\tID Image sol: %d\n", sec->idsol);
@@ -349,14 +351,15 @@ void	write_one_enemy(int fd, t_entity *enn)
 		printf("\t\tEnemy Sector ID: null\n");
 		write(fd, "\xff\xff\xff\xff", sizeof(int));
 	}
-	tmp = (double)(enn->stat.pos.x / EDITORSTEP);
+	tmp = (double)(enn->stat.pos.x / EDITORSTEPX);
 	write(fd, &tmp, sizeof(double));
 	printf("\t\tEnemy pos: %f", tmp);
-	tmp = (double)(enn->stat.pos.y / EDITORSTEP);
+	tmp = (double)(enn->stat.pos.y / EDITORSTEPY);
 	write(fd, &tmp, sizeof(double));
 	printf("\t%f", tmp);
-	write(fd, &enn->stat.roty, sizeof(double));
-	printf("\trot: %f\n", enn->stat.roty);
+	tmp = (double)(enn->stat.roty + CACATRIGO);
+	write(fd, &tmp, sizeof(double));
+	printf("\trot: %f\n", tmp);
 	printf("\n");
 }
 
@@ -404,16 +407,17 @@ void	write_player(int fd, t_eplayer *player)
 	printf("\t\tplayer HP: %d\n", player->stat.type);
 	write(fd, &player->stat.type, sizeof(int));
 
-	tmp = (double)(player->stat.pos.x / EDITORSTEP);
+	tmp = (double)(player->stat.pos.x / EDITORSTEPX);
 	write(fd, &tmp, sizeof(double));
 	printf("\t\tplayer pos: %f\t", tmp);
 
-	tmp = (double)(player->stat.pos.y / EDITORSTEP);
+	tmp = (double)(player->stat.pos.y / EDITORSTEPY);
 	write(fd, &tmp, sizeof(double));
 	printf("%f\n", tmp);
 
-	write(fd, &player->stat.roty, sizeof(double));
-	printf("\trot: %f\n", player->stat.roty);
+	tmp = (double)(player->stat.roty + CACATRIGO);
+	write(fd, &tmp, sizeof(double));
+	printf("\trot: %f\n", tmp);
 	write_balise(fd , "🍌");
 }
 
@@ -436,9 +440,11 @@ int writing_map(int fd, t_editor *edit)
 int	save_editor_to_file(t_editor *edit)
 {
 	int fd;
+	char path[512];
 
-
-	if ((fd = open("ressources/map/editor.map", O_CREAT | O_EXCL | O_WRONLY, S_IRUSR | S_IRGRP| S_IROTH)) == -1)
+	ft_strcpy(path, "ressources/map/");
+	ft_strcpy(&(path[15]), edit->filename);
+	if ((fd = open(path, O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU | S_IRGRP| S_IROTH)) == -1)
 	{
 		write(2, "Error writting to ressources/map/editor.map\n", 44);
 		return (-1);

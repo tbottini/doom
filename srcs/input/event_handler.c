@@ -87,10 +87,14 @@ int				event_handler(t_doom *doom)
 	{
 		if (event.type == SDL_DROPFILE)
 				dropfile_event(doom, event);
+		else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+			doom_exit(doom);
 		else if (event.window.windowID == DOOM_WINDOW)
 			event_handler_doom(doom, event);
 		else if (event.window.windowID == EDITOR_WINDOW)
 			event_handler_editor(doom, event);
+		else if (event.type == SDL_QUIT)
+			doom_exit(doom);
 		if (event.type == SDL_CONTROLLERDEVICEADDED)
 		{
 			ft_printf("Controller Added\n");

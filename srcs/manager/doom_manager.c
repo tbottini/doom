@@ -17,7 +17,7 @@ int		secure_doom(t_doom *doom)
 void	doom_exit(t_doom *doom)
 {
 	ui_free(&doom->ui);
-	editor_free(&doom->edit);
+	editor_free(doom);
 	sdl_free(&doom->sdl);
 	music_free(&doom->game.sound);
 	effect_free(&doom->game.sound);
@@ -42,7 +42,7 @@ t_doom	*doom_init()
 	if (!ui_init(&doom->ui))
 		doom_exit(doom);
 	doom->game.camera.fov = 90;
-	if (!designer_init(&doom->game.arch, &doom->sdl, &doom->game.camera))
+	if (!arch_init(&doom->game.arch, &doom->sdl, &doom->game.camera))
 		doom_exit(doom);
 	doom->edit.ui = &doom->ui;
 	if (!editor_init(&doom->edit))
@@ -52,5 +52,6 @@ t_doom	*doom_init()
 	doom->game.player.fov = 90;
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
+	doom->debug = 0;
 	return (doom);
 }

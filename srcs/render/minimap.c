@@ -6,16 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 20:43:21 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 15:56:00 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-#define UNIT 8.0
-#define CWALL 0xDADADAFF
-#define CPORT 0xE6E678FF
-#define WHITE 0xFFFFFFFF
 
 static Uint32		hcol(int health, int boost)
 {
@@ -86,6 +81,46 @@ static void			miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	}
 }
 
+static void			miniprops(t_minimap mini, t_sector *sector, t_fvct3 pos)
+{
+	int		i;
+	t_vct2	tmp;
+
+	i = 0;
+	while (i < sector->len_prop)
+	{
+		//if (sector->props[i].tex)
+		//{
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((sector->props[i].pos.x - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - sector->props[i].pos.y)) * (UNIT);
+			bold_point2(mini, tmp, DEEPBLUE);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+		//}
+		i++;
+	}
+}
+
 static void			minifield(t_player *player, t_minimap mini)
 {
 	int		i;
@@ -111,4 +146,5 @@ void				minimap(t_doom *d)
 	minibord(d, mini);
 	minifield(&d->game.player, mini);
 	bold_point2(mini, mini.mid, WHITE);
+	miniprops(mini, d->game.player.stat.sector, d->game.player.stat.pos);
 }

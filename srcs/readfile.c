@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 17:09:52 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 18:17:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,10 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 	if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a >= len->nb_sects)
 		return (-73);
 	printf("\t\tFound Prop Sector ID: %d\n", var_a);
-	prop->sector = &game->sectors[var_a];
+	if (var_a == -1)
+		prop->sector = NULL;
+	else
+		prop->sector = &game->sectors[var_a];
 	if ((read(fd, &var_b, sizeof(int)) != sizeof(int)) || var_b >= len->nb_sects)
 		return (-74);
 	if (var_b == -1)
@@ -135,15 +138,16 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 		if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a != -1)
 			return (-79);
 	}
-	else if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a >= game->sectors[var_b].len)
+	else if ((read(fd, &var_a, sizeof(int)) != sizeof(int)))// || var_a >= game->sectors[var_b].len)
 		return (-75);
 	printf("\t\tFound wall %d in sector %d\n", var_a, var_b);
-	prop->wall = &game->sectors[var_b].wall[var_a];
+	if (var_b != -1 && var_a != -1)
+		prop->wall = &game->sectors[var_b].wall[var_a];
 	if ((read(fd, &prop->pos.x, sizeof(double)) != sizeof(double)))
 		return (-76);
 	if ((read(fd, &prop->pos.y, sizeof(double)) != sizeof(double)))
 		return (-77);
-	init_prop(prop);
+	init_prop(prop, game->sectors[len->current_sector].h_floor);
 	printf("\t\tSet Wall Prop position %f %f\n", prop->pos.x, prop->pos.y);
 	return (0);
 }
@@ -169,6 +173,7 @@ int	read_wall_props(int fd, t_game *game, t_wall *wall, t_slen *len)
 			return (rtn);
 		x++;
 	}
+	wall->nb_props = nbp;
 	if (read_balise(fd, "📅", 7))
 		return (7);
 	return (0);
@@ -189,7 +194,8 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_txtrs))
 		return (-63);
 	printf("\t\tFound Texture ID: %d\n", tmp);
-	set_txtr(&wall->txtr, game->gamesurf[tmp]);
+	if (tmp >= 0)
+		set_txtr(&wall->txtr, game->gamesurf[tmp]);
 	if (((read(fd, &wall->status, sizeof(t_portal_id)) != sizeof(t_portal_id))))
 		return (-64);
 	printf("\t\tFound Wall Type: %d\n", tmp);
@@ -211,9 +217,9 @@ int	read_sec_walls(int fd, t_game *game, t_sector *sector, t_slen *len)
 	if ((read(fd, &nbw, sizeof(int)) != sizeof(int)))
 		return (-61);
 	printf("\t\tFound %d Walls\n", nbw);
-	if (!(sector->wall = (t_wall *)malloc(sizeof(t_wall) * (nbw + 1))))
+	if (!(sector->wall = (t_wall *)malloc(sizeof(t_wall) * (nbw))))
 		return (-423);
-	ft_bzero(sector->wall, sizeof(t_wall) * (nbw + 1));
+	ft_bzero(sector->wall, sizeof(t_wall) * (nbw));
 	x = 0;
 	while (x < nbw)
 	{
@@ -248,6 +254,7 @@ int	read_sec_props(int fd, t_game *game, t_sector *sector, t_slen *len)
 			return (rtn);
 		x++;
 	}
+	sector->len_prop = nbp;
 	if (read_balise(fd, "💩", 8))
 		return (8);
 	return (0);
@@ -260,7 +267,7 @@ int	read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
 
 	if (read(fd, &ctmp, sizeof(char)) != sizeof(char))
 		return (-51);
-	sector->gravity.z = (ctmp ? G_EARTH : G_MOON);
+	sector->gravity.z = (ctmp ? G_MOON : G_EARTH);
 	printf("\tSector gravit at %d\n", ctmp);
 	if (read(fd, &sector->h_floor, sizeof(double)) != sizeof(double))
 		return (-52);
@@ -270,11 +277,13 @@ int	read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
 	printf("\tSector ceil at %f\n", sector->h_ceil);
 	if (((read(fd, &itmp, sizeof(int)) != sizeof(int)) || itmp >= len->nb_txtrs))
 		return (-54);
-	set_txtr(&sector->txtrsol, game->gamesurf[itmp]);
+	if (itmp >= 0)
+		set_txtr(&sector->txtrsol, game->gamesurf[itmp]);
 	printf("\tSector floor txtr: %d\n", itmp);
 	if (((read(fd, &itmp, sizeof(int)) != sizeof(int)) || itmp >= len->nb_txtrs))
 		return (-55);
-	set_txtr(&sector->txtrtop, game->gamesurf[itmp]);
+	if (itmp >= 0)
+		set_txtr(&sector->txtrtop, game->gamesurf[itmp]);
 	printf("\tSector ceil txtr: %d\n", itmp);
 	if ((itmp = read_sec_walls(fd, game, sector, len)))
 		return (itmp);
@@ -297,6 +306,7 @@ int	read_sectors(int fd, t_game *game, t_slen *len)
 	x = 0;
 	while (x < len->nb_sects)
 	{
+		len->current_sector = x;
 		if ((rtn = read_one_sector(fd, game, &(game->sectors[x]), len)))
 			return (rtn);
 		x++;
@@ -339,7 +349,7 @@ int	read_one_enemy(int fd, t_game *game, t_slen *len)
 
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || !(ISENEMY(tmp)))
 		return (-101);
-	enemy = enemy_init(tmp);
+	enemy = enemy_init(tmp, (int)game->difficulty);
 	printf("\tEnemy type: %d\n", tmp);
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)))
 		return (-102);
@@ -382,7 +392,7 @@ int	read_enemies(int fd, t_game *game, t_slen *len)
 	return (0);
 }
 
-int reading_map(int fd, t_doom *doom, t_slen *len)
+int reading_map(int fd, t_game *game, t_slen *len)
 {
 	long	x;
 	long	*tmp;
@@ -392,15 +402,15 @@ int reading_map(int fd, t_doom *doom, t_slen *len)
 	tmp = (long *)"💎🇩🇿🍉💩";
 	if (x != *tmp)
 		return (1);
-	if ((rtn = read_textures(fd, &(doom->game.gamesurf), len)))
+	if ((rtn = read_textures(fd, &(game->gamesurf), len)))
 		return (rtn);
-	if ((rtn = read_pillars(fd, &doom->game.pillars, len)))
+	if ((rtn = read_pillars(fd, &game->pillars, len)))
 		return (rtn);
-	if ((rtn = read_sectors(fd, &doom->game, len)))
+	if ((rtn = read_sectors(fd, game, len)))
 		return (rtn);
-	if ((rtn = read_player(fd, &doom->game, &doom->game.player, len)))
+	if ((rtn = read_player(fd, game, &game->player, len)))
 		return (rtn);
-	if ((rtn = read_enemies(fd, &doom->game, len)))
+	if ((rtn = read_enemies(fd, game, len)))
 		return (rtn);
 	read(fd, &x, sizeof(x));
 	tmp = (long *)"👨🏻🤠🍑";
@@ -409,24 +419,78 @@ int reading_map(int fd, t_doom *doom, t_slen *len)
 	return (0);
 }
 
-int	read_file(t_doom *doom, const char *file)
+int	read_file(t_game *game, const char *file)
 {
 	int		fd;
 	int		returncode;
-	t_slen	len;
 
 	if ((fd = open(file, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) == -1)
 	{
 		write(2, "Error opening file\n", 19);
 		return (-1);
 	}
-	if ((returncode = reading_map(fd, doom, &len)))
+	if ((returncode = reading_map(fd, game, &game->len)))
 	{
 		ft_printf("Error : %d\n", returncode);
 		close(fd);
 		return (-1);
 	}
 	close(fd);
-	write(1, "Successfully read ressources/map/editor.map\n", 48);
 	return (0);
+}
+
+void	free_gamesurf(SDL_Surface ***gamesurf)
+{
+	SDL_Surface	**tmp;
+	int 		x;
+
+	tmp = *gamesurf;
+	x = 0;
+	while (tmp[x])
+	{
+		SDL_FreeSurface(tmp[x]);
+		x++;
+	}
+	free(tmp);
+	*gamesurf = NULL;
+}
+
+void	free_sectors(t_sector **sectors, int sec_len)
+{
+	int			x;
+	int			y;
+	t_sector	*tmp;
+
+	x = 0;
+	tmp = *sectors;
+	while (x < sec_len)
+	{
+		y = 0;
+		while (y < tmp[x].len)
+		{
+			free(tmp[x].wall[y].props);
+			y++;
+		}
+		free(tmp[x].wall);
+		free(tmp[x].props);
+		free_enemys(tmp[x].enemys);
+		x++;
+	}
+	free(tmp);
+	*sectors = NULL;
+}
+
+void	free_game(t_game *game)
+{
+	if (game->gamesurf)
+	{
+		free_gamesurf(&game->gamesurf);
+	}
+	if (game->pillars)
+	{
+		free(game->pillars);
+		game->pillars = NULL;
+	}
+	if (game->sectors)
+		free_sectors(&game->sectors, game->len.nb_sects);
 }

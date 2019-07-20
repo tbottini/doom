@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/09 22:31:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/19 12:32:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdbool.h>
 # include "vector.h"
 
+# define H_NORMAL 1.80
+# define H_SMOL 0.36
 # define CROUCH 16350.0
 # define WALK 32700.0
 # define SPRINT 49050.0
@@ -105,7 +107,8 @@ typedef struct			s_super
 int						player_init(t_player *player);
 void					player_free(t_player *player);
 t_enemy					*pushfront_enemy(t_sector *sector, t_enemy *enemy);
-t_enemy					*enemy_init(int type);
+t_enemy					*enemy_init(int type, int difficulty);
+void					free_enemys(t_enemy *enemy);
 
 /*
 **	Gameplay

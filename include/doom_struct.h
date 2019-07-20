@@ -12,6 +12,11 @@
 # include "calcul.h"
 # include "libft.h"
 
+
+# define WIDTH 1300
+# define HEIGHT 950
+
+
 typedef struct s_doom	t_doom;
 typedef struct s_enemy	t_enemy;
 typedef struct s_sector	t_sector;
@@ -19,13 +24,14 @@ typedef struct s_wall	t_portal;
 typedef struct s_prop	t_prop;
 
 # define MAXTXTRNUMBER 500
+# define MAXFILENAMELEN 20
 
 # define MINENEMYPOS 1
 # define MAXENEMYNUMBER 4
 # define MAXENEMYPOS (MINENEMYPOS + MAXENEMYNUMBER)
 
 # define MINPROPSPOS 20
-# define MAXPROPSNUMBER 6
+# define MAXPROPSNUMBER 11
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
@@ -43,16 +49,6 @@ typedef struct s_prop	t_prop;
 # define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
 # define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
 # define ISPORTAL(x) (x >= OPEN_DOOR)
-
-/*
-** Snap var behaviour
-** 0 = center of object is its left;
-** 1 = center of object is its center;
-** 2 = center of object is its right;
-** 3 = under the object before + (pos) px
-** 4 = center of the object before + (pos) px
-** 5 = over the object before + (pos) px
-*/
 
 enum 					e_window_id
 {
@@ -74,6 +70,7 @@ typedef struct			s_slen
 	int	nb_pills;
 	int	nb_txtrs;
 	int	nb_sects;
+	int	current_sector;
 }						t_slen;
 
 /*
@@ -101,6 +98,15 @@ struct					s_entity
 	t_entity			*prev;
 };
 
+/*
+** Snap var behaviour
+** 0 = center of object is its left;
+** 1 = center of object is its center;
+** 2 = center of object is its right;
+** 3 = under the object before + (pos) px
+** 4 = center of the object before + (pos) px
+** 5 = over the object before + (pos) px
+*/
 typedef struct			s_sloc
 {
 	SDL_Rect			area;
@@ -166,6 +172,8 @@ typedef struct			s_font
 typedef struct			s_pal {
 	Uint32				pal[38];
 	int					height;
+	Uint32				*screen;
+	t_vct2				*size;
 }						t_pal;
 
 /*
@@ -266,9 +274,23 @@ typedef enum		e_selecttxtr
 	FILL_WPROP
 }					t_selecttxtr;
 
+/*
+** 0 : Window is closed
+** 1 : Textures are loading
+** 2 : Textures are loaded
+*/
+typedef enum		e_editorstatus
+{
+	ED_CLOSED,
+	ED_LOADING,
+	ED_LOADED,
+	ED_WRITING,
+	ED_SAVING
+}					t_editorstatus;
+
 typedef struct			s_editor
 {
-	bool				status;
+	t_editorstatus		status;
 	t_selecttxtr		selecttxtr;
 	SDL_Window			*win;
 	SDL_Renderer		*rend;
@@ -285,6 +307,7 @@ typedef struct			s_editor
 	t_pilier			*currpilier;
 	t_ecoord			*currstat;
 	t_mur				*currmur;
+	int					*currwriter;
 	t_pilier			*hoverpilier;
 	t_mur				*hovermur;
 	t_lstsec			map;
@@ -293,11 +316,13 @@ typedef struct			s_editor
 	t_lstpil			pillist; // [map] Liste de pilliers
 	t_lstent			ennlist; // [map] Liste d'ennemis
 	t_lstsec			sectors;  // [map] Liste des secteurs (contenant les murs)
+	//int					*idtoeditor; // Used when opening file to editor (Abandon)
 	SDL_Texture			*txtrgame[MAXTXTRNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID de la texture du mur
 	SDL_Texture			*txtrreal[MAXTXTRNUMBER]; // [map] Used when saving map
 	SDL_Texture			*sprites[MAXPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du prop
 	SDL_Texture			*wsprites[MAXWPROPSNUMBER]; // [map] Contient le pointeur a verif pour avoir l'ID du wallprop
 	char				*txtrname[MAXTXTRNUMBER]; // [map] Contient le path de la texture
+	char				filename[MAXFILENAMELEN]; // Truc que Thomas voulait
 }						t_editor;
 
 typedef struct 			s_camera
@@ -306,37 +331,65 @@ typedef struct 			s_camera
 	double				d_screen;
 }						t_camera;
 
-typedef struct 			s_designer
+
+/*
+**	structure principale pour la recursivite
+*/
+typedef struct 			s_borne
+{
+	double				*zline;
+	uint32_t			*b_down;
+	uint32_t			*b_up;
+	double				b_left;
+	double				b_right;
+	t_fvct2				pillar;
+	t_fvct2				next;
+}						t_borne;
+
+typedef struct 			s_arch
 {
 	t_sector			*sector;
-	uint16_t			*borne_down;
-	uint16_t			*borne_up;
 	t_wall				*wall;
 	t_camera			*cam;
 	t_sdl				*sdl;
 	SDL_Surface			**texture;
-	t_fvct2				depth;
-	t_fvct2				decal;
+	uint16_t			depth_portal;
+
+	t_fvct2				pillar;
+	t_fvct2				next;
+
 	t_vct2				px;
 	t_fvct2				shift_txtr;
-	double				*zline;
-	t_fvct2				borne;
-	//uint16			occl_buffer
+	t_borne				portal; //renommer en portal ??
+
+	//debug
+	Uint32			sc_debug[WIDTH * HEIGHT];
+	uint32_t			zoom;
 }						t_arch;
+
+typedef enum		e_difficulty
+{
+	EASY = 1,
+	MEDIUM = 2,
+	HARD = 4
+}					t_difficulty;
 
 typedef struct			s_game
 {
+	t_slen				len;
 	t_player			player;
 	t_sound				sound;
 	t_sector			*sectors;
 	t_pillar			*pillars;
 	SDL_Surface			**gamesurf;
-	t_arch				arch;
+	t_arch				arch;//a voir aveec tbottini
 	t_camera			camera;
+	t_difficulty		difficulty;
 }						t_game;
 
 struct					s_doom
 {
+	int					debug;
 	t_sdl				sdl;
 	t_editor			edit;
 	t_ui				ui;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 17:11:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 15:29:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void			clean_screen(t_sdl *sdl)
 	}
 }
 
+void			debug_code(int key)
+{
+	debug = key - SDLK_KP_1 + 1;
+	printf("debug keycode %d\n", debug);
+}
+
+
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
 ** Example :
@@ -52,18 +59,23 @@ int		key_press(int key, t_doom *doom)
 		else if (doom->ui.m_status == 4)
 			sdl_set_status(doom, 0);
 	}
-	else if (key ==SDLK_g)
-		read_file(doom, "ressources/map/editor.map");
+	else if (key <= SDLK_KP_9 && key >= SDLK_KP_1)
+		debug_code(key);
 	else if (key == SDLK_r && !doom->ui.m_status)
 		reload(&doom->game.player.hand);
 	else if (key == SDLK_e && !doom->ui.m_status)
 		action(&doom->game.player, &doom->game.player.stat);
 	else if (key == SDLK_LGUI && !doom->ui.m_status && doom->game.player.stat.jetpack)
 		crouch(&doom->game.player);
-	else if (key == SDLK_g)
-		describe_player(doom->game.player);
 	else if (key == SDLK_h)
+	{
+		describe_player(doom->game.player);
 		describe_sector_recursif(*doom->game.sectors);
+	}
+	else if (key == SDLK_KP_MINUS)
+		doom->game.arch.zoom /= 2;
+	else if (key == SDLK_KP_PLUS)
+		doom->game.arch.zoom *= 2;
 	else if (key == SDLK_9)
 		change_music(&doom->game.sound, 10, 5000);
 	else if (key == SDLK_b)
@@ -81,7 +93,7 @@ int		key_press(int key, t_doom *doom)
 		0x5a789111, 0x5f7f9812, 0x64879e13, 0x688ea414, 0x6d96aa15, 0x729db016,
 		0x76a5b617, 0x7bacbc18, 0x80b3c219, 0x84bbc81A, 0x89c3ce1B, 0x8ecad41C,
 		0x92d2da1D, 0x97d9e01E, 0x9ce1e61F, 0xa0e8ec20, 0xa5f0f221, 0xaaf7f822,
-		0xafffff23, 0xcfffff24, 0xFFFFFF25}, (doom->sdl.size.y / 80)};
+		0xafffff23, 0xcfffff24, 0xFFFFFF25}, (doom->sdl.size.y / 80), doom->sdl.screen, &doom->sdl.size};
 	else if (key == SDLK_COMMA)
 		doom->ui.fire = (t_pal){{0, 0x07070701, 0x1F070702, 0x2F0F0703, 0x470F0704,
 		0x57170705, 0x671F0706, 0x771F0707, 0x8F270708, 0x9F2F0709, 0xAF3F070A,
@@ -89,29 +101,29 @@ int		key_press(int key, t_doom *doom)
 		0xD75F0711, 0xD7670F12, 0xCF6F0F13, 0xCF770F14, 0xCF7F0F15, 0xCF871716,
 		0xCC8A1817, 0xD18E1918, 0xDB8E2119, 0xD9A8091A, 0xE2B00B1B, 0xF8C2281C,
 		0xF8C2291D, 0xF1D62F1E, 0xF1D62F1F, 0xF1E62F20, 0xDDB73721, 0xCFBF6F22,
-		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80)};
+		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80), doom->sdl.screen, &doom->sdl.size};
 	else if (key == SDLK_j)
 	{
-		doom->game.arch.borne.x += 2;
-		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
+		doom->game.arch.portal.b_left += 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_k)
 	{
-		doom->game.arch.borne.y += 2;
-		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
+		doom->game.arch.portal.b_right += 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_u)
 	{
-		doom->game.arch.borne.x -= 2;
-		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
+		doom->game.arch.portal.b_left -= 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else if (key == SDLK_i)
 	{
-		doom->game.arch.borne.y -= 2;
-		printf("borne %f %f\n", doom->game.arch.borne.x, doom->game.arch.borne.y);
+		doom->game.arch.portal.b_right -= 2;
+		printf("borne %f %f\n", doom->game.arch.portal.b_left, doom->game.arch.portal.b_right);
 		clean_screen(&doom->sdl);
 	}
 	else

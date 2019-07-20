@@ -33,6 +33,9 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	ui->btnmap[1] = add_mapmenu_button(doom);
 	ui->btnopt[0] = ui->btnmap[0];
 	ui->btnopt[1] = add_doom_button(doom, " Options ");
+	ui->btnopt[2] = add_middle_difficulty_button(doom, &(ui->btnopt[1].loc.area));
+	ui->btnopt[3] = add_left_difficulty_button(doom, &(ui->btnopt[2].loc.area));
+	ui->btnopt[4] = add_right_difficulty_button(doom, &(ui->btnopt[2].loc.area));
 	ui->slidopt[0] = add_fov_slider(doom);
 	ui->slidopt[0].loc.parent = &(ui->btnopt[1].loc.area);
 	ui->slidopt[1] = add_music_slider(doom);

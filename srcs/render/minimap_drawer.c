@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 20:57:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 16:54:07 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,64 @@ static void		mbl(t_vct2 pos0, t_vct2 pos1, t_minimap mini, Uint32 color)
 	}
 }
 
+static void			miniwallprops(t_minimap mini, t_wall *wall, t_fvct3 pos)
+{
+	int		i;
+	t_vct2	tmp;
+
+	i = 0;
+	while (i < wall->nb_props)
+	{
+		//if (sector->props[i].tex)
+		//{
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((wall->props[i].pos.x - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - wall->props[i].pos.y)) * (UNIT);
+			bold_point2(mini, tmp, DEEPBLUE);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
+			bold_point2(mini, tmp, 0xFF0000FF);
+			
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
+			bold_point2(mini, tmp, 0xFF0000FF);
+			
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
+			bold_point2(mini, tmp, 0xFF0000FF);
+			
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
+			bold_point2(mini, tmp, 0xFF0000FF);
+			/* 
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( wall->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( wall->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( wall->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( wall->props[i].pos.y + HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( wall->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( wall->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
+		//}*/
+		i++;
+	}
+}
+
 void			miniwalls(t_doom *doom, t_sector *sector, t_minimap mini)
 {
 	int			i;
@@ -86,6 +144,8 @@ void			miniwalls(t_doom *doom, t_sector *sector, t_minimap mini)
 		cursor2 = minipoint(&doom->game.player, wall[i].next->p, mini);
 		mbl(cursor, cursor2, mini, wall[i].status
 			!= PORTAL ? CWALL : CPORT);
+		cursor = minipoint(&doom->game.player, wall[i].pillar->p, mini);
+		miniwallprops(mini, &wall[i], doom->game.player.stat.pos);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   button_drawer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:29:18 by magrab            #+#    #+#             */
-/*   Updated: 2019/04/19 17:29:19 by magrab           ###   ########.fr       */
+/*   Updated: 2019/07/19 11:43:06 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,30 @@ void		update_loc(t_vct2 size, t_sloc *loc, SDL_Rect before)
 		loc->area.y = before.y - loc->area.h - loc->pos.y;
 }
 
+void		draw_difficulty(t_doom *doom, t_btn *arr)
+{
+	SDL_Rect tmp;
+
+	if (doom->game.difficulty == EASY)
+		tmp = arr[3].loc.area;
+	else if (doom->game.difficulty == MEDIUM)
+		tmp = arr[2].loc.area;
+	else if (doom->game.difficulty == HARD)
+		tmp = arr[4].loc.area;
+	tmp.x -= 5;
+	tmp.y -= 5;
+	tmp.w += 10;
+	tmp.h += 10;
+	SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
+	SDL_RenderDrawRect(doom->sdl.rend, &tmp);
+	tmp.x -= 1;
+	tmp.y -= 1;
+	tmp.w += 2;
+	tmp.h += 2;
+	SDL_RenderDrawRect(doom->sdl.rend, &tmp);
+	SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
+}
+
 void		draw_menu(t_doom *doom)
 {
 	int status;
@@ -90,6 +114,7 @@ void		draw_menu(t_doom *doom)
 	{
 		update_loc_buttons(doom->sdl.size, doom->ui.btnopt);
 		draw_buttons(doom, doom->ui.btnopt);
+		draw_difficulty(doom, doom->ui.btnopt);
 		draw_slid(doom, &doom->ui.slidopt[0]);
 		draw_slid(doom, &doom->ui.slidopt[1]);
 		draw_slid(doom, &doom->ui.slidopt[2]);

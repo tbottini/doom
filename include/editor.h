@@ -7,6 +7,9 @@
 ** Editor
 */
 
+int						write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e);
+void					draw_writer(t_editor *edit);
+
 int						save_editor_to_file(t_editor *edit);
 
 t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
@@ -34,8 +37,10 @@ t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2, SDL
 void					ft_clear_wall_list(t_lstmur *start);
 t_secteur				*sector_menu_click(t_editor *edit, int pos, int cas);
 int						opt_menu_click(t_editor *edit, int pos);
+int						opt_menu_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 SDL_Texture				*txtr_menu_click(t_editor *edit, int x, int y, int max);
 int						txtr_menu_click_int(t_editor *editor, int x, int y, int min, int max);
+void					texturebox_click(t_editor *edit, SDL_MouseButtonEvent e);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
 void					ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom);
@@ -63,5 +68,8 @@ void					ft_nodeprint_enemy(t_lstent node);
 void					ft_clear_entity_list(t_lstent *start);
 
 t_vct2					line_percent(t_vct2 pos1, t_vct2 pos2, double percent);
+
+t_vct2					get_screen_mappos(t_editor *editor, int x, int y);
+t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
 
 #endif

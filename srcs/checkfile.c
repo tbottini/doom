@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 17:09:52 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 14:02:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ int	check_one_wall(int fd, t_slen *len)
 		return (-62);
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_txtrs))
 		return (-63);
-
 	if (((read(fd, &ptmp, sizeof(t_portal_id)) != sizeof(t_portal_id))))
 		return (-64);
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects))
@@ -346,16 +345,17 @@ int	check_file(const char *file)
 
 	if ((fd = open(file, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) == -1)
 	{
-		write(2, "Error opening file\n", 19);
+		ft_putendl_fd("Error opening file", 2);
 		return (0);
 	}
 	if ((returncode = check_map(fd, &len)))
 	{
-		ft_printf("Error : %d\n", returncode);
+		ft_printf("%s ❌  : %d\n", file, returncode);
 		close(fd);
 		return (0);
 	}
 	close(fd);
-	write(1, "Successfully read ressources/map/editor.map\n", 48);
+	ft_putstr(file);
+	ft_putendl(" ✅");
 	return (1);
 }
