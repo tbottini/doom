@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 11:43:04 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 15:04:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,24 @@ void		func_prop(t_prop *prop, int type)
 		prop->func = NULL;
 }
 
+int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos)
+{
+	if (hitbox->x <= pos.x && pos.x <= hitbox->w
+		&& hitbox->y <= pos.y && pos.y <= hitbox->l
+		&& hitbox->z <= pos.z && pos.z <= hitbox->h)
+		return (1);
+	return (0);
+}
+
 void		init_prop(t_prop *prop)
 {
 	prop->pos.z = prop->sector->h_floor;
+	prop->hitbox.x = prop->pos.x - HITBOXSIZE;
+	prop->hitbox.y = prop->pos.y - HITBOXSIZE;
+	prop->hitbox.z = prop->pos.z;
+	prop->hitbox.w = prop->pos.x + HITBOXSIZE;
+	prop->hitbox.l = prop->pos.y + HITBOXSIZE;
+	prop->hitbox.h = prop->pos.z + HITBOXSIZE;
 	prop->width = 3;
 	func_prop(prop, prop->type);
 	//txtr_prop(prop, prop->type);
@@ -145,25 +160,25 @@ void		activate_prop(t_game *game, t_prop *prop, t_wall *wall)
 	else if (prop->type == MINWPROPSPOS) // Wall button
 		prop->func(wall);
 }
-
+/*
 int			prop_collision(t_fvct3 pos, t_fvct3 tmp, t_prop *prop)
 {
 	if (vector_intersect(tmp, pos, prop->e1, prop->e2))
 		return (1);
 	return (0);
 }
-
-int			standing_on(t_fvct3 pos, double angle, t_prop *prop)
-{
-	t_fvct3		tmp;
+*/
+//int			standing_on(t_fvct3 pos, double angle, t_prop *prop)
+//{
+//	t_fvct3		tmp;
 
 	//if (prop->tex)
 	//{
-		prop->e1.x = /* prop->pos.x + */sin((angle - 90.0) * PI180) * (prop->width / 2);
-		prop->e1.y = /*prop->pos.y + */cos((angle - 90.0) * PI180) * (prop->width / 2);
-		prop->e2.x = /*prop->pos.x + */sin((angle + 90.0) * PI180) * (prop->width / 2);
-		prop->e2.y = /*prop->pos.y + */cos((angle + 90.0) * PI180) * (prop->width / 2);
-		tmp.x = pos.x;
+	//	prop->e1.x = /* prop->pos.x + */sin((angle - 90.0) * PI180) * (prop->width / 2);
+	//	prop->e1.y = /*prop->pos.y + */cos((angle - 90.0) * PI180) * (prop->width / 2);
+	//	prop->e2.x = /*prop->pos.x + */sin((angle + 90.0) * PI180) * (prop->width / 2);
+	//	prop->e2.y = /*prop->pos.y + */cos((angle + 90.0) * PI180) * (prop->width / 2);
+	/*	tmp.x = pos.x;
 		tmp.y = pos.y + PADDING;
 		pos.x += PADDING;
 		if (prop_collision(pos, tmp, prop))
@@ -178,8 +193,8 @@ int			standing_on(t_fvct3 pos, double angle, t_prop *prop)
 		if (prop_collision(pos, tmp, prop))
 			return (1);
 	//}
-	return (0);
-}
+	return (0);*/
+//}
 
 void		pickup_prop(t_game *game)
 {
@@ -188,8 +203,7 @@ void		pickup_prop(t_game *game)
 	i = 0;
 	while (i < game->player.stat.sector->len_prop)
 	{
-		if (standing_on(game->player.stat.pos, game->player.stat.rot.y,
-			&game->player.stat.sector->props[i]))
+		if (is_in_hitbox(&game->player.stat.sector->props[i].hitbox, game->player.stat.pos))
 		{
 			activate_prop(game, &game->player.stat.sector->props[i], NULL);
 			if (game->player.stat.sector->props[i].type < MAXPROPSNUMBER)

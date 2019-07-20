@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 12:17:05 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 14:03:29 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,13 @@ void		update_position(t_stat *stat, t_fvct3 npos)
 	t_fvct3	tmp;
 	t_wall	*w;
 
-	if (colli_teleport(stat, npos, stat->pos))
+	if (colli_teleport(stat, stat->sector, npos, stat->pos))
 	{
 		stat->pos.x = npos.x;
 		stat->pos.y = npos.y;
 		return ;
 	}
-	if (!(w = collision(stat, npos, NULL)))
+	if (!(w = collision(stat->sector, npos, NULL)))
 	{
 		stat->pos.x = npos.x;
 		stat->pos.y = npos.y;
@@ -134,14 +134,14 @@ void		update_position(t_stat *stat, t_fvct3 npos)
 	}
 	tmp.x = stat->pos.x;
 	tmp.y = npos.y;
-	if (!collision(stat, tmp, w))
+	if (!collision(stat->sector, tmp, w))
 	{
 		stat->pos.y = npos.y;
 		return ;
 	}
 	tmp.y = stat->pos.y;
 	tmp.x = npos.x;
-	if (!collision(stat, tmp, w))
+	if (!collision(stat->sector, tmp, w))
 		stat->pos.x = npos.x;
 }
 

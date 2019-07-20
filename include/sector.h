@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 14:47:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 15:05:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,16 @@ typedef struct			s_wall
 	double				dist;
 }						t_wall;
 
+typedef struct			s_hitbox
+{
+	double				x;
+	double				y;
+	double				z;
+	double				w;
+	double				l;
+	double				h;
+}						t_hitbox;
+
 struct					s_prop
 {
 	t_txtr				*tex;
@@ -74,6 +84,7 @@ struct					s_prop
 	t_fvct3				pos;
 	t_fvct3				e1;
 	t_fvct3				e2;
+	t_hitbox			hitbox;
 	t_wall				*wall;
 	t_sector			*sector;
 	int					width;

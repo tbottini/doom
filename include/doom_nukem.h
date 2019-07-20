@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/19 15:18:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 15:04:15 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ extern int debug;
 # define PADDING 0.30
 # define PADDING2 0.60
 # define STEP 0.25
+# define HITBOXSIZE 0.5
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 # define MAX_FAR 10000

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 12:16:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 14:17:05 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,19 @@ int			can_pass(t_stat *stat, int i)
 	{
 		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil) && (next->h_floor <= stat->pos.z + STEP))
 		{
-			stat->sector = next;
-			if (stat->pos.z <= next->h_floor)
-				stat->pos.z = next->h_floor;
-			return (1);
+			if (!collision(next, stat->pos, NULL))
+			{
+				stat->sector = next;
+				if (stat->pos.z <= next->h_floor)
+					stat->pos.z = next->h_floor;
+				return (1);
+			}
 		}
 	}
 	return (0);
 }
 
-int vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
+int			vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 {
 	if (orientation(p1, q1, p2) != orientation(p1, q1, q2)
 		&& orientation(p2, q2, p1) != orientation(p2, q2, q1))
@@ -48,58 +51,55 @@ int vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 	return (0);
 }
 
-t_wall		*collisionV21(t_stat *stat, t_fvct3 ori, t_fvct3 pos, t_wall *w)
+t_wall		*collisionV21(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 {
 	int		i;
 
 	if (w)
 		return (vector_intersect(ori, pos, *(t_fvct3*)&w->pillar->p, *(t_fvct3*)&w->next->p) ? w : 0);
 	i = -1;
-	while (++i < stat->sector->len)
+	while (++i < sector->len)
 	{
-		if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar->p,
-			*(t_fvct3*)&stat->sector->wall[i].next->p))
-				return (&stat->sector->wall[i]);
+		if (!ISPORTAL(sector->wall[i].status) && vector_intersect(ori, pos, *(t_fvct3*)&sector->wall[i].pillar->p,
+			*(t_fvct3*)&sector->wall[i].next->p))
+				return (&sector->wall[i]);
 	}
 	return (NULL);
 }
 
-int			colli_teleport(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
+int			colli_teleport(t_stat *stat, t_sector *sector, t_fvct3 ori, t_fvct3 pos)
 {
 	int		i;
 
 	i = -1;
-	while (++i < stat->sector->len)
+	while (++i < sector->len)
 	{
-		if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar->p,
-			*(t_fvct3*)&stat->sector->wall[i].next->p))
+		if (vector_intersect(ori, pos, *(t_fvct3*)&sector->wall[i].pillar->p,
+			*(t_fvct3*)&sector->wall[i].next->p))
 		{
-			if (can_pass(stat, i))
-				return (1);
-			else
-				return (0);
+			return (can_pass(stat, i));
 		}
 	}
 	return (0);
 }
 
-t_wall		*collision(t_stat *stat, t_fvct3 pos, t_wall *w)
+t_wall		*collision(t_sector *sector, t_fvct3 pos, t_wall *w)
 {
 	t_fvct3		tmp;
 
 	tmp.x = pos.x;
 	tmp.y = pos.y + PADDING;
 	pos.x += PADDING;
-	if ((w = collisionV21(stat, pos, tmp, w)))
+	if ((w = collisionV21(sector, pos, tmp, w)))
 		return (w);
 	tmp.y -= PADDING2;
-	if ((w = collisionV21(stat, pos, tmp, w)))
+	if ((w = collisionV21(sector, pos, tmp, w)))
 		return (w);
 	pos.x -= PADDING2;
-	if ((w = collisionV21(stat, pos, tmp, w)))
+	if ((w = collisionV21(sector, pos, tmp, w)))
 		return (w);
 	tmp.y += PADDING2;
-	if ((w = collisionV21(stat, pos, tmp, w)))
+	if ((w = collisionV21(sector, pos, tmp, w)))
 		return (w);
 	return (NULL);
 }

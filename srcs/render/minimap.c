@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 11:44:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 15:12:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,8 @@ static void			miniprops(t_minimap mini, t_sector *sector, t_fvct3 pos, double an
 {
 	int		i;
 	t_vct2	tmp;
-	t_vct2	e1;
-	t_vct2	e2;
-	t_fvct2	d;
 
 	i = 0;
-	d.x = sin((angle - 90.0) * PI180);
-	d.y = cos((angle - 90.0) * PI180);
 	while (i < sector->len_prop)
 	{
 		//if (sector->props[i].tex)
@@ -107,21 +102,25 @@ static void			miniprops(t_minimap mini, t_sector *sector, t_fvct3 pos, double an
 			tmp.y = (mini.a.y - (mini.size.y / 2))
 				+ ((pos.y - sector->props[i].pos.y)) * (UNIT);
 			bold_point2(mini, tmp, DEEPBLUE);
-			e1.x = sector->props[i].pos.x + d.x * (sector->props[i].width / 2) + d.y * (sector->props[i].width / 2);
-			e1.y = sector->props[i].pos.y + d.x * (sector->props[i].width / 2) - d.y * (sector->props[i].width / 2);
 			tmp.x = (mini.a.x - (mini.size.x / 2))
-				+ ((e1.x - pos.x)) * (UNIT);
+				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
 			tmp.y = (mini.a.y - (mini.size.y / 2))
-				+ ((pos.y - e1.y)) * (UNIT);
+				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
 			bold_point2(mini, tmp, 0);
-			d.x = sin((angle + 90.0) * PI180);
-			d.y = cos((angle + 90.0) * PI180);
-			e2.x = sector->props[i].pos.x + d.x * (sector->props[i].width / 2) + d.y * (sector->props[i].width / 2);
-			e2.y = sector->props[i].pos.y + d.x * (sector->props[i].width / 2) - d.y * (sector->props[i].width / 2);
 			tmp.x = (mini.a.x - (mini.size.x / 2))
-				+ ((e2.x - pos.x)) * (UNIT);
+				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
 			tmp.y = (mini.a.y - (mini.size.y / 2))
-				+ ((pos.y - e2.y)) * (UNIT);
+				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
+			bold_point2(mini, tmp, 0);
+			tmp.x = (mini.a.x - (mini.size.x / 2))
+				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
+			tmp.y = (mini.a.y - (mini.size.y / 2))
+				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
 			bold_point2(mini, tmp, 0);
 		//}
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_txtrbox.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 17:11:06 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/17 17:11:07 by magrab           ###   ########.fr       */
+/*   Updated: 2019/07/20 13:41:42 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
 {
 	SDL_Texture *txtrclick;
 
+	printf("%d\n", edit->selecttxtr);
 	if (edit->selecttxtr == FILL_PROP && edit->currstat && ISPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
 	{
 		edit->currstat->type = e.x;
@@ -76,8 +77,9 @@ void texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
 		edit->currstat->type = e.x;
 		edit->selecttxtr = NOSELECT;
 	}
-	else if ((txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
+	else if (edit->selecttxtr == FILL_TXTR || edit->selecttxtr == FILL_SOL)
 	{
+		txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER);
 		if (edit->currmur)
 			edit->currmur->txtr = txtrclick;
 		else if (edit->map)

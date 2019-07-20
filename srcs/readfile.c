@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/19 16:14:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 13:55:09 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,8 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_txtrs))
 		return (-63);
 	printf("\t\tFound Texture ID: %d\n", tmp);
-	set_txtr(&wall->txtr, game->gamesurf[tmp]);
+	if (tmp >= 0)
+		set_txtr(&wall->txtr, game->gamesurf[tmp]);
 	if (((read(fd, &wall->status, sizeof(t_portal_id)) != sizeof(t_portal_id))))
 		return (-64);
 	printf("\t\tFound Wall Type: %d\n", tmp);
@@ -272,11 +273,13 @@ int	read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
 	printf("\tSector ceil at %f\n", sector->h_ceil);
 	if (((read(fd, &itmp, sizeof(int)) != sizeof(int)) || itmp >= len->nb_txtrs))
 		return (-54);
-	set_txtr(&sector->txtrsol, game->gamesurf[itmp]);
+	if (itmp >= 0)
+		set_txtr(&sector->txtrsol, game->gamesurf[itmp]);
 	printf("\tSector floor txtr: %d\n", itmp);
 	if (((read(fd, &itmp, sizeof(int)) != sizeof(int)) || itmp >= len->nb_txtrs))
 		return (-55);
-	set_txtr(&sector->txtrtop, game->gamesurf[itmp]);
+	if (itmp >= 0)
+		set_txtr(&sector->txtrtop, game->gamesurf[itmp]);
 	printf("\tSector ceil txtr: %d\n", itmp);
 	if ((itmp = read_sec_walls(fd, game, sector, len)))
 		return (itmp);
