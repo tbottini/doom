@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/19 16:59:41 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 11:43:04 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void		func_prop(t_prop *prop, int type)
 void		init_prop(t_prop *prop)
 {
 	prop->pos.z = prop->sector->h_floor;
-	prop->width = 10;
+	prop->width = 3;
 	func_prop(prop, prop->type);
 	//txtr_prop(prop, prop->type);
 }

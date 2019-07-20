@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/19 15:18:27 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 12:16:45 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,13 @@ int			can_pass(t_stat *stat, int i)
 	t_sector *next;
 
 	next = stat->sector->wall[i].link;
-	printf("can pass ?\n");
-	if (stat->sector->wall[i].status >= OPEN_DOOR)
+	if (next && stat->sector->wall[i].status >= OPEN_DOOR)
 	{
 		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil) && (next->h_floor <= stat->pos.z + STEP))
 		{
 			stat->sector = next;
 			if (stat->pos.z <= next->h_floor)
 				stat->pos.z = next->h_floor;
-			printf("new pos z = %f\n", stat->pos.z);
 			return (1);
 		}
 	}
@@ -76,7 +74,7 @@ int			colli_teleport(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
 		if (vector_intersect(ori, pos, *(t_fvct3*)&stat->sector->wall[i].pillar->p,
 			*(t_fvct3*)&stat->sector->wall[i].next->p))
 		{
-			if (!can_pass(stat, i))
+			if (can_pass(stat, i))
 				return (1);
 			else
 				return (0);
