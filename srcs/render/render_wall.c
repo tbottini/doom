@@ -98,17 +98,18 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	coef_neutre = coef_vct(neutre, arch->px);
 
 	start = arch->px.x;
-	if (arch->wall->status == PORTAL)
+	if (arch->wall->status == PORTAL || arch->wall->status == OPEN_DOOR)
 		borne_svg(arch, &borne_tmp);
 
 	while (arch->px.x != arch->px.y)
 	{
-		if (arch->wall->status == WALL)
+		if (arch->wall->status == WALL
+			|| arch->wall->status == CLOSE_DOOR) // Attention a ne pas push
 		{
 			if (z_line_buffer(arch, neutre.x, arch->px.x))
 				draw_column(arch, pillar);
 		}
-		else if (arch->wall->status == PORTAL)
+		else if (arch->wall->status == PORTAL || arch->wall->status == OPEN_DOOR)
 		{
 			if (zline_portal(arch, borne_tmp.zline, neutre.x, start))
 				draw_portal(arch, pillar, &borne_tmp, start);
@@ -124,7 +125,7 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 			SDL_RenderPresent(arch->sdl->rend);
 		}
 	}
-	if (arch->wall->status == PORTAL)
+	if (arch->wall->status == PORTAL || arch->wall->status == OPEN_DOOR)
 	{
 		arch->px.x = start;
 		set_borne_horizontal(arch);

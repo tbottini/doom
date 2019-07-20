@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 15:04:03 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 17:52:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,13 @@ static void	new_music(t_sound *sound)
 
 /*============bouton=================*/
 
-static void	open_close(t_wall *wall)
+void	open_close(t_wall *wall)
 {
+	ft_printf("toto\n");
 	if (wall->status == OPEN_DOOR)
-		;//close_door(wall);//a faire avec animation
+		wall->status = CLOSE_DOOR;//close_door(wall);//a faire avec animation
 	else if (wall->status == CLOSE_DOOR)
-		;//open_door(wall);//a faire avaec animation
+		wall->status = OPEN_DOOR;//open_door(wall);//a faire avaec animation
 }
 
 /*===============ammo===================*/
@@ -112,9 +113,13 @@ void		func_prop(t_prop *prop, int type)
 	else if (type == MINPROPSPOS + 8 || type == MINPROPSPOS + 9 || type == MINPROPSPOS + 10)//Add new weapons
 		prop->func = &add_weapon;
 	else if (type == MINWPROPSPOS) // Wall button
+	{
+		ft_printf("New Button\n");
 		prop->func = &open_close;
+	}
 	else if (type == MINWPROPSPOS + 1) // wall deco
 		prop->func = NULL;
+	ft_printf("New PROP %d\t\t%d\n", type, MINWPROPSPOS);
 }
 
 int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos)
@@ -126,12 +131,17 @@ int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos)
 	return (0);
 }
 
-void		init_prop(t_prop *prop)
+void		init_prop(t_prop *prop, double height)
 {
-	prop->pos.z = prop->sector->h_floor;
+	if (ISWALLPROP(prop->type))
+		prop->pos.z = height + (H_NORMAL / 2);
+	else
+		prop->pos.z = prop->sector->h_floor;
+	printf("PRROP Z = %f\n\n", prop->pos.z);
 	prop->hitbox.x = prop->pos.x - HITBOXSIZE;
 	prop->hitbox.y = prop->pos.y - HITBOXSIZE;
-	prop->hitbox.z = prop->pos.z;
+	prop->hitbox.z = prop->pos.z - HITBOXSIZE;
+	printf("HITBOX Z = %f\n\n", prop->hitbox.z);
 	prop->hitbox.w = prop->pos.x + HITBOXSIZE;
 	prop->hitbox.l = prop->pos.y + HITBOXSIZE;
 	prop->hitbox.h = prop->pos.z + HITBOXSIZE;

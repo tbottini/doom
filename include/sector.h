@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 15:05:49 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 17:50:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct			s_wall
 	t_sector			*link;
 	t_prop				*props;
 	double				dist;
+	int					nb_props;
 }						t_wall;
 
 typedef struct			s_hitbox
@@ -117,6 +118,9 @@ void			describe_sector_recursif(t_sector sector);
 void			describe_bunch(t_wall **bunch);
 void			describe_sector(t_sector sector);
 void			describe_wall(t_wall wall);
-void			init_prop(t_prop *prop);
+
+
+void			init_prop(t_prop *prop, double height);
+int				is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos);
 
 #endif

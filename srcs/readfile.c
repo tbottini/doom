@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 13:55:09 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 17:50:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,10 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 	if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a >= len->nb_sects)
 		return (-73);
 	printf("\t\tFound Prop Sector ID: %d\n", var_a);
-	prop->sector = &game->sectors[var_a];
+	if (var_a == -1)
+		prop->sector = NULL;
+	else
+		prop->sector = &game->sectors[var_a];
 	if ((read(fd, &var_b, sizeof(int)) != sizeof(int)) || var_b >= len->nb_sects)
 		return (-74);
 	if (var_b == -1)
@@ -135,7 +138,7 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 		if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a != -1)
 			return (-79);
 	}
-	else if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a >= game->sectors[var_b].len)
+	else if ((read(fd, &var_a, sizeof(int)) != sizeof(int)))// || var_a >= game->sectors[var_b].len)
 		return (-75);
 	printf("\t\tFound wall %d in sector %d\n", var_a, var_b);
 	if (var_b != -1 && var_a != -1)
@@ -144,7 +147,7 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 		return (-76);
 	if ((read(fd, &prop->pos.y, sizeof(double)) != sizeof(double)))
 		return (-77);
-	init_prop(prop);
+	init_prop(prop, game->sectors[len->current_sector].h_floor);
 	printf("\t\tSet Wall Prop position %f %f\n", prop->pos.x, prop->pos.y);
 	return (0);
 }
@@ -170,6 +173,7 @@ int	read_wall_props(int fd, t_game *game, t_wall *wall, t_slen *len)
 			return (rtn);
 		x++;
 	}
+	wall->nb_props = nbp;
 	if (read_balise(fd, "📅", 7))
 		return (7);
 	return (0);
@@ -302,6 +306,7 @@ int	read_sectors(int fd, t_game *game, t_slen *len)
 	x = 0;
 	while (x < len->nb_sects)
 	{
+		len->current_sector = x;
 		if ((rtn = read_one_sector(fd, game, &(game->sectors[x]), len)))
 			return (rtn);
 		x++;

@@ -31,7 +31,7 @@ typedef struct s_prop	t_prop;
 # define MAXENEMYPOS (MINENEMYPOS + MAXENEMYNUMBER)
 
 # define MINPROPSPOS 20
-# define MAXPROPSNUMBER 6
+# define MAXPROPSNUMBER 11
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
@@ -70,6 +70,7 @@ typedef struct			s_slen
 	int	nb_pills;
 	int	nb_txtrs;
 	int	nb_sects;
+	int	current_sector;
 }						t_slen;
 
 /*
