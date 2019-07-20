@@ -62,8 +62,8 @@ void		draw_borne(t_arch *arch, uint32_t color)
 	t_vct2		point1;
 	t_vct2		point2;
 
-	borne_up.a = tan(PI180 * arch->bound.b_left);
-	borne_down.a = tan(PI180 * arch->bound.b_right);
+	borne_up.a = tan(PI180 * arch->portal.b_left);
+	borne_down.a = tan(PI180 * arch->portal.b_right);
 	borne_up.b = 0;
 	borne_down.b = 0;
 	point1.x = arch->sdl->size.x / 2.0;

@@ -324,8 +324,8 @@ typedef struct 			s_borne
 	uint32_t			*b_up;
 	double				b_left;
 	double				b_right;
-	t_fvct2				decal_portal;
-	t_fvct2				depth_portal;
+	t_fvct2				pillar;
+	t_fvct2				next;
 }						t_borne;
 
 typedef struct 			s_arch
@@ -342,7 +342,7 @@ typedef struct 			s_arch
 
 	t_vct2				px;
 	t_fvct2				shift_txtr;
-	t_borne				bound;
+	t_borne				portal; //renommer en portal ??
 
 	//debug
 	Uint32			sc_debug[WIDTH * HEIGHT];

@@ -14,19 +14,19 @@ int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 	px = texture_interpolation2D(arch);
 	buff = 0;
 	coef = (double)arch->wall->txtr.h / (surface.y - surface.x);
-	if (surface.y < (int)arch->bound.b_up[arch->px.x])
+	if (surface.y < (int)arch->portal.b_up[arch->px.x])
 		return (numcol + surface.y * arch->sdl->size.x);
-	if (surface.x < (int)arch->bound.b_up[arch->px.x])
+	if (surface.x < (int)arch->portal.b_up[arch->px.x])
 	{
-		buff = (-surface.x + arch->bound.b_up[arch->px.x]) * coef;
+		buff = (-surface.x + arch->portal.b_up[arch->px.x]) * coef;
 		if (buff > 1.0)
 		{
 			px += (int)buff * arch->wall->txtr.w;
 			buff = buff - (int)buff;
 		}
-		surface.x = arch->bound.b_up[arch->px.x];
+		surface.x = arch->portal.b_up[arch->px.x];
 	}
-	while (surface.x < surface.y && surface.x < (int)arch->bound.b_down[arch->px.x])
+	while (surface.x < surface.y && surface.x < (int)arch->portal.b_down[arch->px.x])
 	{
 		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
 		surface.x++;
@@ -49,12 +49,12 @@ int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 */
 double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 {
-	if (surface.x <= (int)arch->bound.b_up[arch->px.x])
-		surface.x = arch->px.x + arch->bound.b_up[arch->px.x] * arch->sdl->size.x;
+	if (surface.x <= (int)arch->portal.b_up[arch->px.x])
+		surface.x = arch->px.x + arch->portal.b_up[arch->px.x] * arch->sdl->size.x;
 	else
 		surface.x = surface.x * arch->sdl->size.x + arch->px.x;
-	if (surface.y > (int)arch->bound.b_down[arch->px.x])
-		surface.y = arch->px.x + (arch->bound.b_down[arch->px.x] - 1) * arch->sdl->size.x;
+	if (surface.y > (int)arch->portal.b_down[arch->px.x])
+		surface.y = arch->px.x + (arch->portal.b_down[arch->px.x] - 1) * arch->sdl->size.x;
 	else
 		surface.y = surface.y * arch->sdl->size.x;
 	while (surface.x < surface.y)
@@ -70,11 +70,11 @@ void		draw_column(t_arch *arch, t_fvct2 surface)
 	double	cursor;
 	t_vct2	surface_tmp;
 
-	surface_tmp = (t_vct2){arch->bound.b_up[arch->px.x], surface.x};
+	surface_tmp = (t_vct2){arch->portal.b_up[arch->px.x], surface.x};
 	cursor = draw_part(arch, surface_tmp, 0);
 	surface_tmp = (t_vct2){surface.x, surface.y};
 	draw_part_texture(arch, cursor, surface_tmp);
-	surface_tmp = (t_vct2){surface.y, arch->bound.b_down[arch->px.x]};
+	surface_tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
 	draw_part(arch, surface_tmp, 0x272130ff);
 }
 
@@ -115,7 +115,7 @@ void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int star
 
 	s_portal = surface_portal(surface, arch->sector, arch->wall->link);
 
-	tmp = (t_vct2){arch->bound.b_up[arch->px.x], surface.x};
+	tmp = (t_vct2){arch->portal.b_up[arch->px.x], surface.x};
 	surf.x = draw_part(arch, tmp, 0);
 	tmp = (t_vct2){surface.x, s_portal.x};
 	surf.x = draw_part_texture(arch, surf.x, tmp);
@@ -123,10 +123,10 @@ void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int star
 	surf.x = draw_part(arch, tmp, ORANGE);
 	tmp = (t_vct2){s_portal.y, surface.y};
 	surf.x = draw_part_texture(arch, surf.x, tmp);
-	tmp = (t_vct2){surface.y, arch->bound.b_down[arch->px.x]};
+	tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
 	draw_part(arch, tmp, 0x272130ff);
-	parent_borne->b_up[arch->px.x - start] = arch->bound.b_up[arch->px.x];
-	parent_borne->b_down[arch->px.x - start] = arch->bound.b_down[arch->px.x];
+	parent_borne->b_up[arch->px.x - start] = arch->portal.b_up[arch->px.x];
+	parent_borne->b_down[arch->px.x - start] = arch->portal.b_down[arch->px.x];
 
 	tmp = (t_vct2){(int)s_portal.x, (int)s_portal.y};
 	set_borne_vertical(arch, tmp, arch->px.x);

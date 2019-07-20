@@ -12,11 +12,11 @@ void		px_polarite(t_arch *arch)
 	double	diff;
 	int		polarite;
 
-	angle.x = local_angle(arch->bound.b_left, arch->wall->pillar->angle);
-	angle.y = local_angle(arch->bound.b_left, arch->wall->next->angle);
+	angle.x = local_angle(arch->portal.b_left, arch->wall->pillar->angle);
+	angle.y = local_angle(arch->portal.b_left, arch->wall->next->angle);
 
 	diff = fabs(angle.x - angle.y);
-	polarite = (arch->wall->next->angle > arch->bound.b_left ? -1 : 1) * (diff < 180 ? 1 : -1);
+	polarite = (arch->wall->next->angle > arch->portal.b_left ? -1 : 1) * (diff < 180 ? 1 : -1);
 	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x -1;
 	arch->px.y = arch->sdl->size.x - 1 - arch->px.x;
 }
@@ -27,9 +27,9 @@ int			pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
 	double	angle_next;
 	double	borne;
 
-	angle = local_angle(arch->bound.b_left, pillar->angle);
-	angle_next = local_angle(arch->bound.b_left, next->angle);
-	borne = local_angle(arch->bound.b_left, arch->bound.b_right);
+	angle = local_angle(arch->portal.b_left, pillar->angle);
+	angle_next = local_angle(arch->portal.b_left, next->angle);
+	borne = local_angle(arch->portal.b_left, arch->portal.b_right);
 
 
 	if (angle < borne - 180)
@@ -62,13 +62,13 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 		arch->px.x = pillar_polarite(arch, arch->wall->pillar, arch->wall->next);
 		if (arch->px.x == 0)
 		{
-			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_left * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->bound.b_left;
+			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_left * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->portal.b_left;
 		}
 		else
 		{
-			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_right * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->bound.b_right;
+			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_right * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->portal.b_right;
 		}
 		arch->shift_txtr.x = wall_clipping(arch, p, &tmp, angle);
 		arch->pillar = tmp;
@@ -87,13 +87,13 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 		arch->px.y = pillar_polarite(arch, arch->wall->next, arch->wall->pillar);
 		if (arch->px.y == 0)
 		{
-			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_left * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->bound.b_left;
+			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_left * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->portal.b_left;
 		}
 		else
 		{
-			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->bound.b_right * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->bound.b_right;
+			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_right * PI180) * arch->cam->d_screen);
+			angle = p->stat.rot.y + arch->portal.b_right;
 		}
 		arch->shift_txtr.y = wall_clipping(arch, p, &tmp, angle);
 		arch->next = tmp;
@@ -122,17 +122,16 @@ int				wall_behind_portal(t_arch *arch)
 	a_pillar.b = 0;
 	a_pillar2.a = arch->next.y / arch->next.x;
 	a_pillar2.b = 0;
-	if (arch->bound.depth_portal.x == arch->bound.depth_portal.y)
+	if (arch->portal.pillar.x == arch->portal.next.x)
 	{
 		a_portal.lock = 1;
-		a_portal.b = arch->bound.depth_portal.x;
+		a_portal.b = arch->portal.pillar.x;
 	}
 	else
 	{
 		a_portal.lock = 0;
-		a_portal.a = (arch->bound.decal_portal.y - arch->bound.decal_portal.x)
-			/ (arch->bound.depth_portal.y - arch->bound.depth_portal.x);
-		a_portal.b = arch->bound.decal_portal.x - (arch->bound.depth_portal.x * a_portal.a);
+		a_portal.a = (arch->portal.next.y - arch->portal.pillar.y) / (arch->portal.next.x - arch->portal.pillar.x);
+		a_portal.b = arch->portal.pillar.y - a_portal.a * arch->portal.pillar.x;
 	}
 	inter = interpolation_linear(a_portal, a_pillar);
 	inter2 = interpolation_linear(a_portal, a_pillar2);
@@ -178,7 +177,13 @@ int			wall_screen_info(t_arch *arch, t_player *p)
 
 	pillar_screen_info(arch, p);
 	if (debug == 1)
-		printf(WRED"portal:\n%f %f --> %f %f\n"WEND, arch->bound.depth_portal.x, arch->bound.decal_portal.x, arch->bound.depth_portal.y, arch->bound.decal_portal.y);
+	{
+		printf(WRED"portal:\n%f %f --> %f %f\n"WEND,
+			arch->portal.pillar.x, arch->portal.pillar.y,
+			arch->portal.next.x, arch->portal.next.y);
+	}
+
+
 	if (arch->depth_portal > 0)
 	{
 		result = wall_behind_portal(arch);

@@ -69,8 +69,8 @@ void			reorder(t_arch *arch)
 **	fait des coeficient pour rendre les colomnes entre les deux pilier
 **	et si c'est un portail prepare
 **		-sauvegarde la borne actuel dans borne_tmp
-**		-la borne pour la recursivite arch->bound
-**		-recharge borne_tmp dans arch->bound
+**		-la borne pour la recursivite arch->portal
+**		-recharge borne_tmp dans arch->portal
 */
 //zline temporaire pour ne pas refaire un passage pillar_to_pillar
 void			pillar_to_pillar(t_arch *arch, t_player *player)
@@ -97,7 +97,7 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 	if (debug == 3)
 	{
 		d_wall(arch->wall);
-		borne_print(&arch->bound);
+		borne_print(&arch->portal);
 	}
 	start = arch->px.x;
 	if (arch->wall->status == PORTAL)
@@ -131,8 +131,12 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		arch->px.x = start;
 		set_borne_horizontal(arch);
 		//set portal borne
-		arch->bound.decal_portal = (t_fvct2){arch->pillar.y, arch->next.y};
-		arch->bound.depth_portal = (t_fvct2){arch->pillar.x, arch->next.x};
+
+		//----arch->portal.decal_portal = (t_fvct2){arch->pillar.y, arch->next.y};
+		//----arch->portal.depth_portal = (t_fvct2){arch->pillar.x, arch->next.x};
+		arch->portal.pillar = arch->pillar;
+		arch->portal.next = arch->next;
+
 		sector_tmp = arch->sector;
 		arch->depth_portal++;
 		if (debug == 1)

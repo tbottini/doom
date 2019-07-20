@@ -188,7 +188,8 @@ void		describe_sector_recursif(t_sector sector)
 void	borne_print(t_borne *borne)
 {
 	printf("-------borne------\n");
-	printf("left %f right %f\nportal: %f %f - %f %f\n", borne->b_left, borne->b_right, borne->depth_portal.x, borne->decal_portal.x,
-		borne->depth_portal.y, borne->decal_portal.y);
+	printf("left %f right %f\nportal: %f %f - %f %f\n", borne->b_left, borne->b_right,
+		borne->pillar.x, borne->pillar.y,
+		borne->next.x, borne->next.y);
 	printf("------------------\n");
 }

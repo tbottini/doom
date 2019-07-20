@@ -20,7 +20,7 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	else if (angle > 180)
 		angle -= 360;
 	pillar->angle = angle;
-	if (angle >= arch->bound.b_right && angle <= arch->bound.b_left)
+	if (angle >= arch->portal.b_right && angle <= arch->portal.b_left)
 		pillar->frust = 1;
 	else
 		pillar->frust = 0;
@@ -48,7 +48,7 @@ double		wall_angle_pers(t_arch *arch, t_wall wall)
 	double	field;
 	t_fvct2	angles;
 
-	if (arch->bound.b_left * arch->bound.b_right > 0)
+	if (arch->portal.b_left * arch->portal.b_right > 0)
 		return (0);
 	angles.x = wall.pillar->angle;
 	angles.y = wall.next->angle;
@@ -84,8 +84,8 @@ int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 {
 	t_fvct2	angles;
 
-	angles.x = local_angle(arch->bound.b_left, wall->pillar->angle);
-	angles.y = local_angle(arch->bound.b_left, wall->next->angle);
+	angles.x = local_angle(arch->portal.b_left, wall->pillar->angle);
+	angles.y = local_angle(arch->portal.b_left, wall->next->angle);
 	return ((fabs(angles.y - angles.x) > 180.0));
 }
 
