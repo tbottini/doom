@@ -377,10 +377,10 @@ typedef struct			s_game
 	t_player			player;
 	t_sound				sound;
 	t_sector			*sectors;
-	t_pillar			*pillars;//
-	SDL_Surface			**gamesurf;//
+	t_pillar			*pillars;
+	SDL_Surface			**gamesurf;
 	t_arch				arch;//a voir aveec tbottini
-	t_camera			camera;//
+	t_camera			camera;
 	t_difficulty		difficulty;
 }						t_game;
 

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 17:52:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 18:26:26 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,41 +170,6 @@ void		activate_prop(t_game *game, t_prop *prop, t_wall *wall)
 	else if (prop->type == MINWPROPSPOS) // Wall button
 		prop->func(wall);
 }
-/*
-int			prop_collision(t_fvct3 pos, t_fvct3 tmp, t_prop *prop)
-{
-	if (vector_intersect(tmp, pos, prop->e1, prop->e2))
-		return (1);
-	return (0);
-}
-*/
-//int			standing_on(t_fvct3 pos, double angle, t_prop *prop)
-//{
-//	t_fvct3		tmp;
-
-	//if (prop->tex)
-	//{
-	//	prop->e1.x = /* prop->pos.x + */sin((angle - 90.0) * PI180) * (prop->width / 2);
-	//	prop->e1.y = /*prop->pos.y + */cos((angle - 90.0) * PI180) * (prop->width / 2);
-	//	prop->e2.x = /*prop->pos.x + */sin((angle + 90.0) * PI180) * (prop->width / 2);
-	//	prop->e2.y = /*prop->pos.y + */cos((angle + 90.0) * PI180) * (prop->width / 2);
-	/*	tmp.x = pos.x;
-		tmp.y = pos.y + PADDING;
-		pos.x += PADDING;
-		if (prop_collision(pos, tmp, prop))
-			return (1);
-		tmp.y -= PADDING2;
-		if (prop_collision(pos, tmp, prop))
-			return (1);
-		pos.x -= PADDING2;
-		if (prop_collision(pos, tmp, prop))
-			return (1);
-		tmp.y += PADDING2;
-		if (prop_collision(pos, tmp, prop))
-			return (1);
-	//}
-	return (0);*/
-//}
 
 void		pickup_prop(t_game *game)
 {
@@ -218,7 +183,6 @@ void		pickup_prop(t_game *game)
 			activate_prop(game, &game->player.stat.sector->props[i], NULL);
 			if (game->player.stat.sector->props[i].type < MAXPROPSNUMBER)
 				game->player.stat.sector->props[i].tex = NULL;
-			printf("\n\ngg t for\n\n");
 			break ;
 		}
 		i++;

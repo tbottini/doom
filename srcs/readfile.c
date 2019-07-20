@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 17:50:03 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 18:17:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,11 +468,11 @@ void	free_sectors(t_sector **sectors, int sec_len)
 		y = 0;
 		while (y < tmp[x].len)
 		{
-			//free_props(&tmp[x].wall[y].props);
+			free(tmp[x].wall[y].props);
 			y++;
 		}
 		free(tmp[x].wall);
-		//free_props(&tmp[x].props);
+		free(tmp[x].props);
 		free_enemys(tmp[x].enemys);
 		x++;
 	}

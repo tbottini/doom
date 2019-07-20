@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 17:50:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 18:07:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ struct					s_prop
 	t_txtr				*tex;
 	void				(*func)();
 	t_fvct3				pos;
-	t_fvct3				e1;
-	t_fvct3				e2;
 	t_hitbox			hitbox;
 	t_wall				*wall;
 	t_sector			*sector;

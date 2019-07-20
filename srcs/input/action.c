@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 17:15:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 18:15:46 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		change_weapon(t_player *player, int id)
 	if (player->weapons[id].id != -1)
 		player->hand = player->weapons[id];
 }
-///////////////////////////////////////////////////////////////////////////////
+/*
 double			button_clipping(t_prop prop, t_fvct3 pos, double angle)
 {
 	t_fvct2		inter;
@@ -107,10 +107,12 @@ t_prop		*button_hit(t_prop **but, t_fvct3 pos, double angle)
 	return (hit);
 }
 
+
 int			is_button(t_prop *prop)
 {
 	return (prop->func ? 1 : 0);
 }
+
 
 static void			prop_hitbox(t_prop *prop, double angle)
 {
@@ -120,7 +122,7 @@ static void			prop_hitbox(t_prop *prop, double angle)
 	prop->e2.y = cos((angle + 90.0) * PI180) * (prop->width / 2);
 }
 
-t_prop		*possible_button(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
+ t_prop		*possible_button(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
 {
 	t_prop		*but[10];
 	t_prop		*b;
@@ -145,16 +147,14 @@ t_prop		*possible_button(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
 	}
 	but[index] = NULL;
 	return (button_hit(but, pos, stat->rot.y));
-}
+}*/
 
 void		action(t_player *player, t_stat *stat)
 {
 	int			x;
 	t_fvct3		d;
-	t_prop	*hit;
-	t_wall	*wallhit;
+	t_wall		*wallhit;
 
-	(void)player;
 	d.x = stat->pos.x + (RANGE * sin(stat->rot.x * PI180) * cos(stat->rot.y * PI180));
 	d.y = stat->pos.y + (RANGE * sin(stat->rot.x * PI180) * sin(stat->rot.y * PI180));
 	d.z = stat->pos.z + (-(RANGE * cos(stat->rot.x * PI180)) + (stat->height / 2));
@@ -163,11 +163,9 @@ void		action(t_player *player, t_stat *stat)
 		ft_printf("No Wall HIT\n");
 		return ;
 	}
-//ft_printf("Wallhit\n");
 	x = 0;
 	while (x < wallhit->nb_props)
 	{
-		//ft_printf("Prophit\n");
 		printf("Player:\nx: %f\ny: %f\nz: %f\n\n", player->stat.pos.x, player->stat.pos.y, player->stat.pos.z);
 		printf("x: %f\ny: %f\nw: %f\ny: %f\nz: %f\nh: %f\n",
 			wallhit->props[x].hitbox.x,
@@ -177,23 +175,9 @@ void		action(t_player *player, t_stat *stat)
 			wallhit->props[x].hitbox.z,
 			wallhit->props[x].hitbox.h);
 		if (is_in_hitbox(&wallhit->props[x].hitbox, player->stat.pos))
-		{
-		//	ft_printf("Sesame ouvre toi\n");
 			wallhit->props[x].func(wallhit->props[x].wall);
-		}
 		x++;
 	}
-	return ;
-	hit = NULL;//possible_button(stat, d, stat->pos);
-	if (hit)
-	{
-		printf("BUTTON HIT\n");
-		//apply damage or impact texture
-	}
-	else
-		printf("BUTTON MISSED\n");
-	printf("\rRot : %f\t%f\n", stat->rot.x, stat->rot.y);
-	printf("\rbullet landed : x = %f | y = %f | z = %f\n", d.x, d.y, d.z);
 }
 
 ///////////////////////////////////////////////////////////////////////
