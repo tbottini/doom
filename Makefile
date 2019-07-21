@@ -73,11 +73,11 @@ $(FOLDER)		:
 	@mkdir -p $(FOLDER)
 
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(HEADERS)
-	@printf '\rCompilation $(NAME)\n'
-	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
-	@printf '%*s\e[0m] \e[94m $<\e[0m' $(INV_FILL_BAR)
-	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
-	@printf '\033[M\033[A'
+	@printf '\rCompilation $(NAME)\n' \
+	&& printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#' \
+	&& printf '%*s\e[0m] \e[94m $<\e[0m\n' $(INV_FILL_BAR) \
+	&& $(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $< \
+	&& printf '\033[A\033[M\033[A'
 
 $(NAME)			:		$(OBJS) $(SRCS_LIBFT)
 	@make -C libft/
