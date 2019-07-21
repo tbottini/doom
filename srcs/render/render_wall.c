@@ -131,9 +131,6 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 		arch->px.x = start;
 		set_borne_horizontal(arch);
 		//set portal borne
-
-		//----arch->portal.decal_portal = (t_fvct2){arch->pillar.y, arch->next.y};
-		//----arch->portal.depth_portal = (t_fvct2){arch->pillar.x, arch->next.x};
 		arch->portal.pillar = arch->pillar;
 		arch->portal.next = arch->next;
 
@@ -159,13 +156,7 @@ void		render_wall(t_arch *arch, t_player *player)
 {
 	if (wall_screen_info(arch, player))
 	{
-		if (arch->wall->status == PORTAL)
-			draw_wall(arch, 0xffff00ff);
-		else if (arch->wall->status == WALL)
-			draw_wall(arch, 0xffffffff);
 		reorder(arch);
 		pillar_to_pillar(arch, player);
 	}
-	else
-		draw_wall(arch, RED);
 }

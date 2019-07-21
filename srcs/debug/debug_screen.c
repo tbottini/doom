@@ -100,20 +100,50 @@ void		p_debug(t_fvct2 a, Uint32 color, t_arch *arch)
 	fill_line_debug(arch, arch->sdl, mid, v, color);
 }
 
-void		draw_affine(t_arch *arch, t_affine affine, uint32_t color)
+/*
+**	on dessine l'affine sur une portion x de l'ecran
+**	la portion est la borne de l'ecran en pixel elle sera convertie en unite
+*/
+void		draw_affine_portion(t_arch *arch, t_affine affine, t_fvct2 portion, uint32_t color)
 {
 	t_vct2	point1;
 	t_vct2	point2;
 
-	double	x_value;
-	x_value = (arch->sdl->size.x / 2.0) / arch->zoom;
-	point1.x = arch->sdl->size.x - 1;
-	point1.y = arch->sdl->size.y / 2.0 - (affine.a * x_value + affine.b) * arch->zoom;
-	point2.x = 0;
-	point2.y = arch->sdl->size.y / 2.0 - (affine.a * -x_value + affine.b) * arch->zoom;
+	point1.x = portion.x;
+	point2.x = portion.y;
+	portion.x = (portion.x - arch->sdl->size.x / 2.0) / arch->zoom;
+	portion.y = (portion.y - arch->sdl->size.x / 2.0) / arch->zoom;
+	point1.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.x) * arch->zoom;
+	point2.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.y) * arch->zoom;
 	trait(arch, point1, point2, color);
 }
 
+void		draw_affine(t_arch *arch, t_affine affine, uint32_t color, int flag)
+{
+	t_fvct2	portion;
+
+	if (flag == FULL)
+		portion = (t_fvct2){0, arch->sdl->size.x - 1};
+	else if (flag == MID)
+		portion = (t_fvct2){arch->sdl->size.x / 2, arch->sdl->size.x - 1};
+	else
+		return ;
+	draw_affine_portion(arch, affine, portion, color);
+}
+
+/*
+**	dessine le frustum horizontal
+*/
+void		draw_frustum_hori(t_arch *arch, uint32_t color)
+{
+	t_affine		fov_affine;
+
+	fov_affine.a = atan2(arch->cam->d_screen, arch->sdl->size.y / 2);
+	fov_affine.b = 0;
+	draw_affine(arch, fov_affine, color, MID);
+	fov_affine.a = -fov_affine.a;
+	draw_affine(arch, fov_affine, color, MID);
+}
 
 void		debug_screen_copy(t_arch *arch)
 {

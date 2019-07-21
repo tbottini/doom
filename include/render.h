@@ -65,6 +65,7 @@ void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int s
 /*
 **	bunch
 */
+int						on_frustum(t_arch *arch, t_player *player, t_pillar *pillar);
 void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
 int						buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch);
 void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
