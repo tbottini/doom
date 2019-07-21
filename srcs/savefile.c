@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   savefile.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:35:39 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/21 13:51:02 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void	write_sec_walls(int fd, t_lstmur wall)
 {
 	t_lstmur tmp;
 	int nbwalls;
-	
+
 	write_balise(fd, "💦");
 	tmp = wall;
 	nbwalls = 0;
@@ -424,7 +424,7 @@ void	write_player(int fd, t_eplayer *player)
 int writing_map(int fd, t_editor *edit)
 {
 	long *x;
-	
+
 	x = (long *)"💎🇩🇿🍉💩";
 	write(fd, x, sizeof(long));
 	write_textures(fd, edit);
@@ -444,6 +444,7 @@ int	save_editor_to_file(t_editor *edit)
 
 	ft_strcpy(path, "ressources/map/");
 	ft_strcpy(&(path[15]), edit->filename);
+	remove(path);
 	if ((fd = open(path, O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU | S_IRGRP| S_IROTH)) == -1)
 	{
 		write(2, "Error writting to ressources/map/editor.map\n", 44);
@@ -451,6 +452,6 @@ int	save_editor_to_file(t_editor *edit)
 	}
 	writing_map(fd, edit);
 	close(fd);
-	write(1, "Successfully wrote to ressources/map/editor.map\n", 48);
+	printf("Successfully wrote to %s\n", path);
 	return (0);
 }

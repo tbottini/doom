@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_handler_editor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 16:34:12 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/21 12:02:24 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int event_handler_editor(t_doom *doom, SDL_Event e)
 		return (close_editor(doom));
 	else if (e.type == SDL_WINDOWEVENT)
 		window_event(doom, e);
-	else if (doom->edit.status == ED_WRITING || doom->edit.status == ED_SAVING)
+	else if (doom->edit.status == ED_WRITING || doom->edit.status == ED_SAVING
+		|| doom->edit.status == ED_OPEN)
 	{
 		if (e.type == SDL_KEYDOWN)
 			write_hook(doom, doom->edit.filename, e.key);
