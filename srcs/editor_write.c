@@ -40,14 +40,20 @@ void push_char(char *str, char c)
 		str[x] = c;
 }
 
+#define ISNUMPADNUM(x) ((SDLK_KP_1 <= x && x <= SDLK_KP_9) || x == SDLK_KP_0)
+
 int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 {
 	unsigned int x;
 
-	if (ft_isalnum(e.keysym.sym))
+	if (ft_isalnum(e.keysym.sym) || ISNUMPADNUM(e.keysym.sym))
 	{
 		if (e.keysym.mod & (KMOD_LSHIFT | KMOD_RSHIFT | KMOD_CAPS))
 			push_char(str, e.keysym.sym - 32);
+		else if (SDLK_KP_1 <= e.keysym.sym && e.keysym.sym <= SDLK_KP_9)
+			push_char(str, e.keysym.sym - 1073741864);
+		else if (e.keysym.sym == SDLK_KP_0)
+			push_char(str, e.keysym.sym - 1073741874);
 		else
 			push_char(str, e.keysym.sym);
 		ft_printf("%d\t%d\t%s\n", e.keysym.mod, (KMOD_LSHIFT | KMOD_RSHIFT), str);
@@ -62,7 +68,7 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 		ft_bzero(str, sizeof(char) * MAXFILENAMELEN);
 		doom->edit.status = ED_LOADED;
 	}
-	else if (e.keysym.sym == SDLK_RETURN)
+	else if (e.keysym.sym == SDLK_RETURN || e.keysym.sym == SDLK_KP_ENTER)
 	{
 		if (doom->edit.status == ED_SAVING)
 		{
