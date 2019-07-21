@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 17:49:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/20 22:20:09 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ int	asynchronous_txtr_load(void *param)
 
 	edit = param;
 	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
-	//if (read_file_to_editor(edit, "ressources/map/editor.map") != 0)
-	//{
+	if (read_file_to_editor(edit, "ressources/map/editor.map") != 0)
+	{
 		edit->player.stat.sector = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);;
 		edit->player.stat.pos = (t_vct2){0, 0};
 		edit->player.stat.type = 100;
-	//}
+	}
 	edit->map = edit->sectors;
 	if (!(edit->player.stat.sector))
 		edit->player.stat.sector = edit->map;
