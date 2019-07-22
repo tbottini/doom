@@ -134,15 +134,29 @@ void		draw_affine(t_arch *arch, t_affine affine, uint32_t color, int flag)
 /*
 **	dessine le frustum horizontal
 */
-void		draw_frustum_hori(t_arch *arch, uint32_t color)
+void		draw_frustum_hori(t_arch *arch, uint32_t color, int flag)
 {
 	t_affine		fov_affine;
+	t_vct2			point1;
+	t_vct2			point2;
 
-	fov_affine.a = atan2(arch->cam->d_screen, arch->sdl->size.y / 2);
+	//fov_affine.a = atan2(arch->cam->d_screen, arch->sdl->size.y / 2);
+	//printf("fov vertical %f\n", fov_affine.a * TOANGLE);
+	fov_affine.a = arch->cam->fov_ver / 2;
 	fov_affine.b = 0;
-	draw_affine(arch, fov_affine, color, MID);
+	draw_affine(arch, fov_affine, GREEN, MID);
 	fov_affine.a = -fov_affine.a;
-	draw_affine(arch, fov_affine, color, MID);
+	draw_affine(arch, fov_affine, GREEN, MID);
+
+
+	if (flag & SCREEN_ON)
+	{
+		point1.x = arch->sdl->size.x / 2 + arch->sdl->size.x / 12;
+		point2.x = point1.x;
+		point1.y = arch->sdl->size.y / 2 + (arch->sdl->size.x / 12 * fov_affine.a);
+		point2.y = arch->sdl->size.y / 2 + (arch->sdl->size.x / 12 * -fov_affine.a);
+		trait(arch, point1, point2, BLUE_SOFT);
+	}
 }
 
 void		debug_screen_copy(t_arch *arch)

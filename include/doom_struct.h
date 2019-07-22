@@ -325,9 +325,14 @@ typedef struct			s_editor
 	char				filename[MAXFILENAMELEN]; // Truc que Thomas voulait
 }						t_editor;
 
+/*
+**	fov: le fov horizontal de la camera (en degre)
+**	fov_ver : le fov vertical (en radian)
+*/
 typedef struct 			s_camera
 {
 	int					fov;
+	double				fov_ver;
 	double				d_screen;
 }						t_camera;
 
@@ -354,16 +359,13 @@ typedef struct 			s_arch
 	t_sdl				*sdl;
 	SDL_Surface			**texture;
 	uint16_t			depth_portal;
-
 	t_fvct2				pillar;
 	t_fvct2				next;
-
 	t_vct2				px;
 	t_fvct2				shift_txtr;
-	t_borne				portal; //renommer en portal ??
+	t_borne				portal;
 
-	//debug
-	Uint32			sc_debug[WIDTH * HEIGHT];
+	Uint32				sc_debug[WIDTH * HEIGHT];
 	uint32_t			zoom;
 }						t_arch;
 

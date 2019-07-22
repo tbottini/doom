@@ -2,15 +2,16 @@
 
 /*
 **	renvoie la position en pixel d'un point
+**	wall_angle est l'angle du point par rapport au joueur
 */
-int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
+int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 {
 	double	wall_angle;
 	int px;
 	double	player_angle;
 
 	player_angle = (player->stat.rot.x - 90) * PI180;
-	wall_angle = atan2(h_diff, depth_wall);
+	wall_angle = atan2(h_diff, depth);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
 	px += (player->stat.rot.x - 90) * 45;
 
@@ -21,23 +22,56 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth_wall)
 }
 
 /*
-**	renvoie la surface en px qu'un pillier prend
-**	en fonction de la hauteur du joueur (player)
+**	renvoie la position au sol qui rejoint le bas du pillier
+**	up : la position en z du haut du pillier par rapport au joueur (en u)
+**	down : idem que up mais pour le bas (en u)
+**	surface : la taille du pillier sur l'ecran
+*/
+t_fvct2		floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar)
+{
+	double		px_to_u;
+	t_fvct2		floor_pos;
+
+	px_to_u = (len.x - len.y) / (surface.y / surface.x);
+	//on recupere l'intersection en profondeur
+	floor_pos.x = len.x / arch->cam->fov_ver;
+	floor_pos.x = floor_pos.x * px_to_u;
+	//on recupere decal
+	floor_pos.y = (pillar->y / pillar->x) * floor_pos.x;
+	return (floor_pos);
+}
+
+/*
+**	calcul la taille du secteur par rapport au joueur
+**	length.x = up
+**	length.y = down
+*/
+t_fvct2		length_sector(t_player *player, t_sector *sector)
+{
+	t_fvct2	length;
+
+	length.y = -player->stat.height - (player->stat.pos.z - sector->h_floor);
+	length.x = length.y + sector->h_ceil;
+	return (length);
+}
+
+
+/*
+**	renvoie la surface en pixels d'un pillier
+**	params : la hauteur du joueur (player)
 **	de la hauteur du mur (wall_height)
 **	et de la distance par rapport au mur (depth)
 **	up est la difference entre le point de vue de la camera
 **		et le haut du mur
 */
-t_fvct2			surface_pillar(t_arch *arch, t_player *player, double depth)
+t_fvct2			surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, double depth)
 {
 	t_fvct2		wall_portion;
-	double		up;
-	double		down;
 
-	down = -player->stat.height - (player->stat.pos.z - arch->sector->h_floor);
-	up = down + arch->sector->h_ceil;
-	wall_portion.x = px_point(arch, player, up, depth);
-	wall_portion.y = px_point(arch, player, down, depth);
+	b_point_debug(arch, (t_fvct2){depth, len_sector.x}, RED);
+	b_point_debug(arch, (t_fvct2){depth, len_sector.y}, RED);
+	wall_portion.x = px_point(arch, player, len_sector.x, depth);
+	wall_portion.y = px_point(arch, player, len_sector.y, depth);
 	return (wall_portion);
 }
 
@@ -48,7 +82,6 @@ void			reorder(t_arch *arch)
 {
 	double		tmp;
 	int			tmpint;
-
 	t_fvct2		pillar_tmp;
 
 	if (arch->px.x > arch->px.y)
@@ -72,78 +105,35 @@ void			reorder(t_arch *arch)
 **		-la borne pour la recursivite arch->portal
 **		-recharge borne_tmp dans arch->portal
 */
-//zline temporaire pour ne pas refaire un passage pillar_to_pillar
-void			pillar_to_pillar(t_arch *arch, t_player *player)
+void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *borne_tmp)
 {
-	t_fvct2		pillar;
-	t_fvct2		pillar_next;
    	t_fvct2		neutre;
    	t_fvct2		coef_surface;
 	double		coef_neutre;
-
-	static		int i = 0;
-
 	int			start;
-	t_borne		borne_tmp;
-	t_sector	*sector_tmp;
 
-	pillar = surface_pillar(arch, player, arch->pillar.x);
-	pillar_next = surface_pillar(arch, player, arch->next.x);
-	coef_surface.x = coef_diff(pillar.x - pillar_next.x, arch->px);
-	coef_surface.y = coef_diff(pillar.y - pillar_next.y, arch->px);
+	start = arch->px.x;
+	coef_surface.x = coef_diff(pillar->x - next->x, arch->px);
+	coef_surface.y = coef_diff(pillar->y - next->y, arch->px);
 	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
-	if (debug == 3)
-	{
-		d_wall(arch->wall);
-		borne_print(&arch->portal);
-	}
-	start = arch->px.x;
-	if (arch->wall->status == PORTAL)
-		borne_svg(arch, &borne_tmp);
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->wall->status == WALL)
 		{
 			if (z_line_buffer(arch, neutre.x, arch->px.x))
-				draw_column(arch, pillar);
+				draw_column(arch, *pillar);
 		}
 		else if (arch->wall->status == PORTAL)
 		{
-			if (zline_portal(arch, borne_tmp.zline, neutre.x, start))
-				draw_portal(arch, pillar, &borne_tmp, start);
+			if (zline_portal(arch, borne_tmp->zline, neutre.x, start))
+				draw_portal(arch, *pillar, borne_tmp, start);
 		}
-		pillar.x -= coef_surface.x;
-		pillar.y -= coef_surface.y;
+		pillar->x -= coef_surface.x;
+		pillar->y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
-		i++;
-		if (debug == 2 && i % 5 == 0)
-		{
-			sdl_MultiRenderCopy(arch->sdl);
-			SDL_RenderPresent(arch->sdl->rend);
-		}
-	}
-	if (arch->wall->status == PORTAL)
-	{
-		//sinon mauvais calcul de borne gauche
-		arch->px.x = start;
-		set_borne_horizontal(arch);
-		//set portal borne
-		arch->portal.pillar = arch->pillar;
-		arch->portal.next = arch->next;
-
-		sector_tmp = arch->sector;
-		arch->depth_portal++;
-		if (debug == 1)
-			printf("--->\n");
-		sector_render(arch, player, arch->wall->link);
-		if (debug == 1)
-			printf("<---\n");
-		arch->depth_portal--;
-		arch->sector = sector_tmp;
-		borne_load(arch, &borne_tmp, start);
 	}
 }
 
@@ -152,11 +142,43 @@ void			pillar_to_pillar(t_arch *arch, t_player *player)
 **	recuperation d'information supplementaire
 **	affichage d'un pillier a un autre
 */
-void		render_wall(t_arch *arch, t_player *player)
+void			render_wall(t_arch *arch, t_player *player)
 {
+	t_fvct2		pillar_px;
+	t_fvct2		next_px;
+	t_fvct2		len_sector;
+	t_borne		borne_tmp;
+	t_sector	*sector_tmp;
+	int			start;
+
 	if (wall_screen_info(arch, player))
 	{
 		reorder(arch);
-		pillar_to_pillar(arch, player);
+
+		len_sector = length_sector(player, arch->sector);
+		pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
+		next_px = surface_pillar(arch, player, len_sector, arch->next.x);
+
+
+		//render_floor (botton, down)
+		//render_ceil (botton, down)
+		//render_wall (arch, surface_wall, surface)
+		if (arch->wall->status == PORTAL)
+			borne_svg(arch, &borne_tmp);
+		start = arch->px.x;
+		pillar_to_pillar(arch, &pillar_px, &next_px, &borne_tmp);
+		if (arch->wall->status == PORTAL)
+		{
+			arch->px.x = start;
+			set_borne_horizontal(arch);
+			arch->portal.pillar = arch->pillar;
+			arch->portal.next = arch->next;
+			sector_tmp = arch->sector;
+			arch->depth_portal++;
+			sector_render(arch, player, arch->wall->link);
+			arch->depth_portal--;
+			arch->sector = sector_tmp;
+			borne_load(arch, &borne_tmp, start);
+		}
 	}
 }

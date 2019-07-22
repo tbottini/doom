@@ -91,6 +91,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						prop_manager.c									\
 						arch_manager.c									\
 						borne_manager.c									\
+						camera_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\

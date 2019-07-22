@@ -35,7 +35,7 @@ void					pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag);
 /*
 **	info function
 */
-t_fvct2					surface_pillar(t_arch *arch, t_player *player, double depth);
+t_fvct2					surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, double depth);
 double					wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle);
 int						wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);

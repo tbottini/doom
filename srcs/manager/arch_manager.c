@@ -33,7 +33,7 @@ void				architect_reset(t_arch *arch)
 	zline_reset(arch);
 }
 
-int arch_free(t_arch *arch)
+int 				arch_free(t_arch *arch)
 {
 	free(arch->portal.zline);
 	return (1);
