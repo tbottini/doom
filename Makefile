@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/07/15 15:36:32 by tbottini         ###   ########.fr        #
+#    Updated: 2019/07/22 15:50:21 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,12 +44,17 @@ HEADERS			:=		libft/libft.h							\
 
 FOLDER			:=		objs									\
 						objs/render								\
+						objs/parsing							\
 						objs/debug								\
 						objs/tools								\
 						objs/ui									\
 						objs/input								\
 						objs/manager							\
 						objs/calcul								\
+						objs/editor								\
+						objs/render/hud							\
+						objs/render/pre_render					\
+						objs/render/drawer						\
 
 COMPILE_LIB		:=		make -C libft/
 

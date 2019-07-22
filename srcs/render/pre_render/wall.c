@@ -38,12 +38,3 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 	inter_local->y = sin((angle - p->stat.rot.y) * PI180) * inter_local->y;
 	return (percent);
 }
-
-/*
-**	lorsqu'un mur a un pillier derriere le portail et un autre pillier
-**	devant, on coupe le mur au niveau du portail
-**	-arch: les donnees a modifier
-**	-inter: le point d'intersection
-**	on calcul la difference de textures
-**
-*/
