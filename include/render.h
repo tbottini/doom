@@ -27,6 +27,14 @@ typedef struct 			s_shape
 	t_fvct2				bot;
 }						t_shape;
 
+typedef struct 			s_shap
+{
+	t_fvct2				ul;
+	t_fvct2				ur;
+	t_fvct2				bl;
+	t_fvct2				br;
+}						t_shap;
+
 /*
 **	pillar
 */
@@ -40,6 +48,7 @@ double					wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double
 int						wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);
 void					reorder(t_arch *arch);
+t_fvct2					get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar);
 
 /*
 **	backface
@@ -54,13 +63,18 @@ int						clean_zline(t_arch *arch, double len_pillar, int px);
 */
 int						doom_render(t_doom *doom);
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
-void					architect_reset(t_arch *arch);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
 uint32_t				texture_interpolation2D(t_arch *arch);
 void					render_wall(t_arch *arch, t_player *player);
 void					draw_column(t_arch *arch, t_fvct2 surface);
 void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
+int						render_floor(t_arch *arch, t_shap shape);
+
+/*
+**	manager
+*/
+void					architect_reset(t_arch *arch);
 
 /*
 **	bunch
@@ -69,12 +83,11 @@ int						on_frustum(t_arch *arch, t_player *player, t_pillar *pillar);
 void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
 int						buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch);
 void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
-
-int			borne_in_wall_angle(t_arch *arch, t_wall *wall);
-int			equal_pillar(t_wall *wall1, t_wall *wall2);
+int						borne_in_wall_angle(t_arch *arch, t_wall *wall);
+int						equal_pillar(t_wall *wall1, t_wall *wall2);
 
 /*
-** Drawer functions
+** drawer functions
 */
 int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
 int						sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg);
@@ -89,6 +102,7 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 */
 void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
 t_shape					shape_reajust(t_shape shape);
+
 
 /*
 **	borne

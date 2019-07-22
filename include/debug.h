@@ -40,6 +40,7 @@
 # define FULL		0
 # define MID		1
 # define SCREEN_ON	1<<1
+# define FOV_HORI	1<<2
 
 /*
 **	debug screen, visual
@@ -53,7 +54,7 @@ void		draw_affine(t_arch *arch, t_affine affine, uint32_t color, int flag);
 void		debug_screen_copy(t_arch *arch);
 void		fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 void		bold_point_debug(t_vct2 v, Uint32 color, t_arch *arch);
-void		draw_frustum_hori(t_arch *arch, uint32_t color, int flag);
+void		draw_frustum(t_arch *arch, int flag);
 
 /*
 **	debug txt

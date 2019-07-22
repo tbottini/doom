@@ -62,8 +62,8 @@ int					doom_render(t_doom *doom)
 		printf("\n-------start render-------\n");
 	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
-	draw_frustum_hori(&doom->game.arch, RED, SCREEN_ON);
-	draw_borne(&doom->game.arch, BLUE_SOFT);
+	draw_borne(&doom->game.arch, RED);
+	draw_frustum(&doom->game.arch, SCREEN_ON | FOV_HORI);
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	minimap(doom);
 	debug_screen_copy(&doom->game.arch);

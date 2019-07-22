@@ -1,11 +1,11 @@
 #include "doom_nukem.h"
 
-/*
-int				render_shape()
-{
 
+int				render_shape(t_arch *arch, t_shap shape)
+{
+	return (0);
 }
-*/
+
 
 /*
 
@@ -17,7 +17,7 @@ int				render_shape()
 **	down : idem que up mais pour le bas (en u)
 **	surface : la taille du pillier sur l'ecran
 */
-t_fvct2		floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar)
+t_fvct2			get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar)
 {
 	double		px_to_u;
 	t_fvct2		floor_pos;
@@ -31,12 +31,23 @@ t_fvct2		floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar)
 	return (floor_pos);
 }
 
-t_fvct2			get_floor_pos(double fov, t_fvct2 len_sector)
+t_shap			shape_def(t_fvct2 up_left, t_fvct2 up_right, t_fvct2 bot_left, t_fvct2 bot_right)
 {
+	t_shap		shape;
 
+	shape.ul = up_left;
+	shape.ur = up_right;
+	shape.bl = bot_left;
+	shape.br = bot_right;
+	return (shape);
 }
 
-int				render_floor()
+int				render_floor(t_arch *arch, t_shap shape)
 {
+	t_shap		floor_s;
 
+	render_shape(arch, shape);
+	//start render
+
+	return (1);
 }

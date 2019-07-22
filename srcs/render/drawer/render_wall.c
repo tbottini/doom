@@ -47,8 +47,8 @@ t_fvct2			surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, dou
 {
 	t_fvct2		wall_portion;
 
-	b_point_debug(arch, (t_fvct2){depth, len_sector.x}, RED);
-	b_point_debug(arch, (t_fvct2){depth, len_sector.y}, RED);
+	//b_point_debug(arch, (t_fvct2){depth, len_sector.x}, RED);
+	//b_point_debug(arch, (t_fvct2){depth, len_sector.y}, RED);
 	wall_portion.x = px_point(arch, player, len_sector.x, depth);
 	wall_portion.y = px_point(arch, player, len_sector.y, depth);
 	return (wall_portion);
@@ -128,20 +128,29 @@ void			render_wall(t_arch *arch, t_player *player)
 	t_fvct2		len_sector;
 	t_borne		borne_tmp;
 	t_sector	*sector_tmp;
+	t_shap		shape;
 	int			start;
+
 
 	if (wall_screen_info(arch, player))
 	{
+		if (arch->wall->status == PORTAL)
+			draw_wall(arch, YELLOW);
+		else if (arch->wall->status == WALL)
+			draw_wall(arch, WHITE);
 		reorder(arch);
 
 		len_sector = length_sector(player, arch->sector);
 		pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
 		next_px = surface_pillar(arch, player, len_sector, arch->next.x);
 
+		shape.ul = arch->pillar;
+		shape.ur = arch->next;
+		shape.bl = get_floor_pos(arch, len_sector, pillar_px, &arch->pillar);
+		shape.br = get_floor_pos(arch, len_sector, next_px, &arch->next);
 
-		//render_floor (botton, down)
-		//render_ceil (botton, down)
-		//render_wall (arch, surface_wall, surface)
+		//render_floor(arch, shape);
+
 		if (arch->wall->status == PORTAL)
 			borne_svg(arch, &borne_tmp);
 		start = arch->px.x;
@@ -160,4 +169,6 @@ void			render_wall(t_arch *arch, t_player *player)
 			borne_load(arch, &borne_tmp, start);
 		}
 	}
+	else
+		draw_wall(arch, RED);
 }
