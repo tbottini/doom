@@ -1,4 +1,4 @@
-#include "calcul.h"
+ #include "calcul.h"
 
 double			affine_val(t_affine affine, double x)
 {
@@ -41,6 +41,21 @@ t_affine		affine_points(t_fvct2 point1, t_fvct2 point2)
 	return (fct);
 }
 
+t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2)
+{
+	t_affine 	fct;
+
+	fct.lock = (point1.x == point2.x);
+	if (!fct.lock)
+		fct.b = point1.x;
+	else
+	{
+		fct.a = (point2.y - point1.y) / (point2.x - point1.x);
+		fct.b = point1.y - fct.a * point1.x;
+	}
+	return (fct);
+}
+
 t_affine		affine_def(double a, double b)
 {
 	return ((t_affine){a, b, 0});
@@ -64,4 +79,17 @@ int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *i
 		inter->y = affine_val(affine2, inter->x);
 	}
 	return (0);
+}
+
+t_fvct2			inter(t_fvct2 p1, t_fvct2 p2, t_fvct2 p3, t_fvct2 p4)
+{
+	t_affine	a;
+	t_affine	b;
+	t_fvct2		inter;
+
+	a = affine_points_secur(p1, p2);
+	b = affine_points_secur(p3, p4);
+
+	interpolation_linear_secur(a, b, &inter);
+	return (inter);
 }

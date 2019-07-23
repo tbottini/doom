@@ -21,6 +21,8 @@ t_fvct2			get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pil
 {
 	double		px_to_u;
 	t_fvct2		floor_pos;
+	t_affine	portal_a;
+	t_fvct2		inte;
 
 	//len.x - len.y car len.y est negatif
 	px_to_u = (len.x - len.y) / (surface.y - surface.x);
@@ -41,6 +43,14 @@ t_fvct2			get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pil
 	//on recupere decal
 	floor_pos.y = (pillar->y / pillar->x) * floor_pos.x;
 
+
+	if (arch->depth_portal > 0)
+	{
+		inte = inter(arch->pillar, arch->next, arch->portal.pillar, arch->portal.next);
+		b_point_debug(arch, inte, RED);
+		if (inte.x > floor_pos.x)
+			floor_pos = inte;
+	}
 
 	return (floor_pos);
 }

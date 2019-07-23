@@ -50,6 +50,8 @@ double					local_angle(double borne, double angle);
 void					reorder(t_arch *arch);
 t_fvct2					get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar);
 
+
+
 /*
 **	backface
 */

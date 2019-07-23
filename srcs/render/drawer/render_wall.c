@@ -147,7 +147,7 @@ void			render_wall(t_arch *arch, t_player *player)
 
 		if (debug_screen == 2)
 		{
-			debug_pillar(arch, P_PILLAR | P_NEXT | TRACE | POINT);
+			//debug_pillar(arch, P_PILLAR | P_NEXT | TRACE | POINT);
 			if (arch->wall->status == PORTAL)
 				draw_wall(arch, YELLOW);
 			else if (arch->wall->status == WALL)
