@@ -50,6 +50,7 @@ t_doom	*doom_init()
 	if (!music_init(&doom->game.sound))
 		doom_exit(doom);
 	doom->game.player.fov = 90;
+	doom->game.difficulty = MEDIUM;
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
 	doom->debug = 0;

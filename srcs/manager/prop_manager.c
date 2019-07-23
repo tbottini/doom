@@ -122,30 +122,19 @@ void		func_prop(t_prop *prop, int type)
 	ft_printf("New PROP %d\t\t%d\n", type, MINWPROPSPOS);
 }
 
-int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos)
-{
-	if (hitbox->x <= pos.x && pos.x <= hitbox->w
-		&& hitbox->y <= pos.y && pos.y <= hitbox->l
-		&& hitbox->z <= pos.z && pos.z <= hitbox->h)
-		return (1);
-	return (0);
-}
-
 void		init_prop(t_prop *prop, double height)
 {
 	if (ISWALLPROP(prop->type))
 		prop->pos.z = height + (H_NORMAL / 2);
 	else
 		prop->pos.z = prop->sector->h_floor;
-	printf("PRROP Z = %f\n\n", prop->pos.z);
 	prop->hitbox.x = prop->pos.x - HITBOXSIZE;
 	prop->hitbox.y = prop->pos.y - HITBOXSIZE;
 	prop->hitbox.z = prop->pos.z - HITBOXSIZE;
-	printf("HITBOX Z = %f\n\n", prop->hitbox.z);
 	prop->hitbox.w = prop->pos.x + HITBOXSIZE;
 	prop->hitbox.l = prop->pos.y + HITBOXSIZE;
 	prop->hitbox.h = prop->pos.z + HITBOXSIZE;
-	prop->width = 3;
+	//prop->width = 3;
 	func_prop(prop, prop->type);
 	//txtr_prop(prop, prop->type);
 }

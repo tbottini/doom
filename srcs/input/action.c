@@ -149,6 +149,15 @@ static void			prop_hitbox(t_prop *prop, double angle)
 	return (button_hit(but, pos, stat->rot.y));
 }*/
 
+int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos)
+{
+	if (hitbox->x <= pos.x && pos.x <= hitbox->w
+		&& hitbox->y <= pos.y && pos.y <= hitbox->l
+		&& hitbox->z <= pos.z && pos.z <= hitbox->h)
+		return (1);
+	return (0);
+}
+
 void		action(t_player *player, t_stat *stat)
 {
 	int			x;

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/18 17:42:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 14:11:40 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void input_loop(t_doom *doom, int key)
 	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
 		shoot(&doom->game.player);
 	else if (key == SDLK_p) //test tir
-		bullet(&doom->game.player.stat);
+		bullet(&doom->game.player.stat, doom->game.player.hand.dmg);
 	else if (key == SDLK_0)//test effects
 		play_effect(&doom->game.sound, 8);
 	else if (key == SDLK_SPACE && !doom->ui.m_status && !doom->game.player.stat.jetpack)

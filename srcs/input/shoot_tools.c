@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/19 12:12:03 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 14:08:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,21 @@ static double	enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
 
-static void			enemy_hitbox(t_enemy *enemy, double angle)
+static void			enemy_hitbox(t_enemy *enemy)//, double angle)
 {
-	enemy->e1.x = sin((angle - 90.0) * PI180) * (enemy->stat.width / 2);
+	/* enemy->e1.x = sin((angle - 90.0) * PI180) * (enemy->stat.width / 2);
 	enemy->e1.y = cos((angle - 90.0) * PI180) * (enemy->stat.width / 2);
 	enemy->e2.x = sin((angle + 90.0) * PI180) * (enemy->stat.width / 2);
-	enemy->e2.y = cos((angle + 90.0) * PI180) * (enemy->stat.width / 2);
+	enemy->e2.y = cos((angle + 90.0) * PI180) * (enemy->stat.width / 2);*/
+	enemy->stat.hitbox.x = enemy->stat.pos.x - HITBOXSIZE;//
+	enemy->stat.hitbox.y = enemy->stat.pos.y - HITBOXSIZE;//
+	enemy->stat.hitbox.z = enemy->stat.pos.z;
+	enemy->stat.hitbox.w = enemy->stat.pos.x + HITBOXSIZE;//
+	enemy->stat.hitbox.l = enemy->stat.pos.y + HITBOXSIZE;//
+	enemy->stat.hitbox.h = enemy->stat.pos.z + enemy->stat.height;
 }
 
-static void		super_super_real_hit(t_super *super, t_stat *stat, double toto)
+static void		enemy_real_hit(t_super *super, t_stat *stat, double toto)
 {
 	int		i;
 	double	res;
@@ -93,7 +99,7 @@ static void		super_super_real_hit(t_super *super, t_stat *stat, double toto)
 	super->edist = res;
 }
 
-void		super_real_hit(t_super *super, t_stat *stat)
+void		wall_real_hit(t_super *super, t_stat *stat)
 {
 	int		i;
 	double	res;
@@ -114,7 +120,7 @@ void		super_real_hit(t_super *super, t_stat *stat)
 		}
 	}
 	super->wdist = res;
-	super_super_real_hit(super, stat, toto);
+	enemy_real_hit(super, stat, toto);
 }
 
 static int	bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
@@ -146,8 +152,12 @@ void		possible_enemys(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *secto
 	tmp = sector->enemys;
 	while (super->i_e < 50 && tmp)
 	{
-		enemy_hitbox(tmp, stat->rot.y);
-		if (vector_intersect(ori, stat->pos, tmp->e1, tmp->e2))
+		enemy_hitbox(tmp);//, stat->rot.y);
+		///if ((vector_intersect(ori, stat->pos, tmp->stat.hitbox.x, tmp->stat.hitbox.y))
+		//	|| (vector_intersect(ori, stat->pos, tmp->stat.hitbox.x, tmp->stat.hitbox.l))
+		//	|| (vector_intersect(ori, stat->pos, tmp->stat.hitbox.w, tmp->stat.hitbox.y))
+		//	|| (vector_intersect(ori, stat->pos, tmp->stat.hitbox.w, tmp->stat.hitbox.l)))
+		if (false)
 		{
 			super->enemys[super->i_e] = tmp;
 			super->i_e++;

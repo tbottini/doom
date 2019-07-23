@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/19 12:17:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 13:57:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ t_enemy	*enemy_init(int type, int difficulty)
 		fat_init(enemy, difficulty);
 	else if (type == 4)
 		boss_init(enemy, difficulty);
-	/*
-		e1.x = sin((stat->rot.y - 90.0) * PI180) * (tmp->stat.width / 2);
-		e1.y = cos((stat->rot.y - 90.0) * PI180) * (tmp->stat.width / 2);
-		e2.x = sin((stat->rot.y + 90.0) * PI180) * (tmp->stat.width / 2);
-		e2.y = cos((stat->rot.y + 90.0) * PI180) * (tmp->stat.width / 2);
-	*/
+	//enemy->stat.hitbox.x = enemy->stat.pos.x - HITBOXSIZE;//
+	//enemy->stat.hitbox.y = enemy->stat.pos.y - HITBOXSIZE;//
+	//enemy->stat.hitbox.z = enemy->stat.pos.z;
+	//enemy->stat.hitbox.w = enemy->stat.pos.x + HITBOXSIZE;//
+	//enemy->stat.hitbox.l = enemy->stat.pos.y + HITBOXSIZE;//
+	//enemy->stat.hitbox.h = enemy->stat.pos.z + enemy->stat.height;
 	return (enemy);
 }
 
@@ -136,6 +136,7 @@ void		del_enemy(t_sector *sector, t_enemy *enemy)
 		else
 			sector->enemys = NULL;
 		tmp->next = NULL;
-		free_enemys(tmp);
+		tmp->prev = NULL;
+		free(tmp);
 	}
 }

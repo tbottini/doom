@@ -93,7 +93,6 @@ void					set_hard(t_doom *doom);
 **	simple input
 */
 
-void					bullet(t_stat *stat);
 void					action(t_player *player, t_stat *stat);
 void					kick(t_doom *doom, t_player *player);
 void					PrintEvent(const SDL_Event *event);

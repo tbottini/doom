@@ -116,6 +116,6 @@ void		supa_shoota(t_stat *stat, t_fvct3 d, t_fvct3 mo)
 	t_super	super;
 
 	possible(&super, stat, d);
-	super_real_hit(&super, stat);
+	wall_real_hit(&super, stat);
 	apply(&super, stat, mo);
 }*/

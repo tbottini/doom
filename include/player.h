@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/19 12:32:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 14:03:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct 			s_stat
 	t_fvct3				vel;
 	t_fvct3				rotvel;
 	t_sector			*sector;
+	t_hitbox			hitbox;
 	double				height;
 	double				speed;
 	int					width;
@@ -98,6 +99,7 @@ typedef struct			s_super
 	double				edist;
 	int					i_w;
 	int					i_e;
+	int					dmg;
 }						t_super;
 
 /*
@@ -138,8 +140,8 @@ t_weapon				shotgun_init(void);
 t_weapon				rifle_init(void);
 void					reload(t_weapon *weapon);
 void					shoot(t_player *player);
-void					bullet(t_stat *stat);
-void					super_real_hit(t_super *super, t_stat *stat);
+void					bullet(t_stat *stat, int dmg);
+void					wall_real_hit(t_super *super, t_stat *stat);
 void					possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector);
 t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);

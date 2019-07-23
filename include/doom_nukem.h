@@ -48,8 +48,8 @@ extern int debug;
 # define DECELERATION 2500.0
 # define PADDING 0.30
 # define PADDING2 0.60
-# define STEP 0.25
-# define HITBOXSIZE 1//0.5
+# define STEP 0.5
+# define HITBOXSIZE 0.5
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
 # define MAX_FAR 10000
