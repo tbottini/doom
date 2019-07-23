@@ -285,7 +285,8 @@ typedef enum		e_editorstatus
 	ED_LOADING,
 	ED_LOADED,
 	ED_WRITING,
-	ED_SAVING
+	ED_SAVING,
+	ED_OPEN,
 }					t_editorstatus;
 
 typedef struct			s_editor

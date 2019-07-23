@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/19 12:32:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 14:38:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define SPRINT 49050.0
 # define G_EPSILON 0.01
 # define NB_WEAPON 4
+
+typedef	struct 			s_sound t_sound;
 
 typedef	struct			s_weapon
 {
@@ -137,7 +139,7 @@ t_weapon				gun_init(void);
 t_weapon				shotgun_init(void);
 t_weapon				rifle_init(void);
 void					reload(t_weapon *weapon);
-void					shoot(t_player *player);
+void					shoot(t_sound *sound, t_player *player);
 void					bullet(t_stat *stat);
 void					super_real_hit(t_super *super, t_stat *stat);
 void					possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector);

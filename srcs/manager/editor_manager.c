@@ -6,26 +6,32 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 22:20:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/21 13:41:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
+int		editor_reset(t_editor *edit)
+{
+	if (edit->ennlist)
+		ft_clear_entity_list(&(edit->ennlist));
+	if (edit->sectors)
+		ft_clear_secteur_list(&(edit->sectors));
+	if (edit->pillist)
+		ft_clear_pillar_list(&(edit->pillist));
+
+	edit->txtrscroll = 0;
+	edit->map = NULL;
+	edit->currmur = NULL;
+	edit->currstat = NULL;
+	edit->currpilier = NULL;
+}
+
 int		close_editor(t_doom *doom)
 {
-	if (doom->edit.ennlist)
-		ft_clear_entity_list(&(doom->edit.ennlist));
-	if (doom->edit.sectors)
-		ft_clear_secteur_list(&(doom->edit.sectors));
-	if (doom->edit.pillist)
-		ft_clear_pillar_list(&(doom->edit.pillist));
+	editor_reset(&doom->edit);
 	free_textures_folder(doom->edit.txtrgame, doom->edit.txtrname);
-	doom->edit.txtrscroll = 0;
-	doom->edit.map = NULL;
-	doom->edit.currmur = NULL;
-	doom->edit.currstat = NULL;
-	doom->edit.currpilier = NULL;
 	SDL_HideWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->sdl.win);
 	doom->edit.status = ED_CLOSED;
@@ -38,12 +44,12 @@ int	asynchronous_txtr_load(void *param)
 
 	edit = param;
 	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
-	if (read_file_to_editor(edit, "ressources/map/editor.map") != 0)
-	{
+	//if (read_file_to_editor(edit, "ressources/map/jesuisunmonsieur") != 0)
+	//{
 		edit->player.stat.sector = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);;
 		edit->player.stat.pos = (t_vct2){0, 0};
 		edit->player.stat.type = 100;
-	}
+	//}
 	edit->map = edit->sectors;
 	if (!(edit->player.stat.sector))
 		edit->player.stat.sector = edit->map;
