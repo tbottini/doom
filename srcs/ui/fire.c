@@ -39,7 +39,8 @@ void fire_init(t_doom *doom)
 		0xD75F0711, 0xD7670F12, 0xCF6F0F13, 0xCF770F14, 0xCF7F0F15, 0xCF871716,
 		0xCC8A1817, 0xD18E1918, 0xDB8E2119, 0xD9A8091A, 0xE2B00B1B, 0xF8C2281C,
 		0xF8C2291D, 0xF1D62F1E, 0xF1D62F1F, 0xF1E62F20, 0xDDB73721, 0xCFBF6F22,
-		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80), doom->sdl.screen, &doom->sdl.size};
+		0xDFDF9F23, 0xEFEFC724, 0xF5F5DB25}, (doom->sdl.size.y / 80),
+		doom->sdl.screen, &doom->sdl.size};
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 }
 
@@ -68,8 +69,8 @@ void fire(t_pal *fire)
 		}
 		else
 		{
-			p = (rand()) % fire->height;
-			fire->screen[i - (p & 3) + 1 - fire->size->x] = fire->pal[pix - (p ? 0 : 1)];
+			p = (rand()) >> 28;
+			fire->screen[i - (p & 3) + 1 - fire->size->x] = fire->pal[pix - (!p)];
 #ifdef OPTI
 			fire->screen[i + 2 - (p & 3) - fire->size->x] = fire->pal[pix - (p ? 0 : 1)];
 #endif

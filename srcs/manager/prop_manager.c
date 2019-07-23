@@ -104,7 +104,7 @@ void		func_prop(t_prop *prop, int type)
 		prop->func = &superhot;
 	else if (type == MINPROPSPOS + 4)//superpunch pill
 		prop->func = &superpunch;
-	else if (type == MINPROPSPOS + 5)//superpunch pill
+	else if (type == MINPROPSPOS + 5)//supersmol pill
 		prop->func = &supersmol;
 	else if (type == MINPROPSPOS + 6)//Add jetpack
 		prop->func = &jetpack;
