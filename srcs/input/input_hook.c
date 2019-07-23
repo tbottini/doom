@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 15:29:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 14:40:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int		key_press(int key, t_doom *doom)
 	else if (key == SDLK_b)
 		save_png(&doom->sdl);
 	else if (key == SDLK_v && !doom->ui.m_status)
-		kick(doom, &doom->game.player);
+		kick(&doom->game.sound, &doom->game.player);
 	else if (key == SDLK_l && !doom->ui.m_status)
 		doom->game.player.stat.jetpack = 1;
 	else if (key == SDLK_z && !doom->ui.m_status)
@@ -169,7 +169,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 			if (doom->ui.m_status != 0)
 				btn_click(doom, x, y);
 			else if (!(doom->game.player.hand.rate))
-				shoot(&doom->game.player);
+				shoot(&doom->game.sound, &doom->game.player);
 			else
 				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
 		}

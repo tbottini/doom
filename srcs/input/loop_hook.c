@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/21 12:18:23 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 14:38:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void input_loop(t_doom *doom, int key)
 	else if (key == SDLK_SPACE && !doom->ui.m_status && doom->game.player.stat.jetpack)
 		jump(&doom->game.player);
 	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
-		shoot(&doom->game.player);
+		shoot(&doom->game.sound, &doom->game.player);
 	else if (key == SDLK_p) //test tir
 		bullet(&doom->game.player.stat);
 	else if (key == SDLK_0)//test effects
