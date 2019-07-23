@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 14:37:04 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 18:38:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ void		jump(t_player *player)
 {
 	if (player->stat.pos.z == player->stat.sector->h_floor)
 	{
-		player->stat.vel.z = WALK * player->stat.height;
+		player->stat.vel.z = (WALK * player->stat.height) / 2;
 		Mix_Pause(1);
 	}
 }

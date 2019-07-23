@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 16:06:46 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 17:35:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,18 @@ void		func_prop(t_prop *prop, int type)
 		ft_printf("New Button\n");
 		prop->func = &open_close;
 	}
-	else if (type == MINWPROPSPOS + 1) // wall deco
+	else if (type == MINWPROPSPOS + 1) // bullet hole
+		prop->func = NULL;
+	else if (type == MINWPROPSPOS + 2) // wall deco
 		prop->func = NULL;
 	ft_printf("New PROP %d\t\t%d\n", type, MINWPROPSPOS);
 }
 
 void		init_prop(t_prop *prop, double height)
 {
-	if (ISWALLPROP(prop->type))
+	if (prop->type == MINWPROPSPOS + 1)
+		prop->pos.z = -1;
+	else if (ISWALLPROP(prop->type))
 		prop->pos.z = height + (H_NORMAL / 2);
 	else
 		prop->pos.z = prop->sector->h_floor;

@@ -92,7 +92,7 @@ void					set_hard(t_doom *doom);
 /*
 **	simple input
 */
-
+void					pickup_prop(t_game *game);
 void					action(t_player *player, t_stat *stat);
 void					kick(t_sound *sound, t_player *player);
 void					PrintEvent(const SDL_Event *event);

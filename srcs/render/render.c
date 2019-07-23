@@ -10,6 +10,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	t_wall			*wall;
 	int				i_wall;
 	t_wall			*portal_tmp;
+	t_minimap		mini;
 
 	i_wall = 0;
 	wall = sector->wall;
@@ -17,6 +18,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	sector_frustum(arch, sector, player);
 	arch->sector = sector;
 	portal_tmp = arch->wall;
+	mini = miniinit(arch->sdl);
 	while (i_wall < sector->len)
 	{
 		on_frustum(arch, player, wall[i_wall].pillar);
@@ -37,6 +39,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 			portal_tmp = arch->wall;
 			arch->wall = &wall[i_wall];
 			render_wall(arch, player);
+			//mini_draw_wall(arch->wall, player->stat.pos, &mini);//test
 			arch->wall = portal_tmp;
 			//bunch[i_bunch] = &wall[i_wall];
 			//i_bunch++;
@@ -70,6 +73,7 @@ void				clear_screen(t_sdl *sdl)
 
 int					doom_render(t_doom *doom)
 {
+	t_minimap		mini;
 	int				i;
 
 	i = 0;
@@ -78,7 +82,8 @@ int					doom_render(t_doom *doom)
 	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
-	minimap(doom);
+	mini = miniinit(&doom->sdl);
+	minimap(&mini, &doom->game.player);
 	debug_screen_copy(&doom->game.arch);
 	sdl_MultiRenderCopy(&doom->sdl);
 	architect_reset(&doom->game.arch);

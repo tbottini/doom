@@ -35,7 +35,7 @@ typedef struct s_prop	t_prop;
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
-# define PROPMUN "ressources/props/ammo.png"
+# define PROPMUN "ressources/props/ammo.png"//erreurs sur ce sprite
 # define PROPRPILL "ressources/props/pill.png"
 # define PROPGPILL "ressources/props/greenpill.png"
 # define PROPBPILL "ressources/props/bluepill.png"
@@ -45,9 +45,10 @@ typedef struct s_prop	t_prop;
 # define PROPRIFLE "ressources/props/rifle.png"
 
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
-# define MAXWPROPSNUMBER 1
+# define MAXWPROPSNUMBER 3
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/button.ico"
+# define PROPIMPACT "ressources/props/impact.png"
 
 # define ISENEMY(x) (MINENEMYPOS <= x && x < MAXENEMYPOS)
 # define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)

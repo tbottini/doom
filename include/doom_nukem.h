@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 16:20:48 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 19:13:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
 void					move(t_stat *stat);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					minimap(t_doom *d);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
 void					play_effect(t_sound *sound, int e);
@@ -137,8 +136,11 @@ void					effect_volume(t_sound *sound);
 ** Minimap
 */
 
-int						bold_point2(t_minimap mini, t_vct2 pos, Uint32 color);
-void					minibord(t_doom *d, t_minimap mini);
-void					miniwalls(t_doom *doom, t_sector *sector, t_minimap mini);
+void					minimap(t_minimap *mini, t_player *player);
+t_minimap				miniinit(t_sdl *s);
+void					mini_draw_wall(t_wall *wall, t_fvct3 pos, t_minimap *mini);
+int						bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color);
+void					minibord(t_minimap *mini);
+void					miniwalls(t_player *player, t_sector *sector, t_minimap *mini);
 
 #endif

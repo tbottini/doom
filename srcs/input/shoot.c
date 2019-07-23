@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 15:30:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 18:23:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ static int is_closer(t_fvct3 posx, t_fvct3 px, t_fvct3 qx)
 	return ((fabs(posx - px) < fabs(posx - qx)));
 }*/
 
+void		impact_wall(t_wall *wall, t_fvct3 p)
+{
+	wall->props[wall->nb_props].pos.x = p.x;
+	wall->props[wall->nb_props].pos.y = p.y;
+	wall->props[wall->nb_props].pos.z = p.z;
+}
+
 void		injure_enemy(t_enemy *enemy, int dmg)
 {
 	enemy->stat.health -= dmg;
@@ -85,7 +92,7 @@ static void	apply(t_super *super, t_fvct3 pos, t_fvct3 mo, int dmg)
 	//calcul enemy or wall is closer
 	//if (is_closer(stat, waim, eaim))
 	if (fabs(pos.x - waim.x) < fabs(pos.x - eaim.x))//revoir condition nulle
-		;//super->whit->props[super->whit->nb_props] = ???;//texture on touched wall
+		impact_wall(super->whit, waim);// change bullet hole prop 's position
 	else
 		injure_enemy(super->ehit, dmg);//damages on touched enemy
 	printf("SUPER COORD : x = %f | y = %f | z = %f\n", waim.x, waim.y, waim.z);

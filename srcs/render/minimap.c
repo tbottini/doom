@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 15:56:00 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 19:30:20 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@ static Uint32		hcol(int health, int boost)
 		return (0xFF764401);
 }
 
-static t_minimap	miniinit(t_sdl *s, int health, int boost)
+t_minimap			miniinit(t_sdl *s)
 {
 	t_minimap	mini;
-	int			i;
-	int			j;
 
 	mini.d.x = (s->size.x >> 6);
 	mini.a.x = s->size.x >> 3;
@@ -43,15 +41,6 @@ static t_minimap	miniinit(t_sdl *s, int health, int boost)
 	mini.mid.x = mini.a.x - (mini.size.x >> 1);
 	mini.mid.y = mini.a.y - (mini.size.y >> 1);
 	mini.sdl = s;
-	i = mini.d.x;
-	while (i < mini.a.x - 1)
-	{
-		j = s->size.y - (s->size.y >> 2);
-		while (++j < mini.a.y - 1)
-			s->screen[i + j * s->size.x] = opacity(hcol(health, boost),
-				s->screen[i + j * s->size.x], 0.5);
-		++i;
-	}
 	return (mini);
 }
 
@@ -81,7 +70,7 @@ static void			miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	}
 }
 
-static void			miniprops(t_minimap mini, t_sector *sector, t_fvct3 pos)
+static void			miniprops(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 {
 	int		i;
 	t_vct2	tmp;
@@ -89,39 +78,36 @@ static void			miniprops(t_minimap mini, t_sector *sector, t_fvct3 pos)
 	i = 0;
 	while (i < sector->len_prop)
 	{
-		//if (sector->props[i].tex)
-		//{
-			tmp.x = (mini.a.x - (mini.size.x / 2))
+			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((sector->props[i].pos.x - pos.x)) * (UNIT);
-			tmp.y = (mini.a.y - (mini.size.y / 2))
+			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - sector->props[i].pos.y)) * (UNIT);
 			bold_point2(mini, tmp, DEEPBLUE);
-			tmp.x = (mini.a.x - (mini.size.x / 2))
+			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini.a.y - (mini.size.y / 2))
+			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
 			bold_point2(mini, tmp, 0);
-			tmp.x = (mini.a.x - (mini.size.x / 2))
+			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini.a.y - (mini.size.y / 2))
+			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
 			bold_point2(mini, tmp, 0);
-			tmp.x = (mini.a.x - (mini.size.x / 2))
+			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini.a.y - (mini.size.y / 2))
+			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
 			bold_point2(mini, tmp, 0);
-			tmp.x = (mini.a.x - (mini.size.x / 2))
+			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini.a.y - (mini.size.y / 2))
+			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
 			bold_point2(mini, tmp, 0);
-		//}
 		i++;
 	}
 }
 
-static void			minifield(t_player *player, t_minimap mini)
+static void			minifield(t_player *player, t_minimap *mini)
 {
 	int		i;
 	t_vct2	pix;
@@ -129,22 +115,36 @@ static void			minifield(t_player *player, t_minimap mini)
 	i = (player->stat.rot.y - (player->fov >> 1));
 	while (i < (player->stat.rot.y + (player->fov >> 1)))
 	{
-		pix.x = 256 * cos(i * PI180) + mini.mid.x;
-		pix.y = -256 * sin(i * PI180) + mini.mid.y;
-		miniline(mini.sdl, mini.mid, pix,
+		pix.x = 256 * cos(i * PI180) + mini->mid.x;
+		pix.y = -256 * sin(i * PI180) + mini->mid.y;
+		miniline(mini->sdl, mini->mid, pix,
 			hcol(player->stat.health, player->boost));
 		i += player->fov >> 3;
 	}
 }
 
-void				minimap(t_doom *d)
+void				minifill(t_minimap *mini, int health, int boost)
 {
-	t_minimap	mini;
+	int i;
+	int j;
 
-	mini = miniinit(&d->sdl, d->game.player.stat.health, d->game.player.boost);
-	miniwalls(d, d->game.player.stat.sector, mini);
-	minibord(d, mini);
-	minifield(&d->game.player, mini);
-	bold_point2(mini, mini.mid, WHITE);
-	miniprops(mini, d->game.player.stat.sector, d->game.player.stat.pos);
+	i = mini->d.x;
+	while (i < mini->a.x - 1)
+	{
+		j = mini->sdl->size.y - (mini->sdl->size.y >> 2);
+		while (++j < mini->a.y - 1)
+			if (mini->sdl->screen[i + j * mini->sdl->size.x]!= CWALL)
+				mini->sdl->screen[i + j * mini->sdl->size.x] = opacity(hcol(health, boost),
+					mini->sdl->screen[i + j * mini->sdl->size.x], 0.5);
+		++i;
+	}
+}
+
+void				minimap(t_minimap *mini, t_player *player)
+{
+	miniwalls(player, player->stat.sector, mini);
+	minifill(mini, player->stat.health, player->boost);
+	minibord(mini);
+	minifield(player, mini);
+	bold_point2(mini, mini->mid, WHITE);
 }
