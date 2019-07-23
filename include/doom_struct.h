@@ -181,14 +181,6 @@ typedef struct			s_pal {
 	t_vct2				*size;
 }						t_pal;
 
-/*
-** 0 : pills
-** 1 : cassette
-** 2 : Health Pack
-** 3 : Munition Pack
-** 4 : Button
-*/
-
 typedef struct			s_ui
 {
 	t_font				fonts;

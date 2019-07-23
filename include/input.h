@@ -92,6 +92,8 @@ void					set_hard(t_doom *doom);
 /*
 **	simple input
 */
+
+void					game_over(t_doom *doom, bool win);
 void					pickup_prop(t_game *game);
 void					action(t_player *player, t_stat *stat);
 void					kick(t_sound *sound, t_player *player);

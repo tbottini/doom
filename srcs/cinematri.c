@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cinematri.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 01:54:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/21 12:52:53 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 20:13:40 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-static void cine_events(t_doom *doom, int *i)
+void cine_events(t_doom *doom, int *i)
 {
 	SDL_Event e;
 

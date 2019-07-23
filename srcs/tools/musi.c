@@ -6,29 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 03:47:35 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/10 14:17:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 19:45:51 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "doom_nukem.h"
-
-/*
-** returns the color c as if it passes throught a transparent screen of color s.
-** double f determines the opacity of the "screen".
-** f must be between 0 and 1, returning the color s, 0 the color c.
-*/
-
-int					opacity(int s, int c, double f)
-{
-	if (f == 1)
-		return (s);
-	else if (!f)
-		return (c);
-	return (((int)((c >> 8 & 255) + f * ((s >> 8 & 255) - (c >> 8 & 255))) << 8)
-	+ ((int)((c >> 16 & 255) + f * ((s >> 16 & 255) - (c >> 16 & 255))) << 16)
-	+ ((int)((c >> 24 & 255) + f * ((s >> 24 & 255) - (c >> 24 & 255))) << 24)
-	+ 255);
-}
 
 void		change_music(t_sound *sound, int n, int fade)
 {

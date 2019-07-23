@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/23 14:40:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 19:56:17 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int		key_press(int key, t_doom *doom)
 		change_music(&doom->game.sound, 10, 5000);
 	else if (key == SDLK_b)
 		save_png(&doom->sdl);
+	else if (key == SDLK_k)
+		game_over(doom, false);
 	else if (key == SDLK_v && !doom->ui.m_status)
 		kick(&doom->game.sound, &doom->game.player);
 	else if (key == SDLK_l && !doom->ui.m_status)
