@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/23 14:11:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 15:31:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void input_loop(t_doom *doom, int key)
 	else if (key == SDLK_SPACE && !doom->ui.m_status && doom->game.player.stat.jetpack)
 		jump(&doom->game.player);
 	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
-		shoot(&doom->game.player);
+		shoot(&doom->game.sound, &doom->game.player);
 	else if (key == SDLK_p) //test tir
 		bullet(&doom->game.player.stat, doom->game.player.hand.dmg);
 	else if (key == SDLK_0)//test effects
@@ -105,7 +105,7 @@ static void delaypcmasterrace(t_doom *doom)
 static void game_loop_hook(t_doom *doom)
 {
 	t_tab pos;
-	
+
 	if (doom->ui.m_status == 0)
 	{
 		pos = doom->sdl.keys;
@@ -153,7 +153,7 @@ static void editor_loop_hook(t_doom *doom)
 	draw_sector_menu(&doom->edit, doom->ui.fonts);
 	if (doom->edit.map || doom->edit.currmur || doom->edit.currstat)
 		draw_inspect_menu(&doom->edit);
-	if (doom->edit.status == ED_SAVING || doom->edit.status == ED_WRITING)
+	if (doom->edit.status == ED_SAVING || doom->edit.status == ED_WRITING || doom->edit.status == ED_OPEN)
 		draw_writer(&doom->edit);
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});

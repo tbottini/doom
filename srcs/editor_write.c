@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_write.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/19 11:39:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/21 13:37:27 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ void push_char(char *str, char c)
 		str[x] = c;
 }
 
+/*
+**	ouvre un input pour remplir la chaine de caracteres str
+*/
 #define ISNUMPADNUM(x) ((SDLK_KP_1 <= x && x <= SDLK_KP_9) || x == SDLK_KP_0)
 
 int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
@@ -89,6 +92,18 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 				*doom->edit.currwriter = MAXEDITVAR;
 			doom->edit.status = ED_LOADED;
 		}
+		else if (doom->edit.status == ED_OPEN)
+		{
+			editor_reset(&doom->edit);
+			printf(WGREEN"Tentative d'ouverture du fichier %s\n"WEND, str);
+			if (read_file_to_editor(&doom->edit, str) != 0)
+				printf(WRED"fail\n"WEND);
+			else
+			{
+				printf(WGREEN"open\n"WEND);
+				doom->edit.status = ED_LOADED;
+			}
+		}
 		ft_bzero(str, sizeof(char) * MAXFILENAMELEN);
 	}
 	return (0);
@@ -124,5 +139,7 @@ void draw_writer(t_editor *edit)
 		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 50, 20}, "HEIGHT", (SDL_Color){250, 250, 250, 255});
 	else if (edit->status == ED_SAVING)
 		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 50, 20}, "Saving", (SDL_Color){250, 250, 250, 255});
+	else if (edit->status == ED_OPEN)
+		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 50, 20}, "Open", (SDL_Color){250, 250, 250, 255});
 	sdl_draw_filename(edit, edit->filename);
 }

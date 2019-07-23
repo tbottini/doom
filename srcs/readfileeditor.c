@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 22:41:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/21 13:35:00 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,14 @@ int	read_file_to_editor(t_editor *edit, const char *file)
 	t_game	game;
 	int		returncode;
 	t_slen	len;
+	char path[512];
 
-	if ((returncode = read_file(&game, file)))
+	ft_strcpy(path, "ressources/map/");
+	ft_strcpy(&(path[15]), file);
+	printf("ouverture de :%s\n", path);
+	if ((returncode = read_file(&game, path)))
 	{
+		printf("Error : %d\n", returncode);
 		return (-1);
 	}
 	if (game_to_editor(&game, edit))
@@ -125,5 +130,9 @@ int	read_file_to_editor(t_editor *edit, const char *file)
 	relink_sector(&game, edit);
 	free_game(&game);
 	ft_putendl("Successfully read ressources/map/editor.map\n");
+	edit->map = edit->sectors;
+	if (!(edit->player.stat.sector))
+		edit->player.stat.sector = edit->map;
+	edit->status = ED_LOADED;
 	return (0);
 }

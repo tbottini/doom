@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/16 18:10:56 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/21 11:59:47 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ int		editor_key_press(int key, t_doom *doom)
 	else if (key == SDLK_r) // Reload position
 	{
 		doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
+	}
+	else if (key == SDLK_o)
+	{
+		printf("Editor status ED_OPEN\n");
+		doom->edit.currmur = NULL; //on sait jamais je comprend pas le code
+		doom->edit.currstat = NULL;
+		doom->edit.status = ED_OPEN;
 	}
 	else
 		ft_nodeadd_int(&(doom->edit.keys), key);
