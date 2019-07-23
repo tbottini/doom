@@ -134,10 +134,6 @@ void			render_wall(t_arch *arch, t_player *player)
 
 	if (wall_screen_info(arch, player))
 	{
-		if (arch->wall->status == PORTAL)
-			draw_wall(arch, YELLOW);
-		else if (arch->wall->status == WALL)
-			draw_wall(arch, WHITE);
 		reorder(arch);
 
 		len_sector = length_sector(player, arch->sector);
@@ -148,6 +144,26 @@ void			render_wall(t_arch *arch, t_player *player)
 		shape.ur = arch->next;
 		shape.bl = get_floor_pos(arch, len_sector, pillar_px, &arch->pillar);
 		shape.br = get_floor_pos(arch, len_sector, next_px, &arch->next);
+
+		if (debug_screen == 2)
+		{
+			debug_pillar(arch, P_PILLAR | P_NEXT | TRACE | POINT);
+			if (arch->wall->status == PORTAL)
+				draw_wall(arch, YELLOW);
+			else if (arch->wall->status == WALL)
+				draw_wall(arch, WHITE);
+			b_point_debug(arch, shape.ul, RED);
+			b_point_debug(arch, shape.ur, RED);
+			b_point_debug(arch, shape.bl, YELLOW);
+			b_point_debug(arch, shape.br, YELLOW);
+		}
+		else if (debug_screen == 3)
+		{
+			debug_pillar_ver(arch, pillar_px);
+		}
+
+
+
 
 		//render_floor(arch, shape);
 
@@ -169,6 +185,6 @@ void			render_wall(t_arch *arch, t_player *player)
 			borne_load(arch, &borne_tmp, start);
 		}
 	}
-	else
+	else if (debug_screen == 2)
 		draw_wall(arch, RED);
 }

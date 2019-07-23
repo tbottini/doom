@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 15:29:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 09:16:52 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void			clean_screen(t_sdl *sdl)
 void			debug_code(int key)
 {
 	debug = key - SDLK_KP_1 + 1;
+	debug_screen = debug;
 	printf("debug keycode %d\n", debug);
 }
 

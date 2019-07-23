@@ -11,6 +11,9 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	int				i;
 	t_wall			*portal_tmp;
 
+	if (debug_screen == 2 && arch->depth_portal > 0)
+		draw_borne(arch, RED);
+
 	i = 0;
 	wall = sector->wall;
 	sector_frustum(arch, sector, player);
@@ -62,8 +65,11 @@ int					doom_render(t_doom *doom)
 		printf("\n-------start render-------\n");
 	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
-	draw_borne(&doom->game.arch, RED);
-	draw_frustum(&doom->game.arch, SCREEN_ON | FOV_HORI);
+
+	if (debug_screen == 2)
+		draw_frustum(&doom->game.arch, SCREEN_ON | FOV_HORI);
+	if (debug_screen == 3)
+		draw_frustum(&doom->game.arch, SCREEN_ON);
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	minimap(doom);
 	debug_screen_copy(&doom->game.arch);

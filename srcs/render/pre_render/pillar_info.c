@@ -116,12 +116,11 @@ int				wall_behind_portal(t_arch *arch)
 	t_fvct2		inter;
 	t_fvct2		inter2;
 
-	if (debug == 1)
-		d_wall(arch->wall);
 	a_pillar.a = arch->pillar.y / arch->pillar.x;
 	a_pillar.b = 0;
 	a_pillar2.a = arch->next.y / arch->next.x;
 	a_pillar2.b = 0;
+
 	if (arch->portal.pillar.x == arch->portal.next.x)
 	{
 		a_portal.lock = 1;
@@ -172,6 +171,7 @@ int				wall_behind_portal(t_arch *arch)
 int			wall_screen_info(t_arch *arch, t_player *p)
 {
 	pillar_screen_info(arch, p);
+
 	if (arch->depth_portal > 0)
 		return (wall_behind_portal(arch));
 	return (1);

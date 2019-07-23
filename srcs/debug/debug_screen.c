@@ -131,14 +131,25 @@ void		draw_affine(t_arch *arch, t_affine affine, uint32_t color, int flag)
 	draw_affine_portion(arch, affine, portion, color);
 }
 
+
+void		draw_screen(t_arch *arch, uint32_t color, int px_distance, t_affine fov_affine)
+{
+	t_vct2	pt1;
+	t_vct2	pt2;
+
+	pt1.x = arch->sdl->size.x / 2 + px_distance;
+	pt2.x = pt1.x;
+	pt1.y = arch->sdl->size.y / 2 + (px_distance * fov_affine.a);
+	pt2.y = arch->sdl->size.y / 2 + (px_distance * -fov_affine.a);
+	trait(arch, pt1, pt2, color);
+}
+
 /*
 **	dessine le frustum horizontal
 */
 void		draw_frustum(t_arch *arch, int flag)
 {
 	t_affine		fov_affine;
-	t_vct2			point1;
-	t_vct2			point2;
 	uint32_t		color;
 
 	if (flag & FOV_HORI)
@@ -148,7 +159,7 @@ void		draw_frustum(t_arch *arch, int flag)
 	}
 	else
 	{
-		fov_affine.a = tan(arch->cam->fov_ver / 2);
+		fov_affine.a = tan(arch->cam->fov_ver / 2 );
 		color = GREEN;
 	}
 	fov_affine.b = 0;
@@ -159,11 +170,54 @@ void		draw_frustum(t_arch *arch, int flag)
 
 	if (flag & SCREEN_ON)
 	{
-		point1.x = arch->sdl->size.x / 2 + arch->sdl->size.x / 12;
-		point2.x = point1.x;
-		point1.y = arch->sdl->size.y / 2 + (arch->sdl->size.x / 12 * fov_affine.a);
-		point2.y = arch->sdl->size.y / 2 + (arch->sdl->size.x / 12 * -fov_affine.a);
-		trait(arch, point1, point2, color);
+		draw_screen(arch, color, arch->sdl->size.x / 12, fov_affine);
+	}
+}
+
+
+
+void		debug_pillar_ver(t_arch *arch, t_fvct2 surface_pillar)
+{
+	t_affine	pillar;
+	t_affine	fov_affine;
+	int			len_screen;
+	int			dist;
+	t_vct2		point1;
+	t_vct2		point2;
+
+	dist = arch->sdl->size.x / 2.5;
+	fov_affine.a = tan(arch->cam->fov_ver / 2);
+	fov_affine.b = 0;
+	draw_screen(arch, BLUE_SOFT, dist, fov_affine);
+	len_screen = 2 * (fov_affine.a * dist);
+
+	point1.x = dist + arch->sdl->size.x / 2;
+	point2.x = dist + arch->sdl->size.x / 2;
+
+	point1.y = len_screen * (surface_pillar.x / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
+	point2.y =  len_screen * (surface_pillar.y / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
+	trait(arch, point1, point2, YELLOW);
+}
+
+void		debug_pillar(t_arch *arch, int flag)
+{
+	t_affine	a_pillar;
+
+	if (flag & P_PILLAR || !flag)
+	{
+		a_pillar = (t_affine){arch->pillar.y / arch->pillar.x, 0, 0};
+		if (flag & TRACE)
+			draw_affine(arch, a_pillar, BLUE_SOFT, MID);
+		if (flag & POINT || !flag)
+			b_point_debug(arch, arch->pillar, RED);
+	}
+	if (flag & P_NEXT)
+	{
+		a_pillar = (t_affine){arch->next.y / arch->next.x, 0, 0};
+		if (flag & TRACE)
+			draw_affine(arch, a_pillar, BLUE_SOFT, MID);
+		if (flag & POINT)
+			b_point_debug(arch, arch->next, RED);
 	}
 }
 

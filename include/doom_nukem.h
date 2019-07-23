@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/22 11:38:29 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 09:18:58 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 **		!!! global de debug a enlever
 */
 extern int debug;
+extern int debug_screen;
 
 # define DEBUG_VISUAL 1
 
