@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/21 13:41:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 16:26:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ int		editor_reset(t_editor *edit)
 		ft_clear_secteur_list(&(edit->sectors));
 	if (edit->pillist)
 		ft_clear_pillar_list(&(edit->pillist));
-
 	edit->txtrscroll = 0;
 	edit->map = NULL;
 	edit->currmur = NULL;
 	edit->currstat = NULL;
 	edit->currpilier = NULL;
+	return (1);
 }
 
 int		close_editor(t_doom *doom)
@@ -159,6 +159,14 @@ int		editor_init(t_editor *editor)
 	if (!(editor->sprites[4] = IMG_LoadTexture(editor->rend, PROPGPILL)))
 		return (0);
 	if (!(editor->sprites[5] = IMG_LoadTexture(editor->rend, PROPBPILL)))
+		return (0);
+	if (!(editor->sprites[6] = IMG_LoadTexture(editor->rend, PROPJETPACK)))
+		return (0);
+	if (!(editor->sprites[7] = IMG_LoadTexture(editor->rend, PROPGUN)))
+		return (0);
+	if (!(editor->sprites[8] = IMG_LoadTexture(editor->rend, PROPSHOTGUN)))
+		return (0);
+	if (!(editor->sprites[9] = IMG_LoadTexture(editor->rend, PROPRIFLE)))
 		return (0);
 	if (!(editor->wsprites[0] = IMG_LoadTexture(editor->rend, PROPBTN)))
 		return (0);

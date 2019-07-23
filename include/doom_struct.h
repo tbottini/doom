@@ -35,10 +35,14 @@ typedef struct s_prop	t_prop;
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
-# define PROPMUN "ressources/props/munition.xpm"
+# define PROPMUN "ressources/props/ammo.png"
 # define PROPRPILL "ressources/props/pill.png"
 # define PROPGPILL "ressources/props/greenpill.png"
 # define PROPBPILL "ressources/props/bluepill.png"
+# define PROPJETPACK "ressources/props/jetpack.png"
+# define PROPGUN "ressources/props/gun.png"
+# define PROPSHOTGUN "ressources/props/shotgun.png"
+# define PROPRIFLE "ressources/props/rifle.png"
 
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
 # define MAXWPROPSNUMBER 1

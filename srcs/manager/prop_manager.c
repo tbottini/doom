@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 18:26:26 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 16:06:46 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,10 @@ void		func_prop(t_prop *prop, int type)
 		prop->func = &supersmol;
 	else if (type == MINPROPSPOS + 6)//Add jetpack
 		prop->func = &jetpack;
-	else if (type == MINPROPSPOS + 7)// Deco sector
-		prop->func = NULL;
-	else if (type == MINPROPSPOS + 8 || type == MINPROPSPOS + 9 || type == MINPROPSPOS + 10)//Add new weapons
+	else if (type == MINPROPSPOS + 7 || type == MINPROPSPOS + 8 || type == MINPROPSPOS + 9)//Add new weapons
 		prop->func = &add_weapon;
+	else if (type == MINPROPSPOS + 10)// Deco sector
+		prop->func = NULL;
 	else if (type == MINWPROPSPOS) // Wall button
 	{
 		ft_printf("New Button\n");
