@@ -14,6 +14,16 @@
 #define EDITORSTEPX 100.0
 #define EDITORSTEPY -100.0
 
+SDL_Texture		*find_texture(SDL_Texture **txtrs, char **edpath, char *surfpath)
+{
+	int			x;
+
+	x = 0;
+	while (edpath[x] && ft_strcmp(edpath[x], surfpath))
+		x++;
+	return (txtrs[x]);
+}
+
 t_secteur		*find_secteur(t_lstsec secteurs, t_sector *stock_sector, t_sector *sector)
 {
 	int			index;
@@ -77,7 +87,7 @@ void add_walls(t_game *game, t_editor *edit, t_sector *gamesec, t_secteur *sec)
 	y = 0;
 	while (y < gamesec->len)
 	{
-		mur = ft_wallpushend(&sec->murs, find_pillar_from_game(game->pillars, gamesec->wall[y].pillar, edit->pillist), find_pillar_from_game(game->pillars, gamesec->wall[y].next, edit->pillist), edit->txtrgame[0]);
+		mur = ft_wallpushend(&sec->murs, find_pillar_from_game(game->pillars, gamesec->wall[y].pillar, edit->pillist), find_pillar_from_game(game->pillars, gamesec->wall[y].next, edit->pillist), find_texture(edit->txtrgame, edit->txtrname, game->surfpath[gamesec->wall[y].txtr.id]));
 		add_wall_prop(game, edit, &gamesec->wall[y], mur);
 		mur->portal_id = gamesec->wall[y].status;
 		y++;
@@ -102,7 +112,8 @@ int game_to_editor(t_game *game, t_editor *edit)
 	x = 0;
 	while (x < game->len.nb_sects)
 	{
-		sec = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
+		;
+		sec = push_secteur(&edit->sectors, find_texture(edit->txtrgame, edit->txtrname, game->surfpath[game->sectors[x].txtrtop.id]), find_texture(edit->txtrgame, edit->txtrname, game->surfpath[game->sectors[x].txtrsol.id]));
 		sec->htop = game->sectors[x].h_ceil * EDITORSTEPX;
 		sec->hsol = game->sectors[x].h_floor * EDITORSTEPX;
 		sec->gravity = ((game->sectors[x].gravity.z == G_MOON));
@@ -147,7 +158,7 @@ int	relink_sector(t_game *game, t_editor *edit)
 		while (mur)
 		{
 			// Parcours
-			if (ISPORTAL(mur->portal_id))
+			if (mur->portal_id != WALL)
 				mur->portal_ptr = find_secteur(edit->sectors, game->sectors, game->sectors[idsec].wall[idmur].link);
 
 			mur = mur->next;
