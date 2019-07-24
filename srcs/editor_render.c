@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 14:22:11 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/19 11:44:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 15:48:42 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static void draw_player(t_editor *editor)
 	tmp.h = 20;
 	SDL_RenderDrawRect(editor->rend, &tmp);
 	tmp.x = cos(editor->player.stat.roty * PI180) * 50.0;
-	tmp.y = sin(editor->player.stat.roty * PI180) * 50.0;
+	tmp.y = -sin(editor->player.stat.roty * PI180) * 50.0;
 	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
@@ -143,12 +143,12 @@ static void draw_enemies(t_editor *editor, t_entity *curr)
 	if (curr->stat.type <= 2)
 	{
 		tmp.x = cos(curr->stat.roty * PI180) * 20;
-		tmp.y = sin(curr->stat.roty * PI180) * 20;
+		tmp.y = -sin(curr->stat.roty * PI180) * 20;
 	}
 	else
 	{
 		tmp.x = cos(curr->stat.roty * PI180) * curr->stat.type * 8;
-		tmp.y = sin(curr->stat.roty * PI180) * curr->stat.type * 8;
+		tmp.y = -sin(curr->stat.roty * PI180) * curr->stat.type * 8;
 	}
 	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 }
@@ -259,10 +259,10 @@ static void draw_walls(t_editor *editor)
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){200, 0, 70, 0xFF});
 			else if (currwall == editor->hovermur)
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){0, 200, 70, 0xFF});
-			else if (currwall->portal_ptr)
-				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
 			else if (editor->currstat && editor->currstat->mur == currwall)
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){75, 100, 255, 0xFF});
+			else if (currwall->portal_ptr)
+				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){230, 230, 100, 0xFF});
 			else
 				map_draw_line(editor, currwall->pil1->pos, currwall->pil2->pos, (SDL_Color){180, 180, 250, 0xFF});
 			draw_objs(editor, currwall->wproplist);
@@ -317,7 +317,7 @@ void draw_sector_menu(t_editor *editor, t_font font)
 		{
 			if (editor->currstat == &editor->player.stat)
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){100, 205, 100, 0xFF});
-			else if (ISPROP(editor->currstat->type))
+			else if (ISPROP(editor->currstat->type) || ISWALLPROP(editor->currstat->type))
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){100, 125, 240, 0xFF});
 			else
 				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){170, 100, 205, 0xFF});
