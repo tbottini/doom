@@ -6,13 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/23 16:26:56 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 19:23:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-int		editor_reset(t_editor *edit)
+int editor_reset(t_editor *edit)
 {
 	if (edit->ennlist)
 		ft_clear_entity_list(&(edit->ennlist));
@@ -21,6 +21,7 @@ int		editor_reset(t_editor *edit)
 	if (edit->pillist)
 		ft_clear_pillar_list(&(edit->pillist));
 	edit->txtrscroll = 0;
+	ft_bzero(edit->txtrreal, sizeof(SDL_Texture *) * MAXTXTRNUMBER);
 	edit->map = NULL;
 	edit->currmur = NULL;
 	edit->currstat = NULL;
@@ -28,7 +29,7 @@ int		editor_reset(t_editor *edit)
 	return (1);
 }
 
-int		close_editor(t_doom *doom)
+int close_editor(t_doom *doom)
 {
 	editor_reset(&doom->edit);
 	free_textures_folder(doom->edit.txtrgame, doom->edit.txtrname);
@@ -46,9 +47,9 @@ int	asynchronous_txtr_load(void *param)
 	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
 	//if (read_file_to_editor(edit, "ressources/map/jesuisunmonsieur") != 0)
 	//{
-		edit->player.stat.sector = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);;
-		edit->player.stat.pos = (t_vct2){0, 0};
-		edit->player.stat.type = 100;
+	edit->player.stat.sector = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
+	edit->player.stat.pos = (t_vct2){0, 0};
+	edit->player.stat.type = 100;
 	//}
 	edit->map = edit->sectors;
 	if (!(edit->player.stat.sector))
@@ -102,7 +103,7 @@ int load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsna
 {
 	DIR				*txtrfolder;
 	struct dirent	*txtrdata;
-	int tot;
+	int				tot;
 	char			tmp[512];
 
 	if (!(txtrfolder = opendir("ressources/textures")))
@@ -135,7 +136,7 @@ int load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsna
 int		editor_init(t_editor *editor)
 {
 	if (!(editor->win = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE)))
+										 SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE)))
 		return (0);
 	if (!(editor->rend = SDL_CreateRenderer(editor->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 14:11:38 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 17:10:53 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct			s_wall
 	t_portal_id			status;
 	t_sector			*link;
 	t_prop				*props;
-	double				dist;
+	double				percent;
 	int					nb_props;
 }						t_wall;
 
