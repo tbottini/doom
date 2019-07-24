@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 14:11:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 14:50:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,22 @@ void	end_level(t_doom *doom)
 	game_over(doom, true);
 }
 
-void	open_close(t_wall *wall)
+void	open_close(t_prop *prop)
 {
-	if (wall->status == OPEN_DOOR)
-		wall->status = CLOSE_DOOR;//close_door(wall);//a faire avec animation
-	else if (wall->status == CLOSE_DOOR)
-		wall->status = OPEN_DOOR;//open_door(wall);//a faire avaec animation
+	if (prop->wall)
+	{
+		if (prop->wall->status == OPEN_DOOR)
+			prop->wall->status = CLOSE_DOOR;//close_door(wall);//a faire avec animation
+		else if (prop->wall->status == CLOSE_DOOR)
+			prop->wall->status = OPEN_DOOR;//open_door(wall);//a faire avaec animation
+	}
+	if (prop->sector)
+	{
+		if (prop->sector->gravity.z == G_EARTH)
+			prop->sector->gravity.z = G_MOON;
+		else
+			prop->sector->gravity.z = G_EARTH;
+	}
 }
 
 /*===============ammo===================*/
@@ -165,7 +175,7 @@ void		activate_prop(t_doom *doom, t_prop *prop, t_wall *wall)
 	else if (prop->type == MINPROPSPOS + 9)//Add rifle
 		prop->func(&doom->game.player.weapons[3]);
 	else if (prop->type == MINWPROPSPOS) // Wall button
-		prop->func(wall);
+		prop->func(prop);
 	else if (prop->type == MINWPROPSPOS + 1) // End button
 		prop->func(doom);
 }

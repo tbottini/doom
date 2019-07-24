@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 14:11:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 14:51:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,26 +197,18 @@ void		action(t_doom *doom, t_stat *stat)
 	x = 0;
 	while (x < wallhit->nb_props)
 	{
-		printf("Player:\nx: %f\ny: %f\nz: %f\n\n", stat->pos.x, stat->pos.y, stat->pos.z);
+		/* printf("Player:\nx: %f\ny: %f\nz: %f\n\n", stat->pos.x, stat->pos.y, stat->pos.z);
 		printf("x: %f\ny: %f\nw: %f\ny: %f\nz: %f\nh: %f\n",
 			wallhit->props[x].hitbox.x,
 			wallhit->props[x].hitbox.y,
 			wallhit->props[x].hitbox.w,
 			wallhit->props[x].hitbox.l,
 			wallhit->props[x].hitbox.z,
-			wallhit->props[x].hitbox.h);
-		if (is_in_hitbox(&wallhit->props[x].hitbox, d, 0))//stat->pos))
+			wallhit->props[x].hitbox.h);*/
+		if (is_in_hitbox(&wallhit->props[x].hitbox, stat->pos, stat->height / 2))
 		{
 			if (wallhit->props[x].type == MINWPROPSPOS)
-				wallhit->props[x].func(wallhit->props[x].wall);
-			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
-				wallhit->props[x].func(doom);
-			printf("D : touched prop type = %d\n", wallhit->props[x].type);
-		}
-		else if (is_in_hitbox(&wallhit->props[x].hitbox, stat->pos, stat->height / 2))
-		{
-			if (wallhit->props[x].type == MINWPROPSPOS)
-				wallhit->props[x].func(wallhit->props[x].wall);
+				wallhit->props[x].func(&wallhit->props[x]);
 			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
 				wallhit->props[x].func(doom);
 			printf("POS : touched prop type = %d\n", wallhit->props[x].type);
