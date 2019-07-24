@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 18:07:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 14:11:38 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,6 @@ void			describe_wall(t_wall wall);
 
 
 void			init_prop(t_prop *prop, double height);
-int				is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos);
+int				is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 19:29:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 14:13:00 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void			miniwalls(t_player *player, t_sector *sector, t_minimap *mini)
 		cursor = minipoint(player->stat.pos, wall[i].pillar->p, mini);
 		cursor2 = minipoint(player->stat.pos, wall[i].next->p, mini);
 		mbl(cursor, cursor2, mini, wall[i].status
-			!= PORTAL ? CWALL : CPORT);
+			>= OPEN_DOOR ? CWALL : CPORT);
 		cursor = minipoint(player->stat.pos, wall[i].pillar->p, mini);
 		miniwallprops(mini, &wall[i], player->stat.pos);
 	}

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 10:52:48 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 14:11:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,13 @@ static void	new_music(t_sound *sound)
 
 /*============bouton=================*/
 
+void	end_level(t_doom *doom)
+{
+	game_over(doom, true);
+}
+
 void	open_close(t_wall *wall)
 {
-	ft_printf("toto\n");
 	if (wall->status == OPEN_DOOR)
 		wall->status = CLOSE_DOOR;//close_door(wall);//a faire avec animation
 	else if (wall->status == CLOSE_DOOR)
@@ -117,16 +121,16 @@ void		func_prop(t_prop *prop, int type)
 		ft_printf("New Button\n");
 		prop->func = &open_close;
 	}
-	else if (type == MINWPROPSPOS + 1) // bullet hole
-		prop->func = NULL;
+	else if (type == MINWPROPSPOS + 1) // End button
+		prop->func = &end_level;
 	else if (type == MINWPROPSPOS + 2) // wall deco
 		prop->func = NULL;
-	ft_printf("New PROP %d\t\t%d\n", type, MINWPROPSPOS);
+	printf("New PROP %d\t\t%d\t\t pos z = %f\n", type, MINWPROPSPOS, prop->pos.z);
 }
 
 void		init_prop(t_prop *prop, double height)
 {
-	if (prop->type == MINWPROPSPOS + 1)
+	if (prop->type == MINWPROPSPOS + 2)
 		prop->pos.z = -1;
 	else if (ISWALLPROP(prop->type))
 		prop->pos.z = height + (H_NORMAL / 2);
@@ -143,39 +147,41 @@ void		init_prop(t_prop *prop, double height)
 	//txtr_prop(prop, prop->type);
 }
 
-void		activate_prop(t_game *game, t_prop *prop, t_wall *wall)
+void		activate_prop(t_doom *doom, t_prop *prop, t_wall *wall)
 {
 	if (prop->type == MINPROPSPOS || prop->type == MINPROPSPOS + 6)//HEAL & jetpack
-		prop->func(&game->player.stat);
+		prop->func(&doom->game.player.stat);
 	else if (prop->type == MINPROPSPOS + 1)//Cassette
-		prop->func(&game->sound);
+		prop->func(&doom->game.sound);
 	else if (prop->type == MINPROPSPOS + 2)//Munitions
-		prop->func(&game->player.hand);
+		prop->func(&doom->game.player.hand);
 	else if (prop->type == MINPROPSPOS + 3 || prop->type == MINPROPSPOS + 4
 		|| prop->type == MINPROPSPOS + 5)//Pills
-		prop->func(&game->player);
+		prop->func(&doom->game.player);
 	else if (prop->type == MINPROPSPOS + 7)//Add gun
-		prop->func(&game->player.weapons[1]);
+		prop->func(&doom->game.player.weapons[1]);
 	else if (prop->type == MINPROPSPOS + 8)//Add shotgun
-		prop->func(&game->player.weapons[2]);
+		prop->func(&doom->game.player.weapons[2]);
 	else if (prop->type == MINPROPSPOS + 9)//Add rifle
-		prop->func(&game->player.weapons[3]);
+		prop->func(&doom->game.player.weapons[3]);
 	else if (prop->type == MINWPROPSPOS) // Wall button
 		prop->func(wall);
+	else if (prop->type == MINWPROPSPOS + 1) // End button
+		prop->func(doom);
 }
 
-void		pickup_prop(t_game *game)
+void		pickup_prop(t_doom *doom)
 {
 	int i;
 
 	i = 0;
-	while (i < game->player.stat.sector->len_prop)
+	while (i < doom->game.player.stat.sector->len_prop)
 	{
-		if (is_in_hitbox(&game->player.stat.sector->props[i].hitbox, game->player.stat.pos))
+		if (is_in_hitbox(&doom->game.player.stat.sector->props[i].hitbox, doom->game.player.stat.pos, 0))
 		{
-			activate_prop(game, &game->player.stat.sector->props[i], NULL);
-			if (game->player.stat.sector->props[i].type < MAXPROPSNUMBER)
-				game->player.stat.sector->props[i].tex = NULL;
+			activate_prop(doom, &doom->game.player.stat.sector->props[i], NULL);
+			if (doom->game.player.stat.sector->props[i].type < MAXPROPSNUMBER)
+				doom->game.player.stat.sector->props[i].tex = NULL;
 			break ;
 		}
 		i++;

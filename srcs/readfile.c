@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/23 17:35:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 13:00:27 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int	read_wall_props(int fd, t_game *game, t_wall *wall, t_slen *len)
 		x++;
 	}
 	wall->nb_props = nbp;
-	wall->props[nbp].type = MINWPROPSPOS + 1;
+	wall->props[nbp].type = MINWPROPSPOS + 2;
 	init_prop(&(wall->props[nbp]), 0);
 	if (read_balise(fd, "📅", 7))
 		return (7);

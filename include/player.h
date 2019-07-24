@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 18:24:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 11:54:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct 			s_player
 /*
 ** Enemy states:
 **
-** 0 : idle, not moving (not to be considered in calculations)
+** 0 : idle, not moving
 ** 1 : moving towards player
 ** 2 : shooting at player
 ** 3 : dying / dead

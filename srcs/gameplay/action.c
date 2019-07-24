@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 10:44:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 14:11:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,16 +171,16 @@ static void			prop_hitbox(t_prop *prop, double angle)
 	return (button_hit(but, pos, stat->rot.y));
 }*/
 
-int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos)
+int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight)
 {
 	if (hitbox->x <= pos.x && pos.x <= hitbox->w
 		&& hitbox->y <= pos.y && pos.y <= hitbox->l
-		&& hitbox->z <= pos.z && pos.z <= hitbox->h)
+		&& hitbox->z <= (pos.z + hheight) && (pos.z + hheight) <= hitbox->h)
 		return (1);
 	return (0);
 }
 
-void		action(t_player *player, t_stat *stat)
+void		action(t_doom *doom, t_stat *stat)
 {
 	int			x;
 	t_fvct3		d;
@@ -189,7 +189,7 @@ void		action(t_player *player, t_stat *stat)
 	d.x = stat->pos.x + (RANGE * sin(stat->rot.x * PI180) * cos(stat->rot.y * PI180));
 	d.y = stat->pos.y + (RANGE * sin(stat->rot.x * PI180) * sin(stat->rot.y * PI180));
 	d.z = stat->pos.z + (-(RANGE * cos(stat->rot.x * PI180)) + (stat->height / 2));
-	if (!(wallhit = collisionV21(player->stat.sector, player->stat.pos, d, NULL)))
+	if (!(wallhit = collisionV21(stat->sector, stat->pos, d, NULL)))
 	{
 		ft_printf("No Wall HIT\n");
 		return ;
@@ -197,7 +197,7 @@ void		action(t_player *player, t_stat *stat)
 	x = 0;
 	while (x < wallhit->nb_props)
 	{
-		printf("Player:\nx: %f\ny: %f\nz: %f\n\n", player->stat.pos.x, player->stat.pos.y, player->stat.pos.z);
+		printf("Player:\nx: %f\ny: %f\nz: %f\n\n", stat->pos.x, stat->pos.y, stat->pos.z);
 		printf("x: %f\ny: %f\nw: %f\ny: %f\nz: %f\nh: %f\n",
 			wallhit->props[x].hitbox.x,
 			wallhit->props[x].hitbox.y,
@@ -205,8 +205,22 @@ void		action(t_player *player, t_stat *stat)
 			wallhit->props[x].hitbox.l,
 			wallhit->props[x].hitbox.z,
 			wallhit->props[x].hitbox.h);
-		if (is_in_hitbox(&wallhit->props[x].hitbox, player->stat.pos))
-			wallhit->props[x].func(wallhit->props[x].wall);
+		if (is_in_hitbox(&wallhit->props[x].hitbox, d, 0))//stat->pos))
+		{
+			if (wallhit->props[x].type == MINWPROPSPOS)
+				wallhit->props[x].func(wallhit->props[x].wall);
+			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
+				wallhit->props[x].func(doom);
+			printf("D : touched prop type = %d\n", wallhit->props[x].type);
+		}
+		else if (is_in_hitbox(&wallhit->props[x].hitbox, stat->pos, stat->height / 2))
+		{
+			if (wallhit->props[x].type == MINWPROPSPOS)
+				wallhit->props[x].func(wallhit->props[x].wall);
+			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
+				wallhit->props[x].func(doom);
+			printf("POS : touched prop type = %d\n", wallhit->props[x].type);
+		}
 		x++;
 	}
 }
