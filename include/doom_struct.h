@@ -380,6 +380,7 @@ typedef struct			s_game
 	t_sector			*sectors;
 	t_pillar			*pillars;
 	SDL_Surface			**gamesurf;
+	char				**surfpath;
 	t_arch				arch;//a voir aveec tbottini
 	t_camera			camera;
 	t_difficulty		difficulty;

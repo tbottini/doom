@@ -12,11 +12,12 @@
 
 #include "doom_nukem.h"
 
-void	set_txtr(t_txtr *txtr, SDL_Surface *surf)
+void	set_txtr(t_txtr *txtr, SDL_Surface *surf, int id)
 {
 	txtr->pixels = surf->pixels;
 	txtr->w = surf->w;
 	txtr->h = surf->h;
+	txtr->id = id;
 }
 
 int	read_balise(int fd, char *balise, int ret)
@@ -31,7 +32,7 @@ int	read_balise(int fd, char *balise, int ret)
 	return (0);
 }
 
-int	read_one_texture(int fd, SDL_Surface **surf)
+int	read_one_texture(int fd, SDL_Surface **surf, char **surfpath)
 {
 	int pathlen;
 	char path[512];
@@ -46,18 +47,21 @@ int	read_one_texture(int fd, SDL_Surface **surf)
 	printf("\tString : %s\n", path);
 	if (!(tmp = IMG_Load(path)))
 		return (-25);
+	if (surfpath && !(*surfpath = ft_strdup(path)))
+		return (-26);
 	*surf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
 	SDL_FreeSurface(tmp);
 	if (read(fd, path, sizeof(char)) != sizeof(char) || *path != '\v')
-		return (-26);
+		return (-27);
 	printf("\tGOOD\n\n");
 	return (0);
 }
 
-int read_textures(int fd, SDL_Surface ***surf, t_slen *len)
+int read_textures(int fd, SDL_Surface ***surf, t_slen *len, char ***surfpath)
 {
 	int x;
 	int rtn;
+	char		**localpath;
 	SDL_Surface **localsurf;
 
 	if (read_balise(fd, "🌅", -2))
@@ -67,12 +71,15 @@ int read_textures(int fd, SDL_Surface ***surf, t_slen *len)
 	printf("Found %d Textures\n", len->nb_txtrs);
 	if (!(*surf = (SDL_Surface **)malloc(sizeof(SDL_Surface *) * (len->nb_txtrs + 1))))
 		return (-420);
+	if (surfpath && !(*surfpath = (char **)malloc(sizeof(char *) * (len->nb_txtrs + 1))))
+		return (-421);
 	localsurf = *surf;
+	localpath = (surfpath ? *surfpath : NULL);
 	ft_bzero(localsurf, sizeof(SDL_Surface *) * (len->nb_txtrs + 1));
 	x = 0;
 	while (x < len->nb_txtrs)
 	{
-		if ((rtn = read_one_texture(fd, &(localsurf[x]))))
+		if ((rtn = read_one_texture(fd, &(localsurf[x]), (surfpath ? &(localpath[x]) : NULL))))
 			return (rtn);
 		x++;
 	}
@@ -197,7 +204,7 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 		return (-63);
 	printf("\t\tFound Texture ID: %d\n", tmp);
 	if (tmp >= 0)
-		set_txtr(&wall->txtr, game->gamesurf[tmp]);
+		set_txtr(&wall->txtr, game->gamesurf[tmp], tmp);
 	if (((read(fd, &wall->status, sizeof(t_portal_id)) != sizeof(t_portal_id))))
 		return (-64);
 	printf("\t\tFound Wall Type: %d\n", tmp);
@@ -280,12 +287,12 @@ int	read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
 	if (((read(fd, &itmp, sizeof(int)) != sizeof(int)) || itmp >= len->nb_txtrs))
 		return (-54);
 	if (itmp >= 0)
-		set_txtr(&sector->txtrsol, game->gamesurf[itmp]);
+		set_txtr(&sector->txtrsol, game->gamesurf[itmp], itmp);
 	printf("\tSector floor txtr: %d\n", itmp);
 	if (((read(fd, &itmp, sizeof(int)) != sizeof(int)) || itmp >= len->nb_txtrs))
 		return (-55);
 	if (itmp >= 0)
-		set_txtr(&sector->txtrtop, game->gamesurf[itmp]);
+		set_txtr(&sector->txtrtop, game->gamesurf[itmp], itmp);
 	printf("\tSector ceil txtr: %d\n", itmp);
 	if ((itmp = read_sec_walls(fd, game, sector, len)))
 		return (itmp);
@@ -394,7 +401,7 @@ int	read_enemies(int fd, t_game *game, t_slen *len)
 	return (0);
 }
 
-int reading_map(int fd, t_game *game, t_slen *len)
+int reading_map(int fd, t_game *game, t_slen *len, bool foredit)
 {
 	long	x;
 	long	*tmp;
@@ -404,7 +411,7 @@ int reading_map(int fd, t_game *game, t_slen *len)
 	tmp = (long *)"💎🇩🇿🍉💩";
 	if (x != *tmp)
 		return (1);
-	if ((rtn = read_textures(fd, &(game->gamesurf), len)))
+	if ((rtn = read_textures(fd, &(game->gamesurf), len, (foredit ? &game->surfpath : NULL))))
 		return (rtn);
 	if ((rtn = read_pillars(fd, &game->pillars, len)))
 		return (rtn);
@@ -421,7 +428,7 @@ int reading_map(int fd, t_game *game, t_slen *len)
 	return (0);
 }
 
-int	read_file(t_game *game, const char *file)
+int	read_file(t_game *game, const char *file, bool foredit)
 {
 	int		fd;
 	int		returncode;
@@ -431,7 +438,7 @@ int	read_file(t_game *game, const char *file)
 		write(2, "Error opening file\n", 19);
 		return (-1);
 	}
-	if ((returncode = reading_map(fd, game, &game->len)))
+	if ((returncode = reading_map(fd, game, &game->len, foredit)))
 	{
 		ft_printf("Error : %d\n", returncode);
 		close(fd);
@@ -441,19 +448,28 @@ int	read_file(t_game *game, const char *file)
 	return (0);
 }
 
-void	free_gamesurf(SDL_Surface ***gamesurf)
+void	free_gamesurf(SDL_Surface ***gamesurf, char ***gamepath)
 {
 	SDL_Surface	**tmp;
+	char		**tmpath;
 	int 		x;
 
 	tmp = *gamesurf;
+	tmpath = (gamepath ? *gamepath : NULL);
 	x = 0;
 	while (tmp[x])
 	{
 		SDL_FreeSurface(tmp[x]);
+		if (tmpath)
+			free(tmpath[x]);
 		x++;
 	}
 	free(tmp);
+	if (tmpath)
+	{
+			free(tmpath);
+			*gamepath = NULL;
+	}
 	*gamesurf = NULL;
 }
 
@@ -486,7 +502,7 @@ void	free_game(t_game *game)
 {
 	if (game->gamesurf)
 	{
-		free_gamesurf(&game->gamesurf);
+		free_gamesurf(&game->gamesurf, (game->surfpath ? &game->surfpath : NULL));
 	}
 	if (game->pillars)
 	{
