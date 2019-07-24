@@ -6,26 +6,29 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 10:56:21 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:57:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-static Uint32		hcol(int health, int boost)
+static Uint32		hcol(int health, t_power power)
 {
-	if (boost)
+	if (power == FREEZE)
 		return (0x76F7FFFF);
+	if (power == SMOL)
+		return (0xba68c8FF);
+	if (power == PUNCH)
+		return (0xb71c1cFF);
 	if (health >= 100)
 		return (0x44FF7D64);
-	else if (health > 75)
+	if (health > 75)
 		return (0xB5FF444B);
-	else if (health > 50)
+	if (health > 50)
 		return (0xEDFF4432);
-	else if (health > 25)
+	if (health > 25)
 		return (0xFFCE4414);
-	else
-		return (0xFF764401);
+	return (0xFF764401);
 }
 
 t_minimap			miniinit(t_sdl *s)
@@ -118,12 +121,12 @@ static void			minifield(t_player *player, t_minimap *mini)
 		pix.x = 256 * cos(i * PI180) + mini->mid.x;
 		pix.y = -256 * sin(i * PI180) + mini->mid.y;
 		miniline(mini->sdl, mini->mid, pix,
-			hcol(player->stat.health, player->boost));
+			hcol(player->stat.health, player->power));
 		i += player->fov >> 3;
 	}
 }
 
-void				minifill(t_minimap *mini, int health, int boost)
+void				minifill(t_minimap *mini, int health, t_power power)
 {
 	int i;
 	int j;
@@ -134,7 +137,7 @@ void				minifill(t_minimap *mini, int health, int boost)
 		j = mini->sdl->size.y - (mini->sdl->size.y >> 2);
 		while (++j < mini->a.y - 1)
 			if (mini->sdl->screen[i + j * mini->sdl->size.x]!= CWALL)
-				mini->sdl->screen[i + j * mini->sdl->size.x] = opacity(hcol(health, boost),
+				mini->sdl->screen[i + j * mini->sdl->size.x] = opacity(hcol(health, power),
 					mini->sdl->screen[i + j * mini->sdl->size.x], 0.5);
 		++i;
 	}
@@ -143,7 +146,7 @@ void				minifill(t_minimap *mini, int health, int boost)
 void				minimap(t_minimap *mini, t_player *player)
 {
 	miniwalls(player, player->stat.sector, mini);
-	minifill(mini, player->stat.health, player->boost);
+	minifill(mini, player->stat.health, player->power);
 	minibord(mini);
 	minifield(player, mini);
 	miniprops(mini, player->stat.sector, player->stat.pos);//

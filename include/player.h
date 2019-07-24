@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 21:12:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:47:02 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@
 # define NB_WEAPON 4
 
 typedef	struct 			s_sound t_sound;
+
+typedef enum			e_power
+{
+	NONE,
+	FREEZE,
+	PUNCH,
+	SMOL
+}						t_power;
 
 typedef	struct			s_weapon
 {
@@ -65,6 +73,7 @@ typedef struct 			s_player
 	t_weapon			weapons[NB_WEAPON];
 	Uint32				boost;
 	Uint32				occupied;
+	t_power				power;
 	int					fov;
 	bool				crouch;
 }						t_player;
@@ -109,6 +118,7 @@ typedef struct			s_super
 **	Gestion
 */
 
+void					check_boost(Uint32 timestamp, t_player *player);
 int						player_init(t_player *player);
 void					player_free(t_player *player);
 t_enemy					*pushfront_enemy(t_sector *sector, t_enemy *enemy);

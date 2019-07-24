@@ -6,11 +6,23 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/19 15:29:34 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:48:55 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+void	check_boost(Uint32 timestamp, t_player *player)
+{
+	if (timestamp > player->boost)
+	{
+		if (player->power == PUNCH)
+			player->weapons[0].dmg = 10;
+		else if (player->power == SMOL)
+			player->stat.height = H_NORMAL;
+		player->power = NONE;
+	}
+}
 
 void	player_free(t_player *player)
 {
@@ -37,6 +49,6 @@ int		player_init(t_player *player)
 	player->stat.vel.x = 0;
 	player->stat.vel.y = 0;
 	player->stat.vel.z = 0;
-	player->stat.health = 15;//a degager
+	player->power = NONE;
 	return (1);
 }

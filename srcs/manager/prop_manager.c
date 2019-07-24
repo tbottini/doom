@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 14:50:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:44:21 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,32 @@ static void	add_weapon(t_weapon *weapon)
 
 static void	supersmol(t_player *player)
 {
-	if (!player->boost)
+	if (!player->power)
 	{
 		if (player->stat.height == H_NORMAL)
 			player->stat.height = H_SMOL;
 		player->boost = SDL_GetTicks() + 30000;
+		player->power = SMOL;
 	}
 }
 
 static void	superpunch(t_player *player)
 {
-	if (!player->boost)
+	if (!player->power)
 	{
 		player->weapons[0].dmg = 100;
 		player->boost = SDL_GetTicks() + 15000;
+		player->power = PUNCH;
 	}
 }
 
 static void	superhot(t_player *player)
 {
-	if (!player->boost)
+	if (!player->power)
+	{
 		player->boost = SDL_GetTicks() + 5000;
+		player->power = FREEZE;
+	}
 }
 
 /*============cassette=================*/
