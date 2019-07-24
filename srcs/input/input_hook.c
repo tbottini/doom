@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 15:54:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:20:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,39 @@ void			debug_code(int key)
 }
 
 
+int		game_key_press(int key, t_doom *doom)
+{
+	if (doom->ui.curr_btn_controller > 0)
+		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
+	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
+		sdl_set_status(doom, 4);
+	else if (key == SDLK_LGUI && doom->game.player.stat.jetpack)
+		crouch(&doom->game.player);
+	else if (key == SDLK_z)
+		jetpack_on_off(&doom->game.player);
+	else if (key == SDLK_b)
+		save_png(&doom->sdl);
+	else if (key == SDLK_9)//
+		change_music(&doom->game.sound, 10, 5000);
+	else if (key == SDLK_k)//
+		game_over(doom, true);
+	else if (doom->timestamp > doom->game.player.occupied)
+	{
+		if (key == SDLK_e)
+			action(doom, &doom->game.player.stat);
+		else if (key == SDLK_r)
+			reload(doom->timestamp, &doom->game.player, &doom->game.player.hand);
+		else if (key == SDLK_v)
+			kick(doom->timestamp, &doom->game.sound, &doom->game.player);
+		else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)//
+			change_weapon(&doom->game.player, key - '0' - 1);
+		else
+			ft_nodeadd_int(&(doom->sdl.keys), key);
+	}
+	else
+		ft_nodeadd_int(&(doom->sdl.keys), key);
+}
+
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
 ** Example :
@@ -52,21 +85,10 @@ int		key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
-	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
-	{
-		if (doom->ui.m_status == 0)
-			sdl_set_status(doom, 4);
-		else if (doom->ui.m_status == 4)
-			sdl_set_status(doom, 0);
-	}
+	else if ((key == SDLK_RETURN || key == SDLK_BACKQUOTE) && doom->ui.m_status == 4)//
+		sdl_set_status(doom, 0);
 	else if (key <= SDLK_KP_9 && key >= SDLK_KP_1)
 		debug_code(key);
-	else if (key == SDLK_r && !doom->ui.m_status)
-		reload(&doom->game.player.hand);
-	else if (key == SDLK_e && !doom->ui.m_status)
-		action(doom, &doom->game.player.stat);
-	else if (key == SDLK_LGUI && !doom->ui.m_status && doom->game.player.stat.jetpack)
-		crouch(&doom->game.player);
 	else if (key == SDLK_h)
 	{
 		describe_player(doom->game.player);
@@ -76,20 +98,6 @@ int		key_press(int key, t_doom *doom)
 		doom->game.arch.zoom /= 2;
 	else if (key == SDLK_KP_PLUS)
 		doom->game.arch.zoom *= 2;
-	else if (key == SDLK_9)
-		change_music(&doom->game.sound, 10, 5000);
-	else if (key == SDLK_b)
-		save_png(&doom->sdl);
-	else if (key == SDLK_k)
-		game_over(doom, true);
-	else if (key == SDLK_v && !doom->ui.m_status)
-		kick(&doom->game.sound, &doom->game.player);
-	else if (key == SDLK_l && !doom->ui.m_status)
-		doom->game.player.stat.jetpack = 1;
-	else if (key == SDLK_z && !doom->ui.m_status)
-		jetpack_on_off(&doom->game.player);
-	else if ((key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4) && !doom->ui.m_status)
-		change_weapon(&doom->game.player, key - '0' - 1);
 	else if (key == SDLK_PERIOD)
 		doom->ui.fire = (t_pal){{0, 0x10003101, 0x14073702, 0x190f3d03, 0x1e164304,
 		0x221e4905, 0x27254f06, 0x2c2c5507, 0x30345b08, 0x353c6109, 0x3a43670A,
@@ -173,7 +181,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 			if (doom->ui.m_status != 0)
 				btn_click(doom, x, y);
 			else if (!(doom->game.player.hand.rate))
-				shoot(&doom->game.sound, &doom->game.player);
+				shoot(doom->timestamp, &doom->game.sound, &doom->game.player);
 			else
 				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
 		}

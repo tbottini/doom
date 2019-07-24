@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 14:51:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:08:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,103 +73,6 @@ void		change_weapon(t_player *player, int id)
 	if (id >= 0 && id < NB_WEAPON && player->weapons[id].on)
 		player->hand = player->weapons[id];
 }
-/*
-double			button_clipping(t_prop prop, t_fvct3 pos, double angle)
-{
-	t_fvct2		inter;
-	t_fvct2		diff;
-	t_fvct2		diff2;
-	double		coef_wall;
-	double		b;
-
-	//diff.x = prop.x1 - pos.x;
-	//diff.y = prop.y1 - pos.y;
-	//diff2.x = prop.x2 - pos.x;
-	//diff2.y = prop.y2 - pos.y;
-	(void)pos;
-	diff.x = sin((angle - 90.0) * PI180) * (prop.width / 2);
-	diff.y = cos((angle - 90.0) * PI180) * (prop.width / 2);
-	diff2.x = sin((angle + 90.0) * PI180) * (prop.width / 2);
-	diff2.y = cos((angle + 90.0) * PI180) * (prop.width / 2);
-	if (diff2.x - diff.x < 0.00001 && diff2.x - diff.x > -0.000001)
-	{
-		inter.x = diff.x;
-		inter.y = diff.x * tan(angle * PI180);
-	}
-	else
-	{
-		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
-		b = diff.y - diff.x * coef_wall;
-		inter.x = b / (tan(angle * PI180) - coef_wall);
-		inter.y = coef_wall * inter.x + b;
-	}
-	return (distance((t_fvct2){0.0, 0.0}, inter));
-}
-
-t_prop		*button_hit(t_prop **but, t_fvct3 pos, double angle)
-{
-	t_prop *hit;
-	int		i;
-	double	res;
-	double	tmp;
-
-	i = 0;
-	res = 987654312.0;
-	hit = NULL;
-	while (but[i])
-	{
-		if ((tmp = button_clipping(*but[i], pos, angle)) < res)
-		{
-			res = tmp;
-			hit = but[i];
-		}
-		++i;
-	}
-	printf("BOUTON TONTON || %f ||\n", res);
-	return (hit);
-}
-
-
-int			is_button(t_prop *prop)
-{
-	return (prop->func ? 1 : 0);
-}
-
-
-static void			prop_hitbox(t_prop *prop, double angle)
-{
-	prop->e1.x = sin((angle - 90.0) * PI180) * (prop->width / 2);
-	prop->e1.y = cos((angle - 90.0) * PI180) * (prop->width / 2);
-	prop->e2.x = sin((angle + 90.0) * PI180) * (prop->width / 2);
-	prop->e2.y = cos((angle + 90.0) * PI180) * (prop->width / 2);
-}
-
- t_prop		*possible_button(t_stat *stat, t_fvct3 ori, t_fvct3 pos)
-{
-	t_prop		*but[10];
-	t_prop		*b;
-	int			i;
-	int			index;
-
-	index = 0;
-	b = NULL;
-	i = -1;
-	while (++i < stat->sector->len)
-	{
-		b = &stat->sector->props[i];
-		prop_hitbox(b, stat->rot.y);
-		//if (is_button(b = &stat->sector->prop[i]) && vector_intersect(ori, pos, (t_fvct3){b->x1, b->y1, 0.0}, (t_fvct3){b->x2, b->y2, 0.0}))
-		if (b->func && vector_intersect(ori, pos, (t_fvct3){b->e1.x, b->e1.y, 0.0}, (t_fvct3){b->e2.x, b->e2.y, 0.0}))
-		{
-			but[index] = b;
-			if (++index > 9)
-				return (button_hit(but, pos, stat->rot.y));
-			printf("sec wall %d\n", i);
-		}
-	}
-	but[index] = NULL;
-	return (button_hit(but, pos, stat->rot.y));
-}*/
 
 int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight)
 {
@@ -228,7 +131,7 @@ void		jump(t_player *player)
 	}
 }
 
-void		kick(t_sound *sound, t_player *player)
+void		kick(Uint32 timestamp, t_sound *sound, t_player *player)
 {
 	t_fvct3	d;
 	int		range;
@@ -238,4 +141,5 @@ void		kick(t_sound *sound, t_player *player)
 	d.y = range * sin(player->stat.rot.x * PI180) * sin(player->stat.rot.y * PI180);
 	d.z = -(range * cos(player->stat.rot.x * PI180)) + (player->stat.height / 2);
 	Mix_PlayChannel(2, sound->tab_effect[6], 0);
+	player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
 }

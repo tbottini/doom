@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 15:01:52 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:05:18 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,10 @@ int event_handler_doom(t_doom *doom, SDL_Event e)
 	if (e.type == SDL_QUIT)
 		doom_exit(doom);
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+	{
+		game_key_press(e.key.keysym.sym, doom);
 		key_press(e.key.keysym.sym, doom);
+	}
 	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
 		key_release(e.key.keysym.sym, doom);
 	else if (e.type == SDL_WINDOWEVENT)

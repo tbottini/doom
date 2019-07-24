@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 13:01:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:21:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,25 @@ void		benda(t_doom *doom, int key)
 
 static void input_loop(t_doom *doom, int key)
 {
-	//if (key == SDLK_w || key == SDLK_s)
-	//	doom->game.player.stat.vel.x = (key == SDLK_w ? 32700 : -32700);
-	//else if (key == SDLK_a || key == SDLK_d)
-	//	doom->game.player.stat.vel.y = (key == SDLK_a ? -32700 : 32700);
-	/*if (key == SDLK_w || key == SDLK_s)
-		doom->game.player.stat.vel.x = (key == SDLK_w ? doom->game.player.stat.speed : -doom->game.player.stat.speed);
-	else if (key == SDLK_a || key == SDLK_d)
-		doom->game.player.stat.vel.y = (key == SDLK_a ? -doom->game.player.stat.speed : doom->game.player.stat.speed);*/
-	if ((key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d) && !doom->ui.m_status)
+	if ((key == SDLK_w || key == SDLK_s || key == SDLK_a || key == SDLK_d))
 		benda(doom, key);
-	else if (key == SDLK_LSHIFT && doom->game.player.stat.vel.x == doom->game.player.stat.speed && !doom->ui.m_status)
+	else if (key == SDLK_LSHIFT && doom->game.player.stat.vel.x == doom->game.player.stat.speed)
 		sprint(&doom->game.player.stat);
-	else if (key == SDLK_SPACE && !doom->ui.m_status && doom->game.player.stat.jetpack)
+	else if (key == SDLK_SPACE && doom->game.player.stat.jetpack)
 		jump(&doom->game.player);
-	else if (key == SDL_BUTTON_LEFT && !doom->ui.m_status)
-		shoot(&doom->game.sound, &doom->game.player);
-	else if (key == SDLK_p) //test tir
-		bullet(&doom->game.player.stat, doom->game.player.hand.dmg);
-	else if (key == SDLK_0)//test effects
-		play_effect(&doom->game.sound, 8);
-	else if (key == SDLK_SPACE && !doom->ui.m_status && !doom->game.player.stat.jetpack)
+	else if (key == SDLK_SPACE && !doom->game.player.stat.jetpack)
 		fly(&doom->game.player.stat);
-	else if (key == SDLK_LGUI && !doom->ui.m_status && !doom->game.player.stat.jetpack)
+	else if (key == SDLK_LGUI && !doom->game.player.stat.jetpack)
 		unfly(&doom->game.player.stat);
+	else if (doom->timestamp > doom->game.player.occupied)
+	{
+		if (key == SDL_BUTTON_LEFT)
+			shoot(doom->timestamp, &doom->game.sound, &doom->game.player);
+		else if (key == SDLK_p) //test tir
+			bullet(&doom->game.player.stat, doom->game.player.hand.dmg);
+		else if (key == SDLK_0)//test effects
+			play_effect(&doom->game.sound, 8);
+	}
 }
 
 static void editor_loop(t_doom *doom, int key)

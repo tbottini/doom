@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 11:54:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:12:10 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct 			s_player
 	t_weapon			hand;
 	t_weapon			weapons[NB_WEAPON];
 	Uint32				boost;
+	Uint32				occupied;
 	int					fov;
 	bool				crouch;
 }						t_player;
@@ -141,8 +142,8 @@ t_weapon				hand_init(void);
 t_weapon				gun_init(void);
 t_weapon				shotgun_init(void);
 t_weapon				rifle_init(void);
-void					reload(t_weapon *weapon);
-void					shoot(t_sound *sound, t_player *player);
+void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon);
+void					shoot(Uint32 timestamp, t_sound *sound, t_player *player);
 void					bullet(t_stat *stat, int dmg);
 void					wall_real_hit(t_super *super, t_stat *stat);
 void					possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector);

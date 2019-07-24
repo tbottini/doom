@@ -54,6 +54,7 @@ int						loop_hook(t_doom *doom);
 t_btn					*btn_hover(t_doom *doom, int x, int y);
 void					draw_hover(t_doom *doom, t_btn *newl, t_btn *old);
 
+int						game_key_press(int key, t_doom *doom);
 int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
 int						mouse_press(int button, int x, int y, t_doom *doom);
@@ -96,7 +97,7 @@ void					set_hard(t_doom *doom);
 void					game_over(t_doom *doom, bool win);
 void					pickup_prop(t_doom *doom);
 void					action(t_doom *doom, t_stat *stat);
-void					kick(t_sound *sound, t_player *player);
+void					kick(Uint32 timestamp, t_sound *sound, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					sdl_MultiRenderCopy(t_sdl *sdl);

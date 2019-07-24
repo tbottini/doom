@@ -6,13 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 18:23:41 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 21:23:06 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void		reload(t_weapon *weapon)
+void		reload(Uint32 timestamp, t_player *player, t_weapon *weapon)
 {
 	int	r;
 
@@ -20,18 +20,23 @@ void		reload(t_weapon *weapon)
 	(weapon->ammo - r < 0 ? r += weapon->ammo - r : 0);
 	weapon->ammo -= r;
 	weapon->clip = r;
+	player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
 }
 
-void		shoot(t_sound *sound, t_player *player)
+void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 {
 	if (player->hand.clip == 0)
-		reload(&player->hand);
+		reload(timestamp, player, &player->hand);
 	else if (!player->hand.id)
-		kick(sound, player);
+		kick(timestamp, sound, player);
 	else
 	{
 		bullet(&player->stat, player->hand.dmg);
 		player->hand.clip--;
+		if (player->hand.rate)
+			player->occupied = timestamp + 150;//ajuster avec vitesse d'animation et vitesse de tir voulue
+		else
+			player->occupied = timestamp + 500;//ajuster avec vitesse d'animation et temps entre deux tirs souhaite
 	}
 }
 
