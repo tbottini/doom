@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 19:30:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 10:56:21 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,5 +146,6 @@ void				minimap(t_minimap *mini, t_player *player)
 	minifill(mini, player->stat.health, player->boost);
 	minibord(mini);
 	minifield(player, mini);
+	miniprops(mini, player->stat.sector, player->stat.pos);//
 	bold_point2(mini, mini->mid, WHITE);
 }

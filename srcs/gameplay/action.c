@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 18:38:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 10:44:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,29 @@ void		prev_weapon(t_player *player)
 
 void		change_weapon(t_player *player, int id)
 {
-	if (player->weapons[id].id != -1)
+	ft_printf("ID SWITCH    %d\n", id);
+	if (player->weapons[id].on)
+	{
+		switch (id)
+		{
+		case (0):
+			printf("no weapon equipped\n");
+			break ;
+		case (1):
+			printf("gun equipped\n");
+			break ;
+		case (2):
+			printf("shotgun equipped\n");
+			break ;
+		case (3):
+			printf("rifle equipped\n");
+			break ;
+		default:
+			printf("couldnt switch\n");
+			break;
+		}
+	}
+	if (id >= 0 && id < NB_WEAPON && player->weapons[id].on)
 		player->hand = player->weapons[id];
 }
 /*

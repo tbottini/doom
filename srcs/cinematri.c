@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 01:54:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 20:13:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 11:02:26 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void cine_events(t_doom *doom, int *i)
 	{
 		if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
 			doom_exit(doom);
-		else if ((e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE))
+		else if ((e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_RETURN)))
 			*i = 3000;
 		else if (e.type == SDL_DROPFILE)
 				dropfile_event(doom, e);

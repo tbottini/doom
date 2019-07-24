@@ -27,18 +27,19 @@ SRCS_UI			:=		button_action.c									\
 						fire.c											\
 
 
+SRCS_GAMEPLAY	:=		action.c										\
+						move.c											\
+						shoot.c											\
+						shoot_tools.c									\
+						collision.c										\
+						gameover.c										\
+
 SRCS_INPUT		:=		event_controller.c								\
 						event_handler.c									\
 						event_handler_doom.c							\
 						event_handler_editor.c							\
 						input_hook.c									\
 						loop_hook.c										\
-						action.c										\
-						move.c											\
-						shoot.c											\
-						shoot_tools.c									\
-						collision.c										\
-						gameover.c										\
 						debug_input.c									\
 
 SRCS_RENDER		:=		render.c										\
@@ -103,6 +104,7 @@ OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/tools/%.o,$(SRCS_TOOLS))	\
 						$(patsubst %.c,objs/ui/%.o,$(SRCS_UI))			\
 						$(patsubst %.c,objs/input/%.o,$(SRCS_INPUT))	\
+						$(patsubst %.c,objs/gameplay/%.o,$(SRCS_GAMEPLAY))\
 						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))\
 						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))
 

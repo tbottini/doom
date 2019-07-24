@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 22:15:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 11:04:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,13 @@ void		game_over(t_doom *doom, bool win)
 	while (filter < 0.95)
 	{
 		//doom->sdl.screen = last;
-		if (win && display_end(doom, 0x9b0a1eff, filter, gameover))//Green | YOU WIN !
+		if (win && display_end(doom, 0x62E9AAFF, filter, gameover))//Green | YOU WIN !
 			break ;
-		else if (display_end(doom, 0x9b0a1eff, filter, gameover))
+		else if (!win && display_end(doom, 0x9b0a1eff, filter, gameover))
 			break ;
 		filter += (filter < 0.07 ? 0.0005 : 0.02);
 	}
 	//SDL_DestroyTexture(gameover);
-	sdl_set_status(doom, 1);
 	free_game(&doom->game);
+	sdl_set_status(doom, 1);
 }

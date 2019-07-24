@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
+#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/07/15 15:36:32 by tbottini         ###   ########.fr        #
+#    Updated: 2019/07/24 11:11:15 by akrache          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ FOLDER			:=		objs									\
 						objs/tools								\
 						objs/ui									\
 						objs/input								\
+						objs/gameplay							\
 						objs/manager							\
 						objs/calcul								\
 

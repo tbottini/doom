@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/23 19:56:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 11:02:38 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,15 @@ int		key_press(int key, t_doom *doom)
 	else if (key == SDLK_b)
 		save_png(&doom->sdl);
 	else if (key == SDLK_k)
-		game_over(doom, false);
+		game_over(doom, true);
 	else if (key == SDLK_v && !doom->ui.m_status)
 		kick(&doom->game.sound, &doom->game.player);
 	else if (key == SDLK_l && !doom->ui.m_status)
 		doom->game.player.stat.jetpack = 1;
 	else if (key == SDLK_z && !doom->ui.m_status)
 		jetpack_on_off(&doom->game.player);
+	else if ((key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4) && !doom->ui.m_status)
+		change_weapon(&doom->game.player, key - '0' - 1);
 	else if (key == SDLK_PERIOD)
 		doom->ui.fire = (t_pal){{0, 0x10003101, 0x14073702, 0x190f3d03, 0x1e164304,
 		0x221e4905, 0x27254f06, 0x2c2c5507, 0x30345b08, 0x353c6109, 0x3a43670A,

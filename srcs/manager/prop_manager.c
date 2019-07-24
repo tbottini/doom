@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 17:35:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/24 10:52:48 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,11 @@ void		activate_prop(t_game *game, t_prop *prop, t_wall *wall)
 	else if (prop->type == MINPROPSPOS + 3 || prop->type == MINPROPSPOS + 4
 		|| prop->type == MINPROPSPOS + 5)//Pills
 		prop->func(&game->player);
-	else if (prop->type == MINPROPSPOS + 8)//Add gun
+	else if (prop->type == MINPROPSPOS + 7)//Add gun
 		prop->func(&game->player.weapons[1]);
-	else if (prop->type == MINPROPSPOS + 9)//Add shotgun
+	else if (prop->type == MINPROPSPOS + 8)//Add shotgun
 		prop->func(&game->player.weapons[2]);
-	else if (prop->type == MINPROPSPOS + 10)//Add rifle
+	else if (prop->type == MINPROPSPOS + 9)//Add rifle
 		prop->func(&game->player.weapons[3]);
 	else if (prop->type == MINWPROPSPOS) // Wall button
 		prop->func(wall);
