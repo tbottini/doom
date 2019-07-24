@@ -40,13 +40,56 @@ t_pilier *find_pillar_from_game(t_pillar *pillars, t_pillar *to_find, t_lstpil p
 	return (pillst);
 }
 
+void add_prop(t_game *game, t_editor *edit, t_sector *gamesec)
+{
+	int y;
+	t_prop *prop;
+	
+	y = 0;
+	while (y < gamesec->len_prop)
+	{
+		prop = &gamesec->props[y];
+		ft_enemypushend(&edit->ennlist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game->sectors, prop->sector));
+		y++;
+	}
+}
+
+void add_wall_prop(t_game *game, t_editor *edit, t_wall *gamewall, t_mur *mur)
+{
+	int y;
+	t_prop *prop;
+	t_entity *ent;
+	
+	y = 0;
+	while (y < gamewall->nb_props)
+	{
+		prop = &gamewall->props[y];
+		ent = ft_enemypushend(&mur->wproplist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game->sectors, prop->sector));
+		y++;
+	}
+}
+
+void add_walls(t_game *game, t_editor *edit, t_sector *gamesec, t_secteur *sec)
+{
+	int		y;
+	t_mur	*mur;
+
+	y = 0;
+	while (y < gamesec->len)
+	{
+		mur = ft_wallpushend(&sec->murs, find_pillar_from_game(game->pillars, gamesec->wall[y].pillar, edit->pillist), find_pillar_from_game(game->pillars, gamesec->wall[y].next, edit->pillist), edit->txtrgame[0]);
+		add_wall_prop(game, edit, &gamesec->wall[y], mur);
+		mur->portal_id = gamesec->wall[y].status;
+		y++;
+	}
+}
+
 int game_to_editor(t_game *game, t_editor *edit)
 {
 	int x;
-	int y;
 	t_vct2 pos;
 	t_secteur *sec;
-	t_mur	*mur;
+	t_enemy		*enn;
 
 	x = 0;
 	while (x < game->len.nb_pills)
@@ -59,19 +102,28 @@ int game_to_editor(t_game *game, t_editor *edit)
 	x = 0;
 	while (x < game->len.nb_sects)
 	{
-		push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
+		sec = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
+		sec->htop = game->sectors[x].h_ceil * EDITORSTEPX;
+		sec->hsol = game->sectors[x].h_floor * EDITORSTEPX;
+		sec->gravity = ((game->sectors[x].gravity.z == G_MOON));
 		x++;
 	}
+	
+	edit->player.stat.pos.x = game->player.stat.pos.x * EDITORSTEPX;
+	edit->player.stat.pos.y = game->player.stat.pos.y * EDITORSTEPY;
+	edit->player.stat.roty = game->player.stat.rot.y + 90.0;
+	edit->player.stat.sector = find_secteur(edit->sectors, game->sectors, game->player.stat.sector);
 	sec = edit->sectors;
 	x = 0;
 	while (x < game->len.nb_sects)
 	{
-		y = 0;
-		while (y < game->sectors[x].len)
+		add_walls(game, edit, &game->sectors[x], sec);
+		add_prop(game, edit, &game->sectors[x]);
+		enn = game->sectors[x].enemys;
+		while (enn)
 		{
-			mur = ft_wallpushend(&sec->murs, find_pillar_from_game(game->pillars, game->sectors[x].wall[y].pillar, edit->pillist), find_pillar_from_game(game->pillars, game->sectors[x].wall[y].next, edit->pillist), edit->txtrgame[0]);
-			mur->portal_id = game->sectors[x].wall[y].status;
-			y++;
+			ft_enemypushend(&edit->ennlist, (t_vct2){enn->stat.pos.x * EDITORSTEPX, enn->stat.pos.y * EDITORSTEPY}, enn->type, find_secteur(edit->sectors, game->sectors, enn->stat.sector));
+			enn = enn->next;
 		}
 		sec = sec->next;
 		x++;
@@ -111,13 +163,13 @@ int	read_file_to_editor(t_editor *edit, const char *file)
 {
 	t_game	game;
 	int		returncode;
-	t_slen	len;
 	char path[512];
 
 	ft_strcpy(path, "ressources/map/");
 	ft_strcpy(&(path[15]), file);
 	printf("ouverture de :%s\n", path);
-	if ((returncode = read_file(&game, path)))
+	ft_bzero(&game, sizeof(t_game));
+	if ((returncode = read_file(&game, path, true)))
 	{
 		printf("Error : %d\n", returncode);
 		return (-1);

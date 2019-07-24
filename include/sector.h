@@ -42,6 +42,7 @@ typedef struct			s_txtr
 	uint32_t			*pixels;
 	uint32_t			w;
 	uint32_t			h;
+	int					id;
 }						t_txtr;
 
 typedef struct			s_pillar
