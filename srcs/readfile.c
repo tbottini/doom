@@ -207,7 +207,7 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 		set_txtr(&wall->txtr, game->gamesurf[tmp], tmp);
 	if (((read(fd, &wall->status, sizeof(t_portal_id)) != sizeof(t_portal_id))))
 		return (-64);
-	printf("\t\tFound Wall Type: %d\n", tmp);
+	printf("\t\tFound Wall Type: %d\n", wall->status);
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects))
 		return (-65);
 	printf("\t\tFound Wall Sector Link: %d\n", tmp);
