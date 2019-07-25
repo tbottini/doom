@@ -94,7 +94,7 @@ void add_walls(t_game *game, t_editor *edit, t_sector *gamesec, t_secteur *sec)
 	}
 }
 
-void add_enemies(t_game *game, t_editor *edit, t_sector *gamesec, t_secteur *sec)
+void add_enemies(t_editor *edit, t_sector *gamesec, t_secteur *sec)
 {
 	t_enemy		*enn;
 
@@ -141,7 +141,7 @@ int game_to_editor(t_game *game, t_editor *edit)
 	{
 		add_walls(game, edit, &game->sectors[x], sec);
 		add_prop(game, edit, &game->sectors[x]);
-		add_enemies(game, edit, &game->sectors[x], sec);
+		add_enemies(edit, &game->sectors[x], sec);
 		sec = sec->next;
 		x++;
 	}
