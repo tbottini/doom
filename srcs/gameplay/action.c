@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 21:08:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 10:52:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,11 @@ void		action(t_doom *doom, t_stat *stat)
 		if (is_in_hitbox(&wallhit->props[x].hitbox, stat->pos, stat->height / 2))
 		{
 			if (wallhit->props[x].type == MINWPROPSPOS)
+			{
 				wallhit->props[x].func(&wallhit->props[x]);
+				if (wallhit->props[x].wall)
+					wallhit->props[x].wall->ots = doom->timestamp;
+			}
 			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
 				wallhit->props[x].func(doom);
 			printf("POS : touched prop type = %d\n", wallhit->props[x].type);

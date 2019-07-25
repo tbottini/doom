@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 17:10:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 10:18:00 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct			s_wall
 	t_sector			*link;
 	t_prop				*props;
 	double				percent;
+	Uint32				ots;
 	int					nb_props;
 }						t_wall;
 

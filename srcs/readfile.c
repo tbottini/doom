@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 13:00:27 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 10:17:36 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,8 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 		return (-65);
 	printf("\t\tFound Wall Sector Link: %d\n", tmp);
 	wall->link = &game->sectors[tmp];
+	wall->percent = 100.0;
+	wall->ots = 0;
 	return (read_wall_props(fd, game, wall, len));
 }
 

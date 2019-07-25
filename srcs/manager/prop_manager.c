@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 21:44:21 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 10:57:22 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,15 @@ void	open_close(t_prop *prop)
 	if (prop->wall)
 	{
 		if (prop->wall->status == OPEN_DOOR)
+		{
 			prop->wall->status = CLOSE_DOOR;//close_door(wall);//a faire avec animation
+		}
 		else if (prop->wall->status == CLOSE_DOOR)
+		{
 			prop->wall->status = OPEN_DOOR;//open_door(wall);//a faire avaec animation
+		}
+		//prop->wall->ots = timestamp;
+		prop->wall->percent = fabs(prop->wall->percent - 100.0);
 	}
 	if (prop->sector)
 	{
