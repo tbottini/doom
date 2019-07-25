@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 14:42:51 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:47:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,15 +142,6 @@ void				minifill(t_minimap *mini, int health, t_power power)
 						mini->sdl->screen[i + j * mini->sdl->size.x], 0.5);
 		++i;
 	}
-}
-
-void	update_enemy_rotation(t_enemy *enemy, t_fvct3 pos)
-{
-	enemy->stat.rot.y = atan2(pos.x - enemy->stat.pos.x, pos.y - enemy->stat.pos.y);
-	enemy->e1.x = enemy->stat.pos.x + sin(enemy->stat.rot.y - 90.0) * enemy->stat.height / 4;
-	enemy->e1.y = enemy->stat.pos.y + cos(enemy->stat.rot.y - 90.0) * enemy->stat.height / 4;
-	enemy->e2.x = enemy->stat.pos.x + sin(enemy->stat.rot.y + 90.0) * enemy->stat.height / 4;
-	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + 90.0) * enemy->stat.height / 4;
 }
 
 static void			minienemies(t_minimap *mini, t_sector *sector, t_fvct3 pos)

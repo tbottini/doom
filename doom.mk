@@ -33,6 +33,7 @@ SRCS_GAMEPLAY	:=		action.c										\
 						shoot_tools.c									\
 						collision.c										\
 						gameover.c										\
+						ia.c											\
 
 SRCS_INPUT		:=		event_controller.c								\
 						event_handler.c									\
