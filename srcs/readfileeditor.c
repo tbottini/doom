@@ -199,7 +199,7 @@ int	relink_sector(t_game *game, t_editor *edit)
 {
 	t_secteur			*secteur;
 	t_mur				*mur;
-	t_entity			*wprop;
+	t_entity			*ent;
 	int					idsec;
 	int					idmur;
 	int					idprop;
@@ -216,11 +216,11 @@ int	relink_sector(t_game *game, t_editor *edit)
 			if (mur->portal_id != WALL)
 				mur->portal_ptr = find_secteur(edit->sectors, game, game->sectors[idsec].wall[idmur].link);
 			idprop = 0;
-			wprop = mur->wproplist;
-			while (wprop)
+			ent = mur->wproplist;
+			while (ent)
 			{
-				fill_ent(edit->sectors, game, wprop, &game->sectors[idsec].wall[idmur].props[idprop]);
-				wprop = wprop->next;
+				fill_ent(edit->sectors, game, ent, &game->sectors[idsec].wall[idmur].props[idprop]);
+				ent = ent->next;
 				idprop++;
 			}
 			mur = mur->next;
@@ -228,6 +228,12 @@ int	relink_sector(t_game *game, t_editor *edit)
 		}
 		secteur = secteur->next;
 		idsec++;
+	}
+	ent = edit->ennlist;
+	while (ent)
+	{
+		//fill_ent(edit->sectors, game, ent, ) // Tres hard parce que les props de sector ne sont plus lié au secteur
+		ent = ent->next;
 	}
 	return (1);
 }
