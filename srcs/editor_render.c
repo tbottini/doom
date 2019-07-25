@@ -90,8 +90,8 @@ static void draw_player(t_editor *editor)
 	tmp.w = 20;
 	tmp.h = 20;
 	SDL_RenderDrawRect(editor->rend, &tmp);
-	tmp.x = cos(editor->player.stat.roty * PI180) * 50.0;
-	tmp.y = -sin(editor->player.stat.roty * PI180) * 50.0;
+	tmp.x = cos((editor->player.stat.roty - 90.0) * PI180) * 50.0;
+	tmp.y = -sin((editor->player.stat.roty - 90.0) * PI180) * 50.0;
 	SDL_RenderDrawLine(editor->rend, loc.x, loc.y, loc.x + tmp.x, loc.y + tmp.y);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }

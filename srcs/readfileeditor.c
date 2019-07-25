@@ -24,17 +24,65 @@ SDL_Texture		*find_texture(SDL_Texture **txtrs, char **edpath, char *surfpath)
 	return (txtrs[x]);
 }
 
-t_secteur		*find_secteur(t_lstsec secteurs, t_sector *stock_sector, t_sector *sector, int nb_sect)
+t_secteur		*find_secteur(t_lstsec secteurs, t_game *game, t_sector *sector)
 {
 	int			index;
 
 	index = 0;
-	while (sector != &stock_sector[index] && index < nb_sect)
+	while (sector != &game->sectors[index] && index < game->len.nb_sects)
 		index++;
 	while (index--)
 		secteurs = secteurs->next;
 	return (secteurs);
+}
 
+t_mur		*find_mur_in_secteur(t_lstsec secteurs, t_game *game, t_wall *wall)
+{
+	int			sectindex;
+	int			murindex;
+	t_mur		*of_the_jedi;
+
+	sectindex = 0;
+	murindex = 0;
+	while (sectindex < game->len.nb_sects && &game->sectors[sectindex].wall[murindex] != wall)
+	{
+		murindex = 0;
+		while (murindex < game->sectors[sectindex].len && &game->sectors[sectindex].wall[murindex] != wall)
+			murindex++;
+		if (&game->sectors[sectindex].wall[murindex] != wall)
+			sectindex++;
+	}
+	while (sectindex--)
+		secteurs = secteurs->next;
+	of_the_jedi = secteurs->murs;
+	while (murindex--)
+		of_the_jedi = of_the_jedi->next;
+	return (of_the_jedi);
+}
+
+void		fill_ent(t_lstsec secteurs, t_game *game, t_entity *ent, t_prop *prop)
+{
+	int			sectindex;
+	int			murindex;
+	t_mur		*mur;
+
+	sectindex = 0;
+	murindex = 0;
+	while (sectindex < game->len.nb_sects && &game->sectors[sectindex].wall[murindex] != prop->wall)
+	{
+		murindex = 0;
+		while (murindex < game->sectors[sectindex].len && &game->sectors[sectindex].wall[murindex] != prop->wall)
+			murindex++;
+		if (&game->sectors[sectindex].wall[murindex] != prop->wall)
+			sectindex++;
+	}
+	while (sectindex--)
+		secteurs = secteurs->next;
+	mur = secteurs->murs;
+	while (murindex--)
+		mur = mur->next;
+	ent->stat.mursec = secteurs;
+	ent->stat.mur = mur;
 }
 
 t_pilier *find_pillar_from_game(t_pillar *pillars, t_pillar *to_find, t_lstpil pillst)
@@ -59,7 +107,7 @@ void add_prop(t_game *game, t_editor *edit, t_sector *gamesec)
 	while (y < gamesec->len_prop)
 	{
 		prop = &gamesec->props[y];
-		ft_enemypushend(&edit->ennlist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game->sectors, prop->sector, game->len.nb_sects));
+		ft_enemypushend(&edit->ennlist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game, prop->sector));
 		y++;
 	}
 }
@@ -74,7 +122,7 @@ void add_wall_prop(t_game *game, t_editor *edit, t_wall *gamewall, t_mur *mur)
 	while (y < gamewall->nb_props)
 	{
 		prop = &gamewall->props[y];
-		ent = ft_enemypushend(&mur->wproplist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game->sectors, prop->sector, game->len.nb_sects));
+		ent = ft_enemypushend(&mur->wproplist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game, prop->sector));
 		y++;
 	}
 }
@@ -123,7 +171,6 @@ int game_to_editor(t_game *game, t_editor *edit)
 	x = 0;
 	while (x < game->len.nb_sects)
 	{
-		;
 		sec = push_secteur(&edit->sectors, find_texture(edit->txtrgame, edit->txtrname, game->surfpath[game->sectors[x].txtrtop.id]), find_texture(edit->txtrgame, edit->txtrname, game->surfpath[game->sectors[x].txtrsol.id]));
 		sec->htop = game->sectors[x].h_ceil * EDITORSTEPX;
 		sec->hsol = game->sectors[x].h_floor * EDITORSTEPX;
@@ -134,7 +181,7 @@ int game_to_editor(t_game *game, t_editor *edit)
 	edit->player.stat.pos.x = game->player.stat.pos.x * EDITORSTEPX;
 	edit->player.stat.pos.y = game->player.stat.pos.y * EDITORSTEPY;
 	edit->player.stat.roty = game->player.stat.rot.y + 90.0;
-	edit->player.stat.sector = find_secteur(edit->sectors, game->sectors, game->player.stat.sector, game->len.nb_sects);
+	edit->player.stat.sector = find_secteur(edit->sectors, game, game->player.stat.sector);
 	sec = edit->sectors;
 	x = 0;
 	while (x < game->len.nb_sects)
@@ -152,8 +199,10 @@ int	relink_sector(t_game *game, t_editor *edit)
 {
 	t_secteur			*secteur;
 	t_mur				*mur;
+	t_entity			*wprop;
 	int					idsec;
 	int					idmur;
+	int					idprop;
 
 	idsec = 0;
 	secteur = edit->sectors;
@@ -165,8 +214,15 @@ int	relink_sector(t_game *game, t_editor *edit)
 		{
 			// Parcours
 			if (mur->portal_id != WALL)
-				mur->portal_ptr = find_secteur(edit->sectors, game->sectors, game->sectors[idsec].wall[idmur].link, game->len.nb_sects);
-
+				mur->portal_ptr = find_secteur(edit->sectors, game, game->sectors[idsec].wall[idmur].link);
+			idprop = 0;
+			wprop = mur->wproplist;
+			while (wprop)
+			{
+				fill_ent(edit->sectors, game, wprop, &game->sectors[idsec].wall[idmur].props[idprop]);
+				wprop = wprop->next;
+				idprop++;
+			}
 			mur = mur->next;
 			idmur++;
 		}

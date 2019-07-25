@@ -18,6 +18,7 @@ t_entity		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 
 	if (!(t = malloc(sizeof(t_entity))))
 		return (NULL);
+	t->stat.mursec = NULL;
 	t->stat.mur = NULL;
 	t->stat.pos.x = loc.x;
 	t->stat.pos.y = loc.y;
