@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 19:01:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:32:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 				stat->sector = next;
 				if (stat->pos.z <= next->h_floor)
 					stat->pos.z = next->h_floor;
+				if (!stat->crouch && stat->height == H_CROUCH)
+				{
+					stat->height = H_NORMAL;
+					stat->speed = WALK;
+				}
 				*port = NULL;
 				return (1);
 			}
@@ -46,6 +51,9 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 	return (0);
 }
 
+/*
+** Returns 1 if the segments [p1, q1] and [p2, q2] intersect, 0 Otherwise
+*/
 int			vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 {
 	if (orientation(p1, q1, p2) != orientation(p1, q1, q2)

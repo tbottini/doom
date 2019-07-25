@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/20 19:02:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:33:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,33 +43,36 @@ void		unfly(t_stat *stat)
 
 void		crouch(t_player *player)
 {
-	if (!player->crouch && player->stat.speed == WALK)
+	if (!player->stat.crouch && player->stat.speed != SPRINT && player->stat.height != H_SMOL)
 	{
-		player->crouch = true;
+		player->stat.crouch = true;
 		player->stat.speed = CROUCH;
-		player->stat.height /= 2;
+		player->stat.height = H_CROUCH;
 	}
 }
 
 void		crouch_release(t_player *player)
 {
-	if (player->crouch && player->stat.jetpack)
+	if (player->stat.crouch && player->stat.jetpack)
 	{
-		player->crouch = false;
+		player->stat.crouch = false;
+		if (player->stat.sector->h_ceil <= player->stat.sector->h_floor + H_NORMAL)
+			return ;
 		player->stat.speed = WALK;
-		player->stat.height *= 2;
+		player->stat.height = H_NORMAL;
 	}
 }
 
 void		sprint(t_stat *stat)
 {
-	if (stat->speed == WALK)
+	if (stat->speed == WALK && stat->height != H_CROUCH)
 		stat->speed = SPRINT;
 }
 
 void		sprint_release(t_stat *stat)
 {
-	stat->speed = WALK;
+	if (stat->speed == SPRINT)
+		stat->speed = WALK;
 }
 
 /*void		fall_damage(t_stat *stat)

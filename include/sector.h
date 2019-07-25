@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 10:18:00 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:43:40 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ struct					s_prop
 	t_hitbox			hitbox;
 	t_wall				*wall;
 	t_sector			*sector;
-	int					width;
-	int					height;
 	int					type;
 };
 

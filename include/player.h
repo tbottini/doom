@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 14:35:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:44:15 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "vector.h"
 
 # define H_NORMAL 1.80
+# define H_CROUCH 0.90
 # define H_SMOL 0.36
 # define CROUCH 16350.0
 # define WALK 32700.0
@@ -59,6 +60,7 @@ typedef struct 			s_stat
 	int					width;
 	int					health;
 	int					jetpack;
+	bool				crouch;
 }						t_stat;
 
 /* Jetpack
@@ -75,7 +77,6 @@ typedef struct 			s_player
 	Uint32				occupied;
 	t_power				power;
 	int					fov;
-	bool				crouch;
 }						t_player;
 
 /*
@@ -93,8 +94,7 @@ typedef struct 			s_enemy
 	t_stat				stat;
 	t_fvct3				e1;
 	t_fvct3				e2;
-	double				dist;// a quoi ca sert ?
-	Uint32				ts;
+	Uint32				rts;//reload timestamp
 	int					dmg;
 	int					type;
 	int					state;

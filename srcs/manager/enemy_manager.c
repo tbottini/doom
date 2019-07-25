@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 13:57:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:44:27 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_enemy	*enemy_init(int type, int difficulty)
 	if (!(enemy = (t_enemy *)malloc(sizeof(t_enemy))))
 		return (NULL);
 	enemy->state = 0;
-	enemy->dist = 0;
+	enemy->rts = 0;
 	enemy->next = NULL;
 	if (type == 1)
 		cac_init(enemy, difficulty);

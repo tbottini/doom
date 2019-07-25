@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 21:48:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:24:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ void	check_boost(Uint32 timestamp, t_player *player)
 		if (player->power == PUNCH)
 			player->weapons[0].dmg = 10;
 		else if (player->power == SMOL)
-			player->stat.height = H_NORMAL;
+		{
+			if (player->stat.sector->h_ceil <= player->stat.sector->h_floor + H_NORMAL)
+				return ;
+			else
+				player->stat.height = H_NORMAL;
+		}
 		player->power = NONE;
 	}
 }
@@ -36,7 +41,7 @@ int		player_init(t_player *player)
 	player->weapons[2] = shotgun_init();
 	player->weapons[3] = rifle_init();
 	player->hand = player->weapons[0];
-	player->crouch = false;
+	player->stat.crouch = false;
 	player->stat.speed = 32700.0;
 	player->stat.width = 0;
 	player->boost = 0;

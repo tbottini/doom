@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:46:33 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 17:34:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 18:59:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,19 @@ int		is_visible(t_stat *stat, t_stat *target)
 	return (0);
 }
 
-void	ai_action(t_enemy *enemy, int t)
+void	ai_action(Uint32 timestamp, t_enemy *enemy, t_player *player, int t)
 {
-	(void)enemy;
-	(void)t;
+	double dist;
+
+	update_enemy_rotation(enemy, player->stat.pos);
+	dist = distance((t_fvct2){enemy->stat.pos.x, enemy->stat.pos.y}, (t_fvct2){player->stat.pos.x, player->stat.pos.y});
+	if (t == 0 && dist <= 10.0 && enemy->rts < timestamp)
+	{
+			//shoot at player
+			enemy->rts = timestamp + 1000;
+	}
+	else
+		;//move toward player
 }
 
 bool	is_passed(t_sector *sector, t_sector **passed, int index)
@@ -42,7 +51,7 @@ bool	is_passed(t_sector *sector, t_sector **passed, int index)
 	return (true);
 }
 
-int		is_around(t_sector *sector, t_stat *stat, t_sector **passed, int *index)
+int		is_around(t_doom *doom, t_sector *sector, t_sector **passed, int *index)
 {
 	t_enemy		*tmp;
 	int			t;
@@ -51,8 +60,8 @@ int		is_around(t_sector *sector, t_stat *stat, t_sector **passed, int *index)
 	tmp = sector->enemys;
 	while (tmp)
 	{
-		if ((t = is_visible(&tmp->stat, stat)) <= 3)
-			ai_action(tmp, t);
+		if ((t = is_visible(&tmp->stat, &doom->game.player.stat)) <= 2)
+			ai_action(doom->timestamp, tmp, &doom->game.player, t);
 		tmp = tmp->next;
 	}
 	passed[*index] = sector;
@@ -61,7 +70,7 @@ int		is_around(t_sector *sector, t_stat *stat, t_sector **passed, int *index)
 	while (i < sector->len)
 	{
 		if (sector->wall[i].status >= OPEN_DOOR && sector->wall[i].link && !is_passed(sector->wall[i].link, passed, *index))
-			is_around(sector->wall[i].link, stat, passed, index);
+			is_around(doom, sector->wall[i].link, passed, index);
 		i++;
 	}
 	return (0);
@@ -76,11 +85,11 @@ void	update_enemy_rotation(t_enemy *enemy, t_fvct3 pos)
 	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + 90.0) * enemy->stat.height / 4;
 }
 
-void	armandtificial_intelligence(t_game *game, t_sector *sector, t_player *player)
+void	armandtificial_intelligence(t_doom *doom)
 {
 	int			index;
-	t_sector	*passed[game->len.nb_sects];
+	t_sector	*passed[doom->game.len.nb_sects];
 
 	index = 0;
-	is_around(sector, &player->stat, passed, &index);
+	is_around(doom, doom->game.player.stat.sector, passed, &index);
 }
