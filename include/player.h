@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 14:12:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:35:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ typedef struct 			s_enemy
 	t_stat				stat;
 	t_fvct3				e1;
 	t_fvct3				e2;
-	double				dist;
+	double				dist;// a quoi ca sert ?
+	Uint32				ts;
 	int					dmg;
 	int					type;
 	int					state;
