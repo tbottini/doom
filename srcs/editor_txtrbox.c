@@ -77,9 +77,8 @@ void texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
 		edit->currstat->type = e.x;
 		edit->selecttxtr = NOSELECT;
 	}
-	else if (edit->selecttxtr == FILL_TXTR || edit->selecttxtr == FILL_SOL)
+	else if ((edit->selecttxtr == FILL_TXTR || edit->selecttxtr == FILL_SOL) && (txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
 	{
-		txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER);
 		if (edit->currmur)
 			edit->currmur->txtr = txtrclick;
 		else if (edit->map)

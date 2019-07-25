@@ -31,7 +31,7 @@ typedef struct s_prop	t_prop;
 # define MAXENEMYPOS (MINENEMYPOS + MAXENEMYNUMBER)
 
 # define MINPROPSPOS 20
-# define MAXPROPSNUMBER 11
+# define MAXPROPSNUMBER 10
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
@@ -47,7 +47,8 @@ typedef struct s_prop	t_prop;
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
 # define MAXWPROPSNUMBER 3
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
-# define PROPBTN "ressources/props/button.ico"
+# define PROPBTN "ressources/props/closed_button.png"
+# define PROPWINBTN "ressources/props/victory_button.png"
 # define PROPIMPACT "ressources/props/impact.png"
 
 # define ISENEMY(x) (MINENEMYPOS <= x && x < MAXENEMYPOS)

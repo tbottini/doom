@@ -221,10 +221,10 @@ static void draw_txtrselector(t_editor *editor, int max, SDL_Texture **txtrs)
 		}
 		++x;
 	}
-	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
-	SDL_RenderFillRect(editor->rend, &tmp);
-	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
-	SDL_RenderDrawRect(editor->rend, &tmp);
+	//SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
+	//SDL_RenderFillRect(editor->rend, &tmp);
+	//SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
+	//SDL_RenderDrawRect(editor->rend, &tmp);
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
 

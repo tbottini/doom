@@ -171,5 +171,9 @@ int		editor_init(t_editor *editor)
 		return (0);
 	if (!(editor->wsprites[0] = IMG_LoadTexture(editor->rend, PROPBTN)))
 		return (0);
+	if (!(editor->wsprites[1] = IMG_LoadTexture(editor->rend, PROPWINBTN)))
+		return (0);
+	if (!(editor->wsprites[2] = IMG_LoadTexture(editor->rend, PROPIMPACT)))
+		return (0);
 	return (1);
 }
