@@ -94,6 +94,7 @@ void					set_hard(t_doom *doom);
 **	simple input
 */
 
+void					update_enemy_rotation(t_enemy *enemy, t_fvct3 pos);
 void					game_over(t_doom *doom, bool win);
 void					pickup_prop(t_doom *doom);
 void					action(t_doom *doom, t_stat *stat);

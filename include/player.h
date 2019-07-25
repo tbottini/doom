@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 21:47:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:12:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef struct 			s_enemy
 	struct s_enemy		*prev;
 }						t_enemy;
 
-typedef struct			s_super
+typedef struct			s_shoot
 {
 	t_wall				*walls[50];
 	t_enemy				*enemys[50];
@@ -112,7 +112,7 @@ typedef struct			s_super
 	int					i_w;
 	int					i_e;
 	int					dmg;
-}						t_super;
+}						t_shoot;
 
 /*
 **	Gestion
@@ -155,8 +155,8 @@ t_weapon				rifle_init(void);
 void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon);
 void					shoot(Uint32 timestamp, t_sound *sound, t_player *player);
 void					bullet(t_stat *stat, int dmg);
-void					wall_real_hit(t_super *super, t_stat *stat);
-void					possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector);
+void					wall_real_hit(t_shoot *shoot, t_stat *stat);
+void					possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector);
 t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);
 //void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);

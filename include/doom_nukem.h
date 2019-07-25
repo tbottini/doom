@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/23 20:13:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 11:22:38 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ extern int debug;
 # define CWALL 0xDADADAFF
 # define CPORT 0xE6E678FF
 # define WHITE 0xFFFFFFFF
-# define DEEPBLUE  0x0000FFFF
+# define DEEPBLUE 0x0000FFFF
+# define CENEMY 0x8E24AAFF
 
 # define DECELERATION 2500.0
 # define PADDING 0.30

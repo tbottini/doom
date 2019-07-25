@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/23 14:08:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:14:15 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void			enemy_hitbox(t_enemy *enemy)//, double angle)
 	enemy->stat.hitbox.h = enemy->stat.pos.z + enemy->stat.height;
 }
 
-static void		enemy_real_hit(t_super *super, t_stat *stat, double toto)
+static void		enemy_real_hit(t_shoot *shoot, t_stat *stat, double toto)
 {
 	int		i;
 	double	res;
@@ -88,18 +88,18 @@ static void		enemy_real_hit(t_super *super, t_stat *stat, double toto)
 
 	i = -1;
 	res = 987654321.0;
-	while (super->enemys[++i])
+	while (shoot->enemys[++i])
 	{
-		if ((tmp = enemy_bullet_clipping(super->enemys[i], stat)) / toto < res)
+		if ((tmp = enemy_bullet_clipping(shoot->enemys[i], stat)) / toto < res)
 		{
 			res = tmp;
-			super->ehit = super->enemys[i];
+			shoot->ehit = shoot->enemys[i];
 		}
 	}
-	super->edist = res;
+	shoot->edist = res;
 }
 
-void		wall_real_hit(t_super *super, t_stat *stat)
+void		wall_real_hit(t_shoot *shoot, t_stat *stat)
 {
 	int		i;
 	double	res;
@@ -111,16 +111,16 @@ void		wall_real_hit(t_super *super, t_stat *stat)
 	if (toto < G_EPSILON)
 		toto = 1;
 	i = -1;
-	while (super->walls[++i])
+	while (shoot->walls[++i])
 	{
-		if ((tmp = wall_bullet_clipping(*super->walls[i]->pillar, *super->walls[i]->next, stat)) / toto < res)
+		if ((tmp = wall_bullet_clipping(*shoot->walls[i]->pillar, *shoot->walls[i]->next, stat)) / toto < res)
 		{
 			res = tmp;
-			super->whit = super->walls[i];
+			shoot->whit = shoot->walls[i];
 		}
 	}
-	super->wdist = res;
-	enemy_real_hit(super, stat, toto);
+	shoot->wdist = res;
+	enemy_real_hit(shoot, stat, toto);
 }
 
 static int	bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
@@ -145,12 +145,12 @@ static int	bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 	return (0);
 }
 
-void		possible_enemys(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector)
+void		possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector)
 {
 	t_enemy	*tmp;
 
 	tmp = sector->enemys;
-	while (super->i_e < 50 && tmp)
+	while (shoot->i_e < 50 && tmp)
 	{
 		enemy_hitbox(tmp);//, stat->rot.y);
 		///if ((vector_intersect(ori, stat->pos, tmp->stat.hitbox.x, tmp->stat.hitbox.y))
@@ -159,34 +159,34 @@ void		possible_enemys(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *secto
 		//	|| (vector_intersect(ori, stat->pos, tmp->stat.hitbox.w, tmp->stat.hitbox.l)))
 		if (false)
 		{
-			super->enemys[super->i_e] = tmp;
-			super->i_e++;
+			shoot->enemys[shoot->i_e] = tmp;
+			shoot->i_e++;
 		}
 		tmp = tmp->next;
 	}
-	super->enemys[super->i_e] = NULL;
+	shoot->enemys[shoot->i_e] = NULL;
 }
 
-void		possible(t_super *super, t_stat *stat, t_fvct3 ori, t_sector *sector)
+void		possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector)
 {
 	int		i;
 
 	i = -1;
 	if (!sector)
 		return ;
-	while (super->i_w < 49 && ++i < sector->len)
+	while (shoot->i_w < 49 && ++i < sector->len)
 	{
 		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
 		{
 			if (bullet_can_pass(stat, i, sector, ori))
-				possible(super, stat, ori, sector->wall[i].link);
+				possible(shoot, stat, ori, sector->wall[i].link);
 			else
 			{
-				super->walls[super->i_w] = &sector->wall[i];
-				super->i_w++;
+				shoot->walls[shoot->i_w] = &sector->wall[i];
+				shoot->i_w++;
 			}
 		}
 	}
-	super->walls[super->i_w] = NULL;
-	possible_enemys(super, stat, ori, sector);
+	shoot->walls[shoot->i_w] = NULL;
+	possible_enemys(shoot, stat, ori, sector);
 }

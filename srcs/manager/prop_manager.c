@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 10:57:22 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 11:28:06 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,9 @@ void	open_close(t_prop *prop)
 	if (prop->wall)
 	{
 		if (prop->wall->status == OPEN_DOOR)
-		{
-			prop->wall->status = CLOSE_DOOR;//close_door(wall);//a faire avec animation
-		}
+			prop->wall->status = CLOSE_DOOR;
 		else if (prop->wall->status == CLOSE_DOOR)
-		{
-			prop->wall->status = OPEN_DOOR;//open_door(wall);//a faire avaec animation
-		}
-		//prop->wall->ots = timestamp;
+			prop->wall->status = OPEN_DOOR;
 		prop->wall->percent = fabs(prop->wall->percent - 100.0);
 	}
 	if (prop->sector)
@@ -168,7 +163,7 @@ void		init_prop(t_prop *prop, double height)
 	//txtr_prop(prop, prop->type);
 }
 
-void		activate_prop(t_doom *doom, t_prop *prop, t_wall *wall)
+void		activate_prop(t_doom *doom, t_prop *prop)
 {
 	if (prop->type == MINPROPSPOS || prop->type == MINPROPSPOS + 6)//HEAL & jetpack
 		prop->func(&doom->game.player.stat);
@@ -200,7 +195,7 @@ void		pickup_prop(t_doom *doom)
 	{
 		if (is_in_hitbox(&doom->game.player.stat.sector->props[i].hitbox, doom->game.player.stat.pos, 0))
 		{
-			activate_prop(doom, &doom->game.player.stat.sector->props[i], NULL);
+			activate_prop(doom, &doom->game.player.stat.sector->props[i]);
 			if (doom->game.player.stat.sector->props[i].type < MAXPROPSNUMBER)
 				doom->game.player.stat.sector->props[i].tex = NULL;
 			break ;

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 22:06:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:13:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,28 +87,28 @@ void		injure_enemy(t_enemy *enemy, int dmg)
 	}
 }
 
-static void	apply(t_super *super, t_fvct3 pos, t_fvct3 mo, int dmg)
+static void	apply(t_shoot *shoot, t_fvct3 pos, t_fvct3 mo, int dmg)
 {
 	t_fvct3 waim;
 	t_fvct3 eaim;
 
-	waim = real_coord(pos, super->wdist, mo);
-	eaim = real_coord(pos, super->edist, mo);
+	waim = real_coord(pos, shoot->wdist, mo);
+	eaim = real_coord(pos, shoot->edist, mo);
 	//calcul enemy or wall is closer
 	//if (is_closer(stat, waim, eaim))
 	if (fabs(pos.x - waim.x) < fabs(pos.x - eaim.x))//revoir condition nulle
-		impact_wall(super->whit, waim);// change bullet hole prop 's position
+		impact_wall(shoot->whit, waim);// change bullet hole prop 's position
 	else
-		injure_enemy(super->ehit, dmg);//damages on touched enemy
+		injure_enemy(shoot->ehit, dmg);//damages on touched enemy
 	printf("SUPER COORD : x = %f | y = %f | z = %f\n", waim.x, waim.y, waim.z);
-	printf("distance || %f ||\n\n", super->wdist);
+	printf("distance || %f ||\n\n", shoot->wdist);
 }
 
 void		bullet(t_stat *stat, int dmg)
 {
 	t_fvct3	d;
 	t_fvct3	mo;
-	t_super	super;
+	t_shoot	shoot;
 
 	mo.x = (RADIUS * sin(stat->rot.x * PI180) * cos(stat->rot.y * PI180));
 	mo.y = (RADIUS * sin(stat->rot.x * PI180) * sin(stat->rot.y * PI180));
@@ -116,13 +116,13 @@ void		bullet(t_stat *stat, int dmg)
 	d.x = mo.x + stat->pos.x;
 	d.y = mo.y + stat->pos.y;
 	d.z = mo.z + stat->pos.z;
-	super.i_e = 0;
-	super.i_w = 0;
+	shoot.i_e = 0;
+	shoot.i_w = 0;
 	//printf("\rRot : %f\t%f\n", stat->rot.x, stat->rot.y);
 	//printf("d : x = %f | y = %f | z = %f\n", d.x, d.y, d.z);
 	//printf("mo : x = %f | y = %f | z = %f\n", mo.x, mo.y, mo.z);
 	//supa_shoota(stat, d, mo);
-	possible(&super, stat, d, stat->sector);
-	wall_real_hit(&super, stat);
-	apply(&super, stat->pos, mo, dmg);
+	possible(&shoot, stat, d, stat->sector);
+	wall_real_hit(&shoot, stat);
+	apply(&shoot, stat->pos, mo, dmg);
 }

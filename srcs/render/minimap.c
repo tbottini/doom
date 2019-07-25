@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 21:57:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:21:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void			miniprops(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 				+ ((sector->props[i].pos.x - pos.x)) * (UNIT);
 			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - sector->props[i].pos.y)) * (UNIT);
-			bold_point2(mini, tmp, DEEPBLUE);
+			bold_point2(mini, tmp, CENEMY);
 			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
 			tmp.y = (mini->a.y - (mini->size.y / 2))
@@ -136,10 +136,58 @@ void				minifill(t_minimap *mini, int health, t_power power)
 	{
 		j = mini->sdl->size.y - (mini->sdl->size.y >> 2);
 		while (++j < mini->a.y - 1)
-			if (mini->sdl->screen[i + j * mini->sdl->size.x]!= CWALL)
-				mini->sdl->screen[i + j * mini->sdl->size.x] = opacity(hcol(health, power),
-					mini->sdl->screen[i + j * mini->sdl->size.x], 0.5);
+			if (mini->sdl->screen[i + j * mini->sdl->size.x] != CWALL
+				&& mini->sdl->screen[i + j * mini->sdl->size.x] != CPORT)
+					mini->sdl->screen[i + j * mini->sdl->size.x] = opacity(hcol(health, power),
+						mini->sdl->screen[i + j * mini->sdl->size.x], 0.5);
 		++i;
+	}
+}
+
+void	update_enemy_rotation(t_enemy *enemy, t_fvct3 pos)
+{
+	enemy->stat.rot.y = atan2(pos.x - enemy->stat.pos.x, pos.y - enemy->stat.pos.y);
+	enemy->e1.x = enemy->stat.pos.x + sin(enemy->stat.rot.y - 90.0);
+	enemy->e1.y = enemy->stat.pos.y + cos(enemy->stat.rot.y - 90.0);
+	enemy->e2.x = enemy->stat.pos.x + sin(enemy->stat.rot.y + 90.0);
+	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + 90.0);
+}
+
+static void			minienemies(t_minimap *mini, t_sector *sector, t_fvct3 pos)
+{
+	int		i;
+	t_vct2	tmp;
+	t_fvct2	dir;
+	t_enemy	*enn;
+
+	i = 0;
+	enn = sector->enemys;
+	while (enn)
+	{
+			tmp.x = (mini->a.x - (mini->size.x / 2))
+				+ ((enn->stat.pos.x - pos.x)) * (UNIT);
+			tmp.y = (mini->a.y - (mini->size.y / 2))
+				+ ((pos.y - enn->stat.pos.y)) * (UNIT);
+			bold_point2(mini, tmp, CENEMY);
+			update_enemy_rotation(enn, pos);
+			dir.x = enn->stat.pos.x + sin(enn->stat.rot.y);
+			dir.y = enn->stat.pos.y + cos(enn->stat.rot.y);
+			tmp.x = (mini->a.x - (mini->size.x / 2))
+				+ ((dir.x - pos.x)) * (UNIT);
+			tmp.y = (mini->a.y - (mini->size.y / 2))
+				+ ((pos.y - dir.y)) * (UNIT);
+			bold_point2(mini, tmp, 0xFF0000FF);
+			tmp.x = (mini->a.x - (mini->size.x / 2))
+				+ ((enn->e1.x - pos.x)) * (UNIT);
+			tmp.y = (mini->a.y - (mini->size.y / 2))
+				+ ((pos.y - enn->e1.y)) * (UNIT);
+			bold_point2(mini, tmp, 0x18ffffFF);
+			tmp.x = (mini->a.x - (mini->size.x / 2))
+				+ ((enn->e2.x - pos.x)) * (UNIT);
+			tmp.y = (mini->a.y - (mini->size.y / 2))
+				+ ((pos.y - enn->e2.y)) * (UNIT);
+			bold_point2(mini, tmp, 0x18ffffFF);
+		enn = enn->next;
 	}
 }
 
@@ -150,5 +198,6 @@ void				minimap(t_minimap *mini, t_player *player)
 	minibord(mini);
 	minifield(player, mini);
 	miniprops(mini, player->stat.sector, player->stat.pos);//
+	minienemies(mini, player->stat.sector, player->stat.pos);//
 	bold_point2(mini, mini->mid, WHITE);
 }

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/26 21:41:46 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 21:07:04 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:12:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void			apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo)
 
 void		supa_shoota(t_stat *stat, t_fvct3 d, t_fvct3 mo)
 {
-	t_super	super;
+	t_shoot	super;
 
 	possible(&super, stat, d);
 	wall_real_hit(&super, stat);
