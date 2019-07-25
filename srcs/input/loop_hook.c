@@ -70,8 +70,19 @@ static void input_loop(t_doom *doom, int key)
 
 static void editor_loop(t_doom *doom, int key)
 {
-	(void)doom;
-	(void)key;
+	//printf("key : %d %c\n", key, key);
+	if (key == SDLK_KP_PLUS || key == SDLK_KP_MINUS)
+	{
+		editor_zoom(&doom->edit.mappos.z, (key == SDLK_KP_PLUS ? 2 : -2));
+	}
+	else if (key == SDLK_KP_4 || key == SDLK_KP_6)
+	{
+		doom->edit.mappos.x += (key == SDLK_KP_4 ? 2 : -2);
+	}
+	else if (key == SDLK_KP_8 || key == SDLK_KP_2)
+	{
+		doom->edit.mappos.y += (key == SDLK_KP_8 ? 2 : -2);
+	}
 }
 
 static void delaypcmasterrace(t_doom *doom)

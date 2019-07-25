@@ -14,6 +14,8 @@ int						save_editor_to_file(t_editor *edit);
 
 t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
 
+void					editor_zoom(int *z, int zoom);
+
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
