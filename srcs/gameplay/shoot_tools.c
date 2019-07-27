@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 14:14:15 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/27 14:59:40 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,14 @@ static double	enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
 	}
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
-
-static void			enemy_hitbox(t_enemy *enemy)//, double angle)
+/* 
+static void			enemy_hitbox(t_enemy *enemy)
 {
-	/* enemy->e1.x = sin((angle - 90.0) * PI180) * (enemy->stat.width / 2);
+	enemy->e1.x = sin((angle - 90.0) * PI180) * (enemy->stat.width / 2);
 	enemy->e1.y = cos((angle - 90.0) * PI180) * (enemy->stat.width / 2);
 	enemy->e2.x = sin((angle + 90.0) * PI180) * (enemy->stat.width / 2);
-	enemy->e2.y = cos((angle + 90.0) * PI180) * (enemy->stat.width / 2);*/
-	enemy->stat.hitbox.x = enemy->stat.pos.x - HITBOXSIZE;//
-	enemy->stat.hitbox.y = enemy->stat.pos.y - HITBOXSIZE;//
-	enemy->stat.hitbox.z = enemy->stat.pos.z;
-	enemy->stat.hitbox.w = enemy->stat.pos.x + HITBOXSIZE;//
-	enemy->stat.hitbox.l = enemy->stat.pos.y + HITBOXSIZE;//
-	enemy->stat.hitbox.h = enemy->stat.pos.z + enemy->stat.height;
-}
+	enemy->e2.y = cos((angle + 90.0) * PI180) * (enemy->stat.width / 2);
+}*/
 
 static void		enemy_real_hit(t_shoot *shoot, t_stat *stat, double toto)
 {
@@ -152,7 +146,7 @@ void		possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *secto
 	tmp = sector->enemys;
 	while (shoot->i_e < 50 && tmp)
 	{
-		enemy_hitbox(tmp);//, stat->rot.y);
+		//enemy_hitbox(tmp);//, stat->rot.y);
 		///if ((vector_intersect(ori, stat->pos, tmp->stat.hitbox.x, tmp->stat.hitbox.y))
 		//	|| (vector_intersect(ori, stat->pos, tmp->stat.hitbox.x, tmp->stat.hitbox.l))
 		//	|| (vector_intersect(ori, stat->pos, tmp->stat.hitbox.w, tmp->stat.hitbox.y))

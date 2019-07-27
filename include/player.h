@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 20:44:15 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/27 15:05:55 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct 			s_stat
 	t_fvct3				vel;
 	t_fvct3				rotvel;
 	t_sector			*sector;
-	t_hitbox			hitbox;
 	double				height;
 	double				speed;
 	int					width;
@@ -119,11 +118,12 @@ typedef struct			s_shoot
 **	Gestion
 */
 
+void					armandtificial_intelligence(t_doom *doom);
 void					check_boost(Uint32 timestamp, t_player *player);
 int						player_init(t_player *player);
 void					player_free(t_player *player);
 t_enemy					*pushfront_enemy(t_sector *sector, t_enemy *enemy);
-t_enemy					*enemy_init(int type, int difficulty);
+t_enemy					*enemy_init(int type, int difficulty, t_sector *sector);
 void					free_enemys(t_enemy *enemy);
 void					del_enemy(t_sector *sector, t_enemy *enemy);
 

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/25 10:17:36 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/27 15:08:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,14 +357,15 @@ int	read_one_enemy(int fd, t_game *game, t_slen *len)
 {
 	t_enemy *enemy;
 	int tmp;
+	int tmp2;
 
-	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || !(ISENEMY(tmp)))
+	if ((read(fd, &tmp2, sizeof(int)) != sizeof(int)) || !(ISENEMY(tmp2)))
 		return (-101);
-	enemy = enemy_init(tmp, (int)game->difficulty);
-	printf("\tEnemy type: %d\n", tmp);
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)))
 		return (-102);
-	printf("\tEnemy Sector: %d\n", tmp);
+	enemy = enemy_init(tmp2, (int)game->difficulty, &game->sectors[tmp]);
+	printf("\tEnemy type: %d\n", tmp);
+	printf("\tEnemy Sector: %d\n", tmp2);
 	if ((read(fd, &enemy->stat.pos.x, sizeof(double)) != sizeof(double)))
 		return (-103);
 	if ((read(fd, &enemy->stat.pos.y, sizeof(double)) != sizeof(double)))

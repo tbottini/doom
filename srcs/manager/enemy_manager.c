@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 20:44:27 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/27 15:03:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	free_enemys(t_enemy *enemy)
 	free(enemy);
 }
 
-t_enemy	*enemy_init(int type, int difficulty)
+t_enemy	*enemy_init(int type, int difficulty, t_sector *sector)
 {
 	t_enemy *enemy;
 
@@ -75,6 +75,7 @@ t_enemy	*enemy_init(int type, int difficulty)
 	enemy->state = 0;
 	enemy->rts = 0;
 	enemy->next = NULL;
+	enemy->stat.sector = sector;
 	if (type == 1)
 		cac_init(enemy, difficulty);
 	else if (type == 2)
@@ -83,12 +84,6 @@ t_enemy	*enemy_init(int type, int difficulty)
 		fat_init(enemy, difficulty);
 	else if (type == 4)
 		boss_init(enemy, difficulty);
-	//enemy->stat.hitbox.x = enemy->stat.pos.x - HITBOXSIZE;//
-	//enemy->stat.hitbox.y = enemy->stat.pos.y - HITBOXSIZE;//
-	//enemy->stat.hitbox.z = enemy->stat.pos.z;
-	//enemy->stat.hitbox.w = enemy->stat.pos.x + HITBOXSIZE;//
-	//enemy->stat.hitbox.l = enemy->stat.pos.y + HITBOXSIZE;//
-	//enemy->stat.hitbox.h = enemy->stat.pos.z + enemy->stat.height;
 	return (enemy);
 }
 

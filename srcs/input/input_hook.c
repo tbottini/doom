@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 21:20:39 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/27 15:06:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int		game_key_press(int key, t_doom *doom)
 	}
 	else
 		ft_nodeadd_int(&(doom->sdl.keys), key);
+	return (0);
 }
 
 /*

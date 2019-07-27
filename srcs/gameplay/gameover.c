@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 16:08:17 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/27 18:54:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void		game_over(t_doom *doom, bool win)
 			break ;
 		filter += (filter < 0.07 ? 0.0005 : 0.02);
 	}
-	//SDL_DestroyTexture(gameover);
 	free_game(&doom->game);
 	sdl_set_status(doom, 1);
 }
