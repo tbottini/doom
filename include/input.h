@@ -35,7 +35,7 @@ t_btn					add_main_menu_button(t_doom *doom);
 t_btn					add_editor_button(t_doom *doom);
 t_btn					add_quit_button(t_doom *doom, const char *str,
 																void *fc);
-int						sdl_set_status(t_doom *doom, int status);
+int						sdl_set_status(t_doom *doom, t_menu_status status);
 void					draw_menu(t_doom *doom);
 int						load_map_btns(t_doom *doom);
 void					update_loc(t_vct2 size, t_sloc *loc, SDL_Rect before);

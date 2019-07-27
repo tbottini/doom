@@ -48,12 +48,12 @@ int			main(int ac, char **av)
 	if (ac == 2)
 	{
 		if (!read_file(&doom->game, av[1], false))
-			sdl_set_status(doom, 0);
+			sdl_set_status(doom, MENU_INGAME);
 		else
-			sdl_set_status(doom, 1);
+			sdl_set_status(doom, MENU_MAIN);
 	}
 	else
-		sdl_set_status(doom, 1);
+		sdl_set_status(doom, MENU_MAIN);
 	event_handler(doom);
 	Mix_FadeInMusic(doom->game.sound.tab_music[0], -1, 18000);
 	cinematrique(doom);

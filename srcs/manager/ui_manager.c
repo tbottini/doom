@@ -55,7 +55,7 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 
 int		ui_init(t_ui *ui)
 {
-	ui->m_status = 1;
+	ui->m_status = MENU_MAIN;
 	ui->curr_btn_controller = -2;
 	if (!(ui->fonts.s64 = TTF_OpenFont(TTFWOLF, 64)))
 		return (0);

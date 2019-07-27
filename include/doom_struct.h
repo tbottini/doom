@@ -167,20 +167,30 @@ typedef struct			s_font
 	TTF_Font			*s128;
 }						t_font;
 
-/*
-** m_status behaviour
-** 0 = gamemode
-** 1 = Show main menu
-** 2 = show map menu
-** 3 = Pause menu
-*/
-
 typedef struct			s_pal {
 	Uint32				pal[38];
 	int					height;
 	Uint32				*screen;
 	t_vct2				*size;
 }						t_pal;
+
+/*
+** m_status behaviour
+** 0 = gamemode
+** 1 = Show main menu
+** 2 = show map menu
+** 3 = Option menu
+** 4 = Pause menu in game
+** 5 = Option menu in game
+*/
+typedef enum			e_menu_status {
+	MENU_INGAME = 0,
+	MENU_MAIN = 1,
+	MENU_MAP = 2,
+	MENU_OPTION = 3,
+	MENU_IGMAIN = 4,
+	MENU_IGOPTION = 5
+}						t_menu_status;
 
 typedef struct			s_ui
 {
@@ -191,7 +201,7 @@ typedef struct			s_ui
 	t_btn				btnpse[20];
 	t_slid				slidopt[10];
 	t_slid				*currslid;
-	int					m_status;
+	t_menu_status		m_status;
 	t_btn				*curr_btn;
 	int					curr_btn_controller;
 	t_pal				fire;

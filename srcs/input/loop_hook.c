@@ -112,7 +112,7 @@ static void game_loop_hook(t_doom *doom)
 {
 	t_tab pos;
 
-	if (doom->ui.m_status == 0)
+	if (doom->ui.m_status == MENU_INGAME)
 	{
 		pos = doom->sdl.keys;
 		while (pos)
@@ -134,9 +134,9 @@ static void game_loop_hook(t_doom *doom)
 	else
 	{
 		/// Place here functions that need to be launch every frame while in the menu
-		if (doom->ui.m_status == 5 && doom->ui.currslid == &(doom->ui.slidopt[0]))
+		if (doom->ui.m_status == MENU_IGOPTION && doom->ui.currslid == &(doom->ui.slidopt[0]))
 			doom_render(doom);
-		else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+		else if (doom->ui.m_status == MENU_IGMAIN || doom->ui.m_status == MENU_IGOPTION)
 			sdl_MultiRenderCopy(&doom->sdl);
 		else
 		{

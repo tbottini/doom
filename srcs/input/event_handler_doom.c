@@ -40,16 +40,16 @@ static void window_event(t_doom *doom, SDL_Event e)
 		doom->sdl.screen = (Uint32 *)tmp;
 		resize_event(doom);
 	}
-	else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && doom->ui.m_status == 0)
-		sdl_set_status(doom, 4);
+	else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && doom->ui.m_status == MENU_INGAME)
+		sdl_set_status(doom, MENU_IGMAIN);
 	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 		doom_exit(doom);
-	if (doom->ui.m_status == 2)
+	if (doom->ui.m_status == MENU_MAP)
 	{
 		load_map_btns(doom);
 		draw_menu(doom);
 	}
-	else if (doom->ui.m_status == 4 || doom->ui.m_status == 5)
+	else if (doom->ui.m_status == MENU_IGMAIN || doom->ui.m_status == MENU_IGOPTION)
 		doom_render(doom);
 }
 
@@ -101,7 +101,7 @@ int event_handler_doom(t_doom *doom, SDL_Event e)
 		SDL_GameControllerClose(doom->controller);
 	else if (e.type == SDL_MOUSEMOTION)
 	{
-		if (doom->ui.m_status == 0)
+		if (doom->ui.m_status == MENU_INGAME)
 			mouse_move(e.motion.xrel, e.motion.yrel, doom);
 		else
 			mouse_move(e.motion.x, e.motion.y, doom);

@@ -47,7 +47,7 @@ int		game_key_press(int key, t_doom *doom)
 	if (doom->ui.curr_btn_controller > 0)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
 	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
-		sdl_set_status(doom, 4);
+		sdl_set_status(doom, MENU_IGMAIN);
 	else if (key == SDLK_LGUI && doom->game.player.stat.jetpack)
 		crouch(&doom->game.player);
 	else if (key == SDLK_z)
@@ -86,8 +86,8 @@ int		key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
-	else if ((key == SDLK_RETURN || key == SDLK_BACKQUOTE) && doom->ui.m_status == 4)//
-		sdl_set_status(doom, 0);
+	else if ((key == SDLK_RETURN || key == SDLK_BACKQUOTE) && doom->ui.m_status == MENU_IGMAIN)
+		sdl_set_status(doom, MENU_INGAME);
 	else if (key <= SDLK_KP_9 && key >= SDLK_KP_1)
 		debug_code(key);
 	else if (key == SDLK_h)
@@ -228,7 +228,7 @@ int		mouse_move(int x, int y, t_doom *doom)
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 	else
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
-	if (doom->ui.m_status == 0)
+	if (doom->ui.m_status == MENU_INGAME)
 	{
 		doom->game.player.stat.rot.y -= x / SENSIBILITY;
 		doom->game.player.stat.rot.x -= y / (SENSIBILITY * 2);

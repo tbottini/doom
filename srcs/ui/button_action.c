@@ -27,7 +27,7 @@ static void		map_btn_click(t_doom *doom, int x, int y)
 			if (i > 1)
 			{
 				if (parsing(doom, tmp.data))
-					sdl_set_status(doom, 0);
+					sdl_set_status(doom, MENU_INGAME);
 				else
 					ft_printf("Error reading file\n");
 			}
@@ -53,8 +53,8 @@ static void		use_slider(t_doom *doom, int x, int y)
 void			btn_click(t_doom *doom, int x, int y)
 {
 	/*
-	if (doom->ui.m_status == 2)
+	if (doom->ui.m_status == MENU_MAP)
 		map_btn_click(doom, x, y);
-	else */if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
+	else */if (doom->ui.m_status == MENU_OPTION || doom->ui.m_status == MENU_IGOPTION)
 		use_slider(doom, x, y);
 }

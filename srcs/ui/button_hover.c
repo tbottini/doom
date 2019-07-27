@@ -32,13 +32,13 @@ static t_btn	*on_menu(t_btn *btnarr, int x, int y)
 
 t_btn		*btn_hover(t_doom *doom, int x, int y)
 {
-	if (doom->ui.m_status == 1)
+	if (doom->ui.m_status == MENU_MAIN)
 		return (on_menu(doom->ui.btnarr, x, y));
-	else if (doom->ui.m_status == 2)
+	else if (doom->ui.m_status == MENU_MAP)
 		return(on_menu(doom->ui.btnmap, x, y));
-	else if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
+	else if (doom->ui.m_status == MENU_OPTION || doom->ui.m_status == MENU_IGOPTION)
 		return(on_menu(doom->ui.btnopt, x, y));
-	else if (doom->ui.m_status == 4)
+	else if (doom->ui.m_status == MENU_IGMAIN)
 		return(on_menu(doom->ui.btnpse, x, y));
 	return(NULL);
 }

@@ -10,46 +10,46 @@ void	sdl_free(t_sdl *sdl)
 		SDL_DestroyWindow(sdl->win);
 }
 
-int		sdl_set_status(t_doom *doom, int status)
+int		sdl_set_status(t_doom *doom, t_menu_status status)
 {
 	SDL_SetRelativeMouseMode(SDL_FALSE);
 	ft_nodeclean(&doom->sdl.keys);
 	doom->ui.curr_btn = NULL;
-	if (status == 0) // gamemode
+	if (status == MENU_INGAME) // gamemode
 	{
-		doom->ui.m_status = 0;
+		doom->ui.m_status = MENU_INGAME;
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		draw_menu(doom);
 	}
-	else if (status == 1) // mainmenu
+	else if (status == MENU_MAIN) // mainmenu
 	{
-		doom->ui.m_status = 1;
+		doom->ui.m_status = MENU_MAIN;
 		doom->ui.curr_btn_controller = -2;
 		//doom_clear_map(doom); // TODO Add map data free;
 		fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 		draw_menu(doom);
 	}
-	else if (status == 2) // Map selection
+	else if (status == MENU_MAP) // Map selection
 	{
-		doom->ui.m_status = 2;
+		doom->ui.m_status = MENU_MAP;
 		doom->ui.curr_btn_controller = -3;
 		load_map_btns(doom);
 		draw_menu(doom);
 	}
-	else if (status == 3) // Options
+	else if (status == MENU_OPTION) // Options
 	{
-		doom->ui.m_status = 3;
+		doom->ui.m_status = MENU_OPTION;
 		doom->ui.curr_btn_controller = -1;
 		draw_menu(doom);
 	}
-	else if (status == 4) // Pause menu
+	else if (status == MENU_IGMAIN) // Pause menu
 	{
-		doom->ui.m_status = 4;
+		doom->ui.m_status = MENU_IGMAIN;
 		doom->ui.curr_btn_controller = -1;
 	}
-	else if (status == 5) // Options from pause menu
+	else if (status == MENU_IGOPTION) // Options from pause menu
 	{
-		doom->ui.m_status = 5;
+		doom->ui.m_status = MENU_IGOPTION;
 		doom->ui.curr_btn_controller = -1;
 		draw_menu(doom);
 	}

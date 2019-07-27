@@ -86,5 +86,5 @@ void		game_over(t_doom *doom, bool win)
 		filter += (filter < 0.07 ? 0.0005 : 0.02);
 	}
 	free_game(&doom->game);
-	sdl_set_status(doom, 1);
+	sdl_set_status(doom, MENU_MAIN);
 }

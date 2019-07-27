@@ -14,22 +14,22 @@
 
 void	start_button(t_doom *doom)
 {
-	sdl_set_status(doom, 2);
+	sdl_set_status(doom, MENU_MAP);
 }
 
 void	resume_button(t_doom *doom)
 {
-	sdl_set_status(doom, 0);
+	sdl_set_status(doom, MENU_INGAME);
 }
 
 void	option_button(t_doom *doom)
 {
-	sdl_set_status(doom, 3);
+	sdl_set_status(doom, MENU_OPTION);
 }
 
 void	ignoption_button(t_doom *doom)
 {
-	sdl_set_status(doom, 5);
+	sdl_set_status(doom, MENU_IGOPTION);
 }
 
 void	main_menu_button(t_doom *doom)
@@ -37,15 +37,15 @@ void	main_menu_button(t_doom *doom)
 	change_music(&doom->game.sound, 0, 0);
 	free_game(&doom->game);
 	doom->ui.curr_btn = NULL;
-	sdl_set_status(doom, 1);
+	sdl_set_status(doom, MENU_MAIN);
 }
 
 void	return_button(t_doom *doom)
 {
-	if (doom->ui.m_status == 5)
-		sdl_set_status(doom, 4);
+	if (doom->ui.m_status == MENU_IGOPTION)
+		sdl_set_status(doom, MENU_IGMAIN);
 	else
-		sdl_set_status(doom, 1);
+		sdl_set_status(doom, MENU_MAIN);
 }
 
 void	start_map_button(t_doom *doom)
@@ -54,7 +54,7 @@ void	start_map_button(t_doom *doom)
 	{
 		player_init(&doom->game.player);
 		change_music(&doom->game.sound, doom->game.sound.on, 5000);
-		sdl_set_status(doom, 0);
+		sdl_set_status(doom, MENU_INGAME);
 	}
 	else
 		ft_printf("Error reading file\n");
