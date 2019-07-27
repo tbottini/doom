@@ -24,7 +24,7 @@ t_wall		*chunck_walls(t_list *chunck_line, t_arch *ressource, size_t len)
 		if (p[0] == 'W')
 			wall[i].status = WALL;
 		else if (p[0] == 'P')
-			wall[i].status = PORTAL_DIRECT;
+			wall[i].status = PORTAL;
 		else if (p[0] == 'O')
 			wall[i].status = WINDOW;
 		p = double_atof(p+1, &wall[i].pillar->p);

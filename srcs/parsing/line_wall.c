@@ -9,7 +9,7 @@ int				line_wall(t_arch *rsrc, t_wall *wall, char *line)
 	else if (line[0] == 'O')
 		wall->status = WINDOW;
 	else if (line[0] == 'P')
-		wall->status = PORTAL_DIRECT;
+		wall->status = PORTAL;
 	//else
 	//	return (0);
 	printf("line %s\n", line);

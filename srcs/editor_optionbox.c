@@ -93,7 +93,7 @@ int opt_menu_click(t_editor *edit, int pos)
 		else if (edit->currmur)
 		{
 			if (edit->currmur->portal_ptr)
-				edit->currmur->portal_id = pos;
+				edit->currmur->portal_id = WINDOW;
 			else
 				ft_enemypushend(&edit->currmur->wproplist, line_percent(edit->currmur->pil1->pos, edit->currmur->pil2->pos, 0.50), MINWPROPSPOS, NULL);
 		}
@@ -103,7 +103,7 @@ int opt_menu_click(t_editor *edit, int pos)
 	else if (pos == 2)
 	{
 		if (edit->currmur && edit->currmur->portal_ptr)
-			edit->currmur->portal_id = pos;
+			edit->currmur->portal_id = CLOSE_DOOR;
 		else if (edit->map && !edit->currmur && !edit->currstat)
 		{
 			edit->currwriter = &edit->map->htop;
@@ -113,7 +113,7 @@ int opt_menu_click(t_editor *edit, int pos)
 	else if (pos == 3)
 	{
 		if (edit->currmur && edit->currmur->portal_ptr)
-			edit->currmur->portal_id = pos;
+			edit->currmur->portal_id = OPEN_DOOR;
 		else if (edit->map && !edit->currmur && !edit->currstat)
 		{
 			edit->currwriter = &edit->map->hsol;
@@ -123,7 +123,7 @@ int opt_menu_click(t_editor *edit, int pos)
 	else if (pos == 4)
 	{
 		if (edit->currmur && edit->currmur->portal_ptr)
-			edit->currmur->portal_id = pos;
+			edit->currmur->portal_id = PORTAL;
 		else if (edit->map && !edit->currstat)
 			edit->map->gravity = (edit->map->gravity ? 0 : 1);
 	}

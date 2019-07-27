@@ -54,7 +54,7 @@ typedef struct s_prop	t_prop;
 # define ISENEMY(x) (MINENEMYPOS <= x && x < MAXENEMYPOS)
 # define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
 # define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
-# define ISPORTAL(x) (x >= OPEN_DOOR)
+# define ISPORTAL(x) (x >= WINDOW)
 
 enum 					e_window_id
 {

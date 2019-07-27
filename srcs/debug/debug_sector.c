@@ -105,7 +105,7 @@ void		describe_sector(t_sector sector)
 			ft_putstr(WYELLOW);
 			printf("PORT\t");
 		}
-		else if (sector.wall[i].status == PORTAL_DIRECT)
+		else if (sector.wall[i].status == PORTAL)
 			printf("PORD\t");
 		else if (sector.wall[i].status == WINDOW)
 			printf("WIND\t");
@@ -147,7 +147,7 @@ void		describe_sub_sector(t_sector sector, int sub)
 			ft_putstr(WYELLOW);
 			printf("PORT\t");
 		}
-		else if (sector.wall[i].status == PORTAL_DIRECT)
+		else if (sector.wall[i].status == PORTAL)
 			printf("PORD\t");
 		else if (sector.wall[i].status == WINDOW)
 			printf("WIND\t");

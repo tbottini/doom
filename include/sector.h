@@ -30,11 +30,10 @@ typedef struct s_prop	t_prop;
 typedef enum			e_portal_id
 {
 	WALL,
-	WINDOW,
 	CLOSE_DOOR,
+	WINDOW,
 	OPEN_DOOR,
-	PORTAL,
-	PORTAL_DIRECT
+	PORTAL
 }						t_portal_id;
 
 typedef struct			s_txtr
