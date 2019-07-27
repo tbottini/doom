@@ -13,6 +13,7 @@ void	sdl_free(t_sdl *sdl)
 int		sdl_set_status(t_doom *doom, int status)
 {
 	SDL_SetRelativeMouseMode(SDL_FALSE);
+	ft_nodeclean(&doom->sdl.keys);
 	doom->ui.curr_btn = NULL;
 	if (status == 0) // gamemode
 	{
