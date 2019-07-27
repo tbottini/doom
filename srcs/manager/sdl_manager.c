@@ -33,6 +33,7 @@ int		sdl_set_status(t_doom *doom, t_menu_status status)
 	{
 		doom->ui.m_status = MENU_MAP;
 		doom->ui.curr_btn_controller = -3;
+		doom->ui.btnmap[1].loc.pos.y = 5;
 		load_map_btns(doom);
 		draw_menu(doom);
 	}

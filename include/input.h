@@ -59,6 +59,7 @@ int						key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
 int						mouse_press(int button, int x, int y, t_doom *doom);
 int						mouse_release(int button, int x, int y, t_doom *doom);
+int						mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 int						mouse_move(int x, int y, t_doom *doom);
 
 double					double_modulo(double num);

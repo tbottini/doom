@@ -203,7 +203,10 @@ int mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
 	}
 	else if (doom->ui.m_status == MENU_MAP)
 	{
-		doom->ui.btnmap[1].loc.pos.y -= e.y;
+		if (doom->ui.btnmap[1].loc.pos.y + e.y < 0)
+			doom->ui.btnmap[1].loc.pos.y = 0;
+		else
+			doom->ui.btnmap[1].loc.pos.y += e.y;
 	}
 	return (0);
 }
