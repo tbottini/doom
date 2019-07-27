@@ -66,7 +66,7 @@ int		game_key_press(int key, t_doom *doom)
 			reload(doom->timestamp, &doom->game.player, &doom->game.player.hand);
 		else if (key == SDLK_v)
 			kick(doom->timestamp, &doom->game.sound, &doom->game.player);
-		else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)//
+		else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 			change_weapon(&doom->game.player, key - '0' - 1);
 		else
 			ft_nodeadd_int(&(doom->sdl.keys), key);
@@ -189,10 +189,22 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 	}
 	//else if (btn == SDL_BUTTON_RIGHT)
 		//fire_on_off(doom->sdl.screen, doom->sdl.size, 0); // Debug thing
-	else if (btn == SDL_BUTTON_X1)
-		next_weapon(&doom->game.player);
-	else if (btn == SDL_BUTTON_X2)
-		prev_weapon(&doom->game.player);
+	return (0);
+}
+
+int mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
+{
+	if (doom->ui.m_status == MENU_INGAME)
+	{
+		if (e.y > 0)
+			next_weapon(&doom->game.player);
+		else if (e.y < 0)
+			prev_weapon(&doom->game.player);
+	}
+	else if (doom->ui.m_status == MENU_MAP)
+	{
+		doom->ui.btnmap[1].loc.pos.y -= e.y;
+	}
 	return (0);
 }
 

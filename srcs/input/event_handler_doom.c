@@ -111,6 +111,6 @@ int event_handler_doom(t_doom *doom, SDL_Event e)
 	else if (e.type == SDL_MOUSEBUTTONUP)
 		mouse_release(e.button.button, e.button.x, e.button.y, doom);
 	else if (e.type == SDL_MOUSEWHEEL)
-		mouse_press((e.wheel.y > 0 ? 4 : 5), doom->sdl.m_pos.x, doom->sdl.m_pos.y, doom);
+		mouse_wheel(e.wheel, doom);
 	return (0);
 }
