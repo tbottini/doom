@@ -79,7 +79,7 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 			{
 				return (-1);
 			}
-			if (e.keysym.mod == 0)
+			if (e.keysym.mod != 0)
 				close_editor(doom);
 		}
 		else if (doom->edit.status == ED_WRITING)
