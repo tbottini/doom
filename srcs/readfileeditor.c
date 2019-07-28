@@ -68,7 +68,7 @@ void		fill_ent(t_lstsec secteurs, t_game *game, t_entity *ent, t_prop *prop)
 
 	sectindex = 0;
 	murindex = 0;
-	while (sectindex < game->len.nb_sects && &game->sectors[sectindex].wall[murindex] != prop->wall)
+	while (sectindex < game->len.nb_sects && murindex < game->sectors[sectindex].len && &game->sectors[sectindex].wall[murindex] != prop->wall)
 	{
 		murindex = 0;
 		while (murindex < game->sectors[sectindex].len && &game->sectors[sectindex].wall[murindex] != prop->wall)
@@ -78,6 +78,8 @@ void		fill_ent(t_lstsec secteurs, t_game *game, t_entity *ent, t_prop *prop)
 	}
 	while (sectindex--)
 		secteurs = secteurs->next;
+	if (!secteurs)
+		return ;
 	mur = secteurs->murs;
 	while (murindex--)
 		mur = mur->next;
