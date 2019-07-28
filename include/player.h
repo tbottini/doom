@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/27 15:05:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/27 22:07:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct 			s_player
 
 /*
 ** Enemy states:
-**
+** -1 : never seen before
 ** 0 : idle, not moving
 ** 1 : moving towards player
 ** 2 : shooting at player

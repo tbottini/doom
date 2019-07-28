@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:46:33 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/27 20:38:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 16:57:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,76 +21,88 @@ void		update_enemy_rotation(t_enemy *enemy, t_fvct3 pos)
 	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + (90.0 * PI180)) * enemy->stat.height / 4;
 }
 
-t_pillar	*closest_pillar(t_wall **walls, t_wall **hit, t_fvct3 pos, t_fvct3 target)
+/*
+** returns true if point pos is between point target and both points m1 and m2, false otherwise
+**/
+bool		is_between(t_fvct3 pos, t_fvct3 target, t_fvct3 m1, t_fvct3 m2)
 {
-	(void)pos;
-	(void)target;
-	*hit = walls[0];//
-	return (walls[0]->pillar);//a faire
+	double dist;
+
+	dist = distance((t_fvct2){target.x, target.y}, (t_fvct2){pos.x, pos.y});
+	if (dist < distance((t_fvct2){target.x, target.y}, (t_fvct2){m1.x, m1.y})
+		&& dist < distance((t_fvct2){target.x, target.y}, (t_fvct2){m2.x, m2.y}))
+		return (false);
+	return (true);
 }
 
 /*
-** returns the number of walls between stat's position and target
+** returns 1 if target is visible from stat's point of view
 */
-int			is_visible(t_stat *stat, t_stat *target, t_wall **walls)//renvoyer tableau *t_wall[4] des murs touches
+int			is_visible(t_stat *stat, t_stat *target, t_sector *sector, int passed)
 {
+	int res;
 	int i;
 
 	i = 0;
-	(void)stat;
-	(void)target;
-	(void)walls;
-	return (0); // a faire
+	res = 0;
+	if (passed > 10)
+		return (1);
+	while (i < sector->len)
+	{
+		if (vector_intersect(stat->pos, target->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
+		{
+			if (sector->wall[i].status >= OPEN_DOOR && sector->wall[i].link != sector
+				&& is_between(stat->pos, target->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
+				return (is_visible(stat, target, sector->wall[i].link, passed + 1));
+			else
+				return (0);
+		}
+		i++;
+	}
+	return (1);
 }
 
-void		ai_move(t_fvct2 pillar, t_wall *wall, t_enemy *enemy)
-{
-	(void)pillar;
-	(void)wall;
-	(void)enemy;
-}
-
-void		move_toward(t_enemy *enemy, t_player *player, t_wall **walls, int t)
+void		move_toward(t_enemy *enemy, t_player *player, Uint32 timestamp)
 {
 	t_fvct3		npos;
 	t_wall		*hit;
-	t_pillar	*pill;
+	t_sector	*old;
 	int			tmp;
 
-	npos.x = enemy->stat.pos.x + (sin(enemy->stat.rot.y) / 10.0) * (enemy->stat.speed / 35000.0);
-	npos.y = enemy->stat.pos.y + (cos(enemy->stat.rot.y) / 10.0) * (enemy->stat.speed / 35000.0);
-	//enemy->stat.pos.z = (npos.z <= enemy->stat.sector->h_floor) ? enemy->stat.sector->h_floor : npos.z; // update enemy z position
-	if (!t)
+	npos.x = enemy->stat.pos.x + (sin(enemy->stat.rot.y) / 10.0) * (enemy->stat.speed / 30000.0);
+	npos.y = enemy->stat.pos.y + (cos(enemy->stat.rot.y) / 10.0) * (enemy->stat.speed / 30000.0);
+	tmp = -7000;
+	old = enemy->stat.sector;
+	if (enemy->stat.sector == player->stat.sector || (tmp = colli_teleport(&enemy->stat, enemy->stat.sector, npos, &hit)) != -1)
 	{
-		if (enemy->stat.sector == player->stat.sector || (tmp = colli_teleport(&enemy->stat, enemy->stat.sector, npos, &hit)) == 1)
+		if (tmp == 1)
 		{
-			enemy->stat.pos.x = npos.x;
-			enemy->stat.pos.y = npos.y;
+			if (old->enemys == enemy)
+				old->enemys = enemy->next;
+			pushfront_enemy(enemy->stat.sector, enemy);
 		}
-	}
-	else
-	{
-		pill = closest_pillar(walls, &hit, enemy->stat.pos, player->stat.pos);
-		ai_move(pill->p, hit, enemy);
+		enemy->stat.pos.x = npos.x;
+		enemy->stat.pos.y = npos.y;
+		enemy->rts = timestamp + 1;
 	}
 }
 
-int			ai_action(Uint32 timestamp, t_enemy *enemy, t_player *player, int t)
+void		ai_action(Uint32 timestamp, t_enemy *enemy, t_player *player)
 {
 	double dist;
 
 	update_enemy_rotation(enemy, player->stat.pos);
 	dist = distance((t_fvct2){enemy->stat.pos.x, enemy->stat.pos.y}, (t_fvct2){player->stat.pos.x, player->stat.pos.y});
-	if (t == 0 && dist <= 10.0)
+	if (dist <= 7.0)
 	{
 		if (enemy->rts < timestamp)
 		{
 			player->stat.health -= enemy->dmg;
 			enemy->rts = timestamp + 1000;
 		}
-		return (1);
+		return ;
 	}
-	return (0);
+	move_toward(enemy, player, timestamp);
 }
 
 bool	is_passed(t_sector *sector, t_sector **passed, int index)
@@ -101,38 +113,44 @@ bool	is_passed(t_sector *sector, t_sector **passed, int index)
 	while (i < index)
 	{
 		if (sector == passed[i])
-			return (false);
+			return (true);
 		i++;
 	}
-	return (true);
+	return (false);
 }
 
 int		is_around(t_doom *doom, t_sector *sector, t_sector **passed, int *index)
 {
 	t_enemy		*tmp;
-	t_wall		*walls[3];
+	t_enemy		*tmp2;
 	double		nposz;
-	int			t;
 	int			i;
 
 	tmp = sector->enemys;
 	while (tmp)
 	{
-		if (tmp->stat.pos.z > tmp->stat.sector->h_floor && tmp->stat.sector->gravity.z < 0)
-			tmp->stat.vel.z += tmp->stat.sector->gravity.z * 450.0;
-		if ((nposz = tmp->stat.pos.z + tmp->stat.vel.z / 35000.0) <= tmp->stat.sector->h_floor)
+		tmp2 = tmp->next;
+		if (tmp->state == -1 && is_visible(&tmp->stat, &doom->game.player.stat, tmp->stat.sector, 0))
+			tmp->state = 0;
+		else if (tmp->state != 1)
 		{
-			tmp->stat.pos.z = tmp->stat.sector->h_floor;
-			tmp->stat.vel.z = 0;
+			tmp->state = 0;
+			if (tmp->stat.pos.z > tmp->stat.sector->h_floor && tmp->stat.sector->gravity.z < 0)
+				tmp->stat.vel.z += tmp->stat.sector->gravity.z * 450.0;
+			if ((nposz = tmp->stat.pos.z + tmp->stat.vel.z / 35000.0) <= tmp->stat.sector->h_floor)
+			{
+				tmp->stat.pos.z = tmp->stat.sector->h_floor;
+				tmp->stat.vel.z = 0;
+			}
+			else
+				tmp->stat.pos.z = nposz;
+			if (tmp->rts <= doom->timestamp && doom->game.player.power != FREEZE
+				&& is_visible(&tmp->stat, &doom->game.player.stat, tmp->stat.sector, 0))
+			{
+				ai_action(doom->timestamp, tmp, &doom->game.player);
+			}
 		}
-		else
-			tmp->stat.pos.z = nposz;
-		if (doom->game.player.power != FREEZE && (t = is_visible(&tmp->stat, &doom->game.player.stat, walls)) <= 2)
-		{
-			if ((i = ai_action(doom->timestamp, tmp, &doom->game.player, t)) == 0)
-				move_toward(tmp, &doom->game.player, walls, t);
-		}
-		tmp = tmp->next;
+		tmp = tmp2;
 	}
 	if (*index == doom->game.len.nb_sects - 1)
 		return (0);

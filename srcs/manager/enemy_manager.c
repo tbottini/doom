@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/27 15:03:41 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 16:51:03 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,10 @@ t_enemy	*enemy_init(int type, int difficulty, t_sector *sector)
 
 	if (!(enemy = (t_enemy *)malloc(sizeof(t_enemy))))
 		return (NULL);
-	enemy->state = 0;
+	enemy->state = -1;
 	enemy->rts = 0;
 	enemy->next = NULL;
+	enemy->prev = NULL;
 	enemy->stat.sector = sector;
 	if (type == 1)
 		cac_init(enemy, difficulty);
@@ -95,6 +96,10 @@ t_enemy		*pushfront_enemy(t_sector *sector, t_enemy *enemy)
 
 	if (!(sector)|| !(enemy))
 		return (NULL);
+	if (enemy->prev)
+		enemy->prev->next = NULL;
+	if (enemy->next)
+		enemy->next->prev = NULL;
 	if (sector->enemys)
 	{
 		tmp = sector->enemys;
