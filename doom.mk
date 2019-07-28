@@ -54,6 +54,7 @@ SRCS_RENDER		:=		render.c										\
 						minimap_drawer.c								\
 						backface.c										\
 						render_effect.c									\
+						hud_render.c									\
 						render_wall.c									\
 						render_portal.c									\
 						pillar_info.c									\

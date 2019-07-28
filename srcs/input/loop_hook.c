@@ -128,7 +128,10 @@ static void game_loop_hook(t_doom *doom)
 		if (doom->game.player.stat.health <= 0)
 			game_over(doom, false);
 		else
+		{
 			doom_render(doom);
+			hud_render(doom);
+		}
 		/// End Comment
 	}
 	else

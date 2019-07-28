@@ -52,6 +52,7 @@ int						clean_zline(t_arch *arch, double len_pillar, int px);
 /*
 **	render
 */
+int						hud_render(t_doom *doom);
 int						doom_render(t_doom *doom);
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
 void					architect_reset(t_arch *arch);
