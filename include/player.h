@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/27 22:07:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 18:43:38 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ typedef enum			e_power
 	PUNCH,
 	SMOL
 }						t_power;
+
+typedef enum			e_id_weapon
+{
+	FIST,
+	GUN,
+	SHOTGUN,
+	RIFLE
+}						t_id_weapon;
 
 typedef	struct			s_weapon
 {
@@ -70,7 +78,7 @@ typedef struct 			s_stat
 typedef struct 			s_player
 {
 	t_stat				stat;
-	t_weapon			hand;
+	t_weapon			*hand;
 	t_weapon			weapons[NB_WEAPON];
 	Uint32				boost;
 	Uint32				occupied;

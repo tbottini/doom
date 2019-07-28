@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 21:51:35 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/29 15:19:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 18:43:11 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_weapon hand_init(void)
 {
 	t_weapon	weapon;
 
-	weapon.id = 0;
+	weapon.id = FIST;
 	weapon.clip_max = 0;
 	weapon.clip = 0;
 	weapon.ammo = 0;
@@ -31,7 +31,7 @@ t_weapon gun_init(void)
 {
 	t_weapon	weapon;
 
-	weapon.id = 1;
+	weapon.id = GUN;
 	weapon.clip_max = 16;
 	weapon.clip = 16;
 	weapon.ammo = 48;
@@ -46,7 +46,7 @@ t_weapon shotgun_init(void)
 {
 	t_weapon	weapon;
 
-	weapon.id = 2;
+	weapon.id = SHOTGUN;
 	weapon.clip_max = 6;
 	weapon.clip = 6;
 	weapon.ammo = 18;
@@ -61,7 +61,7 @@ t_weapon rifle_init(void)
 {
 	t_weapon	weapon;
 
-	weapon.id = 3;
+	weapon.id = RIFLE;
 	weapon.clip_max = 32;
 	weapon.clip = 32;
 	weapon.ammo = 96;

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 11:28:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 18:49:07 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void		activate_prop(t_doom *doom, t_prop *prop)
 	else if (prop->type == MINPROPSPOS + 1)//Cassette
 		prop->func(&doom->game.sound);
 	else if (prop->type == MINPROPSPOS + 2)//Munitions
-		prop->func(&doom->game.player.hand);
+		prop->func(doom->game.player.hand);
 	else if (prop->type == MINPROPSPOS + 3 || prop->type == MINPROPSPOS + 4
 		|| prop->type == MINPROPSPOS + 5)//Pills
 		prop->func(&doom->game.player);

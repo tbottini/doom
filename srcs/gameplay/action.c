@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 10:52:59 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 18:45:10 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		next_weapon(t_player *player)
 {
 	int i;
 
-	i = player->hand.id + 1;
+	i = player->hand->id + 1;
 	while (i < NB_WEAPON)
 	{
 		if (player->weapons[i].on)
@@ -26,24 +26,24 @@ void		next_weapon(t_player *player)
 		i++;
 	}
 	if (i == NB_WEAPON)
-		player->hand = player->weapons[0];
+		player->hand = &player->weapons[0];
 	else
-		player->hand = player->weapons[i];
+		player->hand = &player->weapons[i];
 }
 
 void		prev_weapon(t_player *player)
 {
 	int i;
 
-	if ((i = player->hand.id - 1) == -1)
-		player->hand = player->weapons[NB_WEAPON - 1];
+	if ((i = player->hand->id - 1) == -1)
+		player->hand = &player->weapons[NB_WEAPON - 1];
 	while (i > 0)
 	{
 		if (player->weapons[i].on)
 			break;
 		i--;
 	}
-	player->hand = player->weapons[i];
+	player->hand = &player->weapons[i];
 }
 
 void		change_weapon(t_player *player, int id)
@@ -71,7 +71,7 @@ void		change_weapon(t_player *player, int id)
 		}
 	}
 	if (id >= 0 && id < NB_WEAPON && player->weapons[id].on)
-		player->hand = player->weapons[id];
+		player->hand = &player->weapons[id];
 }
 
 int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight)

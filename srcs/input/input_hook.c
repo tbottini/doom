@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/27 15:06:59 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 18:52:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		game_key_press(int key, t_doom *doom)
 		if (key == SDLK_e)
 			action(doom, &doom->game.player.stat);
 		else if (key == SDLK_r)
-			reload(doom->timestamp, &doom->game.player, &doom->game.player.hand);
+			reload(doom->timestamp, &doom->game.player, doom->game.player.hand);
 		else if (key == SDLK_v)
 			kick(doom->timestamp, &doom->game.sound, &doom->game.player);
 		else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
@@ -181,7 +181,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 		{
 			if (doom->ui.m_status != 0)
 				btn_click(doom, x, y);
-			else if (!(doom->game.player.hand.rate))
+			else if (!(doom->game.player.hand->rate))
 				shoot(doom->timestamp, &doom->game.sound, &doom->game.player);
 			else
 				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
@@ -223,8 +223,8 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 	(void)btn;
 	(void)x;
 	(void)y;
-	if (btn == SDL_BUTTON_LEFT && doom->game.player.hand.rate)
-		ft_noderm_int(&(doom->sdl.keys), btn);
+	//if (btn == SDL_BUTTON_LEFT && doom->game.player.hand && doom->game.player.hand->rate)
+	ft_noderm_int(&(doom->sdl.keys), btn);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 20:32:01 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/28 18:31:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 	{
 		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil) && (next->h_floor <= stat->pos.z + STEP))
 		{
-			if (!collision(next, stat->pos, NULL))
-			{
-				stat->sector = next;
+			stat->sector = next;
 				if (stat->pos.z <= next->h_floor)
 					stat->pos.z = next->h_floor;
 				if (!stat->crouch && stat->height == H_CROUCH)
@@ -42,8 +40,12 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 					stat->speed = WALK;
 				}
 				*port = NULL;
+			if (!collision(next, stat->pos, NULL))
+			{
 				return (1);
 			}
+			else
+				return (2);
 		}
 		return (-1);
 	}
