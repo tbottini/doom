@@ -35,8 +35,7 @@ void		prev_weapon(t_player *player)
 {
 	int i;
 
-	if ((i = player->hand->id - 1) == -1)
-		player->hand = &player->weapons[NB_WEAPON - 1];
+	i = (player->hand->id == FIST) ? NB_WEAPON - 1 : player->hand->id - 1;
 	while (i > 0)
 	{
 		if (player->weapons[i].on)

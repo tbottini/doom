@@ -122,6 +122,12 @@ typedef struct			s_sloc
 	t_vct2				pos;
 }						t_sloc;
 
+typedef struct			s_html
+{
+	t_sloc				loc;
+	SDL_Texture			*txtr;
+}						t_html;
+
 typedef struct			s_btn
 {
 	t_sloc				loc;
@@ -205,6 +211,7 @@ typedef struct			s_ui
 	t_btn				*curr_btn;
 	int					curr_btn_controller;
 	t_pal				fire;
+	SDL_Texture			*weaponhud[NB_WEAPON];
 }						t_ui;
 
 typedef struct			s_sdl

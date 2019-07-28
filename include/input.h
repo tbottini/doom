@@ -26,6 +26,10 @@ t_btn					add_left_difficulty_button(t_doom *doom, SDL_Rect *parent);
 t_btn					add_middle_difficulty_button(t_doom *doom, SDL_Rect *parent);
 t_btn					add_right_difficulty_button(t_doom *doom, SDL_Rect *parent);
 
+SDL_Texture				*add_fist(t_doom *doom);
+SDL_Texture				*add_handgun(t_doom *doom);
+SDL_Texture				*add_shotgun(t_doom *doom);
+SDL_Texture				*add_rifle(t_doom *doom);
 
 t_btn					add_resume_button(t_doom *doom);
 t_btn					add_doom_button(t_doom *doom, const char *name);

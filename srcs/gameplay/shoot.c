@@ -16,11 +16,15 @@ void		reload(Uint32 timestamp, t_player *player, t_weapon *weapon)
 {
 	int	r;
 
-	r = weapon->clip_max - weapon->clip;
-	(weapon->ammo - r < 0 ? r += weapon->ammo - r : 0);
-	weapon->ammo -= r;
-	weapon->clip = r;
-	player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
+	if (player->occupied < timestamp)
+	{
+		r = weapon->clip_max - weapon->clip;
+		if (weapon->ammo - r < 0)
+			r = weapon->ammo;
+		weapon->ammo -= r;
+		weapon->clip += r;
+		player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
+	}
 }
 
 void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)

@@ -49,9 +49,12 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	ui->btnpse[4] = add_right_music_button(doom, &(ui->btnpse[2].loc.area));
 	ui->btnpse[5] = add_ing_opt_button(doom);
 	ui->btnpse[6] = add_main_menu_button(doom);
+	ui->weaponhud[FIST] = add_fist(doom);
+	ui->weaponhud[GUN] = add_handgun(doom);
+	ui->weaponhud[SHOTGUN] = add_shotgun(doom);
+	ui->weaponhud[RIFLE] = add_rifle(doom);
 	return (1);
 }
-
 
 int		ui_init(t_ui *ui)
 {

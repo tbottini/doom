@@ -25,6 +25,11 @@
 # define G_EPSILON 0.01
 # define NB_WEAPON 4
 
+# define HANDHOLLOWPATH "ressources/props/fist_hollow.png"
+# define GUNHOLLOWPATH "ressources/props/handgun_hollow.png"
+# define SHOTGUNHOLLOWPATH "ressources/props/shotgun_hollow.png"
+# define RIFLEHOLLOWPATH "ressources/props/rifle_hollow.png"
+
 typedef	struct 			s_sound t_sound;
 
 typedef enum			e_power

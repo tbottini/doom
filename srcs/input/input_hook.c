@@ -197,9 +197,9 @@ int mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
 	if (doom->ui.m_status == MENU_INGAME)
 	{
 		if (e.y > 0)
-			next_weapon(&doom->game.player);
-		else if (e.y < 0)
 			prev_weapon(&doom->game.player);
+		else if (e.y < 0)
+			next_weapon(&doom->game.player);
 	}
 	else if (doom->ui.m_status == MENU_MAP)
 	{
