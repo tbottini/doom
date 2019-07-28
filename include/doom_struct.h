@@ -196,7 +196,7 @@ typedef struct			s_ui
 {
 	t_font				fonts;
 	t_btn				btnarr[20];
-	t_btn				btnmap[20];
+	t_btn				btnmap[100];
 	t_btn				btnopt[20];
 	t_btn				btnpse[20];
 	t_slid				slidopt[10];

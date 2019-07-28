@@ -25,7 +25,7 @@ static int		read_directory(t_doom *doom, DIR *maps, int y)
 	char			tmp[512];
 
 	ft_printf("Reading\n");
-	while ((mapdata = readdir(maps)) && y < 500)
+	while ((mapdata = readdir(maps)) && y < 100)
 	{
 		ft_strcpy(tmp, "ressources/map/");
 		ft_strcpy(&(tmp[15]), mapdata->d_name);
