@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readfileeditor.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/21 13:35:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/28 18:17:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ void		fill_ent(t_lstsec secteurs, t_game *game, t_entity *ent, t_prop *prop)
 	int			murindex;
 	t_mur		*mur;
 
+	if (!prop->wall)
+	{
+		ent->stat.mur = NULL;
+		ent->stat.mursec = NULL;
+		return ;
+	}
 	sectindex = 0;
 	murindex = 0;
 	while (sectindex < game->len.nb_sects && murindex < game->sectors[sectindex].len && &game->sectors[sectindex].wall[murindex] != prop->wall)
@@ -76,6 +82,8 @@ void		fill_ent(t_lstsec secteurs, t_game *game, t_entity *ent, t_prop *prop)
 		if (&game->sectors[sectindex].wall[murindex] != prop->wall)
 			sectindex++;
 	}
+	if (&game->sectors[sectindex].wall[murindex] != prop->wall)
+		return ;
 	while (sectindex--)
 		secteurs = secteurs->next;
 	if (!secteurs)
