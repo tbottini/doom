@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#define ISNUMPADNUM(x) ((SDLK_KP_1 <= x && x <= SDLK_KP_9) || x == SDLK_KP_0)
 
 unsigned int ft_lil_super_atoi(const char *str)
 {
@@ -40,11 +41,34 @@ void push_char(char *str, char c)
 		str[x] = c;
 }
 
+static int try_save(t_doom *doom, SDL_KeyboardEvent e)
+{
+	char path[512];
+
+	ft_strcpy(path, "ressources/map/");
+	if (save_editor_to_file(&doom->edit))
+		return (-1);
+	if (e.keysym.mod != 0)
+		close_editor(doom);
+	else if (doom->ui.m_status == MENU_MAIN)
+	{
+		ft_strcat(path, doom->edit.filename);
+		//main_menu_button(doom);
+		if (check_file(path))
+		{
+			read_file(&doom->game, path, false);
+			player_init(&doom->game.player);
+			change_music(&doom->game.sound, doom->game.sound.on, 5000);
+			sdl_set_status(doom, MENU_INGAME);
+			SDL_RaiseWindow(doom->sdl.win);
+		}
+	}
+	return (0);
+}
+
 /*
 **	ouvre un input pour remplir la chaine de caracteres str
 */
-#define ISNUMPADNUM(x) ((SDLK_KP_1 <= x && x <= SDLK_KP_9) || x == SDLK_KP_0)
-
 int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 {
 	unsigned int x;
@@ -75,16 +99,11 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 	{
 		if (doom->edit.status == ED_SAVING)
 		{
-			if (save_editor_to_file(&doom->edit))
-			{
+			if (try_save(doom, e) == -1)
 				return (-1);
-			}
-			if (e.keysym.mod != 0)
-				close_editor(doom);
 		}
 		else if (doom->edit.status == ED_WRITING)
 		{
-			//x = ft_atoi(str);
 			x = ft_lil_super_atoi(str);
 			if (x < MAXEDITVAR)
 				*doom->edit.currwriter = x;
