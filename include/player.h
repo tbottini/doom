@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:43:38 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/29 18:15:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void					shoot(Uint32 timestamp, t_sound *sound, t_player *player);
 void					bullet(t_stat *stat, int dmg);
 void					wall_real_hit(t_shoot *shoot, t_stat *stat);
 void					possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector);
-t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo);
+t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);
 //void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
 //t_enemy				*possible_enemys(t_enemy **enemys, t_stat *stat, t_fvct3 d, int *index);

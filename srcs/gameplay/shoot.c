@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:48:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/29 18:28:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,68 +44,60 @@ void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 	}
 }
 
-t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo)
+t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height)
 {
 	t_fvct3 res;
 
 	res.x = pos.x + dist * (mo.x / RADIUS);
 	res.y = pos.y + dist * (mo.y / RADIUS);
-	res.z = pos.z + dist * (mo.z / RADIUS);
+	res.z = pos.z + height + dist * (mo.z / RADIUS);
 	return (res);
 }
 
-/* 
-** Returns 1 if point px is closer from point posx than point qx
-** else, founction returns 0
-
-static int is_closer(t_fvct3 posx, t_fvct3 px, t_fvct3 qx)
-{
-	//t_fvct3 tmp;
-	//t_fvct3 tmq;
-
-	//tmp.x = fabs(pos.x - p.x);
-	//tmp.y = fabs(pos.y - p.y);
-	//tmp.z = fabs(pos.z - p.z);
-	//tmq.x = fabs(pos.x - q.x);
-	//tmq.y = fabs(pos.y - q.y);
-	//tmq.z = fabs(pos.z - q.z);
-	return ((fabs(posx - px) < fabs(posx - qx)));
-}*/
-
 void		impact_wall(t_wall *wall, t_fvct3 p)
 {
+	printf("WALL HIT\n");
 	wall->props[wall->nb_props].pos.x = p.x;
 	wall->props[wall->nb_props].pos.y = p.y;
 	wall->props[wall->nb_props].pos.z = p.z;
 }
 
-void		injure_enemy(t_enemy *enemy, int dmg)
+void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)
 {
-	enemy->stat.health -= dmg;
+	if (hit.z < enemy->stat.sector->h_floor)
+		{printf("TRO O LOL\n");return ;}
+	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height)
+		{printf("TRO BA MDR || %f\n", enemy->stat.sector->h_floor + enemy->stat.height);return ;}
+	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height - 0.25)
+		{enemy->stat.health -= dmg * 3;printf("HEADSHOT !\n");}
+	else
+		{enemy->stat.health -= dmg;printf("BODYSHOT !\n");}
 	if (enemy->stat.health > 0)
 		;//hit texture ?
 	else
 	{
-		enemy->state = -1;//apply dying textures
+		enemy->state = 4;//apply dying textures ou pas
 		del_enemy(enemy->stat.sector, enemy);
 	}
 }
 
-static void	apply(t_shoot *shoot, t_fvct3 pos, t_fvct3 mo, int dmg)
+static void	apply(t_shoot *shoot, t_stat *stat, t_fvct3 mo, int dmg)
 {
 	t_fvct3 waim;
 	t_fvct3 eaim;
 
-	waim = real_coord(pos, shoot->wdist, mo);
-	eaim = real_coord(pos, shoot->edist, mo);
+	waim = real_coord(stat->pos, shoot->wdist, mo, stat->height/ 2);
+	eaim = real_coord(stat->pos, shoot->edist, mo, stat->height/ 2);
 	//calcul enemy or wall is closer
 	//if (is_closer(stat, waim, eaim))
-	if (fabs(pos.x - waim.x) < fabs(pos.x - eaim.x))//revoir condition nulle
+	if (distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){waim.x, waim.y})
+		< distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){eaim.x, eaim.y}))//revoir condition nulle
 		impact_wall(shoot->whit, waim);// change bullet hole prop 's position
 	else
-		injure_enemy(shoot->ehit, dmg);//damages on touched enemy
-	printf("SUPER COORD : x = %f | y = %f | z = %f\n", waim.x, waim.y, waim.z);
-	printf("distance || %f ||\n\n", shoot->wdist);
+		injure_enemy(shoot->ehit, dmg, eaim);//damages on touched enemy
+	printf("SUPER COORD WALL : x = %f | y = %f | z = %f\n", waim.x, waim.y, waim.z);
+	printf("SUPER COORD ENEMY : x = %f | y = %f | z = %f\n", eaim.x, eaim.y, eaim.z);
+	//printf("distance || %f ||\n\n", shoot->wdist);
 }
 
 void		bullet(t_stat *stat, int dmg)
@@ -128,5 +120,5 @@ void		bullet(t_stat *stat, int dmg)
 	//supa_shoota(stat, d, mo);
 	possible(&shoot, stat, d, stat->sector);
 	wall_real_hit(&shoot, stat);
-	apply(&shoot, stat->pos, mo, dmg);
+	apply(&shoot, stat, mo, dmg);
 }

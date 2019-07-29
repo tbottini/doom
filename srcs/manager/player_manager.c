@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/28 18:46:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/29 15:44:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int		player_init(t_player *player)
 	player->weapons[2] = shotgun_init();
 	player->weapons[3] = rifle_init();
 	player->hand = &player->weapons[0];
-	player->stat.crouch = false;
-	player->stat.speed = 32700.0;
+	player->stat.speed = WALK;
 	player->stat.width = 0;
 	player->boost = 0;
 	player->stat.jetpack = -1;
 	player->stat.height = H_NORMAL;
+	player->stat.crouch = false;
 	player->stat.rot.x = 90;
 	player->stat.pos.z = player->stat.sector->h_floor;
 	player->stat.rotvel.x = 0;

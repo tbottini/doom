@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   hud_render.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 16:24:04 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/28 16:24:05 by magrab           ###   ########.fr       */
+/*   Updated: 2019/07/29 13:52:45 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+void				hud_aim(t_doom *doom)
+{
+	int x;
+	int y;
+	int	size;
+	int len;
+
+	if (doom->game.player.hand->id <= GUN)
+		size = 2;
+	else if (doom->game.player.hand->id == SHOTGUN)
+		size = 25;
+	else
+		size = 10;
+	len = 10;
+	x = doom->sdl.size.x / 2;
+	y = doom->sdl.size.y / 2;
+	while (len)
+	{
+		doom->sdl.screen[(x + size + len) + (y) *  doom->sdl.size.x] = 0x00FF00FF;
+		doom->sdl.screen[(x) + (y - size - len) *  doom->sdl.size.x] = 0x00FF00FF;
+		doom->sdl.screen[(x) + (y + size + len) *  doom->sdl.size.x] = 0x00FF00FF;
+		doom->sdl.screen[(x - size - len) + (y) *  doom->sdl.size.x] = 0x00FF00FF;
+		len--;
+	}
+}
 
 int					hud_render(t_doom *doom)
 {
@@ -42,5 +68,6 @@ int					hud_render(t_doom *doom)
 		}
 		x++;
 	}
+	//hud_aim(doom);
 	return (0);
 }

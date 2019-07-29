@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:49:07 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/29 13:31:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	add_weapon(t_weapon *weapon)
 {
 	if (!weapon->on)
 		weapon->on = true;
+	else
+		weapon->ammo += weapon->clip_max;
 }
 
 /*============super pill=================*/

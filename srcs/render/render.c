@@ -75,6 +75,7 @@ int					doom_render(t_doom *doom)
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	mini = miniinit(&doom->sdl);
 	minimap(&mini, &doom->game.player);
+	hud_aim(doom);
 	debug_screen_copy(&doom->game.arch);
 	sdl_MultiRenderCopy(&doom->sdl);
 	architect_reset(&doom->game.arch);
