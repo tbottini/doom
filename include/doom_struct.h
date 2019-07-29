@@ -364,6 +364,7 @@ typedef struct 			s_arch
 	t_vct2				px;
 	t_fvct2				shift_txtr;
 	t_borne				portal;
+	t_list				portal_list;
 
 	Uint32				sc_debug[WIDTH * HEIGHT];
 	uint32_t			zoom;

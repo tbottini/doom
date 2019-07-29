@@ -7,7 +7,7 @@
 int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 {
 	double	wall_angle;
-	int px;
+	int		px;
 	double	player_angle;
 
 	player_angle = (player->stat.rot.x - 90) * PI180;
@@ -161,10 +161,6 @@ void			render_wall(t_arch *arch, t_player *player)
 		{
 			debug_pillar_ver(arch, pillar_px);
 		}
-
-
-
-
 		//render_floor(arch, shape);
 
 		if (arch->wall->status == PORTAL)
