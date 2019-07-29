@@ -364,8 +364,8 @@ int	read_one_enemy(int fd, t_game *game, t_slen *len)
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)))
 		return (-102);
 	enemy = enemy_init(tmp2, (int)game->difficulty, &game->sectors[tmp]);
-	printf("\tEnemy type: %d\n", tmp);
-	printf("\tEnemy Sector: %d\n", tmp2);
+	printf("\tEnemy type: %d\n", tmp2);
+	printf("\tEnemy Sector: %d\n", tmp);
 	if ((read(fd, &enemy->stat.pos.x, sizeof(double)) != sizeof(double)))
 		return (-103);
 	if ((read(fd, &enemy->stat.pos.y, sizeof(double)) != sizeof(double)))

@@ -345,7 +345,8 @@ int	check_file(const char *file)
 
 	if ((fd = open(file, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)) == -1)
 	{
-		ft_putendl_fd("Error opening file", 2);
+		ft_putendl_fd("Error opening file :", 2);
+		ft_putendl_fd(file, 2);
 		return (0);
 	}
 	if ((returncode = check_map(fd, &len)))
