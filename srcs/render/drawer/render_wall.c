@@ -91,6 +91,8 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	double		coef_neutre;
 	int			start;
 
+	int			i = 0;
+
 	start = arch->px.x;
 	coef_surface.x = coef_diff(pillar->x - next->x, arch->px);
 	coef_surface.y = coef_diff(pillar->y - next->y, arch->px);
@@ -113,6 +115,13 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 		pillar->y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
+		i++;
+		if ((i % 5 == 0 && debug == 5)
+			|| (i % 2 == 0 && debug == 4))
+		{
+			sdl_MultiRenderCopy(arch->sdl);
+			SDL_RenderPresent(arch->sdl->rend);
+		}
 	}
 }
 
@@ -130,7 +139,6 @@ void			render_wall(t_arch *arch, t_player *player)
 	t_sector	*sector_tmp;
 	t_shap		shape;
 	int			start;
-
 
 	if (wall_screen_info(arch, player))
 	{

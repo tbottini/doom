@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 11:56:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/29 12:59:44 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int		game_key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
+	else if (key >= SDLK_KP_1 && key <= SDLK_KP_9)
+		debug_code(key);
 	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
 		sdl_set_status(doom, MENU_IGMAIN);
 	else if (key == SDLK_LGUI && doom->game.player.stat.jetpack)
