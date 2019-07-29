@@ -30,7 +30,7 @@ typedef struct			s_fvct3
 /*
 **	operation
 */
-t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
+//t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
 double					ft_atof(char *str);
 double					ft_catof(char *str, char c);
 unsigned int			ft_catoi_u(char *str, char c);

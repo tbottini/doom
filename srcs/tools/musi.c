@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "doom_nukem.h"
+#include "doom_nukem.h"
 
 void		change_music(t_sound *sound, int n, int fade)
 {
@@ -38,7 +38,9 @@ void		next_track(t_doom *doom)
 		doom->game.sound.on = 1;
 	change_music(&doom->game.sound, doom->game.sound.on, 5000);
 	tmp[7] = doom->game.sound.on + '0';
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture,
+		&doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor,
+		doom->ui.btnpse[2].bgcolor);
 }
 
 void		prev_track(t_doom *doom)
@@ -51,5 +53,7 @@ void		prev_track(t_doom *doom)
 		doom->game.sound.on = doom->game.sound.maxmusic - 1;
 	change_music(&doom->game.sound, doom->game.sound.on, 5000);
 	tmp[7] = doom->game.sound.on + '0';
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture, &doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor, doom->ui.btnpse[2].bgcolor);
+	updateText(doom->sdl.rend, doom->ui.fonts.s64, &doom->ui.btnpse[2].txture,
+		&doom->ui.btnpse[2].loc.area, tmp, doom->ui.btnpse[2].fgcolor,
+		doom->ui.btnpse[2].bgcolor);
 }

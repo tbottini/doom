@@ -275,7 +275,7 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		if (edit->currpilier)
 		{
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
-			ft_movepillar(edit->sectors, edit->currpilier, e.xrel, e.yrel, edit->mappos.z);
+			ft_movepillar(edit->sectors, edit->currpilier, (t_vct2){e.xrel, e.yrel}, edit->mappos.z);
 		}
 		else if (edit->currstat)
 		{

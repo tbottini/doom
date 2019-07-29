@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-void scroll_limits(int *value, int addition, int smin, int smax)
+void	scroll_limits(int *value, int addition, int smin, int smax)
 {
 	if (!value)
 		return ;
