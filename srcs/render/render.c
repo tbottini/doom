@@ -8,47 +8,33 @@
 void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 {
 	t_wall			*wall;
-	int				i_wall;
+	int				i;
 	t_wall			*portal_tmp;
 	t_minimap		mini;
 
-	i_wall = 0;
+	if (debug_screen == 2 && arch->depth_portal > 0)
+		draw_borne(arch, RED);
+
+	i = 0;
 	wall = sector->wall;
-	draw_borne(arch, 0xff0000ff);
 	sector_frustum(arch, sector, player);
 	arch->sector = sector;
 	portal_tmp = arch->wall;
-	mini = miniinit(arch->sdl);
-	while (i_wall < sector->len)
+	while (i < sector->len)
 	{
-		on_frustum(arch, player, wall[i_wall].pillar);
-		on_frustum(arch, player, wall[i_wall].next);
-		if ((wall[i_wall].pillar->frust || wall[i_wall].next->frust)
-			&& equal_pillar(&wall[i_wall], arch->wall))
+		on_frustum(arch, player, wall[i].pillar);
+		on_frustum(arch, player, wall[i].next);
+		if (((wall[i].pillar->frust || wall[i].next->frust)
+			||	borne_in_wall_angle(arch, &wall[i]))
+				&& equal_pillar(&wall[i], arch->wall))
 		{
 			portal_tmp = arch->wall;
-			arch->wall = &wall[i_wall];
+			arch->wall = &wall[i];
 			render_wall(arch, player);
 			arch->wall = portal_tmp;
-			//bunch[i_bunch] = &wall[i_wall];
-			//i_bunch++;
 		}
-		else if (borne_in_wall_angle(arch, &wall[i_wall])
-			&& equal_pillar(&wall[i_wall], arch->wall))
-		{
-			portal_tmp = arch->wall;
-			arch->wall = &wall[i_wall];
-			render_wall(arch, player);
-			//mini_draw_wall(arch->wall, player->stat.pos, &mini);//test
-			arch->wall = portal_tmp;
-			//bunch[i_bunch] = &wall[i_wall];
-			//i_bunch++;
-		}
-		i_wall++;
+		i++;
 	}
-	//buncherisation(arch, sector, bunch);
-
-	//bunch_comsuption(arch, player, bunch, sector);
 }
 
 void				clear_screen(t_sdl *sdl)
@@ -81,6 +67,11 @@ int					doom_render(t_doom *doom)
 		printf("\n-------start render-------\n");
 	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
+
+	if (debug_screen == 2)
+		draw_frustum(&doom->game.arch, SCREEN_ON | FOV_HORI);
+	if (debug_screen == 3)
+		draw_frustum(&doom->game.arch, SCREEN_ON);
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	mini = miniinit(&doom->sdl);
 	minimap(&mini, &doom->game.player);

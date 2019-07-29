@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/28 18:48:32 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/29 11:56:53 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 */
 
 int			debug = 0;
+int			debug_screen = 0;
 
 void		benda(t_doom *doom, int key)
 {

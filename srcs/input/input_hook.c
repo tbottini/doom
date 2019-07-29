@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/28 18:52:41 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/29 11:56:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void			clean_screen(t_sdl *sdl)
 void			debug_code(int key)
 {
 	debug = key - SDLK_KP_1 + 1;
+	debug_screen = debug;
 	printf("debug keycode %d\n", debug);
 }
 

@@ -41,7 +41,7 @@ t_doom	*doom_init()
 		doom_exit(doom);
 	if (!ui_init(&doom->ui))
 		doom_exit(doom);
-	doom->game.camera.fov = 90;
+	camera_init(&doom->game.camera, &doom->sdl, 90);
 	if (!arch_init(&doom->game.arch, &doom->sdl, &doom->game.camera))
 		doom_exit(doom);
 	doom->edit.ui = &doom->ui;
@@ -53,6 +53,7 @@ t_doom	*doom_init()
 	doom->game.difficulty = MEDIUM;
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
+
 	doom->debug = 0;
 	return (doom);
 }
