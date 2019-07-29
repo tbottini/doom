@@ -1,0 +1,7 @@
+
+condition render wall
+
+on creer une liste de portail parcourus, on ne rend pas les portail
+deja fait
+
+(une liste pour chaque portail distant)

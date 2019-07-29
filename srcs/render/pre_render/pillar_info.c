@@ -116,12 +116,11 @@ int				wall_behind_portal(t_arch *arch)
 	t_fvct2		inter;
 	t_fvct2		inter2;
 
-	if (debug == 1)
-		d_wall(arch->wall);
 	a_pillar.a = arch->pillar.y / arch->pillar.x;
 	a_pillar.b = 0;
 	a_pillar2.a = arch->next.y / arch->next.x;
 	a_pillar2.b = 0;
+
 	if (arch->portal.pillar.x == arch->portal.next.x)
 	{
 		a_portal.lock = 1;
@@ -135,8 +134,6 @@ int				wall_behind_portal(t_arch *arch)
 	}
 	inter = interpolation_linear(a_portal, a_pillar);
 	inter2 = interpolation_linear(a_portal, a_pillar2);
-	draw_affine(arch, a_pillar, BLUE_SOFT);
-	draw_affine(arch, a_pillar2, BLUE_SOFT);
 	if (inter.x > arch->pillar.x && inter2.x > arch->next.x)
 		return (0);
 	if (arch->pillar.x == arch->next.x)
@@ -173,23 +170,10 @@ int				wall_behind_portal(t_arch *arch)
 
 int			wall_screen_info(t_arch *arch, t_player *p)
 {
-	int		result;
-
 	pillar_screen_info(arch, p);
-	if (debug == 1)
-	{
-		printf(WRED"portal:\n%f %f --> %f %f\n"WEND,
-			arch->portal.pillar.x, arch->portal.pillar.y,
-			arch->portal.next.x, arch->portal.next.y);
-	}
-
 
 	if (arch->depth_portal > 0)
-	{
-		result = wall_behind_portal(arch);
-		if (debug == 1)
-			printf("wall_behind_portal %d\n\n", result);
-		return (result);
-	}
+		return (wall_behind_portal(arch));
 	return (1);
+	//return (arch->depth_portal > 0 || wall_behind_portal(arch));
 }

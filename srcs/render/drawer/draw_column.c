@@ -49,6 +49,10 @@ int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 */
 double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 {
+	if (surface.x >= arch->sdl->size.y)
+		return (arch->sdl->size.y * arch->sdl->size.x);
+	else if (surface.y <= 0)
+		return (arch->px.x);
 	if (surface.x <= (int)arch->portal.b_up[arch->px.x])
 		surface.x = arch->px.x + arch->portal.b_up[arch->px.x] * arch->sdl->size.x;
 	else

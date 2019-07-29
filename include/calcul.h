@@ -30,7 +30,7 @@ int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *i
 t_affine		affine_points(t_fvct2 point1, t_fvct2 point2);
 t_affine		affine_def(double a, double b);
 double			affine_val_index(t_affine affine, double y);
-
+t_fvct2			inter(t_fvct2 p1, t_fvct2 p2, t_fvct2 p3, t_fvct2 p4);
 /*
 **	autres
 */

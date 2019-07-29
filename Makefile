@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/07/15 15:36:32 by tbottini         ###   ########.fr        #
+#    Updated: 2019/07/23 13:33:31 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror #-Ofast -fno-builtin -flto
+CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror -Ofast -fno-builtin -flto
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -44,12 +44,17 @@ HEADERS			:=		libft/libft.h							\
 
 FOLDER			:=		objs									\
 						objs/render								\
+						objs/parsing							\
 						objs/debug								\
 						objs/tools								\
 						objs/ui									\
 						objs/input								\
 						objs/manager							\
 						objs/calcul								\
+						objs/editor								\
+						objs/render/hud							\
+						objs/render/pre_render					\
+						objs/render/drawer						\
 
 COMPILE_LIB		:=		make -C libft/
 

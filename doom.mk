@@ -1,18 +1,16 @@
-SRCS_DOOM		:=		editor_finder.c									\
+SRCS_DOOM		:=		button_function.c								\
+						slider_function.c								\
+						main.c											\
+						checkfile.c										\
+						cinematri.c										\
+
+SRCS_EDITOR		:=		editor_finder.c									\
 						editor_render.c									\
 						editor_input.c									\
 						editor_optionbox.c								\
 						editor_txtrbox.c								\
 						editor_hook.c									\
 						editor_write.c									\
-						button_function.c								\
-						slider_function.c								\
-						main.c											\
-						savefile.c										\
-						readfile.c										\
-						readfileeditor.c								\
-						checkfile.c										\
-						cinematri.c										\
 
 SRCS_UI			:=		button_action.c									\
 						button_drawer.c									\
@@ -41,28 +39,28 @@ SRCS_INPUT		:=		event_controller.c								\
 						debug_input.c									\
 
 SRCS_RENDER		:=		render.c										\
-						bunch.c											\
-						wall.c											\
-						bresenham.c										\
-						draw_line.c										\
-						draw_text.c										\
 						sector.c										\
-						minimap.c										\
-						minimap_drawer.c								\
-						backface.c										\
-						render_effect.c									\
-						render_wall.c									\
-						render_portal.c									\
-						pillar_info.c									\
-						textures.c										\
 						shape.c											\
-						draw_column.c									\
-						borne.c											\
+						hud/minimap.c									\
+						hud/minimap_drawer.c							\
+						hud/bresenham.c									\
+						pre_render/backface.c							\
+						pre_render/render_effect.c						\
+						pre_render/bunch.c								\
+						pre_render/wall.c								\
+						pre_render/borne.c								\
+						pre_render/pillar_info.c						\
+						drawer/render_wall.c							\
+						drawer/render_shape.c							\
+						drawer/textures.c								\
+						drawer/draw_line.c								\
+						drawer/draw_text.c								\
+						drawer/draw_column.c							\
 
-#SRCS_PARSING	:=		parsing.c										\
-						chunck.c										\
-						chunk_ressources.c								\
-						line_wall.c
+SRCS_PARSING	:=		read_editor_file.c								\
+						readfile.c										\
+						readfileeditor.c								\
+						savefile.c										\
 
 SRCS_DEBUG		:=		debug_sector.c									\
 						debug_screen.c									\
@@ -91,6 +89,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						prop_manager.c									\
 						arch_manager.c									\
 						borne_manager.c									\
+						camera_manager.c								\
 
 SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\
@@ -103,6 +102,7 @@ OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/ui/%.o,$(SRCS_UI))			\
 						$(patsubst %.c,objs/input/%.o,$(SRCS_INPUT))	\
 						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))\
-						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))
+						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))	\
+						$(patsubst %.c,objs/editor/%.o,$(SRCS_EDITOR))	\
 
 SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))

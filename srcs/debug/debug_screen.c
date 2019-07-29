@@ -100,20 +100,126 @@ void		p_debug(t_fvct2 a, Uint32 color, t_arch *arch)
 	fill_line_debug(arch, arch->sdl, mid, v, color);
 }
 
-void		draw_affine(t_arch *arch, t_affine affine, uint32_t color)
+/*
+**	on dessine l'affine sur une portion x de l'ecran
+**	la portion est la borne de l'ecran en pixel elle sera convertie en unite
+*/
+void		draw_affine_portion(t_arch *arch, t_affine affine, t_fvct2 portion, uint32_t color)
 {
 	t_vct2	point1;
 	t_vct2	point2;
 
-	double	x_value;
-	x_value = (arch->sdl->size.x / 2.0) / arch->zoom;
-	point1.x = arch->sdl->size.x - 1;
-	point1.y = arch->sdl->size.y / 2.0 - (affine.a * x_value + affine.b) * arch->zoom;
-	point2.x = 0;
-	point2.y = arch->sdl->size.y / 2.0 - (affine.a * -x_value + affine.b) * arch->zoom;
+	point1.x = portion.x;
+	point2.x = portion.y;
+	portion.x = (portion.x - arch->sdl->size.x / 2.0) / arch->zoom;
+	portion.y = (portion.y - arch->sdl->size.x / 2.0) / arch->zoom;
+	point1.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.x) * arch->zoom;
+	point2.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.y) * arch->zoom;
 	trait(arch, point1, point2, color);
 }
 
+void		draw_affine(t_arch *arch, t_affine affine, uint32_t color, int flag)
+{
+	t_fvct2	portion;
+
+	if (flag == FULL)
+		portion = (t_fvct2){0, arch->sdl->size.x - 1};
+	else if (flag == MID)
+		portion = (t_fvct2){arch->sdl->size.x / 2, arch->sdl->size.x - 1};
+	else
+		return ;
+	draw_affine_portion(arch, affine, portion, color);
+}
+
+
+void		draw_screen(t_arch *arch, uint32_t color, int px_distance, t_affine fov_affine)
+{
+	t_vct2	pt1;
+	t_vct2	pt2;
+
+	pt1.x = arch->sdl->size.x / 2 + px_distance;
+	pt2.x = pt1.x;
+	pt1.y = arch->sdl->size.y / 2 + (px_distance * fov_affine.a);
+	pt2.y = arch->sdl->size.y / 2 + (px_distance * -fov_affine.a);
+	trait(arch, pt1, pt2, color);
+}
+
+/*
+**	dessine le frustum horizontal
+*/
+void		draw_frustum(t_arch *arch, int flag)
+{
+	t_affine		fov_affine;
+	uint32_t		color;
+
+	if (flag & FOV_HORI)
+	{
+		fov_affine.a = tan((arch->cam->fov / 2.0) * PI180);
+		color = BLUE_SOFT;
+	}
+	else
+	{
+		fov_affine.a = tan(arch->cam->fov_ver / 2 );
+		color = GREEN;
+	}
+	fov_affine.b = 0;
+	draw_affine(arch, fov_affine, color, MID);
+	fov_affine.a = -fov_affine.a;
+	draw_affine(arch, fov_affine, color, MID);
+
+
+	if (flag & SCREEN_ON)
+	{
+		draw_screen(arch, color, arch->sdl->size.x / 12, fov_affine);
+	}
+}
+
+
+
+void		debug_pillar_ver(t_arch *arch, t_fvct2 surface_pillar)
+{
+	t_affine	pillar;
+	t_affine	fov_affine;
+	int			len_screen;
+	int			dist;
+	t_vct2		point1;
+	t_vct2		point2;
+
+	dist = arch->sdl->size.x / 2.5;
+	fov_affine.a = tan(arch->cam->fov_ver / 2);
+	fov_affine.b = 0;
+	draw_screen(arch, BLUE_SOFT, dist, fov_affine);
+	len_screen = 2 * (fov_affine.a * dist);
+
+	point1.x = dist + arch->sdl->size.x / 2;
+	point2.x = dist + arch->sdl->size.x / 2;
+
+	point1.y = len_screen * (surface_pillar.x / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
+	point2.y =  len_screen * (surface_pillar.y / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
+	trait(arch, point1, point2, YELLOW);
+}
+
+void		debug_pillar(t_arch *arch, int flag)
+{
+	t_affine	a_pillar;
+
+	if (flag & P_PILLAR || !flag)
+	{
+		a_pillar = (t_affine){arch->pillar.y / arch->pillar.x, 0, 0};
+		if (flag & TRACE)
+			draw_affine(arch, a_pillar, BLUE_SOFT, MID);
+		if (flag & POINT || !flag)
+			b_point_debug(arch, arch->pillar, RED);
+	}
+	if (flag & P_NEXT)
+	{
+		a_pillar = (t_affine){arch->next.y / arch->next.x, 0, 0};
+		if (flag & TRACE)
+			draw_affine(arch, a_pillar, BLUE_SOFT, MID);
+		if (flag & POINT)
+			b_point_debug(arch, arch->next, RED);
+	}
+}
 
 void		debug_screen_copy(t_arch *arch)
 {

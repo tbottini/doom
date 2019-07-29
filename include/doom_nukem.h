@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 16:20:48 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/23 09:18:58 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 **		!!! global de debug a enlever
 */
 extern int debug;
+extern int debug_screen;
 
 # define DEBUG_VISUAL 1
 
@@ -83,6 +84,7 @@ int						load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **tx
 void					free_textures_folder(SDL_Texture **txtrs, char **txtrsname);
 void					editor_free(t_doom *doom);
 int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
+t_camera				*camera_init(t_camera *camera, t_sdl *sdl, int fov);
 int						editor_init(t_editor *editor);
 void					sdl_free(t_sdl *sdl);
 int						sdl_init(t_sdl *sdl, const char *title);

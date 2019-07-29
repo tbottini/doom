@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/18 17:42:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/23 09:14:45 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 */
 
 int			debug = 0;
+int			debug_screen = 0;
 
 void		benda(t_doom *doom, int key)
 {
@@ -105,7 +106,7 @@ static void delaypcmasterrace(t_doom *doom)
 static void game_loop_hook(t_doom *doom)
 {
 	t_tab pos;
-	
+
 	if (doom->ui.m_status == 0)
 	{
 		pos = doom->sdl.keys;
