@@ -76,6 +76,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\
+						norm_tools.c									\
 						little_tools.c									\
 						num_tools.c										\
 						sdl_tools.c										\

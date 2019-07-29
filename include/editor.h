@@ -14,8 +14,6 @@ int						save_editor_to_file(t_editor *edit);
 
 t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
 
-void					editor_zoom(int *z, int zoom);
-
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
@@ -70,6 +68,7 @@ void					ft_nodeprint_enemy(t_lstent node);
 void					ft_clear_entity_list(t_lstent *start);
 
 t_vct2					line_percent(t_vct2 pos1, t_vct2 pos2, double percent);
+void					scroll_limits(int *value, int addition, int smin, int smax);
 
 t_vct2					get_screen_mappos(t_editor *editor, int x, int y);
 t_vct2					get_rel_mappos(t_editor *editor, int x, int y);

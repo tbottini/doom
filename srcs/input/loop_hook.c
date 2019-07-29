@@ -74,7 +74,7 @@ static void editor_loop(t_doom *doom, int key)
 	//printf("key : %d %c\n", key, key);
 	if (key == SDLK_KP_PLUS || key == SDLK_KP_MINUS)
 	{
-		editor_zoom(&doom->edit.mappos.z, (key == SDLK_KP_PLUS ? 2 : -2));
+		scroll_limits(&doom->edit.mappos.z, (key == SDLK_KP_PLUS ? 2 : -2) * (doom->edit.mappos.z / 400 * ZOOMSPEED + 1), MINZOOM, MAXZOOM);
 	}
 	else if (key == SDLK_KP_4 || key == SDLK_KP_6)
 	{

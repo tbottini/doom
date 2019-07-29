@@ -12,16 +12,6 @@
 
 #include "doom_nukem.h"
 
-void	editor_zoom(int *z, int zoom)
-{
-	if (*z + zoom < MINZOOM)
-		*z = MINZOOM;
-	else if (*z + zoom > MAXZOOM)
-		*z = MAXZOOM;
-	else
-		*z += zoom * (*z / 400 * ZOOMSPEED + 1);
-}
-
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
 ** Example :
@@ -223,13 +213,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->currstat->roty += e.y;
 		return (0);
 	}
-	editor_zoom(&edit->mappos.z, e.y);
-	//if (edit->mappos.z + e.y < MINZOOM)
-	//	edit->mappos.z = MINZOOM;
-	//else if (edit->mappos.z + e.y > MAXZOOM)
-	//	edit->mappos.z = MAXZOOM;
-	//else
-	//	edit->mappos.z += e.y * (edit->mappos.z / 400 * ZOOMSPEED + 1);
+	scroll_limits(&edit->mappos.z, e.y * (edit->mappos.z / 400 * ZOOMSPEED + 1), MINZOOM, MAXZOOM);
 	ft_printf("\rWheel %d\t%d        ", edit->mappos.z, e.y);
 	return (0);
 }
