@@ -6,21 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:31:56 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 12:58:12 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-static int orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
-{
-	double val;
-
-	val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-	if (val == 0)
-		return (0);
-	return (val > 0) ? 1 : 2;
-}
 
 int			can_pass(t_stat *stat, int i, t_wall **port)
 {
@@ -29,23 +19,19 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 	next = stat->sector->wall[i].link;
 	if (next && stat->sector->wall[i].status >= OPEN_DOOR)
 	{
-		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil) && (next->h_floor <= stat->pos.z + STEP))
+		if ((stat->pos.z + stat->height < next->h_floor + next->h_ceil)
+			&& (next->h_floor <= stat->pos.z + STEP))
 		{
 			stat->sector = next;
-				if (stat->pos.z <= next->h_floor)
-					stat->pos.z = next->h_floor;
-				if (!stat->crouch && stat->height == H_CROUCH)
-				{
-					stat->height = H_NORMAL;
-					stat->speed = WALK;
-				}
-				*port = NULL;
-			if (!collision(next, stat->pos, NULL))
+			if (stat->pos.z <= next->h_floor)
+				stat->pos.z = next->h_floor;
+			if (!stat->crouch && stat->height == H_CROUCH)
 			{
-				return (1);
+				stat->height = H_NORMAL;
+				stat->speed = WALK;
 			}
-			else
-				return (2);
+			*port = NULL;
+			return ((!collision(next, stat->pos, NULL)) ? 1 : 2);
 		}
 		return (-1);
 	}
@@ -53,18 +39,7 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 	return (0);
 }
 
-/*
-** Returns 1 if the segments [p1, q1] and [p2, q2] intersect, 0 Otherwise
-*/
-int			vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
-{
-	if (orientation(p1, q1, p2) != orientation(p1, q1, q2)
-		&& orientation(p2, q2, p1) != orientation(p2, q2, q1))
-		return (1);
-	return (0);
-}
-
-t_wall		*collisionV21(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w)
+t_wall		*colli_walls(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 {
 	int		i;
 
@@ -75,12 +50,12 @@ t_wall		*collisionV21(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 	{
 		if (!ISPORTAL(sector->wall[i].status) && vector_intersect(ori, pos, *(t_fvct3*)&sector->wall[i].pillar->p,
 			*(t_fvct3*)&sector->wall[i].next->p))
-				return (&sector->wall[i]);
+			return (&sector->wall[i]);
 	}
 	return (NULL);
 }
 
-int			colli_teleport(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **wall)
+int			colli_port(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **w)
 {
 	int		i;
 
@@ -90,7 +65,7 @@ int			colli_teleport(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **wall)
 		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p,
 			*(t_fvct3*)&sector->wall[i].next->p))
 		{
-			return (can_pass(stat, i, wall));
+			return (can_pass(stat, i, w));
 		}
 	}
 	return (0);
@@ -103,16 +78,16 @@ t_wall		*collision(t_sector *sector, t_fvct3 pos, t_wall *w)
 	tmp.x = pos.x;
 	tmp.y = pos.y + PADDING;
 	pos.x += PADDING;
-	if ((w = collisionV21(sector, pos, tmp, w)))
+	if ((w = colli_walls(sector, pos, tmp, w)))
 		return (w);
 	tmp.y -= PADDING2;
-	if ((w = collisionV21(sector, pos, tmp, w)))
+	if ((w = colli_walls(sector, pos, tmp, w)))
 		return (w);
 	pos.x -= PADDING2;
-	if ((w = collisionV21(sector, pos, tmp, w)))
+	if ((w = colli_walls(sector, pos, tmp, w)))
 		return (w);
 	tmp.y += PADDING2;
-	if ((w = collisionV21(sector, pos, tmp, w)))
+	if ((w = colli_walls(sector, pos, tmp, w)))
 		return (w);
 	return (NULL);
 }

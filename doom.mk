@@ -28,6 +28,7 @@ SRCS_UI			:=		button_action.c									\
 
 SRCS_GAMEPLAY	:=		action.c										\
 						move.c											\
+						weapons.c										\
 						shoot.c											\
 						shoot_tools.c									\
 						collision.c										\
@@ -81,6 +82,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 						num_tools.c										\
 						sdl_tools.c										\
 						secteur_tools.c									\
+						play_tools.c									\
 						musi.c											\
 
 SRCS_GESTION	:=		doom_manager.c									\
