@@ -53,6 +53,13 @@ int		editor_key_press(int key, t_doom *doom)
 		doom->edit.currstat = NULL;
 		doom->edit.status = ED_OPEN;
 	}
+	else if (key == SDLK_SPACE)
+	{
+		if (doom->edit.currpilier)
+			doom->edit.status = ED_FORME;
+		else
+			ft_putendl("Please select a pillar");
+	}
 	else
 		ft_nodeadd_int(&(doom->edit.keys), key);
 	return (0);
@@ -81,6 +88,7 @@ int editor_key_release(int key, t_doom *doom)
 void editor_mouse_left(SDL_MouseButtonEvent e, t_editor *edit)
 {
 	t_vct2 relpos;
+	t_pilier *pil[3];
 
 	edit->currmur = NULL;
 	edit->currstat = NULL;
@@ -94,16 +102,43 @@ void editor_mouse_left(SDL_MouseButtonEvent e, t_editor *edit)
 	if (e.clicks == 2)
 	{
 		relpos = get_rel_mappos(edit, e.x, e.y);
-		if (!ft_pillarpushend(&edit->pillist, relpos))
+		if (!(pil[0] = ft_pillarpushend(&edit->pillist, relpos)))
 			ft_printf("Error adding pillar\n");
+		if (edit->currmur)
+		{
+			pil[1] = edit->currmur->pil1;
+			pil[2] = edit->currmur->pil2;
+			ft_removewall(&edit->map->murs, &edit->currmur);
+			ft_wallpushend(&edit->map->murs, pil[0], pil[1], edit->txtrgame[0]);
+			ft_wallpushend(&edit->map->murs, pil[0], pil[2], edit->txtrgame[0]);
+			edit->currmur = NULL;
+			edit->hovermur = NULL;
+		}
 	}
 }
 
 void editor_mouse_right(SDL_MouseButtonEvent e, t_editor *edit)
 {
+	t_pilier *pil;
+
 	if (edit->map && edit->currpilier && edit->hoverpilier)
 	{
 		ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier, edit->txtrgame[0]);
+		edit->currpilier = edit->hoverpilier;
+	}
+	else if (e.clicks == 2)
+	{
+		ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
+		if (edit->currmur == edit->hovermur)
+			edit->currmur = NULL;
+		ft_removewall(&edit->map->murs, &edit->hovermur);
+	}
+	else if (edit->map && edit->currpilier)
+	{
+		if (!(pil = ft_pillarpushend(&edit->pillist, get_rel_mappos(edit, e.x, e.y))))
+			ft_putendl_fd("Error adding pillar\n", 2);
+		ft_wallpushend(&edit->map->murs, edit->currpilier, pil, edit->txtrgame[0]);
+		edit->currpilier = pil;
 	}
 	else if (edit->currstat)
 	{
@@ -114,13 +149,6 @@ void editor_mouse_right(SDL_MouseButtonEvent e, t_editor *edit)
 			else
 				edit->currstat->mursec = edit->map;
 		}
-	}
-	else if (e.clicks == 2)
-	{
-		ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
-		if (edit->currmur == edit->hovermur)
-			edit->currmur = NULL;
-		ft_removewall(&edit->map->murs, &edit->hovermur);
 	}
 }
 

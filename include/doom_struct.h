@@ -300,9 +300,12 @@ typedef enum		e_editorstatus
 	ED_LOADING,
 	ED_LOADED,
 	ED_WRITING,
+	ED_FORME,
 	ED_SAVING,
 	ED_OPEN,
 }					t_editorstatus;
+
+# define ISWRITING(x) (x == ED_SAVING || x == ED_WRITING || x == ED_FORME || x == ED_OPEN)
 
 typedef struct			s_editor
 {

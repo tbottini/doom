@@ -67,6 +67,65 @@ static int try_save(t_doom *doom, SDL_KeyboardEvent e)
 }
 
 /*
+** ARMAAAAND
+*/
+void draw_forme(t_doom *doom, unsigned int x)
+{
+	t_pilier *pil;
+	t_pilier *pil2;
+	t_vct2		mov;
+	t_vct2		vel;
+	double		angle;
+	double		angleincrem;
+	double		len;
+
+	ft_printf("DRAWING %d!\n", x);
+	if (x < 2)
+		return ;
+	if (x == 2)
+	{
+		if (!(pil = ft_pillarpushend(&doom->edit.pillist, doom->edit.mapmouse)))
+			ft_printf("Error adding pillar\n");
+		ft_wallpushend(&doom->edit.map->murs, doom->edit.currpilier, pil, doom->edit.txtrgame[0]);
+		return ;
+	}
+	//mov.x = doom->edit.currpilier->pos.x - doom->edit.mapmouse.x;
+	//mov.y = doom->edit.currpilier->pos.y - doom->edit.mapmouse.y;
+	mov.x = doom->edit.mapmouse.x - doom->edit.currpilier->pos.x; // Initialisation de la premiere position
+	mov.y = doom->edit.mapmouse.y - doom->edit.currpilier->pos.y; // Initialisation de la premiere position
+	pil = doom->edit.currpilier;
+	pil2 = pil;
+	angle = atan2(-mov.y, mov.x); // Calcul de l'angle initial par rapport aux deux premiers points
+
+	angleincrem = -(360.0 / x - 180.0) * PI180; // Calcul de l'angle entre chacuns des sommets (Voir Geogebra)
+
+	len = sqrt(mov.x * mov.x + mov.y * mov.y); // Calcul de la longueur entre chaque points
+
+	printf("Start with angle : %f\tangleincrem : %f\tlen : %f\n", angle * TOANGLE, angleincrem * TOANGLE, len);
+	while (x >= 2)
+	{
+		vel.x = cos(angle) * len;
+		vel.y = -sin(angle) * len; // Calcul de la prochaine position par rapport a la pos actuelle (velocite FTW)
+
+		printf("\tangle %12f\tvel : %12d %12d\t%12d %12d\n", angle * TOANGLE, vel.x, vel.y, mov.x, mov.y);
+
+		if (!(pil = ft_pillarpushend(&doom->edit.pillist, (t_vct2){pil->pos.x + vel.x, pil->pos.y + vel.y}))) // Ajout pilier
+			ft_printf("Error adding pillar\n");
+		
+		ft_wallpushend(&doom->edit.map->murs, pil, pil2, doom->edit.txtrgame[0]); // Creation du mur entre les 2 piliers
+
+		pil2 = pil;
+		angle += angleincrem;// Ajout de la Rotation
+		if (angle < 0)
+			angle += M_PI * 2;
+		else if (angle * TOANGLE > 360)
+			angle -= M_PI * 2;
+		x--;
+	}
+	//ft_wallpushend(&doom->edit.map->murs, pil, doom->edit.currpilier, doom->edit.txtrgame[0]);
+}
+
+/*
 **	ouvre un input pour remplir la chaine de caracteres str
 */
 int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
@@ -83,7 +142,6 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 			push_char(str, e.keysym.sym - 1073741874);
 		else
 			push_char(str, e.keysym.sym);
-		ft_printf("%d\t%d\t%s\n", e.keysym.mod, (KMOD_LSHIFT | KMOD_RSHIFT), str);
 	}
 	else if (e.keysym.sym == SDLK_BACKSPACE)
 	{
@@ -109,6 +167,14 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 				*doom->edit.currwriter = x;
 			else
 				*doom->edit.currwriter = MAXEDITVAR;
+			doom->edit.status = ED_LOADED;
+		}
+		else if (doom->edit.status == ED_FORME)
+		{
+			x = ft_lil_super_atoi(str);
+			if (x > 10)
+				x = 0;
+			draw_forme(doom, x);
 			doom->edit.status = ED_LOADED;
 		}
 		else if (doom->edit.status == ED_OPEN)
@@ -156,6 +222,8 @@ void draw_writer(t_editor *edit)
 {
 	if (edit->status == ED_WRITING)
 		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 50, 20}, "HEIGHT", (SDL_Color){250, 250, 250, 255});
+	else if (edit->status == ED_FORME)
+		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 120, 20}, "Number of points", (SDL_Color){250, 250, 250, 255});
 	else if (edit->status == ED_SAVING)
 		sdl_string_put(edit->rend, edit->ui->fonts.s64, (t_vct2){edit->size.x / 2 - 50, 20}, "Saving", (SDL_Color){250, 250, 250, 255});
 	else if (edit->status == ED_OPEN)
