@@ -6,26 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/29 18:28:08 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 13:19:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-void		reload(Uint32 timestamp, t_player *player, t_weapon *weapon)
-{
-	int	r;
-
-	if (player->occupied < timestamp)
-	{
-		r = weapon->clip_max - weapon->clip;
-		if (weapon->ammo - r < 0)
-			r = weapon->ammo;
-		weapon->ammo -= r;
-		weapon->clip += r;
-		player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
-	}
-}
 
 void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 {
@@ -56,22 +41,22 @@ t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height)
 
 void		impact_wall(t_wall *wall, t_fvct3 p)
 {
-	printf("WALL HIT\n");
 	wall->props[wall->nb_props].pos.x = p.x;
 	wall->props[wall->nb_props].pos.y = p.y;
 	wall->props[wall->nb_props].pos.z = p.z;
+	printf("WALL HIT: x = %f | y = %f | z = %f\n", p.x, p.y, p.z);
 }
 
 void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)
 {
 	if (hit.z < enemy->stat.sector->h_floor)
-		{printf("TRO O LOL\n");return ;}
+		{printf("TRO O LOL\n");return ;}//
 	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height)
-		{printf("TRO BA MDR || %f\n", enemy->stat.sector->h_floor + enemy->stat.height);return ;}
+		{printf("TRO BA MDR || %f\n", enemy->stat.sector->h_floor + enemy->stat.height);return ;}//
 	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height - 0.25)
-		{enemy->stat.health -= dmg * 3;printf("HEADSHOT !\n");}
+		{enemy->stat.health -= dmg * 3;printf("HEADSHOT !\n");}//
 	else
-		{enemy->stat.health -= dmg;printf("BODYSHOT !\n");}
+		{enemy->stat.health -= dmg;printf("BODYSHOT !\n");}//
 	if (enemy->stat.health > 0)
 		;//hit texture ?
 	else
@@ -79,6 +64,7 @@ void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)
 		enemy->state = 4;//apply dying textures ou pas
 		del_enemy(enemy->stat.sector, enemy);
 	}
+	printf("ENEMY HIT: x = %f | y = %f | z = %f\n", hit.x, hit.y, hit.z);
 }
 
 static void	apply(t_shoot *shoot, t_stat *stat, t_fvct3 mo, int dmg)
@@ -90,13 +76,11 @@ static void	apply(t_shoot *shoot, t_stat *stat, t_fvct3 mo, int dmg)
 	eaim = real_coord(stat->pos, shoot->edist, mo, stat->height/ 2);
 	//calcul enemy or wall is closer
 	//if (is_closer(stat, waim, eaim))
-	if (distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){waim.x, waim.y})
-		< distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){eaim.x, eaim.y}))//revoir condition nulle
+	if (shoot->whit && distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){waim.x, waim.y})
+		< distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){eaim.x, eaim.y}))
 		impact_wall(shoot->whit, waim);// change bullet hole prop 's position
-	else
+	else if (shoot->ehit)
 		injure_enemy(shoot->ehit, dmg, eaim);//damages on touched enemy
-	printf("SUPER COORD WALL : x = %f | y = %f | z = %f\n", waim.x, waim.y, waim.z);
-	printf("SUPER COORD ENEMY : x = %f | y = %f | z = %f\n", eaim.x, eaim.y, eaim.z);
 	//printf("distance || %f ||\n\n", shoot->wdist);
 }
 
@@ -114,10 +98,8 @@ void		bullet(t_stat *stat, int dmg)
 	d.z = mo.z + stat->pos.z;
 	shoot.i_e = 0;
 	shoot.i_w = 0;
-	//printf("\rRot : %f\t%f\n", stat->rot.x, stat->rot.y);
-	//printf("d : x = %f | y = %f | z = %f\n", d.x, d.y, d.z);
-	//printf("mo : x = %f | y = %f | z = %f\n", mo.x, mo.y, mo.z);
-	//supa_shoota(stat, d, mo);
+	shoot.ehit = NULL;
+	shoot.whit = NULL;
 	possible(&shoot, stat, d, stat->sector);
 	wall_real_hit(&shoot, stat);
 	apply(&shoot, stat, mo, dmg);

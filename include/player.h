@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/29 18:15:49 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 13:12:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,13 +145,12 @@ void					del_enemy(t_sector *sector, t_enemy *enemy);
 */
 
 void					jetpack_on_off(t_player *player);
-void					fly(t_stat *stat);
-void					unfly(t_stat *stat);
+void					fly_down(t_stat *stat);
 void					sprint_release(t_stat *stat);
 void					sprint(t_stat *stat);
 void					gravity(t_stat *stat);
 void					inertie(t_stat *stat);
-void					jump(t_player *player);
+void					jump(t_stat *stat);
 void					crouch_release(t_player *player);
 void					crouch(t_player *player);
 void					next_weapon(t_player *player);

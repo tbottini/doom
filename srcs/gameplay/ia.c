@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:46:33 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 16:57:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 12:55:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		move_toward(t_enemy *enemy, t_player *player, Uint32 timestamp)
 	npos.y = enemy->stat.pos.y + (cos(enemy->stat.rot.y) / 10.0) * (enemy->stat.speed / 30000.0);
 	tmp = -7000;
 	old = enemy->stat.sector;
-	if (enemy->stat.sector == player->stat.sector || (tmp = colli_teleport(&enemy->stat, enemy->stat.sector, npos, &hit)) != -1)
+	if (enemy->stat.sector == player->stat.sector || (tmp = colli_port(&enemy->stat, enemy->stat.sector, npos, &hit)) != -1)
 	{
 		if (tmp == 1)
 		{

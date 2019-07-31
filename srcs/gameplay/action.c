@@ -6,72 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:45:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 13:08:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-# define RANGE 2
-
-void		next_weapon(t_player *player)
-{
-	int i;
-
-	i = player->hand->id + 1;
-	while (i < NB_WEAPON)
-	{
-		if (player->weapons[i].on)
-			break;
-		i++;
-	}
-	if (i == NB_WEAPON)
-		player->hand = &player->weapons[0];
-	else
-		player->hand = &player->weapons[i];
-}
-
-void		prev_weapon(t_player *player)
-{
-	int i;
-
-	i = (player->hand->id == FIST) ? NB_WEAPON - 1 : player->hand->id - 1;
-	while (i > 0)
-	{
-		if (player->weapons[i].on)
-			break;
-		i--;
-	}
-	player->hand = &player->weapons[i];
-}
-
-void		change_weapon(t_player *player, int id)
-{
-	ft_printf("ID SWITCH    %d\n", id);
-	if (player->weapons[id].on)
-	{
-		switch (id)
-		{
-		case (0):
-			printf("no weapon equipped\n");
-			break ;
-		case (1):
-			printf("gun equipped\n");
-			break ;
-		case (2):
-			printf("shotgun equipped\n");
-			break ;
-		case (3):
-			printf("rifle equipped\n");
-			break ;
-		default:
-			printf("couldnt switch\n");
-			break;
-		}
-	}
-	if (id >= 0 && id < NB_WEAPON && player->weapons[id].on)
-		player->hand = &player->weapons[id];
-}
+#define RANGE 2
 
 int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight)
 {
@@ -82,32 +23,21 @@ int			is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight)
 	return (0);
 }
 
-void		action(t_doom *doom, t_stat *stat)
+void		action(t_doom *doom, t_stat *s)
 {
 	int			x;
 	t_fvct3		d;
 	t_wall		*wallhit;
 
-	d.x = stat->pos.x + (RANGE * sin(stat->rot.x * PI180) * cos(stat->rot.y * PI180));
-	d.y = stat->pos.y + (RANGE * sin(stat->rot.x * PI180) * sin(stat->rot.y * PI180));
-	d.z = stat->pos.z + (-(RANGE * cos(stat->rot.x * PI180)) + (stat->height / 2));
-	if (!(wallhit = collisionV21(stat->sector, stat->pos, d, NULL)))
-	{
-		ft_printf("No Wall HIT\n");
+	d.x = s->pos.x + (RANGE * sin(s->rot.x * PI180) * cos(s->rot.y * PI180));
+	d.y = s->pos.y + (RANGE * sin(s->rot.x * PI180) * sin(s->rot.y * PI180));
+	d.z = s->pos.z + (-(RANGE * cos(s->rot.x * PI180)) + (s->height / 2));
+	if (!(wallhit = colli_walls(s->sector, s->pos, d, NULL)))
 		return ;
-	}
-	x = 0;
-	while (x < wallhit->nb_props)
+	x = -1;
+	while (++x < wallhit->nb_props)
 	{
-		/* printf("Player:\nx: %f\ny: %f\nz: %f\n\n", stat->pos.x, stat->pos.y, stat->pos.z);
-		printf("x: %f\ny: %f\nw: %f\ny: %f\nz: %f\nh: %f\n",
-			wallhit->props[x].hitbox.x,
-			wallhit->props[x].hitbox.y,
-			wallhit->props[x].hitbox.w,
-			wallhit->props[x].hitbox.l,
-			wallhit->props[x].hitbox.z,
-			wallhit->props[x].hitbox.h);*/
-		if (is_in_hitbox(&wallhit->props[x].hitbox, stat->pos, stat->height / 2))
+		if (is_in_hitbox(&wallhit->props[x].hitbox, s->pos, s->height / 2))
 		{
 			if (wallhit->props[x].type == MINWPROPSPOS)
 			{
@@ -117,32 +47,34 @@ void		action(t_doom *doom, t_stat *stat)
 			}
 			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
 				wallhit->props[x].func(doom);
-			printf("POS : touched prop type = %d\n", wallhit->props[x].type);
+			printf("POS : touched prop type = %d\n", wallhit->props[x].type);//clic sound
 		}
-		x++;
 	}
 }
 
-///////////////////////////////////////////////////////////////////////
-
-void		jump(t_player *player)
+void		jump(t_stat *stat)
 {
-	if (player->stat.pos.z == player->stat.sector->h_floor)
+	if (stat->jetpack && stat->pos.z == stat->sector->h_floor)
 	{
-		player->stat.vel.z = (WALK * player->stat.height) / 2;
+		stat->vel.z = (WALK * stat->height) / 2;
 		Mix_Pause(1);
 	}
+	else if (!stat->jetpack)
+	{
+		if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height - 0.1)
+			stat->pos.z += 0.1;
+		else if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height)
+			stat->pos.z = stat->sector->h_ceil + stat->sector->h_ceil - stat->height;
+	}
 }
 
-void		kick(Uint32 timestamp, t_sound *sound, t_player *player)
+void		kick(Uint32 timestamp, t_sound *sound, t_player *pl)
 {
 	t_fvct3	d;
-	int		range;
 
-	range = 1;
-	d.x = range * sin(player->stat.rot.x * PI180) * cos(player->stat.rot.y * PI180);
-	d.y = range * sin(player->stat.rot.x * PI180) * sin(player->stat.rot.y * PI180);
-	d.z = -(range * cos(player->stat.rot.x * PI180)) + (player->stat.height / 2);
+	d.x = RANGE * sin(pl->stat.rot.x * PI180) * cos(pl->stat.rot.y * PI180);
+	d.y = RANGE * sin(pl->stat.rot.x * PI180) * sin(pl->stat.rot.y * PI180);
+	d.z = -(RANGE * cos(pl->stat.rot.x * PI180)) + (pl->stat.height / 2);
 	Mix_PlayChannel(2, sound->tab_effect[6], 0);
-	player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
+	pl->occupied = timestamp + 1000; //ajuster avec vitesse d'animation
 }

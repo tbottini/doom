@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:33:01 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 13:12:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,7 @@ void		jetpack_on_off(t_player *player)
 		player->stat.jetpack = 1;
 }
 
-void		fly(t_stat *stat)
-{
-	if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height - 0.1)
-		stat->pos.z += 0.1;
-	else if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height)
-		stat->pos.z = stat->sector->h_ceil + stat->sector->h_ceil - stat->height;
-}
-
-void		unfly(t_stat *stat)
+void		fly_down(t_stat *stat)
 {
 	if (stat->pos.z > stat->sector->h_floor + 0.1)
 		stat->pos.z -= 0.1;
@@ -125,7 +117,7 @@ void		update_position(t_stat *stat, t_fvct3 npos)
 	int		port;
 
 	w = NULL;
-	if ((port = colli_teleport(stat, stat->sector, npos, &w)) >= 1)
+	if ((port = colli_port(stat, stat->sector, npos, &w)) >= 1)
 	{
 		stat->pos.x = port == 1 ? npos.x : npos.x + npos.x / 10;
 		stat->pos.y = port == 1 ? npos.y : npos.y + npos.y / 10;
