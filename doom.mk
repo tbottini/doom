@@ -99,6 +99,10 @@ SRCS_GESTION	:=		doom_manager.c									\
 SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\
 
+SRCS_RASTERIZE	:=		render_surface_rasterize.c						\
+						surface_to_world.c								\
+						world_to_camera.c								\
+
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\
 						$(patsubst %.c,objs/parsing/%.o,$(SRCS_PARSING))\
@@ -110,5 +114,6 @@ OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))\
 						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))	\
 						$(patsubst %.c,objs/editor/%.o,$(SRCS_EDITOR))	\
+						$(patsubst %.c,objs/render/rasterisation/%.o,$(SRCS_RASTERIZE))\
 
 SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))

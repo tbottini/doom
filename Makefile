@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
+#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/07/29 11:57:24 by akrache          ###   ########.fr        #
+#    Updated: 2019/07/31 14:09:36 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ FOLDER			:=		objs									\
 						objs/render/hud							\
 						objs/render/pre_render					\
 						objs/render/drawer						\
+						objs/render/rasterisation				\
 
 COMPILE_LIB		:=		make -C libft/
 

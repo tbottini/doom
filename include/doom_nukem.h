@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 11:56:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/31 08:35:07 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include "editor.h"
 # include "input.h"
 # include "debug.h"
-
 /*
 **		!!! global de debug a enlever
 */
@@ -26,6 +25,11 @@ extern int debug;
 extern int debug_screen;
 
 # define DEBUG_VISUAL 1
+
+# define RASTERIZE		0
+# define ENGINE			1
+# define RENDER			RASTERIZE
+
 
 # define MINWIDTH 800
 # define MINHEIGHT 800

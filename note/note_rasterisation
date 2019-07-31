@@ -1,0 +1,35 @@
+note
+
+{
+	Model to World
+	-on recupere une surface(mur, portal, porte)
+	-on calcul ces coordonnes x, y, z dans le monde
+
+	Triangle
+	-on le decoupe en deux triangle
+}	--->on combine les deux car model to world et triangle sont tres court
+
+World to Camera
+-on calcul ses coordonne par rapport a la camera
+-on calcul ses coordonne par rapport a la rotation de la camera
+
+
+Clipping Z
+-si trois points sont derriere l'ecran
+	on ne rend pas le triangle
+-si deux points on z < 0
+	alors on calcul l'intersection en z (des deux points z<0 par rapport au point en face de l'ecran)
+-si un seul point a z<0
+	on calcul ses intersection avec les deux autres point
+	on divise les intersection et les deux autre point en triangle
+	on rend les deux triangle
+
+Camera to View
+-on projete les point sur l'ecran
+-(on garde la profondeur)
+
+View to Screen
+-on multiplie les coordonne par les dimension de l'ecran
+
+Rasterisation
+-on rend les different triangle avec un barycentre, zbuffer...

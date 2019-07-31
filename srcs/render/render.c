@@ -10,7 +10,6 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	t_wall			*wall;
 	int				i;
 	t_wall			*portal_tmp;
-	t_minimap		mini;
 
 	if (debug_screen == 2 && arch->depth_portal > 0)
 		draw_borne(arch, RED);
@@ -59,8 +58,8 @@ void				clear_screen(t_sdl *sdl)
 
 int					doom_render(t_doom *doom)
 {
-	t_minimap		mini;
 	int				i;
+	t_minimap		mini;
 
 	i = 0;
 	if (debug == 1)
@@ -72,7 +71,17 @@ int					doom_render(t_doom *doom)
 		draw_frustum(&doom->game.arch, SCREEN_ON | FOV_HORI);
 	if (debug_screen == 3)
 		draw_frustum(&doom->game.arch, SCREEN_ON);
-	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
+
+
+
+	if (RENDER == ENGINE || RENDER == RASTERIZE)
+		sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
+	else if (RENDER == RASTERIZE)
+	{
+		render_surface_rasterize(&doom->game.player.stat.sector->wall[1], &doom->game.player, &doom->game.camera);
+		//render_model(&doom->game )
+	}
+
 	mini = miniinit(&doom->sdl);
 	minimap(&mini, &doom->game.player);
 	debug_screen_copy(&doom->game.arch);
