@@ -1,35 +1,63 @@
 note
 
-{
-	Model to World
+Function:
+	ModelToWorld
+	WorldToCamera
+	Triangle
+	ClippingVerticles(2xverticles, 2*verticles_texture)
+	CameraToView
+	ViewToScreen
+	Rasterization
+
+main_function:
+	RENDER_TRIANGLE
+	RENDER_SURFACE_RASTERIZE
+
+Model to World
 	-on recupere une surface(mur, portal, porte)
 	-on calcul ces coordonnes x, y, z dans le monde
-
-	Triangle
-	-on le decoupe en deux triangle
-}	--->on combine les deux car model to world et triangle sont tres court
+	-des quatre coordonnees
 
 World to Camera
--on calcul ses coordonne par rapport a la camera
--on calcul ses coordonne par rapport a la rotation de la camera
+	-on calcul ses coordonne par rapport a la camera
+	-on calcul ses coordonne par rapport a la rotation de la camera
 
+Triangle:
+	-on forme les triangles
 
 Clipping Z
--si trois points sont derriere l'ecran
-	on ne rend pas le triangle
--si deux points on z < 0
-	alors on calcul l'intersection en z (des deux points z<0 par rapport au point en face de l'ecran)
--si un seul point a z<0
-	on calcul ses intersection avec les deux autres point
-	on divise les intersection et les deux autre point en triangle
-	on rend les deux triangle
+	-si trois points sont derriere l'ecran
+		on ne rend pas le triangle
+	-si deux points on z < 0
+		2* ClippingTriangle(*verticles, *verticles, *verticles_texture, *verticles_texture)
+
+	-si un seul point a z<0
+		2*x ClippingTriangle(*verticles, *verticles, *verticles_texture)
 
 Camera to View
--on projete les point sur l'ecran
--(on garde la profondeur)
+	-on projete les point sur l'ecran
+	-(on garde la profondeur)
 
 View to Screen
--on multiplie les coordonne par les dimension de l'ecran
+	-on multiplie les coordonne par les dimension de l'ecran
 
 Rasterisation
--on rend les different triangle avec un barycentre, zbuffer...
+	-on rend les different triangle avec un barycentre, zbuffer...
+
+
+RENDER_TRIANGLE
+
+	Clipping Z
+	Camera To View
+	View To Projection
+	Rasterization
+
+RENDER_SURFACE_RASTERIZE
+
+	Surface_To_World (surface --> quad(//verticles[4]))
+	World_To_Camera
+
+	Quad_To_Triangles (quad(//verticles[4]) --> 2 * triangle(?verticles[3]))
+
+	RENDER_TRIANGLE (Triangle_left)
+	RENDER_TRIANGLE (Triangle_right)

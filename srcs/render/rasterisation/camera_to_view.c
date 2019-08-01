@@ -1,5 +1,4 @@
-#include "rasterize.h"
-#include "debug.h"
+#include "doom_nukem.h"
 
 /*
 **	on projete les point dans une proportion de l'ecran
@@ -26,11 +25,11 @@ void		camera_to_screen(t_triangle *triangle, t_camera *camera, t_sdl *sdl)
 	triangle->v2.z = sdl->size.y / 2 - (triangle->v2.z / fov_tan.y) * sdl->size.y;
 }
 
-void		triangles_show_verticles(t_arch *arch, t_triangle *triangle, t_sdl *sdl)
+/*
+**	on affiche les arretes du triangle
+*/
+void		triangle_show_verticles(t_arch *arch, t_triangle *triangle)
 {
-	//sdl->screen[(int)(triangle->v0.x + triangle->v0.z * sdl->size.x)] = 0xffffffff;
-	//sdl->screen[(int)(triangle->v1.x + triangle->v1.z * sdl->size.x)] = 0xffffffff;
-	//sdl->screen[(int)(triangle->v2.x + triangle->v2.z * sdl->size.x)] = 0xffffffff;
 	trait(arch, (t_vct2){triangle->v0.x, triangle->v0.z}, (t_vct2){triangle->v1.x, triangle->v1.z}, BLUE);
 	trait(arch, (t_vct2){triangle->v1.x, triangle->v1.z}, (t_vct2){triangle->v2.x, triangle->v2.z}, BLUE);
 	trait(arch, (t_vct2){triangle->v2.x, triangle->v2.z}, (t_vct2){triangle->v0.x, triangle->v0.z}, BLUE);

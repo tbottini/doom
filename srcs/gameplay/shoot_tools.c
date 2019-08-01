@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shoot_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/27 14:59:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/01 14:58:56 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static double	enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
 	}
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
-/* 
+/*
 static void			enemy_hitbox(t_enemy *enemy)
 {
 	enemy->e1.x = sin((angle - 90.0) * PI180) * (enemy->stat.width / 2);
@@ -143,6 +143,8 @@ void		possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *secto
 {
 	t_enemy	*tmp;
 
+	(void)ori;
+	(void)stat;
 	tmp = sector->enemys;
 	while (shoot->i_e < 50 && tmp)
 	{

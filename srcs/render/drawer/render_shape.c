@@ -1,12 +1,5 @@
 #include "doom_nukem.h"
 
-
-int				render_shape(t_arch *arch, t_shap shape)
-{
-	return (0);
-}
-
-
 /*
 
 */
@@ -21,7 +14,6 @@ t_fvct2			get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pil
 {
 	double		px_to_u;
 	t_fvct2		floor_pos;
-	t_affine	portal_a;
 	t_fvct2		inte;
 
 	//len.x - len.y car len.y est negatif
@@ -67,12 +59,3 @@ t_shap			shape_def(t_fvct2 up_left, t_fvct2 up_right, t_fvct2 bot_left, t_fvct2 
 	return (shape);
 }
 
-int				render_floor(t_arch *arch, t_shap shape)
-{
-	t_shap		floor_s;
-
-	render_shape(arch, shape);
-	//start render
-
-	return (1);
-}

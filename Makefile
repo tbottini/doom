@@ -1,3 +1,4 @@
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -140,7 +141,7 @@ convert_dot : $(PNG_FILE)
 install_doc:
 	brew install doxygen
 
-doc		: Doxyfile
+doc		: 
 	doxygen -g
 	sed -ie "s/HAVE_DOT               = NO/HAVE_DOT               = YES/g" Doxyfile
 	sed -ie "s/EXTRACT_ALL            = NO/EXTRACT_ALL            = YES/g" Doxyfile
@@ -156,7 +157,7 @@ doc		: Doxyfile
 	@#mv $(PNG_FILE) html/
 	rm -f Doxyfilee
 	open html/index.html
-	
+
 
 doclean:
 	rm -rf html latex Doxyfile

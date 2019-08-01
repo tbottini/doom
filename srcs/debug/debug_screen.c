@@ -178,7 +178,6 @@ void		draw_frustum(t_arch *arch, int flag)
 
 void		debug_pillar_ver(t_arch *arch, t_fvct2 surface_pillar)
 {
-	t_affine	pillar;
 	t_affine	fov_affine;
 	int			len_screen;
 	int			dist;

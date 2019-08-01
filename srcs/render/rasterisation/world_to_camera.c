@@ -5,7 +5,6 @@ void			fvct3_sub(t_fvct3 *vector_sub, t_fvct3 *vector_sub2)
 	vector_sub->x -= vector_sub2->x;
 	vector_sub->y -= vector_sub2->y;
 	vector_sub->z -= vector_sub2->z;
-
 }
 
 void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot)
@@ -34,4 +33,20 @@ void			world_to_camera(t_triangle *triangle, t_player *player)
 	fvct3_rotation(&triangle->v0, player->stat.rot);
 	fvct3_rotation(&triangle->v1, player->stat.rot);
 	fvct3_rotation(&triangle->v2, player->stat.rot);
+}
+
+/*
+**	on change le referentiel d'un quad
+**	les coordonnes du quad seront en fonction d'un stat, rotation position
+*/
+void			quad_set_referential(t_quad *quad, t_stat *ref)
+{
+	fvct3_sub(&(*quad)[0].v, &ref->pos);
+	fvct3_sub(&(*quad)[1].v, &ref->pos);
+	fvct3_sub(&(*quad)[2].v, &ref->pos);
+	fvct3_sub(&(*quad)[3].v, &ref->pos);
+	fvct3_rotation(&(*quad)[0].v, ref->rot);
+	fvct3_rotation(&(*quad)[1].v, ref->rot);
+	fvct3_rotation(&(*quad)[2].v, ref->rot);
+	fvct3_rotation(&(*quad)[3].v, ref->rot);
 }

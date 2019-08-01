@@ -21,16 +21,23 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	portal_tmp = arch->wall;
 	while (i < sector->len)
 	{
-		on_frustum(arch, player, wall[i].pillar);
-		on_frustum(arch, player, wall[i].next);
-		if (((wall[i].pillar->frust || wall[i].next->frust)
-			||	borne_in_wall_angle(arch, &wall[i]))
-				&& equal_pillar(&wall[i], arch->wall))
+		if (RENDER == RASTERIZE)
 		{
-			portal_tmp = arch->wall;
-			arch->wall = &wall[i];
-			render_wall(arch, player);
-			arch->wall = portal_tmp;
+			render_surface_rasterize(arch, &wall[i], sector, player);
+		}
+		else if (RENDER == ENGINE)
+		{
+			on_frustum(arch, player, wall[i].pillar);
+			on_frustum(arch, player, wall[i].next);
+			if (((wall[i].pillar->frust || wall[i].next->frust)
+				||	borne_in_wall_angle(arch, &wall[i]))
+					&& equal_pillar(&wall[i], arch->wall))
+			{
+				portal_tmp = arch->wall;
+				arch->wall = &wall[i];
+				render_wall(arch, player);
+				arch->wall = portal_tmp;
+			}
 		}
 		i++;
 	}
@@ -73,14 +80,8 @@ int					doom_render(t_doom *doom)
 		draw_frustum(&doom->game.arch, SCREEN_ON);
 
 
+	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 
-	if (RENDER == ENGINE)
-		sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
-	else if (RENDER == RASTERIZE)
-	{
-		render_surface_rasterize(&doom->game.arch, &doom->game.player.stat.sector->wall[0], doom->game.player.stat.sector, &doom->game.player, &doom->game.camera);
-
-	}
 	mini = miniinit(&doom->sdl);
 	minimap(&mini, &doom->game.player);
 	debug_screen_copy(&doom->game.arch);

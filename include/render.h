@@ -99,6 +99,7 @@ void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 //void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
+void					trait(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 
 /*
 **	shape
