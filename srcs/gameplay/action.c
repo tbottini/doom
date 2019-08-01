@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 13:08:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/01 15:54:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,26 @@ void		jump(t_stat *stat)
 void		kick(Uint32 timestamp, t_sound *sound, t_player *pl)
 {
 	t_fvct3	d;
+	t_enemy	*tmp;
+	t_enemy	*tmp2;
 
-	d.x = RANGE * sin(pl->stat.rot.x * PI180) * cos(pl->stat.rot.y * PI180);
-	d.y = RANGE * sin(pl->stat.rot.x * PI180) * sin(pl->stat.rot.y * PI180);
-	d.z = -(RANGE * cos(pl->stat.rot.x * PI180)) + (pl->stat.height / 2);
-	Mix_PlayChannel(2, sound->tab_effect[6], 0);
+	printf("SUPA KICKA\t\t");
+	tmp = pl->stat.sector->enemys;
+	d.x = pl->stat.pos.x + RANGE * sin(pl->stat.rot.x * PI180) * cos(pl->stat.rot.y * PI180);
+	d.y = pl->stat.pos.y + RANGE * sin(pl->stat.rot.x * PI180) * sin(pl->stat.rot.y * PI180);
+	d.z = pl->stat.pos.z + -(RANGE * cos(pl->stat.rot.x * PI180)) + (pl->stat.height / 2);
+	while (tmp)
+	{
+		tmp2 = tmp->next;
+		if (vector_intersect(d, pl->stat.pos, tmp->e1, tmp->e2))
+		{
+			injure_enemy(tmp, pl->weapons[0].dmg, d);
+			Mix_PlayChannel(2, sound->tab_effect[6], 0);
+			pl->occupied = timestamp + 1000; //ajuster avec vitesse d'animation
+			return ;
+		}
+		tmp = tmp2;
+	}
+	printf("MISSED\n");
 	pl->occupied = timestamp + 1000; //ajuster avec vitesse d'animation
 }

@@ -117,6 +117,5 @@ t_wall					*collision(t_sector *sector, t_fvct3 pos, t_wall *w);
 t_wall					*colli_walls(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						colli_port(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **wall);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
-void					bulletV42(t_doom *doom, t_player *player);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 13:16:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 14:15:40 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ static int		bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 		mo.x = ori.x - stat->pos.x;
 		mo.y = ori.y - stat->pos.y;
 		mo.z = ori.y - stat->pos.z;
-		coord = real_coord(stat->pos, toto, ori, stat->height / 2);
+		coord = real_coord(stat->pos, toto, ori, 0);
+		//coord = real_coord(stat->pos, toto, mo, stat->height / 2);
 		if ((coord.z < next.h_floor + next.h_ceil) && (next.h_floor < coord.z))
 			return (1);
 	}

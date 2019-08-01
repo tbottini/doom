@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 13:19:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/07/30 15:04:10 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 {
-	if (player->hand->clip == 0)
-		reload(timestamp, player, player->hand);
-	else if (player->hand->id == FIST)
+	printf("shoooooooot || weapon id = %d | FIST = %d\n", player->hand->id, FIST);
+	if (player->hand->id == FIST)
 		kick(timestamp, sound, player);
+	else if (player->hand->clip == 0)
+		reload(timestamp, player, player->hand);
 	else
 	{
 		bullet(&player->stat, player->hand->dmg);
@@ -72,8 +73,8 @@ static void	apply(t_shoot *shoot, t_stat *stat, t_fvct3 mo, int dmg)
 	t_fvct3 waim;
 	t_fvct3 eaim;
 
-	waim = real_coord(stat->pos, shoot->wdist, mo, stat->height/ 2);
-	eaim = real_coord(stat->pos, shoot->edist, mo, stat->height/ 2);
+	waim = real_coord(stat->pos, shoot->wdist, mo, 0);
+	eaim = real_coord(stat->pos, shoot->edist, mo, 0);
 	//calcul enemy or wall is closer
 	//if (is_closer(stat, waim, eaim))
 	if (shoot->whit && distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){waim.x, waim.y})
@@ -104,3 +105,4 @@ void		bullet(t_stat *stat, int dmg)
 	wall_real_hit(&shoot, stat);
 	apply(&shoot, stat, mo, dmg);
 }
+
