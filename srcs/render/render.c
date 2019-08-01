@@ -74,14 +74,13 @@ int					doom_render(t_doom *doom)
 
 
 
-	if (RENDER == ENGINE || RENDER == RASTERIZE)
+	if (RENDER == ENGINE)
 		sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	else if (RENDER == RASTERIZE)
 	{
-		render_surface_rasterize(&doom->game.player.stat.sector->wall[1], &doom->game.player, &doom->game.camera);
-		//render_model(&doom->game )
-	}
+		render_surface_rasterize(&doom->game.arch, &doom->game.player.stat.sector->wall[0], doom->game.player.stat.sector, &doom->game.player, &doom->game.camera);
 
+	}
 	mini = miniinit(&doom->sdl);
 	minimap(&mini, &doom->game.player);
 	debug_screen_copy(&doom->game.arch);

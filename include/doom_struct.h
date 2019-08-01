@@ -11,7 +11,7 @@
 # include "player.h"
 # include "calcul.h"
 # include "libft.h"
-# include "rasterize.h"
+
 
 # define WIDTH 1300
 # define HEIGHT 950

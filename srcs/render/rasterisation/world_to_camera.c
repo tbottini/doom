@@ -12,12 +12,15 @@ void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot)
 {
 	t_fvct3		tmp;
 
+	rot.x = (rot.x - 90) * (M_PI / 180);
+	rot.y = -rot.y * (M_PI / 180);
+
 	tmp = *point;
-	point->x = tmp.x * cos(rot.y) + tmp.z * sin(rot.y);
-	point->z = tmp.x * -sin(rot.y) + tmp.z * cos(rot.y);
+	point->x = tmp.x * cos(rot.y) + tmp.y * sin(rot.y);
+	point->y = tmp.x * -sin(rot.y) + tmp.y * cos(rot.y);
 	tmp = *point;
-	point->y = tmp.y * cos(rot.x) - tmp.z * sin(rot.x);
-	point->z = tmp.y * sin(rot.x) + tmp.z * cos(rot.x);
+	point->z = tmp.z * cos(rot.x) - tmp.y * sin(rot.x);
+	point->y = tmp.z * sin(rot.x) + tmp.y * cos(rot.x);
 }
 
 /*

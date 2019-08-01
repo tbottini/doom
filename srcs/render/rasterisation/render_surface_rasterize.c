@@ -1,25 +1,48 @@
 #include "doom_nukem.h"
 
-int				verticle_position_cam(t_triangle *triangle)
+void			print_triangle(t_triangle *triangle)
 {
-	return ((triangle->v0.z > 1) + (triangle->v1.z > 1) + (triangle->v2.z > 1));
+	printf("triangle");
+	printf("v0: %f %f %f\n", triangle->v0.x, triangle->v0.y, triangle->v0.z);
+	printf("v1: %f %f %f\n", triangle->v1.x, triangle->v1.y, triangle->v1.z);
+	printf("v2: %f %f %f\n", triangle->v2.x, triangle->v2.y, triangle->v2.z);
 }
 
-void			render_surface_rasterize(t_wall *surface, t_sector *sector, t_player *player, t_camera *cam)
+int				verticle_position_cam(t_triangle *triangle)
+{
+	return ((triangle->v0.y > 1) + (triangle->v1.y > 1) + (triangle->v2.y > 1));
+}
+
+//t_sdl
+void			render_surface_rasterize(t_arch *arch, t_wall *surface, t_sector *sector, t_player *player, t_camera *cam)
 {
 	t_triangle	triangle_left;
 	t_triangle	triangle_right;
 	int			front_of_cam;
 
-	surface_to_triangle(&triangle_right, &triangle_left, surface, wall, sector);
+	surface_to_triangles(&triangle_right, &triangle_left, surface, sector);
 	world_to_camera(&triangle_right, player);
+	front_of_cam = verticle_position_cam(&triangle_right);
+	b_point_debug(arch, *(t_fvct2*)&player->stat.pos, WHITE);
+	b_point_debug(arch, (t_fvct2){triangle_right.v0.y, triangle_right.v0.x}, RED);
+	b_point_debug(arch, (t_fvct2){triangle_right.v1.y, triangle_right.v1.x}, GREEN);
+	b_point_debug(arch, (t_fvct2){triangle_right.v2.y, triangle_right.v2.x}, BLUE_SOFT);
+
+	if (front_of_cam == 3)
+	{
+		if (debug == 5)
+			print_triangle(&triangle_right);
+		camera_to_screen(&triangle_right, cam, arch->sdl);
+		triangles_show_verticles(arch, &triangle_right, arch->sdl);
+	}
+	world_to_camera(&triangle_left, player);
 	front_of_cam = verticle_position_cam(&triangle_left);
-	if (front_of_cam == 0)
-		printf("pas de rendu de triangle verticles behind cam\n");
-	else if (front_of_cam == 1)
-		printf("deux intersection et formation d'un triangle\n");
-	else if (front_of_cam == 2)
-		printf("deux intersection et formation de deux triangles\n");
-	else
-		printf("rendu normal, le triangle est en face de la camera\n");
+	if (front_of_cam == 3)
+	{
+		if (debug == 5)
+			print_triangle(&triangle_left);
+		camera_to_screen(&triangle_left, cam, arch->sdl);
+		triangles_show_verticles(arch, &triangle_left, arch->sdl);
+	}
+	b_point_debug(arch, (t_fvct2){triangle_left.v0.y, triangle_left.v0.x}, RED);
 }

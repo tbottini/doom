@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/31 08:35:07 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/07/31 14:59:05 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "editor.h"
 # include "input.h"
 # include "debug.h"
+# include "rasterize.h"
 /*
 **		!!! global de debug a enlever
 */
@@ -152,5 +153,6 @@ void					mini_draw_wall(t_wall *wall, t_fvct3 pos, t_minimap *mini);
 int						bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color);
 void					minibord(t_minimap *mini);
 void					miniwalls(t_player *player, t_sector *sector, t_minimap *mini);
+
 
 #endif

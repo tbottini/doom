@@ -118,4 +118,9 @@ void					borne_reset(t_arch *arch);
 void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
 void					set_borne_horizontal(t_arch *arch);
 
+/*
+**	rasterize
+*/
+
+
 #endif
