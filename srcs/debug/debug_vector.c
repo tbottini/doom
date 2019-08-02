@@ -1,5 +1,6 @@
 #include "libft.h"
 #include "vector.h"
+#include "stdio.h"
 
 void		ft_putdouble(double num)
 {
@@ -52,8 +53,5 @@ void		fvct3_print(t_fvct3 vector)
 
 void		fvct3_msg(char *msg, t_fvct3 vector)
 {
-	ft_putstr(msg);
-	ft_putstr(" : ");
-	fvct3_print(vector);
-	ft_putchar('\n');
+	printf("%s : .x %f .y %f .z %f\n", msg, vector.x, vector.y, vector.z);
 }

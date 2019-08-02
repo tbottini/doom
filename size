@@ -1,0 +1,170 @@
+srcs//debug/debug_screen.c:5:	vct.x = arch->sdl->size.x / 2.0 + vct.x * arch->zoom;
+srcs//debug/debug_screen.c:6:	vct.y = arch->sdl->size.y / 2.0 - vct.y * arch->zoom;
+srcs//debug/debug_screen.c:44:	screen = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
+srcs//debug/debug_screen.c:45:	b.x = arch->sdl->size.x / 2.0 + (v.x * (double)arch->zoom) - 1;
+srcs//debug/debug_screen.c:46:	b.y = arch->sdl->size.y / 2.0 - (v.y * (double)arch->zoom) - 1;
+srcs//debug/debug_screen.c:68:	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
+srcs//debug/debug_screen.c:74:	point1.x = arch->sdl->size.x / 2.0;
+srcs//debug/debug_screen.c:75:	point1.y = arch->sdl->size.y / 2.0;
+srcs//debug/debug_screen.c:76:	point2.x = arch->sdl->size.x - 1;
+srcs//debug/debug_screen.c:77:	point2.y = arch->sdl->size.y / 2 - affine_val(borne_up, point2.x / 2.0);
+srcs//debug/debug_screen.c:79:	point2.y = arch->sdl->size.y / 2 - affine_val(borne_down, point2.x / 2.0);
+srcs//debug/debug_screen.c:88:	point1.x = arch->sdl->size.x / 2.0 + (arch->pillar.x * arch->zoom);
+srcs//debug/debug_screen.c:89:	point1.y = arch->sdl->size.y / 2.0 - (arch->pillar.y * arch->zoom);
+srcs//debug/debug_screen.c:90:	point2.x = arch->sdl->size.x / 2.0 + (arch->next.x * arch->zoom);
+srcs//debug/debug_screen.c:91:	point2.y = arch->sdl->size.y / 2.0 - (arch->next.y * arch->zoom);
+srcs//debug/debug_screen.c:101:	mid.x = arch->sdl->size.x / 2.0;
+srcs//debug/debug_screen.c:102:	mid.y = arch->sdl->size.y / 2.0;
+srcs//debug/debug_screen.c:103:	v.x = arch->sdl->size.x / 2.0 + a.x * arch->zoom;
+srcs//debug/debug_screen.c:104:	v.y = arch->sdl->size.y / 2.0 - a.y * arch->zoom;
+srcs//debug/debug_screen.c:118:	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
+srcs//debug/debug_screen.c:122:	portion.x = (portion.x - arch->sdl->size.x / 2.0) / arch->zoom;
+srcs//debug/debug_screen.c:123:	portion.y = (portion.y - arch->sdl->size.x / 2.0) / arch->zoom;
+srcs//debug/debug_screen.c:124:	point1.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.x) * arch->zoom;
+srcs//debug/debug_screen.c:125:	point2.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.y) * arch->zoom;
+srcs//debug/debug_screen.c:134:		portion = (t_fvct2){0, arch->sdl->size.x - 1};
+srcs//debug/debug_screen.c:136:		portion = (t_fvct2){arch->sdl->size.x / 2, arch->sdl->size.x - 1};
+srcs//debug/debug_screen.c:149:	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
+srcs//debug/debug_screen.c:150:	pt1.x = arch->sdl->size.x / 2 + px_distance;
+srcs//debug/debug_screen.c:152:	pt1.y = arch->sdl->size.y / 2 + (px_distance * fov_affine.a);
+srcs//debug/debug_screen.c:153:	pt2.y = arch->sdl->size.y / 2 + (px_distance * -fov_affine.a);
+srcs//debug/debug_screen.c:183:		draw_screen(arch, color, arch->sdl->size.x / 12, fov_affine);
+srcs//debug/debug_screen.c:198:	dist = arch->sdl->size.x / 2.5;
+srcs//debug/debug_screen.c:204:	point1.x = dist + arch->sdl->size.x / 2;
+srcs//debug/debug_screen.c:205:	point2.x = dist + arch->sdl->size.x / 2;
+srcs//debug/debug_screen.c:207:	point1.y = len_screen * (surface_pillar.x / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
+srcs//debug/debug_screen.c:208:	point2.y =  len_screen * (surface_pillar.y / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
+srcs//debug/debug_screen.c:209:	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
+srcs//debug/debug_screen.c:240:	while (i < arch->sdl->size.x * arch->sdl->size.y)
+srcs//debug/debug_screen.c:243:			arch->sdl->screen[i] = arch->sc_debug[i];
+srcs//input/input_hook.c:19:	s_shot = SDL_CreateRGBSurfaceWithFormatFrom(sdl->screen, sdl->size.x,
+srcs//input/input_hook.c:20:		sdl->size.y, 8, sizeof(uint32_t) * sdl->size.x, SDL_PIXELFORMAT_RGBA8888);
+srcs//input/input_hook.c:31:	while (i < sdl->size.x * sdl->size.y)
+srcs//input/input_hook.c:33:		sdl->screen[i] = 0;
+srcs//manager/arch_manager.c:8:	while (i < arch->sdl->size.x)
+srcs//manager/arch_manager.c:11:		arch->portal.b_down[i] = arch->sdl->size.y;
+srcs//manager/arch_manager.c:23:	while (i < arch->sdl->size.x)
+srcs//manager/arch_manager.c:46:	arch->portal.zline = (double*)malloc(sizeof(double) * sdl->size.x);
+srcs//manager/arch_manager.c:49:	curseur = sdl->size.x * (sdl->size.y - 1);
+srcs//manager/arch_manager.c:52:	arch->portal.b_down = (uint32_t*)malloc(sizeof(uint32_t) * sdl->size.x);
+srcs//manager/arch_manager.c:55:	arch->portal.b_up = (uint32_t*)malloc(sizeof(uint32_t) * sdl->size.x);
+srcs//manager/camera_manager.c:6:	camera->d_screen = (sdl->size.x / 2) / tan(camera->fov / 2.0 * PI180);
+srcs//manager/camera_manager.c:7:	//camera->fov_ver = atan2(camera->d_screen, sdl->size.y / 2);
+srcs//manager/camera_manager.c:8:	camera->fov_ver = atan2(sdl->size.y / 2, camera->d_screen) * 2;
+srcs//manager/sdl_manager.c:5:	if (sdl->txture)
+srcs//manager/sdl_manager.c:6:		SDL_DestroyTexture(sdl->txture);
+srcs//manager/sdl_manager.c:7:	if (sdl->rend)
+srcs//manager/sdl_manager.c:8:		SDL_DestroyRenderer(sdl->rend);
+srcs//manager/sdl_manager.c:9:	if (sdl->win)
+srcs//manager/sdl_manager.c:10:		SDL_DestroyWindow(sdl->win);
+srcs//manager/sdl_manager.c:65:	sdl->size.x = WIDTH;
+srcs//manager/sdl_manager.c:66:	sdl->size.y = HEIGHT;
+srcs//manager/sdl_manager.c:67:	if (!(sdl->win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, 32)))
+srcs//manager/sdl_manager.c:69:	if (!(sdl->rend = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_SOFTWARE)))
+srcs//manager/sdl_manager.c:71:	SDL_SetWindowMinimumSize(sdl->win, MINWIDTH, MINHEIGHT);
+srcs//manager/sdl_manager.c:72:	//SDL_SetWindowMaximumSize(sdl->win, MAXWIDTH, MAXHEIGHT);
+srcs//manager/sdl_manager.c:73:	sdl->txture = SDL_CreateTexture(sdl->rend,
+srcs//manager/sdl_manager.c:75:	if (SDL_LockTexture(sdl->txture, NULL, &tmp, &pitch))
+srcs//manager/sdl_manager.c:77:	sdl->screen = (Uint32*)tmp;
+srcs//render/drawer/draw_column.c:18:		return (numcol + surface.y * arch->sdl->size.x);
+srcs//render/drawer/draw_column.c:31:		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
+srcs//render/drawer/draw_column.c:33:		numcol += arch->sdl->size.x;
+srcs//render/drawer/draw_column.c:52:	if (debug == 9 && arch->depth_portal > 0 && arch->px.x == arch->sdl->size.x / 2)
+srcs//render/drawer/draw_column.c:57:		return (arch->portal.b_down[arch->px.x] * arch->sdl->size.x + arch->px.x);
+srcs//render/drawer/draw_column.c:62:		return (arch->portal.b_up[arch->px.x] * arch->sdl->size.x + arch->px.x);
+srcs//render/drawer/draw_column.c:65:		surface.x = arch->px.x + arch->portal.b_up[arch->px.x] * arch->sdl->size.x;
+srcs//render/drawer/draw_column.c:67:		surface.x = surface.x * arch->sdl->size.x + arch->px.x;
+srcs//render/drawer/draw_column.c:69:		surface.y = arch->px.x + (arch->portal.b_down[arch->px.x] - 1) * arch->sdl->size.x;
+srcs//render/drawer/draw_column.c:71:		surface.y = surface.y * arch->sdl->size.x;
+srcs//render/drawer/draw_column.c:74:		arch->sdl->screen[surface.x] = color;
+srcs//render/drawer/draw_column.c:75:		surface.x += arch->sdl->size.x;
+srcs//render/drawer/draw_column.c:87:	if (debug == 9 && arch->depth_portal > 0 && arch->px.x == arch->sdl->size.x / 2)
+srcs//render/drawer/draw_column.c:104:**	-->renvoie sans le facteur largeur (arch->sdl->size.x)
+srcs//render/drawer/draw_line.c:57:	fill_pixel(sdl->screen, sdl->size, pos0, color);
+srcs//render/drawer/draw_line.c:59:			&& fill_pixel(sdl->screen, sdl->size, pos0, color))
+srcs//render/drawer/draw_line.c:83:	fill_pixel(screen, sdl->size, pos0, color);
+srcs//render/drawer/draw_line.c:85:			&& fill_pixel(screen, sdl->size, pos0, color))
+srcs//render/drawer/draw_part_line.c:14:			sdl->screen[cursor->x + cursor->y * sdl->size.x] = color;
+srcs//render/drawer/render_shape.c:31:	floor_pos.x = ((arch->sdl->size.y / 2) - surface.y) / tan(-arch->cam->fov_ver / 2);
+srcs//render/drawer/render_wall.c:15:	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
+srcs//render/drawer/render_wall.c:20:	//px = arch->sdl->size.y / 2 - px;
+srcs//render/drawer/render_wall.c:99:	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
+srcs//render/drawer/render_wall.c:100:	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
+srcs//render/drawer/render_wall.c:123:			SDL_RenderPresent(arch->sdl->rend);
+srcs//render/drawer/textures.c:16:	px_affine.a = ((arch->sdl->size.x / 2) - arch->px.x) / arch->cam->d_screen;
+srcs//render/hud/minimap.c:62:	fill_pixel(sdl->screen, sdl->size, pos0, color);
+srcs//render/hud/minimap.c:64:			&& sdl->screen[pos0.x + pos0.y * sdl->size.x] != WHITE
+srcs//render/hud/minimap.c:65:			&& sdl->screen[pos0.x + pos0.y * sdl->size.x] != CWALL
+srcs//render/hud/minimap.c:66:			&& fill_pixel(sdl->screen, sdl->size, pos0, color))
+srcs//render/hud/minimap.c:137:		j = mini->sdl->size.y - (mini->sdl->size.y >> 2);
+srcs//render/hud/minimap.c:139:			if (mini->sdl->screen[i + j * mini->sdl->size.x] != CWALL
+srcs//render/hud/minimap.c:140:				&& mini->sdl->screen[i + j * mini->sdl->size.x] != CPORT)
+srcs//render/hud/minimap.c:141:					mini->sdl->screen[i + j * mini->sdl->size.x] = opacity(hcol(health, power),
+srcs//render/hud/minimap.c:142:						mini->sdl->screen[i + j * mini->sdl->size.x], 0.5);
+srcs//render/hud/minimap_drawer.c:24:	tmp = pos.y * mini->sdl->size.x;
+srcs//render/hud/minimap_drawer.c:28:		mini->sdl->screen[pos.x + tmp] = color;
+srcs//render/hud/minimap_drawer.c:29:		mini->sdl->screen[pos.x + 1 + tmp] = color;
+srcs//render/hud/minimap_drawer.c:30:		mini->sdl->screen[pos.x - 1 + tmp] = color;
+srcs//render/hud/minimap_drawer.c:31:		mini->sdl->screen[pos.x + 1 + tmp + mini->sdl->size.x] = color;
+srcs//render/hud/minimap_drawer.c:32:		mini->sdl->screen[pos.x - 1 + tmp + mini->sdl->size.x] = color;
+srcs//render/hud/minimap_drawer.c:33:		mini->sdl->screen[pos.x + 1 + tmp - mini->sdl->size.x] = color;
+srcs//render/hud/minimap_drawer.c:34:		mini->sdl->screen[pos.x - 1 + tmp - mini->sdl->size.x] = color;
+srcs//render/hud/minimap_drawer.c:35:		mini->sdl->screen[pos.x + tmp + mini->sdl->size.x] = color;
+srcs//render/hud/minimap_drawer.c:36:		mini->sdl->screen[pos.x + tmp - mini->sdl->size.x] = color;
+srcs//render/hud/minimap_drawer.c:154:		mini->sdl->screen[i + mini->d.y * mini->sdl->size.x] = WHITE;
+srcs//render/hud/minimap_drawer.c:155:		mini->sdl->screen[i + j * mini->sdl->size.x] = WHITE;
+srcs//render/hud/minimap_drawer.c:157:	j = mini->sdl->size.y - (mini->sdl->size.y >> 2) - 1;
+srcs//render/hud/minimap_drawer.c:160:		mini->sdl->screen[mini->d.x + j * mini->sdl->size.x] = WHITE;
+srcs//render/hud/minimap_drawer.c:161:		mini->sdl->screen[i + j * mini->sdl->size.x] = WHITE;
+srcs//render/pre_render/borne.c:20:	arch->portal.b_left = atan2((arch->sdl->size.x / 2) - arch->px.x, arch->cam->d_screen);
+srcs//render/pre_render/borne.c:21:	arch->portal.b_right = atan2((arch->sdl->size.x / 2) - arch->px.y, arch->cam->d_screen);
+srcs//render/pre_render/pillar_info.c:20:	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x -1;
+srcs//render/pre_render/pillar_info.c:21:	arch->px.y = arch->sdl->size.x - 1 - arch->px.x;
+srcs//render/pre_render/pillar_info.c:38:		return (arch->sdl->size.x - 1);
+srcs//render/pre_render/pillar_info.c:42:		return (arch->sdl->size.x - 1);
+srcs//render/pre_render/pillar_info.c:51:	size = arch->sdl->size.x;
+srcs//render/pre_render/pillar_info.c:65:			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_left * PI180) * arch->cam->d_screen);
+srcs//render/pre_render/pillar_info.c:70:			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_right * PI180) * arch->cam->d_screen);
+srcs//render/pre_render/pillar_info.c:90:			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_left * PI180) * arch->cam->d_screen);
+srcs//render/pre_render/pillar_info.c:95:			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_right * PI180) * arch->cam->d_screen);
+srcs//render/pre_render/pillar_info.c:157:		arch->px.x = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
+srcs//render/pre_render/pillar_info.c:166:		arch->px.y = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
+srcs//render/pre_render/render_effect.c:9:	sx = arch->sdl->size.x / 2.0;
+srcs//render/rasterisation/camera_to_view.c:20:	triangle->v0.x = sdl->size.x / 2 - (triangle->v0.x / fov_tan.x) * sdl->size.x;
+srcs//render/rasterisation/camera_to_view.c:21:	triangle->v0.z = sdl->size.y / 2 - (triangle->v0.z / fov_tan.y) * sdl->size.y;
+srcs//render/rasterisation/camera_to_view.c:22:	triangle->v1.x = sdl->size.x / 2 - (triangle->v1.x / fov_tan.x) * sdl->size.x;
+srcs//render/rasterisation/camera_to_view.c:23:	triangle->v1.z = sdl->size.y / 2 - (triangle->v1.z / fov_tan.y) * sdl->size.y;
+srcs//render/rasterisation/camera_to_view.c:24:	triangle->v2.x = sdl->size.x / 2 - (triangle->v2.x / fov_tan.x) * sdl->size.x;
+srcs//render/rasterisation/camera_to_view.c:25:	triangle->v2.z = sdl->size.y / 2 - (triangle->v2.z / fov_tan.y) * sdl->size.y;
+srcs//render/rasterisation/render_surface_rasterize.c:81:	screen_tmp = (t_screen){arch->sdl->screen, arch->sdl->size.x, arch->sdl->size.y};
+srcs//render/render.c:51:	while (i < sdl->size.x * sdl->size.y)
+srcs//render/render.c:53:		sdl->screen[i] = 0;
+srcs//tools/sdl_tools.c:11:	part.w = sdl->size.x / 4;
+srcs//tools/sdl_tools.c:12:	part.h = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:13:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:23:	part.x = sdl->size.x / 4;
+srcs//tools/sdl_tools.c:26:	part.h = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:27:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:37:	part.x = sdl->size.x / 2;
+srcs//tools/sdl_tools.c:40:	part.h = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:41:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:51:	part.w = sdl->size.x / 4;
+srcs//tools/sdl_tools.c:52:	part.h = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:53:	part.x = sdl->size.x - part.w;
+srcs//tools/sdl_tools.c:55:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:66:	part.y = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:67:	part.w = sdl->size.x / 4;
+srcs//tools/sdl_tools.c:69:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:79:	part.x = sdl->size.x / 4;
+srcs//tools/sdl_tools.c:80:	part.y = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:83:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:93:	part.x = sdl->size.x / 2;
+srcs//tools/sdl_tools.c:94:	part.y = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:97:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:107:	part.w = sdl->size.x / 4;
+srcs//tools/sdl_tools.c:108:	part.h = sdl->size.y / 2;
+srcs//tools/sdl_tools.c:109:	part.x = sdl->size.x - part.w;
+srcs//tools/sdl_tools.c:111:	SDL_RenderCopy(sdl->rend, sdl->txture, &part, &part);
+srcs//tools/sdl_tools.c:121:	SDL_UnlockTexture(sdl->txture);
+srcs//tools/sdl_tools.c:140:	SDL_LockTexture(sdl->txture, NULL, &pixels, &pitch);
+srcs//tools/sdl_tools.c:141:	sdl->screen = (uint32_t*)pixels;

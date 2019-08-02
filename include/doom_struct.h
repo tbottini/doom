@@ -214,6 +214,13 @@ typedef struct			s_ui
 	SDL_Texture			*weaponhud[NB_WEAPON];
 }						t_ui;
 
+typedef struct 			s_screen
+{
+	uint32_t			*screen;
+	int					w;
+	int					h;
+}						t_screen;
+
 typedef struct			s_sdl
 {
 	SDL_Window			*win;

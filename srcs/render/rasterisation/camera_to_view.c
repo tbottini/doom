@@ -28,9 +28,9 @@ void		camera_to_screen(t_triangle *triangle, t_camera *camera, t_sdl *sdl)
 /*
 **	on affiche les arretes du triangle
 */
-void		triangle_show_verticles(t_arch *arch, t_triangle *triangle)
+void		triangle_show_verticles(t_screen *screen, t_triangle *triangle)
 {
-	trait(arch, (t_vct2){triangle->v0.x, triangle->v0.z}, (t_vct2){triangle->v1.x, triangle->v1.z}, BLUE);
-	trait(arch, (t_vct2){triangle->v1.x, triangle->v1.z}, (t_vct2){triangle->v2.x, triangle->v2.z}, BLUE);
-	trait(arch, (t_vct2){triangle->v2.x, triangle->v2.z}, (t_vct2){triangle->v0.x, triangle->v0.z}, BLUE);
+	trait(screen, (t_vct2){triangle->v0.x, triangle->v0.z}, (t_vct2){triangle->v1.x, triangle->v1.z}, BLUE);
+	trait(screen, (t_vct2){triangle->v1.x, triangle->v1.z}, (t_vct2){triangle->v2.x, triangle->v2.z}, BLUE);
+	trait(screen, (t_vct2){triangle->v2.x, triangle->v2.z}, (t_vct2){triangle->v0.x, triangle->v0.z}, BLUE);
 }

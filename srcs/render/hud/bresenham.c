@@ -6,39 +6,39 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/01 15:03:48 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/02 14:30:21 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void		bold_point_debug(t_vct2 v, Uint32 color, t_arch *arch)
+void		bold_point_debug(t_vct2 v, Uint32 color, t_screen *screen)
 {
 	int tmp;
 
-	tmp = v.y * arch->sdl->size.x;
-	if (v.y > 0 && v.y < (arch->sdl->size.y - 1) && (v.x < arch->sdl->size.x - 1) && v.x > 0)
+	tmp = v.y * screen->w;
+	if (v.y > 0 && v.y < (screen->h - 1) && (v.x < screen->w - 1) && v.x > 0)
 	{
-		arch->sc_debug[v.x + tmp] = color;
-		arch->sc_debug[v.x + 1 + tmp] = color;
-		arch->sc_debug[v.x - 1 + tmp] = color;
-		arch->sc_debug[v.x + 1 + tmp + arch->sdl->size.x] = color;
-		arch->sc_debug[v.x - 1 + tmp + arch->sdl->size.x] = color;
-		arch->sc_debug[v.x + 1 + tmp - arch->sdl->size.x] = color;
-		arch->sc_debug[v.x - 1 + tmp - arch->sdl->size.x] = color;
-		arch->sc_debug[v.x + tmp + arch->sdl->size.x] = color;
-		arch->sc_debug[v.x + tmp - arch->sdl->size.x] = color;
+		screen->screen[v.x + tmp] = color;
+		screen->screen[v.x + 1 + tmp] = color;
+		screen->screen[v.x - 1 + tmp] = color;
+		screen->screen[v.x + 1 + tmp + screen->w] = color;
+		screen->screen[v.x - 1 + tmp + screen->w] = color;
+		screen->screen[v.x + 1 + tmp - screen->w] = color;
+		screen->screen[v.x - 1 + tmp - screen->w] = color;
+		screen->screen[v.x + tmp + screen->w] = color;
+		screen->screen[v.x + tmp - screen->w] = color;
 	}
 }
 
-void		point(t_vct2 v, Uint32 color, t_arch *arch)
+void		point(t_vct2 v, Uint32 color, t_screen *screen)
 {
-	if (v.x > 0 && v.y > 0 && v.x < arch->sdl->size.x && v.y < arch->sdl->size.y)
-		arch->sc_debug[v.x + v.y * arch->sdl->size.x] = color;
+	if (v.x > 0 && v.y > 0 && v.x < screen->w && v.y < screen->h)
+		screen->screen[v.x + v.y * screen->w] = color;
 }
 
 
-void			trait_id(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
+void			trait_id(t_screen *screen, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	int			dx;
 	int			dy;
@@ -57,7 +57,7 @@ void			trait_id(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 	while (vct1.x != vct2.x)
 	{
 		vct1.x++;
-		point(vct1, col, arch);
+		point(vct1, col, screen);
 		if (d > 0)
 		{
 			vct1.y += yi;
@@ -67,7 +67,7 @@ void			trait_id(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 	}
 }
 
-void			trait_iu(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
+void			trait_iu(t_screen *screen, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	int			dx;
 	int			dy;
@@ -86,7 +86,7 @@ void			trait_iu(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 	while (vct1.y != vct2.y)
 	{
 		vct1.y++;
-		point(vct1, col, arch);
+		point(vct1, col, screen);
 		if (d > 0)
 		{
 			vct1.x += xi;
@@ -96,7 +96,7 @@ void			trait_iu(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 	}
 }
 
-void			trait(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
+void			trait(t_screen *screen, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 {
 	if (vct2.x != -1 && vct2.y != -1
 		&& vct1.x != -1 && vct1.y != -1)
@@ -104,16 +104,16 @@ void			trait(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col)
 		if (abs(vct2.y - vct1.y) < abs(vct2.x - vct1.x))
 		{
 			if (vct1.x > vct2.x)
-				trait_id(arch, vct2, vct1, col);
+				trait_id(screen, vct2, vct1, col);
 			else
-				trait_id(arch, vct1, vct2, col);
+				trait_id(screen, vct1, vct2, col);
 		}
 		else
 		{
 			if (vct1.y > vct2.y)
-				trait_iu(arch, vct2, vct1, col);
+				trait_iu(screen, vct2, vct1, col);
 			else
-				trait_iu(arch, vct1, vct2, col);
+				trait_iu(screen, vct1, vct2, col);
 		}
 	}
 }

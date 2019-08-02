@@ -111,7 +111,6 @@ void					calcdelay(const char *str, t_doom *doom);
 int						pos_in_rect(SDL_Rect rect, int x, int y);
 
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					trait(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_sector *sector, t_fvct3 pos, t_wall *w);
 t_wall					*collisionV21(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w);

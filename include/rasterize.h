@@ -28,8 +28,10 @@ void					render_surface_rasterize(t_arch *arch, t_wall *surface, t_sector *secto
 void					surface_to_triangles(t_triangle *triangle1, t_triangle *triangle2, t_wall *wall, t_sector *sector_wall);
 void					world_to_camera(t_triangle *triangle, t_player *player);
 void					camera_to_screen(t_triangle *triangle, t_camera *camera, t_sdl *sdl);
-void					triangle_show_verticles(t_arch *arch, t_triangle *triangle);
+void					triangle_show_verticles(t_screen *screen, t_triangle *triangle);
 void					surface_to_quad(t_quad *quad, t_wall *surface, t_sector *sector_wall);
 void					quad_to_triangle(t_quad *quad, t_triangle *tri1, t_triangle *tri2);
 void					quad_set_referential(t_quad *quad, t_stat *ref);
+void					clipping_z(t_fvct3 *behind, t_fvct3 *correct);
+
 #endif
