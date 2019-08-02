@@ -87,11 +87,8 @@ void			render_triangle(t_arch *arch, t_triangle *tri)
 		return ;
 	else if (clip == 1)
 	{
-		clipping_z(verticles_clip[2], verticles_clip[0]);
-		clipping_z(verticles_clip[1], verticles_clip[0]);
-		return ;
-		//on recupere le vecteur dans le frustum
-		//on raccourcis les autre verticles
+		clipping_z(verticles_clip[0], verticles_clip[2]);
+		clipping_z(verticles_clip[1], verticles_clip[2]);
 	}
 	else if (clip == 2)
 	{
@@ -116,13 +113,13 @@ void			render_surface_rasterize(t_arch *arch, t_wall *surface, t_sector *sector,
 	{
 		.v0 = (t_fvct3){-4, -70, -1},
 		.v1 = (t_fvct3){-4, 70, -1},
-		.v2 = (t_fvct3){0, 70, -1}
+		.v2 = (t_fvct3){4, 70, -1}
 	}; //!!!! test floor
 	triangles[1] = (t_triangle)
 	{
-		.v0 = (t_fvct3){0, -70, -1},
+		.v0 = (t_fvct3){4, -70, -1},
 		.v1 = (t_fvct3){-4, -70, -1},
-		.v2 = (t_fvct3){0, 70, -1}
+		.v2 = (t_fvct3){4, 70, -1}
 	}; //!!!! test floor
 	render_triangle(arch, &triangles[0]);
 	render_triangle(arch, &triangles[1]);

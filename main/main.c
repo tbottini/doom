@@ -1,15 +1,36 @@
 #include "doom_nukem.h"
 
-t_triangle		triangle_gen()
+t_triangle		triangle_gen(int number_gen)
 {
 	t_triangle	gen;
 
-	gen = (t_triangle)
+	if (number_gen == 1)
 	{
-		.v0 = (t_fvct3){-2, -10, -2},
-		.v1 = (t_fvct3){-2, 10, -2},
-		.v2 = (t_fvct3){2, 10, -2}
-	};
+		gen = (t_triangle)
+		{
+			.v0 = (t_fvct3){-4, -70, -1},
+			.v1 = (t_fvct3){-4, 70, -1},
+			.v2 = (t_fvct3){0, 70, -1}
+		};
+	}
+	else if (number_gen == 2)
+	{
+		gen = (t_triangle)
+		{
+			.v0 = (t_fvct3){0, -70, -1},
+			.v1 = (t_fvct3){-4, -70, -1},
+			.v2 = (t_fvct3){0, 70, -1}
+		};
+	}
+	else
+	{
+		gen = (t_triangle)
+		{
+			.v0 = (t_fvct3){0, -70, -1},
+			.v1 = (t_fvct3){-4, -70, -1},
+			.v2 = (t_fvct3){0, 70, -1}
+		};
+	}
 	return (gen);
 }
 
@@ -56,28 +77,35 @@ int			test_clipping_z_2_ptr(t_fvct3 **clip_vct)
 	return (0);
 }
 
-int				test_clipping_z_1(t_triangle *triangle)
+int				test_clipping_z_1(t_fvct3 **verticles_clip)
 {
 	//les verticles hors frustum sont v1 et v2
+
+	clipping_z(verticles_clip[0], verticles_clip[2]);
+	clipping_z(verticles_clip[1], verticles_clip[2]);
 
 	return (0);
 }
 
 int				test_draw_floor()
 {
-	t_sdl		sdl;
 	t_triangle	triangle;
-	t_screen	screen_tmp;
 	t_fvct3		*verticles_clip[3];
 	int			clip;
-	SDL_Event	event;
 
-	triangle = triangle_gen();
+	triangle = triangle_gen(1);
 
 	verticles_clip[0] = &triangle.v0;
 	verticles_clip[1] = &triangle.v1;
 	verticles_clip[2] = &triangle.v2;
 	clip = triangles_in_frustum(verticles_clip);
+	if (clip == 0)
+		return (0);
+	else if (clip == 1)
+	{
+		test_clipping_z_1(verticles_clip);
+		return (0);
+	}
 	if (clip == 2)
 	{
 		test_clipping_z_2_ptr(verticles_clip);
@@ -86,16 +114,9 @@ int				test_draw_floor()
 		triangle_print(triangle);
 	}
 	else
+	{
 		return (0);
-	sdl_init(&sdl, "DUKE TEST");
-
-	screen_tmp = (t_screen){sdl.screen, sdl.size.x, sdl.size.y};
-	triangle_show_verticles(&screen_tmp, &triangle);
-	SDL_RenderCopy(sdl.rend, sdl.txture, NULL, NULL);
-	SDL_RenderPresent(sdl.rend);
-
-	SDL_Delay(5000);
-	sdl_free(&sdl);
+	}
 	return (1);
 }
 
