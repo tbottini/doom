@@ -100,10 +100,11 @@ SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\
 
 SRCS_RASTERIZE	:=		render_surface_rasterize.c						\
-						surface_to_world.c								\
 						world_to_camera.c								\
-						camera_to_view.c								\
+						triangle.c										\
 						clippingz.c										\
+						barycentre.c									\
+						surface_to_world.c								\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\

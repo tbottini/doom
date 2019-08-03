@@ -45,19 +45,79 @@ Rasterisation
 	-on rend les different triangle avec un barycentre, zbuffer...
 
 
-RENDER_TRIANGLE
 
-	Clipping Z
+structure
+
+surface->
+{
+	||(si wall)quad
+	||(si portal)2xquad + recursive
+	||(si wall)quad + recursive
+	||(si window)recursive + quad (trans)
+}
+
+quad->
+{
+	2xtriangles
+}
+
+
+//le manager qui va separer oriente la methode de rendu selon le type
+
+RENDER_SURFACE_RASTERIZE
+	if (surface is wall)
+		render_wall(surface)
+
+	else if (surface is portal)
+		render_portal(surface)
+	else if (surface is door)
+		render_wall(surface)
+	else if (surface is window)
+		render_window(surface)
+
+
+//les render de surface se divise en 3 partie:
+	-le split si necessaire (separation des surfaces en surfaces)
+	-la partition (convertion d'une surface en plusieur quad)
+	-le render (des rendu specifique pour chaque quad)
+
+RENDER_SURFACE_WALL		on passe de surface->quad
+	surface_partition_wall(surface)	//partitionne un wall en 1 quad
+	render_quad_wall(wall)
+
+RENDER_SURFACE_PORTAL
+	surface_partition_portal()		//partitionne un portail en 3 quad
+	render_quad_wall2(quad1, quad2)
+	render_quad_portal(quad3)
+
+RENDER_SURFACE_DOOR
+	surface_split_door()			//decoupe la surface_porte en deux surface
+	surface_partition_portal()		//convertion des differente surface
+	surface_partition_wall()
+
+	render_quad_wall2(quad1, quad2)
+	render_quad_wall(quad3)
+	redner_quad_portal(quad4)
+
+RENDER_SURFACE_WINDOW
+	surface_partition_portal()
+	render_quad_wall2(quad1, quad2)
+	render_quad_window(quad3)
+
+
+RENDER_QUAD_TRIANGLE
+	Quad_To_Triangles
+	RENDER_TRIANGLE (left)
+	RENDER_TRIANGLE (right)
+
+
+
+
+RENDER_TRIANGLE				(pointeur sur fonction methode de rendu)
+
+	Clipping Z					-->add split texel
 	Camera To View
 	View To Projection
 	Rasterization
 
-RENDER_SURFACE_RASTERIZE
-
-	Surface_To_World (surface --> quad(//verticles[4]))
-	World_To_Camera
-
-	Quad_To_Triangles (quad(//verticles[4]) --> 2 * triangle(?verticles[3]))
-
-	RENDER_TRIANGLE (Triangle_left)
-	RENDER_TRIANGLE (Triangle_right)
+MAPPING						(pointeur sur fonction methode de rendu)
