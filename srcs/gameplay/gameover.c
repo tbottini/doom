@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   gameover.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/27 18:54:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 12:28:18 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "render.h"
 
 /*
 ** returns the color c as if it passes throught a transparent screen of color s.

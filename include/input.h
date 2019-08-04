@@ -194,12 +194,10 @@ void					action(t_doom *doom, t_stat *stat);
 void					kick(Uint32 timestamp, t_sound *sound, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
-void					sdl_MultiRenderCopy(t_sdl *sdl);
 void					calcdelay(const char *str, t_doom *doom);
 int						pos_in_rect(SDL_Rect rect, int x, int y);
 
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
-double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_sector *sector, t_fvct3 pos, t_wall *w);
 t_wall					*collisionV21(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						colli_teleport(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **wall);

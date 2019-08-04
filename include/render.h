@@ -4,9 +4,6 @@
 #include "architect.h"
 #include "player.h"
 #include "SDL_ttf.h"
-# include <SDL_ttf.h>
-# include <SDL_image.h>
-# include <SDL_mixer.h>
 # include "calcul.h"
 //borne arch player vector sector
 
@@ -102,8 +99,6 @@ int						equal_pillar(t_wall *wall1, t_wall *wall2);
 /*
 ** drawer functions
 */
-int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
-int						sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg);
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
