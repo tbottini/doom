@@ -5,6 +5,11 @@
 # define WIDTH 1300
 # define HEIGHT 950
 
+# define MINWIDTH 800
+# define MINHEIGHT 800
+# define MAXWIDTH 1920
+# define MAXHEIGHT 1080
+
 typedef struct			s_sdl
 {
 	SDL_Window			*win;

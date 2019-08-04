@@ -2,10 +2,15 @@
 #ifndef DEBUG_H
 # define DEBUG_H
 
-
 # include "architect.h"
 # include "color.h"
 # include "calcul.h"
+
+/*
+**	global debug
+*/
+extern int debug;
+extern int debug_screen;
 
 /*
 **	define FLAG for debug print
@@ -26,8 +31,6 @@
 /*
 **	debug screen, visual
 */
-void		bold_point(t_vct2 v, Uint32 color, t_doom *doom);
-
 void		b_point_debug(t_arch *arch, t_fvct2 v, Uint32 color);
 void		draw_borne(t_arch *arch, uint32_t color);
 void		draw_wall(t_arch *arch, uint32_t color);

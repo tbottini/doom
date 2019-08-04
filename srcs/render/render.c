@@ -1,4 +1,5 @@
 #include "doom_nukem.h"
+#include "render.h"
 #include "debug.h"
 #include "rasterize.h"
 /*

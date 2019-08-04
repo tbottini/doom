@@ -7,6 +7,7 @@
 # include <SDL_ttf.h>
 # include <SDL_image.h>
 # include <SDL_mixer.h>
+# include "calcul.h"
 //borne arch player vector sector
 
 /*
@@ -20,6 +21,11 @@
 # define PILLAR 1
 # define NEXT 2
 
+# define DEBUG_VISUAL 1
+
+# define RASTERIZE		0
+# define ENGINE			1
+# define RENDER			RASTERIZE
 
 /*
 **	disfonctionnement si l'ordre n'est pas respecte
@@ -69,8 +75,6 @@ int						clean_zline(t_arch *arch, double len_pillar, int px);
 /*
 **	render
 */
-int						hud_render(t_doom *doom);
-int						doom_render(t_doom *doom);
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);

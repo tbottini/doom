@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 11:09:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 12:00:41 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # define G_EARTH -9.80665
 # define G_MOON -1.62200
 
-typedef struct s_doom	t_doom;
 typedef struct s_enemy	t_enemy;
 typedef struct s_sector	t_sector;
 typedef struct s_wall	t_portal;

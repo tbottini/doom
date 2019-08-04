@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include "render.h"
 
 int			trunc_int(int value, int min, int max)
 {

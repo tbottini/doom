@@ -1,4 +1,5 @@
 #include "doom_nukem.h"
+#include "render.h"
 
 void	sdl_free(t_sdl *sdl)
 {

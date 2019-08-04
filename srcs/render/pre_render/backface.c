@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include "render.h"
 
 /*
 **	on recupere la distance brut

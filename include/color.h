@@ -24,6 +24,12 @@
 # define BROWN		0xff00ffff
 # define YELLOW		0xffff00ff
 # define PURPLE		0xff00ffff
+# define WHITE		0xffffffff
+
+# define CWALL 		0xDADADAFF
+# define CPORT 		0xE6E678FF
+# define DEEPBLUE 	0x0000FFFF
+# define CENEMY 	0x8E24AAFF
 
 
 # define BLUE_SOFT	0x138fa2ff

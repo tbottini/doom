@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include "render.h"
 #include "debug.h"
 /*
 **	si au moins l'un des pilier est hors frustum il passe pas l'extremite de

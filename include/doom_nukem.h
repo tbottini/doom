@@ -6,49 +6,20 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 11:46:14 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 12:12:27 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DOOM_NUKEM_H
 # define DOOM_NUKEM_H
 
-# include <stdbool.h>
-# include "render.h"
 # include "input.h"
-
-/*
-**		!!! global de debug a enlever
-*/
-extern int debug;
-extern int debug_screen;
-
-# define DEBUG_VISUAL 1
-
-# define RASTERIZE		0
-# define ENGINE			1
-# define RENDER			RASTERIZE
-
-
-# define MINWIDTH 800
-# define MINHEIGHT 800
-# define EDITMINWIDTH 1024
-# define EDITMINHEIGHT 800
-# define MAXWIDTH 1920
-# define MAXHEIGHT 1080
-# define PI 3.1415926535897932
-# define PI180 0.01745329251
-# define TOANGLE 57.2957795131
+# include "calcul.h"
 
 # define RADIUS 500
 # define TOTALMUSIC 10
 
 # define UNIT 8.0
-# define CWALL 0xDADADAFF
-# define CPORT 0xE6E678FF
-# define WHITE 0xFFFFFFFF
-# define DEEPBLUE 0x0000FFFF
-# define CENEMY 0x8E24AAFF
 
 # define DECELERATION 2500.0
 # define PADDING 0.30
@@ -80,7 +51,6 @@ extern int debug_screen;
 /*
 **	gestion
 */
-
 void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_Rect *loc, const char *str, SDL_Color fg, SDL_Color bg);
 void					dropfile_event(t_doom *doom, SDL_Event e);
 

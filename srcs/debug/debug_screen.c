@@ -1,5 +1,6 @@
 #include "debug.h"
 #include "doom_nukem.h"
+#include "render.h"
 
 t_vct2		conv_sc_debug(t_arch *arch, t_vct2 vct)
 {

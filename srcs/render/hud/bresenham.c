@@ -6,11 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/02 14:30:21 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 11:58:54 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom_nukem.h"
+#include "render.h"
 
 void		bold_point_debug(t_vct2 v, Uint32 color, t_screen *screen)
 {

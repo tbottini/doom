@@ -6,11 +6,12 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 12:59:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 12:13:06 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "debug.h"
 
 void			save_png(t_sdl *sdl)
 {

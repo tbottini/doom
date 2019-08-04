@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   editor_render.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 14:22:11 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 15:48:42 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 12:10:38 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "render.h"
 
 void sdl_draw_rect_map(t_editor *editor, SDL_Rect rect)
 {

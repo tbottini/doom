@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   editor_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 19:23:49 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 12:18:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "screen.h"
 
 int editor_reset(t_editor *edit)
 {

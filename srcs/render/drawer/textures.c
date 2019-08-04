@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include "render.h"
 #include "debug.h"
 /*
 **	renvoie l'index de la texture associee au pixel de l'ecran

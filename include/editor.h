@@ -37,6 +37,9 @@
 # define PROPWINBTN "ressources/props/victory_button.png"
 # define PROPIMPACT "ressources/props/impact.png"
 
+# define EDITMINWIDTH 1024
+# define EDITMINHEIGHT 800
+
 typedef struct s_mur	t_mur;
 typedef t_mur			*t_lstmur;
 typedef struct s_pilier	t_pilier;
@@ -45,6 +48,7 @@ typedef struct s_entity	t_entity;
 typedef t_entity			*t_lstent;
 typedef struct s_secteur	t_secteur;
 typedef t_secteur		*t_lstsec;
+typedef struct s_doom	t_doom;
 
 /*
 ** selecttxtr 1 fill obvious
@@ -286,11 +290,9 @@ t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
 
 void					editor_zoom(int *z, int zoom);
 
-int						editor_key_press(int key, t_doom *doom);
-int						editor_key_release(int key, t_doom *doom);
+
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
-int						editor_mouse_release(int button, int x, int y,
-																t_doom *doom);
+
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit);
 int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 
@@ -357,5 +359,5 @@ int						read_file_to_editor(t_editor *edit, const char *file);
 int						editor_reset(t_editor *editor);
 void					ui_free(t_ui *ui);
 int						ui_init(t_ui *ui);
-int						ui_by_sdl(t_doom *doom, t_ui *ui);
+
 #endif

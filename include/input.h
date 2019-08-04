@@ -155,7 +155,6 @@ int						mouse_release(int button, int x, int y, t_doom *doom);
 int						mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 int						mouse_move(int x, int y, t_doom *doom);
 
-double					double_modulo(double num);
 double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
@@ -206,5 +205,22 @@ t_wall					*collisionV21(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						colli_teleport(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **wall);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 void					bulletV42(t_doom *doom, t_player *player);
+
+/*
+**	editor_input
+*/
+int						editor_key_press(int key, t_doom *doom);
+int						editor_key_release(int key, t_doom *doom);
+int						editor_mouse_release(int button, int x, int y,
+																t_doom *doom);
+int						ui_by_sdl(t_doom *doom, t_ui *ui);
+
+
+void					armandtificial_intelligence(t_doom *doom);
+
+int						hud_render(t_doom *doom);
+int						doom_render(t_doom *doom);
+
+void					bold_point(t_vct2 v, Uint32 color, t_doom *doom);
 
 #endif
