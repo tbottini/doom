@@ -1,5 +1,5 @@
 #include "doom_nukem.h"
-
+#include "debug.h"
 /*
 **	renvoie la position en pixel d'un point
 **	wall_angle est l'angle du point par rapport au joueur

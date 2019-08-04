@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include "rasterize.h"
 
 void			fvct3_sub(t_fvct3 *vector_sub, t_fvct3 *vector_sub2)
 {

@@ -1,5 +1,5 @@
 #include "doom_nukem.h"
-
+#include "debug.h"
 /*
 
 */

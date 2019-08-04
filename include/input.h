@@ -1,10 +1,99 @@
 #ifndef INPUT_H
 # define INPUT_H
-#include "doom_struct.h"
 
 /*
 ** End Button Functions
 */
+# include "sector.h"
+# include "player.h"
+# include "editor.h"
+# include "architect.h"
+
+typedef struct s_doom	t_doom;
+typedef struct s_enemy	t_enemy;
+typedef struct s_wall	t_portal;
+typedef struct s_prop	t_prop;
+
+# define ISENEMY(x) (MINENEMYPOS <= x && x < MAXENEMYPOS)
+# define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
+# define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
+# define ISPORTAL(x) (x >= WINDOW)
+
+enum 					e_window_id
+{
+	DOOM_WINDOW = 1,
+	EDITOR_WINDOW = 2
+};
+
+typedef struct			s_slen
+{
+	int	nb_pills;
+	int	nb_txtrs;
+	int	nb_sects;
+	int	current_sector;
+}						t_slen;
+
+typedef struct			s_sound
+{
+	Mix_Chunk			*e_world;
+	Mix_Chunk			*e_perso;
+	Mix_Chunk			*e_other;
+	Mix_Chunk			*tab_effect[50];//changer nb effects
+	Mix_Music			*music;
+	Mix_Music			*tab_music[11];
+	int					on;
+	int					maxmusic;
+	int					musicvolume;
+	int					effectvolume;
+}						t_sound;
+
+typedef struct			s_minimap
+{
+	t_vct2	d;
+	t_vct2	a;
+	t_vct2	size;
+	t_vct2	mid;
+	t_sdl	*sdl;
+}						t_minimap;
+
+typedef enum		e_difficulty
+{
+	EASY = 1,
+	MEDIUM = 2,
+	HARD = 4
+}					t_difficulty;
+
+typedef struct			s_game
+{
+	t_slen				len;
+	t_player			player;
+	t_sound				sound;
+	t_sector			*sectors;
+	t_pillar			*pillars;
+	SDL_Surface			**gamesurf;
+	char				**surfpath;
+	t_arch				arch;//a voir aveec tbottini
+	t_camera			camera;
+	t_difficulty		difficulty;
+}						t_game;
+
+struct					s_doom
+{
+	int					debug;
+	t_sdl				sdl;
+	t_editor			edit;
+	t_ui				ui;
+	Uint32				timestamp;
+	SDL_GameController	*controller;
+	t_game				game;
+};
+
+/*
+**	manager
+*/
+void					doom_exit(t_doom *doom);
+t_doom					*doom_init();
+
 
 int						parsing(t_doom *doom, char *filename);
 

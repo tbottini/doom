@@ -1,4 +1,5 @@
-#include "doom_nukem.h"
+#include "rasterize.h"
+#include "color.h"
 
 /*
 **	on projete les point dans une proportion de l'ecran

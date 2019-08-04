@@ -1,5 +1,6 @@
 #include "doom_nukem.h"
-
+#include "debug.h"
+#include "rasterize.h"
 /*
 **	on recupere les information du secteur par rapport au frustum (champs de vision du joueur)
 **	on definit un bunch contenant les mur visibles
@@ -23,7 +24,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	{
 		if (RENDER == RASTERIZE)
 		{
-			render_surface_rasterize(arch, &wall[i], sector, player);
+			render_surface_rasterize(arch->cam, arch->sdl, &wall[i], sector, player);
 		}
 		else if (RENDER == ENGINE)
 		{

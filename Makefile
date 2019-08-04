@@ -34,7 +34,6 @@ HEADERS			:=		libft/libft.h							\
 						include/doom_nukem.h					\
 						include/calcul.h						\
 						include/debug.h							\
-						include/doom_struct.h					\
 						include/editor.h						\
 						include/vector.h						\
 						include/render.h						\
@@ -42,6 +41,9 @@ HEADERS			:=		libft/libft.h							\
 						include/input.h							\
 						include/sector.h						\
 						include/rasterize.h						\
+						include/screen.h						\
+						include/architect.h						\
+						include/color.h							\
 
 
 FOLDER			:=		objs									\

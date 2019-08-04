@@ -1,4 +1,5 @@
 #include "doom_nukem.h"
+#include "calcul.h"
 
 /*
 **	trouve l'intersection entre le mur et un angle donne

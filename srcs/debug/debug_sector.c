@@ -1,4 +1,6 @@
-#include "doom_nukem.h"
+#include "sector.h"
+#include "debug.h"
+#include "player.h"
 
 void		ft_putnbr_msg(char *msg, int nb)
 {

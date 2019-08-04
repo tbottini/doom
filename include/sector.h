@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 20:43:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 11:09:42 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,17 +107,19 @@ struct					s_sector
 	//list things (shapes, objets, deco, enemis)
 };
 
+t_sector				*sector_new();
+
 /*
 **	wall : draw, manipulation
 */
 
-void			describe_sector_recursif(t_sector sector);
-void			describe_bunch(t_wall **bunch);
-void			describe_sector(t_sector sector);
-void			describe_wall(t_wall wall);
+void					describe_sector_recursif(t_sector sector);
+void					describe_bunch(t_wall **bunch);
+void					describe_sector(t_sector sector);
+void					describe_wall(t_wall wall);
 
 
-void			init_prop(t_prop *prop, double height);
-int				is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
+void					init_prop(t_prop *prop, double height);
+int						is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
 
 #endif

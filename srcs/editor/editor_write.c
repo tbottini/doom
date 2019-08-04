@@ -6,11 +6,12 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/21 13:37:27 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 11:50:22 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "color.h"
 
 unsigned int ft_lil_super_atoi(const char *str)
 {

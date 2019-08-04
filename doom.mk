@@ -103,7 +103,6 @@ SRCS_RASTERIZE	:=		render_surface_rasterize.c						\
 						world_to_camera.c								\
 						triangle.c										\
 						clippingz.c										\
-						barycentre.c									\
 						surface_to_world.c								\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
