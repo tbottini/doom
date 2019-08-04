@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/30 13:27:00 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 11:29:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static void input_loop(t_doom *doom, int key)
 	else if (key == SDLK_LSHIFT && doom->game.player.stat.vel.x == doom->game.player.stat.speed)
 		sprint(&doom->game.player.stat);
 	else if (key == SDLK_SPACE)
-		jump(&doom->game.player.stat);
-	else if (key == SDLK_LGUI && !doom->game.player.stat.jetpack)
+		jump(&doom->game.player.stat, &doom->game.player.inv);
+	else if (key == SDLK_LGUI && !doom->game.player.inv.jetpack)
 		fly_down(&doom->game.player.stat);
 	else if (doom->timestamp > doom->game.player.occupied)
 	{
@@ -118,7 +118,7 @@ static void game_loop_hook(t_doom *doom)
 			pos = pos->next;
 		}
 		/// Place here functions that need to be launch every frame while the game is running
-		move(&doom->game.player.stat);
+		move(&doom->game.player.stat, &doom->game.player.inv);
 		pickup_prop(doom);
 		check_boost(doom->timestamp, &doom->game.player);
 		armandtificial_intelligence(doom);

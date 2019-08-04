@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/01 15:54:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 11:48:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,17 @@ void		action(t_doom *doom, t_stat *s)
 			printf("POS : touched prop type = %d\n", wallhit->props[x].type);//clic sound
 		}
 	}
+	
 }
 
-void		jump(t_stat *stat)
+void		jump(t_stat *stat, t_inv *inv)
 {
-	if (stat->jetpack && stat->pos.z == stat->sector->h_floor)
+	if (inv->jetpack && stat->pos.z == stat->sector->h_floor)
 	{
 		stat->vel.z = (WALK * stat->height) / 2;
 		Mix_Pause(1);
 	}
-	else if (!stat->jetpack)
+	else if (!inv->jetpack)
 	{
 		if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height - 0.1)
 			stat->pos.z += 0.1;

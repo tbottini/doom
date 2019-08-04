@@ -28,6 +28,7 @@ SRCS_UI			:=		button_action.c									\
 
 SRCS_GAMEPLAY	:=		action.c										\
 						move.c											\
+						move2.c											\
 						weapons.c										\
 						shoot.c											\
 						shoot_tools.c									\

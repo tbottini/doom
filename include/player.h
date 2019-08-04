@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 14:59:20 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 11:34:45 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,20 @@ typedef enum			e_id_weapon
 	RIFLE
 }						t_id_weapon;
 
+/* Jetpack
+** -1 : pas ramasse
+** 0 : actif
+** 1 : inactif
+*/
+typedef struct			s_inv
+{
+	int		jetpack;
+	bool	key1;
+	bool	key2;
+	bool	key3;
+	bool	key4;
+}						t_inv;
+
 typedef	struct			s_weapon
 {
 	t_txtr				*sprites;
@@ -71,18 +85,13 @@ typedef struct 			s_stat
 	double				speed;
 	int					width;
 	int					health;
-	int					jetpack;
 	bool				crouch;
 }						t_stat;
 
-/* Jetpack
-** -1 : pas ramasse
-** 0 : actif
-** 1 : inactif
-*/
 typedef struct 			s_player
 {
 	t_stat				stat;
+	t_inv				inv;
 	t_weapon			*hand;
 	t_weapon			weapons[NB_WEAPON];
 	Uint32				boost;
@@ -148,9 +157,9 @@ void					jetpack_on_off(t_player *player);
 void					fly_down(t_stat *stat);
 void					sprint_release(t_stat *stat);
 void					sprint(t_stat *stat);
-void					gravity(t_stat *stat);
-void					inertie(t_stat *stat);
-void					jump(t_stat *stat);
+//void					gravity(t_stat *stat);
+//void					inertie(t_stat *stat);
+void					jump(t_stat *stat, t_inv *inv);
 void					crouch_release(t_player *player);
 void					crouch(t_player *player);
 void					next_weapon(t_player *player);

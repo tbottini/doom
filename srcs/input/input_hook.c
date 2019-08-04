@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 12:59:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 11:29:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		game_key_press(int key, t_doom *doom)
 		debug_code(key);
 	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
 		sdl_set_status(doom, MENU_IGMAIN);
-	else if (key == SDLK_LGUI && doom->game.player.stat.jetpack)
+	else if (key == SDLK_LGUI && doom->game.player.inv.jetpack)
 		crouch(&doom->game.player);
 	else if (key == SDLK_z)
 		jetpack_on_off(&doom->game.player);

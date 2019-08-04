@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/29 13:31:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/01 18:11:59 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 /*============jetpack=================*/
 
-static void	jetpack(t_stat *stat)
+static void	jetpack(t_inv *inv)
 {
-	stat->jetpack = 1;
+	if (inv->jetpack == -1)
+		inv->jetpack = 1;
 }
 
 /*============weapon=================*/
@@ -114,6 +115,27 @@ static void	heal(t_stat *stat)
 		? stat->health + 25 : 100;
 }
 
+/*=============key 1====================*/
+static void	addkey1(t_inv *inv)
+{
+	if (inv->key1 == false)
+		inv->key1 = true;
+}
+
+/*=============key 3====================*/
+static void	addkey2(t_inv *inv)
+{
+	if (inv->key2 == false)
+		inv->key2 = true;
+}
+
+/*=============key 3====================*/
+static void	addkey3(t_inv *inv)
+{
+	if (inv->key3 == false)
+		inv->key3 = true;
+}
+
 void		func_prop(t_prop *prop, int type)
 {
 	if (type == MINPROPSPOS)//HEAL
@@ -132,7 +154,13 @@ void		func_prop(t_prop *prop, int type)
 		prop->func = &jetpack;
 	else if (type == MINPROPSPOS + 7 || type == MINPROPSPOS + 8 || type == MINPROPSPOS + 9)//Add new weapons
 		prop->func = &add_weapon;
-	else if (type == MINPROPSPOS + 10)// Deco sector
+	else if (type == MINPROPSPOS + 10)// key level 1
+		prop->func = &addkey1;
+	else if (type == MINPROPSPOS + 11)// key level 2 
+		prop->func = &addkey2;
+	else if (type == MINPROPSPOS + 12)// Botinum Core / key level 3
+		prop->func = &addkey3;
+	else if (type == MINPROPSPOS + 13)// Deco sector
 		prop->func = NULL;
 	else if (type == MINWPROPSPOS) // Wall button
 	{
@@ -167,7 +195,7 @@ void		init_prop(t_prop *prop, double height)
 
 void		activate_prop(t_doom *doom, t_prop *prop)
 {
-	if (prop->type == MINPROPSPOS || prop->type == MINPROPSPOS + 6)//HEAL & jetpack
+	if (prop->type == MINPROPSPOS)//HEAL
 		prop->func(&doom->game.player.stat);
 	else if (prop->type == MINPROPSPOS + 1)//Cassette
 		prop->func(&doom->game.sound);
@@ -176,12 +204,16 @@ void		activate_prop(t_doom *doom, t_prop *prop)
 	else if (prop->type == MINPROPSPOS + 3 || prop->type == MINPROPSPOS + 4
 		|| prop->type == MINPROPSPOS + 5)//Pills
 		prop->func(&doom->game.player);
+	if (prop->type == MINPROPSPOS + 6)//jetpack
+		prop->func(&doom->game.player.inv);
 	else if (prop->type == MINPROPSPOS + 7)//Add gun
 		prop->func(&doom->game.player.weapons[1]);
 	else if (prop->type == MINPROPSPOS + 8)//Add shotgun
 		prop->func(&doom->game.player.weapons[2]);
 	else if (prop->type == MINPROPSPOS + 9)//Add rifle
 		prop->func(&doom->game.player.weapons[3]);
+	else if (prop->type == MINPROPSPOS + 10)//Add Botinum Core key
+		prop->func(&doom->game.player);
 	else if (prop->type == MINWPROPSPOS) // Wall button
 		prop->func(prop);
 	else if (prop->type == MINWPROPSPOS + 1) // End button

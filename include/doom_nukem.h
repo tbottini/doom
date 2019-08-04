@@ -117,7 +117,7 @@ int						line_wall(t_arch *rsrc, t_wall *wall, char *line);
 */
 void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
-void					move(t_stat *stat);
+void					move(t_stat *stat, t_inv *inv);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
