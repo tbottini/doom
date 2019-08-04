@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/01 18:11:59 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 13:58:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,13 @@ static void	addkey3(t_inv *inv)
 		inv->key3 = true;
 }
 
+/*=============Last Key====================*/
+static void	addlastkey(t_inv *inv)
+{
+	if (inv->last_key == false)
+		inv->last_key = true;
+}
+
 void		func_prop(t_prop *prop, int type)
 {
 	if (type == MINPROPSPOS)//HEAL
@@ -158,9 +165,11 @@ void		func_prop(t_prop *prop, int type)
 		prop->func = &addkey1;
 	else if (type == MINPROPSPOS + 11)// key level 2 
 		prop->func = &addkey2;
-	else if (type == MINPROPSPOS + 12)// Botinum Core / key level 3
+	else if (type == MINPROPSPOS + 12)// key level 3
 		prop->func = &addkey3;
-	else if (type == MINPROPSPOS + 13)// Deco sector
+	else if (type == MINPROPSPOS + 13)// botinium core
+		prop->func = &addlastkey;
+	else if (type == MINPROPSPOS + 14)// Deco sector
 		prop->func = NULL;
 	else if (type == MINWPROPSPOS) // Wall button
 	{
@@ -176,11 +185,12 @@ void		func_prop(t_prop *prop, int type)
 
 void		init_prop(t_prop *prop, double height)
 {
+	printf("PROP TYPE == %d\n", prop->type);
 	if (prop->type == MINWPROPSPOS + 2)
-		prop->pos.z = -1;
+		prop->pos.z = -10;
 	else if (ISWALLPROP(prop->type))
 		prop->pos.z = height + (H_NORMAL / 2);
-	else
+	else if (prop->sector)
 		prop->pos.z = prop->sector->h_floor;
 	prop->hitbox.x = prop->pos.x - HITBOXSIZE;
 	prop->hitbox.y = prop->pos.y - HITBOXSIZE;
@@ -188,7 +198,6 @@ void		init_prop(t_prop *prop, double height)
 	prop->hitbox.w = prop->pos.x + HITBOXSIZE;
 	prop->hitbox.l = prop->pos.y + HITBOXSIZE;
 	prop->hitbox.h = prop->pos.z + HITBOXSIZE;
-	//prop->width = 3;
 	func_prop(prop, prop->type);
 	//txtr_prop(prop, prop->type);
 }
@@ -204,7 +213,9 @@ void		activate_prop(t_doom *doom, t_prop *prop)
 	else if (prop->type == MINPROPSPOS + 3 || prop->type == MINPROPSPOS + 4
 		|| prop->type == MINPROPSPOS + 5)//Pills
 		prop->func(&doom->game.player);
-	if (prop->type == MINPROPSPOS + 6)//jetpack
+	if (prop->type == MINPROPSPOS + 6 || prop->type == MINPROPSPOS + 10
+		|| prop->type == MINPROPSPOS + 11 || prop->type == MINPROPSPOS + 12
+		|| prop->type == MINPROPSPOS + 13)//jetpack && keys
 		prop->func(&doom->game.player.inv);
 	else if (prop->type == MINPROPSPOS + 7)//Add gun
 		prop->func(&doom->game.player.weapons[1]);
@@ -212,8 +223,6 @@ void		activate_prop(t_doom *doom, t_prop *prop)
 		prop->func(&doom->game.player.weapons[2]);
 	else if (prop->type == MINPROPSPOS + 9)//Add rifle
 		prop->func(&doom->game.player.weapons[3]);
-	else if (prop->type == MINPROPSPOS + 10)//Add Botinum Core key
-		prop->func(&doom->game.player);
 	else if (prop->type == MINWPROPSPOS) // Wall button
 		prop->func(prop);
 	else if (prop->type == MINWPROPSPOS + 1) // End button

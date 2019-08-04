@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/27 15:08:03 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 14:51:22 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,9 @@ int	read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len)
 	if (((read(fd, &wall->status, sizeof(t_portal_id)) != sizeof(t_portal_id))))
 		return (-64);
 	printf("\t\tFound Wall Type: %d\n", wall->status);
+	if (((read(fd, &wall->level, sizeof(int)) != sizeof(int))))
+		return (-67);
+	printf("\t\tWall Level: %d\n", wall->level);
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects))
 		return (-65);
 	printf("\t\tFound Wall Sector Link: %d\n", tmp);

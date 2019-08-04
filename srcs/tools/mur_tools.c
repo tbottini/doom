@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mur_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:36:28 by tbottini          #+#    #+#             */
-/*   Updated: 2019/04/27 13:13:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 14:45:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static t_lstmur	ft_newwall(t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr)
 	t->prvs = NULL;
 	t->next = NULL;
 	t->portal_id = 0;
+	t->level = 0;
 	t->portal_ptr = NULL;
 	t->wproplist = NULL;
 	return (t);

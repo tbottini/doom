@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_optionbox.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 17:07:24 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/17 17:07:25 by magrab           ###   ########.fr       */
+/*   Updated: 2019/08/04 14:43:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,26 @@ int opt_menu_click(t_editor *edit, int pos)
 			edit->currmur->portal_id = PORTAL;
 		else if (edit->map && !edit->currstat)
 			edit->map->gravity = (edit->map->gravity ? 0 : 1);
+	}
+	else if (pos == 5)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 0;
+	}
+	else if (pos == 6)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 1;
+	}
+	else if (pos == 7)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 2;
+	}
+	else if (pos == 8)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 3;
 	}
 	else
 	{

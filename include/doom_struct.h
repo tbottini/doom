@@ -31,11 +31,11 @@ typedef struct s_prop	t_prop;
 # define MAXENEMYPOS (MINENEMYPOS + MAXENEMYNUMBER)
 
 # define MINPROPSPOS 20
-# define MAXPROPSNUMBER 13
+# define MAXPROPSNUMBER 14
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
-# define PROPMUN "ressources/props/ammo.png"//erreurs sur ce sprite
+# define PROPMUN "ressources/props/ammo.png"
 # define PROPRPILL "ressources/props/pill.png"
 # define PROPGPILL "ressources/props/greenpill.png"
 # define PROPBPILL "ressources/props/bluepill.png"
@@ -43,9 +43,9 @@ typedef struct s_prop	t_prop;
 # define PROPGUN "ressources/props/gun.png"
 # define PROPSHOTGUN "ressources/props/shotgun.png"
 # define PROPRIFLE "ressources/props/rifle.png"
-# define PROPKEY1 ""
-# define PROPKEY2 ""
-# define PROPKEY2 ""
+# define PROPKEY1 "ressources/props/key1.png"
+# define PROPKEY2 "ressources/props/key2.png"
+# define PROPKEY3 "ressources/props/key3.png"
 # define PROPCORE "ressources/props/botinium.png"
 
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
@@ -262,6 +262,7 @@ struct					s_mur {
 	t_lstmur			prvs;
 	t_lstmur			next;
 	int					id;
+	int					level;
 };
 
 struct					s_secteur

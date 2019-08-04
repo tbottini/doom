@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 11:34:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 13:47:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct			s_inv
 	bool	key1;
 	bool	key2;
 	bool	key3;
-	bool	key4;
+	bool	last_key;
 }						t_inv;
 
 typedef	struct			s_weapon

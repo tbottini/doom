@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 11:48:01 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 12:12:26 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,15 @@ void		action(t_doom *doom, t_stat *s)
 	x = -1;
 	while (++x < wallhit->nb_props)
 	{
+		printf("wuut\n");
 		if (is_in_hitbox(&wallhit->props[x].hitbox, s->pos, s->height / 2))
 		{
 			if (wallhit->props[x].type == MINWPROPSPOS)
-			{
 				wallhit->props[x].func(&wallhit->props[x]);
-				if (wallhit->props[x].wall)
-					wallhit->props[x].wall->ots = doom->timestamp;
-			}
 			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
 				wallhit->props[x].func(doom);
+			if (wallhit->props[x].wall)
+				wallhit->props[x].wall->ots = doom->timestamp;
 			printf("POS : touched prop type = %d\n", wallhit->props[x].type);//clic sound
 		}
 	}
@@ -66,6 +65,29 @@ void		jump(t_stat *stat, t_inv *inv)
 			stat->pos.z += 0.1;
 		else if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height)
 			stat->pos.z = stat->sector->h_ceil + stat->sector->h_ceil - stat->height;
+	}
+}
+
+static void	kick_button(t_stat *stat, t_fvct3 d, Uint32 timestamp)
+{
+	t_wall	*wallhit;
+	int		x;
+
+	if (!(wallhit = colli_walls(stat->sector, stat->pos, d, NULL)))
+		return ;
+	x = -1;
+	while (++x < wallhit->nb_props)
+	{
+		if (is_in_hitbox(&wallhit->props[x].hitbox, stat->pos, stat->height / 2))
+		{
+			if (wallhit->props[x].type == MINWPROPSPOS)
+			{
+				wallhit->props[x].func(&wallhit->props[x]);
+				if (wallhit->props[x].wall)
+					wallhit->props[x].wall->ots = timestamp;
+			}
+			printf("POS : touched prop type = %d\n", wallhit->props[x].type);//clic sound
+		}
 	}
 }
 
@@ -93,5 +115,6 @@ void		kick(Uint32 timestamp, t_sound *sound, t_player *pl)
 		tmp = tmp2;
 	}
 	printf("MISSED\n");
+	kick_button(&pl->stat, d, timestamp);
 	pl->occupied = timestamp + 1000; //ajuster avec vitesse d'animation
 }

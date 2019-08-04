@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   savefile.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/21 13:51:02 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 14:48:40 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ void	write_one_wall(int fd, t_lstmur wall)
 	write(fd, &wall->idtxtr, sizeof(int));
 	printf("\t\tID Portal Type: %d\n", wall->portal_id);
 	write(fd, &wall->portal_id, sizeof(t_portal_id));
+	printf("\t\tPortal Level: %d\n", wall->level);
+	write(fd, &wall->level, sizeof(int));
 	if (wall->portal_ptr)
 	{
 		printf("\t\tID Sector: %d\n", wall->portal_ptr->id);
