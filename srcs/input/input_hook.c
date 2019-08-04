@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 11:29:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 15:37:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		game_key_press(int key, t_doom *doom)
 	else if (doom->timestamp > doom->game.player.occupied)
 	{
 		if (key == SDLK_e)
-			action(doom, &doom->game.player.stat);
+			action(doom, &doom->game.player.stat, &doom->game.player.inv);
 		else if (key == SDLK_r)
 			reload(doom->timestamp, &doom->game.player, doom->game.player.hand);
 		else if (key == SDLK_v)

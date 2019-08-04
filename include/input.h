@@ -102,7 +102,7 @@ void					set_hard(t_doom *doom);
 void					update_enemy_rotation(t_enemy *enemy, t_fvct3 pos);
 void					game_over(t_doom *doom, bool win);
 void					pickup_prop(t_doom *doom);
-void					action(t_doom *doom, t_stat *stat);
+void					action(t_doom *doom, t_stat *s, t_inv *inv);
 void					kick(Uint32 timestamp, t_sound *sound, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/20 14:02:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 15:21:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,8 @@ int	check_one_wall(int fd, t_slen *len)
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_txtrs))
 		return (-63);
 	if (((read(fd, &ptmp, sizeof(t_portal_id)) != sizeof(t_portal_id))))
+		return (-64);
+	if (((read(fd, &tmp, sizeof(int)) != sizeof(int))))
 		return (-64);
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects))
 		return (-65);
