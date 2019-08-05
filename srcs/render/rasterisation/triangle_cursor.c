@@ -1,5 +1,45 @@
 #include "rasterize.h"
 
+void	triangle_adapt_barycentre(t_triangle *triangle)
+{
+	double		ztmp;
+
+	ztmp = triangle->v[0].p.y;
+	triangle->v[0].p.y = triangle->v[0].p.z;
+	triangle->v[0].p.z = ztmp;
+	ztmp = triangle->v[1].p.y;
+	triangle->v[1].p.y = triangle->v[1].p.z;
+	triangle->v[1].p.z = ztmp;
+	ztmp = triangle->v[2].p.y;
+	triangle->v[2].p.y = triangle->v[2].p.z;
+	triangle->v[2].p.z = ztmp;
+}
+
+double	cross_product(t_fvct2 *origin, t_fvct2 *vct1, t_fvct2 *vct2)
+{
+	double		tmp;
+
+	tmp = (vct2->x - origin->x) * (vct1->y - origin->y);
+	tmp -= (vct2->y - origin->y) * (vct1->x - origin->x);
+	return (tmp);
+}
+
+double	cross_product_px(t_fvct3 *origin, t_fvct3 *vct1, t_vct2 *vct2)
+{
+	double		tmp;
+
+	tmp = (vct2->x - origin->x) * (vct1->y - origin->y);
+	tmp -= (vct2->y - origin->y) * (vct1->x - origin->x);
+	return (tmp);
+}
+
+void	barycentrique_coord(t_fvct3 *barycentr, double area, t_fvct3 *normal)
+{
+	barycentr->x = fabs(normal->y / area);
+	barycentr->z = fabs(normal->x / area);
+	barycentr->y = fabs(normal->z / area);
+}
+
 void	sort_verticles3(t_fvct3 *verticles)
 {
 	int		i;
@@ -26,14 +66,14 @@ void	sort_verticles3(t_fvct3 *verticles)
 	}
 }
 
-void	cursor_init(t_sdl *sdl, t_cursor *cursor, t_tri *triangle)
+void	cursor_init(t_sdl *sdl, t_cursor *cursor, t_triangle *triangle)
 {
 	t_fvct3		verticles[3];
 	double		modulo_pixel;
 
-	verticles[0] = triangle->v0;
-	verticles[1] = triangle->v1;
-	verticles[2] = triangle->v2;
+	verticles[0] = triangle->v[0].p;
+	verticles[1] = triangle->v[1].p;
+	verticles[2] = triangle->v[2].p;
 	sort_verticles3((t_fvct3*)verticles);
 	cursor->mid_on_left = (cross_product((t_fvct2*)&verticles[0], (t_fvct2*)&verticles[2], (t_fvct2*)&verticles[1]) < 0);
 	cursor->mid_limit = verticles[1].y;
@@ -87,7 +127,7 @@ bool		get_next_draw_line(t_cursor *cursor, int screenx)
 /*
 **	utilise un barycentre pour avoir une texture correct
 */
-void		correct_texture(t_sdl *sdl, t_tri *primary, t_vct2 *point)
+void		correct_texture(t_sdl *sdl, t_triangle *triangle, t_vct2 *point)
 {
 	t_fvct2		texel;
 	double		correct_depth;
@@ -95,59 +135,61 @@ void		correct_texture(t_sdl *sdl, t_tri *primary, t_vct2 *point)
 	t_fvct3		barycentre;
 	t_fvct3		normal;
 
-	normal.x = cross_product_px((t_fvct2*)&primary->v0, (t_fvct2*)&primary->v1, point);
-	normal.y = cross_product_px((t_fvct2*)&primary->v1, (t_fvct2*)&primary->v2, point);
-	normal.z = cross_product_px((t_fvct2*)&primary->v2, (t_fvct2*)&primary->v0, point);
-	barycentrique_coord(&barycentre, primary->area, &normal);
-	correct_depth = 1 / (1 / primary->v0.z * barycentre.x + 1 / primary->v1.z * barycentre.y + 1 / primary->v2.z * barycentre.z);
-	texel.x = (primary->c0.x * barycentre.x / primary->v0.z
-		+ primary->c1.x * barycentre.y / primary->v1.z
-			+ primary->c2.x * barycentre.z / primary->v2.z)
-				* correct_depth;
-	texel.y = (primary->c0.y * barycentre.x / primary->v0.z
-		+ primary->c1.y * barycentre.y / primary->v1.z
-			+ primary->c2.y * barycentre.z / primary->v2.z)
-				* correct_depth;
-	texel.x = fmod(texel.x, primary->texture.surface->w / primary->texture.repeatx) * (primary->texture.repeatx);
-	texel.y = fmod(texel.y, primary->texture.surface->h / primary->texture.repeaty) * (primary->texture.repeaty);
-	color = primary->texture.txtr[(int)texel.x + (int)texel.y * primary->texture.surface->w];
+	normal.x = cross_product_px(&triangle->v[0].p, &triangle->v[1].p, point);
+	normal.y = cross_product_px(&triangle->v[1].p, &triangle->v[2].p, point);
+	normal.z = triangle->area - (normal.x + normal.y);
+	barycentrique_coord(&barycentre, triangle->area, &normal);
+	correct_depth = 1 / (barycentre.x / triangle->v[0].p.z + barycentre.y / triangle->v[1].p.z + barycentre.z / triangle->v[2].p.z);
+	texel.x = (triangle->v[0].texel.x * barycentre.x
+			+ triangle->v[1].texel.x * barycentre.y
+			+ triangle->v[2].texel.x * barycentre.z)
+			* correct_depth;
+	texel.y = (triangle->v[0].texel.y * barycentre.x
+			+ triangle->v[1].texel.y * barycentre.y
+			+ triangle->v[2].texel.y * barycentre.z)
+			* correct_depth;
+	//texel.x = fmod(texel.x, triangle->texture->w / triangle->texture->repeatx) * (triangle->texture->repeatx);
+	//texel.y = fmod(texel.y, triangle->texture->h / triangle->texture->repeaty) * (triangle->texture->repeaty);
+	color = triangle->texture->pixels[(int)texel.x + (int)texel.y * triangle->texture->w];
 	sdl->screen[point->x + point->y * sdl->size.x] = color;
 }
 
 /*
 **	parcours une ligne donne par le cursor
 */
-void			fill_line(t_sdl *sdl, t_tri *primary, t_cursor *cursor, void (*pixel_effector)(t_sdl*, t_tri*, t_vct2*))
+void			cursor_fill_line(t_sdl *sdl, t_triangle *triangle, t_cursor *cursor)
 {
-	primary->texture.repeatx = 1;
-	primary->texture.repeaty = 3;
+	triangle->texture->repeatx = 1;
+	triangle->texture->repeaty = 3;
 
 	while (cursor->cursor.x < cursor->line.y)
 	{
-		pixel_effector(sdl, primary, &cursor->cursor);
+		correct_texture(sdl, triangle, &cursor->cursor);
 		cursor->cursor.x++;
 	}
 }
 
 
-void			triangle_cursor_fill(t_sdl *sdl, t_tri primitive)
+void			texture_mapping(t_sdl *sdl, t_triangle *triangle)
 {
 	t_cursor	cursor;
-	cursor_init(sdl, &cursor, &primitive);
+
+	triangle_adapt_barycentre(triangle);
+	cursor_init(sdl, &cursor, triangle);
+	triangle->v[0].texel.x /= triangle->v[0].p.z;
+	triangle->v[1].texel.x /= triangle->v[1].p.z;
+	triangle->v[2].texel.x /= triangle->v[2].p.z;
+	triangle->v[0].texel.y /= triangle->v[0].p.z;
+	triangle->v[1].texel.y /= triangle->v[1].p.z;
+	triangle->v[2].texel.y /= triangle->v[2].p.z;
 
 
-    texture_load(&primitive.texture, "wall.jpg");
-
-    primitive.c0 = (t_vct2){0, 0};
-    primitive.c1 = (t_vct2){primitive.texture.surface->w, 0};
-	primitive.c2 = (t_vct2){0, primitive.texture.surface->h};
-
-	bold_point(sdl->screen, sdl->size.x, sdl->size.y, cursor.cursor, 0xffffffff);
-	primitive.area = cross_product((t_fvct2*)&primitive.v0, (t_fvct2*)&primitive.v1, (t_fvct2*)&primitive.v2);
+	//bold_point(sdl->screen, sdl->size.x, sdl->size.y, cursor.cursor, 0xffffffff);
+	triangle->area = cross_product((t_fvct2*)&triangle->v[0].p, (t_fvct2*)&triangle->v[1].p, (t_fvct2*)&triangle->v[2].p);
 	while (get_next_draw_line(&cursor, sdl->size.x))
 	{
-		bold_point(sdl->screen, sdl->size.x, sdl->size.y, cursor.cursor, 0xffffffff);
-		bold_point(sdl->screen, sdl->size.x, sdl->size.y, (t_vct2){cursor.line.y, cursor.cursor.y}, 0xff0000ff);
-		fill_line(sdl, &primitive, &cursor, &correct_texture);
+		//bold_point(sdl->screen, sdl->size.x, sdl->size.y, cursor.cursor, 0xffffffff);
+		//bold_point(sdl->screen, sdl->size.x, sdl->size.y, (t_vct2){cursor.line.y, cursor.cursor.y}, 0xff0000ff);
+		cursor_fill_line(sdl, triangle, &cursor);
 	}
 }

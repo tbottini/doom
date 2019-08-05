@@ -1,5 +1,6 @@
 #include "render.h"
 #include "debug.h"
+#include "rasterize.h"
 
 /*
 **	renvoie la position en pixel d'un point
@@ -14,7 +15,7 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 	player_angle = (player->stat.rot.x - 90) * PI180;
 	wall_angle = atan2(h_diff, depth);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
-	px += (player->stat.rot.x - 90) * 45;
+	px += (player->stat.rot.x - 90) * 15;
 
 	//vraies cervicales
 	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
@@ -126,6 +127,7 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	}
 }
 
+
 /*
 **	les etapes de rendu pour un mur
 **	recuperation d'information supplementaire
@@ -140,19 +142,18 @@ void			render_wall(t_arch *arch, t_player *player)
 	t_sector	*sector_tmp;
 	t_shap		shape;
 	int			start;
+	t_verticle	quad[4];
 
 	if (wall_screen_info(arch, player))
 	{
 		reorder(arch);
 
 		len_sector = length_sector(player, arch->sector);
+		//on recupere la surface du pilier
 		pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
+		//on recupere la surface du next
 		next_px = surface_pillar(arch, player, len_sector, arch->next.x);
-
-		shape.ul = arch->pillar;
-		shape.ur = arch->next;
-		shape.bl = get_floor_pos(arch, len_sector, pillar_px, &arch->pillar);
-		shape.br = get_floor_pos(arch, len_sector, next_px, &arch->next);
+		//render_floor();
 
 		if (debug_screen == 2)
 		{
@@ -166,12 +167,15 @@ void			render_wall(t_arch *arch, t_player *player)
 			b_point_debug(arch, shape.bl, YELLOW);
 			b_point_debug(arch, shape.br, YELLOW);
 		}
-		else if (debug_screen == 3)
-		{
-			debug_pillar_ver(arch, pillar_px);
-		}
-		//render_floor(arch, shape);
 
+		t_fvct2 inter;
+
+		//inter = frustum_depth_intersection(arch->cam, &player->stat, len_sector.y);
+		inter = frustum_floor_intersection(&arch->pillar, arch->cam, &len_sector, &player->stat);
+		b_point_debug(arch, inter, YELLOW);
+		//inter = frustum_depth_intersection(arch->cam, &player->stat, len_sector.y);
+		inter = frustum_floor_intersection(&arch->next, arch->cam, &len_sector, &player->stat);
+		b_point_debug(arch, inter, YELLOW);
 		if (arch->wall->status == PORTAL)
 			borne_svg(arch, &borne_tmp);
 		start = arch->px.x;

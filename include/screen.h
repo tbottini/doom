@@ -29,7 +29,7 @@ typedef struct			s_sdl
 }						t_sdl;
 
 /*
-**	fov: le fov horizontal de la camera (en degre)
+**	fov: le fov horizontal de la camera (en radian)
 **	fov_ver : le fov vertical (en radian)
 */
 typedef struct 			s_camera

@@ -118,17 +118,9 @@ void		barycentr_texture(t_sdl *sdl, t_tri primary, t_texture *txtr)
 	}
 }
 
-void			render_triangle(t_sdl *sdl)
+void			render_triangle(t_sdl *sdl, t_triangle *triangle)
 {
 	t_tri		primary;
-
-	primary = primitive_gen(sdl);
-
-    texture_load(&primary.texture, "wall.jpg");
-
-    primary.c0 = (t_vct2){0, 0};
-    primary.c1 = (t_vct2){primary.texture.surface->w, 0};
-	primary.c2 = (t_vct2){0, primary.texture.surface->h};
 
 	barycentr_texture(sdl, primary, &primary.texture);
 

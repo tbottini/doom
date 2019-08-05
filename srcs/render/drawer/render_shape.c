@@ -17,7 +17,7 @@ t_fvct2			get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pil
 	t_fvct2		inte;
 
 	//len.x - len.y car len.y est negatif
-	px_to_u = (len.x - len.y) / (surface.y - surface.x);
+	px_to_u = (len.x - len.y) / (surface.y - surface.x) / 2;
 
 
 	//intersection entre le frustum et le bas du pillier

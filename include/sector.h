@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 12:00:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/04 13:43:13 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct			s_txtr
 	uint32_t			w;
 	uint32_t			h;
 	int					id;
+	double				repeatx;
+	double				repeaty;
 }						t_txtr;
 
 typedef struct			s_pillar

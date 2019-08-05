@@ -8,9 +8,9 @@
 */
 int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 {
-	double	coef;
-	uint32_t		px;
-	double	buff;
+	double		coef;
+	uint32_t	px;
+	double		buff;
 
 	px = texture_interpolation2D(arch);
 	buff = 0;

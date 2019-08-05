@@ -40,4 +40,30 @@ typedef struct 			s_arch
 int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);
 int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
 
+
+/*
+**	backface
+*/
+void					zline_cut(t_arch *arch, double *zline_cut, int start);
+int						zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start);
+int						z_line_buffer(t_arch *arch, double len_pillar, int px);
+int						clean_zline(t_arch *arch, double len_pillar, int px);
+
+
+/*
+**	manager
+*/
+void					architect_reset(t_arch *arch);
+
+/*
+**	borne
+*/
+t_borne					*borne_init(t_borne *borne, int len);
+t_borne					*borne_svg(t_arch *arch, t_borne *borne);
+void					borne_free(t_borne *borne);
+void					borne_load(t_arch *arch, t_borne *borne, int start);
+void					borne_reset(t_arch *arch);
+void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
+void					set_borne_horizontal(t_arch *arch);
+
 #endif

@@ -7,6 +7,7 @@
 # define PI 3.1415926535897932
 # define PI180 0.01745329251
 # define TOANGLE 57.2957795131
+# define TO_RADIAN PI180
 
 /*
 **	lock == 1 si la droite affine est constante sur l'absice (x)
@@ -44,4 +45,7 @@ int				opacity(int s, int c, double f);
 double					double_modulo(double num);
 
 double					distance(t_fvct2 vct1, t_fvct2 vct2);
+
+void			fvct3_sub(t_fvct3 *vector_sub, t_fvct3 *vector_sub2);
+void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot);
 #endif

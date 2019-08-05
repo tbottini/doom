@@ -61,6 +61,7 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_line.c								\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
+						drawer/render_floor.c							\
 
 SRCS_PARSING	:=		read_editor_file.c								\
 						readfile.c										\
@@ -100,10 +101,11 @@ SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\
 
 SRCS_RASTERIZE	:=		render_surface_rasterize.c						\
-						world_to_camera.c								\
 						triangle.c										\
 						clippingz.c										\
-						surface_to_world.c								\
+						triangle_cursor.c								\
+						quad.c											\
+						surface.c										\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\

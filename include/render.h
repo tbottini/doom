@@ -22,7 +22,7 @@
 
 # define RASTERIZE		0
 # define ENGINE			1
-# define RENDER			RASTERIZE
+# define RENDER			ENGINE
 
 /*
 **	disfonctionnement si l'ordre n'est pas respecte
@@ -58,16 +58,8 @@ int						wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);
 void					reorder(t_arch *arch);
 t_fvct2					get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar);
-
-
-
-/*
-**	backface
-*/
-void					zline_cut(t_arch *arch, double *zline_cut, int start);
-int						zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start);
-int						z_line_buffer(t_arch *arch, double len_pillar, int px);
-int						clean_zline(t_arch *arch, double len_pillar, int px);
+t_fvct2					frustum_floor_intersection(t_fvct2 *pillar_pos, t_camera *camera, t_fvct2 *len_sector, t_stat *stat);
+t_fvct2					frustum_depth_intersection(t_camera *camera, t_stat *stat, double floor_diff);
 
 /*
 **	render
@@ -79,12 +71,6 @@ uint32_t				texture_interpolation2D(t_arch *arch);
 void					render_wall(t_arch *arch, t_player *player);
 void					draw_column(t_arch *arch, t_fvct2 surface);
 void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
-int						render_floor(t_arch *arch, t_shap shape);
-
-/*
-**	manager
-*/
-void					architect_reset(t_arch *arch);
 
 /*
 **	bunch
@@ -102,29 +88,11 @@ int						equal_pillar(t_wall *wall1, t_wall *wall2);
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
-//void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 
 /*
 **	shape
 */
 void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
 t_shape					shape_reajust(t_shape shape);
-
-
-/*
-**	borne
-*/
-t_borne					*borne_init(t_borne *borne, int len);
-t_borne					*borne_svg(t_arch *arch, t_borne *borne);
-void					borne_free(t_borne *borne);
-void					borne_load(t_arch *arch, t_borne *borne, int start);
-void					borne_reset(t_arch *arch);
-void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
-void					set_borne_horizontal(t_arch *arch);
-
-/*
-**	rasterize
-*/
-
 
 #endif

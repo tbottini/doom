@@ -1,27 +1,5 @@
 #include "rasterize.h"
 
-void			fvct3_sub(t_fvct3 *vector_sub, t_fvct3 *vector_sub2)
-{
-	vector_sub->x -= vector_sub2->x;
-	vector_sub->y -= vector_sub2->y;
-	vector_sub->z -= vector_sub2->z;
-}
-
-void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot)
-{
-	t_fvct3		tmp;
-
-	rot.x = (rot.x - 90) * (M_PI / 180);
-	rot.y = -rot.y * (M_PI / 180);
-
-	tmp = *point;
-	point->x = tmp.x * cos(rot.y) + tmp.y * sin(rot.y);
-	point->y = tmp.x * -sin(rot.y) + tmp.y * cos(rot.y);
-	tmp = *point;
-	point->z = tmp.z * cos(rot.x) - tmp.y * sin(rot.x);
-	point->y = tmp.z * sin(rot.x) + tmp.y * cos(rot.x);
-}
-
 /*
 **	on deplace les point selon la position et la rotation de la camera
 */
@@ -49,4 +27,25 @@ void			quad_world_to_camera(t_quad *quad, t_stat *ref)
 	fvct3_rotation(&(*quad)[1].p, ref->rot);
 	fvct3_rotation(&(*quad)[2].p, ref->rot);
 	fvct3_rotation(&(*quad)[3].p, ref->rot);
+}
+
+void			quad_to_triangle(t_quad *quad, t_triangle *tri1, t_triangle *tri2)
+{
+	tri1->v[0].p = (*quad)[0].p;
+	tri1->v[1].p = (*quad)[1].p;
+	tri1->v[2].p = (*quad)[2].p;
+	tri2->v[0].p = (*quad)[0].p;
+	tri2->v[1].p = (*quad)[1].p;
+	tri2->v[2].p = (*quad)[3].p;
+}
+
+void			quad_to_triangle_wall(t_quad *quad, t_triangle *tri1, t_triangle *tri2)
+{
+	quad_to_triangle(quad, tri1, tri2);
+	tri1->v[0].texel = (*quad)[0].texel;
+	tri1->v[1].texel = (*quad)[1].texel;
+	tri1->v[2].texel = (*quad)[2].texel;
+	tri2->v[0].texel = (*quad)[0].texel;
+	tri2->v[1].texel = (*quad)[1].texel;
+	tri2->v[2].texel = (*quad)[3].texel;
 }

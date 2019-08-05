@@ -81,11 +81,14 @@ void			render_triangle(t_camera *cam, t_sdl *sdl, t_triangle *tri)
 	else if (clip == 2)
 	{
 		triangle_divide = triangle_clip_split(verticles_clip);
+		triangle_divide.texture = tri->texture;
 		triangle_cam_to_screen(&triangle_divide, cam, sdl);
 		triangle_show_verticles(&screen_tmp, &triangle_divide);
+		texture_mapping(sdl, &triangle_divide);
 	}
 	triangle_cam_to_screen(tri, cam, sdl);
 	triangle_show_verticles(&screen_tmp, tri);
+	texture_mapping(sdl, tri);
 }
 
 //t_sdl
@@ -96,9 +99,13 @@ void			render_surface_rasterize(t_camera *cam, t_sdl *sdl, t_wall *surface, t_se
 
 	if (surface->status == WALL)
 	{
-		surface_to_quad(&quad, surface, sector);
+		//surface_to_quad
+		surface_to_quad_wall(&quad, surface, sector);
 		quad_world_to_camera(&quad, &player->stat);
-		quad_to_triangle(&quad, &triangles[0], &triangles[1]);
+		//quad_to_triangle(&quad, &triangles[0], &triangles[1]);
+		quad_to_triangle_wall(&quad, &triangles[0], &triangles[1]);
+		triangles[0].texture = &surface->txtr;
+		triangles[1].texture = &surface->txtr;
 		render_triangle(cam, sdl, &triangles[0]);
 		render_triangle(cam, sdl, &triangles[1]);
 	}
