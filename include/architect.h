@@ -28,6 +28,8 @@ typedef struct 			s_arch
 	uint16_t			depth_portal;
 	t_fvct2				pillar;
 	t_fvct2				next;
+	t_fvct2				pillar_world;
+	t_fvct2				next_world;
 	t_vct2				px;
 	t_fvct2				shift_txtr;
 	t_borne				portal;

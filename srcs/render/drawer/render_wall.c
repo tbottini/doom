@@ -147,14 +147,9 @@ void			render_wall(t_arch *arch, t_player *player)
 	if (wall_screen_info(arch, player))
 	{
 		reorder(arch);
-
 		len_sector = length_sector(player, arch->sector);
-		//on recupere la surface du pilier
 		pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
-		//on recupere la surface du next
 		next_px = surface_pillar(arch, player, len_sector, arch->next.x);
-		//render_floor();
-
 		if (debug_screen == 2)
 		{
 			//debug_pillar(arch, P_PILLAR | P_NEXT | TRACE | POINT);
@@ -167,15 +162,12 @@ void			render_wall(t_arch *arch, t_player *player)
 			b_point_debug(shape.bl, YELLOW);
 			b_point_debug(shape.br, YELLOW);
 		}
-		//inter = frustum_depth_intersection(arch->cam, &player->stat, len_sector.y);
-		inter = frustum_floor_intersection(&arch->pillar, arch->cam, &len_sector, &player->stat);
-		if (debug_screen == 2)
-			b_point_debug(inter, YELLOW);
-		//inter = frustum_depth_intersection(arch->cam, &player->stat, len_sector.y);
-		inter = frustum_floor_intersection(&arch->next, arch->cam, &len_sector, &player->stat);
+		render_under_floor(arch, len_sector, player, (t_fvct2){pillar_px.y, next_px.y});
 		if (arch->wall->status == PORTAL)
+		{
 			borne_svg(arch, &borne_tmp);
-		start = arch->px.x;
+			start = arch->px.x;
+		}
 		pillar_to_pillar(arch, &pillar_px, &next_px, &borne_tmp);
 		if (arch->wall->status == PORTAL)
 		{

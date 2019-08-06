@@ -91,10 +91,10 @@ void		draw_column(t_arch *arch, t_fvct2 surface)
 		printf("up %d %f\n", arch->portal.b_up[arch->px.x], surface.x);
 	surface_tmp = (t_vct2){surface.x, surface.y};
 	draw_part_texture(arch, cursor, surface_tmp);
-	if (debug == 7 && arch->depth_portal > 0)
-		printf("down %f %d\n", surface.y, arch->portal.b_down[arch->px.x]);
-	surface_tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
-	draw_part(arch, surface_tmp, 0x272130ff);
+	//if (debug == 7 && arch->depth_portal > 0)
+	//	printf("down %f %d\n", surface.y, arch->portal.b_down[arch->px.x]);
+	//surface_tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
+	//draw_part(arch, surface_tmp, 0x272130ff);
 }
 
 /*

@@ -1,36 +1,6 @@
 #include "render.h"
 #include "debug.h"
-
-t_fvct2			fvct2_rotation(t_fvct2 vector, double rotation)
-{
-	double		tmp_x;
-
-	tmp_x = cos(rotation) * vector.x - sin(rotation) * vector.y;
-	vector.y = sin(rotation) * vector.x + cos(rotation) * vector.y;
-	vector.x = tmp_x;
-	return (vector);
-}
-
-t_fvct2			fvct2_addition(t_fvct2 vector, t_fvct2 add)
-{
-	vector.x += add.x;
-	vector.y += add.y;
-	return (vector);
-}
-
-/*
-**	angle en radian
-**	on recupere un vecteur a partir de l'angle
-*/
-t_fvct2			fvct2_from_angle(double angle)
-{
-	t_fvct2		vector_dir;
-
-	vector_dir.x = cos(angle);
-	vector_dir.y = sin(angle);
-	return (vector_dir);
-}
-
+#include "rasterize.h"
 
 /*
 **	retourne une intersection avec le sol selon la rotation x du joueur
@@ -51,87 +21,79 @@ t_fvct2			frustum_floor_intersection(t_fvct2 *pillar_pos, t_camera *camera, t_fv
 	t_fvct2		angle_vector;
 	t_fvct2		inter;
 
-
 	if (debug == 7)
 		printf("fov_ver %f\n", camera->fov_ver);
-
-	//on considere par default que la rot.y est a 0 --> sur doom par default a 90
 	angle_vector = fvct2_from_angle((stat->rot.x - 90) * TO_RADIAN - (camera->fov_ver / 2));
-	//ajoute la rotation.x - 90 * TO_RADIAN
 	if (debug == 7)
 		printf("angle_vector %f %f\n", angle_vector.x, angle_vector.y);
-
 	if (angle_vector.y >= 0)
 	{
 		if (debug == 7)
 			printf("angle_vector.y == 0 pas d'intersection avec le sol\n");
 		return ((t_fvct2){0, 0});
 	}
-
 	inter.x = len_sector->y / angle_vector.y * angle_vector.x;
 	if (debug == 7)
 		printf("len_sector.y %f intersection selon x %f\n", len_sector->y, inter.x);
-
 	inter.y = inter.x / pillar_pos->x * pillar_pos->y;
 	if (debug == 7)
 		printf("pillar_pos .x %f .y %f\ninter .x %f .y %f\n", pillar_pos->x, pillar_pos->y, inter.x, inter.y);
-
 	if (debug_screen == 2)
-	{
-		b_point_debug(inter, YELLOW);
-	}
-	inter = fvct2_rotation(inter, -stat->rot.y * TO_RADIAN);
-	//printf("inter with rot (%.2f) (cam ref (with rotation)) .x %f .y %f\n", stat->rot.y, inter.x, inter.y);
-
-
-	inter = fvct2_addition(inter, *(t_fvct2*)&stat->pos);
-	//printf("inter (world_ref) .x %f .y %f\n", inter.x, inter.y);
-	if (debug_screen == 3)
 		b_point_debug(inter, YELLOW);
 	return (inter);
 }
 
-t_fvct2			frustum_depth_intersection(t_camera *camera, t_stat *stat, double floor_diff)
+t_fvct2		fvct2_camera_to_world(t_fvct2 vector_cam, t_stat *stat)
 {
-	t_fvct2		angle_vector;
-	t_fvct2		inter;
+	t_fvct2	vector_world;
 
+	vector_world = fvct2_rotation(vector_cam, -(360 - stat->rot.y) * TO_RADIAN);
+	vector_world = fvct2_addition(vector_world, *(t_fvct2*)&stat->pos);
+	if (debug_screen == 3)
+		b_point_debug(vector_world, YELLOW);
 
-	printf("fov_ver %f\n", camera->fov_ver);
-	printf(WBLUE"%f"WEND, stat->rot.x);
-	//on considere par default que la rot.y est a 0 --> sur doom par default a 90
-	angle_vector = fvct2_from_angle((stat->rot.x - 90) * TO_RADIAN - (camera->fov_ver / 2));
-	//ajoute la rotation.x - 90 * TO_RADIAN
-	printf("angle_vector %f %f\n", angle_vector.x, angle_vector.y);
-
-	if (angle_vector.y >= 0)
-	{
-		printf("angle_vector.y == 0 pas d'intersection avec le sol\n");
-		return ((t_fvct2){0, 0});
-	}
-
-	inter.x = floor_diff / angle_vector.y * angle_vector.x;
-	printf("len_sector.y %f intersection selon x %f\n", floor_diff, inter.x);
-
-	inter.y = 0;
-
-	return (inter);
+	return (vector_world);
 }
 
 /*
-**	rendu du sol
+**	rendu du sol, en dessous du mur coullissant
+**	down_px est le px de depart du sol, .x pour la fin du pillar, .y pour la fin de next
 */
-void				render_floor()
+void				render_under_floor(t_arch *arch, t_fvct2 len_sector, t_player *player, t_fvct2 down_px)
 {
-	//t_verticles		verticle[4];
+	t_fvct2			inter_camera;
+	t_fvct2			inter_world;
+	t_verticle		quad[4];
+	t_triangle		tri1, tri2;
+	t_screen		screen;
 
-	//on recupere l'intersection avec le sol
-	//on recupere la position au sol d'une bande de l'ecran
-	//frustum_floor_intersection();
+	screen = (t_screen){arch->sdl->screen, arch->sdl->size.x, arch->sdl->size.y};
 
-	//arch_to_quad();
+	quad[0].p = (t_fvct3){arch->px.x, down_px.x, arch->pillar.y};
+	inter_world = fvct2_camera_to_world(arch->pillar, &player->stat);
+	quad[0].texel = sector_get_floor_texel(arch->sector, inter_world);
 
-	//quad_to_triangle();
-	//render_triangle();
-	//render_triangle();
+	quad[1].p = (t_fvct3){arch->px.y, down_px.y, arch->next.y};
+	inter_world = fvct2_camera_to_world(arch->next, &player->stat);
+	quad[1].texel = sector_get_floor_texel(arch->sector, inter_world);
+
+	//on recupere la position dans le secteur des intersection avec le frustum
+	inter_camera = frustum_floor_intersection(&arch->pillar, arch->cam, &len_sector, &player->stat);
+	inter_world = fvct2_camera_to_world(inter_camera, &player->stat);
+	quad[2].p = (t_fvct3){arch->px.x, arch->portal.b_down[arch->px.x], inter_camera.x};
+	quad[2].texel = sector_get_floor_texel(arch->sector, inter_world);
+
+	inter_camera = frustum_floor_intersection(&arch->next, arch->cam, &len_sector, &player->stat);
+	inter_world = fvct2_camera_to_world(inter_camera, &player->stat);
+	quad[3].p = (t_fvct3){arch->px.y, arch->portal.b_down[arch->px.y], inter_camera.x};
+	quad[3].texel = sector_get_floor_texel(arch->sector, inter_world);
+
+	quad_to_triangle_wall(&quad, &tri1, &tri2);
+	triangle_show_verticles(&screen, &tri1);
+	if (debug == 9)
+	{
+		printf("print tri1 %f %f\n", tri1.v[0].p.x, tri1.v[0].p.y);
+		printf("print tri1 %f %f\n", tri1.v[1].p.x, tri1.v[1].p.y);
+	}
+	//texture_mapping(sdl, &triangle_divide);
 }

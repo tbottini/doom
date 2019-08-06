@@ -48,3 +48,20 @@ void			sector_set_box(t_sector *sector)
 
 	sector->box.length = (t_fvct2){max.x - min.x, max.y - min.y};
 }
+
+t_vct2		sector_get_floor_texel(t_sector *sector, t_fvct2 pos)
+{
+	//on recupere le pourcentage
+	//on le multiplie a la largeur/longueur du sprite
+	t_vct2		texel;
+
+	texel.x = sector->txtrsol.w * ((pos.x - sector->box.start.x) / sector->box.length.x);
+	texel.y = sector->txtrsol.h * ((pos.y - sector->box.start.y) / sector->box.length.y);
+	if (debug == 9)
+	{
+		printf("percent %f %f\n", (pos.x - sector->box.start.x) / sector->box.length.x,
+			(pos.y - sector->box.start.y) / sector->box.length.y);
+		printf("texel .x %d .y %d, texture %d %d\n", texel.x, texel.y, sector->txtrsol.w, sector->txtrsol.h);
+	}
+	return (texel);
+}

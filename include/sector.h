@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/06 14:33:54 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/06 16:48:00 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void					describe_bunch(t_wall **bunch);
 void					describe_sector(t_sector sector);
 void					describe_wall(t_wall wall);
 
-
+t_vct2					sector_get_floor_texel(t_sector *sector, t_fvct2 pos);
 void					init_prop(t_prop *prop, double height);
 int						is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
 

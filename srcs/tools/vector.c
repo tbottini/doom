@@ -42,3 +42,33 @@ void			fvct2_cmp_affect2(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(dou
 	dbl_cmp_affect2(&affect->x, b->x, c->x, cmp);
 	dbl_cmp_affect2(&affect->y, b->y, c->y, cmp);
 }
+
+t_fvct2			fvct2_rotation(t_fvct2 vector, double rotation)
+{
+	double		tmp_x;
+
+	tmp_x = cos(rotation) * vector.x - sin(rotation) * vector.y;
+	vector.y = sin(rotation) * vector.x + cos(rotation) * vector.y;
+	vector.x = tmp_x;
+	return (vector);
+}
+
+t_fvct2			fvct2_addition(t_fvct2 vector, t_fvct2 add)
+{
+	vector.x += add.x;
+	vector.y += add.y;
+	return (vector);
+}
+
+/*
+**	angle en radian
+**	on recupere un vecteur a partir de l'angle
+*/
+t_fvct2			fvct2_from_angle(double angle)
+{
+	t_fvct2		vector_dir;
+
+	vector_dir.x = cos(angle);
+	vector_dir.y = sin(angle);
+	return (vector_dir);
+}

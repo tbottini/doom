@@ -22,7 +22,7 @@
 
 # define RASTERIZE		0
 # define ENGINE			1
-# define RENDER			ENGINE
+# define RENDER			RASTERIZE
 
 /*
 **	disfonctionnement si l'ordre n'est pas respecte
@@ -94,5 +94,5 @@ int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 */
 void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
 t_shape					shape_reajust(t_shape shape);
-
+void					render_floor(t_arch *arch, t_fvct2 len_sector, t_player *player);
 #endif

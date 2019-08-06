@@ -59,4 +59,8 @@ void			dbl_cmp_affect(double *affect, double b, double c, int (*cmp)(double, dou
 void			fvct2_cmp_affect(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(double, double));
 void			fvct2_cmp_affect2(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(double, double));
 
+t_fvct2			fvct2_rotation(t_fvct2 vector, double rotation);
+t_fvct2			fvct2_addition(t_fvct2 vector, t_fvct2 add);
+t_fvct2			fvct2_from_angle(double angle);
+
 #endif
