@@ -15,7 +15,7 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 	player_angle = (player->stat.rot.x - 90) * PI180;
 	wall_angle = atan2(h_diff, depth);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
-	px += (player->stat.rot.x - 90) * 15;
+	px += (player->stat.rot.x - 90) * 15.5;
 
 	//vraies cervicales
 	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
@@ -142,7 +142,7 @@ void			render_wall(t_arch *arch, t_player *player)
 	t_sector	*sector_tmp;
 	t_shap		shape;
 	int			start;
-	t_verticle	quad[4];
+	t_fvct2 inter;
 
 	if (wall_screen_info(arch, player))
 	{
@@ -162,20 +162,17 @@ void			render_wall(t_arch *arch, t_player *player)
 				draw_wall(arch, YELLOW);
 			else if (arch->wall->status == WALL)
 				draw_wall(arch, WHITE);
-			b_point_debug(arch, shape.ul, RED);
-			b_point_debug(arch, shape.ur, RED);
-			b_point_debug(arch, shape.bl, YELLOW);
-			b_point_debug(arch, shape.br, YELLOW);
+			b_point_debug(shape.ul, RED);
+			b_point_debug(shape.ur, RED);
+			b_point_debug(shape.bl, YELLOW);
+			b_point_debug(shape.br, YELLOW);
 		}
-
-		t_fvct2 inter;
-
 		//inter = frustum_depth_intersection(arch->cam, &player->stat, len_sector.y);
 		inter = frustum_floor_intersection(&arch->pillar, arch->cam, &len_sector, &player->stat);
-		b_point_debug(arch, inter, YELLOW);
+		if (debug_screen == 2)
+			b_point_debug(inter, YELLOW);
 		//inter = frustum_depth_intersection(arch->cam, &player->stat, len_sector.y);
 		inter = frustum_floor_intersection(&arch->next, arch->cam, &len_sector, &player->stat);
-		b_point_debug(arch, inter, YELLOW);
 		if (arch->wall->status == PORTAL)
 			borne_svg(arch, &borne_tmp);
 		start = arch->px.x;

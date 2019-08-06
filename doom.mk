@@ -82,6 +82,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 						sdl_tools.c										\
 						secteur_tools.c									\
 						musi.c											\
+						vector.c										\
 
 SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\

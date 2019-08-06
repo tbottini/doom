@@ -15,6 +15,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 
 	if (debug_screen == 2 && arch->depth_portal > 0)
 		draw_borne(arch, RED);
+	sector_set_box(sector);
 
 	i = 0;
 	wall = sector->wall;
@@ -23,6 +24,10 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	portal_tmp = arch->wall;
 	while (i < sector->len)
 	{
+		if (debug_screen == 3)
+		{
+			debug_segment(arch, sector->wall[i].pillar->p, sector->wall[i].next->p, RED, WHITE);
+		}
 		if (RENDER == RASTERIZE)
 		{
 			render_surface_rasterize(arch->cam, arch->sdl, &wall[i], sector, player);
@@ -42,6 +47,15 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 			}
 		}
 		i++;
+	}
+	if (debug_screen == 3)
+	{
+		uint32_t color[] = {BLUE_SOFT, YELLOW, RED, RED_SOFT};
+		if (arch->depth_portal > 3)
+			color[0] = color[3];
+		else
+			color[0] = color[arch->depth_portal];
+		debug_sector_box(arch, &sector->box, color[0]);
 	}
 }
 
@@ -78,10 +92,10 @@ int					doom_render(t_doom *doom)
 
 	if (debug_screen == 2)
 		draw_frustum(&doom->game.arch, SCREEN_ON | FOV_HORI);
-	if (debug_screen == 3)
-		draw_frustum(&doom->game.arch, SCREEN_ON);
-
-
+	else if (debug_screen == 3)
+	{
+		b_point_debug(*(t_fvct2*)&doom->game.player.stat.pos, RED);
+	}
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 
 	mini = miniinit(&doom->sdl);

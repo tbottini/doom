@@ -220,5 +220,6 @@ int						hud_render(t_doom *doom);
 int						doom_render(t_doom *doom);
 
 void					bold_point(t_vct2 v, Uint32 color, t_doom *doom);
+void					sector_set_box(t_sector *sector);
 
 #endif

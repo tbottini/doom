@@ -158,6 +158,7 @@ doc		:
 	@#make convert_dot
 	@#mv $(PNG_FILE) html/
 	rm -f Doxyfilee
+	rm -f Doxyfile.bak
 	open html/index.html
 
 

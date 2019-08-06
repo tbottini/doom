@@ -52,4 +52,11 @@ void					fvct3_msg(char *msg, t_fvct3 vector);
 */
 double					dist(t_fvct2 vct1, t_fvct2 vct2);
 
+int				double_sup(double a, double b);
+int				double_inf(double a, double b);
+void			dbl_cmp_affect2(double *affect, double b, double c, int (*cmp)(double, double));
+void			dbl_cmp_affect(double *affect, double b, double c, int (*cmp)(double, double));
+void			fvct2_cmp_affect(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(double, double));
+void			fvct2_cmp_affect2(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(double, double));
+
 #endif

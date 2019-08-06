@@ -52,34 +52,43 @@ t_fvct2			frustum_floor_intersection(t_fvct2 *pillar_pos, t_camera *camera, t_fv
 	t_fvct2		inter;
 
 
-	printf("fov_ver %f\n", camera->fov_ver);
+	if (debug == 7)
+		printf("fov_ver %f\n", camera->fov_ver);
 
 	//on considere par default que la rot.y est a 0 --> sur doom par default a 90
 	angle_vector = fvct2_from_angle((stat->rot.x - 90) * TO_RADIAN - (camera->fov_ver / 2));
 	//ajoute la rotation.x - 90 * TO_RADIAN
-	printf("angle_vector %f %f\n", angle_vector.x, angle_vector.y);
+	if (debug == 7)
+		printf("angle_vector %f %f\n", angle_vector.x, angle_vector.y);
 
 	if (angle_vector.y >= 0)
 	{
-		printf("angle_vector.y == 0 pas d'intersection avec le sol\n");
+		if (debug == 7)
+			printf("angle_vector.y == 0 pas d'intersection avec le sol\n");
 		return ((t_fvct2){0, 0});
 	}
 
 	inter.x = len_sector->y / angle_vector.y * angle_vector.x;
-	printf("len_sector.y %f intersection selon x %f\n", len_sector->y, inter.x);
+	if (debug == 7)
+		printf("len_sector.y %f intersection selon x %f\n", len_sector->y, inter.x);
 
 	inter.y = inter.x / pillar_pos->x * pillar_pos->y;
-	printf("pillar_pos .x %f .y %f\ninter .x %f .y %f\n", pillar_pos->x, pillar_pos->y, inter.x, inter.y);
+	if (debug == 7)
+		printf("pillar_pos .x %f .y %f\ninter .x %f .y %f\n", pillar_pos->x, pillar_pos->y, inter.x, inter.y);
 
-	t_fvct2		test;
-
-	test = inter;
+	if (debug_screen == 2)
+	{
+		b_point_debug(inter, YELLOW);
+	}
 	inter = fvct2_rotation(inter, -stat->rot.y * TO_RADIAN);
 	//printf("inter with rot (%.2f) (cam ref (with rotation)) .x %f .y %f\n", stat->rot.y, inter.x, inter.y);
 
+
 	inter = fvct2_addition(inter, *(t_fvct2*)&stat->pos);
 	//printf("inter (world_ref) .x %f .y %f\n", inter.x, inter.y);
-	return (test);
+	if (debug_screen == 3)
+		b_point_debug(inter, YELLOW);
+	return (inter);
 }
 
 t_fvct2			frustum_depth_intersection(t_camera *camera, t_stat *stat, double floor_diff)

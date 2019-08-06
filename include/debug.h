@@ -11,6 +11,7 @@
 */
 extern int debug;
 extern int debug_screen;
+extern t_arch *arch_debug_extern;
 
 /*
 **	define FLAG for debug print
@@ -31,7 +32,8 @@ extern int debug_screen;
 /*
 **	debug screen, visual
 */
-void		b_point_debug(t_arch *arch, t_fvct2 v, Uint32 color);
+t_vct2		b_point_debug(t_fvct2 v, Uint32 color);
+void		debug_segment(t_arch *arch, t_fvct2 v, t_fvct2 v2, Uint32 color, Uint32 color_wall);
 void		draw_borne(t_arch *arch, uint32_t color);
 void		draw_wall(t_arch *arch, uint32_t color);
 
@@ -53,4 +55,8 @@ void		d_wall(t_wall *wall);
 void		sector_recursif(t_sector sector, int sub);
 void		borne_print(t_borne *borne);
 
+/*
+**			debug struct
+*/
+void		debug_sector_box(t_arch *arch, t_box_txtr *box, uint32_t color);
 #endif

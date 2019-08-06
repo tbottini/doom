@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 13:43:13 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/06 14:33:54 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,12 @@ struct					s_prop
 	int					type;
 };
 
+typedef struct 			s_box_txtr
+{
+	t_fvct2				start;
+	t_fvct2				length;
+}						t_box_txtr;
+
 struct					s_sector
 {
 	t_fvct3				gravity;
@@ -104,6 +110,8 @@ struct					s_sector
 	int					len;
 	t_txtr				txtrtop;
 	t_txtr				txtrsol;
+
+	t_box_txtr			box;
 	//sector effector *fonction
 	//list things (shapes, objets, deco, enemis)
 };

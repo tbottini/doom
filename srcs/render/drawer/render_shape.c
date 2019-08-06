@@ -39,7 +39,7 @@ t_fvct2			get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pil
 	if (arch->depth_portal > 0)
 	{
 		inte = inter(arch->pillar, arch->next, arch->portal.pillar, arch->portal.next);
-		b_point_debug(arch, inte, RED);
+		b_point_debug(inte, RED);
 		if (inte.x > floor_pos.x)
 			floor_pos = inte;
 	}

@@ -1,4 +1,7 @@
 #include "doom_nukem.h"
+#include "debug.h"
+
+t_arch *arch_debug_extern;
 
 void		borne_reset(t_arch *arch)
 {
@@ -59,5 +62,6 @@ int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 	arch->depth_portal = 0;
 	arch->zoom = 25;
 	zline_reset(arch);
+	arch_debug_extern = arch;
 	return (1);
 }
