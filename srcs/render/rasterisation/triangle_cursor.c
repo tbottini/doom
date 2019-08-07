@@ -78,12 +78,34 @@ void	cursor_init(t_sdl *sdl, t_cursor *cursor, t_triangle *triangle)
 	cursor->mid_on_left = (cross_product((t_fvct2*)&verticles[0], (t_fvct2*)&verticles[2], (t_fvct2*)&verticles[1]) < 0);
 	cursor->mid_limit = verticles[1].y;
 	cursor->down_limit = (verticles[2].y > sdl->size.y) ? sdl->size.y - 1 : verticles[2].y;
-	cursor->long_curve = (verticles[2].x - verticles[0].x) / (verticles[2].y - verticles[0].y);
+
+	if (verticles[2].y == verticles[1].y)
+		cursor->long_curve = 0;
+	else
+		cursor->long_curve = (verticles[2].x - verticles[0].x) / (verticles[2].y - verticles[0].y);
+
 	cursor->up_curve = (verticles[1].x - verticles[0].x) / (verticles[1].y - verticles[0].y);
-	cursor->down_curve = (verticles[1].x - verticles[2].x) / (verticles[1].y - verticles[2].y);
+
+	if (verticles[1].y == verticles[2].y)
+		cursor->down_curve = 0;
+	else
+		cursor->down_curve = (verticles[1].x - verticles[2].x) / (verticles[1].y - verticles[2].y);
 	modulo_pixel = fmod(verticles[0].y, 1.0);
 	cursor->cursor.y = (verticles[0].y < 0) ? 0 : verticles[0].y;
-	if (cursor->mid_on_left)
+	if (verticles[1].y == verticles[0].y)
+	{
+		if (verticles[1].x < verticles[0].x)
+		{
+			cursor->buff_cursor.x = verticles[1].x;
+			cursor->buff_cursor.y = verticles[0].x;
+		}
+		else
+		{
+			cursor->buff_cursor.x = verticles[0].x;
+			cursor->buff_cursor.y = verticles[1].x;
+		}
+	}
+	else if (cursor->mid_on_left)
 	{
 		cursor->buff_cursor.y = cursor->long_curve * (modulo_pixel + cursor->cursor.y - verticles[0].y) + verticles[0].x;
 		cursor->buff_cursor.x = cursor->up_curve * (modulo_pixel + cursor->cursor.y - verticles[0].y) + verticles[0].x;
@@ -107,13 +129,13 @@ bool		get_next_draw_line(t_cursor *cursor, int screenx)
 	cursor->cursor.y++;
 	if (cursor->mid_on_left)
 	{
-		cursor->buff_cursor.x += (cursor->cursor.y < cursor->mid_limit) ? cursor->up_curve : cursor->down_curve;
+		cursor->buff_cursor.x += (cursor->cursor.y <= cursor->mid_limit) ? cursor->up_curve : cursor->down_curve;
 		cursor->buff_cursor.y += cursor->long_curve;
 	}
 	else
 	{
 		cursor->buff_cursor.x += cursor->long_curve;
-		cursor->buff_cursor.y += (cursor->cursor.y < cursor->mid_limit) ? cursor->up_curve : cursor->down_curve;
+		cursor->buff_cursor.y += (cursor->cursor.y <= cursor->mid_limit) ? cursor->up_curve : cursor->down_curve;
 	}
 	cursor->line = (t_vct2){(int)cursor->buff_cursor.x, (int)cursor->buff_cursor.y};
 	if (cursor->line.x < 0)
@@ -148,6 +170,11 @@ void		correct_texture(t_sdl *sdl, t_triangle *triangle, t_vct2 *point)
 			+ triangle->v[1].texel.y * barycentre.y
 			+ triangle->v[2].texel.y * barycentre.z)
 			* correct_depth;
+
+	if (texel.x < 0)
+		texel.x = 0;
+	if (texel.y < 0)
+		texel.y = 0;
 	//texel.x = fmod(texel.x, triangle->texture->w / triangle->texture->repeatx) * (triangle->texture->repeatx);
 	//texel.y = fmod(texel.y, triangle->texture->h / triangle->texture->repeaty) * (triangle->texture->repeaty);
 	color = triangle->texture->pixels[(int)texel.x + (int)texel.y * triangle->texture->w];
@@ -164,7 +191,8 @@ void			cursor_fill_line(t_sdl *sdl, t_triangle *triangle, t_cursor *cursor)
 
 	while (cursor->cursor.x < cursor->line.y)
 	{
-		correct_texture(sdl, triangle, &cursor->cursor);
+		sdl->screen[cursor->cursor.x + cursor->cursor.y * sdl->size.x] = 0xff0000ff;
+		//correct_texture(sdl, triangle, &cursor->cursor);
 		cursor->cursor.x++;
 	}
 }
@@ -174,7 +202,7 @@ void			texture_mapping(t_sdl *sdl, t_triangle *triangle)
 {
 	t_cursor	cursor;
 
-	triangle_adapt_barycentre(triangle);
+	//triangle_adapt_barycentre(triangle);
 	cursor_init(sdl, &cursor, triangle);
 	triangle->v[0].texel.x /= triangle->v[0].p.z;
 	triangle->v[1].texel.x /= triangle->v[1].p.z;
@@ -183,13 +211,9 @@ void			texture_mapping(t_sdl *sdl, t_triangle *triangle)
 	triangle->v[1].texel.y /= triangle->v[1].p.z;
 	triangle->v[2].texel.y /= triangle->v[2].p.z;
 
-
-	//bold_point(sdl->screen, sdl->size.x, sdl->size.y, cursor.cursor, 0xffffffff);
 	triangle->area = cross_product((t_fvct2*)&triangle->v[0].p, (t_fvct2*)&triangle->v[1].p, (t_fvct2*)&triangle->v[2].p);
 	while (get_next_draw_line(&cursor, sdl->size.x))
 	{
-		//bold_point(sdl->screen, sdl->size.x, sdl->size.y, cursor.cursor, 0xffffffff);
-		//bold_point(sdl->screen, sdl->size.x, sdl->size.y, (t_vct2){cursor.line.y, cursor.cursor.y}, 0xff0000ff);
 		cursor_fill_line(sdl, triangle, &cursor);
 	}
 }

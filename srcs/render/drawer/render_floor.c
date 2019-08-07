@@ -69,31 +69,64 @@ void				render_under_floor(t_arch *arch, t_fvct2 len_sector, t_player *player, t
 
 	screen = (t_screen){arch->sdl->screen, arch->sdl->size.x, arch->sdl->size.y};
 
-	quad[0].p = (t_fvct3){arch->px.x, down_px.x, arch->pillar.y};
+	if (debug == 9 || debug == 7)
+	{
+		printf(WBLUE"--FLOOR--\n"WEND);
+		printf(WBLUE"pillar .x %f .y %f\n"WEND, arch->pillar.x, arch->pillar.y);
+		printf(WBLUE"next .x %f ,y %f\n"WEND, arch->next.x, arch->next.y);
+		printf("arch px.x %d px.y %d\n", arch->px.x, arch->px.y);
+	}
+
+	quad[0].p = (t_fvct3){arch->px.x, down_px.x, arch->pillar.x};
 	inter_world = fvct2_camera_to_world(arch->pillar, &player->stat);
 	quad[0].texel = sector_get_floor_texel(arch->sector, inter_world);
 
-	quad[1].p = (t_fvct3){arch->px.y, down_px.y, arch->next.y};
+	quad[1].p = (t_fvct3){arch->px.y, down_px.y, arch->next.x};
 	inter_world = fvct2_camera_to_world(arch->next, &player->stat);
 	quad[1].texel = sector_get_floor_texel(arch->sector, inter_world);
 
 	//on recupere la position dans le secteur des intersection avec le frustum
 	inter_camera = frustum_floor_intersection(&arch->pillar, arch->cam, &len_sector, &player->stat);
 	inter_world = fvct2_camera_to_world(inter_camera, &player->stat);
-	quad[2].p = (t_fvct3){arch->px.x, arch->portal.b_down[arch->px.x], inter_camera.x};
-	quad[2].texel = sector_get_floor_texel(arch->sector, inter_world);
+	quad[3].p = (t_fvct3){arch->px.x, arch->portal.b_down[arch->px.x], inter_camera.x};
+	quad[3].texel = sector_get_floor_texel(arch->sector, inter_world);
 
 	inter_camera = frustum_floor_intersection(&arch->next, arch->cam, &len_sector, &player->stat);
 	inter_world = fvct2_camera_to_world(inter_camera, &player->stat);
-	quad[3].p = (t_fvct3){arch->px.y, arch->portal.b_down[arch->px.y], inter_camera.x};
-	quad[3].texel = sector_get_floor_texel(arch->sector, inter_world);
+	////////////////////////////
+	quad[2].p = (t_fvct3){arch->px.y, arch->portal.b_down[arch->px.y - 1], inter_camera.x};
+	quad[2].texel = sector_get_floor_texel(arch->sector, inter_world);
 
 	quad_to_triangle_wall(&quad, &tri1, &tri2);
-	triangle_show_verticles(&screen, &tri1);
+	tri1.texture = &arch->sector->txtrsol;
+	tri2.texture = &arch->sector->txtrsol;
 	if (debug == 9)
 	{
-		printf("print tri1 %f %f\n", tri1.v[0].p.x, tri1.v[0].p.y);
-		printf("print tri1 %f %f\n", tri1.v[1].p.x, tri1.v[1].p.y);
+		printf("quad v0 %f %f %f\n", quad[0].p.x, quad[0].p.y, quad[0].p.z);
+		printf("quad v1 %f %f %f\n", quad[1].p.x, quad[1].p.y, quad[1].p.z);
+		printf("quad v2 %f %f %f\n", quad[2].p.x, quad[2].p.y, quad[2].p.z);
+		printf("quad v3 %f %f %f\n", quad[3].p.x, quad[3].p.y, quad[3].p.z);
+
 	}
-	//texture_mapping(sdl, &triangle_divide);
+	texture_mapping(arch->sdl, &tri1);
+	texture_mapping(arch->sdl, &tri2);
+	if (debug_screen == 7)
+	{
+		trait(&screen, (t_vct2){quad[0].p.x, quad[0].p.y}, (t_vct2){quad[1].p.x, quad[1].p.y}, RED_SOFT);
+		trait(&screen, (t_vct2){quad[1].p.x, quad[1].p.y}, (t_vct2){quad[2].p.x, quad[2].p.y}, RED_SOFT);
+		trait(&screen, (t_vct2){quad[2].p.x, quad[2].p.y}, (t_vct2){quad[3].p.x, quad[3].p.y}, RED_SOFT);
+		trait(&screen, (t_vct2){quad[3].p.x, quad[3].p.y}, (t_vct2){quad[0].p.x, quad[0].p.y}, GREEN);
+	}
+	else
+	{
+		trait(&screen, (t_vct2){tri1.v[1].p.x, tri1.v[1].p.y}, (t_vct2){tri1.v[2].p.x, tri1.v[2].p.y}, RED_SOFT);
+		trait(&screen, (t_vct2){tri1.v[0].p.x, tri1.v[0].p.y}, (t_vct2){tri1.v[1].p.x, tri1.v[1].p.y}, RED_SOFT);
+		trait(&screen, (t_vct2){tri1.v[0].p.x, tri1.v[0].p.y}, (t_vct2){tri1.v[2].p.x, tri1.v[2].p.y}, RED_SOFT);
+		trait(&screen, (t_vct2){tri2.v[1].p.x, tri2.v[1].p.y}, (t_vct2){tri2.v[2].p.x, tri2.v[2].p.y}, GREEN);
+		trait(&screen, (t_vct2){tri2.v[0].p.x, tri2.v[0].p.y}, (t_vct2){tri2.v[1].p.x, tri2.v[1].p.y}, GREEN);
+		trait(&screen, (t_vct2){tri2.v[0].p.x, tri2.v[0].p.y}, (t_vct2){tri2.v[2].p.x, tri2.v[2].p.y}, GREEN);
+	}
+
+	if (debug == 9 || debug == 7)
+		printf(WBLUE"------\n"WEND);
 }

@@ -34,8 +34,9 @@ void			quad_to_triangle(t_quad *quad, t_triangle *tri1, t_triangle *tri2)
 	tri1->v[0].p = (*quad)[0].p;
 	tri1->v[1].p = (*quad)[1].p;
 	tri1->v[2].p = (*quad)[2].p;
-	tri2->v[0].p = (*quad)[0].p;
-	tri2->v[1].p = (*quad)[1].p;
+
+	tri2->v[0].p = (*quad)[2].p;
+	tri2->v[1].p = (*quad)[0].p;
 	tri2->v[2].p = (*quad)[3].p;
 }
 
@@ -45,7 +46,8 @@ void			quad_to_triangle_wall(t_quad *quad, t_triangle *tri1, t_triangle *tri2)
 	tri1->v[0].texel = (*quad)[0].texel;
 	tri1->v[1].texel = (*quad)[1].texel;
 	tri1->v[2].texel = (*quad)[2].texel;
-	tri2->v[0].texel = (*quad)[0].texel;
-	tri2->v[1].texel = (*quad)[1].texel;
+
+	tri2->v[0].texel = (*quad)[2].texel;
+	tri2->v[1].texel = (*quad)[0].texel;
 	tri2->v[2].texel = (*quad)[3].texel;
 }

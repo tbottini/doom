@@ -22,7 +22,7 @@
 
 # define RASTERIZE		0
 # define ENGINE			1
-# define RENDER			RASTERIZE
+# define RENDER			ENGINE
 
 /*
 **	disfonctionnement si l'ordre n'est pas respecte

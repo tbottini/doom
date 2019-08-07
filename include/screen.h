@@ -5,8 +5,8 @@
 # define WIDTH 1300
 # define HEIGHT 950
 
-# define MINWIDTH 800
-# define MINHEIGHT 800
+# define MINWIDTH 500
+# define MINHEIGHT 500
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 
