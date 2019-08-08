@@ -1,6 +1,8 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
+#include "calcul.h"
+
 typedef struct			s_vct2
 {
 	int					x;
@@ -62,5 +64,17 @@ void			fvct2_cmp_affect2(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(dou
 t_fvct2			fvct2_rotation(t_fvct2 vector, double rotation);
 t_fvct2			fvct2_addition(t_fvct2 vector, t_fvct2 add);
 t_fvct2			fvct2_from_angle(double angle);
+double			fvct2_angle(t_fvct2 origin, t_fvct2 pos, double rot_origin);
 
+double			coef_vct(t_fvct2 quantity, t_vct2 step);
+double			coef_diff(double diff, t_vct2 step);
+double			coef_vct2(t_fvct2 value, t_fvct2 value2);
+t_fvct2			interpolation_linear(t_affine d1, t_affine d2);
+int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *inter);
+t_affine		affine_points(t_fvct2 point1, t_fvct2 point2);
+t_fvct2			inter(t_fvct2 p1, t_fvct2 p2, t_fvct2 p3, t_fvct2 p4);
+double			hypothenuse(t_fvct2 vct);
+double			distance(t_fvct2 vct1, t_fvct2 vct2);
+void			fvct3_sub(t_fvct3 *vector_sub, t_fvct3 *vector_sub2);
+void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot);
 #endif

@@ -15,10 +15,6 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 	wall_angle = atan2(h_diff, depth);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
 	px += (player->stat.rot.x - 90) * 15.5;
-
-	//vraies cervicales
-	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
-	//px = arch->sdl->size.y / 2 - px;
 	return (px);
 }
 

@@ -57,5 +57,6 @@ void					trait(t_screen *screen, t_vct2 vct1, t_vct2 vct2, Uint32 col);
 void					sdl_MultiRenderCopy(t_sdl *sdl);
 int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
 int						sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg);
+void					sdl_line(t_sdl *sdl, t_vct2 a, t_vct2 b, uint32_t color);
 
 #endif

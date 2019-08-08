@@ -280,3 +280,11 @@ void		debug_sector_box(t_arch *arch, t_box_txtr *box, uint32_t color)
 	debug_segment(arch, square[2], square[3], color, color);
 	debug_segment(arch, square[3], square[0], color, color);
 }
+
+void		sdl_line(t_sdl *sdl, t_vct2 a, t_vct2 b, uint32_t color)
+{
+	t_screen	screen_tmp;
+
+	screen_tmp = (t_screen){sdl->screen, sdl->size.x, sdl->size.y};
+	trait(&screen_tmp, a, b, color);
+}

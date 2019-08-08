@@ -1,5 +1,5 @@
-#include "calcul.h"
-#include "math.h"
+#include "vector.h"
+#include <math.h>
 
 double			coef_vct(t_fvct2 quantity, t_vct2 step)
 {

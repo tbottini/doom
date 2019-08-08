@@ -45,7 +45,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 			color[0] = color[arch->depth_portal];
 		debug_sector_box(arch, &sector->box, color[0]);
 	}
-	render_sector_enemy(arch->sdl, sector);
+	render_sector_enemy(arch->sdl, arch->cam, sector, player);
 }
 
 void				clear_screen(t_sdl *sdl)

@@ -72,3 +72,21 @@ t_fvct2			fvct2_from_angle(double angle)
 	vector_dir.y = sin(angle);
 	return (vector_dir);
 }
+
+double			fvct2_angle(t_fvct2 origin, t_fvct2 pos, double rot_origin)
+{
+	t_fvct2		dist;
+	double		angle;
+
+	dist.x = pos.x - origin.x;
+	dist.y = pos.y - origin.y;
+	angle = atan2(dist.y, dist.x) * TOANGLE;
+	if (angle < 0)
+		angle = 360 + angle;
+	angle = double_modulo(angle - rot_origin);
+	if (angle < -180)
+		angle += 360;
+	else if (angle > 180)
+		angle -= 360;
+	return (angle);
+}
