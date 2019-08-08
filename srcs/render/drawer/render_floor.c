@@ -93,7 +93,7 @@ void				render_under_floor(t_arch *arch, t_fvct2 len_sector, t_player *player, t
 
 	inter_camera = frustum_floor_intersection(&arch->next, arch->cam, &len_sector, &player->stat);
 	inter_world = fvct2_camera_to_world(inter_camera, &player->stat);
-	////////////////////////////
+
 	quad[2].p = (t_fvct3){arch->px.y, arch->portal.b_down[arch->px.y - 1], inter_camera.x};
 	quad[2].texel = sector_get_floor_texel(arch->sector, inter_world);
 

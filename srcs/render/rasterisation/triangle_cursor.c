@@ -175,8 +175,8 @@ void		correct_texture(t_sdl *sdl, t_triangle *triangle, t_vct2 *point)
 		texel.x = 0;
 	if (texel.y < 0)
 		texel.y = 0;
-	//texel.x = fmod(texel.x, triangle->texture->w / triangle->texture->repeatx) * (triangle->texture->repeatx);
-	//texel.y = fmod(texel.y, triangle->texture->h / triangle->texture->repeaty) * (triangle->texture->repeaty);
+	texel.x = fmod(texel.x, triangle->texture->w / triangle->texture->repeatx) * (triangle->texture->repeatx);
+	texel.y = fmod(texel.y, triangle->texture->h / triangle->texture->repeaty) * (triangle->texture->repeaty);
 	color = triangle->texture->pixels[(int)texel.x + (int)texel.y * triangle->texture->w];
 	sdl->screen[point->x + point->y * sdl->size.x] = color;
 }
@@ -186,13 +186,13 @@ void		correct_texture(t_sdl *sdl, t_triangle *triangle, t_vct2 *point)
 */
 void			cursor_fill_line(t_sdl *sdl, t_triangle *triangle, t_cursor *cursor)
 {
-	triangle->texture->repeatx = 1;
-	triangle->texture->repeaty = 3;
+	triangle->texture->repeatx = 5;
+	triangle->texture->repeaty = 5;
 
 	while (cursor->cursor.x < cursor->line.y)
 	{
-		sdl->screen[cursor->cursor.x + cursor->cursor.y * sdl->size.x] = 0xff0000ff;
-		//correct_texture(sdl, triangle, &cursor->cursor);
+		//sdl->screen[cursor->cursor.x + cursor->cursor.y * sdl->size.x] = 0xff0000ff;
+		correct_texture(sdl, triangle, &cursor->cursor);
 		cursor->cursor.x++;
 	}
 }

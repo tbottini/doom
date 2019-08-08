@@ -62,6 +62,7 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
 						drawer/render_floor.c							\
+						render_enemy.c									\
 
 SRCS_PARSING	:=		read_editor_file.c								\
 						readfile.c										\

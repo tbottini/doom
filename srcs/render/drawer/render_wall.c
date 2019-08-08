@@ -162,7 +162,7 @@ void			render_wall(t_arch *arch, t_player *player)
 			b_point_debug(shape.bl, YELLOW);
 			b_point_debug(shape.br, YELLOW);
 		}
-		render_under_floor(arch, len_sector, player, (t_fvct2){pillar_px.y, next_px.y});
+		//render_under_floor(arch, len_sector, player, (t_fvct2){pillar_px.y, next_px.y});
 		if (arch->wall->status == PORTAL)
 		{
 			borne_svg(arch, &borne_tmp);
