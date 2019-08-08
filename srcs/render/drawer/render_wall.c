@@ -1,6 +1,5 @@
 #include "render.h"
 #include "debug.h"
-#include "rasterize.h"
 
 /*
 **	renvoie la position en pixel d'un point

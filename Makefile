@@ -40,7 +40,6 @@ HEADERS			:=		libft/libft.h							\
 						include/player.h						\
 						include/input.h							\
 						include/sector.h						\
-						include/rasterize.h						\
 						include/screen.h						\
 						include/architect.h						\
 						include/color.h							\

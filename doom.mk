@@ -61,7 +61,6 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_line.c								\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
-						drawer/render_floor.c							\
 						render_enemy.c									\
 
 SRCS_PARSING	:=		read_editor_file.c								\
@@ -101,13 +100,6 @@ SRCS_GESTION	:=		doom_manager.c									\
 
 SRCS_CALCUL		:=		affine.c										\
 						extra_calcul.c									\
-
-SRCS_RASTERIZE	:=		render_surface_rasterize.c						\
-						triangle.c										\
-						clippingz.c										\
-						triangle_cursor.c								\
-						quad.c											\
-						surface.c										\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/render/%.o,$(SRCS_RENDER))	\

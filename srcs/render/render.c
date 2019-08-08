@@ -1,7 +1,6 @@
 #include "doom_nukem.h"
 #include "render.h"
 #include "debug.h"
-#include "rasterize.h"
 /*
 **	on recupere les information du secteur par rapport au frustum (champs de vision du joueur)
 **	on definit un bunch contenant les mur visibles
@@ -15,8 +14,6 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 
 	if (debug_screen == 2 && arch->depth_portal > 0)
 		draw_borne(arch, RED);
-	//sector_set_box(sector);
-
 	i = 0;
 	wall = sector->wall;
 	sector_frustum(arch, sector, player);
@@ -25,26 +22,17 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	while (i < sector->len)
 	{
 		if (debug_screen == 3)
-		{
 			debug_segment(arch, sector->wall[i].pillar->p, sector->wall[i].next->p, RED, WHITE);
-		}
-		if (RENDER == RASTERIZE)
+		on_frustum(arch, player, wall[i].pillar);
+		on_frustum(arch, player, wall[i].next);
+		if (((wall[i].pillar->frust || wall[i].next->frust)
+			||	borne_in_wall_angle(arch, &wall[i]))
+				&& equal_pillar(&wall[i], arch->wall))
 		{
-			render_surface_rasterize(arch->cam, arch->sdl, &wall[i], sector, player);
-		}
-		else if (RENDER == ENGINE)
-		{
-			on_frustum(arch, player, wall[i].pillar);
-			on_frustum(arch, player, wall[i].next);
-			if (((wall[i].pillar->frust || wall[i].next->frust)
-				||	borne_in_wall_angle(arch, &wall[i]))
-					&& equal_pillar(&wall[i], arch->wall))
-			{
-				portal_tmp = arch->wall;
-				arch->wall = &wall[i];
-				render_wall(arch, player);
-				arch->wall = portal_tmp;
-			}
+			portal_tmp = arch->wall;
+			arch->wall = &wall[i];
+			render_wall(arch, player);
+			arch->wall = portal_tmp;
 		}
 		i++;
 	}
@@ -90,7 +78,6 @@ int					doom_render(t_doom *doom)
 		printf("\n-------start render-------\n");
 	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
-
 	if (debug_screen == 2)
 		draw_frustum(&doom->game.arch, SCREEN_ON | FOV_HORI);
 	else if (debug_screen == 3)
