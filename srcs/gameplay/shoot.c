@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 15:04:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/07 14:28:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 	}
 }
 
-t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height)
+t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, double angle)
 {
 	t_fvct3 res;
 
 	res.x = pos.x + dist * (mo.x / RADIUS);
 	res.y = pos.y + dist * (mo.y / RADIUS);
-	res.z = pos.z + height + dist * (mo.z / RADIUS);
+	//res.z = pos.z + height + dist * (mo.z / RADIUS);
+	res.z = pos.z + height + dist * sin((angle - 90.0) * PI180);
 	return (res);
 }
 
@@ -73,8 +74,8 @@ static void	apply(t_shoot *shoot, t_stat *stat, t_fvct3 mo, int dmg)
 	t_fvct3 waim;
 	t_fvct3 eaim;
 
-	waim = real_coord(stat->pos, shoot->wdist, mo, 0);
-	eaim = real_coord(stat->pos, shoot->edist, mo, 0);
+	waim = real_coord(stat->pos, shoot->wdist, mo, stat->height, stat->rot.x);
+	eaim = real_coord(stat->pos, shoot->edist, mo, stat->height, stat->rot.x);
 	//calcul enemy or wall is closer
 	//if (is_closer(stat, waim, eaim))
 	if (shoot->whit && distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){waim.x, waim.y})

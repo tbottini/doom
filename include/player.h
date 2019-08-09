@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 13:47:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 17:47:21 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void					bullet(t_stat *stat, int dmg);
 void					injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit);
 void					wall_real_hit(t_shoot *shoot, t_stat *stat);
 void					possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector);
-t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height);
+t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, double angle);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);
 //void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
 //t_enemy				*possible_enemys(t_enemy **enemys, t_stat *stat, t_fvct3 d, int *index);

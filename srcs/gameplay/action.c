@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 15:37:09 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 15:55:06 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		action(t_doom *doom, t_stat *s, t_inv *inv)
 				else
 					wallhit->props[x].func(&wallhit->props[x]);
 			}
-			else if (wallhit->props[x].type == MINWPROPSPOS + 1)
+			else if (wallhit->props[x].type == MINWPROPSPOS + 1 && inv->last_key == true)
 				wallhit->props[x].func(doom);
 			printf("POS : touched prop type = %d\n", wallhit->props[x].type);//clic sound
 		}

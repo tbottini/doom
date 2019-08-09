@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 14:15:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 17:51:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static int		bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 		mo.x = ori.x - stat->pos.x;
 		mo.y = ori.y - stat->pos.y;
 		mo.z = ori.y - stat->pos.z;
-		coord = real_coord(stat->pos, toto, ori, 0);
+		coord = real_coord(stat->pos, toto, ori, stat->height, stat->rot.x);
 		//coord = real_coord(stat->pos, toto, mo, stat->height / 2);
 		if ((coord.z < next.h_floor + next.h_ceil) && (next.h_floor < coord.z))
 			return (1);
@@ -160,7 +160,7 @@ void			possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector)
 	{
 		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
 		{
-			if (bullet_can_pass(stat, i, sector, ori))
+			if (bullet_can_pass(stat, i, sector, ori) && sector->wall[i].link != sector)
 				possible(shoot, stat, ori, sector->wall[i].link);
 			else
 			{
