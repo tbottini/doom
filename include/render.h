@@ -88,7 +88,7 @@ int						equal_pillar(t_wall *wall1, t_wall *wall2);
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
-void					render_sector_enemy(t_sdl *sdl, t_camera *camera, t_sector *sector, t_player *player);
+void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
 
 /*
 **	shape
