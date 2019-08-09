@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/01 15:35:42 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/09 16:09:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,12 @@ void		game_over(t_doom *doom, bool win)
 	double			filter;
 
 	gameover = NULL;
+	Mix_HaltChannel(-1);
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
+	if (win)
+		Mix_PlayChannel(0, doom->game.sound.tab_effect[11], 0);
+	else
+		Mix_PlayChannel(0, doom->game.sound.tab_effect[12], 0);
 	filter = 0.0;
 	while (filter < 0.95)
 	{
@@ -85,6 +90,9 @@ void		game_over(t_doom *doom, bool win)
 			break ;
 		filter += (filter < 0.07 ? 0.0005 : 0.02);
 	}
+	Mix_FadeOutChannel(0, 1000);
 	free_game(&doom->game);
+	if (!win)
+		Mix_PlayChannel(0, doom->game.sound.tab_effect[13], 0);
 	sdl_set_status(doom, MENU_MAIN);
 }

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 15:55:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/09 16:32:18 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,12 @@ void		action(t_doom *doom, t_stat *s, t_inv *inv)
 				if (wallhit->props[x].wall)
 				{
 					if (has_key(inv, wallhit->props[x].wall->level))
+					{
 						wallhit->props[x].func(&wallhit->props[x]);
+						Mix_PlayChannel(3, doom->game.sound.tab_effect[3], 0);
+					}
+					else
+						Mix_PlayChannel(3, doom->game.sound.tab_effect[5], 0);
 					wallhit->props[x].wall->ots = doom->timestamp;
 				}
 				else
@@ -65,7 +70,9 @@ void		action(t_doom *doom, t_stat *s, t_inv *inv)
 			}
 			else if (wallhit->props[x].type == MINWPROPSPOS + 1 && inv->last_key == true)
 				wallhit->props[x].func(doom);
-			printf("POS : touched prop type = %d\n", wallhit->props[x].type);//clic sound
+			else if (!inv->last_key)
+				Mix_PlayChannel(3, doom->game.sound.tab_effect[5], 0);
+			printf("POS : touched prop type = %d\n", wallhit->props[x].type);
 		}
 	}
 	

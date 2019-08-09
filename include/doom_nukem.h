@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 11:56:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/09 16:21:38 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ extern int debug_screen;
 # define TOANGLE 57.2957795131
 
 # define RADIUS 500
-# define TOTALMUSIC 10
+# define TOTALMUSIC 11
 
 # define UNIT 8.0
 # define CWALL 0xDADADAFF

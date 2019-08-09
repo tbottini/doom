@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/07 14:28:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/09 16:37:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,17 @@ void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 	if (player->hand->id == FIST)
 		kick(timestamp, sound, player);
 	else if (player->hand->clip == 0)
+	{
+		Mix_PlayChannel(2, sound->tab_effect[9], 0);
 		reload(timestamp, player, player->hand);
+	}
 	else
 	{
 		bullet(&player->stat, player->hand->dmg);
+		if (player->hand->id == SHOTGUN)
+			Mix_PlayChannel(2, sound->tab_effect[8], 0);
+		else
+			Mix_PlayChannel(2, sound->tab_effect[7], 0);
 		player->hand->clip--;
 		if (player->hand->rate)
 			player->occupied = timestamp + 150;//ajuster avec vitesse d'animation et vitesse de tir voulue
