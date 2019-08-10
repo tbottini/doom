@@ -128,7 +128,7 @@ void			draw_enemy_box(t_arch->sdl *arch->sdl, t_enemy *enemy, t_vct2 width, t_vc
 }
 */
 
-void			draw_enemy_box(t_arch *arch, t_enemy *enemy, t_vct2 width, t_vct2 heigth)
+void			draw_enemy_box(t_arch *arch, t_enemy *enemy, t_vct2 width, t_vct2 heigth, double neutral_distance)
 {
 	double		p_buff_h;
 	double		p_buff_w;
@@ -145,7 +145,7 @@ void			draw_enemy_box(t_arch *arch, t_enemy *enemy, t_vct2 width, t_vct2 heigth)
 	p_buff_h = (double)enemy->sprites->h / (double)(heigth.y - heigth.x);
 	p_buff_w = enemy->sprites->w / (double)(width.y - width.x);
 
-	printf("prinp_buff_h %f\n", p_buff_h);
+	//printf("prinp_buff_h %f\n", p_buff_h);
 
 	if (heigth.x < 0)
 	{
@@ -173,17 +173,33 @@ void			draw_enemy_box(t_arch *arch, t_enemy *enemy, t_vct2 width, t_vct2 heigth)
 
 	while (width.x < width.y)
 	{
-		i_heigth = heigth.x;
-		cursor_screen = width.x + (i_heigth * arch->sdl->size.x);
-		limit_h = heigth.y * arch->sdl->size.x;
-		while (cursor_screen < limit_h)
+		if (zline_compare(arch, neutral_distance, width.x))
 		{
-			arch->sdl->screen[cursor_screen] =
-				enemy->sprites->pixels[(int)buffer_w + (int)buffer_h * enemy->sprites->w];
-			cursor_screen += arch->sdl->size.x;
-			buffer_h += p_buff_h;
+			if (heigth.x < (int)arch->portal.b_up[width.x])
+			{
+				i_heigth = (int)arch->portal.b_up[width.x];
+				buffer_h = (arch->portal.b_up[width.x] - heigth.x) * p_buff_h;
+			}
+			else
+			{
+				i_heigth = heigth.x;
+				buffer_h = 0;
+			}
+			cursor_screen = width.x + (i_heigth * arch->sdl->size.x);
+			if (heigth.y > (int)arch->portal.b_down[width.x])
+				limit_h = arch->portal.b_down[width.x] * arch->sdl->size.x;
+			else
+				limit_h = heigth.y * arch->sdl->size.x;
+
+
+			while (cursor_screen < limit_h)
+			{
+				arch->sdl->screen[cursor_screen] =
+					enemy->sprites->pixels[(int)buffer_w + (int)buffer_h * enemy->sprites->w];
+				cursor_screen += arch->sdl->size.x;
+				buffer_h += p_buff_h;
+			}
 		}
-		buffer_h = start_txtr_heigth;
 		width.x++;
 		buffer_w += p_buff_w;
 	}
@@ -198,6 +214,7 @@ void			render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player)
 	int			posx;
 	t_vct2		enemy_surface;
 	t_vct2		enemy_width;
+	double		neutral_distance;
 
 	enemy_node = sector->enemys;
 
@@ -207,14 +224,15 @@ void			render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player)
 	while (enemy_node)
 	{
 		enemy_node->sprites = &sector->txtrsol;
-		printf("pos %f %f\n", enemy_node->stat.pos.x, enemy_node->stat.pos.y);
+		//printf("pos %f %f\n", enemy_node->stat.pos.x, enemy_node->stat.pos.y);
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&enemy_node->stat.pos, player->stat.rot.y);
-		printf("e_angle %f\n", e_angle);
+		//printf("e_angle %f\n", e_angle);
 		if (e_angle < 90 && e_angle > -90)
 		{
 			dist_cam.x = distance(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&enemy_node->stat.pos);
 			dist_cam.y = dist_cam.x * sin(e_angle * TO_RADIAN);
 			dist_cam.x = dist_cam.x * cos(e_angle * TO_RADIAN);
+			neutral_distance = (double)(arch->sdl->size.y) / dist_cam.x;
 			b_point_debug(dist_cam, RED);
 			//printf("dist cam .x %f .y %f\n", dist_cam.x, dist_cam.y);
 			posx = arch->sdl->size.x / 2 - dist_cam.y / dist_cam.x * arch->cam->d_screen;
@@ -229,7 +247,7 @@ void			render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player)
 			enemy_width = cam_enemy_width(arch->cam, enemy_node, enemy_surface, posx);
 			arch->sdl->screen[enemy_width.x + (arch->sdl->size.y / 2) * arch->sdl->size.x] = 0x00ffffff;
 			sdl_line(arch->sdl, (t_vct2){enemy_width.x, arch->sdl->size.y / 2}, (t_vct2){enemy_width.y, arch->sdl->size.y / 2}, YELLOW);
-			draw_enemy_box(arch, enemy_node, enemy_width, enemy_surface);
+			draw_enemy_box(arch, enemy_node, enemy_width, enemy_surface, neutral_distance);
 		}
 		enemy_node = enemy_node->next;
 	}

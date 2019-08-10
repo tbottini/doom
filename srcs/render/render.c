@@ -12,6 +12,11 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	int				i;
 	t_wall			*portal_tmp;
 
+	if (debug == 9)
+	{
+		printf(WBLUE"\nrender_sector(%d) up %d down %d\n"WEND, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
+	}
+
 	if (debug_screen == 2 && arch->depth_portal > 0)
 		draw_borne(arch, RED);
 	i = 0;
@@ -44,6 +49,10 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 		else
 			color[0] = color[arch->depth_portal];
 		debug_sector_box(arch, &sector->box, color[0]);
+	}
+	if (debug == 9)
+	{
+		printf("render_enemy(%d) up %d down %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 	}
 	render_sector_enemy(arch, sector, player);
 }

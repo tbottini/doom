@@ -87,7 +87,8 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
    	t_fvct2		coef_surface;
 	double		coef_neutre;
 	int			start;
-
+	double		coef_distance;
+	double		dist_px;
 	int			i = 0;
 
 	start = arch->px.x;
@@ -96,6 +97,10 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
+	//on sauvegarde l'inverse de la distance...
+
+	coef_distance = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
+	dist_px = arch->pillar.x;
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->wall->status == WALL)
@@ -119,6 +124,7 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 			sdl_MultiRenderCopy(arch->sdl);
 			SDL_RenderPresent(arch->sdl->rend);
 		}
+		dist_px += coef_distance;
 	}
 }
 
@@ -137,7 +143,8 @@ void			render_wall(t_arch *arch, t_player *player)
 	t_sector	*sector_tmp;
 	t_shap		shape;
 	int			start;
-	t_fvct2 inter;
+	t_vct2		px_draw;
+	t_fvct2		inter;
 
 	if (wall_screen_info(arch, player))
 	{
@@ -160,22 +167,35 @@ void			render_wall(t_arch *arch, t_player *player)
 		//render_under_floor(arch, len_sector, player, (t_fvct2){pillar_px.y, next_px.y});
 		if (arch->wall->status == PORTAL)
 		{
+			if (debug == 9)
+				printf("borne_svg(%d) %d %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 			borne_svg(arch, &borne_tmp);
-			start = arch->px.x;
+			px_draw = arch->px;
+			//start = arch->px.x;
 		}
 		pillar_to_pillar(arch, &pillar_px, &next_px, &borne_tmp);
 		if (arch->wall->status == PORTAL)
 		{
-			arch->px.x = start;
+			arch->px.x = px_draw.x;
 			set_borne_horizontal(arch);
 			arch->portal.pillar = arch->pillar;
 			arch->portal.next = arch->next;
 			sector_tmp = arch->sector;
 			arch->depth_portal++;
+			if (debug == 9)
+				printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
+
 			sector_render(arch, player, arch->wall->link);
 			arch->depth_portal--;
 			arch->sector = sector_tmp;
-			borne_load(arch, &borne_tmp, start);
+			if (debug == 9)
+			{
+				printf("arch(%d) %d %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
+				printf("borne_tmp(%d) %d %d\n", arch->depth_portal, borne_tmp.b_up[arch->sdl->size.x/2 - start], borne_tmp.b_down[arch->sdl->size.x/2 - start]);
+			}
+			borne_load(arch, &borne_tmp, px_draw);
+			if (debug == 9)
+				printf("borne_load(%d) %d %d\n\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 		}
 	}
 	else if (debug_screen == 2)

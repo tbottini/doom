@@ -1,4 +1,5 @@
 #include "render.h"
+#include "debug.h"
 
 int			trunc_int(int value, int min, int max)
 {
@@ -49,19 +50,25 @@ t_borne		*borne_svg(t_arch *arch, t_borne *borne)
 **	recharge une borne dans la borne arch
 *	(une borne anciennement sauvegarde...)
 */
-void		borne_load(t_arch *arch, t_borne *borne, int start)
+void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 {
 	int		i;
 
 	i = 0;
 	arch->portal.b_left = borne->b_left;
 	arch->portal.b_right = borne->b_right;
-	while (start < arch->px.y)
+
+	if (debug == 9)
 	{
-		arch->portal.b_up[start] = borne->b_up[i];
-		arch->portal.b_down[start] = borne->b_down[i];
-		arch->portal.zline[start] = borne->zline[i];
-		start++;
+		printf("borne->b_left %f borne->b_right %f\n", borne->b_left, borne->b_right);
+		printf("start load start %d arch->px.y %d archmid %d\n", px_draw.x, arch->px.y, arch->sdl->size.x/2);
+	}
+	while (px_draw.x < px_draw.y)
+	{
+		arch->portal.b_up[px_draw.x] = borne->b_up[i];
+		arch->portal.b_down[px_draw.x] = borne->b_down[i];
+		arch->portal.zline[px_draw.x] = borne->zline[i];
+		px_draw.x++;
 		i++;
 	}
 	//-----arch->portal.decal_portal = borne->decal_portal;
