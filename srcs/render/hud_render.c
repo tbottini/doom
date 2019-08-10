@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 16:24:04 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/10 19:45:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 22:06:07 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,6 @@ void				weapon_render(t_doom *doom)
 
 int					hud_render(t_doom *doom)
 {
-	t_minimap		mini;
-	
-	mini = miniinit(&doom->sdl);
-	minimap(&mini, &doom->game.player);
-	hud_aim(doom);
 	weapon_render(doom);
 	weaponhud_render(doom);
 	//hud_aim(doom);

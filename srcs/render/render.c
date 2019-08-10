@@ -59,7 +59,7 @@ void				clear_screen(t_sdl *sdl)
 
 int					doom_render(t_doom *doom)
 {
-	return (1);
+	t_minimap		mini;
 	int				i;
 
 	i = 0;
@@ -73,11 +73,15 @@ int					doom_render(t_doom *doom)
 	if (debug_screen == 3)
 		draw_frustum(&doom->game.arch, SCREEN_ON);
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
+	mini = miniinit(&doom->sdl, &doom->ui);
+	minimap(&mini, &doom->game.player);
+	hud_aim(doom);
 	debug_screen_copy(&doom->game.arch);
 	sdl_MultiRenderCopy(&doom->sdl);
+	miniinv(&mini, &doom->game.player);
 	architect_reset(&doom->game.arch);
-	clear_screen(&doom->sdl);
-	ft_bzero(&doom->game.arch.sc_debug, sizeof(Uint32) * doom->sdl.size.x * doom->sdl.size.y);
+	//clear_screen(&doom->sdl);
+	//ft_bzero(&doom->game.arch.sc_debug, sizeof(Uint32) * doom->sdl.size.x * doom->sdl.size.y);
 	if (debug == 1)
 		printf("\n--------------------------\n");
 	return (1);

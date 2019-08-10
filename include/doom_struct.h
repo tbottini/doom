@@ -247,6 +247,7 @@ typedef struct			s_ui
 	t_pal				fire;
 	SDL_Texture			*weaponhud[NB_WEAPON];
 	SDL_Texture			*sprites[ENDSPRITES + 1];
+	SDL_Texture			*props[MAXPROPSNUMBER + MAXWPROPSNUMBER];
 }						t_ui;
 
 typedef struct			s_sdl
@@ -269,6 +270,7 @@ typedef struct			s_minimap
 	t_vct2	size;
 	t_vct2	mid;
 	t_sdl	*sdl;
+	t_ui	*ui;
 }						t_minimap;
 
 typedef struct s_pilier	t_pilier;

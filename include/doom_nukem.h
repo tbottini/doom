@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/10 18:47:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 22:18:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,11 @@ void					effect_volume(t_sound *sound);
 */
 
 void					minimap(t_minimap *mini, t_player *player);
-t_minimap				miniinit(t_sdl *s);
+t_minimap				miniinit(t_sdl *s, t_ui *ui);
 void					mini_draw_wall(t_wall *wall, t_fvct3 pos, t_minimap *mini);
 int						bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color);
 void					minibord(t_minimap *mini);
 void					miniwalls(t_player *player, t_sector *sector, t_minimap *mini);
+void					miniinv(t_minimap *mini, t_player *player);
 
 #endif
