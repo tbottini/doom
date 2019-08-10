@@ -44,7 +44,6 @@ SRCS_INPUT		:=		event_controller.c								\
 
 SRCS_RENDER		:=		render.c										\
 						sector.c										\
-						shape.c											\
 						hud_render.c									\
 						hud/minimap.c									\
 						hud/minimap_drawer.c							\
@@ -56,12 +55,12 @@ SRCS_RENDER		:=		render.c										\
 						pre_render/borne.c								\
 						pre_render/pillar_info.c						\
 						drawer/render_wall.c							\
-						drawer/render_shape.c							\
 						drawer/textures.c								\
 						drawer/draw_line.c								\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
 						render_enemy.c									\
+						sprite.c										\
 
 SRCS_PARSING	:=		read_editor_file.c								\
 						readfile.c										\

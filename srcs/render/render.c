@@ -11,6 +11,7 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	t_wall			*wall;
 	int				i;
 	t_wall			*portal_tmp;
+	t_sprite		*sprite;
 
 	if (debug == 9)
 	{
@@ -54,7 +55,20 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	{
 		printf("render_enemy(%d) up %d down %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 	}
-	render_sector_enemy(arch, sector, player);
+	sprite = NULL;
+
+	sprite_from_enemy(&sprite, sector->enemys, player, arch);
+	sprite_from_props(&sprite, sector->props, player, sector->len_prop, arch);
+
+	sprite_render_list(sprite, arch, player);
+
+
+	if (debug == 7)
+		sprite_iter(sprite, &sprite_print);
+
+	sprite_iter(sprite, &sprite_free);
+
+	//render_sector_enemy(arch, sector, player);
 }
 
 void				clear_screen(t_sdl *sdl)

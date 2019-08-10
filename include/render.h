@@ -44,6 +44,15 @@ typedef struct 			s_shap
 	t_fvct2				br;
 }						t_shap;
 
+typedef struct 			s_sprite
+{
+	t_fvct2				pos;
+	t_vct2				width;
+	t_vct2				heigth;
+	t_txtr				texture;
+	struct s_sprite		*next;
+}						t_sprite;
+
 /*
 **	pillar
 */
@@ -96,5 +105,26 @@ void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
 void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
 t_shape					shape_reajust(t_shape shape);
 
+/*
+**	sprites
+*/
+void					sprite_render_list(t_sprite *sprite, t_arch *arch, t_player *player);
+t_sprite				*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *player, t_arch *arch);
+t_sprite				*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch);
+void					sprite_print(t_sprite *sprite);
+void					sprite_free(t_sprite *sprite);
+void					sprite_print(t_sprite *sprite);
+void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
+void					sprite_render(t_sprite *sprite, t_arch *arch, t_player *player);
+t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
+
+
+/*
+**	render enemy
+*/
+t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);
+int						camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double h_diff, double depth);
+t_vct2					cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_player *player, double depth);
+t_vct2					cam_txtr_width(t_camera *camera, t_txtr *texture, t_vct2 surface, int posx);
 
 #endif

@@ -13,6 +13,20 @@ t_fvct2			player_enemy_diff_heigth(t_player *player, t_enemy *enemy)
 	return (length);
 }
 
+/*
+**	on recupere la difference basse et haute d'un objet par rapport au joueur
+**	avec la hauteur du secteur et celui de l'obj
+*/
+t_fvct2			player_diff_heigth(t_player *player, double sector_floor, double obj_heigth)
+{
+	t_fvct2		length;
+
+	length.y = -player->stat.height - (player->stat.pos.z - sector_floor);
+	length.x = length.y + obj_heigth;
+	return (length);
+
+}
+
 int				camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double h_diff, double depth)
 {
 	double		wall_angle;
@@ -24,6 +38,17 @@ int				camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double
 	px = sdl->size.y / 2 - tan(wall_angle) * camera->d_screen;
 	px += (player->stat.rot.x - 90) * 15.5;
 	return (px);
+}
+
+t_vct2			player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth)
+{
+	t_fvct2		len;
+	t_vct2		surface;
+
+	len = player_diff_heigth(player, prop->sector->h_floor, 1);
+	surface.x = camera_proj_heigth(arch->cam, arch->sdl, player, len.x, depth);
+	surface.y = camera_proj_heigth(arch->cam, arch->sdl, player, len.y, depth);
+	return (surface);
 }
 
 /*
@@ -41,92 +66,21 @@ t_vct2			cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_p
 	return (surface);
 }
 
-t_vct2			cam_enemy_width(t_camera *camera, t_enemy *enemy, t_vct2 surface, int posx)
+/*
+**	on recupere la largeur de la texture a l'ecran a partir de ses dimensions de base et de
+**	sa hauteur a l'ecran
+**	on ajoute sa position x, colonne du millieu de texture
+*/
+t_vct2			cam_txtr_width(t_camera *camera, t_txtr *texture, t_vct2 surface, int posx)
 {
 	//calcul en croix de la longeur en pixel
 	t_vct2		width;
 
-	width.x = (((surface.y - surface.x) / (double)enemy->sprites->h) * enemy->sprites->w) / 2;
+	width.x = (((surface.y - surface.x) / (double)texture->h) * texture->w) / 2;
 	width.y = posx + width.x;
 	width.x = posx - width.x;
 	return (width);
 }
-
-/*
-void			draw_enemy_box(t_arch->sdl *arch->sdl, t_enemy *enemy, t_vct2 width, t_vct2 heigth)
-{
-	double		buff_h;
-	double		buff_w;
-	t_vct2		cursor_screen;
-	t_vct2		cursor_txtr;
-	t_fvct2		buff_cursor;
-	double		start_x_txtr;
-	int			cursor_s;
-	int			cursor_t;
-
-	int			limit_h, limit_w;
-
-	buff_h = enemy->sprites->h / (double)(heigth.y - heigth.x);
-	buff_w = enemy->sprites->w / (double)(width.y - width.x);
-
-	buff_cursor = (t_fvct2){0, 0};
-
-
-	cursor_txtr.x = (int)buff_cursor.x;
-	cursor_txtr.y = (int)buff_cursor.y;
-
-	if (width.x < 0)
-	{
-		start_x_txtr = -width.x * buff_w;
-		buff_cursor.x = start_x_txtr;
-		width.x = 0;
-		cursor_screen.x = 0;
-	}
-	else
-	{
-		cursor_screen.x = width.x;
-	}
-	if (heigth.x < 0)
-	{
-		buff_cursor.y = -heigth.x * buff_h;
-		cursor_screen.y = 0;
-	}
-	else
-	{
-		cursor_screen.y = heigth.x * arch->sdl->size.x;
-	}
-	if (heigth.y > arch->sdl->size.y)
-		heigth.y = arch->sdl->size.y * arch->sdl->size.x;
-	else
-		heigth.y *= arch->sdl->size.x;
-	if (width.y > arch->sdl->size.x)
-		width.y = arch->sdl->size.x;
-
-	limit_h = heigth.y - arch->sdl->size.x;
-
-	cursor_s = cursor_screen.x + cursor_screen.y;
-
-	while (cursor_s < limit_h)
-	{
-		//printf("cursor_s %d %d\n", cursor_s, limit_h);
-		cursor_s = cursor_screen.x + cursor_screen.y;
-		while (cursor_screen.x < width.y)
-		{
-			cursor_t = cursor_txtr.x + cursor_txtr.y;
-			arch->sdl->screen[cursor_s] = enemy->sprites->pixels[cursor_t];
-			cursor_screen.x++;
-			cursor_s++;
-			buff_cursor.x += buff_w;
-			cursor_txtr.x = (int)buff_cursor.x;
-		}
-		cursor_screen.x = width.x;
-		buff_cursor.x = start_x_txtr;
-		cursor_screen.y += arch->sdl->size.x;
-		buff_cursor.y += buff_h;
-		cursor_txtr.y = (int)buff_cursor.y * enemy->sprites->w;
-	}
-}
-*/
 
 void			draw_enemy_box(t_arch *arch, t_enemy *enemy, t_vct2 width, t_vct2 heigth, double neutral_distance)
 {
@@ -232,22 +186,21 @@ void			render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player)
 			dist_cam.x = distance(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&enemy_node->stat.pos);
 			dist_cam.y = dist_cam.x * sin(e_angle * TO_RADIAN);
 			dist_cam.x = dist_cam.x * cos(e_angle * TO_RADIAN);
+
+
 			neutral_distance = (double)(arch->sdl->size.y) / dist_cam.x;
 			b_point_debug(dist_cam, RED);
-			//printf("dist cam .x %f .y %f\n", dist_cam.x, dist_cam.y);
 			posx = arch->sdl->size.x / 2 - dist_cam.y / dist_cam.x * arch->cam->d_screen;
-			//printf("posx %d\n", posx);
 			arch->sdl->screen[posx + (arch->sdl->size.y / 2) * arch->sdl->size.x] = 0xffffffff;
-			//printf("enemy heigth %f\n", enemy_node->stat.height);
+
 			enemy_surface = cam_get_enemy_surface(arch->cam, arch->sdl, enemy_node, player, dist_cam.x);
-			//printf("enemy surface %d %d\n", enemy_surface.x, enemy_surface.y);
+
 			sdl_line(arch->sdl, (t_vct2){posx, enemy_surface.x}, (t_vct2){posx, enemy_surface.y}, BLUE_SOFT);
-			//proportion avec les texture
-			//printf("enemy surface len w %d h %d\n", enemy_node->sprites->w, enemy_node->sprites->h);
-			enemy_width = cam_enemy_width(arch->cam, enemy_node, enemy_surface, posx);
+			enemy_width = cam_txtr_width(arch->cam, enemy_node->sprites, enemy_surface, posx);
 			arch->sdl->screen[enemy_width.x + (arch->sdl->size.y / 2) * arch->sdl->size.x] = 0x00ffffff;
 			sdl_line(arch->sdl, (t_vct2){enemy_width.x, arch->sdl->size.y / 2}, (t_vct2){enemy_width.y, arch->sdl->size.y / 2}, YELLOW);
 			draw_enemy_box(arch, enemy_node, enemy_width, enemy_surface, neutral_distance);
+
 		}
 		enemy_node = enemy_node->next;
 	}

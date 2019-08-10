@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/08 16:25:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/10 18:09:53 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,5 +179,10 @@ t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo);
 */
 
 void					describe_player(t_player player);
+
+/*
+**	calcul
+*/
+t_fvct2					player_diff_heigth(t_player *player, double sector_floor, double obj_heigth);
 
 #endif
