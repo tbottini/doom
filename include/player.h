@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 17:47:21 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 13:55:16 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ typedef struct			s_inv
 
 typedef	struct			s_weapon
 {
-	t_txtr				*sprites;
+	t_txtr				*sprites[22];
+	int					nb_ts;
+	int					nb_tr;
 	int					clip_max;
 	int					ammo;
 	int					clip;
