@@ -22,6 +22,23 @@ void	ui_free(t_ui *ui)
 		TTF_CloseFont(ui->fonts.s128);
 }
 
+int		load_weapons(t_doom *doom, t_ui *ui)
+{
+	int x;
+	char path[512];
+
+	ft_strcpy(path, SPRITEPATH);
+	x = KICKSTART;
+	while (x < ENDSPRITES)
+	{
+		concat_atoi(&path[19], x);
+		if (!(ui->sprites[x] = IMG_LoadTexture(doom->sdl.rend, path)))
+			return (0);
+		x++;
+	}
+	return (1);
+}
+
 int		ui_by_sdl(t_doom *doom, t_ui *ui)
 {
 	ui->btnarr[0] = add_doom_button(doom, " Doom-Nukem ");
@@ -49,10 +66,13 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	ui->btnpse[4] = add_right_music_button(doom, &(ui->btnpse[2].loc.area));
 	ui->btnpse[5] = add_ing_opt_button(doom);
 	ui->btnpse[6] = add_main_menu_button(doom);
-	ui->weaponhud[FIST] = add_fist(doom);
-	ui->weaponhud[GUN] = add_handgun(doom);
-	ui->weaponhud[SHOTGUN] = add_shotgun(doom);
-	ui->weaponhud[RIFLE] = add_rifle(doom);
+	if (!(ui->weaponhud[FIST] = add_fist(doom))
+		|| !(ui->weaponhud[GUN] = add_handgun(doom))
+		|| !(ui->weaponhud[SHOTGUN] = add_shotgun(doom))
+		|| !(ui->weaponhud[RIFLE] = add_rifle(doom)))
+		return (0);
+	if (!(load_weapons(doom, ui)))
+		return (0);
 	return (1);
 }
 

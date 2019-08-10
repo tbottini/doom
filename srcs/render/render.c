@@ -59,7 +59,7 @@ void				clear_screen(t_sdl *sdl)
 
 int					doom_render(t_doom *doom)
 {
-	t_minimap		mini;
+	return (1);
 	int				i;
 
 	i = 0;
@@ -73,9 +73,6 @@ int					doom_render(t_doom *doom)
 	if (debug_screen == 3)
 		draw_frustum(&doom->game.arch, SCREEN_ON);
 	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
-	mini = miniinit(&doom->sdl);
-	minimap(&mini, &doom->game.player);
-	hud_aim(doom);
 	debug_screen_copy(&doom->game.arch);
 	sdl_MultiRenderCopy(&doom->sdl);
 	architect_reset(&doom->game.arch);

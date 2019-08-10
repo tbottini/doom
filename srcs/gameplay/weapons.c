@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/30 12:59:22 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 13:00:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 19:12:11 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		change_weapon(t_player *player, int id)
 		player->hand = &player->weapons[id];
 }
 
-void		reload(Uint32 timestamp, t_player *player, t_weapon *weapon)
+void		reload(Uint32 timestamp, t_player *player, t_weapon *weapon, t_sound *sound)
 {
 	int	r;
 
@@ -60,6 +60,9 @@ void		reload(Uint32 timestamp, t_player *player, t_weapon *weapon)
 			r = weapon->ammo;
 		weapon->ammo -= r;
 		weapon->clip += r;
+		Mix_PlayChannel(2, sound->tab_effect[9], 0);
+		player->act = true;
+		player->timeact = timestamp;
 		player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
 	}
 }

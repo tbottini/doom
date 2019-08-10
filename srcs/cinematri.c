@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 01:54:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 11:02:26 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 17:28:32 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ static void	cine_delay(t_doom *doom, int *i)
 	doom->timestamp = SDL_GetTicks();
 }
 
-static void	concat_atoi(char *deb, int i)
+void	concat_atoi(char *str, int i)
 {
-	deb[27] = i / 1000 + '0';
+	str[0] = i / 1000 + '0';
 	i %= 1000;
-	deb[28] = i / 100 + '0';
+	str[1] = i / 100 + '0';
 	i %= 100;
-	deb[29] = i / 10 + '0';
+	str[2] = i / 10 + '0';
 	i %= 10;
-	deb[30] = i + '0';
+	str[3] = i + '0';
 }
 
 static void	super_cinematrique(t_doom *doom, SDL_Surface *image, SDL_Texture *texture, int i)
@@ -77,7 +77,7 @@ static void	super_cinematrique(t_doom *doom, SDL_Surface *image, SDL_Texture *te
 	ft_strcpy(deb, "ressources/cinematic/frame_0000.png");
 	while (i <= max && (image = IMG_Load(deb)))
 	{
-		concat_atoi(deb, i);
+		concat_atoi(&deb[27], i);
 		if (!(texture = SDL_CreateTextureFromSurface(doom->sdl.rend, image)))
 			return ;
 		SDL_RenderCopy(doom->sdl.rend, texture, NULL, NULL);

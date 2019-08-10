@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/09 16:21:38 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 18:47:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void					play_effect(t_sound *sound, int e);
 **	Cinematique et Musique
 */
 
+void					concat_atoi(char *str, int i);
 void					cine_events(t_doom *doom, int *i);
 void					prev_track(t_doom *doom);
 void					next_track(t_doom *doom);

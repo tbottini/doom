@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/09 16:32:18 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 17:55:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,5 +142,7 @@ void		kick(Uint32 timestamp, t_sound *sound, t_player *pl)
 	}
 	printf("MISSED\n");
 	kick_button(&pl->stat, d, timestamp);
+	pl->act = false;
+	pl->timeact = timestamp;
 	pl->occupied = timestamp + 1000; //ajuster avec vitesse d'animation
 }

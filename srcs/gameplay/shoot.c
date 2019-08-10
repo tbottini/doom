@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/09 16:37:25 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 19:01:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,27 @@
 void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 {
 	printf("shoooooooot || weapon id = %d | FIST = %d\n", player->hand->id, FIST);
-	if (player->hand->id == FIST)
-		kick(timestamp, sound, player);
-	else if (player->hand->clip == 0)
+	if (player->occupied < timestamp)
 	{
-		Mix_PlayChannel(2, sound->tab_effect[9], 0);
-		reload(timestamp, player, player->hand);
-	}
-	else
-	{
-		bullet(&player->stat, player->hand->dmg);
-		if (player->hand->id == SHOTGUN)
-			Mix_PlayChannel(2, sound->tab_effect[8], 0);
+		if (player->hand->id == FIST)
+			kick(timestamp, sound, player);
+		else if (player->hand->clip == 0)
+			reload(timestamp, player, player->hand, sound);
 		else
-			Mix_PlayChannel(2, sound->tab_effect[7], 0);
-		player->hand->clip--;
-		if (player->hand->rate)
-			player->occupied = timestamp + 150;//ajuster avec vitesse d'animation et vitesse de tir voulue
-		else
-			player->occupied = timestamp + 500;//ajuster avec vitesse d'animation et temps entre deux tirs souhaite
+		{
+			bullet(&player->stat, player->hand->dmg);
+			player->act = false;
+			player->timeact = timestamp;
+			if (player->hand->id == SHOTGUN)
+				Mix_PlayChannel(2, sound->tab_effect[8], 0);
+			else
+				Mix_PlayChannel(2, sound->tab_effect[7], 0);
+			player->hand->clip--;
+			if (player->hand->rate)
+				player->occupied = timestamp + 150;//ajuster avec vitesse d'animation et vitesse de tir voulue
+			else
+				player->occupied = timestamp + 500;//ajuster avec vitesse d'animation et temps entre deux tirs souhaite
+		}
 	}
 }
 
@@ -113,4 +115,3 @@ void		bullet(t_stat *stat, int dmg)
 	wall_real_hit(&shoot, stat);
 	apply(&shoot, stat, mo, dmg);
 }
-

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/10 16:15:22 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 17:58:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct			s_inv
 
 typedef	struct			s_weapon
 {
-	t_txtr				*sprites[22];
+	SDL_Texture			*sprites[22];
 	int					nb_ts;
 	int					nb_tr;
 	int					clip_max;
@@ -97,9 +97,11 @@ typedef struct 			s_player
 	t_weapon			*hand;
 	t_weapon			weapons[NB_WEAPON];
 	Uint32				boost;
+	Uint32				timeact;
 	Uint32				occupied;
 	t_power				power;
 	int					fov;
+	bool				act;
 }						t_player;
 
 /*
@@ -176,7 +178,7 @@ t_weapon				hand_init(void);
 t_weapon				gun_init(void);
 t_weapon				shotgun_init(void);
 t_weapon				rifle_init(void);
-void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon);
+void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon, t_sound *sound);
 void					shoot(Uint32 timestamp, t_sound *sound, t_player *player);
 void					bullet(t_stat *stat, int dmg);
 void					injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit);

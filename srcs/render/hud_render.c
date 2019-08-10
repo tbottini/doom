@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 16:24:04 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 13:52:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 19:45:02 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void				hud_aim(t_doom *doom)
 	}
 }
 
-int					hud_render(t_doom *doom)
+void				weaponhud_render(t_doom *doom)
 {
 	SDL_Rect pos;
 	int x;
@@ -68,6 +68,64 @@ int					hud_render(t_doom *doom)
 		}
 		x++;
 	}
+}
+
+void				action_render(t_doom *doom, int start, int len)
+{
+	int currimg;
+	SDL_Rect rect;
+
+	rect = (SDL_Rect){0, doom->sdl.size.y / 2, doom->sdl.size.x, doom->sdl.size.y / 2};
+	currimg = ((double)doom->timestamp - (double)doom->game.player.occupied) / ((double)doom->game.player.occupied - (double)doom->game.player.timeact) * (double)len + len;
+	if (currimg < len)
+		SDL_RenderCopy(doom->sdl.rend, doom->ui.sprites[start + currimg], NULL, &rect);
+}
+
+void				weapon_render(t_doom *doom)
+{
+	SDL_Rect rect;
+
+	rect = (SDL_Rect){0, doom->sdl.size.y / 2, doom->sdl.size.x, doom->sdl.size.y / 2};
+	if (doom->timestamp > doom->game.player.occupied)
+	{
+		if (doom->game.player.hand->id == GUN)
+			SDL_RenderCopy(doom->sdl.rend, doom->ui.sprites[GUNSTART], NULL, &rect);
+		else if (doom->game.player.hand->id == SHOTGUN)
+			SDL_RenderCopy(doom->sdl.rend, doom->ui.sprites[SHOTGUNSTART], NULL, &rect);
+		else if (doom->game.player.hand->id == RIFLE)
+			SDL_RenderCopy(doom->sdl.rend, doom->ui.sprites[RIFLESTART], NULL, &rect);
+	}
+	else if (doom->game.player.act)
+	{
+		if (doom->game.player.hand->id == GUN)
+			action_render(doom, GUNRELOADSTART, GUNRELOADLEN);
+		else if (doom->game.player.hand->id == SHOTGUN)
+			action_render(doom, SHOTGUNRELOADSTART, SHOTGUNRELOADLEN);
+		else if (doom->game.player.hand->id == RIFLE)
+			action_render(doom, RIFLERELOADSTART, RIFLERELOADLEN);
+	}
+	else if (doom->game.player.act == false)
+	{
+		if (doom->game.player.hand->id == FIST)
+			action_render(doom, KICKSTART, KICKLEN);
+		else if (doom->game.player.hand->id == GUN)
+			action_render(doom, GUNSHOOTSTART, GUNSHOOTLEN);
+		else if (doom->game.player.hand->id == SHOTGUN)
+			action_render(doom, SHOTGUNSHOOTSTART, SHOTGUNSHOOTLEN);
+		else if (doom->game.player.hand->id == RIFLE)
+			action_render(doom, RIFLESHOOTSTART, RIFLESHOOTLEN);
+	}
+}
+
+int					hud_render(t_doom *doom)
+{
+	t_minimap		mini;
+	
+	mini = miniinit(&doom->sdl);
+	minimap(&mini, &doom->game.player);
+	hud_aim(doom);
+	weapon_render(doom);
+	weaponhud_render(doom);
 	//hud_aim(doom);
 	return (0);
 }

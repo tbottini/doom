@@ -60,6 +60,36 @@ typedef struct s_prop	t_prop;
 # define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
 # define ISPORTAL(x) (x >= WINDOW)
 
+/*
+** For sprites
+*/
+#define SPRITEPATH "ressources/sprites/0000.png"
+
+#define KICKSTART 0
+#define KICKLEN 3
+
+#define GUNSTART (KICKSTART + KICKLEN)
+#define GUNSHOOTSTART (GUNSTART + 1)
+#define GUNSHOOTLEN 7
+#define GUNRELOADSTART (GUNSHOOTSTART + GUNSHOOTLEN)
+#define GUNRELOADLEN 3
+
+#define SHOTGUNSTART (GUNRELOADSTART + GUNRELOADLEN)
+#define SHOTGUNSHOOTSTART (SHOTGUNSTART + 1)
+#define SHOTGUNSHOOTLEN 4
+#define SHOTGUNRELOADSTART (SHOTGUNSHOOTSTART + SHOTGUNSHOOTLEN)
+#define SHOTGUNRELOADLEN 12
+
+#define RIFLESTART (SHOTGUNRELOADSTART + SHOTGUNRELOADLEN)
+#define RIFLESHOOTSTART (RIFLESTART + 1)
+#define RIFLESHOOTLEN 4
+#define RIFLERELOADSTART (RIFLESHOOTSTART + RIFLESHOOTLEN)
+#define RIFLERELOADLEN 17
+
+#define ENDSPRITES (RIFLERELOADSTART + RIFLERELOADLEN)
+
+
+
 enum 					e_window_id
 {
 	DOOM_WINDOW = 1,
@@ -216,6 +246,7 @@ typedef struct			s_ui
 	int					curr_btn_controller;
 	t_pal				fire;
 	SDL_Texture			*weaponhud[NB_WEAPON];
+	SDL_Texture			*sprites[ENDSPRITES + 1];
 }						t_ui;
 
 typedef struct			s_sdl

@@ -53,7 +53,7 @@ t_doom	*doom_init()
 	doom->game.difficulty = MEDIUM;
 	ui_by_sdl(doom, &doom->ui);
 	SDL_RaiseWindow(doom->sdl.win);
-
+	doom->timestamp = SDL_GetTicks();
 	doom->debug = 0;
 	return (doom);
 }
