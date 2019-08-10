@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 14:59:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 22:44:21 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void add_walls(t_game *game, t_editor *edit, t_sector *gamesec, t_secteur *sec)
 			find_pillar_from_game(game->pillars, gamesec->wall[y].next, edit->pillist),
 			find_texture(edit->txtrgame, edit->txtrname, game->surfpath[gamesec->wall[y].txtr.id]));
 		add_wall_prop(game, edit, &gamesec->wall[y], mur);
+		mur->level = gamesec->wall[y].level;
 		mur->portal_id = gamesec->wall[y].status;
 		y++;
 	}
