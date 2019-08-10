@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_write.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/21 13:37:27 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/10 22:38:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,26 @@ static int try_save(t_doom *doom, SDL_KeyboardEvent e)
 		return (-1);
 	if (e.keysym.mod != 0)
 		close_editor(doom);
-	else if (doom->ui.m_status == MENU_MAIN)
-	{
-		ft_strcat(path, doom->edit.filename);
-		//main_menu_button(doom);
-		if (check_file(path))
-		{
-			read_file(&doom->game, path, false);
-			player_init(&doom->game.player);
-			change_music(&doom->game.sound, doom->game.sound.on, 5000);
-			sdl_set_status(doom, MENU_INGAME);
-			SDL_RaiseWindow(doom->sdl.win);
-		}
-	}
 	return (0);
 }
+
+/*
+**	else if (doom->ui.m_status == MENU_MAIN)
+**	{
+**		ft_strcat(path, doom->edit.filename);
+**		//main_menu_button(doom);
+**		if (check_file(path))
+**		{
+**			read_file(&doom->game, path, false);
+**			player_init(&doom->game.player);
+**			change_music(&doom->game.sound, doom->game.sound.on, 5000);
+**			sdl_set_status(doom, MENU_INGAME);
+**			SDL_RaiseWindow(doom->sdl.win);
+**		}
+**	}
+**	return (0);
+**}
+*/
 
 /*
 ** ARMAAAAND
@@ -159,6 +164,7 @@ int write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e)
 		{
 			if (try_save(doom, e) == -1)
 				return (-1);
+			doom->edit.status = ED_LOADED;
 		}
 		else if (doom->edit.status == ED_WRITING)
 		{
