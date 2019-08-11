@@ -61,9 +61,9 @@ void		impact_wall(t_wall *wall, t_fvct3 p)
 void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)
 {
 	if (hit.z < enemy->stat.sector->h_floor)
-		{printf("TRO O LOL\n");return ;}//
+		{printf("TRO BA LOL\n");return ;}//
 	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height)
-		{printf("TRO BA MDR || %f\n", enemy->stat.sector->h_floor + enemy->stat.height);return ;}//
+		{printf("TRO O MDR || %f\n", enemy->stat.sector->h_floor + enemy->stat.height);return ;}//
 	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height - 0.25)
 		{enemy->stat.health -= dmg * 3;printf("HEADSHOT !\n");}//
 	else
