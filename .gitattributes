@@ -4,3 +4,4 @@
 *.jpg filter=lfs diff=lfs merge=lfs -text
 *.xpm filter=lfs diff=lfs merge=lfs -text
 *.jpeg filter=lfs diff=lfs merge=lfs -text
+*.xcf filter=lfs diff=lfs merge=lfs -text
