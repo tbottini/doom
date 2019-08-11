@@ -41,6 +41,10 @@ int		load_weapons(t_doom *doom, t_ui *ui)
 
 int		load_props(t_doom *doom, t_ui *ui)
 {
+	void *tmp;
+	int pitch;
+	int x;
+
 	if    (!(ui->props[0] = IMG_LoadTexture(doom->sdl.rend, PROPHEALTH))
 		|| !(ui->props[1] = IMG_LoadTexture(doom->sdl.rend, PROPCASS))
 		|| !(ui->props[2] = IMG_LoadTexture(doom->sdl.rend, PROPMUN))
@@ -59,6 +63,14 @@ int		load_props(t_doom *doom, t_ui *ui)
 		|| !(ui->props[15] = IMG_LoadTexture(doom->sdl.rend, PROPWINBTN))
 		|| !(ui->props[16] = IMG_LoadTexture(doom->sdl.rend, PROPIMPACT)))
 		return (0);
+	x = 0;
+	while (x <= 16)
+	{
+		SDL_QueryTexture(ui->props[x], NULL, NULL, (int *)&ui->propsthomas[x].w, (int *)&ui->propsthomas[x].h);
+		SDL_LockTexture(ui->props[x], NULL, &tmp, &pitch);
+		ui->propsthomas[x].pixels = (Uint32 *)tmp;
+		x++;
+	}
 	return (1);
 }
 
