@@ -61,6 +61,7 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_column.c							\
 						render_enemy.c									\
 						sprite.c										\
+						prop.c											\
 
 SRCS_PARSING	:=		read_editor_file.c								\
 						readfile.c										\

@@ -95,8 +95,6 @@ void		describe_sector(t_sector sector)
 	double_msg("height floor :", sector.h_floor);
 	ft_putnchar('\t', 1);
 	double_msg("height ceil :", sector.h_ceil);
-	ft_putnchar('\t', 1);
-	int_msg("son sector :", sector.len_sub);
 	wall = sector.wall;
 	while (i < sector.len)
 	{
@@ -137,8 +135,6 @@ void		describe_sub_sector(t_sector sector, int sub)
 	double_msg("height floor :", sector.h_floor);
 	ft_putnchar('\t', sub);
 	double_msg("height ceil :", sector.h_ceil);
-	ft_putnchar('\t', sub);
-	int_msg("son sector :", sector.len_sub);
 	wall = sector.wall;
 	while (i < sector.len)
 	{
@@ -171,11 +167,6 @@ void		sector_recursif(t_sector sector, int sub)
 	i = 0;
 
 	describe_sub_sector(sector, sub);
-	if (sector.len_sub)
-	{
-		ft_putnchar('\t', sub );
-		ft_putendl("--->son");
-	}
 	ft_putnchar('\t', sub);
 	ft_putendl("--------------------");
 }

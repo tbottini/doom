@@ -27,10 +27,10 @@ enum 					e_window_id
 
 typedef struct			s_slen
 {
-	int	nb_pills;
-	int	nb_txtrs;
-	int	nb_sects;
-	int	current_sector;
+	int					nb_pills;
+	int					nb_txtrs;
+	int					nb_sects;
+	int					current_sector;
 }						t_slen;
 
 typedef struct			s_sound
@@ -49,19 +49,19 @@ typedef struct			s_sound
 
 typedef struct			s_minimap
 {
-	t_vct2	d;
-	t_vct2	a;
-	t_vct2	size;
-	t_vct2	mid;
-	t_sdl	*sdl;
+	t_vct2				d;
+	t_vct2				a;
+	t_vct2				size;
+	t_vct2				mid;
+	t_sdl				*sdl;
 }						t_minimap;
 
-typedef enum		e_difficulty
+typedef enum			e_difficulty
 {
 	EASY = 1,
 	MEDIUM = 2,
 	HARD = 4
-}					t_difficulty;
+}						t_difficulty;
 
 typedef struct			s_game
 {
