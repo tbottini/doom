@@ -63,6 +63,7 @@ void		reload(Uint32 timestamp, t_player *player, t_weapon *weapon, t_sound *soun
 		Mix_PlayChannel(2, sound->tab_effect[9], 0);
 		player->act = true;
 		player->timeact = timestamp;
-		player->occupied = timestamp + 1000;//ajuster avec vitesse d'animation
+		player->occupied = timestamp + (weapon->id == GUN ? 900 : 1500);
+
 	}
 }

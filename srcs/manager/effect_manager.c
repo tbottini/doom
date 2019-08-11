@@ -72,7 +72,7 @@ int					effect_init(t_sound *sound)
 		return (0);
 	if (Mix_AllocateChannels(4) != 4)
 		return (0);
-	sound->effectvolume = 0;
+	sound->effectvolume = 0;//
 	effect_volume(sound);
 	return (1);
 }
