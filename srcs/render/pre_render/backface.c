@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include "render.h"
 
 /*
 **	on recupere la distance brut
@@ -66,4 +66,9 @@ void		zline_cut(t_arch *arch, double *zline_cut, int start)
 		start++;
 	}
 	//free(zline_cut);
+}
+
+int			zline_compare(t_arch *arch, double len_pillar, int px)
+{
+	return (len_pillar > arch->portal.zline[px]);
 }

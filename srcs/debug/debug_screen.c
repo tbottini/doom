@@ -1,4 +1,6 @@
+#include "debug.h"
 #include "doom_nukem.h"
+#include "render.h"
 
 t_vct2		conv_sc_debug(t_arch *arch, t_vct2 vct)
 {
@@ -37,19 +39,35 @@ void		bold_point(t_vct2 v, Uint32 color, t_doom *doom)
 	}
 }
 
-void		b_point_debug(t_arch *arch, t_fvct2 v, Uint32 color)
+t_vct2		b_point_debug(t_fvct2 v, Uint32 color)
 {
 	t_vct2	b;
-
-	b.x = arch->sdl->size.x / 2.0 + (v.x * (double)arch->zoom) - 1;
-	b.y = arch->sdl->size.y / 2.0 - (v.y * (double)arch->zoom) - 1;
-	bold_point_debug(b, color, arch);
+	t_screen	screen;
+	t_vct2	save;
+	screen = (t_screen){arch_debug_extern->sc_debug, arch_debug_extern->sdl->size.x, arch_debug_extern->sdl->size.y};
+	b.x = arch_debug_extern->sdl->size.x / 2.0 + (v.x * (double)arch_debug_extern->zoom) - 1;
+	b.y = arch_debug_extern->sdl->size.y / 2.0 - (v.y * (double)arch_debug_extern->zoom) - 1;
+	save = b;
+	bold_point_debug(b, color, &screen);
 	b.x += 2;
-	bold_point_debug(b, color, arch);
+	bold_point_debug(b, color, &screen);
 	b.y += 2;
-	bold_point_debug(b, color, arch);
+	bold_point_debug(b, color, &screen);
 	b.x -= 2;
-	bold_point_debug(b, color, arch);
+	bold_point_debug(b, color, &screen);
+	return (save);
+}
+
+void		debug_segment(t_arch *arch, t_fvct2 v, t_fvct2 v2, Uint32 color, Uint32 color_wall)
+{
+	t_vct2	a;
+	t_vct2	b;
+	t_screen	screen;
+	screen = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
+
+	a = b_point_debug(v, color);
+	b = b_point_debug(v2, color);
+	trait(&screen, a, b, color_wall);
 }
 
 /*
@@ -61,6 +79,9 @@ void		draw_borne(t_arch *arch, uint32_t color)
 	t_affine	borne_down;
 	t_vct2		point1;
 	t_vct2		point2;
+	t_screen	screen_tmp;
+
+	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
 
 	borne_up.a = tan(PI180 * arch->portal.b_left);
 	borne_down.a = tan(PI180 * arch->portal.b_right);
@@ -108,6 +129,9 @@ void		draw_affine_portion(t_arch *arch, t_affine affine, t_fvct2 portion, uint32
 {
 	t_vct2	point1;
 	t_vct2	point2;
+	t_screen	screen_tmp;
+
+	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
 
 	point1.x = portion.x;
 	point2.x = portion.y;
@@ -115,7 +139,7 @@ void		draw_affine_portion(t_arch *arch, t_affine affine, t_fvct2 portion, uint32
 	portion.y = (portion.y - arch->sdl->size.x / 2.0) / arch->zoom;
 	point1.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.x) * arch->zoom;
 	point2.y = arch->sdl->size.y / 2.0 - affine_val(affine, portion.y) * arch->zoom;
-	trait(arch, point1, point2, color);
+	trait(&screen_tmp, point1, point2, color);
 }
 
 void		draw_affine(t_arch *arch, t_affine affine, uint32_t color, int flag)
@@ -136,12 +160,14 @@ void		draw_screen(t_arch *arch, uint32_t color, int px_distance, t_affine fov_af
 {
 	t_vct2	pt1;
 	t_vct2	pt2;
+	t_screen screen_tmp;
 
+	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
 	pt1.x = arch->sdl->size.x / 2 + px_distance;
 	pt2.x = pt1.x;
 	pt1.y = arch->sdl->size.y / 2 + (px_distance * fov_affine.a);
 	pt2.y = arch->sdl->size.y / 2 + (px_distance * -fov_affine.a);
-	trait(arch, pt1, pt2, color);
+	trait(&screen_tmp, pt1, pt2, color);
 }
 
 /*
@@ -178,12 +204,12 @@ void		draw_frustum(t_arch *arch, int flag)
 
 void		debug_pillar_ver(t_arch *arch, t_fvct2 surface_pillar)
 {
-	t_affine	pillar;
 	t_affine	fov_affine;
 	int			len_screen;
 	int			dist;
 	t_vct2		point1;
 	t_vct2		point2;
+	t_screen	screen_tmp;
 
 	dist = arch->sdl->size.x / 2.5;
 	fov_affine.a = tan(arch->cam->fov_ver / 2);
@@ -196,7 +222,8 @@ void		debug_pillar_ver(t_arch *arch, t_fvct2 surface_pillar)
 
 	point1.y = len_screen * (surface_pillar.x / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
 	point2.y =  len_screen * (surface_pillar.y / arch->sdl->size.y) + (arch->sdl->size.y - len_screen) / 2;
-	trait(arch, point1, point2, YELLOW);
+	screen_tmp = (t_screen){arch->sc_debug, arch->sdl->size.x, arch->sdl->size.y};
+	trait(&screen_tmp, point1, point2, YELLOW);
 }
 
 void		debug_pillar(t_arch *arch, int flag)
@@ -209,7 +236,7 @@ void		debug_pillar(t_arch *arch, int flag)
 		if (flag & TRACE)
 			draw_affine(arch, a_pillar, BLUE_SOFT, MID);
 		if (flag & POINT || !flag)
-			b_point_debug(arch, arch->pillar, RED);
+			b_point_debug(arch->pillar, RED);
 	}
 	if (flag & P_NEXT)
 	{
@@ -217,7 +244,7 @@ void		debug_pillar(t_arch *arch, int flag)
 		if (flag & TRACE)
 			draw_affine(arch, a_pillar, BLUE_SOFT, MID);
 		if (flag & POINT)
-			b_point_debug(arch, arch->next, RED);
+			b_point_debug(arch->next, RED);
 	}
 }
 
@@ -234,3 +261,30 @@ void		debug_screen_copy(t_arch *arch)
 	}
 }
 
+void		debug_sector_box(t_arch *arch, t_box_txtr *box, uint32_t color)
+{
+	t_fvct2	square[4];
+
+	square[0] = box->start;
+	square[1] = (t_fvct2){box->start.x, box->start.y + box->length.y};
+	square[2] = (t_fvct2){box->start.x + box->length.x, box->start.y + box->length.y};
+	square[3] = (t_fvct2){box->start.x + box->length.x, box->start.y};
+
+	if (debug == 3)
+	{
+		printf("box .start %f %f .length %f %f\n", box->start.x, box->start.y, box->length.y, box->length.y);
+	}
+
+	debug_segment(arch, square[0], square[1], color, color);
+	debug_segment(arch, square[1], square[2], color, color);
+	debug_segment(arch, square[2], square[3], color, color);
+	debug_segment(arch, square[3], square[0], color, color);
+}
+
+void		sdl_line(t_sdl *sdl, t_vct2 a, t_vct2 b, uint32_t color)
+{
+	t_screen	screen_tmp;
+
+	screen_tmp = (t_screen){sdl->screen, sdl->size.x, sdl->size.y};
+	trait(&screen_tmp, a, b, color);
+}

@@ -1,4 +1,4 @@
- #include "calcul.h"
+#include "vector.h"
 
 double			affine_val(t_affine affine, double x)
 {

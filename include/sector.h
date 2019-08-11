@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   sector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
 /*   Updated: 2019/08/04 14:02:10 by akrache          ###   ########.fr       */
@@ -21,7 +21,6 @@
 # define G_EARTH -9.80665
 # define G_MOON -1.62200
 
-typedef struct s_doom	t_doom;
 typedef struct s_enemy	t_enemy;
 typedef struct s_sector	t_sector;
 typedef struct s_wall	t_portal;
@@ -42,6 +41,8 @@ typedef struct			s_txtr
 	uint32_t			w;
 	uint32_t			h;
 	int					id;
+	double				repeatx;
+	double				repeaty;
 }						t_txtr;
 
 typedef struct			s_pillar
@@ -89,7 +90,15 @@ struct					s_prop
 	t_wall				*wall;
 	t_sector			*sector;
 	int					type;
+	t_fvct2				left;
+	t_fvct2				right;
 };
+
+typedef struct 			s_box_txtr
+{
+	t_fvct2				start;
+	t_fvct2				length;
+}						t_box_txtr;
 
 struct					s_sector
 {
@@ -98,27 +107,41 @@ struct					s_sector
 	t_prop				*props;
 	t_enemy				*enemys;
 	int					len_prop; // Nb de props dans le sector
-	int					len_sub;
 	double				h_floor;
 	double				h_ceil;
 	int					len;
 	t_txtr				txtrtop;
 	t_txtr				txtrsol;
+
+	t_box_txtr			box;
 	//sector effector *fonction
 	//list things (shapes, objets, deco, enemis)
 };
+
+t_sector				*sector_new();
 
 /*
 **	wall : draw, manipulation
 */
 
-void			describe_sector_recursif(t_sector sector);
-void			describe_bunch(t_wall **bunch);
-void			describe_sector(t_sector sector);
-void			describe_wall(t_wall wall);
+void					describe_sector_recursif(t_sector sector);
+void					describe_bunch(t_wall **bunch);
+void					describe_sector(t_sector sector);
+void					describe_wall(t_wall wall);
 
+t_vct2					sector_get_floor_texel(t_sector *sector, t_fvct2 pos);
+void					init_prop(t_prop *prop, double height);
+int						is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
 
-void			init_prop(t_prop *prop, double height);
-int				is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
+void					sector_init_prop(t_sector *sector);
+void					sector_iter(t_sector *sector, int len, void (sector_effector)(t_sector*));
+void					sector_wall_props_init(t_sector *sector);
+
+/*
+**	prop
+*/
+void					prop_init(t_prop *prop);
+void					prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*));
+
 
 #endif

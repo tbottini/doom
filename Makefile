@@ -1,9 +1,10 @@
+
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akrache <akrache@student.42.fr>            +#+  +:+       +#+         #
+#    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
 #    Updated: 2019/08/01 15:34:28 by akrache          ###   ########.fr        #
@@ -17,7 +18,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g #-fsanitize=address#-Werror -Ofast -fno-builtin -flto
+CFLAGS			:=		-Wall -Wextra -g#-fsanitize=address-Ofast -fno-builtin -flto
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -33,13 +34,15 @@ HEADERS			:=		libft/libft.h							\
 						include/doom_nukem.h					\
 						include/calcul.h						\
 						include/debug.h							\
-						include/doom_struct.h					\
 						include/editor.h						\
 						include/vector.h						\
 						include/render.h						\
 						include/player.h						\
 						include/input.h							\
 						include/sector.h						\
+						include/screen.h						\
+						include/architect.h						\
+						include/color.h							\
 
 
 FOLDER			:=		objs									\
@@ -56,6 +59,7 @@ FOLDER			:=		objs									\
 						objs/render/hud							\
 						objs/render/pre_render					\
 						objs/render/drawer						\
+						objs/render/rasterisation				\
 
 COMPILE_LIB		:=		make -C libft/
 
@@ -120,3 +124,42 @@ start			:	all
 re				:	fclean all
 
 .PHONY: all clean fclean re
+
+DOT_FILE		=		$(wildcard latex/*.dot)
+
+PNG_FILE		= 		$(DOT_FILE:.dot=.png)
+
+DOT_PATH		:=		latex
+
+DOC_PATH		:=		html
+
+$(DOT_PATH)/%.png:$(DOC_PATH)/%.dot
+	@echo $@
+	@dot -Tpng $< -o $@
+
+convert_dot : $(PNG_FILE)
+
+install_doc:
+	brew install doxygen
+
+doc		:
+	doxygen -g
+	sed -ie "s/HAVE_DOT               = NO/HAVE_DOT               = YES/g" Doxyfile
+	sed -ie "s/EXTRACT_ALL            = NO/EXTRACT_ALL            = YES/g" Doxyfile
+	sed -ie "s/EXTRACT_PRIVATE        = NO/EXTRACT_PRIVATE        = YES/g" Doxyfile
+	sed -ie "s/EXTRACT_STATIC         = NO/EXTRACT_STATIC         = YES/g" Doxyfile
+	sed -ie "s/CALL_GRAPH             = NO/CALL_GRAPH             = YES/g" Doxyfile
+	sed -ie "s/RECURSIVE              = NO/RECURSIVE              = YES/g" Doxyfile
+	sed -ie "s/DOT_CLEANUP            = YES/DOT_CLEANUP            = NO/g" Doxyfile
+	doxygen Doxyfile
+	@#$(eval DOT_FILE = $(wildcard latex/*.dot))
+	@#$(eval PNG_FILE = $(DOT_FILE:.dot=.png))
+	@#make convert_dot
+	@#mv $(PNG_FILE) html/
+	rm -f Doxyfilee
+	rm -f Doxyfile.bak
+	open html/index.html
+
+
+doclean:
+	rm -rf html latex Doxyfile

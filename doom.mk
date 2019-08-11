@@ -46,7 +46,6 @@ SRCS_INPUT		:=		event_controller.c								\
 
 SRCS_RENDER		:=		render.c										\
 						sector.c										\
-						shape.c											\
 						hud_render.c									\
 						hud/minimap.c									\
 						hud/minimap_drawer.c							\
@@ -58,11 +57,13 @@ SRCS_RENDER		:=		render.c										\
 						pre_render/borne.c								\
 						pre_render/pillar_info.c						\
 						drawer/render_wall.c							\
-						drawer/render_shape.c							\
 						drawer/textures.c								\
 						drawer/draw_line.c								\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
+						render_enemy.c									\
+						sprite.c										\
+						prop.c											\
 
 SRCS_PARSING	:=		readfile.c										\
 						readfileeditor.c								\
@@ -84,6 +85,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 						secteur_tools.c									\
 						play_tools.c									\
 						musi.c											\
+						vector.c										\
 
 SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\
@@ -113,5 +115,6 @@ OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\
 						$(patsubst %.c,objs/manager/%.o,$(SRCS_GESTION))\
 						$(patsubst %.c,objs/calcul/%.o,$(SRCS_CALCUL))	\
 						$(patsubst %.c,objs/editor/%.o,$(SRCS_EDITOR))	\
+						$(patsubst %.c,objs/render/rasterisation/%.o,$(SRCS_RASTERIZE))\
 
 SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))

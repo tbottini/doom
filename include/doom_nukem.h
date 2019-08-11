@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
 /*   Updated: 2019/08/10 22:18:43 by akrache          ###   ########.fr       */
@@ -13,39 +13,13 @@
 #ifndef DOOM_NUKEM_H
 # define DOOM_NUKEM_H
 
-# include <stdbool.h>
-# include "render.h"
-# include "editor.h"
 # include "input.h"
-# include "debug.h"
-
-/*
-**		!!! global de debug a enlever
-*/
-extern int debug;
-extern int debug_screen;
-
-# define DEBUG_VISUAL 1
-
-# define MINWIDTH 800
-# define MINHEIGHT 800
-# define EDITMINWIDTH 1024
-# define EDITMINHEIGHT 800
-# define MAXWIDTH 1920
-# define MAXHEIGHT 1080
-# define PI 3.1415926535897932
-# define PI180 0.01745329251
-# define TOANGLE 57.2957795131
+# include "calcul.h"
 
 # define RADIUS 500
 # define TOTALMUSIC 11
 
 # define UNIT 8.0
-# define CWALL 0xDADADAFF
-# define CPORT 0xE6E678FF
-# define WHITE 0xFFFFFFFF
-# define DEEPBLUE 0x0000FFFF
-# define CENEMY 0x8E24AAFF
 
 # define DECELERATION 2500.0
 # define PADDING 0.30
@@ -77,40 +51,22 @@ extern int debug_screen;
 /*
 **	gestion
 */
-
 void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_Rect *loc, const char *str, SDL_Color fg, SDL_Color bg);
 void					dropfile_event(t_doom *doom, SDL_Event e);
-void					doom_exit(t_doom *doom);
-t_doom					*doom_init();
-int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);
+
+
 int						load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname);
 void					free_textures_folder(SDL_Texture **txtrs, char **txtrsname);
 void					editor_free(t_doom *doom);
-int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
-t_camera				*camera_init(t_camera *camera, t_sdl *sdl, int fov);
-int						editor_init(t_editor *editor);
-void					sdl_free(t_sdl *sdl);
-int						sdl_init(t_sdl *sdl, const char *title);
-void					ui_free(t_ui *ui);
-int						ui_init(t_ui *ui);
-int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
 /*
 **	parsing
 */
 
 int						read_file(t_game *game, const char *file, bool foredit);
-int						read_file_to_editor(t_editor *edit, const char *file);
+
 int						check_file(const char *file);
 void					free_game(t_game *game);
-
-t_wall					*chunck_walls(t_list *chunck_line, t_arch *ressources, size_t len);
-int						chunk_texture(t_sdl *sdl, t_arch *arch, int fd);
-t_player				chunck_player(int fd);
-t_sector				*chunck_sector(int fd, t_arch *ressources);
-t_sector				*sector_new();
-t_list					*ft_lstn(void *content);
-int						line_wall(t_arch *rsrc, t_wall *wall, char *line);
 
 /*
 **	debug
@@ -150,5 +106,12 @@ int						bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color);
 void					minibord(t_minimap *mini);
 void					miniwalls(t_player *player, t_sector *sector, t_minimap *mini);
 void					miniinv(t_minimap *mini, t_player *player);
+
+/*
+** HUD
+*/
+void					hud_aim(t_doom *doom);
+int						hud_render(t_doom *doom);
+int						doom_render(t_doom *doom);
 
 #endif

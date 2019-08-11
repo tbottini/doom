@@ -1,5 +1,5 @@
-#include "doom_nukem.h"
-
+#include "render.h"
+#include "debug.h"
 /*
 **	renvoie l'index de la texture associee au pixel de l'ecran
 **	l'affine du mur est le decal(y) selon depth(x)

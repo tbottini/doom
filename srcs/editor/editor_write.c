@@ -12,6 +12,8 @@
 
 #include "doom_nukem.h"
 #define ISNUMPADNUM(x) ((SDLK_KP_1 <= x && x <= SDLK_KP_9) || x == SDLK_KP_0)
+#include "color.h"
+#include "screen.h"
 
 unsigned int ft_lil_super_atoi(const char *str)
 {

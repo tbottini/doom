@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   editor_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
 /*   Updated: 2019/08/04 13:38:44 by akrache          ###   ########.fr       */
@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "screen.h"
 
 int editor_reset(t_editor *edit)
 {

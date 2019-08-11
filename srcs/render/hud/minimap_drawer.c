@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_drawer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/24 14:15:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 12:09:39 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "render.h"
 #include "doom_nukem.h"
+#include "color.h"
 
-#define UNIT 8.0
-#define CWALL 0xDADADAFF
-#define CPORT 0xE6E678FF
-#define WHITE 0xFFFFFFFF
 
 int				bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color)
 {
@@ -89,19 +87,19 @@ static void			miniwallprops(t_minimap *mini, t_wall *wall, t_fvct3 pos)
 			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
 			bold_point2(mini, tmp, 0xFF0000FF);
-			
+
 			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
 			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
 			bold_point2(mini, tmp, 0xFF0000FF);
-			
+
 			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
 			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
 			bold_point2(mini, tmp, 0xFF0000FF);
-			
+
 			tmp.x = (mini->a.x - (mini->size.x / 2))
 				+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
 			tmp.y = (mini->a.y - (mini->size.y / 2))

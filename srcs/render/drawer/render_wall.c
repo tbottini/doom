@@ -1,4 +1,5 @@
-#include "doom_nukem.h"
+#include "render.h"
+#include "debug.h"
 
 /*
 **	renvoie la position en pixel d'un point
@@ -13,11 +14,7 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 	player_angle = (player->stat.rot.x - 90) * PI180;
 	wall_angle = atan2(h_diff, depth);
 	px = arch->sdl->size.y / 2 - tan(wall_angle) * arch->cam->d_screen;
-	px += (player->stat.rot.x - 90) * 45;
-
-	//vraies cervicales
-	//px = tan(wall_angle - player_angle) * arch->cam->d_screen;
-	//px = arch->sdl->size.y / 2 - px;
+	px += (player->stat.rot.x - 90) * 15.5;
 	return (px);
 }
 
@@ -90,7 +87,8 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
    	t_fvct2		coef_surface;
 	double		coef_neutre;
 	int			start;
-
+	double		coef_distance;
+	double		dist_px;
 	int			i = 0;
 
 	start = arch->px.x;
@@ -99,6 +97,10 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
+	//on sauvegarde l'inverse de la distance...
+
+	coef_distance = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
+	dist_px = arch->pillar.x;
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->wall->status == WALL)
@@ -122,8 +124,10 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 			sdl_MultiRenderCopy(arch->sdl);
 			SDL_RenderPresent(arch->sdl->rend);
 		}
+		dist_px += coef_distance;
 	}
 }
+
 
 /*
 **	les etapes de rendu pour un mur
@@ -138,21 +142,14 @@ void			render_wall(t_arch *arch, t_player *player)
 	t_borne		borne_tmp;
 	t_sector	*sector_tmp;
 	t_shap		shape;
-	int			start;
+	t_vct2		px_draw;
 
 	if (wall_screen_info(arch, player))
 	{
 		reorder(arch);
-
 		len_sector = length_sector(player, arch->sector);
 		pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
 		next_px = surface_pillar(arch, player, len_sector, arch->next.x);
-
-		shape.ul = arch->pillar;
-		shape.ur = arch->next;
-		shape.bl = get_floor_pos(arch, len_sector, pillar_px, &arch->pillar);
-		shape.br = get_floor_pos(arch, len_sector, next_px, &arch->next);
-
 		if (debug_screen == 2)
 		{
 			//debug_pillar(arch, P_PILLAR | P_NEXT | TRACE | POINT);
@@ -160,33 +157,38 @@ void			render_wall(t_arch *arch, t_player *player)
 				draw_wall(arch, YELLOW);
 			else if (arch->wall->status == WALL)
 				draw_wall(arch, WHITE);
-			b_point_debug(arch, shape.ul, RED);
-			b_point_debug(arch, shape.ur, RED);
-			b_point_debug(arch, shape.bl, YELLOW);
-			b_point_debug(arch, shape.br, YELLOW);
+			b_point_debug(shape.ul, RED);
+			b_point_debug(shape.ur, RED);
+			b_point_debug(shape.bl, YELLOW);
+			b_point_debug(shape.br, YELLOW);
 		}
-		else if (debug_screen == 3)
-		{
-			debug_pillar_ver(arch, pillar_px);
-		}
-		//render_floor(arch, shape);
-
+		//render_under_floor(arch, len_sector, player, (t_fvct2){pillar_px.y, next_px.y});
 		if (arch->wall->status == PORTAL)
+		{
+			if (debug == 9)
+				printf("borne_svg(%d) %d %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 			borne_svg(arch, &borne_tmp);
-		start = arch->px.x;
+			px_draw = arch->px;
+			//start = arch->px.x;
+		}
 		pillar_to_pillar(arch, &pillar_px, &next_px, &borne_tmp);
 		if (arch->wall->status == PORTAL)
 		{
-			arch->px.x = start;
+			arch->px.x = px_draw.x;
 			set_borne_horizontal(arch);
 			arch->portal.pillar = arch->pillar;
 			arch->portal.next = arch->next;
 			sector_tmp = arch->sector;
 			arch->depth_portal++;
+			if (debug == 9)
+				printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
+
 			sector_render(arch, player, arch->wall->link);
 			arch->depth_portal--;
 			arch->sector = sector_tmp;
-			borne_load(arch, &borne_tmp, start);
+			borne_load(arch, &borne_tmp, px_draw);
+			if (debug == 9)
+				printf("borne_load(%d) %d %d\n\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 		}
 	}
 	else if (debug_screen == 2)

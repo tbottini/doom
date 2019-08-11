@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   button_function.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/07 23:05:38 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/10 15:09:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/11 16:13:33 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "input.h"
+#include "debug.h"
 
 void	start_button(t_doom *doom)
 {
@@ -55,6 +57,8 @@ void	start_map_button(t_doom *doom)
 		player_init(&doom->game.player);
 		change_music(&doom->game.sound, doom->game.sound.on, 5000);
 		sdl_set_status(doom, MENU_INGAME);
+		printf(WRED"sector iter"WEND);
+		sector_iter(doom->game.sectors, doom->game.len.nb_sects, &sector_wall_props_init);
 	}
 	else
 		ft_printf("Error reading file\n");

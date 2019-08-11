@@ -1,4 +1,4 @@
-#include "doom_nukem.h"
+#include "render.h"
 
 int				sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg)
 {

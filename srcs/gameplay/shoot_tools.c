@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   shoot_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
 /*   Updated: 2019/08/04 17:51:24 by akrache          ###   ########.fr       */
@@ -136,6 +136,8 @@ void			possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sect
 {
 	t_enemy	*tmp;
 
+	(void)ori;
+	(void)stat;
 	tmp = sector->enemys;
 	while (shoot->i_e < 50 && tmp)
 	{

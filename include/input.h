@@ -1,10 +1,104 @@
 #ifndef INPUT_H
 # define INPUT_H
-#include "doom_struct.h"
 
 /*
 ** End Button Functions
 */
+# include "sector.h"
+# include "player.h"
+# include "editor.h"
+# include "architect.h"
+
+typedef struct s_doom	t_doom;
+typedef struct s_enemy	t_enemy;
+typedef struct s_sector	t_sector;
+typedef struct s_wall	t_portal;
+typedef struct s_prop	t_prop;
+
+/*
+** Define checker
+*/
+# define ISENEMY(x) (MINENEMYPOS <= x && x < MAXENEMYPOS)
+# define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
+# define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
+# define ISPORTAL(x) (x >= WINDOW)
+
+enum 					e_window_id
+{
+	DOOM_WINDOW = 1,
+	EDITOR_WINDOW = 2
+};
+
+typedef struct			s_slen
+{
+	int					nb_pills;
+	int					nb_txtrs;
+	int					nb_sects;
+	int					current_sector;
+}						t_slen;
+
+typedef struct			s_sound
+{
+	Mix_Chunk			*e_world;
+	Mix_Chunk			*e_perso;
+	Mix_Chunk			*e_other;
+	Mix_Chunk			*tab_effect[50];//changer nb effects
+	Mix_Music			*music;
+	Mix_Music			*tab_music[11];
+	int					on;
+	int					maxmusic;
+	int					musicvolume;
+	int					effectvolume;
+}						t_sound;
+
+typedef struct			s_minimap
+{
+	t_vct2				d;
+	t_vct2				a;
+	t_vct2				size;
+	t_vct2				mid;
+	t_sdl				*sdl;
+	t_ui				*ui;
+}						t_minimap;
+
+typedef enum			e_difficulty
+{
+	EASY = 1,
+	MEDIUM = 2,
+	HARD = 4
+}						t_difficulty;
+
+typedef struct			s_game
+{
+	t_slen				len;
+	t_player			player;
+	t_sound				sound;
+	t_sector			*sectors;
+	t_pillar			*pillars;
+	SDL_Surface			**gamesurf;
+	char				**surfpath;
+	t_arch				arch;//a voir aveec tbottini
+	t_camera			camera;
+	t_difficulty		difficulty;
+}						t_game;
+
+struct					s_doom
+{
+	int					debug;
+	t_sdl				sdl;
+	t_editor			edit;
+	t_ui				ui;
+	Uint32				timestamp;
+	SDL_GameController	*controller;
+	t_game				game;
+};
+
+/*
+**	manager
+*/
+void					doom_exit(t_doom *doom);
+t_doom					*doom_init();
+
 
 int						parsing(t_doom *doom, char *filename);
 
@@ -66,7 +160,6 @@ int						mouse_release(int button, int x, int y, t_doom *doom);
 int						mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 int						mouse_move(int x, int y, t_doom *doom);
 
-double					double_modulo(double num);
 double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
@@ -106,16 +199,31 @@ void					action(t_doom *doom, t_stat *s, t_inv *inv);
 void					kick(Uint32 timestamp, t_sound *sound, t_player *player);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
-void					sdl_MultiRenderCopy(t_sdl *sdl);
 void					calcdelay(const char *str, t_doom *doom);
 int						pos_in_rect(SDL_Rect rect, int x, int y);
 
 void					point_gras(t_vct2 cursor, Uint32 color, t_doom *doom);
-void					trait(t_arch *arch, t_vct2 vct1, t_vct2 vct2, Uint32 col);
-double					distance(t_fvct2 vct1, t_fvct2 vct2);
 t_wall					*collision(t_sector *sector, t_fvct3 pos, t_wall *w);
 t_wall					*colli_walls(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w);
 int						colli_port(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **wall);
 int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
+
+/*
+**	editor_input
+*/
+int						editor_key_press(int key, t_doom *doom);
+int						editor_key_release(int key, t_doom *doom);
+int						editor_mouse_release(int button, int x, int y,
+																t_doom *doom);
+int						ui_by_sdl(t_doom *doom, t_ui *ui);
+
+
+void					armandtificial_intelligence(t_doom *doom);
+
+int						hud_render(t_doom *doom);
+int						doom_render(t_doom *doom);
+
+void					bold_point(t_vct2 v, Uint32 color, t_doom *doom);
+void					sector_set_box(t_sector *sector);
 
 #endif

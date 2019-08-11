@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include "debug.h"
 
 void			save_png(t_sdl *sdl)
 {

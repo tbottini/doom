@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/10 17:58:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 18:09:53 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,6 @@ typedef struct			s_shoot
 /*
 **	Gestion
 */
-
-void					armandtificial_intelligence(t_doom *doom);
 void					check_boost(Uint32 timestamp, t_player *player);
 int						player_init(t_player *player);
 void					player_free(t_player *player);
@@ -194,5 +192,10 @@ t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, doub
 */
 
 void					describe_player(t_player player);
+
+/*
+**	calcul
+*/
+t_fvct2					player_diff_heigth(t_player *player, double sector_floor, double obj_heigth);
 
 #endif

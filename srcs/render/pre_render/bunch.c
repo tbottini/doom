@@ -1,4 +1,6 @@
-#include "doom_nukem.h"
+#include "render.h"
+#include "input.h"
+#include "debug.h"
 
 int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 {

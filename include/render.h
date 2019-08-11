@@ -1,7 +1,11 @@
 #ifndef RENDER_H
 # define RENDER_H
 
-#include "doom_struct.h"
+#include "architect.h"
+#include "player.h"
+#include "SDL_ttf.h"
+# include "calcul.h"
+//borne arch player vector sector
 
 /*
 **	Color
@@ -14,6 +18,11 @@
 # define PILLAR 1
 # define NEXT 2
 
+# define DEBUG_VISUAL 1
+
+# define RASTERIZE		0
+# define ENGINE			1
+# define RENDER			ENGINE
 
 /*
 **	disfonctionnement si l'ordre n'est pas respecte
@@ -35,6 +44,15 @@ typedef struct 			s_shap
 	t_fvct2				br;
 }						t_shap;
 
+typedef struct 			s_sprite
+{
+	t_fvct2				pos;
+	t_vct2				width;
+	t_vct2				heigth;
+	t_txtr				texture;
+	struct s_sprite		*next;
+}						t_sprite;
+
 /*
 **	pillar
 */
@@ -49,24 +67,13 @@ int						wall_screen_info(t_arch *arch, t_player *p);
 double					local_angle(double borne, double angle);
 void					reorder(t_arch *arch);
 t_fvct2					get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar);
-
-
-
-/*
-**	backface
-*/
-void					zline_cut(t_arch *arch, double *zline_cut, int start);
-int						zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start);
-int						z_line_buffer(t_arch *arch, double len_pillar, int px);
-int						clean_zline(t_arch *arch, double len_pillar, int px);
+t_fvct2					frustum_floor_intersection(t_fvct2 *pillar_pos, t_camera *camera, t_fvct2 *len_sector, t_stat *stat);
+t_fvct2					frustum_depth_intersection(t_camera *camera, t_stat *stat, double floor_diff);
 
 /*
 **	render
 */
 
-void					hud_aim(t_doom *doom);
-int						hud_render(t_doom *doom);
-int						doom_render(t_doom *doom);
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
@@ -74,12 +81,6 @@ uint32_t				texture_interpolation2D(t_arch *arch);
 void					render_wall(t_arch *arch, t_player *player);
 void					draw_column(t_arch *arch, t_fvct2 surface);
 void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
-int						render_floor(t_arch *arch, t_shap shape);
-
-/*
-**	manager
-*/
-void					architect_reset(t_arch *arch);
 
 /*
 **	bunch
@@ -94,13 +95,10 @@ int						equal_pillar(t_wall *wall1, t_wall *wall2);
 /*
 ** drawer functions
 */
-int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
-int						sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg);
 void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
-//void					editor_fill_line(t_editor *ed, t_vct2 pos0, t_vct2 pos1, Uint32 color);
-void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
+void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
 
 /*
 **	shape
@@ -108,16 +106,27 @@ void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
 t_shape					shape_reajust(t_shape shape);
 
+/*
+**	sprites
+*/
+void					sprite_render_list(t_sprite *sprite, t_arch *arch, t_player *player);
+t_sprite				*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *player, t_arch *arch);
+t_sprite				*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch);
+void					sprite_print(t_sprite *sprite);
+void					sprite_free(t_sprite *sprite);
+void					sprite_print(t_sprite *sprite);
+void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
+void					sprite_render(t_sprite *sprite, t_arch *arch, t_player *player);
+t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
+
 
 /*
-**	borne
+**	render enemy
 */
-t_borne					*borne_init(t_borne *borne, int len);
-t_borne					*borne_svg(t_arch *arch, t_borne *borne);
-void					borne_free(t_borne *borne);
-void					borne_load(t_arch *arch, t_borne *borne, int start);
-void					borne_reset(t_arch *arch);
-void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
-void					set_borne_horizontal(t_arch *arch);
+t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);
+int						camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double h_diff, double depth);
+t_vct2					cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_player *player, double depth);
+t_vct2					cam_txtr_width(t_camera *camera, t_txtr *texture, t_vct2 surface, int posx);
+
 
 #endif
