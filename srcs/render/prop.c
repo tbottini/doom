@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/11 21:48:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/11 22:00:38 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,17 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 			//printf("print arch->px.x %d\n", arch->px.x);
 
 			padding_render = (surface.y - surface.x) * heigth_percent.x;
-			printf("heigth ceil %f\n", arch->sector->h_ceil);
+			//printf("heigth ceil %f\n", arch->sector->h_ceil);
 			surface_tmp.x = surface.x + padding_render;
 			surface_tmp.y = surface.y - padding_render;
 
 			surface_tmp.x = surface.x + (surface.y - surface.x) * heigth_percent.x;
 			surface_tmp.y = surface.y - (surface.y - surface.x) * heigth_percent.y;
+			//if (surface_tmp.x < 0)
+			//	surface_tmp.x = 0;
 			cursor = arch->px.x + surface_tmp.x * arch->sdl->size.x;
+			if (cursor < 0)
+				cursor = arch->px.x;
 			props[i].tex = &arch->sector->txtrtop;
 			draw_part_texture(arch, cursor, surface_tmp, props[i].tex);
 
