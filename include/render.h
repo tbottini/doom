@@ -99,6 +99,8 @@ void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
+int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr);
+void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);
 
 /*
 **	shape
@@ -128,5 +130,7 @@ int						camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, doub
 t_vct2					cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_player *player, double depth);
 t_vct2					cam_txtr_width(t_camera *camera, t_txtr *texture, t_vct2 surface, int posx);
 
-
+void					prop_wall_render(t_prop *prop, void *arch);
+void					prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup);
+t_vct2					prop_get_screen_pixel(t_prop *prop, t_arch *arch);
 #endif

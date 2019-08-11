@@ -17,17 +17,31 @@ t_sector		*sector_new()
 
 void			sector_props_init(t_sector *sector)
 {
-	prop_iter(sector->props, sector->len_prop, &prop_init);
+	//prop_iter(sector->props, sector->len_prop, &prop_init);
+	(void)sector;
 }
+
 
 void			sector_wall_props_init(t_sector *sector)
 {
 	int			i;
+	int			j;
 
 	i = 0;
+	j = 0;
 	while (i < sector->len)
 	{
-		prop_iter(sector->wall[i].props, sector->wall[i].nb_props, &prop_init);
+		//printf("wall %d %f %f %f %f\n", i, sector->wall[i].next->p.x, sector->wall[i].next->p.y,
+		//	sector->wall[i].pillar->p.x, sector->wall[i].pillar->p.y);
+		while (j < sector->wall[i].nb_props)
+		{
+			//printf("\twall %d %f %f %f %f\n", i, sector->wall[i].next->p.x, sector->wall[i].next->p.y,
+			//sector->wall[i].pillar->p.x, sector->wall[i].pillar->p.y);
+			prop_init(&sector->wall[i].props[j], &sector->wall[i]);
+			j++;
+		}
+		j = 0;
+		//prop_iter(sector->wall[i].props, sector->wall[i].nb_props, &prop_init);
 		i++;
 	}
 }

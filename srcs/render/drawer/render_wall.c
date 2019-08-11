@@ -106,7 +106,10 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 		if (arch->wall->status == WALL)
 		{
 			if (z_line_buffer(arch, neutre.x, arch->px.x))
+			{
 				draw_column(arch, *pillar);
+				props_draw_column(arch->wall->props, arch, *pillar);
+			}
 		}
 		else if (arch->wall->status == PORTAL)
 		{
@@ -150,6 +153,7 @@ void			render_wall(t_arch *arch, t_player *player)
 		len_sector = length_sector(player, arch->sector);
 		pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
 		next_px = surface_pillar(arch, player, len_sector, arch->next.x);
+		prop_iter_v(arch->wall->props, arch->wall->nb_props, &prop_wall_render, arch);
 		if (debug_screen == 2)
 		{
 			//debug_pillar(arch, P_PILLAR | P_NEXT | TRACE | POINT);
@@ -190,7 +194,9 @@ void			render_wall(t_arch *arch, t_player *player)
 			if (debug == 9)
 				printf("borne_load(%d) %d %d\n\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 		}
+
 	}
 	else if (debug_screen == 2)
 		draw_wall(arch, RED);
+
 }

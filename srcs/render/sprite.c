@@ -98,6 +98,9 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 }
 
 
+
+//recuperation des sprites dans ui props [prop->ui]
+
 t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch)
 {
 	t_sprite		*sprite;
