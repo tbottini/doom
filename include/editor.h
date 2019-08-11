@@ -14,8 +14,6 @@ int						save_editor_to_file(t_editor *edit);
 
 t_btn					add_test_button(t_editor *edit, SDL_Rect *parent);
 
-void					editor_zoom(int *z, int zoom);
-
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
@@ -45,12 +43,12 @@ int						txtr_menu_click_int(t_editor *editor, int x, int y, int min, int max);
 void					texturebox_click(t_editor *edit, SDL_MouseButtonEvent e);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
-void					ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom);
+void					ft_movepillar(t_lstsec sectors, t_pilier *pil, t_vct2 add, int zoom);
 void					ft_removepillar(t_lstpil *start, t_lstpil *pil);
 t_lstpil				ft_pillarpushend(t_lstpil *start, t_vct2 loc);
 void					ft_clear_pillar_list(t_lstpil *start);
 void					ft_nodeprint_pillar(t_lstpil node);
-void 					ft_nodeprint_secteur(t_lstsec node);
+//void 					ft_nodeprint_secteur(t_lstsec node);
 t_lstpil				find_pilier(t_editor *editor, t_lstpil start, int x, int y);
 t_ecoord				*find_player(t_editor *edit, int x, int y);
 
@@ -66,10 +64,11 @@ t_entity					*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr);
 void					ft_removeenemy(t_lstent *start, t_entity **pil);
 t_entity					*ft_enemypushend(t_lstent *start, t_vct2 loc, int type, t_secteur *sctr);
 void					ft_removeenemywithstat(t_lstent *start, t_ecoord **pil);
-void					ft_nodeprint_enemy(t_lstent node);
+//void					ft_nodeprint_enemy(t_lstent node);
 void					ft_clear_entity_list(t_lstent *start);
 
 t_vct2					line_percent(t_vct2 pos1, t_vct2 pos2, double percent);
+void					scroll_limits(int *value, int addition, int smin, int smax);
 
 t_vct2					get_screen_mappos(t_editor *editor, int x, int y);
 t_vct2					get_rel_mappos(t_editor *editor, int x, int y);

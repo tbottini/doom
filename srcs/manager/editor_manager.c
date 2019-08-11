@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 19:23:49 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 13:38:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,14 @@ int		editor_init(t_editor *editor)
 	if (!(editor->sprites[8] = IMG_LoadTexture(editor->rend, PROPSHOTGUN)))
 		return (0);
 	if (!(editor->sprites[9] = IMG_LoadTexture(editor->rend, PROPRIFLE)))
+		return (0);
+	if (!(editor->sprites[10] = IMG_LoadTexture(editor->rend, PROPKEY1)))
+		return (0);
+	if (!(editor->sprites[11] = IMG_LoadTexture(editor->rend, PROPKEY2)))
+		return (0);
+	if (!(editor->sprites[12] = IMG_LoadTexture(editor->rend, PROPKEY3)))
+		return (0);
+	if (!(editor->sprites[13] = IMG_LoadTexture(editor->rend, PROPCORE)))
 		return (0);
 	if (!(editor->wsprites[0] = IMG_LoadTexture(editor->rend, PROPBTN)))
 		return (0);

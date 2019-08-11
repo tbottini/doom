@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:43:38 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 17:58:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,25 @@ typedef enum			e_id_weapon
 	RIFLE
 }						t_id_weapon;
 
+/* Jetpack
+** -1 : pas ramasse
+** 0 : actif
+** 1 : inactif
+*/
+typedef struct			s_inv
+{
+	int		jetpack;
+	bool	key1;
+	bool	key2;
+	bool	key3;
+	bool	last_key;
+}						t_inv;
+
 typedef	struct			s_weapon
 {
-	t_txtr				*sprites;
+	SDL_Texture			*sprites[22];
+	int					nb_ts;
+	int					nb_tr;
 	int					clip_max;
 	int					ammo;
 	int					clip;
@@ -71,24 +87,21 @@ typedef struct 			s_stat
 	double				speed;
 	int					width;
 	int					health;
-	int					jetpack;
 	bool				crouch;
 }						t_stat;
 
-/* Jetpack
-** -1 : pas ramasse
-** 0 : actif
-** 1 : inactif
-*/
 typedef struct 			s_player
 {
 	t_stat				stat;
+	t_inv				inv;
 	t_weapon			*hand;
 	t_weapon			weapons[NB_WEAPON];
 	Uint32				boost;
+	Uint32				timeact;
 	Uint32				occupied;
 	t_power				power;
 	int					fov;
+	bool				act;
 }						t_player;
 
 /*
@@ -145,13 +158,12 @@ void					del_enemy(t_sector *sector, t_enemy *enemy);
 */
 
 void					jetpack_on_off(t_player *player);
-void					fly(t_stat *stat);
-void					unfly(t_stat *stat);
+void					fly_down(t_stat *stat);
 void					sprint_release(t_stat *stat);
 void					sprint(t_stat *stat);
-void					gravity(t_stat *stat);
-void					inertie(t_stat *stat);
-void					jump(t_player *player);
+//void					gravity(t_stat *stat);
+//void					inertie(t_stat *stat);
+void					jump(t_stat *stat, t_inv *inv);
 void					crouch_release(t_player *player);
 void					crouch(t_player *player);
 void					next_weapon(t_player *player);
@@ -166,12 +178,13 @@ t_weapon				hand_init(void);
 t_weapon				gun_init(void);
 t_weapon				shotgun_init(void);
 t_weapon				rifle_init(void);
-void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon);
+void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon, t_sound *sound);
 void					shoot(Uint32 timestamp, t_sound *sound, t_player *player);
 void					bullet(t_stat *stat, int dmg);
+void					injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit);
 void					wall_real_hit(t_shoot *shoot, t_stat *stat);
 void					possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector);
-t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo);
+t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, double angle);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);
 //void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
 //t_enemy				*possible_enemys(t_enemy **enemys, t_stat *stat, t_fvct3 d, int *index);

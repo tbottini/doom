@@ -6,95 +6,39 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:13:17 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:33:01 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 11:34:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void		jetpack_on_off(t_player *player)
+static void		inertie(t_stat *stat)
 {
-	if (player->stat.jetpack == 1)
-	{
-		player->stat.jetpack = 0;
-		player->stat.vel.x = 0;
-		player->stat.vel.y = 0;
-		player->stat.vel.z = 0;
-	}
-	else if (player->stat.jetpack == 0)
-		player->stat.jetpack = 1;
+	if (stat->vel.x > DECELERATION)
+		stat->vel.x -= DECELERATION;
+	else if (stat->vel.x < -DECELERATION)
+		stat->vel.x += DECELERATION;
+	else
+		stat->vel.x = 0;
+	if (stat->vel.y > DECELERATION)
+		stat->vel.y -= DECELERATION;
+	else if (stat->vel.y < -DECELERATION)
+		stat->vel.y += DECELERATION;
+	else
+		stat->vel.y = 0;
+	if (stat->vel.x < stat->speed - DECELERATION && stat->vel.y < stat->speed - DECELERATION && Mix_Playing(1))
+		Mix_FadeOutChannel(1, 0);
 }
 
-void		fly(t_stat *stat)
+
+static void		gravity(t_stat *stat)
 {
-	if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height - 0.1)
-		stat->pos.z += 0.1;
-	else if (stat->pos.z < stat->sector->h_ceil + stat->sector->h_floor - stat->height)
-		stat->pos.z = stat->sector->h_ceil + stat->sector->h_ceil - stat->height;
+	stat->vel.x += stat->sector->gravity.x;
+	stat->vel.y += stat->sector->gravity.y;
+	stat->vel.z += stat->sector->gravity.z * 450.0;
 }
 
-void		unfly(t_stat *stat)
-{
-	if (stat->pos.z > stat->sector->h_floor + 0.1)
-		stat->pos.z -= 0.1;
-	else if (stat->pos.z > stat->sector->h_floor)
-		stat->pos.z = stat->sector->h_floor;
-}
-
-void		crouch(t_player *player)
-{
-	if (!player->stat.crouch && player->stat.speed != SPRINT && player->stat.height != H_SMOL)
-	{
-		player->stat.crouch = true;
-		player->stat.speed = CROUCH;
-		player->stat.height = H_CROUCH;
-	}
-}
-
-void		crouch_release(t_player *player)
-{
-	if (player->stat.crouch && player->stat.jetpack)
-	{
-		player->stat.crouch = false;
-		if (player->stat.sector->h_ceil <= player->stat.sector->h_floor + H_NORMAL)
-			return ;
-		player->stat.speed = WALK;
-		player->stat.height = H_NORMAL;
-	}
-}
-
-void		sprint(t_stat *stat)
-{
-	if (stat->speed == WALK && stat->height != H_CROUCH)
-		stat->speed = SPRINT;
-}
-
-void		sprint_release(t_stat *stat)
-{
-	if (stat->speed == SPRINT)
-		stat->speed = WALK;
-}
-
-/*void		fall_damage(t_stat *stat)
-{
-	stat->pos.z = stat->sector->h_floor;
-	Mix_Resume(1);
-	//stat->vel.z = 0;
-}*/
-
-void		gravity(t_stat *stat)
-{
-	if (stat->jetpack)
-	{
-		stat->vel.x += stat->sector->gravity.x;
-		stat->vel.y += stat->sector->gravity.y;
-		//if (fabs((stat->sector->h_floor + stat->sector->h_ceil) - (stat->pos.z + stat->height)) == 0.0)
-		//	stat->vel.z = 0;
-		stat->vel.z += stat->sector->gravity.z * 450.0;
-	}
-}
-
-void		update_rotation(t_stat *stat)
+static void		update_rotation(t_stat *stat, t_inv *inv)
 {
 	// Update Rotation
 	stat->rot.x += stat->rotvel.x;
@@ -112,20 +56,20 @@ void		update_rotation(t_stat *stat)
 		&& stat->sector->gravity.z < 0) || (stat->pos.z
 		>= stat->sector->h_floor + stat->sector->h_ceil
 		- stat->height && stat->sector->gravity.z > 0))
-		|| !stat->jetpack)
+		|| !inv->jetpack)
 		inertie(stat);
-	else
+	else if (inv->jetpack)
 		gravity(stat);
 }
 
-void		update_position(t_stat *stat, t_fvct3 npos)
+static void		update_position(t_stat *stat, t_fvct3 npos)
 {
 	t_fvct3	tmp;
 	t_wall	*w;
 	int		port;
 
 	w = NULL;
-	if ((port = colli_teleport(stat, stat->sector, npos, &w)) >= 1)
+	if ((port = colli_port(stat, stat->sector, npos, &w)) >= 1)
 	{
 		stat->pos.x = port == 1 ? npos.x : npos.x + npos.x / 10;
 		stat->pos.y = port == 1 ? npos.y : npos.y + npos.y / 10;
@@ -152,12 +96,12 @@ void		update_position(t_stat *stat, t_fvct3 npos)
 		stat->pos.x = npos.x;
 }
 
-void		move(t_stat *stat)
+void		move(t_stat *stat, t_inv *inv)
 {
 	t_fvct2	d;
 	t_fvct3	npos;
 
-	update_rotation(stat);
+	update_rotation(stat, inv);
 	d.x = sin(stat->rot.y * PI180) / 10.0;
 	d.y = cos(stat->rot.y * PI180) / 10.0;
 	npos.x = stat->pos.x + d.x * stat->vel.y / 35000.0 + d.y * stat->vel.x / 35000.0;
@@ -176,22 +120,4 @@ void		move(t_stat *stat)
 	else
 		stat->pos.z = npos.z;
 	update_position(stat, npos);
-}
-
-void		inertie(t_stat *stat)
-{
-	if (stat->vel.x > DECELERATION)
-		stat->vel.x -= DECELERATION;
-	else if (stat->vel.x < -DECELERATION)
-		stat->vel.x += DECELERATION;
-	else
-		stat->vel.x = 0;
-	if (stat->vel.y > DECELERATION)
-		stat->vel.y -= DECELERATION;
-	else if (stat->vel.y < -DECELERATION)
-		stat->vel.y += DECELERATION;
-	else
-		stat->vel.y = 0;
-	if (stat->vel.x < stat->speed - DECELERATION && stat->vel.y < stat->speed - DECELERATION && Mix_Playing(1))
-		Mix_FadeOutChannel(1, 0);
 }

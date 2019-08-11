@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 11:56:53 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 11:29:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,14 @@ static void input_loop(t_doom *doom, int key)
 		benda(doom, key);
 	else if (key == SDLK_LSHIFT && doom->game.player.stat.vel.x == doom->game.player.stat.speed)
 		sprint(&doom->game.player.stat);
-	else if (key == SDLK_SPACE && doom->game.player.stat.jetpack)
-		jump(&doom->game.player);
-	else if (key == SDLK_SPACE && !doom->game.player.stat.jetpack)
-		fly(&doom->game.player.stat);
-	else if (key == SDLK_LGUI && !doom->game.player.stat.jetpack)
-		unfly(&doom->game.player.stat);
+	else if (key == SDLK_SPACE)
+		jump(&doom->game.player.stat, &doom->game.player.inv);
+	else if (key == SDLK_LGUI && !doom->game.player.inv.jetpack)
+		fly_down(&doom->game.player.stat);
 	else if (doom->timestamp > doom->game.player.occupied)
 	{
 		if (key == SDL_BUTTON_LEFT)
 			shoot(doom->timestamp, &doom->game.sound, &doom->game.player);
-		else if (key == SDLK_p) //test tir
-			bullet(&doom->game.player.stat, doom->game.player.hand->dmg);
 		else if (key == SDLK_0)//test effects
 			play_effect(&doom->game.sound, 8);
 	}
@@ -74,7 +70,7 @@ static void editor_loop(t_doom *doom, int key)
 	//printf("key : %d %c\n", key, key);
 	if (key == SDLK_KP_PLUS || key == SDLK_KP_MINUS)
 	{
-		editor_zoom(&doom->edit.mappos.z, (key == SDLK_KP_PLUS ? 2 : -2));
+		scroll_limits(&doom->edit.mappos.z, (key == SDLK_KP_PLUS ? 2 : -2) * (doom->edit.mappos.z / 400 * ZOOMSPEED + 1), MINZOOM, MAXZOOM);
 	}
 	else if (key == SDLK_KP_4 || key == SDLK_KP_6)
 	{
@@ -122,7 +118,7 @@ static void game_loop_hook(t_doom *doom)
 			pos = pos->next;
 		}
 		/// Place here functions that need to be launch every frame while the game is running
-		move(&doom->game.player.stat);
+		move(&doom->game.player.stat, &doom->game.player.inv);
 		pickup_prop(doom);
 		check_boost(doom->timestamp, &doom->game.player);
 		armandtificial_intelligence(doom);
@@ -168,7 +164,7 @@ static void editor_loop_hook(t_doom *doom)
 	draw_sector_menu(&doom->edit, doom->ui.fonts);
 	if (doom->edit.map || doom->edit.currmur || doom->edit.currstat)
 		draw_inspect_menu(&doom->edit);
-	if (doom->edit.status == ED_SAVING || doom->edit.status == ED_WRITING || doom->edit.status == ED_OPEN)
+	if (ISWRITING(doom->edit.status))
 		draw_writer(&doom->edit);
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10}, "x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
 	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40}, "y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});

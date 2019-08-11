@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/25 20:43:40 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/04 14:02:10 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct			s_wall
 	double				percent;
 	Uint32				ots;
 	int					nb_props;
+	int					level; //A ajouter dans l'editeur et l'ecriteur
 }						t_wall;
 
 typedef struct			s_hitbox

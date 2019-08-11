@@ -31,11 +31,11 @@ typedef struct s_prop	t_prop;
 # define MAXENEMYPOS (MINENEMYPOS + MAXENEMYNUMBER)
 
 # define MINPROPSPOS 20
-# define MAXPROPSNUMBER 10
+# define MAXPROPSNUMBER 14
 # define MAXPROPSPOS (MINPROPSPOS + MAXPROPSNUMBER)
 # define PROPHEALTH "ressources/props/health.xpm"
 # define PROPCASS "ressources/props/cassette.png"
-# define PROPMUN "ressources/props/ammo.png"//erreurs sur ce sprite
+# define PROPMUN "ressources/props/ammo.png"
 # define PROPRPILL "ressources/props/pill.png"
 # define PROPGPILL "ressources/props/greenpill.png"
 # define PROPBPILL "ressources/props/bluepill.png"
@@ -43,6 +43,10 @@ typedef struct s_prop	t_prop;
 # define PROPGUN "ressources/props/gun.png"
 # define PROPSHOTGUN "ressources/props/shotgun.png"
 # define PROPRIFLE "ressources/props/rifle.png"
+# define PROPKEY1 "ressources/props/key1.png"
+# define PROPKEY2 "ressources/props/key2.png"
+# define PROPKEY3 "ressources/props/key3.png"
+# define PROPCORE "ressources/props/botinium.png"
 
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
 # define MAXWPROPSNUMBER 3
@@ -55,6 +59,36 @@ typedef struct s_prop	t_prop;
 # define ISPROP(x) (MINPROPSPOS <= x && x < MAXPROPSPOS)
 # define ISWALLPROP(x) (MINWPROPSPOS <= x && x < MAXWPROPSPOS)
 # define ISPORTAL(x) (x >= WINDOW)
+
+/*
+** For sprites
+*/
+#define SPRITEPATH "ressources/sprites/0000.png"
+
+#define KICKSTART 0
+#define KICKLEN 3
+
+#define GUNSTART (KICKSTART + KICKLEN)
+#define GUNSHOOTSTART (GUNSTART + 1)
+#define GUNSHOOTLEN 7
+#define GUNRELOADSTART (GUNSHOOTSTART + GUNSHOOTLEN)
+#define GUNRELOADLEN 3
+
+#define SHOTGUNSTART (GUNRELOADSTART + GUNRELOADLEN)
+#define SHOTGUNSHOOTSTART (SHOTGUNSTART + 1)
+#define SHOTGUNSHOOTLEN 4
+#define SHOTGUNRELOADSTART (SHOTGUNSHOOTSTART + SHOTGUNSHOOTLEN)
+#define SHOTGUNRELOADLEN 12
+
+#define RIFLESTART (SHOTGUNRELOADSTART + SHOTGUNRELOADLEN)
+#define RIFLESHOOTSTART (RIFLESTART + 1)
+#define RIFLESHOOTLEN 4
+#define RIFLERELOADSTART (RIFLESHOOTSTART + RIFLESHOOTLEN)
+#define RIFLERELOADLEN 17
+
+#define ENDSPRITES (RIFLERELOADSTART + RIFLERELOADLEN)
+
+
 
 enum 					e_window_id
 {
@@ -212,6 +246,8 @@ typedef struct			s_ui
 	int					curr_btn_controller;
 	t_pal				fire;
 	SDL_Texture			*weaponhud[NB_WEAPON];
+	SDL_Texture			*sprites[ENDSPRITES + 1];
+	SDL_Texture			*props[MAXPROPSNUMBER + MAXWPROPSNUMBER];
 }						t_ui;
 
 typedef struct			s_sdl
@@ -234,6 +270,7 @@ typedef struct			s_minimap
 	t_vct2	size;
 	t_vct2	mid;
 	t_sdl	*sdl;
+	t_ui	*ui;
 }						t_minimap;
 
 typedef struct s_pilier	t_pilier;
@@ -258,6 +295,7 @@ struct					s_mur {
 	t_lstmur			prvs;
 	t_lstmur			next;
 	int					id;
+	int					level;
 };
 
 struct					s_secteur
@@ -300,9 +338,12 @@ typedef enum		e_editorstatus
 	ED_LOADING,
 	ED_LOADED,
 	ED_WRITING,
+	ED_FORME,
 	ED_SAVING,
 	ED_OPEN,
 }					t_editorstatus;
+
+# define ISWRITING(x) (x == ED_SAVING || x == ED_WRITING || x == ED_FORME || x == ED_OPEN)
 
 typedef struct			s_editor
 {

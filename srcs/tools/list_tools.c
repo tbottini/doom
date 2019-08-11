@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-t_pilier *ft_newpillar(t_vct2 loc)
+t_pilier	*ft_newpillar(t_vct2 loc)
 {
 	t_pilier *t;
 
@@ -24,7 +24,7 @@ t_pilier *ft_newpillar(t_vct2 loc)
 	return (t);
 }
 
-void ft_removepillar(t_lstpil *start, t_pilier **pil)
+void		ft_removepillar(t_lstpil *start, t_pilier **pil)
 {
 	if (!pil || !(*pil))
 		return ;
@@ -38,13 +38,13 @@ void ft_removepillar(t_lstpil *start, t_pilier **pil)
 	*pil = NULL;
 }
 
-void ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom)
+void		ft_movepillar(t_lstsec sectors, t_pilier *pil, t_vct2 add, int zoom)
 {
 	t_lstent wprops;
 	t_lstmur murs;
 
-	pil->pos.x += addx * (EDITORPRECISION) / zoom;
-	pil->pos.y += addy * (EDITORPRECISION) / zoom;
+	pil->pos.x += add.x * (EDITORPRECISION) / zoom;
+	pil->pos.y += add.y * (EDITORPRECISION) / zoom;
 	while (sectors)
 	{
 		murs = sectors->murs;
@@ -55,7 +55,8 @@ void ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom
 				wprops = murs->wproplist;
 				while (wprops)
 				{
-					wprops->stat.pos = line_percent(murs->pil1->pos, murs->pil2->pos, wprops->stat.roty / 100);
+					wprops->stat.pos = line_percent(murs->pil1->pos,
+						murs->pil2->pos, wprops->stat.roty / 100);
 					wprops = wprops->next;
 				}
 			}
@@ -65,7 +66,7 @@ void ft_movepillar(t_lstsec sectors, t_pilier *pil, int addx, int addy, int zoom
 	}
 }
 
-t_pilier *ft_pillarpushend(t_lstpil *start, t_vct2 loc)
+t_pilier	*ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 {
 	t_pilier *t;
 
@@ -82,45 +83,12 @@ t_pilier *ft_pillarpushend(t_lstpil *start, t_vct2 loc)
 	return (t->next);
 }
 
-static int check_diff(t_lstpil un, t_lstpil deux)
-{
-	if (un->pos.x != deux->pos.x || un->pos.y != deux->pos.y)
-		return (0);
-	return (1);
-}
-
-void ft_nodeprint_pillar(t_lstpil node)
-{
-	t_pilier *curr;
-
-	if (!node)
-	{
-		ft_printf("xxx\n");
-		return;
-	}
-	curr = node;
-	while (curr)
-	{
-		ft_printf("%d %d", curr->pos.x, curr->pos.y);
-		if (curr->next)
-			ft_printf("%c-> ", check_diff(curr->next->prvs, curr) ? ' ' : '!');
-		if (curr->next != node)
-			curr = curr->next;
-		else
-		{
-			ft_printf("Loop");
-			curr = NULL;
-		}
-	}
-	ft_printf("\n");
-}
-
-void ft_clear_pillar_list(t_lstpil *start)
+void		ft_clear_pillar_list(t_lstpil *start)
 {
 	t_pilier *tmp;
 
 	if (!start || !(*start))
-		return;
+		return ;
 	tmp = *start;
 	while (tmp->next && tmp->next != *start)
 		tmp = tmp->next;
@@ -134,3 +102,38 @@ void ft_clear_pillar_list(t_lstpil *start)
 	free(*start);
 	*start = NULL;
 }
+
+/*
+** static int check_diff(t_lstpil un, t_lstpil deux)
+** {
+** 	if (un->pos.x != deux->pos.x || un->pos.y != deux->pos.y)
+** 		return (0);
+** 	return (1);
+** }
+**
+** void ft_nodeprint_pillar(t_lstpil node)
+** {
+** 	t_pilier *curr;
+**
+** 	if (!node)
+** 	{
+** 		ft_printf("xxx\n");
+** 		return;
+** 	}
+** 	curr = node;
+** 	while (curr)
+** 	{
+** 		ft_printf("%d %d", curr->pos.x, curr->pos.y);
+** 		if (curr->next)
+** 			ft_printf("%c-> ", check_diff(curr->next->prvs, curr) ? ' ' : '!');
+** 		if (curr->next != node)
+** 			curr = curr->next;
+** 		else
+** 		{
+** 			ft_printf("Loop");
+** 			curr = NULL;
+** 		}
+** 	}
+** 	ft_printf("\n");
+** }
+*/

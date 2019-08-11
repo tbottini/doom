@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 21:51:35 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 18:43:11 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 14:02:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ t_weapon hand_init(void)
 	weapon.clip = 0;
 	weapon.ammo = 0;
 	weapon.rate = 0;
+	weapon.nb_tr = 0;
+	weapon.nb_ts = 3;
 	weapon.dmg = 10;
-	weapon.sprites = NULL;//
+	//weapon.sprites = NULL;
 	weapon.on = true;
 	return (weapon);
 }
@@ -37,7 +39,9 @@ t_weapon gun_init(void)
 	weapon.ammo = 48;
 	weapon.rate = 0;
 	weapon.dmg = 20;
-	weapon.sprites = NULL;//
+	weapon.nb_tr = 0;
+	weapon.nb_ts = 7;
+	//weapon.sprites = NULL;
 	weapon.on = false;
 	return (weapon);
 }
@@ -52,7 +56,9 @@ t_weapon shotgun_init(void)
 	weapon.ammo = 18;
 	weapon.rate = 0;
 	weapon.dmg = 45;
-	weapon.sprites = NULL;//
+	weapon.nb_tr = 12;
+	weapon.nb_ts = 4;
+	//weapon.sprites = NULL;
 	weapon.on = false;
 	return (weapon);
 }
@@ -67,7 +73,9 @@ t_weapon rifle_init(void)
 	weapon.ammo = 96;
 	weapon.rate = 1;
 	weapon.dmg = 15;
-	weapon.sprites = NULL;//
+	weapon.nb_tr = 17;
+	weapon.nb_ts = 4;
+	//weapon.sprites = NULL;
 	weapon.on = false;
 	return (weapon);
 }

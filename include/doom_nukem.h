@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/29 11:56:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 22:18:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ extern int debug_screen;
 # define TOANGLE 57.2957795131
 
 # define RADIUS 500
-# define TOTALMUSIC 10
+# define TOTALMUSIC 11
 
 # define UNIT 8.0
 # define CWALL 0xDADADAFF
@@ -117,7 +117,7 @@ int						line_wall(t_arch *rsrc, t_wall *wall, char *line);
 */
 void					move_input(t_doom *doom, int key);
 void					mvt_input(t_player *player, int key);
-void					move(t_stat *stat);
+void					move(t_stat *stat, t_inv *inv);
 void					bold_point(t_vct2 cursor, Uint32 color, t_doom *doom);
 void					PrintEvent(const SDL_Event *event);
 int						keyboard_input(t_doom *doom, SDL_Event event);
@@ -127,6 +127,7 @@ void					play_effect(t_sound *sound, int e);
 **	Cinematique et Musique
 */
 
+void					concat_atoi(char *str, int i);
 void					cine_events(t_doom *doom, int *i);
 void					prev_track(t_doom *doom);
 void					next_track(t_doom *doom);
@@ -143,10 +144,11 @@ void					effect_volume(t_sound *sound);
 */
 
 void					minimap(t_minimap *mini, t_player *player);
-t_minimap				miniinit(t_sdl *s);
+t_minimap				miniinit(t_sdl *s, t_ui *ui);
 void					mini_draw_wall(t_wall *wall, t_fvct3 pos, t_minimap *mini);
 int						bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color);
 void					minibord(t_minimap *mini);
 void					miniwalls(t_player *player, t_sector *sector, t_minimap *mini);
+void					miniinv(t_minimap *mini, t_player *player);
 
 #endif

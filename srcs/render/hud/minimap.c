@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/27 17:15:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/10 22:25:21 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static Uint32		hcol(int health, t_power power)
 	return (0xFF764401);
 }
 
-t_minimap			miniinit(t_sdl *s)
+t_minimap			miniinit(t_sdl *s, t_ui *ui)
 {
 	t_minimap	mini;
 
@@ -44,6 +44,7 @@ t_minimap			miniinit(t_sdl *s)
 	mini.mid.x = mini.a.x - (mini.size.x >> 1);
 	mini.mid.y = mini.a.y - (mini.size.y >> 1);
 	mini.sdl = s;
+	mini.ui = ui;
 	return (mini);
 }
 
@@ -180,6 +181,46 @@ static void			minienemies(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 			bold_point2(mini, tmp, 0x18ffffFF);
 		enn = enn->next;
 	}
+}
+
+void				miniinv(t_minimap *mini, t_player *player)
+{
+	int y;
+	int tmp;
+	SDL_Rect rect;
+
+	tmp = (mini->a.y - mini->d.y) / 5;
+	y = mini->d.y;
+	rect.x = mini->a.x;
+	rect.y = y;
+	rect.w = tmp;
+	rect.h = tmp;
+	if (player->inv.jetpack != -1)
+	{
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[6], NULL, &rect);
+		if (!player->inv.jetpack)
+		{
+			SDL_SetRenderDrawColor(mini->sdl->rend, 128, 128, 128, 255);
+			SDL_RenderDrawRect(mini->sdl->rend, &rect);
+			SDL_SetRenderDrawColor(mini->sdl->rend, 0, 0, 0, 0);
+		}
+	}
+	y += tmp;
+	rect.y = y;
+	if (player->inv.key1)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[10], NULL, &rect);
+	y += tmp;
+	rect.y = y;
+	if (player->inv.key2)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[11], NULL, &rect);
+	y += tmp;
+	rect.y = y;
+	if (player->inv.key3)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[12], NULL, &rect);
+	y += tmp;
+	rect.y = y;
+	if (player->inv.last_key)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[13], NULL, &rect);
 }
 
 void				minimap(t_minimap *mini, t_player *player)

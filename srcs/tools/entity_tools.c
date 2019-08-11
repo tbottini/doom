@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-t_entity		*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
+t_entity	*ft_newenemy(t_vct2 loc, int type, t_secteur *sctr)
 {
 	t_entity *t;
 
@@ -66,15 +66,15 @@ void		ft_removeenemywithstat(t_lstent *start, t_ecoord **pil)
 	}
 }
 
-t_entity		*ft_enemypushend(t_lstent *start, t_vct2 loc, int type, t_secteur *sctr)
+t_entity	*ft_enemypushend(t_lstent *s, t_vct2 loc, int type, t_secteur *sctr)
 {
 	t_entity *t;
 
-	if (!start)
+	if (!s)
 		return (NULL);
-	if (!(*start))
-		return (*start = ft_newenemy(loc, type, sctr));
-	t = *start;
+	if (!(*s))
+		return (*s = ft_newenemy(loc, type, sctr));
+	t = *s;
 	while (t->next)
 		t = t->next;
 	if (!(t->next = ft_newenemy(loc, type, sctr)))
@@ -83,45 +83,12 @@ t_entity		*ft_enemypushend(t_lstent *start, t_vct2 loc, int type, t_secteur *sct
 	return (t->next);
 }
 
-static int	check_diff(t_lstent un, t_lstent deux)
-{
-	if (un->stat.pos.x != deux->stat.pos.x || un->stat.pos.y != deux->stat.pos.y)
-		return (0);
-	return (1);
-}
-
-void		ft_nodeprint_enemy(t_lstent node)
-{
-	t_entity *curr;
-
-	if (!node)
-	{
-		ft_printf("xxx\n");
-		return;
-	}
-	curr = node;
-	while (curr)
-	{
-		ft_printf("%d %d", curr->stat.pos.x, curr->stat.pos.y);
-		if (curr->next)
-			ft_printf("%c-> ", check_diff(curr->next->prev, curr) ? ' ' : '!');
-		if (curr->next != node)
-			curr = curr->next;
-		else
-		{
-			ft_printf("Loop");
-			curr = NULL;
-		}
-	}
-	ft_printf("\n");
-}
-
 void		ft_clear_entity_list(t_lstent *start)
 {
 	t_entity *tmp;
 
 	if (!start || !(*start))
-		return;
+		return ;
 	tmp = *start;
 	while (tmp->next && tmp->next != *start)
 		tmp = tmp->next;
@@ -135,3 +102,39 @@ void		ft_clear_entity_list(t_lstent *start)
 	free(*start);
 	*start = NULL;
 }
+
+/*
+** static int	check_diff(t_lstent un, t_lstent deux)
+** {
+** 	if (un->stat.pos.x != deux->stat.pos.x
+** 		|| un->stat.pos.y != deux->stat.pos.y)
+** 		return (0);
+** 	return (1);
+** }
+**
+** void		ft_nodeprint_enemy(t_lstent node)
+** {
+** 	t_entity *curr;
+**
+** 	if (!node)
+** 	{
+** 		ft_printf("xxx\n");
+** 		return ;
+** 	}
+** 	curr = node;
+** 	while (curr)
+** 	{
+** 		ft_printf("%d %d", curr->stat.pos.x, curr->stat.pos.y);
+** 		if (curr->next)
+** 			ft_printf("%c-> ", check_diff(curr->next->prev, curr) ? ' ' : '!');
+** 		if (curr->next != node)
+** 			curr = curr->next;
+** 		else
+** 		{
+** 			ft_printf("Loop");
+** 			curr = NULL;
+** 		}
+** 	}
+** 	ft_printf("\n");
+** }
+*/

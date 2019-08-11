@@ -28,6 +28,8 @@ SRCS_UI			:=		button_action.c									\
 
 SRCS_GAMEPLAY	:=		action.c										\
 						move.c											\
+						move2.c											\
+						weapons.c										\
 						shoot.c											\
 						shoot_tools.c									\
 						collision.c										\
@@ -62,8 +64,7 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
 
-SRCS_PARSING	:=		read_editor_file.c								\
-						readfile.c										\
+SRCS_PARSING	:=		readfile.c										\
 						readfileeditor.c								\
 						savefile.c										\
 
@@ -76,10 +77,12 @@ SRCS_TOOLS		:=		list_tools.c									\
 						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\
+						norm_tools.c									\
 						little_tools.c									\
 						num_tools.c										\
 						sdl_tools.c										\
 						secteur_tools.c									\
+						play_tools.c									\
 						musi.c											\
 
 SRCS_GESTION	:=		doom_manager.c									\

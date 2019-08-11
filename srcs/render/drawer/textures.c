@@ -33,7 +33,7 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 	if (percent < 0)
 		return (0);
 	else if (percent > 1)
-		return (arch->wall->txtr.w);
+		return (arch->wall->txtr.w - 1);
 	return (percent * arch->wall->txtr.w);
 }
 

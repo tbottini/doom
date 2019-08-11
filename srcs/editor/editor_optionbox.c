@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_optionbox.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 17:07:24 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/17 17:07:25 by magrab           ###   ########.fr       */
+/*   Updated: 2019/08/04 14:43:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,51 +18,16 @@ int opt_menu_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 	if (e.x == 0 && edit->currstat)
 	{
 		if (edit->currstat == &edit->player.stat)
-		{
-			if (edit->currstat->type + e.y < 10)
-				edit->currstat->type = 10;
-			else if (edit->currstat->type + e.y > 250)
-				edit->currstat->type = 250;
-			else
-				edit->currstat->type += e.y;
-		}
-		if (ISPROP(edit->currstat->type))
-		{
-			if (edit->currstat->type + e.y < MINPROPSPOS)
-				edit->currstat->type = MINPROPSPOS;
-			else if (edit->currstat->type + e.y >= MAXPROPSPOS)
-				edit->currstat->type = MAXPROPSPOS - 1;
-			else
-				edit->currstat->type += e.y;
-		}
+			scroll_limits(&edit->currstat->type, e.y, 10, 250);
+		else if (ISPROP(edit->currstat->type))
+			scroll_limits(&edit->currstat->type, e.y, MINPROPSPOS, MAXPROPSPOS);
 		else if (ISWALLPROP(edit->currstat->type))
-		{
-			if (edit->currstat->type + e.y < MINWPROPSPOS)
-				edit->currstat->type = MINWPROPSPOS;
-			else if (edit->currstat->type + e.y >= MAXWPROPSPOS)
-				edit->currstat->type = MAXWPROPSPOS - 1;
-			else
-				edit->currstat->type += e.y;
-		}
+			scroll_limits(&edit->currstat->type, e.y, MINWPROPSPOS, MAXWPROPSPOS);
 	}
 	else if (e.x == 2 && edit->map)
-	{
-		if (edit->map->htop + e.y * 5 < 0)
-			edit->map->htop = 0;
-		else if (edit->map->htop + e.y * 5 > MAXEDITVAR)
-			edit->map->htop = MAXEDITVAR;
-		else
-			edit->map->htop += e.y * 5;
-	}
+		scroll_limits(&edit->map->htop, e.y * 5, 0, MAXEDITVAR);
 	else if (e.x == 3 && edit->map)
-	{
-		if (edit->map->hsol + e.y * 5 < 0)
-			edit->map->hsol = 0;
-		else if (edit->map->hsol + e.y * 5 > MAXEDITVAR)
-			edit->map->hsol = MAXEDITVAR;
-		else
-			edit->map->hsol += e.y * 5;
-	}
+		scroll_limits(&edit->map->hsol, e.y * 5, 0, MAXEDITVAR);
 	return (0);
 }
 
@@ -126,6 +91,26 @@ int opt_menu_click(t_editor *edit, int pos)
 			edit->currmur->portal_id = PORTAL;
 		else if (edit->map && !edit->currstat)
 			edit->map->gravity = (edit->map->gravity ? 0 : 1);
+	}
+	else if (pos == 5)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 0;
+	}
+	else if (pos == 6)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 1;
+	}
+	else if (pos == 7)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 2;
+	}
+	else if (pos == 8)
+	{
+		if (edit->currmur && edit->currmur->portal_ptr)
+			edit->currmur->level = 3;
 	}
 	else
 	{

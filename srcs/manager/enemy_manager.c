@@ -77,6 +77,7 @@ t_enemy	*enemy_init(int type, int difficulty, t_sector *sector)
 	enemy->next = NULL;
 	enemy->prev = NULL;
 	enemy->stat.sector = sector;
+	enemy->type = type;
 	if (type == 1)
 		cac_init(enemy, difficulty);
 	else if (type == 2)

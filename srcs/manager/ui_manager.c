@@ -22,6 +22,46 @@ void	ui_free(t_ui *ui)
 		TTF_CloseFont(ui->fonts.s128);
 }
 
+int		load_weapons(t_doom *doom, t_ui *ui)
+{
+	int x;
+	char path[50];
+
+	ft_strcpy(path, SPRITEPATH);
+	x = KICKSTART;
+	while (x < ENDSPRITES)
+	{
+		concat_atoi(&path[19], x);
+		if (!(ui->sprites[x] = IMG_LoadTexture(doom->sdl.rend, path)))
+			return (0);
+		x++;
+	}
+	return (1);
+}
+
+int		load_props(t_doom *doom, t_ui *ui)
+{
+	if    (!(ui->props[0] = IMG_LoadTexture(doom->sdl.rend, PROPHEALTH))
+		|| !(ui->props[1] = IMG_LoadTexture(doom->sdl.rend, PROPCASS))
+		|| !(ui->props[2] = IMG_LoadTexture(doom->sdl.rend, PROPMUN))
+		|| !(ui->props[3] = IMG_LoadTexture(doom->sdl.rend, PROPRPILL))
+		|| !(ui->props[4] = IMG_LoadTexture(doom->sdl.rend, PROPGPILL))
+		|| !(ui->props[5] = IMG_LoadTexture(doom->sdl.rend, PROPBPILL))
+		|| !(ui->props[6] = IMG_LoadTexture(doom->sdl.rend, PROPJETPACK))
+		|| !(ui->props[7] = IMG_LoadTexture(doom->sdl.rend, PROPGUN))
+		|| !(ui->props[8] = IMG_LoadTexture(doom->sdl.rend, PROPSHOTGUN))
+		|| !(ui->props[9] = IMG_LoadTexture(doom->sdl.rend, PROPRIFLE))
+		|| !(ui->props[10] = IMG_LoadTexture(doom->sdl.rend, PROPKEY1))
+		|| !(ui->props[11] = IMG_LoadTexture(doom->sdl.rend, PROPKEY2))
+		|| !(ui->props[12] = IMG_LoadTexture(doom->sdl.rend, PROPKEY3))
+		|| !(ui->props[13] = IMG_LoadTexture(doom->sdl.rend, PROPCORE))
+		|| !(ui->props[14] = IMG_LoadTexture(doom->sdl.rend, PROPBTN))
+		|| !(ui->props[15] = IMG_LoadTexture(doom->sdl.rend, PROPWINBTN))
+		|| !(ui->props[16] = IMG_LoadTexture(doom->sdl.rend, PROPIMPACT)))
+		return (0);
+	return (1);
+}
+
 int		ui_by_sdl(t_doom *doom, t_ui *ui)
 {
 	ui->btnarr[0] = add_doom_button(doom, " Doom-Nukem ");
@@ -49,10 +89,15 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	ui->btnpse[4] = add_right_music_button(doom, &(ui->btnpse[2].loc.area));
 	ui->btnpse[5] = add_ing_opt_button(doom);
 	ui->btnpse[6] = add_main_menu_button(doom);
-	ui->weaponhud[FIST] = add_fist(doom);
-	ui->weaponhud[GUN] = add_handgun(doom);
-	ui->weaponhud[SHOTGUN] = add_shotgun(doom);
-	ui->weaponhud[RIFLE] = add_rifle(doom);
+	if (!(ui->weaponhud[FIST] = add_fist(doom))
+		|| !(ui->weaponhud[GUN] = add_handgun(doom))
+		|| !(ui->weaponhud[SHOTGUN] = add_shotgun(doom))
+		|| !(ui->weaponhud[RIFLE] = add_rifle(doom)))
+		return (0);
+	if (!(load_weapons(doom, ui)))
+		return (0);
+	if (!(load_props(doom, ui)))
+		return (0);
 	return (1);
 }
 

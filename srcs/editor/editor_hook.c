@@ -12,16 +12,6 @@
 
 #include "doom_nukem.h"
 
-void	editor_zoom(int *z, int zoom)
-{
-	if (*z + zoom < MINZOOM)
-		*z = MINZOOM;
-	else if (*z + zoom > MAXZOOM)
-		*z = MAXZOOM;
-	else
-		*z += zoom * (*z / 400 * ZOOMSPEED + 1);
-}
-
 /*
 ** Add here function that need to be done when a key is pressed (wont trigger in loop_hook)
 ** Example :
@@ -63,6 +53,13 @@ int		editor_key_press(int key, t_doom *doom)
 		doom->edit.currstat = NULL;
 		doom->edit.status = ED_OPEN;
 	}
+	else if (key == SDLK_SPACE)
+	{
+		if (doom->edit.currpilier)
+			doom->edit.status = ED_FORME;
+		else
+			ft_putendl("Please select a pillar");
+	}
 	else
 		ft_nodeadd_int(&(doom->edit.keys), key);
 	return (0);
@@ -91,6 +88,7 @@ int editor_key_release(int key, t_doom *doom)
 void editor_mouse_left(SDL_MouseButtonEvent e, t_editor *edit)
 {
 	t_vct2 relpos;
+	t_pilier *pil[3];
 
 	edit->currmur = NULL;
 	edit->currstat = NULL;
@@ -104,16 +102,43 @@ void editor_mouse_left(SDL_MouseButtonEvent e, t_editor *edit)
 	if (e.clicks == 2)
 	{
 		relpos = get_rel_mappos(edit, e.x, e.y);
-		if (!ft_pillarpushend(&edit->pillist, relpos))
+		if (!(pil[0] = ft_pillarpushend(&edit->pillist, relpos)))
 			ft_printf("Error adding pillar\n");
+		if (edit->currmur)
+		{
+			pil[1] = edit->currmur->pil1;
+			pil[2] = edit->currmur->pil2;
+			ft_removewall(&edit->map->murs, &edit->currmur);
+			ft_wallpushend(&edit->map->murs, pil[0], pil[1], edit->txtrgame[0]);
+			ft_wallpushend(&edit->map->murs, pil[0], pil[2], edit->txtrgame[0]);
+			edit->currmur = NULL;
+			edit->hovermur = NULL;
+		}
 	}
 }
 
 void editor_mouse_right(SDL_MouseButtonEvent e, t_editor *edit)
 {
+	t_pilier *pil;
+
 	if (edit->map && edit->currpilier && edit->hoverpilier)
 	{
 		ft_wallpushend(&edit->map->murs, edit->currpilier, edit->hoverpilier, edit->txtrgame[0]);
+		edit->currpilier = edit->hoverpilier;
+	}
+	else if (e.clicks == 2)
+	{
+		ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
+		if (edit->currmur == edit->hovermur)
+			edit->currmur = NULL;
+		ft_removewall(&edit->map->murs, &edit->hovermur);
+	}
+	else if (edit->map && edit->currpilier)
+	{
+		if (!(pil = ft_pillarpushend(&edit->pillist, get_rel_mappos(edit, e.x, e.y))))
+			ft_putendl_fd("Error adding pillar\n", 2);
+		ft_wallpushend(&edit->map->murs, edit->currpilier, pil, edit->txtrgame[0]);
+		edit->currpilier = pil;
 	}
 	else if (edit->currstat)
 	{
@@ -124,13 +149,6 @@ void editor_mouse_right(SDL_MouseButtonEvent e, t_editor *edit)
 			else
 				edit->currstat->mursec = edit->map;
 		}
-	}
-	else if (e.clicks == 2)
-	{
-		ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
-		if (edit->currmur == edit->hovermur)
-			edit->currmur = NULL;
-		ft_removewall(&edit->map->murs, &edit->hovermur);
 	}
 }
 
@@ -223,13 +241,7 @@ int editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 			edit->currstat->roty += e.y;
 		return (0);
 	}
-	editor_zoom(&edit->mappos.z, e.y);
-	//if (edit->mappos.z + e.y < MINZOOM)
-	//	edit->mappos.z = MINZOOM;
-	//else if (edit->mappos.z + e.y > MAXZOOM)
-	//	edit->mappos.z = MAXZOOM;
-	//else
-	//	edit->mappos.z += e.y * (edit->mappos.z / 400 * ZOOMSPEED + 1);
+	scroll_limits(&edit->mappos.z, e.y * (edit->mappos.z / 400 * ZOOMSPEED + 1), MINZOOM, MAXZOOM);
 	ft_printf("\rWheel %d\t%d        ", edit->mappos.z, e.y);
 	return (0);
 }
@@ -291,7 +303,7 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		if (edit->currpilier)
 		{
 			SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEALL));
-			ft_movepillar(edit->sectors, edit->currpilier, e.xrel, e.yrel, edit->mappos.z);
+			ft_movepillar(edit->sectors, edit->currpilier, (t_vct2){e.xrel, e.yrel}, edit->mappos.z);
 		}
 		else if (edit->currstat)
 		{
