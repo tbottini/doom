@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/28 16:51:03 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/11 22:16:01 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	cac_init(t_enemy *enemy, double difficulty)
 	enemy->stat.height = 1.4;
 	enemy->stat.health = 50 * difficulty;
 	enemy->dmg = 1 * difficulty;//
-	enemy->sprites = NULL;//
 }
 
 static void	egun_init(t_enemy *enemy, double difficulty)
@@ -35,7 +34,6 @@ static void	egun_init(t_enemy *enemy, double difficulty)
 	enemy->stat.height = 1.8;
 	enemy->stat.health = 75 * difficulty;
 	enemy->dmg = 1 * difficulty;//
-	enemy->sprites = NULL;//
 }
 
 static void	fat_init(t_enemy *enemy, double difficulty)
@@ -44,7 +42,6 @@ static void	fat_init(t_enemy *enemy, double difficulty)
 	enemy->stat.height = 2.0;
 	enemy->stat.health = 125 * difficulty;
 	enemy->dmg = 1 * difficulty;//
-	enemy->sprites = NULL;//
 }
 
 static void	boss_init(t_enemy *enemy, double difficulty)
@@ -54,7 +51,6 @@ static void	boss_init(t_enemy *enemy, double difficulty)
 	enemy->stat.height = 4.0;
 	enemy->stat.health = 750 * difficulty;//
 	enemy->dmg = 1 * difficulty;//
-	enemy->sprites = NULL;//
 }
 
 void	free_enemys(t_enemy *enemy)
@@ -78,6 +74,7 @@ t_enemy	*enemy_init(int type, int difficulty, t_sector *sector)
 	enemy->prev = NULL;
 	enemy->stat.sector = sector;
 	enemy->type = type;
+	enemy->sprites.pixels = NULL;
 	if (type == 1)
 		cac_init(enemy, difficulty);
 	else if (type == 2)

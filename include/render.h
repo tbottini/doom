@@ -126,7 +126,7 @@ t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *pr
 t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);
 int						camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double h_diff, double depth);
 t_vct2					cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_player *player, double depth);
-t_vct2					cam_txtr_width(t_camera *camera, t_txtr *texture, t_vct2 surface, int posx);
+t_vct2					cam_txtr_width(t_camera *camera, t_txtr texture, t_vct2 surface, int posx);
 
 
 #endif

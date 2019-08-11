@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/10 22:18:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/11 21:47:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ void					editor_free(t_doom *doom);
 /*
 **	parsing
 */
-
+void					set_txtr(t_txtr *txtr, SDL_Surface *surf, int id);
 int						read_file(t_game *game, const char *file, bool foredit);
-
 int						check_file(const char *file);
 void					free_game(t_game *game);
 
@@ -82,7 +81,6 @@ void					play_effect(t_sound *sound, int e);
 /*
 **	Cinematique et Musique
 */
-
 void					concat_atoi(char *str, int i);
 void					cine_events(t_doom *doom, int *i);
 void					prev_track(t_doom *doom);
@@ -98,7 +96,6 @@ void					effect_volume(t_sound *sound);
 /*
 ** Minimap
 */
-
 void					minimap(t_minimap *mini, t_player *player);
 t_minimap				miniinit(t_sdl *s, t_ui *ui);
 void					mini_draw_wall(t_wall *wall, t_fvct3 pos, t_minimap *mini);

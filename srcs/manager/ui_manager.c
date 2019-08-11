@@ -62,6 +62,24 @@ int		load_props(t_doom *doom, t_ui *ui)
 	return (1);
 }
 
+
+int		load_enemies(t_doom *doom, t_ui *ui)
+{
+	int x;
+	char path[50];
+
+	ft_strcpy(path, ENEMYPATH);
+	x = 0;
+	while (x < ENEMYTXTRTOTAL)
+	{
+		concat_atoi(&path[35], x);
+		if (!(ui->enemy[x] = IMG_Load(path)))
+			return (0);
+		x++;
+	}
+	return (1);
+}
+
 int		ui_by_sdl(t_doom *doom, t_ui *ui)
 {
 	ui->btnarr[0] = add_doom_button(doom, " Doom-Nukem ");
@@ -97,6 +115,8 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	if (!(load_weapons(doom, ui)))
 		return (0);
 	if (!(load_props(doom, ui)))
+		return (0);
+	if (!(load_enemies(doom, ui)))
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/10 19:01:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/11 22:28:19 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,19 @@ void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)
 		{printf("TRO BA LOL\n");return ;}//
 	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height)
 		{printf("TRO O MDR || %f\n", enemy->stat.sector->h_floor + enemy->stat.height);return ;}//
-	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height - 0.25)
-		{enemy->stat.health -= dmg * 3;printf("HEADSHOT !\n");}//
-	else
-		{enemy->stat.health -= dmg;printf("BODYSHOT !\n");}//
-	if (enemy->stat.health > 0)
-		;//hit texture ?
-	else
+	if (enemy->state != 4)
 	{
-		enemy->state = 4;//apply dying textures ou pas
-		del_enemy(enemy->stat.sector, enemy);
+		if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height - 0.25)
+			{enemy->stat.health -= dmg * 3;printf("HEADSHOT !\n");}//
+		else
+			{enemy->stat.health -= dmg;printf("BODYSHOT !\n");}//
+		if (enemy->stat.health > 0)
+			;//hit texture ?
+		else
+		{
+			enemy->state = 3;
+			//del_enemy(enemy->stat.sector, enemy);
+		}
 	}
 	printf("ENEMY HIT: x = %f | y = %f | z = %f\n", hit.x, hit.y, hit.z);
 }

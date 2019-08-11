@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:46:33 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 12:55:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/11 23:21:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		update_enemy_rotation(t_enemy *enemy, t_fvct3 pos)
 	enemy->e1.x = enemy->stat.pos.x + sin(enemy->stat.rot.y - (90.0 * PI180)) * enemy->stat.height / 4;
 	enemy->e1.y = enemy->stat.pos.y + cos(enemy->stat.rot.y - (90.0 * PI180)) * enemy->stat.height / 4;
 	enemy->e2.x = enemy->stat.pos.x + sin(enemy->stat.rot.y + (90.0 * PI180)) * enemy->stat.height / 4;
-	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + (90.0 * PI180)) * enemy->stat.height / 4;
+	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + (90.0 * PI180)) * enemy->stat.height / 4;	
 }
 
 /*
@@ -81,6 +81,7 @@ void		move_toward(t_enemy *enemy, t_player *player, Uint32 timestamp)
 				old->enemys = enemy->next;
 			pushfront_enemy(enemy->stat.sector, enemy);
 		}
+		enemy->state = 1;
 		enemy->stat.pos.x = npos.x;
 		enemy->stat.pos.y = npos.y;
 		enemy->rts = timestamp + 1;
@@ -95,9 +96,11 @@ void		ai_action(Uint32 timestamp, t_enemy *enemy, t_player *player)
 	dist = distance((t_fvct2){enemy->stat.pos.x, enemy->stat.pos.y}, (t_fvct2){player->stat.pos.x, player->stat.pos.y});
 	if (dist <= 7.0)
 	{
+		enemy->state = 0;
 		if (enemy->rts < timestamp)
 		{
 			player->stat.health -= enemy->dmg;
+			enemy->state = 2;
 			enemy->rts = timestamp + 1000;
 		}
 		return ;
@@ -119,6 +122,34 @@ bool	is_passed(t_sector *sector, t_sector **passed, int index)
 	return (false);
 }
 
+void	update_enemy_sprite(t_ui *ui, t_enemy *enemy, Uint32 timestamp)
+{
+	int anim;
+
+	if (enemy->state == 0)
+		set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6], 0);
+	else if (enemy->state == 1)
+	{
+		anim = (timestamp % 1000) / 250;
+		set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6 + anim + 2], 0);
+	}
+	else if (enemy->state == 2)
+		set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6 + 1], 0);
+	else if (enemy->state == 4)
+	{
+		anim = (double)(timestamp - (enemy->rts + 1000.0)) / 1000.0 * 9 + 9;
+		printf("Anim %d\t%d\t%d\n", anim, enemy->rts, timestamp);
+		if (enemy->type != 4)
+		{
+			set_txtr(&enemy->sprites, ui->enemy[ENEMYDEATHSTART + anim], 0);
+		}
+		else
+		{
+			set_txtr(&enemy->sprites, ui->enemy[BOSSDEATHSTART + anim], 0);
+		}
+	}
+}
+
 int		is_around(t_doom *doom, t_sector *sector, t_sector **passed, int *index)
 {
 	t_enemy		*tmp;
@@ -132,22 +163,38 @@ int		is_around(t_doom *doom, t_sector *sector, t_sector **passed, int *index)
 		tmp2 = tmp->next;
 		if (tmp->state == -1 && is_visible(&tmp->stat, &doom->game.player.stat, tmp->stat.sector, 0))
 			tmp->state = 0;
-		else if (tmp->state != 1)
+		else if (tmp->state != -1)
 		{
-			tmp->state = 0;
-			if (tmp->stat.pos.z > tmp->stat.sector->h_floor && tmp->stat.sector->gravity.z < 0)
-				tmp->stat.vel.z += tmp->stat.sector->gravity.z * 450.0;
-			if ((nposz = tmp->stat.pos.z + tmp->stat.vel.z / 35000.0) <= tmp->stat.sector->h_floor)
+			if (tmp->state == 3)
 			{
-				tmp->stat.pos.z = tmp->stat.sector->h_floor;
-				tmp->stat.vel.z = 0;
+				tmp->rts = doom->timestamp;
+				tmp->state = 4;
 			}
-			else
-				tmp->stat.pos.z = nposz;
-			if (tmp->rts <= doom->timestamp && doom->game.player.power != FREEZE
-				&& is_visible(&tmp->stat, &doom->game.player.stat, tmp->stat.sector, 0))
+			else if (tmp->state == 4)
 			{
-				ai_action(doom->timestamp, tmp, &doom->game.player);
+				tmp->rts + 1000 < doom->timestamp ? del_enemy(sector, tmp) : update_enemy_sprite(&doom->ui, tmp, doom->timestamp);
+				if (tmp->rts + 1000 < doom->timestamp)
+					printf("KILL\n");
+				else
+					printf("Debug : %d\t%d\n", tmp->rts, doom->timestamp);
+			}
+			else if (tmp->state != 4)
+			{
+				if (tmp->stat.pos.z > tmp->stat.sector->h_floor && tmp->stat.sector->gravity.z < 0)
+				tmp->stat.vel.z += tmp->stat.sector->gravity.z * 450.0;
+				if ((nposz = tmp->stat.pos.z + tmp->stat.vel.z / 35000.0) <= tmp->stat.sector->h_floor)
+				{
+					tmp->stat.pos.z = tmp->stat.sector->h_floor;
+					tmp->stat.vel.z = 0;
+				}
+				else
+					tmp->stat.pos.z = nposz;
+				if (tmp->rts <= doom->timestamp && doom->game.player.power != FREEZE
+					&& is_visible(&tmp->stat, &doom->game.player.stat, tmp->stat.sector, 0))
+				{
+					ai_action(doom->timestamp, tmp, &doom->game.player);
+				}
+				update_enemy_sprite(&doom->ui, tmp, doom->timestamp);
 			}
 		}
 		tmp = tmp2;

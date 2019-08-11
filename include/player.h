@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/10 18:09:53 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/11 22:15:50 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct 			s_player
 
 typedef struct 			s_enemy
 {
-	t_txtr				*sprites;
+	t_txtr				sprites;
 	t_stat				stat;
 	t_fvct3				e1;
 	t_fvct3				e2;
