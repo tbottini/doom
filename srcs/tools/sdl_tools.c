@@ -114,8 +114,8 @@ static int bottom_right_d(void *ptr)
 
 void	sdl_MultiRenderCopy(t_sdl *sdl)
 {
-	int pitch;
-	void *pixels;
+	//int pitch;
+	//void *pixels;
 	SDL_Thread *rend_ths[8];
 
 	//SDL_UnlockTexture(sdl->txture);

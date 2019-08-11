@@ -64,8 +64,7 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
 
-SRCS_PARSING	:=		read_editor_file.c								\
-						readfile.c										\
+SRCS_PARSING	:=		readfile.c										\
 						readfileeditor.c								\
 						savefile.c										\
 

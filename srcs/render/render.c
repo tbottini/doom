@@ -10,7 +10,6 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 	t_wall			*wall;
 	int				i;
 	t_wall			*portal_tmp;
-	t_minimap		mini;
 
 	if (debug_screen == 2 && arch->depth_portal > 0)
 		draw_borne(arch, RED);
