@@ -53,27 +53,15 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 	double			shift_txtr_tmp;
 	t_fvct2			next_tmp;
 
-
-	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME * 3);
-	percent_open = 0.7;
-	if (flag == CLOSE_DOOR)
+	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME);
+	if (flag == OPEN_DOOR)
 		percent_open = 1 - percent_open;
 	if (percent_open > 1)
 		percent_open = 1;
 	if (percent_open < 0)
 		percent_open = 0;
 
-
-
-	//percent_open = 0.7;
-
-	printf("shift_txtr %f %f\n", arch->shift_txtr.x, arch->shift_txtr.y);
-	printf("arch->pillar %f %f\n", arch->pillar.x, arch->pillar.y);
-
 	percent_local = (arch->shift_txtr.x - (1 - percent_open)) / (arch->shift_txtr.x - arch->shift_txtr.y);
-	printf("percent local %.4f entre %.4f %.4f\n", percent_local, arch->shift_txtr.x, arch->shift_txtr.y);
-
-	//on recupere l'intersection l'arret physique du mur et son pixel
 	if (percent_local > 1)
 	{
 		inter = arch->next;
@@ -119,9 +107,5 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 		reorder(arch);
 		render_surface(arch, player);
 	}
-
-	//if (1 - arch->shift_txtr.x < percent_open)
-	//{
-	//}
 	arch->wall->status = flag;
 }
