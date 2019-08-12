@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/11 19:06:44 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/12 10:56:22 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom_nukem.h"
 #include "render.h"
 #include "debug.h"
@@ -59,16 +71,10 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 
 	sprite_from_enemy(&sprite, sector->enemys, player, arch);
 	sprite_from_props(&sprite, sector->props, player, sector->len_prop, arch);
-
-	sprite_render_list(sprite, arch, player);
-
-
+	sprite_render_list(sprite, arch);
 	if (debug == 7)
 		sprite_iter(sprite, &sprite_print);
-
 	sprite_iter(sprite, &sprite_free);
-
-	//render_sector_enemy(arch, sector, player);
 }
 
 void				clear_screen(t_sdl *sdl)
@@ -115,8 +121,8 @@ int					doom_render(t_doom *doom)
 	sdl_MultiRenderCopy(&doom->sdl);
 	miniinv(&mini, &doom->game.player);
 	architect_reset(&doom->game.arch);
-	//clear_screen(&doom->sdl);
-	//ft_bzero(&doom->game.arch.sc_debug, sizeof(Uint32) * doom->sdl.size.x * doom->sdl.size.y);
+	clear_screen(&doom->sdl);
+	ft_bzero(&doom->game.arch.sc_debug, sizeof(Uint32) * doom->sdl.size.x * doom->sdl.size.y);
 	if (debug == 1)
 		printf("\n--------------------------\n");
 	return (1);

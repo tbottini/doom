@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 13:25:52 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 14:46:49 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		impact_wall(t_wall *wall, t_fvct3 p)
 	wall->props[wall->nb_props].pos.x = p.x;
 	wall->props[wall->nb_props].pos.y = p.y;
 	wall->props[wall->nb_props].pos.z = p.z;
-	printf("WALL HIT: x = %f | y = %f | z = %f\n", p.x, p.y, p.z);
+	prop_init(&wall->props[wall->nb_props], wall);
 }
 
 void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)

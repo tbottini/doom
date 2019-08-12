@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 14:02:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/11 20:30:52 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ struct					s_prop
 	t_wall				*wall;
 	t_sector			*sector;
 	int					type;
-	t_fvct2				left;
-	t_fvct2				right;
+	t_fvct2				percent;
+	t_vct2				px;
 };
 
 typedef struct 			s_box_txtr
@@ -138,7 +138,7 @@ void					sector_wall_props_init(t_sector *sector);
 /*
 **	prop
 */
-void					prop_init(t_prop *prop);
+void					prop_init(t_prop *prop, t_wall *wall);
 void					prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*));
 
 

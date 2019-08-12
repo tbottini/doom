@@ -1,20 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_column.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/12 14:08:39 by akrache          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
 #include "debug.h"
 
-/*
-**	numcol index de depart
-**	surface : colonne de depart et colonne de fin, (sans la multiplication avec les range)
-**	-> renvoie l'index de fin
-*/
-int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
+int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr)
 {
 	double		coef;
 	uint32_t	px;
 	double		buff;
 
-	px = texture_interpolation2D(arch);
+	px = texture_interpolation2d(arch, txtr);
 	buff = 0;
-	coef = (double)arch->wall->txtr.h / (surface.y - surface.x);
+	coef = (double)txtr->h / (surface.y - surface.x);
 	if (surface.y < (int)arch->portal.b_up[arch->px.x])
 		return (numcol + surface.y * arch->sdl->size.x);
 	if (surface.x < (int)arch->portal.b_up[arch->px.x])
@@ -22,20 +29,62 @@ int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 		buff = (-surface.x + arch->portal.b_up[arch->px.x]) * coef;
 		if (buff > 1.0)
 		{
-			px += (int)buff * arch->wall->txtr.w;
+			px += (int)buff * txtr->w;
 			buff = buff - (int)buff;
 		}
 		surface.x = arch->portal.b_up[arch->px.x];
 	}
 	while (surface.x < surface.y && surface.x < (int)arch->portal.b_down[arch->px.x])
 	{
-		arch->sdl->screen[numcol] = arch->wall->txtr.pixels[px];
+		arch->sdl->screen[numcol] = txtr->pixels[px];
 		surface.x++;
 		numcol += arch->sdl->size.x;
 		buff += coef;
 		if (buff > 1.0)
 		{
-			px += (int)buff * arch->wall->txtr.w;
+			px += (int)buff * txtr->w;
+			buff = buff - (int)buff;
+		}
+	}
+	return (numcol);
+}
+
+
+int		draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop)
+{
+	double		coef;
+	uint32_t	px;
+	double		buff;
+	t_txtr		*txtr;
+
+	txtr = &prop->tex;
+	px = texture_prop_interpolation2d(arch, txtr, prop);
+	buff = 0;
+	coef = (double)txtr->h / (surface.y - surface.x);
+	if (surface.y < (int)arch->portal.b_up[arch->px.x])
+		return (numcol + surface.y * arch->sdl->size.x);
+	if (surface.x < (int)arch->portal.b_up[arch->px.x])
+	{
+		buff = (-surface.x + arch->portal.b_up[arch->px.x]) * coef;
+		if (buff > 1.0)
+		{
+			px += (int)buff * txtr->w;
+			buff = buff - (int)buff;
+		}
+		surface.x = arch->portal.b_up[arch->px.x];
+	}
+	while (surface.x < surface.y && surface.x < (int)arch->portal.b_down[arch->px.x])
+	{
+		arch->sdl->screen[numcol] =
+			opacity(arch->sdl->screen[numcol],
+			txtr->pixels[px],
+			1 - (unsigned char)(txtr->pixels[px]) / 255.0);
+		surface.x++;
+		numcol += arch->sdl->size.x;
+		buff += coef;
+		if (buff > 1.0)
+		{
+			px += (int)buff * txtr->w;
 			buff = buff - (int)buff;
 		}
 	}
@@ -43,11 +92,11 @@ int		draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 }
 
 /*
-**
-**			on donne la surface(sans le facteur largeur)
-**			on convertit la valeur
-**			on la trunc
+**	on donne la surface(sans le facteur largeur)
+**	on convertit la valeur
+**	on la trunc
 */
+
 double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 {
 	if (surface.x >= (int)arch->portal.b_down[arch->px.x])
@@ -56,7 +105,6 @@ double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 	}
 	else if (surface.y <= (int)arch->portal.b_up[arch->px.x])
 	{
-		//printf("depassement Y < 0\n");
 		return (arch->portal.b_up[arch->px.x] * arch->sdl->size.x + arch->px.x);
 	}
 	if (surface.x <= (int)arch->portal.b_up[arch->px.x])
@@ -83,7 +131,7 @@ void		draw_column(t_arch *arch, t_fvct2 surface)
 	surface_tmp = (t_vct2){arch->portal.b_up[arch->px.x], surface.x};
 	cursor = draw_part(arch, surface_tmp, 0);
 	surface_tmp = (t_vct2){surface.x, surface.y};
-	draw_part_texture(arch, cursor, surface_tmp);
+	draw_part_texture(arch, cursor, surface_tmp, &arch->wall->txtr);
 	surface_tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
 	draw_part(arch, surface_tmp, 0x272130ff);
 }
@@ -128,11 +176,11 @@ void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int star
 	tmp = (t_vct2){arch->portal.b_up[arch->px.x], surface.x};
 	surf.x = draw_part(arch, tmp, 0);
 	tmp = (t_vct2){surface.x, s_portal.x};
-	surf.x = draw_part_texture(arch, surf.x, tmp);
+	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	tmp = (t_vct2){s_portal.x, s_portal.y};
 	surf.x = draw_part(arch, tmp, ORANGE);
 	tmp = (t_vct2){s_portal.y, surface.y};
-	surf.x = draw_part_texture(arch, surf.x, tmp);
+	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
 	draw_part(arch, tmp, 0x272130ff);
 	parent_borne->b_up[arch->px.x - start] = arch->portal.b_up[arch->px.x];

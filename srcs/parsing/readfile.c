@@ -157,6 +157,8 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 	init_prop(prop, game->sectors[len->current_sector].h_floor);
 	if (game->ui && MINPROPSPOS <= prop->type && prop->type < MAXPROPSPOS)
 		set_txtr(&prop->tex, game->ui->propssurf[prop->type - MINPROPSPOS], 0);
+	else if (game->ui && MINWPROPSPOS <= prop->type && prop->type < MAXWPROPSPOS)
+		set_txtr(&prop->tex, game->ui->propssurf[prop->type - MINWPROPSPOS + 14], 0);
 	printf("\t\tSet Wall Prop position %f %f\n", prop->pos.x, prop->pos.y);
 	return (0);
 }
@@ -184,7 +186,9 @@ int	read_wall_props(int fd, t_game *game, t_wall *wall, t_slen *len)
 	}
 	wall->nb_props = nbp;
 	wall->props[nbp].type = MINWPROPSPOS + 2;
-	init_prop(&(wall->props[nbp]), 0);
+	if (game->ui)
+		set_txtr(&wall->props[nbp].tex, game->ui->propssurf[16], 0);
+	wall->props[nbp].pos.z = -10;
 	if (read_balise(fd, "📅", 7))
 		return (7);
 	return (0);
