@@ -273,6 +273,7 @@ typedef struct			s_ui
 	SDL_Texture			*weaponhud[NB_WEAPON];
 	SDL_Texture			*sprites[ENDSPRITES + 1];
 	SDL_Texture			*props[MAXPROPSNUMBER + MAXWPROPSNUMBER];
+	SDL_Surface			*propssurf[MAXPROPSNUMBER + MAXWPROPSNUMBER];
 	SDL_Surface			*enemy[ENEMYTXTRTOTAL];
 }						t_ui;
 

@@ -51,6 +51,7 @@ t_doom	*doom_init()
 	if (!music_init(&doom->game.sound))
 		doom_exit(doom);
 	doom->game.player.fov = 90;
+	doom->game.ui = &doom->ui;
 	doom->game.difficulty = MEDIUM;
 	SDL_RaiseWindow(doom->sdl.win);
 	doom->timestamp = SDL_GetTicks();

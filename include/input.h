@@ -78,6 +78,7 @@ typedef struct			s_game
 	SDL_Surface			**gamesurf;
 	char				**surfpath;
 	t_arch				arch;//a voir aveec tbottini
+	t_ui				*ui;
 	t_camera			camera;
 	t_difficulty		difficulty;
 }						t_game;

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:46:33 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/11 23:21:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 13:11:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,13 +171,10 @@ int		is_around(t_doom *doom, t_sector *sector, t_sector **passed, int *index)
 			else if (tmp->state == 4)
 			{
 				tmp->rts + 1000 < doom->timestamp ? del_enemy(sector, tmp) : update_enemy_sprite(&doom->ui, tmp, doom->timestamp);
-				if (tmp->rts + 1000 < doom->timestamp)
-					printf("KILL\n");
-				else
-					printf("Debug : %d\t%d\n", tmp->rts, doom->timestamp);
 			}
 			else if (tmp->state != 4)
 			{
+				tmp->state == 2 ? tmp->state = 0 : 0;
 				if (tmp->stat.pos.z > tmp->stat.sector->h_floor && tmp->stat.sector->gravity.z < 0)
 				tmp->stat.vel.z += tmp->stat.sector->gravity.z * 450.0;
 				if ((nposz = tmp->stat.pos.z + tmp->stat.vel.z / 35000.0) <= tmp->stat.sector->h_floor)

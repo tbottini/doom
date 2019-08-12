@@ -118,6 +118,7 @@ static void game_loop_hook(t_doom *doom)
 			pos = pos->next;
 		}
 		/// Place here functions that need to be launch every frame while the game is running
+		effect_volume(&doom->game.sound);
 		move(&doom->game.player.stat, &doom->game.player.inv);
 		pickup_prop(doom);
 		check_boost(doom->timestamp, &doom->game.player);

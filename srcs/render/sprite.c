@@ -111,7 +111,7 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&props[i].pos, player->stat.rot.y);
 		if (e_angle < 90 && e_angle > -90)
 		{
-			sprite = sprite_new(props[i].sector->txtrtop, player->stat.pos, props[i].pos, e_angle);
+			sprite = sprite_new(props[i].tex, player->stat.pos, props[i].pos, e_angle);
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
@@ -134,7 +134,7 @@ void				sprite_render(t_sprite *sprite, t_arch *arch, t_player *player)
 	double		buffer_h;
 	double		buffer_w;
 	int			i_heigth;
-	int			limit_h;
+	unsigned int limit_h;
 	unsigned int cursor_screen;
 	double		neutral_distance;
 

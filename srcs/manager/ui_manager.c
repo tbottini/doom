@@ -39,27 +39,45 @@ int		load_weapons(t_doom *doom, t_ui *ui)
 	return (1);
 }
 
+int		link_txtr(t_doom *doom, t_ui *ui)
+{
+	int x;
+	SDL_Surface *tmp;
+
+	x = -1;
+	while (++x < 17)
+	{
+
+		if (!(ui->props[x] = SDL_CreateTextureFromSurface(doom->sdl.rend, ui->propssurf[x])))
+			return (0);
+		tmp = ui->propssurf[x];
+		ui->propssurf[x] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
+		SDL_FreeSurface(tmp);
+	}
+	return (1);
+}
+
 int		load_props(t_doom *doom, t_ui *ui)
 {
-	if    (!(ui->props[0] = IMG_LoadTexture(doom->sdl.rend, PROPHEALTH))
-		|| !(ui->props[1] = IMG_LoadTexture(doom->sdl.rend, PROPCASS))
-		|| !(ui->props[2] = IMG_LoadTexture(doom->sdl.rend, PROPMUN))
-		|| !(ui->props[3] = IMG_LoadTexture(doom->sdl.rend, PROPRPILL))
-		|| !(ui->props[4] = IMG_LoadTexture(doom->sdl.rend, PROPGPILL))
-		|| !(ui->props[5] = IMG_LoadTexture(doom->sdl.rend, PROPBPILL))
-		|| !(ui->props[6] = IMG_LoadTexture(doom->sdl.rend, PROPJETPACK))
-		|| !(ui->props[7] = IMG_LoadTexture(doom->sdl.rend, PROPGUN))
-		|| !(ui->props[8] = IMG_LoadTexture(doom->sdl.rend, PROPSHOTGUN))
-		|| !(ui->props[9] = IMG_LoadTexture(doom->sdl.rend, PROPRIFLE))
-		|| !(ui->props[10] = IMG_LoadTexture(doom->sdl.rend, PROPKEY1))
-		|| !(ui->props[11] = IMG_LoadTexture(doom->sdl.rend, PROPKEY2))
-		|| !(ui->props[12] = IMG_LoadTexture(doom->sdl.rend, PROPKEY3))
-		|| !(ui->props[13] = IMG_LoadTexture(doom->sdl.rend, PROPCORE))
-		|| !(ui->props[14] = IMG_LoadTexture(doom->sdl.rend, PROPBTN))
-		|| !(ui->props[15] = IMG_LoadTexture(doom->sdl.rend, PROPWINBTN))
-		|| !(ui->props[16] = IMG_LoadTexture(doom->sdl.rend, PROPIMPACT)))
+	if    (!(ui->propssurf[0] = IMG_Load(PROPHEALTH))
+		|| !(ui->propssurf[1] = IMG_Load(PROPCASS))
+		|| !(ui->propssurf[2] = IMG_Load(PROPMUN))
+		|| !(ui->propssurf[3] = IMG_Load(PROPRPILL))
+		|| !(ui->propssurf[4] = IMG_Load(PROPGPILL))
+		|| !(ui->propssurf[5] = IMG_Load(PROPBPILL))
+		|| !(ui->propssurf[6] = IMG_Load(PROPJETPACK))
+		|| !(ui->propssurf[7] = IMG_Load(PROPGUN))
+		|| !(ui->propssurf[8] = IMG_Load(PROPSHOTGUN))
+		|| !(ui->propssurf[9] = IMG_Load(PROPRIFLE))
+		|| !(ui->propssurf[10] = IMG_Load(PROPKEY1))
+		|| !(ui->propssurf[11] = IMG_Load(PROPKEY2))
+		|| !(ui->propssurf[12] = IMG_Load(PROPKEY3))
+		|| !(ui->propssurf[13] = IMG_Load(PROPCORE))
+		|| !(ui->propssurf[14] = IMG_Load(PROPBTN))
+		|| !(ui->propssurf[15] = IMG_Load(PROPWINBTN))
+		|| !(ui->propssurf[16] = IMG_Load(PROPIMPACT)))
 		return (0);
-	return (1);
+	return (link_txtr(doom, ui));
 }
 
 

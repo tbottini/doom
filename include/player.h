@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/11 22:15:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 13:25:43 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon, t_sound *s
 void					shoot(Uint32 timestamp, t_sound *sound, t_player *player);
 void					bullet(t_stat *stat, int dmg);
 void					injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit);
-void					wall_real_hit(t_shoot *shoot, t_stat *stat);
+void					wall_real_hit(t_shoot *shoot, t_stat *stat, t_fvct3 mo);
 void					possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector);
 t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, double angle);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);

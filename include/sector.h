@@ -81,7 +81,7 @@ typedef struct			s_hitbox
 
 struct					s_prop
 {
-	t_txtr				*tex;
+	t_txtr				tex;
 	void				(*func)();
 	t_fvct3				pos;
 	t_hitbox			hitbox;

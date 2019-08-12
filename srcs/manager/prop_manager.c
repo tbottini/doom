@@ -240,7 +240,7 @@ void		pickup_prop(t_doom *doom)
 		{
 			activate_prop(doom, &doom->game.player.stat.sector->props[i]);
 			if (doom->game.player.stat.sector->props[i].type < MAXPROPSNUMBER)
-				doom->game.player.stat.sector->props[i].tex = NULL;
+				doom->game.player.stat.sector->props[i].tex.pixels = NULL;
 			break ;
 		}
 		i++;

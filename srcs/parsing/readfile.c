@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 14:51:22 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 13:38:09 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 	if ((read(fd, &prop->pos.y, sizeof(double)) != sizeof(double)))
 		return (-77);
 	init_prop(prop, game->sectors[len->current_sector].h_floor);
+	if (game->ui && MINPROPSPOS <= prop->type && prop->type < MAXPROPSPOS)
+		set_txtr(&prop->tex, game->ui->propssurf[prop->type - MINPROPSPOS], 0);
 	printf("\t\tSet Wall Prop position %f %f\n", prop->pos.x, prop->pos.y);
 	return (0);
 }

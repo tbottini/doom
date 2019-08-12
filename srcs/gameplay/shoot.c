@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/11 22:28:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 13:25:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,6 @@ void		bullet(t_stat *stat, int dmg)
 	shoot.ehit = NULL;
 	shoot.whit = NULL;
 	possible(&shoot, stat, d, stat->sector);
-	wall_real_hit(&shoot, stat);
+	wall_real_hit(&shoot, stat, mo);
 	apply(&shoot, stat, mo, dmg);
 }
