@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/07/30 12:58:12 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 19:35:48 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int			can_pass(t_stat *stat, int i, t_wall **port)
 {
-	t_sector *next;
+	t_sector	*next;
+	//t_wall		*tmp;
 
 	next = stat->sector->wall[i].link;
 	if (next && stat->sector->wall[i].status >= OPEN_DOOR)
@@ -31,7 +32,16 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 				stat->speed = WALK;
 			}
 			*port = NULL;
-			return ((!collision(next, stat->pos, NULL)) ? 1 : 2);
+			//if (!(tmp = collision(next, stat->pos, NULL)))
+			//	return (1);
+			//else
+			//{
+			//	if ((stat->sector->wall[i].pillar == tmp->pillar && stat->sector->wall[i].next == tmp->next)
+			//		|| (stat->sector->wall[i].pillar == tmp->next && stat->sector->wall[i].next == tmp->pillar))
+			//		return (2);
+			//	return (1);
+			return (!(collision(next, stat->pos, NULL)) ? 1 : 2);
+			//}
 		}
 		return (-1);
 	}

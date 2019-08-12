@@ -39,36 +39,66 @@ int		load_weapons(t_doom *doom, t_ui *ui)
 	return (1);
 }
 
+int		link_txtr(t_doom *doom, t_ui *ui)
+{
+	int x;
+	SDL_Surface *tmp;
+
+	x = -1;
+	while (++x < 18)
+	{
+		if (!(ui->props[x] = SDL_CreateTextureFromSurface(doom->sdl.rend, ui->propssurf[x])))
+			return (0);
+		tmp = ui->propssurf[x];
+		ui->propssurf[x] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
+		SDL_FreeSurface(tmp);
+	}
+	return (1);
+}
+
 int		load_props(t_doom *doom, t_ui *ui)
 {
-	void *tmp;
-	int pitch;
-	int x;
-
-	if    (!(ui->props[0] = IMG_LoadTexture(doom->sdl.rend, PROPHEALTH))
-		|| !(ui->props[1] = IMG_LoadTexture(doom->sdl.rend, PROPCASS))
-		|| !(ui->props[2] = IMG_LoadTexture(doom->sdl.rend, PROPMUN))
-		|| !(ui->props[3] = IMG_LoadTexture(doom->sdl.rend, PROPRPILL))
-		|| !(ui->props[4] = IMG_LoadTexture(doom->sdl.rend, PROPGPILL))
-		|| !(ui->props[5] = IMG_LoadTexture(doom->sdl.rend, PROPBPILL))
-		|| !(ui->props[6] = IMG_LoadTexture(doom->sdl.rend, PROPJETPACK))
-		|| !(ui->props[7] = IMG_LoadTexture(doom->sdl.rend, PROPGUN))
-		|| !(ui->props[8] = IMG_LoadTexture(doom->sdl.rend, PROPSHOTGUN))
-		|| !(ui->props[9] = IMG_LoadTexture(doom->sdl.rend, PROPRIFLE))
-		|| !(ui->props[10] = IMG_LoadTexture(doom->sdl.rend, PROPKEY1))
-		|| !(ui->props[11] = IMG_LoadTexture(doom->sdl.rend, PROPKEY2))
-		|| !(ui->props[12] = IMG_LoadTexture(doom->sdl.rend, PROPKEY3))
-		|| !(ui->props[13] = IMG_LoadTexture(doom->sdl.rend, PROPCORE))
-		|| !(ui->props[14] = IMG_LoadTexture(doom->sdl.rend, PROPBTN))
-		|| !(ui->props[15] = IMG_LoadTexture(doom->sdl.rend, PROPWINBTN))
-		|| !(ui->props[16] = IMG_LoadTexture(doom->sdl.rend, PROPIMPACT)))
+	if    (!(ui->propssurf[0] = IMG_Load(PROPHEALTH))
+		|| !(ui->propssurf[1] = IMG_Load(PROPCASS))
+		|| !(ui->propssurf[2] = IMG_Load(PROPMUN))
+		|| !(ui->propssurf[3] = IMG_Load(PROPRPILL))
+		|| !(ui->propssurf[4] = IMG_Load(PROPGPILL))
+		|| !(ui->propssurf[5] = IMG_Load(PROPBPILL))
+		|| !(ui->propssurf[6] = IMG_Load(PROPJETPACK))
+		|| !(ui->propssurf[7] = IMG_Load(PROPGUN))
+		|| !(ui->propssurf[8] = IMG_Load(PROPSHOTGUN))
+		|| !(ui->propssurf[9] = IMG_Load(PROPRIFLE))
+		|| !(ui->propssurf[10] = IMG_Load(PROPKEY1))
+		|| !(ui->propssurf[11] = IMG_Load(PROPKEY2))
+		|| !(ui->propssurf[12] = IMG_Load(PROPKEY3))
+		|| !(ui->propssurf[13] = IMG_Load(PROPCORE))
+		|| !(ui->propssurf[14] = IMG_Load(PROPBTN))
+		|| !(ui->propssurf[15] = IMG_Load(PROPWINBTN))
+		|| !(ui->propssurf[16] = IMG_Load(PROPIMPACT))
+		|| !(ui->propssurf[17] = IMG_Load(PROPARROW))
+		|| !(ui->propssurf[18] = IMG_Load(PROPCROSS))
+		|| !(ui->propssurf[19] = IMG_Load(PROPEXIT))
+		|| !(ui->propssurf[20] = IMG_Load(PROPBTNOPEN)))
 		return (0);
+	return (link_txtr(doom, ui));
+}
+
+
+int		load_enemies(t_doom *doom, t_ui *ui)
+{
+	int x;
+	char path[50];
+	SDL_Surface *tmp;
+
+	ft_strcpy(path, ENEMYPATH);
 	x = 0;
-	while (x <= 16)
+	while (x < ENEMYTXTRTOTAL)
 	{
-		SDL_QueryTexture(ui->props[x], NULL, NULL, (int *)&ui->propsthomas[x].w, (int *)&ui->propsthomas[x].h);
-		SDL_LockTexture(ui->props[x], NULL, &tmp, &pitch);
-		ui->propsthomas[x].pixels = (Uint32 *)tmp;
+		concat_atoi(&path[35], x);
+		if (!(tmp = IMG_Load(path)))
+			return (0);
+		ui->enemy[x] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
+		SDL_FreeSurface(tmp);
 		x++;
 	}
 	return (1);
@@ -109,6 +139,8 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	if (!(load_weapons(doom, ui)))
 		return (0);
 	if (!(load_props(doom, ui)))
+		return (0);
+	if (!(load_enemies(doom, ui)))
 		return (0);
 	return (1);
 }

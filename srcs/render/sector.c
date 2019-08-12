@@ -33,7 +33,7 @@ void			sector_wall_props_init(t_sector *sector)
 	{
 		//printf("wall %d %f %f %f %f\n", i, sector->wall[i].next->p.x, sector->wall[i].next->p.y,
 		//	sector->wall[i].pillar->p.x, sector->wall[i].pillar->p.y);
-		while (j < sector->wall[i].nb_props)
+		while (j <= sector->wall[i].nb_props)
 		{
 			//printf("\twall %d %f %f %f %f\n", i, sector->wall[i].next->p.x, sector->wall[i].next->p.y,
 			//sector->wall[i].pillar->p.x, sector->wall[i].pillar->p.y);

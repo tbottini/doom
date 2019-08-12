@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/11 22:02:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/12 21:31:42 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,13 @@ typedef struct			s_shoot
 	t_enemy				*enemys[50];
 	t_wall				*whit;
 	t_enemy				*ehit;
+	t_sector			**passed;
 	double				wdist;
 	double				edist;
 	int					i_w;
 	int					i_e;
 	int					dmg;
+	int					index;
 }						t_shoot;
 
 /*
@@ -177,10 +179,10 @@ t_weapon				gun_init(void);
 t_weapon				shotgun_init(void);
 t_weapon				rifle_init(void);
 void					reload(Uint32 timestamp, t_player *player, t_weapon *weapon, t_sound *sound);
-void					shoot(Uint32 timestamp, t_sound *sound, t_player *player);
-void					bullet(t_stat *stat, int dmg);
+void					shoot(Uint32 timestamp, t_sound *sound, t_player *player, int nbsect);
+void					bullet(t_stat *stat, int dmg, int nbsect);
 void					injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit);
-void					wall_real_hit(t_shoot *shoot, t_stat *stat);
+void					wall_real_hit(t_shoot *shoot, t_stat *stat, t_fvct3 mo);
 void					possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector);
 t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, double angle);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);

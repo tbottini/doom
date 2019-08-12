@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 15:21:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 13:49:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,12 +252,12 @@ int	check_sectors(int fd, t_slen *len)
 
 int	check_player(int fd, t_slen *len)
 {
-	int tmp;
+	unsigned int tmp;
 	double dtmp;
 
 	if (check_balise(fd, "🍆", -9))
 		return (-9);
-	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects)
+	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= (unsigned int)len->nb_sects)
 		return (-91);
 	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)))
 		return (-92);

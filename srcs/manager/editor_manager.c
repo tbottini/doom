@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 13:38:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 15:46:26 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,9 @@ int	asynchronous_txtr_load(void *param)
 
 	edit = param;
 	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
-	//if (read_file_to_editor(edit, "ressources/map/jesuisunmonsieur") != 0)
-	//{
 	edit->player.stat.sector = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
 	edit->player.stat.pos = (t_vct2){0, 0};
 	edit->player.stat.type = 100;
-	//}
 	edit->map = edit->sectors;
 	if (!(edit->player.stat.sector))
 		edit->player.stat.sector = edit->map;
@@ -63,6 +60,11 @@ void	open_editor(t_doom *doom)
 {
 	SDL_Thread *th;
 
+	if ((SDL_GetWindowFlags(doom->edit.win) & SDL_WINDOW_HIDDEN) != 8)
+	{
+		SDL_RaiseWindow(doom->edit.win);
+		return ;
+	}
 	doom->edit.status = ED_LOADING;
 	th = SDL_CreateThread(&asynchronous_txtr_load, "Texture Load", &doom->edit);
 	SDL_DetachThread(th);
@@ -183,6 +185,12 @@ int		editor_init(t_editor *editor)
 	if (!(editor->wsprites[1] = IMG_LoadTexture(editor->rend, PROPWINBTN)))
 		return (0);
 	if (!(editor->wsprites[2] = IMG_LoadTexture(editor->rend, PROPIMPACT)))
+		return (0);
+	if (!(editor->wsprites[3] = IMG_LoadTexture(editor->rend, PROPARROW)))
+		return (0);
+	if (!(editor->wsprites[4] = IMG_LoadTexture(editor->rend, PROPCROSS)))
+		return (0);
+	if (!(editor->wsprites[5] = IMG_LoadTexture(editor->rend, PROPEXIT)))
 		return (0);
 	return (1);
 }

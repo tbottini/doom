@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 14:51:22 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 13:49:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,10 @@ int	read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len)
 	if ((read(fd, &prop->pos.y, sizeof(double)) != sizeof(double)))
 		return (-77);
 	init_prop(prop, game->sectors[len->current_sector].h_floor);
+	if (game->ui && MINPROPSPOS <= prop->type && prop->type < MAXPROPSPOS)
+		set_txtr(&prop->tex, game->ui->propssurf[prop->type - MINPROPSPOS], 0);
+	else if (game->ui && MINWPROPSPOS <= prop->type && prop->type < MAXWPROPSPOS)
+		set_txtr(&prop->tex, game->ui->propssurf[prop->type - MINWPROPSPOS + 14], 0);
 	printf("\t\tSet Wall Prop position %f %f\n", prop->pos.x, prop->pos.y);
 	return (0);
 }
@@ -182,7 +186,9 @@ int	read_wall_props(int fd, t_game *game, t_wall *wall, t_slen *len)
 	}
 	wall->nb_props = nbp;
 	wall->props[nbp].type = MINWPROPSPOS + 2;
-	init_prop(&(wall->props[nbp]), 0);
+	if (game->ui)
+		set_txtr(&wall->props[nbp].tex, game->ui->propssurf[16], 0);
+	wall->props[nbp].pos.z = -10;
 	if (read_balise(fd, "📅", 7))
 		return (7);
 	return (0);
@@ -332,11 +338,11 @@ int	read_sectors(int fd, t_game *game, t_slen *len)
 
 int	read_player(int fd, t_game *game, t_player *player, t_slen *len)
 {
-	int tmp;
+	unsigned int tmp;
 
 	if (read_balise(fd, "🍆", -9))
 		return (-9);
-	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects)
+	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= (unsigned int)len->nb_sects)
 		return (-91);
 	printf("Found Player at %d\n", tmp);
 	player->stat.sector = &game->sectors[tmp];

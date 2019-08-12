@@ -36,11 +36,15 @@
 # define PROPCORE "ressources/props/botinium.png"
 
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
-# define MAXWPROPSNUMBER 3
+# define MAXWPROPSNUMBER 6
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/closed_button.png"
+# define PROPBTNOPEN "ressources/props/opened_button.png" //Hidden in editor
 # define PROPWINBTN "ressources/props/victory_button.png"
 # define PROPIMPACT "ressources/props/impact.png"
+# define PROPARROW "ressources/props/arrowblood.png"
+# define PROPCROSS "ressources/props/crossblood.png"
+# define PROPEXIT "ressources/props/exitblood.png"
 
 # define EDITMINWIDTH 1024
 # define EDITMINHEIGHT 800
@@ -50,30 +54,41 @@
 */
 # define ISWRITING(x) (x == ED_SAVING || x == ED_WRITING || x == ED_FORME || x == ED_OPEN)
 
-#define SPRITEPATH "ressources/sprites/0000.png"
+# define SPRITEPATH "ressources/sprites/0000.png"
 
-#define KICKSTART 0
-#define KICKLEN 3
+# define KICKSTART 0
+# define KICKLEN 3
 
-#define GUNSTART (KICKSTART + KICKLEN)
-#define GUNSHOOTSTART (GUNSTART + 1)
-#define GUNSHOOTLEN 7
-#define GUNRELOADSTART (GUNSHOOTSTART + GUNSHOOTLEN)
-#define GUNRELOADLEN 3
+# define GUNSTART (KICKSTART + KICKLEN)
+# define GUNSHOOTSTART (GUNSTART + 1)
+# define GUNSHOOTLEN 7
+# define GUNRELOADSTART (GUNSHOOTSTART + GUNSHOOTLEN)
+# define GUNRELOADLEN 3
 
-#define SHOTGUNSTART (GUNRELOADSTART + GUNRELOADLEN)
-#define SHOTGUNSHOOTSTART (SHOTGUNSTART + 1)
-#define SHOTGUNSHOOTLEN 4
-#define SHOTGUNRELOADSTART (SHOTGUNSHOOTSTART + SHOTGUNSHOOTLEN)
-#define SHOTGUNRELOADLEN 12
+# define SHOTGUNSTART (GUNRELOADSTART + GUNRELOADLEN)
+# define SHOTGUNSHOOTSTART (SHOTGUNSTART + 1)
+# define SHOTGUNSHOOTLEN 4
+# define SHOTGUNRELOADSTART (SHOTGUNSHOOTSTART + SHOTGUNSHOOTLEN)
+# define SHOTGUNRELOADLEN 12
 
-#define RIFLESTART (SHOTGUNRELOADSTART + SHOTGUNRELOADLEN)
-#define RIFLESHOOTSTART (RIFLESTART + 1)
-#define RIFLESHOOTLEN 4
-#define RIFLERELOADSTART (RIFLESHOOTSTART + RIFLESHOOTLEN)
-#define RIFLERELOADLEN 17
+# define RIFLESTART (SHOTGUNRELOADSTART + SHOTGUNRELOADLEN)
+# define RIFLESHOOTSTART (RIFLESTART + 1)
+# define RIFLESHOOTLEN 4
+# define RIFLERELOADSTART (RIFLESHOOTSTART + RIFLESHOOTLEN)
+# define RIFLERELOADLEN 17
 
-#define ENDSPRITES (RIFLERELOADSTART + RIFLERELOADLEN)
+# define ENDSPRITES (RIFLERELOADSTART + RIFLERELOADLEN)
+
+# define ENEMYPATH "ressources/sprites/enemies_sprites/0000.png"
+
+# define ENEMY1START 0
+# define ENEMY2START 6
+# define ENEMY3START 12
+# define ENEMY4START 18
+# define ENEMYDEATHSTART 24
+# define BOSSDEATHSTART 33
+# define DEATHLEN 9
+# define ENEMYTXTRTOTAL 42
 
 typedef struct s_mur	t_mur;
 typedef t_mur			*t_lstmur;
@@ -261,8 +276,9 @@ typedef struct			s_ui
 	t_pal				fire;
 	SDL_Texture			*weaponhud[NB_WEAPON];
 	SDL_Texture			*sprites[ENDSPRITES + 1];
-	SDL_Texture			*props[MAXPROPSNUMBER + MAXWPROPSNUMBER];
-	t_txtr				propsthomas[MAXPROPSNUMBER + MAXWPROPSNUMBER];
+	SDL_Texture			*props[MAXPROPSNUMBER + MAXWPROPSNUMBER + 1];
+	SDL_Surface			*propssurf[MAXPROPSNUMBER + MAXWPROPSNUMBER + 1];
+	SDL_Surface			*enemy[ENEMYTXTRTOTAL];
 }						t_ui;
 
 /*

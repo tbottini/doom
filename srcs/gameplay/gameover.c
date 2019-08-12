@@ -18,7 +18,6 @@
 ** double f determines the opacity of the "screen".
 ** f must be between 0 and 1, 1 returning the color s, 0 the color c.
 */
-
 int					opacity(int s, int c, double f)
 {
 	if (f == 1)

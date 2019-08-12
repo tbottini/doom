@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 13:45:13 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/12 16:12:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void				prop_init(t_prop *prop, t_wall *wall)
 	prop->percent.x = (hyp_pos - 0.5) / (hyp);
 	prop->percent.y = (hyp_pos + 0.5) / (hyp);
 	printf(WGREEN"prop %f %f\n"WEND, prop->percent.x, prop->percent.y);
-
 }
 
 void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
@@ -44,7 +43,7 @@ void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
 	int				i;
 
 	i = 0;
-	while (i < len)
+	while (i <= len)
 	{
 		prop_iter(&prop[i]);
 		i++;
@@ -56,7 +55,7 @@ void				prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), voi
 	int				i;
 
 	i = 0;
-	while (i < len)
+	while (i <= len)
 	{
 		prop_iter(&prop[i], sup);
 		i++;
@@ -126,12 +125,12 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 
 	i = 0;
 	col_print = false;
-	heigth_percent.x = (arch->sector->h_ceil - 2) / arch->sector->h_ceil;
-	heigth_percent.y = 1 / arch->sector->h_ceil;
-	while (i < arch->wall->nb_props && !col_print)
+	while (i <= arch->wall->nb_props && !col_print)
 	{
-		if (arch->px.x > props[i].px.x && arch->px.x < props[i].px.y)
+		if (arch->px.x > props[i].px.x && arch->px.x < props[i].px.y && props[i].pos.z + 1.0 > 0 && props[i].pos.z < arch->sector->h_ceil)
 		{
+			heigth_percent.x = (arch->sector->h_ceil - 1 - props[i].pos.z) / arch->sector->h_ceil;
+			heigth_percent.y = props[i].pos.z / arch->sector->h_ceil;
 			padding_render = (surface.y - surface.x) * heigth_percent.x;
 			surface_tmp.x = surface.x + padding_render;
 			surface_tmp.y = surface.y - padding_render;
@@ -141,7 +140,6 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 			cursor = arch->px.x + surface_tmp.x * arch->sdl->size.x;
 			if (cursor < 0)
 				cursor = arch->px.x;
-			props[i].tex = &arch->sector->txtrtop;
 			draw_part_prop(arch, cursor, surface_tmp, &props[i]);
 			col_print = true;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shoot_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 17:51:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 21:56:33 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,12 @@ static double	enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
 
-static void		enemy_real_hit(t_shoot *shoot, t_stat *stat, double toto)
+static void		enemy_real_hit(t_shoot *shoot, t_stat *stat, double toto, t_fvct3 mo)
 {
 	int		i;
 	double	res;
 	double	tmp;
+	t_fvct3	p;
 
 	i = -1;
 	res = 987654321.0;
@@ -78,14 +79,18 @@ static void		enemy_real_hit(t_shoot *shoot, t_stat *stat, double toto)
 	{
 		if ((tmp = enemy_bullet_clipping(shoot->enemys[i], stat)) / toto < res)
 		{
-			res = tmp;
-			shoot->ehit = shoot->enemys[i];
+			p = real_coord(stat->pos, tmp, mo, stat->height, stat->rot.x);
+			if (p.z < shoot->enemys[i]->stat.sector->h_floor + shoot->enemys[i]->stat.height)
+			{
+				res = tmp;
+				shoot->ehit = shoot->enemys[i];
+			}
 		}
 	}
 	shoot->edist = res;
 }
 
-void			wall_real_hit(t_shoot *shoot, t_stat *stat)
+void			wall_real_hit(t_shoot *shoot, t_stat *stat, t_fvct3 mo)
 {
 	int		i;
 	double	res;
@@ -106,7 +111,7 @@ void			wall_real_hit(t_shoot *shoot, t_stat *stat)
 		}
 	}
 	shoot->wdist = res;
-	enemy_real_hit(shoot, stat, toto);
+	enemy_real_hit(shoot, stat, toto, mo);
 }
 
 static int		bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
@@ -141,7 +146,7 @@ void			possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sect
 	tmp = sector->enemys;
 	while (shoot->i_e < 50 && tmp)
 	{
-		if (vector_intersect(ori, stat->pos, tmp->e1, tmp->e2))
+		if (tmp->state != 4 && vector_intersect(ori, stat->pos, tmp->e1, tmp->e2))
 		{
 			shoot->enemys[shoot->i_e] = tmp;
 			shoot->i_e++;
@@ -151,18 +156,37 @@ void			possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sect
 	shoot->enemys[shoot->i_e] = NULL;
 }
 
+/*
+bool	is_passed(t_sector *sector, t_sector **passed, int index)
+{
+	int i;
+
+	i = 0;
+	while (i < index)
+	{
+		if (sector == passed[i])
+			return (true);
+		i++;
+	}
+	return (false);
+}
+*/
+
 void			possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector)
 {
 	int		i;
 
 	i = -1;
-	if (!sector)
+	if (!sector || is_passed(sector, shoot->passed, shoot->index))
 		return ;
+	printf("sector %p\n", sector);
+	shoot->passed[shoot->index] = sector;
+	shoot->index++;
 	while (shoot->i_w < 49 && ++i < sector->len)
 	{
 		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
 		{
-			if (bullet_can_pass(stat, i, sector, ori) && sector->wall[i].link != sector)
+			if (sector->wall[i].link != sector && bullet_can_pass(stat, i, sector, ori))
 				possible(shoot, stat, ori, sector->wall[i].link);
 			else
 			{

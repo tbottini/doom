@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 14:52:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/11 22:05:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/12 19:07:47 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_enemy	*enemy_init(int type, int difficulty, t_sector *sector)
 	enemy->prev = NULL;
 	enemy->stat.sector = sector;
 	enemy->type = type;
+	enemy->sprites.pixels = NULL;
 	if (type == 1)
 		cac_init(enemy, difficulty);
 	else if (type == 2)

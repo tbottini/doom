@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_column.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 10:51:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/12 14:08:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop)
 	double		buff;
 	t_txtr		*txtr;
 
-	txtr = prop->tex;
+	txtr = &prop->tex;
 	px = texture_prop_interpolation2d(arch, txtr, prop);
 	buff = 0;
 	coef = (double)txtr->h / (surface.y - surface.x);
@@ -75,7 +75,10 @@ int		draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop)
 	}
 	while (surface.x < surface.y && surface.x < (int)arch->portal.b_down[arch->px.x])
 	{
-		arch->sdl->screen[numcol] = txtr->pixels[px];
+		arch->sdl->screen[numcol] =
+			opacity(arch->sdl->screen[numcol],
+			txtr->pixels[px],
+			1 - (unsigned char)(txtr->pixels[px]) / 255.0);
 		surface.x++;
 		numcol += arch->sdl->size.x;
 		buff += coef;

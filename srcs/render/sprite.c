@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sprite.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 10:59:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/12 13:52:28 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 	{
 		while (sprite_insert->next && sprite_node->pos.x < sprite_insert->next->pos.x)
 		{
-			printf("next\n");
 			sprite_insert= sprite_insert->next;
 		}
 		sprite_node->next = sprite_insert->next;
@@ -95,8 +94,8 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&enemy->stat.pos, player->stat.rot.y);
 		if (e_angle < 90 && e_angle > -90)
 		{
-			enemy->sprites = enemy->stat.sector->txtrsol;
-			sprite = sprite_new(enemy->stat.sector->txtrsol, player->stat.pos, enemy->stat.pos, e_angle);
+			//enemy->sprites = &enemy->stat.sector->txtrsol;
+			sprite = sprite_new(enemy->sprites, player->stat.pos, enemy->stat.pos, e_angle);
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
@@ -123,7 +122,7 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&props[i].pos, player->stat.rot.y);
 		if (e_angle < 90 && e_angle > -90)
 		{
-			sprite = sprite_new(props[i].sector->txtrtop, player->stat.pos, props[i].pos, e_angle);
+			sprite = sprite_new(props[i].tex, player->stat.pos, props[i].pos, e_angle);
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
@@ -146,10 +145,12 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 	double		buffer_h;
 	double		buffer_w;
 	int			i_heigth;
-	int			limit_h;
-	int			cursor_screen;
+	unsigned int limit_h;
+	unsigned int cursor_screen;
 	double		neutral_distance;
 
+	if (!(sprite->texture.pixels))
+		return ;
 	p_buff_h = (double)sprite->texture.h / (double)(sprite->heigth.y - sprite->heigth.x);
 	p_buff_w = sprite->texture.w / (double)(sprite->width.y - sprite->width.x);
 	neutral_distance = (double)(arch->sdl->size.y) / sprite->pos.x;
@@ -175,7 +176,7 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 		sprite->width.y = arch->sdl->size.x;
 	if (sprite->heigth.y > arch->sdl->size.y)
 		sprite->heigth.y = arch->sdl->size.y - 1;
-	while (sprite->width.x < sprite->width.y)
+	while (sprite->width.x < sprite->width.y && buffer_w < sprite->texture.w)
 	{
 		if (zline_compare(arch, neutral_distance, sprite->width.x))
 		{
@@ -195,11 +196,12 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 			else
 				limit_h = sprite->heigth.y * arch->sdl->size.x;
 
-
-			while (cursor_screen < limit_h)
+			while (cursor_screen < limit_h && buffer_h < sprite->texture.h)
 			{
 				arch->sdl->screen[cursor_screen] =
-					sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w];
+					opacity(arch->sdl->screen[cursor_screen],
+					sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w],
+					1 - (unsigned char)(sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w]) / 255.0);
 				cursor_screen += arch->sdl->size.x;
 				buffer_h += p_buff_h;
 			}

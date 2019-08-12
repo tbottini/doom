@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 13:58:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 15:46:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void		func_prop(t_prop *prop, int type)
 	}
 	else if (type == MINWPROPSPOS + 1) // End button
 		prop->func = &end_level;
-	else if (type == MINWPROPSPOS + 2) // wall deco
+	else if (type >= MINWPROPSPOS + 2) // wall deco
 		prop->func = NULL;
 	printf("New PROP %d\t\t%d\t\t pos z = %f\n", type, MINWPROPSPOS, prop->pos.z);
 }
@@ -186,9 +186,7 @@ void		func_prop(t_prop *prop, int type)
 void		init_prop(t_prop *prop, double height)
 {
 	printf("PROP TYPE == %d\n", prop->type);
-	if (prop->type == MINWPROPSPOS + 2)
-		prop->pos.z = -10;
-	else if (ISWALLPROP(prop->type))
+	if (ISWALLPROP(prop->type))
 		prop->pos.z = height + (H_NORMAL / 2);
 	else if (prop->sector)
 		prop->pos.z = prop->sector->h_floor;
@@ -240,7 +238,7 @@ void		pickup_prop(t_doom *doom)
 		{
 			activate_prop(doom, &doom->game.player.stat.sector->props[i]);
 			if (doom->game.player.stat.sector->props[i].type < MAXPROPSNUMBER)
-				doom->game.player.stat.sector->props[i].tex = NULL;
+				doom->game.player.stat.sector->props[i].tex.pixels = NULL;
 			break ;
 		}
 		i++;

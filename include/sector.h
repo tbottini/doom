@@ -43,8 +43,6 @@ typedef struct			s_txtr
 	uint32_t			w;
 	uint32_t			h;
 	int					id;
-	double				repeatx;
-	double				repeaty;
 }						t_txtr;
 
 typedef struct			s_pillar
@@ -85,7 +83,7 @@ typedef struct			s_hitbox
 
 struct					s_prop
 {
-	t_txtr				*tex;
+	t_txtr				tex;
 	void				(*func)();
 	t_fvct3				pos;
 	t_hitbox			hitbox;

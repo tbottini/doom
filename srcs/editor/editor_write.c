@@ -118,8 +118,8 @@ void draw_forme(t_doom *doom, unsigned int x)
 
 		if (!(pil = ft_pillarpushend(&doom->edit.pillist, (t_vct2){pil->pos.x + vel.x, pil->pos.y + vel.y}))) // Ajout pilier
 			ft_printf("Error adding pillar\n");
-		
-		ft_wallpushend(&doom->edit.map->murs, pil, pil2, doom->edit.txtrgame[0]); // Creation du mur entre les 2 piliers
+		//Useful if function works
+		//ft_wallpushend(&doom->edit.map->murs, pil, pil2, doom->edit.txtrgame[0]); // Creation du mur entre les 2 piliers
 
 		pil2 = pil;
 		angle += angleincrem;// Ajout de la Rotation
