@@ -135,9 +135,11 @@ void				sprite_render(t_sprite *sprite, t_arch *arch, t_player *player)
 	double		buffer_w;
 	int			i_heigth;
 	int			limit_h;
-	int			cursor_screen;
+	unsigned int cursor_screen;
 	double		neutral_distance;
 
+	if (!(sprite->texture.pixels))
+		return ;
 	p_buff_h = (double)sprite->texture.h / (double)(sprite->heigth.y - sprite->heigth.x);
 	p_buff_w = sprite->texture.w / (double)(sprite->width.y - sprite->width.x);
 	neutral_distance = (double)(arch->sdl->size.y) / sprite->pos.x;
@@ -163,7 +165,7 @@ void				sprite_render(t_sprite *sprite, t_arch *arch, t_player *player)
 		sprite->width.y = arch->sdl->size.x;
 	if (sprite->heigth.y > arch->sdl->size.y)
 		sprite->heigth.y = arch->sdl->size.y - 1;
-	while (sprite->width.x < sprite->width.y)
+	while (sprite->width.x < sprite->width.y && buffer_w < sprite->texture.w)
 	{
 		if (zline_compare(arch, neutral_distance, sprite->width.x))
 		{
@@ -183,14 +185,12 @@ void				sprite_render(t_sprite *sprite, t_arch *arch, t_player *player)
 			else
 				limit_h = sprite->heigth.y * arch->sdl->size.x;
 
-
-			while (cursor_screen < limit_h)
+			while (cursor_screen < limit_h && buffer_h < sprite->texture.h)
 			{
-				if (sprite->texture.w > buffer_w && sprite->texture.h > buffer_h)
-				{
 				arch->sdl->screen[cursor_screen] =
-					sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w];
-				}
+					opacity(arch->sdl->screen[cursor_screen],
+					sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w],
+					1 - (unsigned char)(sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w]) / 255.0);
 				cursor_screen += arch->sdl->size.x;
 				buffer_h += p_buff_h;
 			}

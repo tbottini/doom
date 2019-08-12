@@ -83,6 +83,7 @@
 # define ENEMY4START 18
 # define ENEMYDEATHSTART 24
 # define BOSSDEATHSTART 33
+# define DEATHLEN 9
 # define ENEMYTXTRTOTAL 42
 
 typedef struct s_mur	t_mur;

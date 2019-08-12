@@ -131,22 +131,20 @@ void	update_enemy_sprite(t_ui *ui, t_enemy *enemy, Uint32 timestamp)
 	else if (enemy->state == 1)
 	{
 		anim = (timestamp % 1000) / 250;
-		set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6 + anim + 2], 0);
+		if (anim < DEATHLEN)
+			set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6 + anim + 2], 0);
 	}
 	else if (enemy->state == 2)
 		set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6 + 1], 0);
 	else if (enemy->state == 4)
 	{
 		anim = (double)(timestamp - (enemy->rts + 1000.0)) / 1000.0 * 9 + 9;
-		printf("Anim %d\t%d\t%d\n", anim, enemy->rts, timestamp);
+		if (!(anim < DEATHLEN))
+			return ;
 		if (enemy->type != 4)
-		{
 			set_txtr(&enemy->sprites, ui->enemy[ENEMYDEATHSTART + anim], 0);
-		}
 		else
-		{
 			set_txtr(&enemy->sprites, ui->enemy[BOSSDEATHSTART + anim], 0);
-		}
 	}
 }
 

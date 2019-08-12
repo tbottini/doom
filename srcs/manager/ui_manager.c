@@ -67,14 +67,17 @@ int		load_enemies(t_doom *doom, t_ui *ui)
 {
 	int x;
 	char path[50];
+	SDL_Surface *tmp;
 
 	ft_strcpy(path, ENEMYPATH);
 	x = 0;
 	while (x < ENEMYTXTRTOTAL)
 	{
 		concat_atoi(&path[35], x);
-		if (!(ui->enemy[x] = IMG_Load(path)))
+		if (!(tmp = IMG_Load(path)))
 			return (0);
+		ui->enemy[x] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
+		SDL_FreeSurface(tmp);
 		x++;
 	}
 	return (1);
