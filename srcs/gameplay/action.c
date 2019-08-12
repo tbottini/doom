@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 14:29:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 16:16:52 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void		action(t_doom *doom, t_stat *s, t_inv *inv)
 			else if (!inv->last_key)
 				Mix_PlayChannel(3, doom->game.sound.tab_effect[5], 0);
 			printf("POS : touched prop type = %d\n", wallhit->props[x].type);
-			wallhit->props[x].pos.z += 1;
 		}
 	}
 	
