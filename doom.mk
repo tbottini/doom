@@ -9,7 +9,10 @@ SRCS_EDITOR		:=		editor_finder.c									\
 						editor_input.c									\
 						editor_optionbox.c								\
 						editor_txtrbox.c								\
-						editor_hook.c									\
+						editor_key.c									\
+						editor_mouse_move.c								\
+						editor_mouse_press.c							\
+						editor_mouse_wheel.c							\
 						editor_write.c									\
 
 SRCS_UI			:=		button_action.c									\
