@@ -295,7 +295,11 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 	else
 		edit->hovermur = NULL;
 	if (edit->hoverpilier || edit->hovermur)
+	{
+		if (e.state == SDL_BUTTON_RMASK && edit->hoverpilier && !edit->currpilier)
+			ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
+	}
 	else
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (e.state == SDL_BUTTON_LMASK)

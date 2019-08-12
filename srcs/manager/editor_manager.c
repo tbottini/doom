@@ -46,12 +46,9 @@ int	asynchronous_txtr_load(void *param)
 
 	edit = param;
 	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
-	//if (read_file_to_editor(edit, "ressources/map/jesuisunmonsieur") != 0)
-	//{
 	edit->player.stat.sector = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
 	edit->player.stat.pos = (t_vct2){0, 0};
 	edit->player.stat.type = 100;
-	//}
 	edit->map = edit->sectors;
 	if (!(edit->player.stat.sector))
 		edit->player.stat.sector = edit->map;
@@ -63,6 +60,11 @@ void	open_editor(t_doom *doom)
 {
 	SDL_Thread *th;
 
+	if ((SDL_GetWindowFlags(doom->edit.win) & SDL_WINDOW_HIDDEN) != 8)
+	{
+		SDL_RaiseWindow(doom->edit.win);
+		return ;
+	}
 	doom->edit.status = ED_LOADING;
 	th = SDL_CreateThread(&asynchronous_txtr_load, "Texture Load", &doom->edit);
 	SDL_DetachThread(th);

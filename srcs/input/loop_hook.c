@@ -80,6 +80,21 @@ static void editor_loop(t_doom *doom, int key)
 	{
 		doom->edit.mappos.y += (key == SDLK_KP_8 ? 2 : -2);
 	}
+	else if (doom->edit.selecttxtr != NOSELECT)
+	{
+		if (key == SDLK_UP && doom->edit.txtrscroll + 5 < 0)
+			doom->edit.txtrscroll += 5;
+		else if (key == SDLK_DOWN)
+			doom->edit.txtrscroll -= 5;
+	}
+	else if (doom->edit.currstat && doom->edit.currmur && (ISWALLPROP(doom->edit.currstat->type)))
+	{
+		if (key == SDLK_UP && doom->edit.currstat->roty + 2.0 < 100.0)
+			doom->edit.currstat->roty += 2.0;
+		else if (key == SDLK_DOWN && doom->edit.currstat->roty - 2.0 > 0.0)
+			doom->edit.currstat->roty -= 2.0;
+		doom->edit.currstat->pos = line_percent(doom->edit.currmur->pil1->pos, doom->edit.currmur->pil2->pos, doom->edit.currstat->roty / 100);
+	}
 }
 
 static void delaypcmasterrace(t_doom *doom)
