@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 15:00:21 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 15:07:51 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void				prop_init(t_prop *prop, t_wall *wall)
 	prop->percent.x = (hyp_pos - 0.5) / (hyp);
 	prop->percent.y = (hyp_pos + 0.5) / (hyp);
 	printf(WGREEN"prop %f %f\n"WEND, prop->percent.x, prop->percent.y);
-
 }
 
 void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))

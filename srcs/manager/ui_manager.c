@@ -75,7 +75,10 @@ int		load_props(t_doom *doom, t_ui *ui)
 		|| !(ui->propssurf[14] = IMG_Load(PROPBTN))
 		|| !(ui->propssurf[15] = IMG_Load(PROPWINBTN))
 		|| !(ui->propssurf[16] = IMG_Load(PROPIMPACT))
-		|| !(ui->propssurf[17] = IMG_Load(PROPBTNOPEN)))
+		|| !(ui->propssurf[17] = IMG_Load(PROPARROW))
+		|| !(ui->propssurf[18] = IMG_Load(PROPCROSS))
+		|| !(ui->propssurf[19] = IMG_Load(PROPEXIT))
+		|| !(ui->propssurf[20] = IMG_Load(PROPBTNOPEN)))
 		return (0);
 	return (link_txtr(doom, ui));
 }

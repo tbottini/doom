@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   editor_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 13:38:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 15:46:26 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,12 @@ int		editor_init(t_editor *editor)
 	if (!(editor->wsprites[1] = IMG_LoadTexture(editor->rend, PROPWINBTN)))
 		return (0);
 	if (!(editor->wsprites[2] = IMG_LoadTexture(editor->rend, PROPIMPACT)))
+		return (0);
+	if (!(editor->wsprites[3] = IMG_LoadTexture(editor->rend, PROPARROW)))
+		return (0);
+	if (!(editor->wsprites[4] = IMG_LoadTexture(editor->rend, PROPCROSS)))
+		return (0);
+	if (!(editor->wsprites[5] = IMG_LoadTexture(editor->rend, PROPEXIT)))
 		return (0);
 	return (1);
 }

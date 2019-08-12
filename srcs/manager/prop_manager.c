@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 14:54:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 15:46:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void		func_prop(t_prop *prop, int type)
 	}
 	else if (type == MINWPROPSPOS + 1) // End button
 		prop->func = &end_level;
-	else if (type == MINWPROPSPOS + 2) // wall deco
+	else if (type >= MINWPROPSPOS + 2) // wall deco
 		prop->func = NULL;
 	printf("New PROP %d\t\t%d\t\t pos z = %f\n", type, MINWPROPSPOS, prop->pos.z);
 }

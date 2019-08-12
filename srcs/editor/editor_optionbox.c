@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 17:07:24 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 14:43:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 15:49:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int opt_menu_click(t_editor *edit, int pos)
 			edit->selecttxtr = FILL_WPROP;
 		else if (edit->currmur)
 			edit->selecttxtr = FILL_TXTR;
+		edit->txtrscroll = 0;
 	}
 	else if (pos == 1)
 	{

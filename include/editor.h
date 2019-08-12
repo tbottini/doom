@@ -36,12 +36,15 @@
 # define PROPCORE "ressources/props/botinium.png"
 
 # define MINWPROPSPOS (MAXPROPSPOS + 1)
-# define MAXWPROPSNUMBER 3
+# define MAXWPROPSNUMBER 6
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/closed_button.png"
-# define PROPBTNOPEN "ressources/props/opened_button.png"
+# define PROPBTNOPEN "ressources/props/opened_button.png" //Hidden in editor
 # define PROPWINBTN "ressources/props/victory_button.png"
 # define PROPIMPACT "ressources/props/impact.png"
+# define PROPARROW "ressources/props/arrowblood.png"
+# define PROPCROSS "ressources/props/crossblood.png"
+# define PROPEXIT "ressources/props/exitblood.png"
 
 # define EDITMINWIDTH 1024
 # define EDITMINHEIGHT 800
