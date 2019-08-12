@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:46:33 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 13:11:43 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 19:10:14 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,12 @@ int		is_around(t_doom *doom, t_sector *sector, t_sector **passed, int *index)
 	while (tmp)
 	{
 		tmp2 = tmp->next;
-		if (tmp->state == -1 && is_visible(&tmp->stat, &doom->game.player.stat, tmp->stat.sector, 0))
-			tmp->state = 0;
+		if (tmp->state == -1)
+		{
+			if (is_visible(&tmp->stat, &doom->game.player.stat, tmp->stat.sector, 0))
+				tmp->state = 0;
+			set_txtr(&tmp->sprites, doom->game.ui->enemy[(tmp->type - 1) * 6], 0);
+		}
 		else if (tmp->state != -1)
 		{
 			if (tmp->state == 3)

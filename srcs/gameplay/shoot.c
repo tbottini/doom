@@ -6,13 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 14:46:49 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 21:32:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
+void		shoot(Uint32 timestamp, t_sound *sound, t_player *player, int nbsect)
 {
 	printf("shoooooooot || weapon id = %d | FIST = %d\n", player->hand->id, FIST);
 	if (player->occupied < timestamp)
@@ -23,7 +23,7 @@ void		shoot(Uint32 timestamp, t_sound *sound, t_player *player)
 			reload(timestamp, player, player->hand, sound);
 		else
 		{
-			bullet(&player->stat, player->hand->dmg);
+			bullet(&player->stat, player->hand->dmg, nbsect);
 			player->act = false;
 			player->timeact = timestamp;
 			if (player->hand->id == SHOTGUN)
@@ -98,11 +98,12 @@ static void	apply(t_shoot *shoot, t_stat *stat, t_fvct3 mo, int dmg)
 	//printf("distance || %f ||\n\n", shoot->wdist);
 }
 
-void		bullet(t_stat *stat, int dmg)
+void		bullet(t_stat *stat, int dmg, int nbsect)
 {
 	t_fvct3	d;
 	t_fvct3	mo;
 	t_shoot	shoot;
+	t_sector passed[nbsect];
 
 	mo.x = (RADIUS * sin(stat->rot.x * PI180) * cos(stat->rot.y * PI180));
 	mo.y = (RADIUS * sin(stat->rot.x * PI180) * sin(stat->rot.y * PI180));
@@ -114,6 +115,8 @@ void		bullet(t_stat *stat, int dmg)
 	shoot.i_w = 0;
 	shoot.ehit = NULL;
 	shoot.whit = NULL;
+	shoot.passed = &passed;
+	shoot.index = 0;
 	possible(&shoot, stat, d, stat->sector);
 	wall_real_hit(&shoot, stat, mo);
 	apply(&shoot, stat, mo, dmg);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/12 12:16:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/12 21:28:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void input_loop(t_doom *doom, int key)
 	else if (doom->timestamp > doom->game.player.occupied)
 	{
 		if (key == SDL_BUTTON_LEFT)
-			shoot(doom->timestamp, &doom->game.sound, &doom->game.player);
+			shoot(doom->timestamp, &doom->game.sound, &doom->game.player, doom->game.len.nb_sects);
 		else if (key == SDLK_0)//test effects
 			play_effect(&doom->game.sound, 8);
 	}
@@ -94,6 +94,13 @@ static void editor_loop(t_doom *doom, int key)
 		else if (key == SDLK_DOWN && doom->edit.currstat->roty - 2.0 > 0.0)
 			doom->edit.currstat->roty -= 2.0;
 		doom->edit.currstat->pos = line_percent(doom->edit.currmur->pil1->pos, doom->edit.currmur->pil2->pos, doom->edit.currstat->roty / 100);
+	}
+	else
+	{
+		if (key == SDLK_UP && doom->edit.sectscroll + 5 < 0)
+			doom->edit.sectscroll += 5;
+		else if (key == SDLK_DOWN)
+			doom->edit.sectscroll -= 5;
 	}
 }
 

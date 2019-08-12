@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/10 18:38:06 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 21:51:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ int		game_key_press(int key, t_doom *doom)
 			action(doom, &doom->game.player.stat, &doom->game.player.inv);
 		else if (key == SDLK_r && doom->game.player.hand->id != FIST)
 			reload(doom->timestamp, &doom->game.player, doom->game.player.hand, &doom->game.sound);
-		else if (key == SDLK_v)
-			kick(doom->timestamp, &doom->game.sound, &doom->game.player);
 		else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 			change_weapon(&doom->game.player, key - '0' - 1);
 		else
@@ -186,7 +184,7 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 			if (doom->ui.m_status != 0)
 				btn_click(doom, x, y);
 			else if (!(doom->game.player.hand->rate))
-				shoot(doom->timestamp, &doom->game.sound, &doom->game.player);
+				shoot(doom->timestamp, &doom->game.sound, &doom->game.player, doom->game.len.nb_sects);
 			else
 				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
 		}
