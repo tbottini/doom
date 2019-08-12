@@ -45,9 +45,8 @@ int		link_txtr(t_doom *doom, t_ui *ui)
 	SDL_Surface *tmp;
 
 	x = -1;
-	while (++x < 17)
+	while (++x < 18)
 	{
-
 		if (!(ui->props[x] = SDL_CreateTextureFromSurface(doom->sdl.rend, ui->propssurf[x])))
 			return (0);
 		tmp = ui->propssurf[x];
@@ -75,7 +74,8 @@ int		load_props(t_doom *doom, t_ui *ui)
 		|| !(ui->propssurf[13] = IMG_Load(PROPCORE))
 		|| !(ui->propssurf[14] = IMG_Load(PROPBTN))
 		|| !(ui->propssurf[15] = IMG_Load(PROPWINBTN))
-		|| !(ui->propssurf[16] = IMG_Load(PROPIMPACT)))
+		|| !(ui->propssurf[16] = IMG_Load(PROPIMPACT))
+		|| !(ui->propssurf[17] = IMG_Load(PROPBTNOPEN)))
 		return (0);
 	return (link_txtr(doom, ui));
 }

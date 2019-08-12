@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/04 21:39:35 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/12 13:38:09 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 13:49:41 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,11 +334,11 @@ int	read_sectors(int fd, t_game *game, t_slen *len)
 
 int	read_player(int fd, t_game *game, t_player *player, t_slen *len)
 {
-	int tmp;
+	unsigned int tmp;
 
 	if (read_balise(fd, "🍆", -9))
 		return (-9);
-	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects)
+	if ((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= (unsigned int)len->nb_sects)
 		return (-91);
 	printf("Found Player at %d\n", tmp);
 	player->stat.sector = &game->sectors[tmp];

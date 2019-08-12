@@ -39,6 +39,7 @@
 # define MAXWPROPSNUMBER 3
 # define MAXWPROPSPOS (MINWPROPSPOS + MAXWPROPSNUMBER)
 # define PROPBTN "ressources/props/closed_button.png"
+# define PROPBTNOPEN "ressources/props/opened_button.png"
 # define PROPWINBTN "ressources/props/victory_button.png"
 # define PROPIMPACT "ressources/props/impact.png"
 
@@ -272,8 +273,8 @@ typedef struct			s_ui
 	t_pal				fire;
 	SDL_Texture			*weaponhud[NB_WEAPON];
 	SDL_Texture			*sprites[ENDSPRITES + 1];
-	SDL_Texture			*props[MAXPROPSNUMBER + MAXWPROPSNUMBER];
-	SDL_Surface			*propssurf[MAXPROPSNUMBER + MAXWPROPSNUMBER];
+	SDL_Texture			*props[MAXPROPSNUMBER + MAXWPROPSNUMBER + 1];
+	SDL_Surface			*propssurf[MAXPROPSNUMBER + MAXWPROPSNUMBER + 1];
 	SDL_Surface			*enemy[ENEMYTXTRTOTAL];
 }						t_ui;
 
