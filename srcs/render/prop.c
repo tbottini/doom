@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 10:52:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/12 12:01:56 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,23 @@ void				prop_init(t_prop *prop, t_wall *wall)
 	double			hyp_pos;
 	t_fvct2			diff;
 
+	printf("wall %f %f --> %f %f\n",
+		wall->pillar->p.x,
+		wall->pillar->p.y,
+		wall->next->p.x,
+		wall->next->p.y);
+
 	diff.x = wall->next->p.x - wall->pillar->p.x;
 	diff.y = wall->next->p.y - wall->pillar->p.y;
+	printf("diff wall %f %f\n", diff.x, diff.y);
 	hyp = sqrt(diff.x * diff.x + diff.y * diff.y);
 	diff.x = prop->pos.x - wall->pillar->p.x;
 	diff.y = prop->pos.y - wall->pillar->p.y;
 	hyp_pos = sqrt(diff.x * diff.x + diff.y * diff.y);
+	printf("hyp pos %f hyp %f\n", hyp_pos, hyp);
 	prop->percent.x = (hyp_pos - 0.5) / (hyp);
 	prop->percent.y = (hyp_pos + 0.5) / (hyp);
-
+	printf(WGREEN"prop %f %f\n"WEND, prop->percent.x, prop->percent.y);
 
 }
 
@@ -81,13 +89,20 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 	prop_rigth_pos.y = delta_wall.y * percent_wall.y + arch->pillar.y;
 	px_props.y = arch->sdl->size.x / 2 - ((prop_rigth_pos.y / prop_rigth_pos.x) * (arch->sdl->size.x / 2));
 	px_props.x = arch->sdl->size.x / 2 - ((prop_left_pos.y / prop_left_pos.x) * (arch->sdl->size.x / 2));
-	prop->px.x = px_props.y;
-	prop->px.y = px_props.x;
+	if (px_props.x > px_props.y)
+	{
+		prop->px.x = px_props.y;
+		prop->px.y = px_props.x;
+	}
+	else
+	{
+		prop->px.x = px_props.x;
+		prop->px.y = px_props.y;
+	}
 	if (debug_screen == 8)
 	{
 		fill_line_debug(arch, arch->sdl, (t_vct2){px_props.x, arch->sdl->size.y / 2}, (t_vct2){px_props.y, arch->sdl->size.y / 2}, 0xffffffff);
 	}
-
 	return (px_props);
 }
 

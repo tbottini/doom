@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sprite.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/12 10:59:15 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
 #include "calcul.h"
 #include "debug.h"
@@ -96,10 +108,6 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 	}
 	return (*sprite_list);
 }
-
-
-
-//recuperation des sprites dans ui props [prop->ui]
 
 t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch)
 {
