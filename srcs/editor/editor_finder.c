@@ -45,7 +45,7 @@ t_pilier		*find_pilier(t_editor *editor, t_lstpil start, int x, int y)
 	t_vct2		p;
 
 	curr = start;
-	p = get_rel_mappos(editor, x, y);
+	p = g_r_mp(editor, x, y);
 	while (curr)
 	{
 		if (p.x - MAXZOOM / editor->mappos.z * 2 <= curr->pos.x
@@ -107,8 +107,8 @@ t_mur			*find_mur(t_editor *editor, t_lstsec start, int x, int y)
 	if (!start)
 		return (NULL);
 	curr = start->murs;
-	p = get_rel_mappos(editor, x, y);
-	precs = (EDITORPRECISION) / editor->mappos.z + 1;
+	p = g_r_mp(editor, x, y);
+	precs = (EDITPREC) / editor->mappos.z + 1;
 	while (curr)
 	{
 		tbox = init_locator(curr, precs);

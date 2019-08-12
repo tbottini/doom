@@ -43,8 +43,8 @@ void		ft_movepillar(t_lstsec sectors, t_pilier *pil, t_vct2 add, int zoom)
 	t_lstent wprops;
 	t_lstmur murs;
 
-	pil->pos.x += add.x * (EDITORPRECISION) / zoom;
-	pil->pos.y += add.y * (EDITORPRECISION) / zoom;
+	pil->pos.x += add.x * (EDITPREC) / zoom;
+	pil->pos.y += add.y * (EDITPREC) / zoom;
 	while (sectors)
 	{
 		murs = sectors->murs;

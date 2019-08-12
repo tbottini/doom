@@ -12,12 +12,12 @@
 
 #include "doom_nukem.h"
 
-t_vct2	get_rel_mappos(t_editor *editor, int x, int y)
+t_vct2	g_r_mp(t_editor *editor, int x, int y)
 {
 	t_vct2 pos;
 
-	pos.x = (x - editor->mappos.x) * EDITORPRECISION / editor->mappos.z;
-	pos.y = (y - editor->mappos.y) * EDITORPRECISION / editor->mappos.z;
+	pos.x = (x - editor->mappos.x) * EDITPREC / editor->mappos.z;
+	pos.y = (y - editor->mappos.y) * EDITPREC / editor->mappos.z;
 	return (pos);
 }
 
@@ -25,8 +25,8 @@ t_vct2	get_screen_mappos(t_editor *editor, int x, int y)
 {
 	t_vct2 pos;
 
-	pos.x = x * editor->mappos.z / EDITORPRECISION + editor->mappos.x;
-	pos.y = y * editor->mappos.z / EDITORPRECISION + editor->mappos.y;
+	pos.x = x * editor->mappos.z / EDITPREC + editor->mappos.x;
+	pos.y = y * editor->mappos.z / EDITPREC + editor->mappos.y;
 	return (pos);
 }
 
@@ -56,10 +56,10 @@ void			ft_movewall(t_mur *wall, int addx, int addy, int zoom)
 {
 	t_lstent wprops;
 
-	wall->pil1->pos.x += addx * (EDITORPRECISION) / zoom;
-	wall->pil1->pos.y += addy * (EDITORPRECISION) / zoom;
-	wall->pil2->pos.x += addx * (EDITORPRECISION) / zoom;
-	wall->pil2->pos.y += addy * (EDITORPRECISION) / zoom;
+	wall->pil1->pos.x += addx * (EDITPREC) / zoom;
+	wall->pil1->pos.y += addy * (EDITPREC) / zoom;
+	wall->pil2->pos.x += addx * (EDITPREC) / zoom;
+	wall->pil2->pos.y += addy * (EDITPREC) / zoom;
 	wprops = wall->wproplist;
 	while (wprops)
 	{

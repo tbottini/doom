@@ -62,7 +62,7 @@ int txtr_menu_click_int(t_editor *editor, int x, int y, int pos, int max)
 	return (0);
 }
 
-void texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
+int texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
 {
 	SDL_Texture *txtrclick;
 
@@ -90,4 +90,5 @@ void texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
 		}
 		edit->selecttxtr = NOSELECT;
 	}
+	return (0);
 }

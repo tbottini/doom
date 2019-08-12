@@ -353,7 +353,10 @@ int						editor_mouse_press(SDL_MouseButtonEvent e, t_editor *edit);
 int						editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit);
 int						editor_mouse_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 
-t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
+/*
+** get_rel_map_pos to check all
+*/
+t_vct2					g_r_mp(t_editor *editor, int x, int y);
 
 void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
@@ -371,7 +374,7 @@ int						opt_menu_click(t_editor *edit, int pos);
 int						opt_menu_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 SDL_Texture				*txtr_menu_click(t_editor *edit, int x, int y, int max);
 int						txtr_menu_click_int(t_editor *editor, int x, int y, int min, int max);
-void					texturebox_click(t_editor *edit, SDL_MouseButtonEvent e);
+int						texturebox_click(t_editor *edit, SDL_MouseButtonEvent e);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);
 void					ft_movepillar(t_lstsec sectors, t_pilier *pil, t_vct2 add, int zoom);
@@ -402,7 +405,7 @@ t_vct2					line_percent(t_vct2 pos1, t_vct2 pos2, double percent);
 void					scroll_limits(int *value, int addition, int smin, int smax);
 
 t_vct2					get_screen_mappos(t_editor *editor, int x, int y);
-t_vct2					get_rel_mappos(t_editor *editor, int x, int y);
+t_vct2					g_r_mp(t_editor *editor, int x, int y);
 
 
 /*

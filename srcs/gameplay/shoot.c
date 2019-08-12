@@ -115,7 +115,7 @@ void		bullet(t_stat *stat, int dmg, int nbsect)
 	shoot.i_w = 0;
 	shoot.ehit = NULL;
 	shoot.whit = NULL;
-	shoot.passed = &passed;
+	shoot.passed = (t_sector **)&passed;
 	shoot.index = 0;
 	possible(&shoot, stat, d, stat->sector);
 	wall_real_hit(&shoot, stat, mo);

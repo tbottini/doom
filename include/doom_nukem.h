@@ -40,7 +40,7 @@
 ** Editor Stuff
 */
 # define EDPADDING 5
-# define EDITORPRECISION 5000
+# define EDITPREC 5000
 # define DEBUG 0
 # define SECTORBOXHEIGHT 50
 # define MAXEDITVAR 999999

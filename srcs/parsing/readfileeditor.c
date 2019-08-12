@@ -135,6 +135,7 @@ void add_wall_prop(t_game *game, t_editor *edit, t_wall *gamewall, t_mur *mur)
 	{
 		prop = &gamewall->props[y];
 		ent = ft_enemypushend(&mur->wproplist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game, prop->sector));
+		//ent->stat.
 		y++;
 	}
 }

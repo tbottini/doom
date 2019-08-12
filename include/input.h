@@ -214,8 +214,6 @@ int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 */
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
-int						editor_mouse_release(int button, int x, int y,
-																t_doom *doom);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
 

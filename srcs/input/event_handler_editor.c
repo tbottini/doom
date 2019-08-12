@@ -64,8 +64,6 @@ int event_handler_editor(t_doom *doom, SDL_Event e)
 			editor_mouse_press(e.button, &doom->edit);
 		else if (e.type == SDL_MOUSEWHEEL)
 			editor_mouse_wheel(e.wheel, &(doom->edit));
-		else if (e.type == SDL_MOUSEBUTTONUP)
-			editor_mouse_release(e.button.button, e.button.x, e.button.y, doom);
 	}
 	return (0);
 }
