@@ -50,9 +50,12 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 	double			percent_local;
 	t_fvct2			inter;
 	int				px_tmp;
+	double			shift_txtr_tmp;
+	t_fvct2			next_tmp;
 
 
 	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME * 3);
+	percent_open = 0.7;
 	if (flag == CLOSE_DOOR)
 		percent_open = 1 - percent_open;
 	if (percent_open > 1)
@@ -80,24 +83,45 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 		inter.x = arch->pillar.x + percent_local * (arch->next.x - arch->pillar.x);
 		inter.y = arch->pillar.y + percent_local * (arch->next.y - arch->pillar.y);
 	}
-	px_tmp = arch->px.y;
-	arch->px.y = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (inter.y / inter.x);
-	arch->next = inter;
+
 
 	//on determine le shift_txtr a partir du percent_local
-	if (1 - arch->shift_txtr.x > percent_open || arch->shift_txtr.y > 1)
+	if (arch->shift_txtr.y > 1)
 		return ;
-
-	arch->shift_txtr.x = 1 - percent_open + (1 - arch->shift_txtr.x);
-	if (arch->shift_txtr.y > 1 - percent_open)
-		arch->shift_txtr.y = 1 - (arch->shift_txtr.y - (1 - percent_open));
+	if (1 - arch->shift_txtr.x < percent_open)
+	{
+		px_tmp = arch->px.y;
+		shift_txtr_tmp = arch->shift_txtr.y;
+		next_tmp = arch->next;
+		arch->px.y = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (inter.y / inter.x);
+		arch->next = inter;
+		arch->shift_txtr.x = 1 - percent_open + (1 - arch->shift_txtr.x);
+		if (arch->shift_txtr.y > 1 - percent_open)
+			arch->shift_txtr.y = 1 - (arch->shift_txtr.y - (1 - percent_open));
+		else
+			arch->shift_txtr.y = 1;
+		arch->wall->status = WALL;
+		reorder(arch);
+		render_surface(arch, player);
+		arch->wall->status = PORTAL;
+		arch->px.x = arch->px.y;
+		arch->px.y = px_tmp;
+		arch->pillar = arch->next;
+		arch->next = next_tmp;
+		arch->shift_txtr.x = arch->shift_txtr.y;
+		arch->shift_txtr.y = shift_txtr_tmp;
+		reorder(arch);
+		render_surface(arch, player);
+	}
 	else
-		arch->shift_txtr.y = 1;
+	{
+		arch->wall->status = PORTAL;
+		reorder(arch);
+		render_surface(arch, player);
+	}
 
-
-
-	arch->wall->status = WALL;
-	reorder(arch);
-	render_surface(arch, player);
+	//if (1 - arch->shift_txtr.x < percent_open)
+	//{
+	//}
 	arch->wall->status = flag;
 }
