@@ -195,7 +195,7 @@ void			render_wall(t_arch *arch, t_player *player)
 	//	return ;
 	//}
 	pillar_screen_info(arch, player);
-	if (arch->depth_portal == 0|| (wall_behind_portal(arch)))
+	if (arch->depth_portal == 0 || (wall_behind_portal(arch)))
 	{
 		if (arch->wall->status == CLOSE_DOOR || arch->wall->status == OPEN_DOOR)
 		{

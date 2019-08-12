@@ -51,12 +51,18 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 	t_fvct2			inter;
 	int				px_tmp;
 
-	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME * 3);
 
+	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME * 3);
+	if (flag == CLOSE_DOOR)
+		percent_open = 1 - percent_open;
 	if (percent_open > 1)
 		percent_open = 1;
+	if (percent_open < 0)
+		percent_open = 0;
 
-	percent_open = 0.7;
+
+
+	//percent_open = 0.7;
 
 	printf("shift_txtr %f %f\n", arch->shift_txtr.x, arch->shift_txtr.y);
 	printf("arch->pillar %f %f\n", arch->pillar.x, arch->pillar.y);
