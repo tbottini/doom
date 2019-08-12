@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 11:29:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 12:16:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static void delaypcmasterrace(t_doom *doom)
 	if (wait < 0)
 		SDL_Delay(-wait);
 	doom->timestamp = SDL_GetTicks();
+	doom->game.arch.timestamp = doom->timestamp;
 }
 
 static void game_loop_hook(t_doom *doom)

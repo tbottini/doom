@@ -69,11 +69,11 @@ void					reorder(t_arch *arch);
 t_fvct2					get_floor_pos(t_arch *arch, t_fvct2 len, t_fvct2 surface, t_fvct2 *pillar);
 t_fvct2					frustum_floor_intersection(t_fvct2 *pillar_pos, t_camera *camera, t_fvct2 *len_sector, t_stat *stat);
 t_fvct2					frustum_depth_intersection(t_camera *camera, t_stat *stat, double floor_diff);
-
+void					pillar_screen_info(t_arch *arch, t_player *p);
+int						wall_behind_portal(t_arch *arch);
 /*
 **	render
 */
-
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
@@ -131,8 +131,13 @@ t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);
 int						camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double h_diff, double depth);
 t_vct2					cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_player *player, double depth);
 t_vct2					txtr_width(t_txtr *texture, t_vct2 surface, int posx);
-
-void					prop_wall_render(t_prop *prop, void *arch);
+void					prop_init_render(t_prop *prop, void *arch);
 void					prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup);
 t_vct2					prop_get_screen_pixel(t_prop *prop, t_arch *arch);
+
+/*
+**	sector viewing manipulation
+*/
+void				door_split(t_arch *arch, t_player *player, int flag);
+
 #endif

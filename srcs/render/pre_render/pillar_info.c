@@ -167,13 +167,3 @@ int				wall_behind_portal(t_arch *arch)
 	}
 	return (1);
 }
-
-int			wall_screen_info(t_arch *arch, t_player *p)
-{
-	pillar_screen_info(arch, p);
-
-	if (arch->depth_portal > 0)
-		return (wall_behind_portal(arch));
-	return (1);
-	//return (arch->depth_portal > 0 || wall_behind_portal(arch));
-}

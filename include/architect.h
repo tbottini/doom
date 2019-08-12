@@ -36,6 +36,7 @@ typedef struct 			s_arch
 	t_list				portal_list;
 	Uint32				sc_debug[WIDTH * HEIGHT];
 	uint32_t			zoom;
+	uint32_t			timestamp;
 }						t_arch;
 
 int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);

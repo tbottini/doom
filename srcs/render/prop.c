@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 15:07:51 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 16:12:08 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 	return (px_props);
 }
 
-void				prop_wall_render(t_prop *prop, void *arch)
+void				prop_init_render(t_prop *prop, void *arch)
 {
 	t_arch			*arc;
 	t_vct2			px;
