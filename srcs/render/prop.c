@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 16:12:08 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 23:19:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,14 @@ void				prop_init(t_prop *prop, t_wall *wall)
 	double			hyp_pos;
 	t_fvct2			diff;
 
-	printf("wall %f %f --> %f %f\n",
-		wall->pillar->p.x,
-		wall->pillar->p.y,
-		wall->next->p.x,
-		wall->next->p.y);
-
 	diff.x = wall->next->p.x - wall->pillar->p.x;
 	diff.y = wall->next->p.y - wall->pillar->p.y;
-	printf("diff wall %f %f\n", diff.x, diff.y);
 	hyp = sqrt(diff.x * diff.x + diff.y * diff.y);
 	diff.x = prop->pos.x - wall->pillar->p.x;
 	diff.y = prop->pos.y - wall->pillar->p.y;
 	hyp_pos = sqrt(diff.x * diff.x + diff.y * diff.y);
-	printf("hyp pos %f hyp %f\n", hyp_pos, hyp);
 	prop->percent.x = (hyp_pos - 0.5) / (hyp);
 	prop->percent.y = (hyp_pos + 0.5) / (hyp);
-	printf(WGREEN"prop %f %f\n"WEND, prop->percent.x, prop->percent.y);
 }
 
 void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
