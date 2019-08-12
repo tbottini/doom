@@ -83,6 +83,7 @@ void					render_wall(t_arch *arch, t_player *player);
 void					draw_column(t_arch *arch, t_fvct2 surface);
 void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
 int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop);
+void					render_surface(t_arch *arch, t_player *player);
 
 /*
 **	bunch

@@ -197,12 +197,12 @@ void			render_wall(t_arch *arch, t_player *player)
 	pillar_screen_info(arch, player);
 	if (arch->depth_portal == 0|| (wall_behind_portal(arch)))
 	{
-		reorder(arch);
 		if (arch->wall->status == CLOSE_DOOR || arch->wall->status == OPEN_DOOR)
 		{
 			door_split(arch, player, arch->wall->status);
 			return ;
 		}
+		reorder(arch);
 		render_surface(arch, player);
 	}
 	else if (debug_screen == 2)

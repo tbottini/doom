@@ -47,76 +47,51 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 void				door_split(t_arch *arch, t_player *player, int flag)
 {
 	double			percent_open;
-	double			local_percent;
+	double			percent_local;
 	t_fvct2			inter;
-	t_fvct2			tmp;
 	int				px_tmp;
 
 	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME * 3);
-	//printf("timestamp %d start %d DOOR_TIME %d\n", arch->timestamp, arch->wall->ots, DOOR_OPEN_TIME);
 
-	//!!!! secur a enlever
 	if (percent_open > 1)
 		percent_open = 1;
 
-	//percent_open = 0.7;
+	percent_open = 0.7;
 
-	printf("percent_open %f", percent_open);
 	printf("shift_txtr %f %f\n", arch->shift_txtr.x, arch->shift_txtr.y);
+	printf("arch->pillar %f %f\n", arch->pillar.x, arch->pillar.y);
 
-	if (arch->shift_txtr.x == arch->shift_txtr.y)
+	percent_local = (arch->shift_txtr.x - (1 - percent_open)) / (arch->shift_txtr.x - arch->shift_txtr.y);
+	printf("percent local %.4f entre %.4f %.4f\n", percent_local, arch->shift_txtr.x, arch->shift_txtr.y);
+
+	//on recupere l'intersection l'arret physique du mur et son pixel
+	if (percent_local > 1)
+	{
+		inter = arch->next;
+	}
+	else
+	{
+		inter.x = arch->pillar.x + percent_local * (arch->next.x - arch->pillar.x);
+		inter.y = arch->pillar.y + percent_local * (arch->next.y - arch->pillar.y);
+	}
+	px_tmp = arch->px.y;
+	arch->px.y = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (inter.y / inter.x);
+	arch->next = inter;
+
+	//on determine le shift_txtr a partir du percent_local
+	if (1 - arch->shift_txtr.x > percent_open || arch->shift_txtr.y > 1)
 		return ;
 
-	if (percent_open > arch->shift_txtr.x)
-	{
-		local_percent = (percent_open - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
-		if (local_percent <= 1)
-		{
-			printf("local_percent %f\n", local_percent);
-			inter.x = local_percent * (arch->next.x - arch->pillar.x) + arch->pillar.x;
-			inter.y = local_percent * (arch->next.y - arch->pillar.y) + arch->pillar.y;
-			tmp = arch->next;
-			arch->next = inter;
-			if (debug_screen == 2)
-			{
-				b_point_debug(arch->next, RED);
-			}
-			px_tmp = arch->px.y;
-			arch->px.y = arch->sdl->size.x / 2 - ((arch->next.y / arch->next.x) * (arch->sdl->size.x / 2));
-			if (arch->px.y >= arch->sdl->size.x)
-				arch->px.y = arch->sdl->size.x - 1;
-			arch->wall->status = WALL;
-			arch->shift_txtr.x = (1 - percent_open) + arch->shift_txtr.x;
-			arch->shift_txtr.y = 1;
-			render_surface(arch, player);
-			arch->next = tmp;
-			arch->px.y = px_tmp;
-			arch->wall->status = flag;
-		}
-		else
-		{//arch->next ne change pas, si local_percent > 1 on affiche que le mur
-
-			if (debug_screen == 2)
-			{
-				b_point_debug(arch->next, RED);
-			}
-			arch->shift_txtr.x = (1 - percent_open) + arch->shift_txtr.x;
-			arch->shift_txtr.y = 1 - (percent_open - arch->shift_txtr.y);
-			arch->wall->status = WALL;
-			render_surface(arch, player);
-			arch->wall->status = flag;
-		}
-
-
-	}
+	arch->shift_txtr.x = 1 - percent_open + (1 - arch->shift_txtr.x);
+	if (arch->shift_txtr.y > 1 - percent_open)
+		arch->shift_txtr.y = 1 - (arch->shift_txtr.y - (1 - percent_open));
+	else
+		arch->shift_txtr.y = 1;
 
 
 
-	if (debug_screen == 8)
-	{
-		fill_line_debug(arch, arch->sdl, (t_vct2){arch->px.x, arch->sdl->size.y / 2}, (t_vct2){arch->px.y, arch->sdl->size.y / 2}, 0xffffffff);
-	}
-
-
-
+	arch->wall->status = WALL;
+	reorder(arch);
+	render_surface(arch, player);
+	arch->wall->status = flag;
 }
