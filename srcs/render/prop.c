@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 14:41:24 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 15:00:21 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
 	int				i;
 
 	i = 0;
-	while (i < len)
+	while (i <= len)
 	{
 		prop_iter(&prop[i]);
 		i++;
@@ -56,7 +56,7 @@ void				prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), voi
 	int				i;
 
 	i = 0;
-	while (i < len)
+	while (i <= len)
 	{
 		prop_iter(&prop[i], sup);
 		i++;
@@ -128,7 +128,7 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 	col_print = false;
 	while (i <= arch->wall->nb_props && !col_print)
 	{
-		if (arch->px.x > props[i].px.x && arch->px.x < props[i].px.y && props[i].pos.z > 0 && props[i].pos.z < arch->sector->h_ceil)
+		if (arch->px.x > props[i].px.x && arch->px.x < props[i].px.y && props[i].pos.z + 1.0 > 0 && props[i].pos.z < arch->sector->h_ceil)
 		{
 			heigth_percent.x = (arch->sector->h_ceil - 1 - props[i].pos.z) / arch->sector->h_ceil;
 			heigth_percent.y = props[i].pos.z / arch->sector->h_ceil;

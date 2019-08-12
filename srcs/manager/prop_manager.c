@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 13:58:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 14:54:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,9 +186,7 @@ void		func_prop(t_prop *prop, int type)
 void		init_prop(t_prop *prop, double height)
 {
 	printf("PROP TYPE == %d\n", prop->type);
-	if (prop->type == MINWPROPSPOS + 2)
-		prop->pos.z = -10;
-	else if (ISWALLPROP(prop->type))
+	if (ISWALLPROP(prop->type))
 		prop->pos.z = height + (H_NORMAL / 2);
 	else if (prop->sector)
 		prop->pos.z = prop->sector->h_floor;
