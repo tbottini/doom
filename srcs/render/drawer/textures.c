@@ -1,12 +1,8 @@
 #include "render.h"
 #include "debug.h"
-/*
-**	renvoie l'index de la texture associee au pixel de l'ecran
-**	l'affine du mur est le decal(y) selon depth(x)
-**	pblm on peut avoir un mur face au joueur formant
-**	une affine constante verticalement
-*/
-uint32_t		texture_interpolation2D(t_arch *arch)
+
+
+double			percent_interpolation2d(t_arch *arch)
 {
 	t_affine	px_affine;
 	t_affine	wall_affine;
@@ -23,7 +19,6 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 	}
 	else
 	{
-
 		wall_affine.a = (arch->next.y - arch->pillar.y) / (arch->next.x - arch->pillar.x);
 		wall_affine.b = arch->pillar.y - wall_affine.a * arch->pillar.x;
 		inter = interpolation_linear(wall_affine, px_affine);
@@ -33,8 +28,33 @@ uint32_t		texture_interpolation2D(t_arch *arch)
 	if (percent < 0)
 		return (0);
 	else if (percent > 1)
-		return (arch->wall->txtr.w - 1);
-	return (percent * arch->wall->txtr.w);
+		return (1);
+	return (percent);
+}
+
+/*
+**	renvoie l'index de la texture associee au pixel de l'ecran
+**	l'affine du mur est le decal(y) selon depth(x)
+**	pblm on peut avoir un mur face au joueur formant
+**	une affine constante verticalement
+*/
+uint32_t		texture_interpolation2d(t_arch *arch, t_txtr *txtr)
+{
+	double		percent;
+
+	percent = percent_interpolation2d(arch);
+	return (percent * txtr->w);
+}
+
+uint32_t		texture_prop_interpolation2d(t_arch *arch, t_txtr *txtr, t_prop *prop)
+{
+	double		percent;
+
+	percent = percent_interpolation2d(arch);
+	percent = 1 - (percent - prop->percent.x) / (prop->percent.y - prop->percent.x);
+	if (percent < 0)
+		return (0);
+	return (percent * txtr->w);
 }
 
 /*

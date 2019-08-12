@@ -77,10 +77,12 @@ t_fvct2					frustum_depth_intersection(t_camera *camera, t_stat *stat, double fl
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
-uint32_t				texture_interpolation2D(t_arch *arch);
+uint32_t				texture_interpolation2d(t_arch *arch, t_txtr *txtr);
+uint32_t				texture_prop_interpolation2d(t_arch *arch, t_txtr *txtr, t_prop *prop);
 void					render_wall(t_arch *arch, t_player *player);
 void					draw_column(t_arch *arch, t_fvct2 surface);
 void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
+int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop);
 
 /*
 **	bunch
@@ -111,14 +113,14 @@ t_shape					shape_reajust(t_shape shape);
 /*
 **	sprites
 */
-void					sprite_render_list(t_sprite *sprite, t_arch *arch, t_player *player);
+void					sprite_render_list(t_sprite *sprite, t_arch *arch);
 t_sprite				*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *player, t_arch *arch);
 t_sprite				*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch);
 void					sprite_print(t_sprite *sprite);
 void					sprite_free(t_sprite *sprite);
 void					sprite_print(t_sprite *sprite);
 void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
-void					sprite_render(t_sprite *sprite, t_arch *arch, t_player *player);
+void					sprite_render(t_sprite *sprite, t_arch *arch);
 t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
 
 
@@ -128,7 +130,7 @@ t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *pr
 t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);
 int						camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double h_diff, double depth);
 t_vct2					cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_player *player, double depth);
-t_vct2					cam_txtr_width(t_camera *camera, t_txtr *texture, t_vct2 surface, int posx);
+t_vct2					txtr_width(t_txtr *texture, t_vct2 surface, int posx);
 
 void					prop_wall_render(t_prop *prop, void *arch);
 void					prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup);

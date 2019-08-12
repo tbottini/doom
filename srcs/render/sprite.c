@@ -83,13 +83,13 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&enemy->stat.pos, player->stat.rot.y);
 		if (e_angle < 90 && e_angle > -90)
 		{
-			enemy->sprites = &enemy->stat.sector->txtrsol;
+			enemy->sprites = enemy->stat.sector->txtrsol;
 			sprite = sprite_new(enemy->stat.sector->txtrsol, player->stat.pos, enemy->stat.pos, e_angle);
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
 			sprite->heigth = cam_get_enemy_surface(arch->cam, arch->sdl, enemy, player, sprite->pos.x);
-			sprite->width = cam_txtr_width(arch->cam, &sprite->texture, sprite->heigth, posx);
+			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
 			sprite_insert(sprite_list, sprite);
 		}
 		enemy = enemy->next;
@@ -122,7 +122,7 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 
 			//sprite->heigth =
 			sprite->heigth = player_prop_heigth_surface(arch, player, &props[i], sprite->pos.x);
-			sprite->width = cam_txtr_width(arch->cam, &sprite->texture, sprite->heigth, posx);
+			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
 			sprite_insert(sprite_list, sprite);
 		}
 		i++;
@@ -130,7 +130,7 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 	return (*sprite_list);
 }
 
-void				sprite_render(t_sprite *sprite, t_arch *arch, t_player *player)
+void				sprite_render(t_sprite *sprite, t_arch *arch)
 {
 	double		p_buff_h;
 	double		p_buff_w;
@@ -201,11 +201,11 @@ void				sprite_render(t_sprite *sprite, t_arch *arch, t_player *player)
 	}
 }
 
-void			sprite_render_list(t_sprite *sprite, t_arch *arch, t_player *player)
+void			sprite_render_list(t_sprite *sprite, t_arch *arch)
 {
 	while (sprite)
 	{
-		sprite_render(sprite, arch, player);
+		sprite_render(sprite, arch);
 		sprite = sprite->next;
 	}
 }
