@@ -28,7 +28,8 @@ int		editor_key_press(int key, t_doom *doom)
 	{
 		doom->edit.currmur = NULL;
 		doom->edit.currstat = NULL;
-		doom->edit.status = ED_SAVING;
+		if (doom->edit.pillist)
+			doom->edit.status = ED_SAVING;
 	}
 	else if (key == SDLK_1 || key == SDLK_2 || key == SDLK_3 || key == SDLK_4)
 	{
@@ -297,7 +298,10 @@ int editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 	if (edit->hoverpilier || edit->hovermur)
 	{
 		if (e.state == SDL_BUTTON_RMASK && edit->hoverpilier && !edit->currpilier)
+		{
 			ft_remove_pillar_from_sector(edit->sectors, &edit->pillist, &edit->hoverpilier);
+			edit->hovermur = NULL;
+		}
 		SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND));
 	}
 	else
