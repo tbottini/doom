@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 05:01:49 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 05:16:54 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,34 +123,30 @@ int				wall_behind_portal(t_arch *arch)
 	t_affine	a_portal;
 	t_affine	a_pillar;
 	t_affine	a_pillar2;
-	t_fvct2		inter;
-	t_fvct2		inter2;
+	t_fvct2		inter[2];
 
-	a_pillar.a = arch->pillar.y / arch->pillar.x;
-	a_pillar.b = 0;
-	a_pillar2.a = arch->next.y / arch->next.x;
-	a_pillar2.b = 0;
-
+	a_pillar = (t_affine){arch->pillar.y / arch->pillar.x, 0, 0};
+	a_pillar2 = (t_affine){arch->next.y / arch->next.x, 0, 0};
 	a_portal = affine_points_secur(arch->portal.pillar, arch->portal.next);
-	inter = interpolation_linear(a_portal, a_pillar);
-	inter2 = interpolation_linear(a_portal, a_pillar2);
-	if (inter.x > arch->pillar.x && inter2.x > arch->next.x)
+	inter[0] = interpolation_linear(a_portal, a_pillar);
+	inter[1] = interpolation_linear(a_portal, a_pillar2);
+	if (inter[0].x > arch->pillar.x && inter[1].x > arch->next.x)
 		return (0);
 	a_wall = affine_points_secur(arch->pillar, arch->next);
-	if (inter.x > arch->pillar.x)
+	if (inter[0].x > arch->pillar.x)
 	{
-		if (interpolation_linear_secur(a_portal, a_wall, &inter))
+		if (interpolation_linear_secur(a_portal, a_wall, &inter[0]))
 			return (0);
-		pillar_virtual_move(arch, inter, PILLAR);
+		pillar_virtual_move(arch, inter[0], PILLAR);
 		a_pillar.a = arch->pillar.y / arch->pillar.x;
 		a_pillar.b = 0;
 		arch->px.x = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
 	}
-	else if (inter2.x > arch->next.x)
+	else if (inter[1].x > arch->next.x)
 	{
-		if (interpolation_linear_secur(a_portal, a_wall, &inter))
+		if (interpolation_linear_secur(a_portal, a_wall, &inter[0]))
 			return (0);
-		pillar_virtual_move(arch, inter, NEXT);
+		pillar_virtual_move(arch, inter[0], NEXT);
 		a_pillar.a = arch->next.y / arch->next.x;
 		a_pillar.b = 0;
 		arch->px.y = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);

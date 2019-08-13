@@ -79,4 +79,5 @@ void			fvct3_sub(t_fvct3 *vector_sub, t_fvct3 *vector_sub2);
 void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot);
 
 t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2);
+double			affine_val_index(t_affine affine, double y);
 #endif

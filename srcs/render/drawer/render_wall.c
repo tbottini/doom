@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 01:21:12 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 04:29:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 05:21:45 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,8 @@ void			render_surface(t_arch *arch, t_player *player)
 	if (arch->wall->status == PORTAL)
 	{
 		arch->px.x = px_draw.x;
-		render_recursive(arch, player);
+		if (arch->wall->link != arch->sector)
+			render_recursive(arch, player);
 		borne_load(arch, &borne_tmp, px_draw);
 	}
 }
