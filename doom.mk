@@ -59,7 +59,6 @@ SRCS_RENDER		:=		render.c										\
 						hud_render.c									\
 						hud/minimap.c									\
 						hud/minimap_drawer.c							\
-						hud/bresenham.c									\
 						pre_render/backface.c							\
 						pre_render/render_effect.c						\
 						pre_render/bunch.c								\

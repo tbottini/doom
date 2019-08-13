@@ -3,11 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 02:38:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 05:03:33 by tbottini         ###   ########.fr       */
 /*                                                                            */
+/* ************************************************************************** */
+                                                      */
 /* ************************************************************************** */
 
 #include "render.h"
@@ -84,31 +86,31 @@ static void			miniprops(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 	i = 0;
 	while (i < sector->len_prop)
 	{
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((sector->props[i].pos.x - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - sector->props[i].pos.y)) * (UNIT);
-			bold_point2(mini, tmp, CENEMY);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
-			bold_point2(mini, tmp, 0);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
-			bold_point2(mini, tmp, 0);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
-			bold_point2(mini, tmp, 0);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
-			bold_point2(mini, tmp, 0);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((sector->props[i].pos.x - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - sector->props[i].pos.y)) * (UNIT);
+		bold_point2(mini, tmp, CENEMY);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, tmp, 0);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, tmp, 0);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, tmp, 0);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, tmp, 0);
 		i++;
 	}
 }
@@ -158,29 +160,29 @@ static void			minienemies(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 	enn = sector->enemys;
 	while (enn)
 	{
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((enn->stat.pos.x - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - enn->stat.pos.y)) * (UNIT);
-			bold_point2(mini, tmp, CENEMY);
-			update_enemy_rotation(enn, &enn->stat, pos);
-			dir.x = enn->stat.pos.x + sin(enn->stat.rot.y);
-			dir.y = enn->stat.pos.y + cos(enn->stat.rot.y);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((dir.x - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - dir.y)) * (UNIT);
-			bold_point2(mini, tmp, 0xFF0000FF);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((enn->e1.x - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - enn->e1.y)) * (UNIT);
-			bold_point2(mini, tmp, 0x18ffffFF);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((enn->e2.x - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - enn->e2.y)) * (UNIT);
-			bold_point2(mini, tmp, 0x18ffffFF);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((enn->stat.pos.x - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - enn->stat.pos.y)) * (UNIT);
+		bold_point2(mini, tmp, CENEMY);
+		update_enemy_rotation(enn, pos);
+		dir.x = enn->stat.pos.x + sin(enn->stat.rot.y);
+		dir.y = enn->stat.pos.y + cos(enn->stat.rot.y);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((dir.x - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - dir.y)) * (UNIT);
+		bold_point2(mini, tmp, 0xFF0000FF);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((enn->e1.x - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - enn->e1.y)) * (UNIT);
+		bold_point2(mini, tmp, 0x18ffffFF);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((enn->e2.x - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - enn->e2.y)) * (UNIT);
+		bold_point2(mini, tmp, 0x18ffffFF);
 		enn = enn->next;
 	}
 }

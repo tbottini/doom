@@ -77,4 +77,6 @@ double			hypothenuse(t_fvct2 vct);
 double			distance(t_fvct2 vct1, t_fvct2 vct2);
 void			fvct3_sub(t_fvct3 *vector_sub, t_fvct3 *vector_sub2);
 void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot);
+
+t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2);
 #endif

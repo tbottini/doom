@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 02:07:54 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 04:41:32 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,34 +76,31 @@ static void			miniwallprops(t_minimap *mini, t_wall *wall, t_fvct3 pos)
 	i = 0;
 	while (i < wall->nb_props)
 	{
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((wall->props[i].pos.x - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - wall->props[i].pos.y)) * (UNIT);
-			bold_point2(mini, tmp, DEEPBLUE);
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
-			bold_point2(mini, tmp, 0xFF0000FF);
-
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
-			bold_point2(mini, tmp, 0xFF0000FF);
-
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
-			bold_point2(mini, tmp, 0xFF0000FF);
-
-			tmp.x = (mini->a.x - (mini->size.x / 2))
-				+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
-			tmp.y = (mini->a.y - (mini->size.y / 2))
-				+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
-			bold_point2(mini, tmp, 0xFF0000FF);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((wall->props[i].pos.x - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - wall->props[i].pos.y)) * (UNIT);
+		bold_point2(mini, tmp, DEEPBLUE);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
+		bold_point2(mini, tmp, 0xFF0000FF);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
+		bold_point2(mini, tmp, 0xFF0000FF);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
+		bold_point2(mini, tmp, 0xFF0000FF);
+		tmp.x = (mini->a.x - (mini->size.x / 2))
+			+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
+		bold_point2(mini, tmp, 0xFF0000FF);
 		i++;
 	}
 }

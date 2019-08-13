@@ -18,11 +18,6 @@ t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2)
 {
 	t_fvct2		inter;
 
-	//if ((int)fct1.a == -1)
-	//	inter.x = fct1.b;
-	////else
-	//si fct1.a == fct2.a && fct1.b != fct2.b
-	//	erreur
 	if (fct1.b == fct2.b)
 		return ((t_fvct2){0, fct1.b});
 	else if (fct1.a == fct2.a)
@@ -45,11 +40,14 @@ t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2)
 {
 	t_affine 	fct;
 
-	fct.lock = (point1.x == point2.x);
-	if (!fct.lock)
+	if (point1.x == point2.x)
+	{
+		fct.lock = 1;
 		fct.b = point1.x;
+	}
 	else
 	{
+		fct.lock = 0;
 		fct.a = (point2.y - point1.y) / (point2.x - point1.x);
 		fct.b = point1.y - fct.a * point1.x;
 	}
@@ -61,8 +59,9 @@ t_affine		affine_def(double a, double b)
 	return ((t_affine){a, b, 0});
 }
 
-
-//gestion de l'affine lock sur une abscise
+/*
+**	interpolation lineaire avec gestion des affine lock
+*/
 int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *inter)
 {
 	if (affine1.lock && affine2.lock)

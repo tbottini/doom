@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 02:07:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 04:44:25 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 **		calculer et afficher la colomne
 **	tout est inverse car on ne recoit pas la distance mais la taille du pillier
 */
+
 int			z_line_buffer(t_arch *arch, double len_pillar, int px)
 {
-
 	if (len_pillar > arch->portal.zline[px])
 	{
 		arch->portal.zline[px] = len_pillar;
@@ -30,7 +30,6 @@ int			z_line_buffer(t_arch *arch, double len_pillar, int px)
 	}
 	return (0);
 }
-
 
 int			clean_zline(t_arch *arch, double len_pillar, int px)
 {
@@ -48,7 +47,9 @@ int			clean_zline(t_arch *arch, double len_pillar, int px)
 **	stocke la plus grande valeur dans le zline tmp qui sera reaffecter
 **		apres la recursivite
 */
-int			zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start)
+
+int			zline_portal(t_arch *arch, double *zline_tmp, double len_pillar,
+	int start)
 {
 	if (len_pillar > arch->portal.zline[arch->px.x])
 	{
@@ -64,6 +65,7 @@ int			zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start
 **	recupere l'index de depart (ancien px perdu avec le parcours)
 **	copy et delete le zline_tmp dans le zline_buffer
 */
+
 void		zline_cut(t_arch *arch, double *zline_cut, int start)
 {
 	int		i;
@@ -77,7 +79,6 @@ void		zline_cut(t_arch *arch, double *zline_cut, int start)
 		i++;
 		start++;
 	}
-	//free(zline_cut);
 }
 
 int			zline_compare(t_arch *arch, double len_pillar, int px)

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 02:57:48 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 04:50:12 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	t_fvct2	dist;
 	double	angle;
 
-	if (arch->wall && (pillar == arch->wall->pillar || pillar == arch->wall->next))
+	if (arch->wall && (pillar == arch->wall->pillar
+		|| pillar == arch->wall->next))
 		return (0);
 	dist.x = pillar->p.x - player->stat.pos.x;
 	dist.y = pillar->p.y - player->stat.pos.y;
@@ -64,8 +65,6 @@ double		wall_angle_pers(t_arch *arch, t_wall wall)
 		return (0);
 	angles.x = wall.pillar->angle;
 	angles.y = wall.next->angle;
-
-
 	if (wall.pillar->angle < 0)
 		angles.x += 360;
 	if (wall.next->angle < 0)
@@ -88,9 +87,9 @@ double		local_angle(double borne, double angle)
 	return (angle);
 }
 
-
 /*
-**	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
+**	fonction a utiliser pour les bornes si il n'y a aucun pillier dans
+**		le frustum
 **	determine si les bornes sont entre les angles des mur
 */
 
@@ -112,59 +111,4 @@ int			equal_pillar(t_wall *wall1, t_wall *wall2)
 	if (wall1->pillar == wall2->next && wall1->next == wall2->pillar)
 		return (0);
 	return (1);
-}
-
-/*
-**	buncherisation mets les murs visible d'un secteur dans un tableau
-**	-un mur est visible si l'un des pillier est dans le frustrum
-**		ou si l'angle mur/joueur est plus grand que 180 (signifiant
-**		que le mur passe devant le champ de vision du joueur)
-**
-**	un mur n'est pas ajoute au bunch si c'est un portail
-**		ou commence une recursivite
-**	i_wall correspond a l'index des mur parcourus
-**	i_bunch est l'index dans le bunch
-*/
-
-int			buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch)
-{
-	int		i_wall;
-	int		i_bunch;
-	t_wall	*wall;
-
-	i_bunch = 0;
-	i_wall = 0;
-	wall = sector->wall;
-	while (i_wall < sector->len)
-	{
-		if ((wall[i_wall].pillar->frust || wall[i_wall].next->frust)
-			&& equal_pillar(&wall[i_wall], arch->wall))
-		{
-			bunch[i_bunch] = &wall[i_wall];
-			i_bunch++;
-		}
-		else if (borne_in_wall_angle(arch, &wall[i_wall])
-			&& equal_pillar(&wall[i_wall], arch->wall))
-		{
-			bunch[i_bunch] = &wall[i_wall];
-			i_bunch++;
-		}
-		i_wall++;
-	}
-	bunch[i_bunch] = NULL;
-	return (1);
-}
-
-void		bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector)
-{
-	int		i;
-
-	i = 0;
-	arch->sector = sector;
-	while (bunch[i] != NULL)
-	{
-		arch->wall = bunch[i];
-		render_wall(arch, player);
-		i++;
-	}
 }

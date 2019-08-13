@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 02:59:50 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 05:01:49 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 **	si l'angle entre le joueur est les deux pillier est superieur a 180
 **	la polarite de depart (position du premier pillier) s'inverse
 */
+
 void		px_polarite(t_arch *arch)
 {
 	t_fvct2	angle;
@@ -115,11 +116,11 @@ void			pillar_screen_info(t_arch *arch, t_player *p)
 **		0 si le portail est devant le portail
 **		1 si le portail est derriere le portail
 */
+
 int				wall_behind_portal(t_arch *arch)
 {
 	t_affine	a_wall;
 	t_affine	a_portal;
-
 	t_affine	a_pillar;
 	t_affine	a_pillar2;
 	t_fvct2		inter;
@@ -130,32 +131,12 @@ int				wall_behind_portal(t_arch *arch)
 	a_pillar2.a = arch->next.y / arch->next.x;
 	a_pillar2.b = 0;
 
-	if (arch->portal.pillar.x == arch->portal.next.x)
-	{
-		a_portal.lock = 1;
-		a_portal.b = arch->portal.pillar.x;
-	}
-	else
-	{
-		a_portal.lock = 0;
-		a_portal.a = (arch->portal.next.y - arch->portal.pillar.y) / (arch->portal.next.x - arch->portal.pillar.x);
-		a_portal.b = arch->portal.pillar.y - a_portal.a * arch->portal.pillar.x;
-	}
+	a_portal = affine_points_secur(arch->portal.pillar, arch->portal.next);
 	inter = interpolation_linear(a_portal, a_pillar);
 	inter2 = interpolation_linear(a_portal, a_pillar2);
 	if (inter.x > arch->pillar.x && inter2.x > arch->next.x)
 		return (0);
-	if (arch->pillar.x == arch->next.x)
-	{
-		a_wall.lock = 1;
-		a_wall.b = arch->pillar.x;
-	}
-	else
-	{
-		a_wall.lock = 0;
-		a_wall.a = (arch->next.y - arch->pillar.y) / (arch->next.x - arch->pillar.x);
-		a_wall.b = arch->pillar.y - a_wall.a * arch->pillar.x;
-	}
+	a_wall = affine_points_secur(arch->pillar, arch->next);
 	if (inter.x > arch->pillar.x)
 	{
 		if (interpolation_linear_secur(a_portal, a_wall, &inter))
