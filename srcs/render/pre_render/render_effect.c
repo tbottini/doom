@@ -6,12 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 02:08:13 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 07:33:08 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-
 
 int				fish_bowl_px(t_arch *arch, t_pillar pillar)
 {

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 06:59:48 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 07:50:23 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 **	renvoie le pourcentage de l'intersection par rapport au mur (debut pilier)
 */
 
-double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle)
+double				wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle)
 {
-	t_fvct2		inter;
-	t_fvct2		diff;
-	t_fvct2		diff2;
-	double		coef_ang;
-	double		coef_wall;
-	double		b;
-	double		percent;
+	t_fvct2			inter;
+	t_fvct2			diff;
+	t_fvct2			diff2;
+	double			coef_ang;
+	double			coef_wall;
+	double			b;
+	double			percent;
 
 	diff.x = arch->wall->pillar->p.x - p->stat.pos.x;
 	diff.y = arch->wall->pillar->p.y - p->stat.pos.y;
@@ -53,6 +53,69 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 	return (percent);
 }
 
+void				swap_pillar(t_arch *arch, int px_tmp, t_fvct2 next_tmp
+	, double shift_txtr_tmp)
+{
+	arch->wall->status = PORTAL;
+	arch->px.x = arch->px.y;
+	arch->px.y = px_tmp;
+	arch->pillar = arch->next;
+	arch->next = next_tmp;
+	arch->shift_txtr.x = arch->shift_txtr.y;
+	arch->shift_txtr.y = shift_txtr_tmp;
+}
+
+t_fvct2				inter_cal(double percent_open, t_arch *arch)
+{
+	double			percent_local;
+	t_fvct2			inter;
+
+	percent_local = (arch->shift_txtr.x - (1 - percent_open))
+		/ (arch->shift_txtr.x - arch->shift_txtr.y);
+	if (percent_local > 1)
+		inter = arch->next;
+	else
+	{
+		inter.x = arch->pillar.x + percent_local * (arch->next.x
+			- arch->pillar.x);
+		inter.y = arch->pillar.y + percent_local * (arch->next.y
+			- arch->pillar.y);
+	}
+	return (inter);
+}
+
+double				trunc_double(double a, double min, double max)
+{
+	if (a < min)
+		return (min);
+	if (a > max)
+		return (max);
+	return (a);
+}
+
+void				render_left_door(t_arch *arch, t_player *player
+	, double percent_open, t_fvct2 inter)
+{
+	int				px_tmp;
+	double			shift_txtr_tmp;
+	t_fvct2			next_tmp;
+
+	px_tmp = arch->px.y;
+	shift_txtr_tmp = arch->shift_txtr.y;
+	next_tmp = arch->next;
+	arch->px.y = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (inter.y / inter.x);
+	arch->next = inter;
+	arch->shift_txtr.x = 1 - percent_open + (1 - arch->shift_txtr.x);
+	if (arch->shift_txtr.y > 1 - percent_open)
+		arch->shift_txtr.y = 1 - (arch->shift_txtr.y - (1 - percent_open));
+	else
+		arch->shift_txtr.y = 1;
+	arch->wall->status = WALL;
+	render_surface(arch, player);
+	swap_pillar(arch, px_tmp, next_tmp, shift_txtr_tmp);
+	render_surface(arch, player);
+}
+
 /*
 **	va separer la porte en deux partie un portail et un mur
 */
@@ -60,58 +123,21 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 void				door_split(t_arch *arch, t_player *player, int flag)
 {
 	double			percent_open;
-	double			percent_local;
 	t_fvct2			inter;
-	int				px_tmp;
-	double			shift_txtr_tmp;
-	t_fvct2			next_tmp;
 
-	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME);
+	percent_open = (arch->timestamp - arch->wall->ots)
+		/ ((double)DOOR_OPEN_TIME);
 	if (flag == OPEN_DOOR)
 		percent_open = 1 - percent_open;
-	if (percent_open > 1)
-		percent_open = 1;
-	if (percent_open < 0)
-		percent_open = 0;
-	percent_local = (arch->shift_txtr.x - (1 - percent_open)) / (arch->shift_txtr.x - arch->shift_txtr.y);
-	if (percent_local > 1)
-		inter = arch->next;
-	else
-	{
-		inter.x = arch->pillar.x + percent_local * (arch->next.x - arch->pillar.x);
-		inter.y = arch->pillar.y + percent_local * (arch->next.y - arch->pillar.y);
-	}
+	percent_open = trunc_double(percent_open, 0, 1);
+	inter = inter_cal(percent_open, arch);
 	if (arch->shift_txtr.y > 1)
 		return ;
 	if (1 - arch->shift_txtr.x < percent_open)
-	{
-		px_tmp = arch->px.y;
-		shift_txtr_tmp = arch->shift_txtr.y;
-		next_tmp = arch->next;
-		arch->px.y = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (inter.y / inter.x);
-		arch->next = inter;
-		arch->shift_txtr.x = 1 - percent_open + (1 - arch->shift_txtr.x);
-		if (arch->shift_txtr.y > 1 - percent_open)
-			arch->shift_txtr.y = 1 - (arch->shift_txtr.y - (1 - percent_open));
-		else
-			arch->shift_txtr.y = 1;
-		arch->wall->status = WALL;
-		reorder(arch);
-		render_surface(arch, player);
-		arch->wall->status = PORTAL;
-		arch->px.x = arch->px.y;
-		arch->px.y = px_tmp;
-		arch->pillar = arch->next;
-		arch->next = next_tmp;
-		arch->shift_txtr.x = arch->shift_txtr.y;
-		arch->shift_txtr.y = shift_txtr_tmp;
-		reorder(arch);
-		render_surface(arch, player);
-	}
+		render_left_door(arch, player, percent_open, inter);
 	else
 	{
 		arch->wall->status = PORTAL;
-		reorder(arch);
 		render_surface(arch, player);
 	}
 	arch->wall->status = flag;

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 01:21:12 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 05:21:45 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 07:36:14 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,7 @@ void			render_surface(t_arch *arch, t_player *player)
 	t_borne		borne_tmp;
 	t_vct2		px_draw;
 
+	reorder(arch);
 	len_sector = length_sector(player, arch->sector);
 	pillar_px[0] = surface_pillar(arch, player, len_sector, arch->pillar.x);
 	pillar_px[1] = surface_pillar(arch, player, len_sector, arch->next.x);
@@ -209,7 +210,6 @@ void			render_wall(t_arch *arch, t_player *player)
 			door_split(arch, player, arch->wall->status);
 			return ;
 		}
-		reorder(arch);
 		render_surface(arch, player);
 	}
 }
