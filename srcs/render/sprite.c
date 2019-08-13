@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 03:04:56 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 08:16:06 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
-			sprite->heigth = cam_get_enemy_surface(arch->cam, arch->sdl, enemy, player, sprite->pos.x);
+			sprite->heigth = cam_get_enemy_surface(arch, enemy, player, sprite->pos.x);
 			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
 			sprite_insert(sprite_list, sprite);
 		}
