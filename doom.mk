@@ -77,12 +77,14 @@ SRCS_RENDER		:=		render.c										\
 						prop.c											\
 
 SRCS_PARSING	:=		lil_readfile.c									\
+						lil_readfileeditor.c							\
 						lil_savefile.c									\
 						my_readsavefile.c								\
 						readfile.c										\
 						readfileeditor.c								\
 						savefile.c										\
 						super_readfile.c								\
+						super_readfileeditor.c							\
 						super_savefile.c								\
 
 SRCS_TOOLS		:=		list_tools.c									\

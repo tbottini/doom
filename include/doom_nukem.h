@@ -98,6 +98,13 @@ int						read_balise(int fd, char *balise, int ret);
 int						read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len);
 int						read_sectors(int fd, t_game *game, t_slen *len);
 
+SDL_Texture				*find_texture(SDL_Texture **txtrs, char **edpath, char *surfpath);
+t_secteur				*find_secteur(t_lstsec secteurs, t_game *g, t_sector *sector);
+t_mur					*find_mur_in_secteur(t_lstsec secteurs, t_game *g, t_wall *wall);
+void					fill_ent(t_lstsec secteurs, t_game *g, t_entity *ent, t_prop *prop);
+
+void					add_walls(t_game *g, t_editor *e, t_sector *gsec, t_secteur *sec);
+t_pilier				*find_pillar_from_game(t_pillar *pillars, t_pillar *to_find, t_lstpil pillst);
 void					set_txtr(t_txtr *txtr, SDL_Surface *surf, int id);
 int						read_file(t_game *game, const char *file, bool foredit);
 int						check_file(const char *file);
