@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/07/24 22:00:47 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 06:07:16 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,59 +14,63 @@
 
 void		resize_event(t_doom *doom)
 {
-	doom->game.camera.d_screen = (doom->sdl.size.x / 2.0) / tan(doom->game.player.fov / 2.0 * PI180);
+	doom->game.camera.d_screen = (doom->sdl.size.x / 2.0)
+	/ tan(doom->game.player.fov / 2.0 * PI180);
 	fire_init(doom);
 	draw_menu(doom);
 }
 
-static void window_event(t_doom *doom, SDL_Event e)
+static void	event2(t_doom *d, SDL_Event e, bool f)
 {
-	void *tmp;
-	int pitch;
-
-	//PrintEvent(&e);
-	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || e.window.event == SDL_WINDOWEVENT_RESIZED)
+	if (f)
 	{
-		SDL_GetWindowSize(doom->sdl.win, &(doom->sdl.size.x), &(doom->sdl.size.y));
-		if (doom->sdl.size.x % 4) // Pour le Multithreading (Lignes noires si pas fait)
-			SDL_SetWindowSize(doom->sdl.win, doom->sdl.size.x += doom->sdl.size.x % 4, doom->sdl.size.y);
-		if (doom->sdl.txture)
-			SDL_DestroyTexture(doom->sdl.txture);
-		doom->sdl.txture = SDL_CreateTexture(doom->sdl.rend,
-				SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING,
-						doom->sdl.size.x, doom->sdl.size.y);
-		if (SDL_LockTexture(doom->sdl.txture, NULL, &tmp, &pitch))
-			doom_exit(doom);
-		doom->sdl.screen = (Uint32 *)tmp;
-		resize_event(doom);
+		if (d->ui.m_status == MENU_MAP)
+		{
+			load_map_btns(d);
+			draw_menu(d);
+		}
+		else if (d->ui.m_status == MENU_IGMAIN
+			|| d->ui.m_status == MENU_IGOPTION)
+			doom_render(d);
 	}
-	else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST && doom->ui.m_status == MENU_INGAME)
-		sdl_set_status(doom, MENU_IGMAIN);
-	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
-		doom_exit(doom);
-	if (doom->ui.m_status == MENU_MAP)
+	else
 	{
-		load_map_btns(doom);
-		draw_menu(doom);
+		if (d->ui.m_status == MENU_INGAME)
+			mouse_move(e.motion.xrel, e.motion.yrel, d);
+		else
+			mouse_move(e.motion.x, e.motion.y, d);
 	}
-	else if (doom->ui.m_status == MENU_IGMAIN || doom->ui.m_status == MENU_IGOPTION)
-		doom_render(doom);
 }
 
-void dropfile_event(t_doom *doom, SDL_Event e)
+static void	window_event(t_doom *d, SDL_Event e)
+{
+	void	*tmp;
+	int		pitch;
+
+	if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED
+		|| e.window.event == SDL_WINDOWEVENT_RESIZED)
+	{
+		SDL_GetWindowSize(d->sdl.win, &(d->sdl.size.x), &(d->sdl.size.y));
+		d->sdl.size.x % 4 ? SDL_SetWindowSize(d->sdl.win, d->sdl.size.x +=
+			d->sdl.size.x % 4, d->sdl.size.y) : 0;
+		d->sdl.txture ? SDL_DestroyTexture(d->sdl.txture) : 0;
+		d->sdl.txture = SDL_CreateTexture(d->sdl.rend, SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_STREAMING, d->sdl.size.x, d->sdl.size.y);
+		SDL_LockTexture(d->sdl.txture, NULL, &tmp, &pitch) ? doom_exit(d) : 0;
+		d->sdl.screen = (Uint32 *)tmp;
+		resize_event(d);
+	}
+	else if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST
+	&& d->ui.m_status == MENU_INGAME)
+		sdl_set_status(d, MENU_IGMAIN);
+	else if (e.window.event == SDL_WINDOWEVENT_CLOSE)
+		doom_exit(d);
+	event2(d, e, true);
+}
+
+void		dropfile_event(t_doom *doom, SDL_Event e)
 {
 	(void)doom;
-	//if (doom->map)
-	//	doom_clear_map(doom);
-	//if (doom_parseur(doom, e.drop.file))
-	//{
-	//	sdl_set_status(doom, 0);
-	//}
-	//else
-	//{
-	//	ft_printf("Error Reading File Drop\n");
-	//	sdl_set_status(doom, 1);
-	//}
 	SDL_free(e.drop.file);
 }
 
@@ -75,7 +79,7 @@ void dropfile_event(t_doom *doom, SDL_Event e)
 ** New event shouldn't be needed
 */
 
-int event_handler_doom(t_doom *doom, SDL_Event e)
+int			event_handler_doom(t_doom *doom, SDL_Event e)
 {
 	if (doom->edit.status)
 		doom->edit.status = ED_CLOSED;
@@ -92,20 +96,8 @@ int event_handler_doom(t_doom *doom, SDL_Event e)
 		key_release(e.key.keysym.sym, doom);
 	else if (e.type == SDL_WINDOWEVENT)
 		window_event(doom, e);
-	else if (e.type == SDL_CONTROLLERDEVICEADDED)
-	{
-		if (!(doom->controller) && SDL_NumJoysticks() && SDL_IsGameController(0))
-			doom->controller = SDL_GameControllerOpen(0);
-	}
-	else if (e.type == SDL_CONTROLLERDEVICEREMOVED && doom->controller)
-		SDL_GameControllerClose(doom->controller);
 	else if (e.type == SDL_MOUSEMOTION)
-	{
-		if (doom->ui.m_status == MENU_INGAME)
-			mouse_move(e.motion.xrel, e.motion.yrel, doom);
-		else
-			mouse_move(e.motion.x, e.motion.y, doom);
-	}
+		event2(doom, e, false);
 	else if (e.type == SDL_MOUSEBUTTONDOWN)
 		mouse_press(e.button.button, e.button.x, e.button.y, doom);
 	else if (e.type == SDL_MOUSEBUTTONUP)

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 02:25:30 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 07:45:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,4 +243,5 @@ void		pickup_prop(t_doom *doom)
 		}
 		i++;
 	}
+	check_boost(doom->timestamp, &doom->game.player);
 }
