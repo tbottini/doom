@@ -4,16 +4,19 @@ SRCS_DOOM		:=		button_function.c								\
 						checkfile.c										\
 						cinematri.c										\
 
-SRCS_EDITOR		:=		editor_finder.c									\
-						editor_render.c									\
+SRCS_EDITOR		:=		draw_inspect_menu.c								\
+						draw_sector_menu.c								\
+						editor_finder.c									\
 						editor_input.c									\
-						editor_optionbox.c								\
-						editor_txtrbox.c								\
 						editor_key.c									\
+						editor_menu_wheel.c								\
 						editor_mouse_move.c								\
 						editor_mouse_press.c							\
 						editor_mouse_wheel.c							\
-						editor_menu_wheel.c								\
+						editor_optionbox.c								\
+						editor_render_draw.c							\
+						editor_render.c									\
+						editor_txtrbox.c								\
 						editor_write.c									\
 
 SRCS_UI			:=		button_action.c									\

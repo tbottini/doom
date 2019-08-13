@@ -1,9 +1,9 @@
 #ifndef RENDER_H
 # define RENDER_H
 
-#include "architect.h"
-#include "player.h"
-#include "SDL_ttf.h"
+# include "architect.h"
+# include "player.h"
+# include <SDL_ttf.h>
 # include "calcul.h"
 //borne arch player vector sector
 
@@ -23,6 +23,14 @@
 # define RASTERIZE		0
 # define ENGINE			1
 # define RENDER			ENGINE
+
+typedef					struct s_editor		t_editor;
+typedef					struct s_mur		t_mur;
+typedef 				t_mur				*t_lstmur;
+typedef					struct s_secteur	t_secteur;
+typedef					t_secteur			*t_lstsec;
+typedef					struct s_entity		t_entity;
+typedef					t_entity			*t_lstent;
 
 typedef struct 			s_sprite
 {
@@ -65,6 +73,18 @@ void					draw_column(t_arch *arch, t_fvct2 surface);
 void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
 int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop);
 void					render_surface(t_arch *arch, t_player *player);
+
+/*
+** Editor render
+*/
+void					map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, SDL_Color c);
+void					draw_grid(t_editor *editor, t_vct2 center, int dist, int master);
+void					draw_player(t_editor *editor);
+void					draw_props(t_editor *editor, t_entity *curr, SDL_Texture **sprites, int proppos);
+void					draw_enemies(t_editor *editor, t_entity *curr);
+void					draw_objs(t_editor *editor, t_entity *start);
+void					draw_one_wall(t_editor *editor, t_lstmur currwall);
+void					norm_draw_walls(t_editor *editor, t_lstsec currsec);
 
 /*
 **	bunch
