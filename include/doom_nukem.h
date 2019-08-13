@@ -65,6 +65,39 @@ void					push_char(char *str, char c);
 /*
 **	parsing
 */
+void					write_balise(int fd, char *balise);
+void					write_one_wall(int fd, t_lstmur wall);
+void					write_sec_walls(int fd, t_lstmur wall);
+void					write_sec_props(int fd, t_secteur *sect, t_lstent props);
+void					write_sectors(int fd, t_editor *edit);
+
+void					write_wall_props(int fd, t_lstent props);
+
+void					write_pillars(int fd, t_editor *edit);
+void					write_one_prop(int fd, t_entity *prop);
+void					write_one_sector(int fd, t_secteur *sec, t_lstent props);
+void					write_one_enemy(int fd, t_entity *enn);
+void					write_player(int fd, t_eplayer *player);
+
+char					*get_path(t_editor *edit, SDL_Texture *txtr);
+void					load_used_textures(t_editor *edit);
+int						push_texture(t_editor *edit, SDL_Texture *txtr);
+
+int						read_one_texture(int fd, SDL_Surface **surf, char **sp);
+int						read_textures(int fd, SDL_Surface ***surf, t_slen *len, char ***sp);
+int						read_one_pillar(int fd, t_pillar *pill);
+int						read_pillars(int fd, t_pillar **pillars, t_slen *len);
+
+int						read_one_prop(int fd, t_game *game, t_prop *prop, t_slen *len);
+int						read_one_wall(int fd, t_game *game, t_wall *wall, t_slen *len);
+int						read_wall_props(int fd, t_game *game, t_wall *wall, t_slen *len);
+int						read_sec_walls(int fd, t_game *game, t_sector *sector, t_slen *len);
+int						read_sec_props(int fd, t_game *game, t_sector *sector, t_slen *len);
+
+int						read_balise(int fd, char *balise, int ret);
+int						read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len);
+int						read_sectors(int fd, t_game *game, t_slen *len);
+
 void					set_txtr(t_txtr *txtr, SDL_Surface *surf, int id);
 int						read_file(t_game *game, const char *file, bool foredit);
 int						check_file(const char *file);
@@ -106,6 +139,8 @@ int						bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color);
 void					minibord(t_minimap *mini);
 void					miniwalls(t_player *player, t_sector *sector, t_minimap *mini);
 void					miniinv(t_minimap *mini, t_player *player);
+void					minifield(t_player *player, t_minimap *mini);
+void					minifill(t_minimap *m, int h, t_power p);
 
 /*
 ** HUD

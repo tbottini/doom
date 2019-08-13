@@ -58,7 +58,9 @@ SRCS_RENDER		:=		render.c										\
 						sector.c										\
 						hud_render.c									\
 						hud/minimap.c									\
+						hud/mini_minimap.c								\
 						hud/minimap_drawer.c							\
+						hud/minimap_tools.c								\
 						pre_render/backface.c							\
 						pre_render/render_effect.c						\
 						pre_render/bunch.c								\
@@ -74,9 +76,14 @@ SRCS_RENDER		:=		render.c										\
 						sprite.c										\
 						prop.c											\
 
-SRCS_PARSING	:=		readfile.c										\
+SRCS_PARSING	:=		lil_readfile.c									\
+						lil_savefile.c									\
+						my_readsavefile.c								\
+						readfile.c										\
 						readfileeditor.c								\
 						savefile.c										\
+						super_readfile.c								\
+						super_savefile.c								\
 
 SRCS_TOOLS		:=		list_tools.c									\
 						editor_tools.c									\
@@ -89,6 +96,8 @@ SRCS_TOOLS		:=		list_tools.c									\
 						sdl_tools.c										\
 						secteur_tools.c									\
 						play_tools.c									\
+						readfile_tools.c								\
+						savefile_tools.c								\
 						musi.c											\
 						vector.c										\
 						editor_write_tools.c							\
