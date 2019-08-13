@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/01 18:08:19 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 08:11:58 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	check_boost(Uint32 timestamp, t_player *player)
 			player->weapons[0].dmg = 10;
 		else if (player->power == SMOL)
 		{
-			if (player->stat.sector->h_ceil <= player->stat.sector->h_floor + H_NORMAL)
+			if (player->stat.sector->h_ceil <=
+				player->stat.sector->h_floor + H_NORMAL)
 				return ;
 			else
 				player->stat.height = H_NORMAL;

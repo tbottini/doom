@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_btns3.c                                       :+:      :+:    :+:   */
+/*   init_btns4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:28 by magrab            #+#    #+#             */
-/*   Updated: 2019/06/12 15:37:01 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 08:20:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Change Difficulty
 */
 
-t_btn	add_middle_difficulty_button(t_doom *doom, SDL_Rect *parent)
+t_btn	add_middle_diff_button(t_doom *doom, SDL_Rect *parent)
 {
 	t_btn			tmp;
 
@@ -34,7 +34,7 @@ t_btn	add_middle_difficulty_button(t_doom *doom, SDL_Rect *parent)
 	return (tmp);
 }
 
-t_btn	add_left_difficulty_button(t_doom *doom, SDL_Rect *parent)
+t_btn	add_left_diff_button(t_doom *doom, SDL_Rect *parent)
 {
 	t_btn			tmp;
 
@@ -52,7 +52,7 @@ t_btn	add_left_difficulty_button(t_doom *doom, SDL_Rect *parent)
 	return (tmp);
 }
 
-t_btn	add_right_difficulty_button(t_doom *doom, SDL_Rect *parent)
+t_btn	add_right_diff_button(t_doom *doom, SDL_Rect *parent)
 {
 	t_btn			tmp;
 

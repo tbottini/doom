@@ -89,6 +89,7 @@ SRCS_PARSING	:=		lil_readfile.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
 						editor_tools.c									\
+						enemy_tools.c									\
 						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\
@@ -107,6 +108,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\
 						ui_manager.c									\
+						ui_manager2.c									\
 						player_manager.c								\
 						editor_manager.c								\
 						music_manager.c									\

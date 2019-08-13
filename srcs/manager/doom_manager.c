@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   doom_manager.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/13 08:02:36 by akrache           #+#    #+#             */
+/*   Updated: 2019/08/13 09:05:50 by akrache          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom_nukem.h"
 
 int		secure_doom(t_doom *doom)
@@ -29,7 +41,7 @@ void	doom_exit(t_doom *doom)
 	exit(0);
 }
 
-t_doom	*doom_init()
+t_doom	*doom_init(void)
 {
 	t_doom	*doom;
 
@@ -41,7 +53,8 @@ t_doom	*doom_init()
 		doom_exit(doom);
 	if (!ui_init(&doom->ui))
 		doom_exit(doom);
-	ui_by_sdl(doom, &doom->ui);
+	if (!ui_by_sdl(doom, &doom->ui))
+		doom_exit(doom);
 	camera_init(&doom->game.camera, &doom->sdl, 90);
 	if (!arch_init(&doom->game.arch, &doom->sdl, &doom->game.camera))
 		doom_exit(doom);
@@ -55,6 +68,5 @@ t_doom	*doom_init()
 	doom->game.difficulty = MEDIUM;
 	SDL_RaiseWindow(doom->sdl.win);
 	doom->timestamp = SDL_GetTicks();
-	doom->debug = 0;
 	return (doom);
 }

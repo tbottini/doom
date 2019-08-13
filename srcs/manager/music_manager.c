@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   music_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/16 14:49:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 08:11:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "doom_nukem.h"
+#include "doom_nukem.h"
 
 void				music_free(t_sound *sound)
 {
@@ -31,10 +31,7 @@ static Mix_Music	*loadmus(char *track)
 	Mix_Music *res;
 
 	if (!(res = Mix_LoadMUS(track)))
-	{
-		ft_printf( "SDL_mixer Error: %s\n", Mix_GetError());
 		return (0);
-	}
 	return (res);
 }
 
