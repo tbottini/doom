@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_column.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 14:08:39 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 01:24:00 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,19 +99,23 @@ int		draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop)
 
 double		draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
 {
-	if (surface.x >= (int)arch->portal.b_down[arch->px.x])
+	if (surface.x >= (int)arch->portal.b_down[arch->px.x]
+		|| surface.x > arch->sdl->size.y)
 	{
 		return (arch->portal.b_down[arch->px.x] * arch->sdl->size.x + arch->px.x);
 	}
-	else if (surface.y <= (int)arch->portal.b_up[arch->px.x])
+	else if (surface.y <= (int)arch->portal.b_up[arch->px.x]
+		|| surface.y < 0)
 	{
 		return (arch->portal.b_up[arch->px.x] * arch->sdl->size.x + arch->px.x);
 	}
-	if (surface.x <= (int)arch->portal.b_up[arch->px.x])
+	if (surface.x <= (int)arch->portal.b_up[arch->px.x]
+		|| surface.x <= 0)
 		surface.x = arch->px.x + arch->portal.b_up[arch->px.x] * arch->sdl->size.x;
 	else
 		surface.x = surface.x * arch->sdl->size.x + arch->px.x;
-	if (surface.y > (int)arch->portal.b_down[arch->px.x])
+	if (surface.y > (int)arch->portal.b_down[arch->px.x]
+		|| surface.y > arch->sdl->size.y)
 		surface.y = arch->px.x + (arch->portal.b_down[arch->px.x] - 1) * arch->sdl->size.x;
 	else
 		surface.y = surface.y * arch->sdl->size.x;
@@ -146,6 +150,7 @@ void		draw_column(t_arch *arch, t_fvct2 surface)
 t_fvct2		surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child)
 {
 	t_fvct2	s_portal;
+
 
 	s_portal.y = (child->h_floor - parent->h_floor) / parent->h_ceil;
 	s_portal.x = (child->h_floor - parent->h_floor + child->h_ceil) / parent->h_ceil;
@@ -185,7 +190,6 @@ void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int star
 	draw_part(arch, tmp, 0x272130ff);
 	parent_borne->b_up[arch->px.x - start] = arch->portal.b_up[arch->px.x];
 	parent_borne->b_down[arch->px.x - start] = arch->portal.b_down[arch->px.x];
-
 	tmp = (t_vct2){s_portal.x, s_portal.y};
 	set_borne_vertical(arch, tmp, arch->px.x);
 }

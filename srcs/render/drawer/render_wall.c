@@ -89,6 +89,8 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	int			start;
 	double		coef_distance;
 	double		dist_px;
+//	t_fvct2		s_portal;
+//	t_vct2		tmp;
 	int			i = 0;
 
 	start = arch->px.x;
@@ -103,8 +105,14 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	dist_px = arch->pillar.x;
 	while (arch->px.x != arch->px.y)
 	{
+		if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
+			arch->portal.b_up[arch->px.x] = arch->sdl->size.y - 1;
+		if (arch->portal.b_down[arch->px.x] > (uint32_t)arch->sdl->size.y)
+			arch->portal.b_down[arch->px.x] = arch->sdl->size.y - 1;
 		if (arch->wall->status == WALL)
 		{
+
+
 			if (z_line_buffer(arch, neutre.x, arch->px.x))
 			{
 				draw_column(arch, *pillar);
@@ -114,7 +122,9 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 		else if (arch->wall->status == PORTAL)
 		{
 			if (zline_portal(arch, borne_tmp->zline, neutre.x, start))
+			{
 				draw_portal(arch, *pillar, borne_tmp, start);
+			}
 		}
 		pillar->x -= coef_surface.x;
 		pillar->y -= coef_surface.y;
@@ -171,7 +181,7 @@ void			render_surface(t_arch *arch, t_player *player)
 		arch->depth_portal++;
 		if (debug == 9)
 			printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
-
+		//printf(WRED"arch->px %d %d\n"WEND, arch->px.x, arch->px.y);
 		sector_render(arch, player, arch->wall->link);
 		arch->depth_portal--;
 		arch->sector = sector_tmp;
