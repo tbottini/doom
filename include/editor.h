@@ -430,6 +430,8 @@ int						read_file_to_editor(t_editor *edit, const char *file);
 */
 int						editor_reset(t_editor *editor);
 void					ui_free(t_ui *ui);
+int						load_weapons(t_doom *doom, t_ui *ui);
+int						link_txtr(t_doom *doom, t_ui *ui);
 int						ui_init(t_ui *ui);
 
 #endif

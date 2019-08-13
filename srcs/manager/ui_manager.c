@@ -1,64 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ui_manager.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/13 08:15:30 by akrache           #+#    #+#             */
+/*   Updated: 2019/08/13 08:28:43 by akrache          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom_nukem.h"
 
-void	ui_free(t_ui *ui)
+static int	load_props(t_doom *doom, t_ui *ui)
 {
-	int i;
-
-	i = -1;
-	//while (ui->btnarr[++i].txture)
-	//	SDL_DestroyTexture(ui->btnarr[i].txture);
-	i = -1;
-	//while (ui->btnmap[++i].txture)
-	//{
-	//	SDL_DestroyTexture(ui->btnmap[i].txture);
-		if (i > 1)
-			free(ui->btnmap[i].data);
-	//}
-	if (ui->fonts.s64)
-		TTF_CloseFont(ui->fonts.s64);
-	if (ui->fonts.s32)
-		TTF_CloseFont(ui->fonts.s32);
-	if (ui->fonts.s128)
-		TTF_CloseFont(ui->fonts.s128);
-}
-
-int		load_weapons(t_doom *doom, t_ui *ui)
-{
-	int x;
-	char path[50];
-
-	ft_strcpy(path, SPRITEPATH);
-	x = KICKSTART;
-	while (x < ENDSPRITES)
-	{
-		concat_atoi(&path[19], x);
-		if (!(ui->sprites[x] = IMG_LoadTexture(doom->sdl.rend, path)))
-			return (0);
-		x++;
-	}
-	return (1);
-}
-
-int		link_txtr(t_doom *doom, t_ui *ui)
-{
-	int x;
-	SDL_Surface *tmp;
-
-	x = -1;
-	while (++x < 18)
-	{
-		if (!(ui->props[x] = SDL_CreateTextureFromSurface(doom->sdl.rend, ui->propssurf[x])))
-			return (0);
-		tmp = ui->propssurf[x];
-		ui->propssurf[x] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
-		SDL_FreeSurface(tmp);
-	}
-	return (1);
-}
-
-int		load_props(t_doom *doom, t_ui *ui)
-{
-	if    (!(ui->propssurf[0] = IMG_Load(PROPHEALTH))
+	if (!(ui->propssurf[0] = IMG_Load(PROPHEALTH))
 		|| !(ui->propssurf[1] = IMG_Load(PROPCASS))
 		|| !(ui->propssurf[2] = IMG_Load(PROPMUN))
 		|| !(ui->propssurf[3] = IMG_Load(PROPRPILL))
@@ -83,13 +39,13 @@ int		load_props(t_doom *doom, t_ui *ui)
 	return (link_txtr(doom, ui));
 }
 
-
-int		load_enemies(t_doom *doom, t_ui *ui)
+static int	load_enemies(t_doom *doom, t_ui *ui)
 {
-	int x;
-	char path[50];
-	SDL_Surface *tmp;
+	int			x;
+	char		path[50];
+	SDL_Surface	*tmp;
 
+	(void)doom;
 	ft_strcpy(path, ENEMYPATH);
 	x = 0;
 	while (x < ENEMYTXTRTOTAL)
@@ -97,33 +53,16 @@ int		load_enemies(t_doom *doom, t_ui *ui)
 		concat_atoi(&path[35], x);
 		if (!(tmp = IMG_Load(path)))
 			return (0);
-		ui->enemy[x] = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
+		ui->enemy[x] =
+		SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGBA8888, 0);
 		SDL_FreeSurface(tmp);
 		x++;
 	}
 	return (1);
 }
 
-int		ui_by_sdl(t_doom *doom, t_ui *ui)
+static int	ui_by_sdl2(t_doom *doom, t_ui *ui)
 {
-	ui->btnarr[0] = add_doom_button(doom, " Doom-Nukem ");
-	ui->btnarr[1] = add_start_button(doom);
-	ui->btnarr[2] = add_opt_button(doom);
-	ui->btnarr[3] = add_editor_button(doom);
-	ui->btnarr[4] = add_quit_button(doom, " Quit ", &doom_exit);
-	ui->btnmap[0] = add_quit_button(doom, " Return ", &return_button);
-	ui->btnmap[1] = add_mapmenu_button(doom);
-	ui->btnopt[0] = ui->btnmap[0];
-	ui->btnopt[1] = add_doom_button(doom, " Options ");
-	ui->btnopt[2] = add_middle_difficulty_button(doom, &(ui->btnopt[1].loc.area));
-	ui->btnopt[3] = add_left_difficulty_button(doom, &(ui->btnopt[2].loc.area));
-	ui->btnopt[4] = add_right_difficulty_button(doom, &(ui->btnopt[2].loc.area));
-	ui->slidopt[0] = add_fov_slider(doom);
-	ui->slidopt[0].loc.parent = &(ui->btnopt[1].loc.area);
-	ui->slidopt[1] = add_music_slider(doom);
-	ui->slidopt[1].loc.parent = &(ui->slidopt[0].loc.area);
-	ui->slidopt[2] = add_effect_slider(doom);
-	ui->slidopt[2].loc.parent = &(ui->slidopt[1].loc.area);
 	ui->btnpse[0] = add_pause_button(doom);
 	ui->btnpse[1] = add_resume_button(doom);
 	ui->btnpse[2] = add_middle_music_button(doom);
@@ -145,7 +84,30 @@ int		ui_by_sdl(t_doom *doom, t_ui *ui)
 	return (1);
 }
 
-int		ui_init(t_ui *ui)
+int			ui_by_sdl(t_doom *doom, t_ui *ui)
+{
+	ui->btnarr[0] = add_doom_button(doom, " Doom-Nukem ");
+	ui->btnarr[1] = add_start_button(doom);
+	ui->btnarr[2] = add_opt_button(doom);
+	ui->btnarr[3] = add_editor_button(doom);
+	ui->btnarr[4] = add_quit_button(doom, " Quit ", &doom_exit);
+	ui->btnmap[0] = add_quit_button(doom, " Return ", &return_button);
+	ui->btnmap[1] = add_mapmenu_button(doom);
+	ui->btnopt[0] = ui->btnmap[0];
+	ui->btnopt[1] = add_doom_button(doom, " Options ");
+	ui->btnopt[2] = add_middle_diff_button(doom, &(ui->btnopt[1].loc.area));
+	ui->btnopt[3] = add_left_diff_button(doom, &(ui->btnopt[2].loc.area));
+	ui->btnopt[4] = add_right_diff_button(doom, &(ui->btnopt[2].loc.area));
+	ui->slidopt[0] = add_fov_slider(doom);
+	ui->slidopt[0].loc.parent = &(ui->btnopt[1].loc.area);
+	ui->slidopt[1] = add_music_slider(doom);
+	ui->slidopt[1].loc.parent = &(ui->slidopt[0].loc.area);
+	ui->slidopt[2] = add_effect_slider(doom);
+	ui->slidopt[2].loc.parent = &(ui->slidopt[1].loc.area);
+	return (ui_by_sdl2(doom, ui));
+}
+
+int			ui_init(t_ui *ui)
 {
 	ui->m_status = MENU_MAIN;
 	ui->curr_btn_controller = -2;

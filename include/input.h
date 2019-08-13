@@ -117,9 +117,9 @@ t_btn					add_left_music_button(t_doom *doom, SDL_Rect *parent);
 t_btn					add_middle_music_button(t_doom *doom);
 t_btn					add_right_music_button(t_doom *doom, SDL_Rect *parent);
 
-t_btn					add_left_difficulty_button(t_doom *doom, SDL_Rect *parent);
-t_btn					add_middle_difficulty_button(t_doom *doom, SDL_Rect *parent);
-t_btn					add_right_difficulty_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_left_diff_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_middle_diff_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_right_diff_button(t_doom *doom, SDL_Rect *parent);
 
 SDL_Texture				*add_fist(t_doom *doom);
 SDL_Texture				*add_handgun(t_doom *doom);
