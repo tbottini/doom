@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wall.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/13 02:58:39 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
 #include "calcul.h"
-#include "debug.h"
 
 /*
 **	trouve l'intersection entre le mur et un angle donne
 **	renvoie le pourcentage de l'intersection par rapport au mur (debut pilier)
 */
+
 double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle)
 {
 	t_fvct2		inter;
@@ -44,6 +56,7 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 /*
 **	va separer la porte en deux partie un portail et un mur
 */
+
 void				door_split(t_arch *arch, t_player *player, int flag)
 {
 	double			percent_open;
@@ -60,20 +73,14 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 		percent_open = 1;
 	if (percent_open < 0)
 		percent_open = 0;
-
 	percent_local = (arch->shift_txtr.x - (1 - percent_open)) / (arch->shift_txtr.x - arch->shift_txtr.y);
 	if (percent_local > 1)
-	{
 		inter = arch->next;
-	}
 	else
 	{
 		inter.x = arch->pillar.x + percent_local * (arch->next.x - arch->pillar.x);
 		inter.y = arch->pillar.y + percent_local * (arch->next.y - arch->pillar.y);
 	}
-
-
-	//on determine le shift_txtr a partir du percent_local
 	if (arch->shift_txtr.y > 1)
 		return ;
 	if (1 - arch->shift_txtr.x < percent_open)

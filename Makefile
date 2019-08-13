@@ -33,7 +33,6 @@ INCLUDE			:=		-I ./include							\
 HEADERS			:=		libft/libft.h							\
 						include/doom_nukem.h					\
 						include/calcul.h						\
-						include/debug.h							\
 						include/editor.h						\
 						include/vector.h						\
 						include/render.h						\
@@ -42,8 +41,6 @@ HEADERS			:=		libft/libft.h							\
 						include/sector.h						\
 						include/screen.h						\
 						include/architect.h						\
-						include/color.h							\
-
 
 FOLDER			:=		objs									\
 						objs/render								\

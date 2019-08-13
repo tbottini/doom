@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sprite.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 23:57:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 03:04:56 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 #include "calcul.h"
-#include "debug.h"
 
 void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 {
@@ -20,15 +19,9 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 
 	sprite_insert = *sprite_list;
 	if (!sprite_insert)
-	{
-		if (debug == 9)
-			printf("insert first node %f\n", sprite_node->pos.x);
 		*sprite_list = sprite_node;
-	}
 	else if (sprite_node->pos.x > sprite_insert->pos.x)
 	{
-		if (debug == 9)
-			printf("insert2node %f\n", sprite_node->pos.x);
 		sprite_node->next = *sprite_list;
 		*sprite_list = sprite_node;
 	}
@@ -40,8 +33,6 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 		}
 		sprite_node->next = sprite_insert->next;
 		sprite_insert->next = sprite_node;
-		if (debug == 9)
-			printf("insert node %f\n", sprite_node->pos.x);
 	}
 }
 
@@ -126,8 +117,6 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
-
-			//sprite->heigth =
 			sprite->heigth = player_prop_heigth_surface(arch, player, &props[i], sprite->pos.x);
 			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
 			sprite_insert(sprite_list, sprite);
@@ -139,15 +128,15 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 
 void				sprite_render(t_sprite *sprite, t_arch *arch)
 {
-	double		p_buff_h;
-	double		p_buff_w;
-	double		start_txtr_heigth;
-	double		buffer_h;
-	double		buffer_w;
-	int			i_heigth;
-	unsigned int limit_h;
-	unsigned int cursor_screen;
-	double		neutral_distance;
+	double			p_buff_h;
+	double			p_buff_w;
+	double			start_txtr_heigth;
+	double			buffer_h;
+	double			buffer_w;
+	int				i_heigth;
+	unsigned int 	limit_h;
+	unsigned int 	cursor_screen;
+	double			neutral_distance;
 
 	if (!(sprite->texture.pixels))
 		return ;

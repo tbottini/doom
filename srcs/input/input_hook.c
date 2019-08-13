@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   input_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/12 21:51:30 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 03:15:25 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-#include "debug.h"
 
 void			save_png(t_sdl *sdl)
 {
@@ -36,20 +35,10 @@ void			clean_screen(t_sdl *sdl)
 	}
 }
 
-void			debug_code(int key)
-{
-	debug = key - SDLK_KP_1 + 1;
-	debug_screen = debug;
-	printf("debug keycode %d\n", debug);
-}
-
-
 int		game_key_press(int key, t_doom *doom)
 {
 	if (doom->ui.curr_btn_controller > 0)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
-	else if (key >= SDLK_KP_1 && key <= SDLK_KP_9)
-		debug_code(key);
 	else if (key == SDLK_RETURN || key == SDLK_BACKQUOTE)
 		sdl_set_status(doom, MENU_IGMAIN);
 	else if (key == SDLK_LGUI && doom->game.player.inv.jetpack)
@@ -90,17 +79,6 @@ int		key_press(int key, t_doom *doom)
 		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
 	else if ((key == SDLK_RETURN || key == SDLK_BACKQUOTE) && doom->ui.m_status == MENU_IGMAIN)
 		sdl_set_status(doom, MENU_INGAME);
-	else if (key <= SDLK_KP_9 && key >= SDLK_KP_1)
-		debug_code(key);
-	else if (key == SDLK_h)
-	{
-		describe_player(doom->game.player);
-		describe_sector_recursif(*doom->game.sectors);
-	}
-	else if (key == SDLK_KP_MINUS)
-		doom->game.arch.zoom /= 2;
-	else if (key == SDLK_KP_PLUS)
-		doom->game.arch.zoom *= 2;
 	else if (key == SDLK_PERIOD)
 		doom->ui.fire = (t_pal){{0, 0x10003101, 0x14073702, 0x190f3d03, 0x1e164304,
 		0x221e4905, 0x27254f06, 0x2c2c5507, 0x30345b08, 0x353c6109, 0x3a43670A,
@@ -175,7 +153,6 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 	SDL_SetCursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW));
 	if (btn == SDL_BUTTON_LEFT)
 	{
-		//doom->ui.curr_btn = NULL;
 		curr_btn = btn_hover(doom, x, y);
 		if (curr_btn && curr_btn->func)
 			(*curr_btn->func)(doom);
@@ -189,8 +166,6 @@ int		mouse_press(int btn, int x, int y, t_doom *doom)
 				ft_nodeadd_int(&(doom->sdl.keys), SDL_BUTTON_LEFT);
 		}
 	}
-	//else if (btn == SDL_BUTTON_RIGHT)
-		//fire_on_off(doom->sdl.screen, doom->sdl.size, 0); // Debug thing
 	return (0);
 }
 
@@ -219,6 +194,7 @@ int mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom)
 ** else if (btn == SDL_BUTTON_yourbutton)
 **		action();
 */
+
 int		mouse_release(int btn, int x, int y, t_doom *doom)
 {
 	doom->ui.currslid = NULL;
@@ -234,6 +210,7 @@ int		mouse_release(int btn, int x, int y, t_doom *doom)
 ** Add here function that need to be done when mouse if moved in window
 ** x and y are relative postions when in gamemode
 */
+
 int		mouse_move(int x, int y, t_doom *doom)
 {
 	t_slid	*tmp;

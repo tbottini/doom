@@ -6,14 +6,13 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 12:09:39 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 02:07:54 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 #include "doom_nukem.h"
 #include "color.h"
-
 
 int				bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color)
 {

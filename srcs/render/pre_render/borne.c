@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   borne.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/13 01:28:54 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/13 02:59:00 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
-#include "debug.h"
 
 int			trunc_int(int value, int min, int max)
 {
@@ -56,11 +67,6 @@ void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 	arch->portal.b_left = borne->b_left;
 	arch->portal.b_right = borne->b_right;
 
-	if (debug == 9)
-	{
-		printf("borne->b_left %f borne->b_right %f\n", borne->b_left, borne->b_right);
-		printf("start load start %d arch->px.y %d archmid %d\n", px_draw.x, arch->px.y, arch->sdl->size.x/2);
-	}
 	while (px_draw.x < px_draw.y)
 	{
 		arch->portal.b_up[px_draw.x] = borne->b_up[i];

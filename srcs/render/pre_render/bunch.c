@@ -1,13 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bunch.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/13 02:57:48 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
 #include "input.h"
-#include "debug.h"
 
 int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 {
 	t_fvct2	dist;
 	double	angle;
-
-	//si on est dans un portail on et que le pillier appartient au portail alors on ne le calcul pas
 
 	if (arch->wall && (pillar == arch->wall->pillar || pillar == arch->wall->next))
 		return (0);
@@ -45,6 +54,7 @@ void		sector_frustum(t_arch *arch, t_sector *sector, t_player *player)
 /*
 **	renvoie l'angle entre un pillier -> joueur -> pillier_next
 */
+
 double		wall_angle_pers(t_arch *arch, t_wall wall)
 {
 	double	field;
@@ -69,6 +79,7 @@ double		wall_angle_pers(t_arch *arch, t_wall wall)
 **	la reference est la rotation du joueur ce qui est a gauche + a droite -
 **	ca sera utilise pour les borne de la fenetre
 */
+
 double		local_angle(double borne, double angle)
 {
 	angle = angle - borne;
@@ -82,6 +93,7 @@ double		local_angle(double borne, double angle)
 **	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
 **	determine si les bornes sont entre les angles des mur
 */
+
 int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 {
 	t_fvct2	angles;
@@ -94,20 +106,13 @@ int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 int			equal_pillar(t_wall *wall1, t_wall *wall2)
 {
 	if (!wall1 || !wall2)
-	{
-		//printf("wall == NULL\n");
 		return (1);
-	}
 	if (wall1->pillar == wall2->pillar && wall1->next == wall2->next)
 		return (0);
 	if (wall1->pillar == wall2->next && wall1->next == wall2->pillar)
 		return (0);
-	//printf("wall != NULL\n");
-
-	//futur check de profondeur
 	return (1);
 }
-
 
 /*
 **	buncherisation mets les murs visible d'un secteur dans un tableau
@@ -120,6 +125,7 @@ int			equal_pillar(t_wall *wall1, t_wall *wall2)
 **	i_wall correspond a l'index des mur parcourus
 **	i_bunch est l'index dans le bunch
 */
+
 int			buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch)
 {
 	int		i_wall;
@@ -145,8 +151,6 @@ int			buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch)
 		}
 		i_wall++;
 	}
-	if (debug == 1)
-		printf("deep_portal %d i_bunch %d\n", arch->depth_portal, i_bunch);
 	bunch[i_bunch] = NULL;
 	return (1);
 }

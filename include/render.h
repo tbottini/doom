@@ -24,26 +24,6 @@
 # define ENGINE			1
 # define RENDER			ENGINE
 
-/*
-**	disfonctionnement si l'ordre n'est pas respecte
-**	pour un carre a(up left) b(bottom left) c(up right) d(bot right)
-*/
-typedef struct 			s_shape
-{
-	t_fvct2				up;
-	t_fvct2				left;
-	t_fvct2				right;
-	t_fvct2				bot;
-}						t_shape;
-
-typedef struct 			s_shap
-{
-	t_fvct2				ul;
-	t_fvct2				ur;
-	t_fvct2				bl;
-	t_fvct2				br;
-}						t_shap;
-
 typedef struct 			s_sprite
 {
 	t_fvct2				pos;
@@ -105,12 +85,6 @@ int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
 int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr);
 void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);
-
-/*
-**	shape
-*/
-void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
-t_shape					shape_reajust(t_shape shape);
 
 /*
 **	sprites

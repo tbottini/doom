@@ -6,12 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 23:19:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 03:05:20 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-#include "debug.h"
 
 void				prop_init(t_prop *prop, t_wall *wall)
 {
@@ -88,10 +87,6 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 	{
 		prop->px.x = px_props.x;
 		prop->px.y = px_props.y;
-	}
-	if (debug_screen == 8)
-	{
-		fill_line_debug(arch, arch->sdl, (t_vct2){px_props.x, arch->sdl->size.y / 2}, (t_vct2){px_props.y, arch->sdl->size.y / 2}, 0xffffffff);
 	}
 	return (px_props);
 }

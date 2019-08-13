@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pillar_info.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/13 02:59:50 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
-#include "debug.h"
+
 /*
 **	si au moins l'un des pilier est hors frustum il passe pas l'extremite de
 **	l'ecran, on determine laquelle avec une polarite (-1 == 0px et 1 == max)
@@ -14,7 +26,6 @@ void		px_polarite(t_arch *arch)
 
 	angle.x = local_angle(arch->portal.b_left, arch->wall->pillar->angle);
 	angle.y = local_angle(arch->portal.b_left, arch->wall->next->angle);
-
 	diff = fabs(angle.x - angle.y);
 	polarite = (arch->wall->next->angle > arch->portal.b_left ? -1 : 1) * (diff < 180 ? 1 : -1);
 	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x -1;
@@ -30,8 +41,6 @@ int			pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
 	angle = local_angle(arch->portal.b_left, pillar->angle);
 	angle_next = local_angle(arch->portal.b_left, next->angle);
 	borne = local_angle(arch->portal.b_left, arch->portal.b_right);
-
-
 	if (angle < borne - 180)
 		return (0);
 	else if (angle > 180)
