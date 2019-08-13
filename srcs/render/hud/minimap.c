@@ -59,7 +59,7 @@ static void			miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	}
 }
 
-static void			minifield(t_player *player, t_minimap *mini)
+void				minifield(t_player *player, t_minimap *mini)
 {
 	int		i;
 	t_vct2	pix;

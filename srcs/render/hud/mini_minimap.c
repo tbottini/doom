@@ -85,6 +85,7 @@ void				miniinv(t_minimap *mini, t_player *player)
 	int			tmp;
 	SDL_Rect	rect;
 
+	tmp = (mini->a.y - mini->d.y) / 5;
 	rect = (SDL_Rect){mini->a.x, mini->d.y, tmp, tmp};
 	if (player->inv.jetpack != -1)
 	{
@@ -96,6 +97,7 @@ void				miniinv(t_minimap *mini, t_player *player)
 			SDL_SetRenderDrawColor(mini->sdl->rend, 0, 0, 0, 0);
 		}
 	}
+	lil_miniinv(mini, player, rect);
 }
 
 void				minimap(t_minimap *mini, t_player *player)

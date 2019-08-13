@@ -12,29 +12,6 @@
 
 #include "doom_nukem.h"
 
-void	write_wall_props(int fd, t_lstent props)
-{
-	t_lstent	tmp;
-	int			x;
-
-	write_balise(fd, "🖼");
-	tmp = props;
-	x = 0;
-	while (tmp)
-	{
-		x++;
-		tmp = tmp->next;
-	}
-	write(fd, &x, sizeof(int));
-	tmp = props;
-	while (tmp)
-	{
-		write_one_prop(fd, tmp);
-		tmp = tmp->next;
-	}
-	write_balise(fd, "📅");
-}
-
 void	write_one_texture(int fd, t_editor *edit, SDL_Texture *txtr)
 {
 	char	*path;
