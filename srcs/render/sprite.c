@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 13:52:28 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 23:57:23 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,9 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 
 			while (cursor_screen < limit_h && buffer_h < sprite->texture.h)
 			{
-				arch->sdl->screen[cursor_screen] =
+				if ((int)buffer_w + (int)buffer_h * sprite->texture.w < sprite->texture.w * sprite->texture.h
+					&& cursor_screen < arch->sdl->size.x * arch->sdl->size.y)
+					arch->sdl->screen[cursor_screen] =
 					opacity(arch->sdl->screen[cursor_screen],
 					sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w],
 					1 - (unsigned char)(sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w]) / 255.0);
