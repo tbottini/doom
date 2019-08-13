@@ -6,13 +6,13 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 22:38:41 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 02:57:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 08:20:27 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sector.h"
 
-t_sector		*sector_new()
+t_sector		*sector_new(void)
 {
 	t_sector	*new;
 
@@ -45,7 +45,8 @@ void			sector_wall_props_init(t_sector *sector)
 	}
 }
 
-void			sector_iter(t_sector *sector, int len, void (sector_effector)(t_sector*))
+void			sector_iter(t_sector *sector, int len
+	, void (sector_effector)(t_sector*))
 {
 	int			i;
 
