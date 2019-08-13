@@ -41,6 +41,16 @@ typedef struct 			s_sprite
 	struct s_sprite		*next;
 }						t_sprite;
 
+typedef	struct		s_cursor
+{
+	t_fvct2			c_surface;
+	double			c_neutre;
+	double			c_dist;
+	t_fvct2			*surface;
+	double			dist_px;
+	double			neutre;
+}					t_cursor;
+
 /*
 **	pillar
 */
