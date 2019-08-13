@@ -12,8 +12,11 @@ int			trunc_int(int value, int min, int max)
 
 void		set_borne_vertical(t_arch *arch, t_vct2 surface, int i)
 {
+
 	arch->portal.b_up[i] = (uint32_t)trunc_int(surface.x, arch->portal.b_up[arch->px.x], arch->portal.b_down[arch->px.x] - 1);
+	arch->portal.b_up[i] = (uint32_t)trunc_int(arch->portal.b_up[i], 0, arch->sdl->size.y - 1);
 	arch->portal.b_down[i] = (uint32_t)trunc_int(surface.y, arch->portal.b_up[arch->px.x], arch->portal.b_down[arch->px.x] - 1);
+	arch->portal.b_down[i] = (uint32_t)trunc_int(arch->portal.b_down[i], 0, arch->sdl->size.y - 1);
 }
 
 void		set_borne_horizontal(t_arch *arch)
@@ -35,11 +38,6 @@ t_borne		*borne_svg(t_arch *arch, t_borne *borne)
 	len = arch->px.y - arch->px.x;
 	borne->b_left = arch->portal.b_left;
 	borne->b_right = arch->portal.b_right;
-
-
-	//----borne->decal_portal = arch->portal.decal_portal;
-	//----borne->depth_portal = arch->portal.depth_portal;
-
 	borne->pillar = arch->portal.pillar;
 	borne->next = arch->portal.next;
 	borne_init(borne, len);
@@ -71,8 +69,6 @@ void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 		px_draw.x++;
 		i++;
 	}
-	//-----arch->portal.decal_portal = borne->decal_portal;
-	//-----arch->portal.depth_portal = borne->depth_portal;
 	arch->portal.pillar = borne->pillar;
 	arch->portal.next = borne->next;
 	borne_free(borne);

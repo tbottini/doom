@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 21:32:56 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 23:05:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ void		bullet(t_stat *stat, int dmg, int nbsect)
 	shoot.passed = (t_sector **)&passed;
 	shoot.index = 0;
 	possible(&shoot, stat, d, stat->sector);
+	shoot.walls[shoot.i_w] = NULL;
+	shoot.enemys[shoot.i_e] = NULL;
 	wall_real_hit(&shoot, stat, mo);
 	apply(&shoot, stat, mo, dmg);
 }

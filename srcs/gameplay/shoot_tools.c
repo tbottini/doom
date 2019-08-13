@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 21:56:33 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/12 23:10:57 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ void			possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sect
 		}
 		tmp = tmp->next;
 	}
-	shoot->enemys[shoot->i_e] = NULL;
 }
 
 /*
@@ -186,15 +185,15 @@ void			possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector)
 	{
 		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
 		{
-			if (sector->wall[i].link != sector && bullet_can_pass(stat, i, sector, ori))
+			//if (sector->wall[i].link != sector && bullet_can_pass(stat, i, sector, ori))
+			if (!is_passed(sector->wall[i].link, shoot->passed, shoot->index) && bullet_can_pass(stat, i, sector, ori))
 				possible(shoot, stat, ori, sector->wall[i].link);
-			else
+			else if (sector->wall[i].status < OPEN_DOOR)
 			{
 				shoot->walls[shoot->i_w] = &sector->wall[i];
 				shoot->i_w++;
 			}
 		}
 	}
-	shoot->walls[shoot->i_w] = NULL;
 	possible_enemys(shoot, stat, ori, sector);
 }
