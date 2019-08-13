@@ -6,50 +6,63 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 07:50:23 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 08:04:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 #include "calcul.h"
 
+void				multi_diff_calc(t_fvct2 *diff1, t_fvct2 *diff2, t_arch *a
+	, t_player *p)
+{
+	diff1->x = a->wall->pillar->p.x - p->stat.pos.x;
+	diff1->y = a->wall->pillar->p.y - p->stat.pos.y;
+	diff2->x = a->wall->next->p.x - p->stat.pos.x;
+	diff2->y = a->wall->next->p.y - p->stat.pos.y;
+}
+
+t_fvct2				dist_p(t_fvct2 inter, double angle, t_player *p)
+{
+	inter.y = hypothenuse(inter);
+	inter.x = cos((angle - p->stat.rot.y) * PI180) * inter.y;
+	inter.y = sin((angle - p->stat.rot.y) * PI180) * inter.y;
+	return (inter);
+}
+
 /*
 **	trouve l'intersection entre le mur et un angle donne
 **	renvoie le pourcentage de l'intersection par rapport au mur (debut pilier)
+**	norme !!! : coef_ang = coef[0]
+**	norme !!! : coef_wall = coef[1]
 */
 
-double				wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle)
+double				wall_clipping(t_arch *arch, t_player *p
+	, t_fvct2 *inter_local, double angle)
 {
 	t_fvct2			inter;
-	t_fvct2			diff;
-	t_fvct2			diff2;
-	double			coef_ang;
-	double			coef_wall;
+	t_fvct2			diff[2];
+	double			coef[2];
 	double			b;
 	double			percent;
 
-	diff.x = arch->wall->pillar->p.x - p->stat.pos.x;
-	diff.y = arch->wall->pillar->p.y - p->stat.pos.y;
-	diff2.x = arch->wall->next->p.x - p->stat.pos.x;
-	diff2.y = arch->wall->next->p.y - p->stat.pos.y;
-	coef_ang = tan(angle * PI180);
-	if (diff2.x == diff.x && diff2.x == diff.x)
+	multi_diff_calc(&diff[0], &diff[1], arch, p);
+	coef[0] = tan(angle * PI180);
+	if (diff[1].x == diff[0].x && diff[1].x == diff[0].x)
 	{
-		inter.x = diff.x;
-		inter.y = diff.x * coef_ang;
-		percent = (diff2.y - inter.y) / (diff2.y - diff.y);
+		inter.x = diff[0].x;
+		inter.y = diff[0].x * coef[0];
+		percent = (diff[1].y - inter.y) / (diff[1].y - diff[0].y);
 	}
 	else
 	{
-		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
-		b = diff.y - diff.x * coef_wall;
-		inter.x = b / (coef_ang - coef_wall);
-		inter.y = coef_wall * inter.x + b;
-		percent = (diff2.x - inter.x) / (diff2.x - diff.x);
+		coef[1] = (diff[1].y - diff[0].y) / (diff[1].x - diff[0].x);
+		b = diff[0].y - diff[0].x * coef[1];
+		inter.x = b / (coef[0] - coef[1]);
+		inter.y = coef[1] * inter.x + b;
+		percent = (diff[1].x - inter.x) / (diff[1].x - diff[0].x);
 	}
-	inter_local->y = hypothenuse(inter);
-	inter_local->x = cos((angle - p->stat.rot.y) * PI180) * inter_local->y;
-	inter_local->y = sin((angle - p->stat.rot.y) * PI180) * inter_local->y;
+	*inter_local = dist_p(inter, angle, p);
 	return (percent);
 }
 
@@ -103,7 +116,8 @@ void				render_left_door(t_arch *arch, t_player *player
 	px_tmp = arch->px.y;
 	shift_txtr_tmp = arch->shift_txtr.y;
 	next_tmp = arch->next;
-	arch->px.y = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (inter.y / inter.x);
+	arch->px.y = arch->sdl->size.x / 2 - arch->sdl->size.x / 2
+		* (inter.y / inter.x);
 	arch->next = inter;
 	arch->shift_txtr.x = 1 - percent_open + (1 - arch->shift_txtr.x);
 	if (arch->shift_txtr.y > 1 - percent_open)
