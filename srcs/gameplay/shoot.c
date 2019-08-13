@@ -6,51 +6,40 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 19:51:14 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 23:05:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 04:33:02 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void		shoot(Uint32 timestamp, t_sound *sound, t_player *player, int nbsect)
+void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)
 {
-	printf("shoooooooot || weapon id = %d | FIST = %d\n", player->hand->id, FIST);
-	if (player->occupied < timestamp)
+	if (hit.z < enemy->stat.sector->h_floor)
+		return ;
+	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height)
+		return ;
+	if (enemy->state != 4)
 	{
-		if (player->hand->id == FIST)
-			kick(timestamp, sound, player);
-		else if (player->hand->clip == 0)
-			reload(timestamp, player, player->hand, sound);
+		if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height - 0.25)
+			enemy->stat.health -= dmg * 3;
 		else
-		{
-			bullet(&player->stat, player->hand->dmg, nbsect);
-			player->act = false;
-			player->timeact = timestamp;
-			if (player->hand->id == SHOTGUN)
-				Mix_PlayChannel(2, sound->tab_effect[8], 0);
-			else
-				Mix_PlayChannel(2, sound->tab_effect[7], 0);
-			player->hand->clip--;
-			if (player->hand->rate)
-				player->occupied = timestamp + 150;//ajuster avec vitesse d'animation et vitesse de tir voulue
-			else
-				player->occupied = timestamp + 500;//ajuster avec vitesse d'animation et temps entre deux tirs souhaite
-		}
+			enemy->stat.health -= dmg;
+		if (enemy->stat.health < 0)
+			enemy->state = 3;
 	}
 }
 
-t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, double angle)
+t_fvct3		real_coord(t_fvct3 pos, double dist, t_fvct3 mo, t_stat *stat)
 {
 	t_fvct3 res;
 
 	res.x = pos.x + dist * (mo.x / RADIUS);
 	res.y = pos.y + dist * (mo.y / RADIUS);
-	//res.z = pos.z + height + dist * (mo.z / RADIUS);
-	res.z = pos.z + height + dist * sin((angle - 90.0) * PI180);
+	res.z = pos.z + stat->height + dist * sin((stat->rot.x - 90.0) * PI180);
 	return (res);
 }
 
-void		impact_wall(t_wall *wall, t_fvct3 p)
+static void	impact_wall(t_wall *wall, t_fvct3 p)
 {
 	wall->props[wall->nb_props].pos.x = p.x;
 	wall->props[wall->nb_props].pos.y = p.y;
@@ -58,52 +47,27 @@ void		impact_wall(t_wall *wall, t_fvct3 p)
 	prop_init(&wall->props[wall->nb_props], wall);
 }
 
-void		injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit)
-{
-	if (hit.z < enemy->stat.sector->h_floor)
-		{printf("TRO BA LOL\n");return ;}//
-	if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height)
-		{printf("TRO O MDR || %f\n", enemy->stat.sector->h_floor + enemy->stat.height);return ;}//
-	if (enemy->state != 4)
-	{
-		if (hit.z > enemy->stat.sector->h_floor + enemy->stat.height - 0.25)
-			{enemy->stat.health -= dmg * 3;printf("HEADSHOT !\n");}//
-		else
-			{enemy->stat.health -= dmg;printf("BODYSHOT !\n");}//
-		if (enemy->stat.health > 0)
-			;//hit texture ?
-		else
-		{
-			enemy->state = 3;
-			//del_enemy(enemy->stat.sector, enemy);
-		}
-	}
-	printf("ENEMY HIT: x = %f | y = %f | z = %f\n", hit.x, hit.y, hit.z);
-}
-
 static void	apply(t_shoot *shoot, t_stat *stat, t_fvct3 mo, int dmg)
 {
 	t_fvct3 waim;
 	t_fvct3 eaim;
 
-	waim = real_coord(stat->pos, shoot->wdist, mo, stat->height, stat->rot.x);
-	eaim = real_coord(stat->pos, shoot->edist, mo, stat->height, stat->rot.x);
-	//calcul enemy or wall is closer
-	//if (is_closer(stat, waim, eaim))
-	if (shoot->whit && distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){waim.x, waim.y})
-		< distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){eaim.x, eaim.y}))
-		impact_wall(shoot->whit, waim);// change bullet hole prop 's position
+	waim = real_coord(stat->pos, shoot->wdist, mo, stat);
+	eaim = real_coord(stat->pos, shoot->edist, mo, stat);
+	if (shoot->whit && distance((t_fvct2){stat->pos.x,
+	stat->pos.y}, (t_fvct2){waim.x, waim.y})
+	< distance((t_fvct2){stat->pos.x, stat->pos.y}, (t_fvct2){eaim.x, eaim.y}))
+		impact_wall(shoot->whit, waim);
 	else if (shoot->ehit)
-		injure_enemy(shoot->ehit, dmg, eaim);//damages on touched enemy
-	//printf("distance || %f ||\n\n", shoot->wdist);
+		injure_enemy(shoot->ehit, dmg, eaim);
 }
 
 void		bullet(t_stat *stat, int dmg, int nbsect)
 {
-	t_fvct3	d;
-	t_fvct3	mo;
-	t_shoot	shoot;
-	t_sector passed[nbsect];
+	t_fvct3		d;
+	t_fvct3		mo;
+	t_shoot		shoot;
+	t_sector	passed[nbsect];
 
 	mo.x = (RADIUS * sin(stat->rot.x * PI180) * cos(stat->rot.y * PI180));
 	mo.y = (RADIUS * sin(stat->rot.x * PI180) * sin(stat->rot.y * PI180));

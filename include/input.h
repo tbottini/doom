@@ -193,11 +193,10 @@ void					set_hard(t_doom *doom);
 **	simple input
 */
 
-void					update_enemy_rotation(t_enemy *enemy, t_fvct3 pos);
 void					game_over(t_doom *doom, bool win);
 void					pickup_prop(t_doom *doom);
 void					action(t_doom *doom, t_stat *s, t_inv *inv);
-void					kick(Uint32 timestamp, t_sound *sound, t_player *player);
+void					kick(Uint32 timestamp, t_sound *sound, t_player *pl, t_stat *s);
 void					PrintEvent(const SDL_Event *event);
 void					debug_up(t_doom *doom);
 void					calcdelay(const char *str, t_doom *doom);
@@ -224,5 +223,17 @@ int						doom_render(t_doom *doom);
 
 void					bold_point(t_vct2 v, Uint32 color, t_doom *doom);
 void					sector_set_box(t_sector *sector);
+
+/*
+** Artificial intelligence
+*/
+
+void					update_enemy_rotation(t_enemy *enemy, t_stat *s, t_fvct3 pos);
+bool					is_between(t_fvct3 pos, t_fvct3 target, t_fvct3 m1, t_fvct3 m2);
+int						is_visible(t_stat *stat, t_stat *target, t_sector *sector, int passed);
+void					is_around_recur(t_doom *d, t_sector **passed, t_sector *s, int *index);
+void					is_around(t_doom *d, t_sector *s, t_sector **passed, int *index);
+bool					is_passed(t_sector *sector, t_sector **passed, int index);
+void					ai_active(t_doom *d, t_enemy *t, t_sector *s);
 
 #endif

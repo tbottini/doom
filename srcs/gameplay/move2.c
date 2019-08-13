@@ -6,24 +6,11 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/04 11:25:46 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/04 11:29:28 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 04:18:24 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-
-void		jetpack_on_off(t_player *player)
-{
-	if (player->inv.jetpack == 1)
-	{
-		player->inv.jetpack = 0;
-		player->stat.vel.x = 0;
-		player->stat.vel.y = 0;
-		player->stat.vel.z = 0;
-	}
-	else if (player->inv.jetpack == 0)
-		player->inv.jetpack = 1;
-}
 
 void		fly_down(t_stat *stat)
 {
@@ -35,7 +22,8 @@ void		fly_down(t_stat *stat)
 
 void		crouch(t_player *player)
 {
-	if (!player->stat.crouch && player->stat.speed != SPRINT && player->stat.height != H_SMOL)
+	if (!player->stat.crouch && player->stat.speed
+	!= SPRINT && player->stat.height != H_SMOL)
 	{
 		player->stat.crouch = true;
 		player->stat.speed = CROUCH;
@@ -48,7 +36,8 @@ void		crouch_release(t_player *player)
 	if (player->stat.crouch && player->inv.jetpack)
 	{
 		player->stat.crouch = false;
-		if (player->stat.sector->h_ceil <= player->stat.sector->h_floor + H_NORMAL)
+		if (player->stat.sector->h_ceil
+		<= player->stat.sector->h_floor + H_NORMAL)
 			return ;
 		player->stat.speed = WALK;
 		player->stat.height = H_NORMAL;
@@ -57,7 +46,6 @@ void		crouch_release(t_player *player)
 
 void		sprint(t_stat *stat)
 {
-
 	if (stat->speed == WALK && stat->height != H_CROUCH)
 		stat->speed = SPRINT;
 }

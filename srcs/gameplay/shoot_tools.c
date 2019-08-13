@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 23:10:57 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 04:40:26 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,134 +66,70 @@ static double	enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
 
-static void		enemy_real_hit(t_shoot *shoot, t_stat *stat, double toto, t_fvct3 mo)
-{
-	int		i;
-	double	res;
-	double	tmp;
-	t_fvct3	p;
-
-	i = -1;
-	res = 987654321.0;
-	while (shoot->enemys[++i])
-	{
-		if ((tmp = enemy_bullet_clipping(shoot->enemys[i], stat)) / toto < res)
-		{
-			p = real_coord(stat->pos, tmp, mo, stat->height, stat->rot.x);
-			if (p.z < shoot->enemys[i]->stat.sector->h_floor + shoot->enemys[i]->stat.height)
-			{
-				res = tmp;
-				shoot->ehit = shoot->enemys[i];
-			}
-		}
-	}
-	shoot->edist = res;
-}
-
-void			wall_real_hit(t_shoot *shoot, t_stat *stat, t_fvct3 mo)
-{
-	int		i;
-	double	res;
-	double	tmp;
-	double	toto;
-
-	res = 987654321.0;
-	toto = cos((stat->rot.x - 90.0) * PI180);
-	if (toto < G_EPSILON)
-		toto = 1;
-	i = -1;
-	while (shoot->walls[++i])
-	{
-		if ((tmp = wall_bullet_clipping(*shoot->walls[i]->pillar, *shoot->walls[i]->next, stat)) / toto < res)
-		{
-			res = tmp;
-			shoot->whit = shoot->walls[i];
-		}
-	}
-	shoot->wdist = res;
-	enemy_real_hit(shoot, stat, toto, mo);
-}
-
-static int		bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
+static int		bullet_can_pass(t_stat *stat, int i, t_sector *s, t_fvct3 ori)
 {
 	double		toto;
 	t_fvct3		mo;
 	t_fvct3		coord;
 	t_sector	next;
 
-	next = *sector->wall[i].link;
-	if (sector->wall[i].status >= OPEN_DOOR)
+	next = *s->wall[i].link;
+	if (s->wall[i].status >= OPEN_DOOR)
 	{
 		toto = cos((stat->rot.x - 90.0) * PI180);
-		toto = wall_bullet_clipping(*sector->wall[i].pillar, *sector->wall[i].next, stat) / (toto < G_EPSILON ? 1 : toto);
+		toto = wall_bullet_clipping(*s->wall[i].pillar,
+		*s->wall[i].next, stat) / (toto < G_EPSILON ? 1 : toto);
 		mo.x = ori.x - stat->pos.x;
 		mo.y = ori.y - stat->pos.y;
 		mo.z = ori.y - stat->pos.z;
-		coord = real_coord(stat->pos, toto, ori, stat->height, stat->rot.x);
-		//coord = real_coord(stat->pos, toto, mo, stat->height / 2);
+		coord = real_coord(stat->pos, toto, ori, stat);
 		if ((coord.z < next.h_floor + next.h_ceil) && (next.h_floor < coord.z))
 			return (1);
 	}
 	return (0);
 }
 
-void			possible_enemys(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector)
+static void		possible_enemys(t_shoot *s, t_stat *stat,
+t_fvct3 ori, t_sector *sector)
 {
-	t_enemy	*tmp;
+	t_enemy	*t;
 
-	(void)ori;
-	(void)stat;
-	tmp = sector->enemys;
-	while (shoot->i_e < 50 && tmp)
+	t = sector->enemys;
+	while (s->i_e < 50 && t)
 	{
-		if (tmp->state != 4 && vector_intersect(ori, stat->pos, tmp->e1, tmp->e2))
+		if (t->state != 4 && vector_intersect(ori, stat->pos, t->e1, t->e2))
 		{
-			shoot->enemys[shoot->i_e] = tmp;
-			shoot->i_e++;
+			s->enemys[s->i_e] = t;
+			s->i_e++;
 		}
-		tmp = tmp->next;
+		t = t->next;
 	}
 }
 
-/*
-bool	is_passed(t_sector *sector, t_sector **passed, int index)
-{
-	int i;
-
-	i = 0;
-	while (i < index)
-	{
-		if (sector == passed[i])
-			return (true);
-		i++;
-	}
-	return (false);
-}
-*/
-
-void			possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector)
+void			possible(t_shoot *shoot, t_stat *stat,
+t_fvct3 ori, t_sector *s)
 {
 	int		i;
 
 	i = -1;
-	if (!sector || is_passed(sector, shoot->passed, shoot->index))
+	if (!s || is_passed(s, shoot->passed, shoot->index))
 		return ;
-	printf("sector %p\n", sector);
-	shoot->passed[shoot->index] = sector;
+	shoot->passed[shoot->index] = s;
 	shoot->index++;
-	while (shoot->i_w < 49 && ++i < sector->len)
+	while (shoot->i_w < 49 && ++i < s->len)
 	{
-		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p, *(t_fvct3*)&sector->wall[i].next->p))
+		if (vector_intersect(ori, stat->pos,
+		*(t_fvct3*)&s->wall[i].pillar->p, *(t_fvct3*)&s->wall[i].next->p))
 		{
-			//if (sector->wall[i].link != sector && bullet_can_pass(stat, i, sector, ori))
-			if (!is_passed(sector->wall[i].link, shoot->passed, shoot->index) && bullet_can_pass(stat, i, sector, ori))
-				possible(shoot, stat, ori, sector->wall[i].link);
-			else if (sector->wall[i].status < OPEN_DOOR)
+			if (!is_passed(s->wall[i].link, shoot->passed, shoot->index)
+			&& bullet_can_pass(stat, i, s, ori))
+				possible(shoot, stat, ori, s->wall[i].link);
+			else if (s->wall[i].status < OPEN_DOOR)
 			{
-				shoot->walls[shoot->i_w] = &sector->wall[i];
+				shoot->walls[shoot->i_w] = &s->wall[i];
 				shoot->i_w++;
 			}
 		}
 	}
-	possible_enemys(shoot, stat, ori, sector);
+	possible_enemys(shoot, stat, ori, s);
 }

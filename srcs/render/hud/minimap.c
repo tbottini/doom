@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/10 22:25:21 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 02:38:35 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ static void			minienemies(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 			tmp.y = (mini->a.y - (mini->size.y / 2))
 				+ ((pos.y - enn->stat.pos.y)) * (UNIT);
 			bold_point2(mini, tmp, CENEMY);
-			update_enemy_rotation(enn, pos);
+			update_enemy_rotation(enn, &enn->stat, pos);
 			dir.x = enn->stat.pos.x + sin(enn->stat.rot.y);
 			dir.y = enn->stat.pos.y + cos(enn->stat.rot.y);
 			tmp.x = (mini->a.x - (mini->size.x / 2))

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 15:46:44 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 02:25:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ void		pickup_prop(t_doom *doom)
 	i = 0;
 	while (i < doom->game.player.stat.sector->len_prop)
 	{
-		if (is_in_hitbox(&doom->game.player.stat.sector->props[i].hitbox, doom->game.player.stat.pos, 0))
+		if (in_hitbox(&doom->game.player.stat.sector->props[i].hitbox, doom->game.player.stat.pos, 0))
 		{
 			activate_prop(doom, &doom->game.player.stat.sector->props[i]);
 			if (doom->game.player.stat.sector->props[i].type < MAXPROPSNUMBER)

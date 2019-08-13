@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gameover.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/09 16:09:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 02:33:45 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 ** double f determines the opacity of the "screen".
 ** f must be between 0 and 1, 1 returning the color s, 0 the color c.
 */
-int					opacity(int s, int c, double f)
+
+int			opacity(int s, int c, double f)
 {
 	if (f == 1)
 		return (s);
@@ -30,7 +31,7 @@ int					opacity(int s, int c, double f)
 	+ 255);
 }
 
-void		full_screen_opacity(t_doom *doom, Uint32 color, double blood)
+static void	full_screen_opacity(t_doom *doom, Uint32 color, double bl)
 {
 	int i;
 	int j;
@@ -42,12 +43,12 @@ void		full_screen_opacity(t_doom *doom, Uint32 color, double blood)
 		while (++j < doom->sdl.size.y)
 		{
 			doom->sdl.screen[i + j * doom->sdl.size.x] =
-				opacity(color, doom->sdl.screen[i + j * doom->sdl.size.x], blood);
+				opacity(color, doom->sdl.screen[i + j * doom->sdl.size.x], bl);
 		}
 	}
 }
 
-int			display_end(t_doom *doom, Uint32 color, double filter, bool win)
+static int	display_end(t_doom *doom, Uint32 color, double filter, bool win)
 {
 	int		wait;
 	int		ex;
@@ -55,14 +56,20 @@ int			display_end(t_doom *doom, Uint32 color, double filter, bool win)
 	full_screen_opacity(doom, color, filter);
 	sdl_MultiRenderCopy(&doom->sdl);
 	if (win)
-		sdl_string_put(doom->sdl.rend, doom->ui.fonts.s128, (t_vct2){doom->sdl.size.x / 2 - 158, doom->sdl.size.y / 2 - 100}, "YOU WIN !", (SDL_Color){0, 0, 0, 255});
+		sdl_string_put(doom->sdl.rend, doom->ui.fonts.s128,
+		(t_vct2){doom->sdl.size.x / 2 - 158,
+		doom->sdl.size.y / 2 - 100}, "YOU WIN !",
+		(SDL_Color){0, 0, 0, 255});
 	else
-		sdl_string_put(doom->sdl.rend, doom->ui.fonts.s128, (t_vct2){doom->sdl.size.x / 2 - 174, doom->sdl.size.y / 2 - 100}, "GAME OVER", (SDL_Color){250, 250, 250, 255});
+		sdl_string_put(doom->sdl.rend, doom->ui.fonts.s128,
+		(t_vct2){doom->sdl.size.x / 2 - 174,
+		doom->sdl.size.y / 2 - 100}, "GAME OVER",
+		(SDL_Color){250, 250, 250, 255});
 	SDL_RenderPresent(doom->sdl.rend);
 	cine_events(doom, &ex);
 	if (ex == 3000)
 		return (-1);
-	wait = SDL_GetTicks() - doom->timestamp - 39; // Nombre de ms entre chaque frames
+	wait = SDL_GetTicks() - doom->timestamp - 39;
 	if (wait < 0)
 		SDL_Delay(-wait);
 	doom->timestamp = SDL_GetTicks();
@@ -76,7 +83,8 @@ void		game_over(t_doom *doom, bool win)
 
 	gameover = NULL;
 	Mix_HaltChannel(-1);
-	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
+	sector_render(&doom->game.arch, &doom->game.player,
+	doom->game.player.stat.sector);
 	if (win)
 		Mix_PlayChannel(0, doom->game.sound.tab_effect[11], 0);
 	else

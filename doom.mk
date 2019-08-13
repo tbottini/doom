@@ -38,10 +38,13 @@ SRCS_GAMEPLAY	:=		action.c										\
 						move2.c											\
 						weapons.c										\
 						shoot.c											\
+						shooting.c										\
 						shoot_tools.c									\
 						collision.c										\
 						gameover.c										\
 						ia.c											\
+						ia_tools.c										\
+						ia_action.c										\
 
 SRCS_INPUT		:=		event_controller.c								\
 						event_handler.c									\

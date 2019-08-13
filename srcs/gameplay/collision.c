@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/29 18:06:16 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 19:35:48 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 02:29:44 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int			can_pass(t_stat *stat, int i, t_wall **port)
 {
 	t_sector	*next;
-	//t_wall		*tmp;
 
 	next = stat->sector->wall[i].link;
 	if (next && stat->sector->wall[i].status >= OPEN_DOOR)
@@ -32,16 +31,7 @@ int			can_pass(t_stat *stat, int i, t_wall **port)
 				stat->speed = WALK;
 			}
 			*port = NULL;
-			//if (!(tmp = collision(next, stat->pos, NULL)))
-			//	return (1);
-			//else
-			//{
-			//	if ((stat->sector->wall[i].pillar == tmp->pillar && stat->sector->wall[i].next == tmp->next)
-			//		|| (stat->sector->wall[i].pillar == tmp->next && stat->sector->wall[i].next == tmp->pillar))
-			//		return (2);
-			//	return (1);
 			return (!(collision(next, stat->pos, NULL)) ? 1 : 2);
-			//}
 		}
 		return (-1);
 	}
@@ -54,11 +44,15 @@ t_wall		*colli_walls(t_sector *sector, t_fvct3 ori, t_fvct3 pos, t_wall *w)
 	int		i;
 
 	if (w)
-		return (vector_intersect(ori, pos, *(t_fvct3*)&w->pillar->p, *(t_fvct3*)&w->next->p) ? w : 0);
+	{
+		return (vector_intersect(ori, pos, *(t_fvct3*)&w->pillar->p,
+		*(t_fvct3*)&w->next->p) ? w : 0);
+	}
 	i = -1;
 	while (++i < sector->len)
 	{
-		if (!ISPORTAL(sector->wall[i].status) && vector_intersect(ori, pos, *(t_fvct3*)&sector->wall[i].pillar->p,
+		if (!ISPORTAL(sector->wall[i].status)
+			&& vector_intersect(ori, pos, *(t_fvct3*)&sector->wall[i].pillar->p,
 			*(t_fvct3*)&sector->wall[i].next->p))
 			return (&sector->wall[i]);
 	}
@@ -72,11 +66,10 @@ int			colli_port(t_stat *stat, t_sector *sector, t_fvct3 ori, t_wall **w)
 	i = -1;
 	while (++i < sector->len)
 	{
-		if (vector_intersect(ori, stat->pos, *(t_fvct3*)&sector->wall[i].pillar->p,
+		if (vector_intersect(ori, stat->pos,
+			*(t_fvct3*)&sector->wall[i].pillar->p,
 			*(t_fvct3*)&sector->wall[i].next->p))
-		{
 			return (can_pass(stat, i, w));
-		}
 	}
 	return (0);
 }

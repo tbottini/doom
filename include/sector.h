@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 21:52:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 02:22:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void					describe_wall(t_wall wall);
 
 t_vct2					sector_get_floor_texel(t_sector *sector, t_fvct2 pos);
 void					init_prop(t_prop *prop, double height);
-int						is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
+int						in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
 
 void					sector_init_prop(t_sector *sector);
 void					sector_iter(t_sector *sector, int len, void (sector_effector)(t_sector*));

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 21:31:42 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 04:40:20 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include "vector.h"
 
+# define RANGE 2
 # define H_NORMAL 1.80
 # define H_CROUCH 0.90
 # define H_SMOL 0.36
@@ -183,11 +184,11 @@ void					shoot(Uint32 timestamp, t_sound *sound, t_player *player, int nbsect);
 void					bullet(t_stat *stat, int dmg, int nbsect);
 void					injure_enemy(t_enemy *enemy, int dmg, t_fvct3 hit);
 void					wall_real_hit(t_shoot *shoot, t_stat *stat, t_fvct3 mo);
+void					enemy_real_hit(t_shoot *s, t_stat *stat, double t, t_fvct3 mo);
 void					possible(t_shoot *shoot, t_stat *stat, t_fvct3 ori, t_sector *sector);
-t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, double height, double angle);
+t_fvct3					real_coord(t_fvct3 pos, double dist, t_fvct3 mo, t_stat *stat);
 //t_wall				*possible_walls(t_wall **walls, t_stat *stat, t_fvct3 d, int *index);
 //void					apply_wall(t_wall *wall, t_stat *stat, t_fvct3 mo);
-//t_enemy				*possible_enemys(t_enemy **enemys, t_stat *stat, t_fvct3 d, int *index);
 
 /*
 **	Debug
