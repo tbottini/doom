@@ -39,7 +39,7 @@ t_vct2	line_percent(t_vct2 pos1, t_vct2 pos2, double percent)
 	return (middle);
 }
 
-int				ft_walllen(t_lstmur start)
+int		ft_walllen(t_lstmur start)
 {
 	int x;
 
@@ -52,7 +52,7 @@ int				ft_walllen(t_lstmur start)
 	return (x);
 }
 
-void			ft_movewall(t_mur *wall, int addx, int addy, int zoom)
+void	ft_movewall(t_mur *wall, int addx, int addy, int zoom)
 {
 	t_lstent wprops;
 
