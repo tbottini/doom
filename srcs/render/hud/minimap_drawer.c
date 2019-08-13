@@ -3,37 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_drawer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 11:42:04 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 04:41:32 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 05:28:18 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 #include "doom_nukem.h"
 #include "color.h"
-
-int				bold_point2(t_minimap *mini, t_vct2 pos, Uint32 color)
-{
-	int tmp;
-
-	tmp = pos.y * mini->sdl->size.x;
-	if (pos.y > mini->d.y && pos.y < mini->a.y - 1
-		&& pos.x < mini->a.x - 1 && pos.x > mini->d.x)
-	{
-		mini->sdl->screen[pos.x + tmp] = color;
-		mini->sdl->screen[pos.x + 1 + tmp] = color;
-		mini->sdl->screen[pos.x - 1 + tmp] = color;
-		mini->sdl->screen[pos.x + 1 + tmp + mini->sdl->size.x] = color;
-		mini->sdl->screen[pos.x - 1 + tmp + mini->sdl->size.x] = color;
-		mini->sdl->screen[pos.x + 1 + tmp - mini->sdl->size.x] = color;
-		mini->sdl->screen[pos.x - 1 + tmp - mini->sdl->size.x] = color;
-		mini->sdl->screen[pos.x + tmp + mini->sdl->size.x] = color;
-		mini->sdl->screen[pos.x + tmp - mini->sdl->size.x] = color;
-	}
-	return (1);
-}
 
 static t_vct2	minipoint(t_fvct3 pos, t_fvct2 v, t_minimap *m)
 {
@@ -68,40 +47,32 @@ static void		mbl(t_vct2 pos0, t_vct2 pos1, t_minimap *mini, Uint32 color)
 	}
 }
 
-static void			miniwallprops(t_minimap *mini, t_wall *wall, t_fvct3 pos)
+static void		miniwallprops(t_minimap *mini, t_wall *wall, t_fvct3 pos)
 {
-	int		i;
-	t_vct2	tmp;
+	t_vct3	tmp;
 
-	i = 0;
-	while (i < wall->nb_props)
+	tmp.z = -1;
+	while (++tmp.z < wall->nb_props)
 	{
 		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((wall->props[i].pos.x - pos.x)) * (UNIT);
+			+ ((wall->props[tmp.z].pos.x - pos.x)) * (UNIT);
 		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - wall->props[i].pos.y)) * (UNIT);
-		bold_point2(mini, tmp, DEEPBLUE);
+			+ ((pos.y - wall->props[tmp.z].pos.y)) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, DEEPBLUE);
 		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
+			+ (((wall->props[tmp.z].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
 		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
-		bold_point2(mini, tmp, 0xFF0000FF);
+			+ ((pos.y - (wall->props[tmp.z].pos.y + HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - (wall->props[tmp.z].pos.y + -HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
 		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( wall->props[i].hitbox.x) - pos.x)) * (UNIT);
+			+ (((wall->props[tmp.z].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
 		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
-		bold_point2(mini, tmp, 0xFF0000FF);
-		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
-		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( wall->props[i].hitbox.y))) * (UNIT);
-		bold_point2(mini, tmp, 0xFF0000FF);
-		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( wall->props[i].hitbox.w) - pos.x)) * (UNIT);
-		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( wall->props[i].hitbox.l))) * (UNIT);
-		bold_point2(mini, tmp, 0xFF0000FF);
-		i++;
+			+ ((pos.y - (wall->props[tmp.z].pos.y + HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
 	}
 }
 
@@ -133,25 +104,5 @@ void			miniwalls(t_player *player, t_sector *sector, t_minimap *mini)
 			< OPEN_DOOR ? CWALL : CPORT);
 		cursor = minipoint(player->stat.pos, wall[i].pillar->p, mini);
 		miniwallprops(mini, &wall[i], player->stat.pos);
-	}
-}
-
-void			minibord(t_minimap *mini)
-{
-	int i;
-	int j;
-
-	i = mini->d.x - 1;
-	j = mini->a.y - 1;
-	while (++i < mini->a.x - 1)
-	{
-		mini->sdl->screen[i + mini->d.y * mini->sdl->size.x] = WHITE;
-		mini->sdl->screen[i + j * mini->sdl->size.x] = WHITE;
-	}
-	j = mini->sdl->size.y - (mini->sdl->size.y >> 2) - 1;
-	while (++j < mini->a.y)
-	{
-		mini->sdl->screen[mini->d.x + j * mini->sdl->size.x] = WHITE;
-		mini->sdl->screen[i + j * mini->sdl->size.x] = WHITE;
 	}
 }
