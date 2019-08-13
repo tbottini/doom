@@ -5,14 +5,15 @@ SRCS_DOOM		:=		button_function.c								\
 						cinematri.c										\
 
 SRCS_EDITOR		:=		editor_finder.c									\
-						editor_render.c									\
 						editor_input.c									\
-						editor_optionbox.c								\
-						editor_txtrbox.c								\
 						editor_key.c									\
+						editor_menu_wheel.c								\
 						editor_mouse_move.c								\
 						editor_mouse_press.c							\
 						editor_mouse_wheel.c							\
+						editor_optionbox.c								\
+						editor_render.c									\
+						editor_txtrbox.c								\
 						editor_write.c									\
 
 SRCS_UI			:=		button_action.c									\
@@ -27,7 +28,6 @@ SRCS_UI			:=		button_action.c									\
 						init_slids.c									\
 						init_textures.c									\
 						fire.c											\
-
 
 SRCS_GAMEPLAY	:=		action.c										\
 						move.c											\
@@ -78,6 +78,7 @@ SRCS_DEBUG		:=		debug_sector.c									\
 
 SRCS_TOOLS		:=		list_tools.c									\
 						editor_tools.c									\
+						editor_write_tools.c							\
 						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\

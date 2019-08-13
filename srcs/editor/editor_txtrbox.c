@@ -12,10 +12,10 @@
 
 #include "doom_nukem.h"
 
-SDL_Texture *txtr_menu_click(t_editor *editor, int x, int y, int max)
+SDL_Texture	*txtr_menu_click(t_editor *editor, int x, int y, int max)
 {
-	SDL_Rect tmp;
-	int i;
+	SDL_Rect	tmp;
+	int			i;
 
 	tmp.x = editor->txtrbox.x + EDPADDING;
 	tmp.y = editor->txtrbox.y + EDPADDING + editor->txtrscroll;
@@ -37,10 +37,10 @@ SDL_Texture *txtr_menu_click(t_editor *editor, int x, int y, int max)
 	return (NULL);
 }
 
-int txtr_menu_click_int(t_editor *editor, int x, int y, int pos, int max)
+int			txtr_menu_click_int(t_editor *editor, t_vct2 m, int pos, int max)
 {
-	SDL_Rect tmp;
-	int i;
+	SDL_Rect	tmp;
+	int			i;
 
 	tmp.x = editor->txtrbox.x + EDPADDING;
 	tmp.y = editor->txtrbox.y + EDPADDING + editor->txtrscroll;
@@ -49,7 +49,7 @@ int txtr_menu_click_int(t_editor *editor, int x, int y, int pos, int max)
 	i = 0;
 	while (i < max)
 	{
-		if (pos_in_rect(tmp, x, y))
+		if (pos_in_rect(tmp, m.x, m.y))
 			return (i + pos);
 		tmp.x += tmp.w + EDPADDING;
 		if (editor->txtrbox.x + editor->txtrbox.w < tmp.x + tmp.w)
@@ -62,22 +62,12 @@ int txtr_menu_click_int(t_editor *editor, int x, int y, int pos, int max)
 	return (0);
 }
 
-int texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
+static void	lil_texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
 {
 	SDL_Texture *txtrclick;
 
-	printf("%d\n", edit->selecttxtr);
-	if (edit->selecttxtr == FILL_PROP && edit->currstat && ISPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINPROPSPOS, MAXPROPSNUMBER)))
-	{
-		edit->currstat->type = e.x;
-		edit->selecttxtr = NOSELECT;
-	}
-	else if (edit->selecttxtr == FILL_WPROP && edit->currstat && ISWALLPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit, e.x, e.y, MINWPROPSPOS, MAXWPROPSNUMBER)))
-	{
-		edit->currstat->type = e.x;
-		edit->selecttxtr = NOSELECT;
-	}
-	else if ((edit->selecttxtr == FILL_TXTR || edit->selecttxtr == FILL_SOL) && (txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
+	if ((edit->selecttxtr == FILL_TXTR || edit->selecttxtr == FILL_SOL)
+		&& (txtrclick = txtr_menu_click(edit, e.x, e.y, MAXTXTRNUMBER)))
 	{
 		if (edit->currmur)
 			edit->currmur->txtr = txtrclick;
@@ -90,5 +80,27 @@ int texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
 		}
 		edit->selecttxtr = NOSELECT;
 	}
+}
+
+int			texturebox_click(t_editor *edit, SDL_MouseButtonEvent e)
+{
+	printf("%d\n", edit->selecttxtr);
+	if (edit->selecttxtr == FILL_PROP && edit->currstat
+		&& ISPROP(edit->currstat->type) && (e.x = txtr_menu_click_int(edit,
+		(t_vct2){e.x, e.y}, MINPROPSPOS, MAXPROPSNUMBER)))
+	{
+		edit->currstat->type = e.x;
+		edit->selecttxtr = NOSELECT;
+	}
+	else if (edit->selecttxtr == FILL_WPROP && edit->currstat
+		&& ISWALLPROP(edit->currstat->type)
+		&& (e.x = txtr_menu_click_int(edit, (t_vct2){e.x, e.y},
+		MINWPROPSPOS, MAXWPROPSNUMBER)))
+	{
+		edit->currstat->type = e.x;
+		edit->selecttxtr = NOSELECT;
+	}
+	else
+		lil_texturebox_click(edit, e);
 	return (0);
 }

@@ -20,16 +20,19 @@ static void	lil_editor_key_press(int key, t_doom *doom)
 		doom->edit.currstat = NULL;
 		doom->edit.status = ED_OPEN;
 	}
-	else if (key == SDLK_SPACE)
-	{
-		if (doom->edit.currpilier)
-			doom->edit.status = ED_FORME;
-		else
-			ft_putendl("Please select a pillar");
-	}
 	else
 		ft_nodeadd_int(&(doom->edit.keys), key);
 }
+
+/*
+**	else if (key == SDLK_SPACE)
+**	{
+**		if (doom->edit.currpilier)
+**			doom->edit.status = ED_FORME;
+**		else
+**			ft_putendl("Please select a pillar");
+**	}
+*/
 
 /*
 ** Add here function that need to be done when a key is pressed

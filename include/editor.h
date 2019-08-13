@@ -51,8 +51,10 @@
 
 /*
 ** For sprites
+** # define ISWRITING(x) (x == ED_SAVING || x == ED_WRITING
+**											|| x == ED_FORME || x == ED_OPEN)
 */
-# define ISWRITING(x) (x == ED_SAVING || x == ED_WRITING || x == ED_FORME || x == ED_OPEN)
+# define ISWRITING(x) (x == ED_SAVING || x == ED_WRITING || x == ED_OPEN)
 
 # define SPRITEPATH "ressources/sprites/0000.png"
 
@@ -285,6 +287,10 @@ typedef struct			s_ui
 ** 0 : Window is closed
 ** 1 : Textures are loading
 ** 2 : Textures are loaded
+** 3 : Writing
+** 4 : Int to forme // Turned off
+** 5 : Writing to save file
+** 6 : Writing to load file
 */
 typedef enum		e_editorstatus
 {
@@ -292,10 +298,13 @@ typedef enum		e_editorstatus
 	ED_LOADING,
 	ED_LOADED,
 	ED_WRITING,
-	ED_FORME,
 	ED_SAVING,
 	ED_OPEN,
 }					t_editorstatus;
+
+/*
+**	ED_FORME
+*/
 
 typedef struct			s_editor
 {
@@ -339,6 +348,8 @@ typedef struct			s_editor
 ** Editor
 */
 
+unsigned int			ft_lil_super_atoi(const char *str);
+
 int						write_hook(t_doom *doom, char *str, SDL_KeyboardEvent e);
 void					draw_writer(t_editor *edit);
 
@@ -373,7 +384,7 @@ t_secteur				*sector_menu_click(t_editor *edit, int pos, int cas);
 int						opt_menu_click(t_editor *edit, int pos);
 int						opt_menu_wheel(SDL_MouseWheelEvent e, t_editor *edit);
 SDL_Texture				*txtr_menu_click(t_editor *edit, int x, int y, int max);
-int						txtr_menu_click_int(t_editor *editor, int x, int y, int min, int max);
+int						txtr_menu_click_int(t_editor *editor, t_vct2 m, int min, int max);
 int						texturebox_click(t_editor *edit, SDL_MouseButtonEvent e);
 t_mur					*find_mur(t_editor *editor, t_lstsec start, int x, int y);
 t_lstpil				ft_newpillar(t_vct2 loc);

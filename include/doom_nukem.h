@@ -54,10 +54,13 @@
 void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_Rect *loc, const char *str, SDL_Color fg, SDL_Color bg);
 void					dropfile_event(t_doom *doom, SDL_Event e);
 
-
 int						load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname);
 void					free_textures_folder(SDL_Texture **txtrs, char **txtrsname);
 void					editor_free(t_doom *doom);
+
+int						sdl_draw_filename(t_editor *edit, const char *text);
+int						try_save(t_doom *doom, SDL_KeyboardEvent e);
+void					push_char(char *str, char c);
 
 /*
 **	parsing
