@@ -74,9 +74,11 @@ SRCS_RENDER		:=		render.c										\
 						sprite.c										\
 						prop.c											\
 
-SRCS_PARSING	:=		readfile.c										\
+SRCS_PARSING	:=		lil_savefile.c									\
+						readfile.c										\
 						readfileeditor.c								\
 						savefile.c										\
+						super_savefile.c								\
 
 SRCS_TOOLS		:=		list_tools.c									\
 						editor_tools.c									\
@@ -89,6 +91,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 						sdl_tools.c										\
 						secteur_tools.c									\
 						play_tools.c									\
+						savefile_tools.c								\
 						musi.c											\
 						vector.c										\
 						editor_write_tools.c							\

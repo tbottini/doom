@@ -65,6 +65,24 @@ void					push_char(char *str, char c);
 /*
 **	parsing
 */
+void					write_balise(int fd, char *balise);
+void					write_one_wall(int fd, t_lstmur wall);
+void					write_sec_walls(int fd, t_lstmur wall);
+void					write_sec_props(int fd, t_secteur *sect, t_lstent props);
+void					write_sectors(int fd, t_editor *edit);
+
+void					write_wall_props(int fd, t_lstent props);
+
+void					write_pillars(int fd, t_editor *edit);
+void					write_one_prop(int fd, t_entity *prop);
+void					write_one_sector(int fd, t_secteur *sec, t_lstent props);
+void					write_one_enemy(int fd, t_entity *enn);
+void					write_player(int fd, t_eplayer *player);
+
+char					*get_path(t_editor *edit, SDL_Texture *txtr);
+void					load_used_textures(t_editor *edit);
+int						push_texture(t_editor *edit, SDL_Texture *txtr);
+
 void					set_txtr(t_txtr *txtr, SDL_Surface *surf, int id);
 int						read_file(t_game *game, const char *file, bool foredit);
 int						check_file(const char *file);
