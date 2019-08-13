@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 07:01:36 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 07:25:30 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,26 @@
 **	la polarite de depart (position du premier pillier) s'inverse
 */
 
-void		px_polarite(t_arch *arch)
+void			px_polarite(t_arch *arch)
 {
-	t_fvct2	angle;
-	double	diff;
-	int		polarite;
+	t_fvct2		angle;
+	double		diff;
+	int			polarite;
 
 	angle.x = local_angle(arch->portal.b_left, arch->wall->pillar->angle);
 	angle.y = local_angle(arch->portal.b_left, arch->wall->next->angle);
 	diff = fabs(angle.x - angle.y);
-	polarite = (arch->wall->next->angle > arch->portal.b_left ? -1 : 1) * (diff < 180 ? 1 : -1);
-	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x -1;
+	polarite = (arch->wall->next->angle > arch->portal.b_left ? -1 : 1)
+		* (diff < 180 ? 1 : -1);
+	arch->px.x = (polarite == -1) ? 0 : arch->sdl->size.x - 1;
 	arch->px.y = arch->sdl->size.x - 1 - arch->px.x;
 }
 
-int			pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
+int				pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
 {
-	double	angle;
-	double	angle_next;
-	double	borne;
+	double		angle;
+	double		angle_next;
+	double		borne;
 
 	angle = local_angle(arch->portal.b_left, pillar->angle);
 	angle_next = local_angle(arch->portal.b_left, next->angle);
@@ -52,64 +53,106 @@ int			pillar_polarite(t_arch *arch, t_pillar *pillar, t_pillar *next)
 		return (arch->sdl->size.x - 1);
 }
 
-void			pillar_screen_info(t_arch *arch, t_player *p)
+void			pillar_out_frust(t_arch *a, t_player *p, int flag)
 {
-	float		angle;
-	int			size;
-	t_fvct2		tmp;
-
-	size = arch->sdl->size.x;
-	if (arch->wall->pillar->frust)
+	if (flag == PILLAR)
 	{
-		arch->px.x = fish_bowl_px(arch, *arch->wall->pillar);
-		arch->pillar.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->pillar->p);
-		arch->pillar.y = sin(arch->wall->pillar->angle * PI180) * arch->pillar.x;
-		arch->pillar.x = cos(arch->wall->pillar->angle * PI180) * arch->pillar.x;
-		arch->shift_txtr.x = 1;
+		a->px.x = fish_bowl_px(a, *a->wall->pillar);
+		a->pillar.x = distance(*(t_fvct2*)&p->stat.pos, a->wall->pillar->p);
+		a->pillar.y = sin(a->wall->pillar->angle * PI180) * a->pillar.x;
+		a->pillar.x = cos(a->wall->pillar->angle * PI180) * a->pillar.x;
+		a->shift_txtr.x = 1;
 	}
 	else
 	{
-		arch->px.x = pillar_polarite(arch, arch->wall->pillar, arch->wall->next);
-		if (arch->px.x == 0)
-		{
-			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_left * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->portal.b_left;
-		}
-		else
-		{
-			arch->px.x = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_right * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->portal.b_right;
-		}
-		arch->shift_txtr.x = wall_clipping(arch, p, &tmp, angle);
-		arch->pillar = tmp;
-	}
-	if (arch->wall->next->frust)
-	{
-		arch->px.y = fish_bowl_px(arch, *arch->wall->next);
-		arch->next.x = distance(*(t_fvct2*)&p->stat.pos, arch->wall->next->p);
-		arch->next.y = sin(arch->wall->next->angle * PI180) * arch->next.x;
-		arch->next.x = cos(arch->wall->next->angle * PI180) * arch->next.x;
-
-		arch->shift_txtr.y = 0;
-	}
-	else
-	{
-		arch->px.y = pillar_polarite(arch, arch->wall->next, arch->wall->pillar);
-		if (arch->px.y == 0)
-		{
-			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_left * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->portal.b_left;
-		}
-		else
-		{
-			arch->px.y = arch->sdl->size.x / 2.0 - (tan(arch->portal.b_right * PI180) * arch->cam->d_screen);
-			angle = p->stat.rot.y + arch->portal.b_right;
-		}
-		arch->shift_txtr.y = wall_clipping(arch, p, &tmp, angle);
-		arch->next = tmp;
+		a->px.y = fish_bowl_px(a, *a->wall->next);
+		a->next.x = distance(*(t_fvct2*)&p->stat.pos, a->wall->next->p);
+		a->next.y = sin(a->wall->next->angle * PI180) * a->next.x;
+		a->next.x = cos(a->wall->next->angle * PI180) * a->next.x;
+		a->shift_txtr.y = 0;
 	}
 }
 
+void			pil_screen_info(t_arch *a, t_player *p)
+{
+	float		angle;
+	t_fvct2		tmp;
+
+	if (a->wall->pillar->frust)
+		pillar_out_frust(a, p, PILLAR);
+	else
+	{
+		a->px.x = pillar_polarite(a, a->wall->pillar, a->wall->next);
+		if (a->px.x == 0)
+		{
+			a->px.x = a->sdl->size.x / 2.0 - (tan(a->portal.b_left * PI180)
+				* a->cam->d_screen);
+			angle = p->stat.rot.y + a->portal.b_left;
+		}
+		else
+		{
+			a->px.x = a->sdl->size.x / 2.0 - (tan(a->portal.b_right * PI180)
+				* a->cam->d_screen);
+			angle = p->stat.rot.y + a->portal.b_right;
+		}
+		a->shift_txtr.x = wall_clipping(a, p, &tmp, angle);
+		a->pillar = tmp;
+	}
+}
+
+void			next_screen_info(t_arch *a, t_player *p)
+{
+	float		angle;
+	t_fvct2		tmp;
+
+	if (a->wall->next->frust)
+	{
+		pillar_out_frust(a, p, NEXT);
+	}
+	else
+	{
+		a->px.y = pillar_polarite(a, a->wall->next, a->wall->pillar);
+		if (a->px.y == 0)
+		{
+			a->px.y = a->sdl->size.x / 2.0 - (tan(a->portal.b_left * PI180)
+				* a->cam->d_screen);
+			angle = p->stat.rot.y + a->portal.b_left;
+		}
+		else
+		{
+			a->px.y = a->sdl->size.x / 2.0 - (tan(a->portal.b_right * PI180)
+				* a->cam->d_screen);
+			angle = p->stat.rot.y + a->portal.b_right;
+		}
+		a->shift_txtr.y = wall_clipping(a, p, &tmp, angle);
+		a->next = tmp;
+	}
+}
+
+void			pillar_screen_info(t_arch *arch, t_player *p)
+{
+	pil_screen_info(arch, p);
+	next_screen_info(arch, p);
+}
+
+int				portal_clipping(t_arch *arch, int flag, t_affine a_wall
+	, t_affine a_portal)
+{
+	t_fvct2		inter;
+	int			*px;
+	t_affine	a_pillar;
+
+	inter = (flag == PILLAR) ? arch->pillar : arch->next;
+	px = (flag == PILLAR) ? &arch->px.x : &arch->px.y;
+	if (interpolation_linear_secur(a_portal, a_wall, &inter))
+		return (0);
+	pillar_virtual_move(arch, inter, flag);
+	a_pillar.a = inter.y / inter.x;
+	a_pillar.b = 0;
+	*px = arch->sdl->size.x / 2 - affine_val(a_pillar
+		, arch->cam->d_screen);
+	return (1);
+}
 
 /*
 **	renvoie la position du mur par rapport au portail de rendu
@@ -133,23 +176,11 @@ int				wall_behind_portal(t_arch *arch)
 	if (inter[0].x > arch->pillar.x && inter[1].x > arch->next.x)
 		return (0);
 	a_wall = affine_points_secur(arch->pillar, arch->next);
-	if (inter[0].x > arch->pillar.x)
-	{
-		if (interpolation_linear_secur(a_portal, a_wall, &inter[0]))
-			return (0);
-		pillar_virtual_move(arch, inter[0], PILLAR);
-		a_pillar.a = arch->pillar.y / arch->pillar.x;
-		a_pillar.b = 0;
-		arch->px.x = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
-	}
-	else if (inter[1].x > arch->next.x)
-	{
-		if (interpolation_linear_secur(a_portal, a_wall, &inter[0]))
-			return (0);
-		pillar_virtual_move(arch, inter[0], NEXT);
-		a_pillar.a = arch->next.y / arch->next.x;
-		a_pillar.b = 0;
-		arch->px.y = arch->sdl->size.x / 2 - affine_val(a_pillar, arch->cam->d_screen);
-	}
+	if (inter[0].x > arch->pillar.x
+		&& !portal_clipping(arch, PILLAR, a_wall, a_portal))
+		return (0);
+	else if (inter[1].x > arch->next.x
+		&& !portal_clipping(arch, NEXT, a_wall, a_portal))
+		return (0);
 	return (1);
 }
