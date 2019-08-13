@@ -17,9 +17,6 @@ void		set_borne_vertical(t_arch *arch, t_vct2 surface, int i)
 	arch->portal.b_up[i] = (uint32_t)trunc_int(arch->portal.b_up[i], 0, arch->sdl->size.y - 1);
 	arch->portal.b_down[i] = (uint32_t)trunc_int(surface.y, arch->portal.b_up[arch->px.x], arch->portal.b_down[arch->px.x] - 1);
 	arch->portal.b_down[i] = (uint32_t)trunc_int(arch->portal.b_down[i], 0, arch->sdl->size.y - 1);
-	printf("arch->portal.b_up[%d] %d arch->portal.b_down[%d] %d\n", i, arch->portal.b_up[i], i, arch->portal.b_down[i]);
-	//if ((int)arch->portal.b_down[i] > arch->sdl->size.y || (int)arch->portal.b_up[i] < 0)
-	//	printf("depth portail %d\n", arch->depth_portal);
 }
 
 void		set_borne_horizontal(t_arch *arch)
@@ -72,8 +69,6 @@ void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 		px_draw.x++;
 		i++;
 	}
-	//-----arch->portal.decal_portal = borne->decal_portal;
-	//-----arch->portal.depth_portal = borne->depth_portal;
 	arch->portal.pillar = borne->pillar;
 	arch->portal.next = borne->next;
 	borne_free(borne);

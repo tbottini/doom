@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 01:10:29 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 01:24:00 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,6 @@ void		draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int star
 	draw_part(arch, tmp, 0x272130ff);
 	parent_borne->b_up[arch->px.x - start] = arch->portal.b_up[arch->px.x];
 	parent_borne->b_down[arch->px.x - start] = arch->portal.b_down[arch->px.x];
-
 	tmp = (t_vct2){s_portal.x, s_portal.y};
-	printf("set borne vertical %d\n", arch->px.x);
 	set_borne_vertical(arch, tmp, arch->px.x);
 }

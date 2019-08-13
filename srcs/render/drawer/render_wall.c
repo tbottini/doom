@@ -181,7 +181,7 @@ void			render_surface(t_arch *arch, t_player *player)
 		arch->depth_portal++;
 		if (debug == 9)
 			printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
-		printf(WRED"arch->px %d %d\n"WEND, arch->px.x, arch->px.y);
+		//printf(WRED"arch->px %d %d\n"WEND, arch->px.x, arch->px.y);
 		sector_render(arch, player, arch->wall->link);
 		arch->depth_portal--;
 		arch->sector = sector_tmp;
