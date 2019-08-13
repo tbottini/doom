@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 16:13:54 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 05:03:33 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 05:16:11 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-                                                      */
+
 /* ************************************************************************** */
 
 #include "render.h"
@@ -80,38 +80,30 @@ static void			miniline(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 
 static void			miniprops(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 {
-	int		i;
-	t_vct2	tmp;
+	t_vct3	tmp;
 
-	i = 0;
-	while (i < sector->len_prop)
+	tmp.z = -1;
+	while (++tmp.z < sector->len_prop)
 	{
 		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((sector->props[i].pos.x - pos.x)) * (UNIT);
+			+ ((sector->props[tmp.z].pos.x - pos.x)) * (UNIT);
 		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - sector->props[i].pos.y)) * (UNIT);
-		bold_point2(mini, tmp, CENEMY);
+			+ ((pos.y - sector->props[tmp.z].pos.y)) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, CENEMY);
 		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
+			+ (((sector->props[tmp.z].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
 		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
-		bold_point2(mini, tmp, 0);
+			+ ((pos.y - (sector->props[tmp.z].pos.y + HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
+		tmp.y = (mini->a.y - (mini->size.y / 2))
+			+ ((pos.y - (sector->props[tmp.z].pos.y + -HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
 		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+			+ (((sector->props[tmp.z].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
 		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
-		bold_point2(mini, tmp, 0);
-		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( sector->props[i].pos.x + -HITBOXSIZE) - pos.x)) * (UNIT);
-		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( sector->props[i].pos.y + HITBOXSIZE))) * (UNIT);
-		bold_point2(mini, tmp, 0);
-		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((( sector->props[i].pos.x + HITBOXSIZE) - pos.x)) * (UNIT);
-		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - ( sector->props[i].pos.y + -HITBOXSIZE))) * (UNIT);
-		bold_point2(mini, tmp, 0);
-		i++;
+			+ ((pos.y - (sector->props[tmp.z].pos.y + HITBOXSIZE))) * (UNIT);
+		bold_point2(mini, (t_vct2){tmp.x, tmp.y}, 0);
 	}
 }
 
@@ -131,20 +123,20 @@ static void			minifield(t_player *player, t_minimap *mini)
 	}
 }
 
-void				minifill(t_minimap *mini, int health, t_power power)
+void				minifill(t_minimap *m, int h, t_power p)
 {
 	int i;
 	int j;
 
-	i = mini->d.x;
-	while (i < mini->a.x - 1)
+	i = m->d.x;
+	while (i < m->a.x - 1)
 	{
-		j = mini->sdl->size.y - (mini->sdl->size.y >> 2);
-		while (++j < mini->a.y - 1)
-			if (mini->sdl->screen[i + j * mini->sdl->size.x] != CWALL
-				&& mini->sdl->screen[i + j * mini->sdl->size.x] != CPORT)
-					mini->sdl->screen[i + j * mini->sdl->size.x] = opacity(hcol(health, power),
-						mini->sdl->screen[i + j * mini->sdl->size.x], 0.5);
+		j = m->sdl->size.y - (m->sdl->size.y >> 2);
+		while (++j < m->a.y - 1)
+			if (m->sdl->screen[i + j * m->sdl->size.x] != CWALL
+				&& m->sdl->screen[i + j * m->sdl->size.x] != CPORT)
+				m->sdl->screen[i + j * m->sdl->size.x] = opacity(hcol(h, p),
+				m->sdl->screen[i + j * m->sdl->size.x], 0.5);
 		++i;
 	}
 }
@@ -153,7 +145,6 @@ static void			minienemies(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 {
 	int		i;
 	t_vct2	tmp;
-	t_fvct2	dir;
 	t_enemy	*enn;
 
 	i = 0;
@@ -165,40 +156,35 @@ static void			minienemies(t_minimap *mini, t_sector *sector, t_fvct3 pos)
 		tmp.y = (mini->a.y - (mini->size.y / 2))
 			+ ((pos.y - enn->stat.pos.y)) * (UNIT);
 		bold_point2(mini, tmp, CENEMY);
-		update_enemy_rotation(enn, pos);
-		dir.x = enn->stat.pos.x + sin(enn->stat.rot.y);
-		dir.y = enn->stat.pos.y + cos(enn->stat.rot.y);
-		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((dir.x - pos.x)) * (UNIT);
-		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - dir.y)) * (UNIT);
-		bold_point2(mini, tmp, 0xFF0000FF);
-		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((enn->e1.x - pos.x)) * (UNIT);
-		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - enn->e1.y)) * (UNIT);
-		bold_point2(mini, tmp, 0x18ffffFF);
-		tmp.x = (mini->a.x - (mini->size.x / 2))
-			+ ((enn->e2.x - pos.x)) * (UNIT);
-		tmp.y = (mini->a.y - (mini->size.y / 2))
-			+ ((pos.y - enn->e2.y)) * (UNIT);
-		bold_point2(mini, tmp, 0x18ffffFF);
 		enn = enn->next;
 	}
 }
 
-void				miniinv(t_minimap *mini, t_player *player)
+void				lil_miniinv(t_minimap *mini, t_player *p, SDL_Rect rect)
 {
-	int y;
 	int tmp;
-	SDL_Rect rect;
 
 	tmp = (mini->a.y - mini->d.y) / 5;
-	y = mini->d.y;
-	rect.x = mini->a.x;
-	rect.y = y;
-	rect.w = tmp;
-	rect.h = tmp;
+	rect.y += tmp;
+	if (p->inv.key1)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[10], NULL, &rect);
+	rect.y += tmp;
+	if (p->inv.key2)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[11], NULL, &rect);
+	rect.y += tmp;
+	if (p->inv.key3)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[12], NULL, &rect);
+	rect.y += tmp;
+	if (p->inv.last_key)
+		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[13], NULL, &rect);
+}
+
+void				miniinv(t_minimap *mini, t_player *player)
+{
+	int			tmp;
+	SDL_Rect	rect;
+
+	rect = (SDL_Rect){mini->a.x, mini->d.y, tmp, tmp};
 	if (player->inv.jetpack != -1)
 	{
 		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[6], NULL, &rect);
@@ -209,22 +195,6 @@ void				miniinv(t_minimap *mini, t_player *player)
 			SDL_SetRenderDrawColor(mini->sdl->rend, 0, 0, 0, 0);
 		}
 	}
-	y += tmp;
-	rect.y = y;
-	if (player->inv.key1)
-		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[10], NULL, &rect);
-	y += tmp;
-	rect.y = y;
-	if (player->inv.key2)
-		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[11], NULL, &rect);
-	y += tmp;
-	rect.y = y;
-	if (player->inv.key3)
-		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[12], NULL, &rect);
-	y += tmp;
-	rect.y = y;
-	if (player->inv.last_key)
-		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[13], NULL, &rect);
 }
 
 void				minimap(t_minimap *mini, t_player *player)
@@ -233,7 +203,7 @@ void				minimap(t_minimap *mini, t_player *player)
 	minifill(mini, player->stat.health, player->power);
 	minibord(mini);
 	minifield(player, mini);
-	miniprops(mini, player->stat.sector, player->stat.pos);//
-	minienemies(mini, player->stat.sector, player->stat.pos);//
+	miniprops(mini, player->stat.sector, player->stat.pos);
+	minienemies(mini, player->stat.sector, player->stat.pos);
 	bold_point2(mini, mini->mid, WHITE);
 }

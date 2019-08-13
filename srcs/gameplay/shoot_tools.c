@@ -6,13 +6,13 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 04:40:26 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/13 04:54:29 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-static double	wall_bullet_clipping(t_pillar wall, t_pillar next, t_stat *stat)
+double			wall_bullet_clipping(t_pillar wall, t_pillar next, t_stat *stat)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;
@@ -39,7 +39,7 @@ static double	wall_bullet_clipping(t_pillar wall, t_pillar next, t_stat *stat)
 	return (distance((t_fvct2){0.0, 0.0}, inter));
 }
 
-static double	enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
+double			enemy_bullet_clipping(t_enemy *enemy, t_stat *stat)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;
