@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 01:21:12 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 03:00:23 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 04:11:19 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 **	renvoie la position en pixel d'un point
 **	wall_angle est l'angle du point par rapport au joueur
 */
-int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
+
+int			px_point(t_arch *arch, t_player *player, double h_diff
+	, double depth)
 {
 	double	wall_angle;
 	int		px;
@@ -34,6 +36,7 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 **	length.x = up
 **	length.y = down
 */
+
 t_fvct2		length_sector(t_player *player, t_sector *sector)
 {
 	t_fvct2	length;
@@ -51,7 +54,9 @@ t_fvct2		length_sector(t_player *player, t_sector *sector)
 **	up est la difference entre le point de vue de la camera
 **		et le haut du mur
 */
-t_fvct2			surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, double depth)
+
+t_fvct2			surface_pillar(t_arch *arch, t_player *player
+	, t_fvct2 len_sector, double depth)
 {
 	t_fvct2		wall_portion;
 
@@ -63,6 +68,7 @@ t_fvct2			surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, dou
 /*
 **	rearrange les parametre pour que l'on rende les colonnes de gauche a droite
 */
+
 void			reorder(t_arch *arch)
 {
 	double		tmp;
@@ -90,15 +96,47 @@ void			reorder(t_arch *arch)
 **		-la borne pour la recursivite arch->portal
 **		-recharge borne_tmp dans arch->portal
 */
-void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *borne_tmp)
+
+
+//une strucutre
+typedef	struct		s_cursor
+{
+	t_fvct2			c_surface;
+	double			c_neutre;
+	double			c_dist;
+	t_fvct2			*surface;
+	double			dist_px;
+	double			neutre;
+}					t_cursor;
+
+t_cursor			init_cursor_dir_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next)
+{
+	t_cursor		cursor;
+	t_fvct2			neutre;
+
+	cursor.c_surface.x = coef_diff(pillar->x - next->x, arch->px);
+	cursor.c_surface.y = coef_diff(pillar->y - next->y, arch->px);
+	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
+	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
+	cursor.neutre = neutre.x;
+	cursor.c_neutre = coef_vct(neutre, arch->px);
+	cursor.c_dist = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
+	cursor.dist_px = arch->pillar.x;
+	cursor.surface = pillar;
+	return (cursor);
+}
+
+
+void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next
+	, t_borne *borne_tmp)
 {
    	t_fvct2		neutre;
    	t_fvct2		coef_surface;
 	double		coef_neutre;
 	int			start;
 	double		coef_distance;
-	double		dist_px;
-	int			i = 0;
+
+	t_cursor	curs;
 
 	start = arch->px.x;
 	coef_surface.x = coef_diff(pillar->x - next->x, arch->px);
@@ -107,7 +145,9 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
 	coef_distance = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
-	dist_px = arch->pillar.x;
+
+	curs = init_cursor_dir_pillar(arch, pillar, next);
+
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
@@ -116,7 +156,7 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 			arch->portal.b_down[arch->px.x] = arch->sdl->size.y - 1;
 		if (arch->wall->status == WALL)
 		{
-			if (z_line_buffer(arch, neutre.x, arch->px.x))
+			if (z_line_buffer(arch, curs.neutre, arch->px.x))
 			{
 				draw_column(arch, *pillar);
 				props_draw_column(arch->wall->props, arch, *pillar);
@@ -124,17 +164,15 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 		}
 		else if (arch->wall->status == PORTAL)
 		{
-			if (zline_portal(arch, borne_tmp->zline, neutre.x, start))
+			if (zline_portal(arch, borne_tmp->zline, curs.neutre, start))
 			{
 				draw_portal(arch, *pillar, borne_tmp, start);
 			}
 		}
-		pillar->x -= coef_surface.x;
-		pillar->y -= coef_surface.y;
-		neutre.x += coef_neutre;
+		curs.surface->x -= coef_surface.x;
+		curs.surface->y -= coef_surface.y;
+		curs.neutre += coef_neutre;
 		arch->px.x++;
-		i++;
-		dist_px += coef_distance;
 	}
 }
 
@@ -181,7 +219,6 @@ void			render_surface(t_arch *arch, t_player *player)
 
 void			render_wall(t_arch *arch, t_player *player)
 {
-
 	pillar_screen_info(arch, player);
 	if (arch->depth_portal == 0 || (wall_behind_portal(arch)))
 	{

@@ -6,13 +6,14 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 02:07:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 03:19:16 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-int				sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg)
+int				sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc,
+	const char *text, SDL_Color fg)
 {
 	SDL_Texture *texture;
 	SDL_Surface *surf;
@@ -42,7 +43,8 @@ static int		ft_strlcpy_schlagg(char *dst, const char *src)
 	return (y);
 }
 
-int				sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg)
+int				sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc,
+	const char *label, const int value, SDL_Color fg)
 {
 	char res[25];
 
