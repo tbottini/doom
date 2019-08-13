@@ -46,13 +46,13 @@ SRCS_GAMEPLAY	:=		action.c										\
 						ia_tools.c										\
 						ia_action.c										\
 
-SRCS_INPUT		:=		event_controller.c								\
-						event_handler.c									\
+SRCS_INPUT		:=		event_handler.c									\
 						event_handler_doom.c							\
 						event_handler_editor.c							\
 						input_hook.c									\
+						input_mouse.c									\
 						loop_hook.c										\
-						debug_input.c									\
+						editor_loop.c									\
 
 SRCS_RENDER		:=		render.c										\
 						sector.c										\

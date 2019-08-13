@@ -154,7 +154,7 @@ t_btn					*btn_hover(t_doom *doom, int x, int y);
 void					draw_hover(t_doom *doom, t_btn *newl, t_btn *old);
 
 int						game_key_press(int key, t_doom *doom);
-int						key_press(int key, t_doom *doom);
+void					key_press(int key, t_doom *doom);
 int						key_release(int key, t_doom *doom);
 int						mouse_press(int button, int x, int y, t_doom *doom);
 int						mouse_release(int button, int x, int y, t_doom *doom);
@@ -211,11 +211,12 @@ int						vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2);
 /*
 **	editor_input
 */
+void					editor_loop_hook(t_doom *doom);
 int						editor_key_press(int key, t_doom *doom);
 int						editor_key_release(int key, t_doom *doom);
 int						ui_by_sdl(t_doom *doom, t_ui *ui);
 
-
+void					outgame_loop_hook(t_doom *doom);
 void					armandtificial_intelligence(t_doom *doom);
 
 int						hud_render(t_doom *doom);
