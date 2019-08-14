@@ -150,6 +150,7 @@ void			render_surface(t_arch *arch, t_player *player)
 	t_sector	*sector_tmp;
 	t_vct2		px_draw;
 
+	reorder(arch);
 	len_sector = length_sector(player, arch->sector);
 	pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
 	next_px = surface_pillar(arch, player, len_sector, arch->next.x);
@@ -212,7 +213,6 @@ void			render_wall(t_arch *arch, t_player *player)
 			door_split(arch, player, arch->wall->status);
 			return ;
 		}
-		reorder(arch);
 		render_surface(arch, player);
 	}
 	else if (debug_screen == 2)

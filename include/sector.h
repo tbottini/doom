@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 21:52:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/14 16:38:10 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define G_EARTH -9.80665
 # define G_MOON -1.62200
 
-# define DOOR_OPEN_TIME 300
+# define DOOR_OPEN_TIME 5000
 
 typedef struct s_enemy	t_enemy;
 typedef struct s_sector	t_sector;

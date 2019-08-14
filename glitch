@@ -1,0 +1,15 @@
+render
+	-props afficher a l'infini
+	-props afficher a l'inverse de leurs position
+	-bug porte avec les porte a l'envers
+	-porte clignote
+	-la partie mur n'a pas de bordure vertical comme l'a la partie portail
+	-props secteur afficher alors qu'ils sont derriere un portail
+	-portail affichage d'une colonne en moins dans le prochain secteur
+		colonne jaune sur les bords
+
+gameplay:
+	-ejection du secteur lors de certain passage
+
+segv:
+	-...?
