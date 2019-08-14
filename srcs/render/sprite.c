@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 08:16:06 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/14 14:39:55 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,24 +149,21 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 		start_txtr_heigth = -sprite->heigth.x * p_buff_h;
 	}
 	else
-	{
 		start_txtr_heigth = 0;
-	}
 	if (sprite->width.x < 0)
 	{
 		buffer_w = -sprite->width.x * p_buff_w;
 		sprite->width.x = 0;
 	}
 	else
-	{
 		buffer_w = 0;
-	}
 	if (sprite->width.y > arch->sdl->size.x)
 		sprite->width.y = arch->sdl->size.x;
 	if (sprite->heigth.y > arch->sdl->size.y)
 		sprite->heigth.y = arch->sdl->size.y - 1;
 	while (sprite->width.x < sprite->width.y && buffer_w < sprite->texture.w)
 	{
+
 		if (zline_compare(arch, neutral_distance, sprite->width.x))
 		{
 			if (sprite->heigth.x < (int)arch->portal.b_up[sprite->width.x])

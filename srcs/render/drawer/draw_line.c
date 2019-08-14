@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/04 11:58:56 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 08:24:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 	}
 }
 
-void	fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
+void	fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0
+	, t_vct2 pos1, Uint32 color)
 {
 	t_vct3	decal;
 	t_vct2	orig;
@@ -82,7 +83,7 @@ void	fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 
 	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
 	fill_pixel(screen, sdl->size, pos0, color);
 	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-			&& fill_pixel(screen, sdl->size, pos0, color))
+		&& fill_pixel(screen, sdl->size, pos0, color))
 	{
 		e2 = err;
 		if (e2 > -orig.x && ((err -= orig.y) || 1))
