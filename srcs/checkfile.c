@@ -113,7 +113,7 @@ int	check_one_prop(int fd)
 		if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a != -1)
 			return (-79);
 	}
-	else if ((read(fd, &var_a, sizeof(int)) != sizeof(int)))
+	else if ((read(fd, &var_a, sizeof(int)) != sizeof(int)) || var_a < -1)
 		return (-75);
 	if ((read(fd, &dtmp, sizeof(double)) != sizeof(double)))
 		return (-76);
@@ -159,7 +159,7 @@ int	check_one_wall(int fd, t_slen *len)
 		return (-64);
 	if (((read(fd, &tmp, sizeof(int)) != sizeof(int))))
 		return (-64);
-	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects))
+	if (((read(fd, &tmp, sizeof(int)) != sizeof(int)) || tmp >= len->nb_sects || tmp < -1))
 		return (-65);
 	return (check_wall_props(fd));
 }
