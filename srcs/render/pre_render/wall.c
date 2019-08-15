@@ -43,12 +43,14 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 
 /*
 **	va separer la porte en deux partie un portail et un mur
+**	arch shift_txtr .y correspond a la vision par rapport a next
+**	si (arch->shift_txtr.y > 1 - percent_open)
+**		alors la gauche du champ de vision a depasser la limite de la porte
+**		par rapport a droite
 */
 void				door_split(t_arch *arch, t_player *player, int flag)
 {
-	//bug percent == 0.503229
-	//le portail prend le dessus sur la partie porte
-	//perte a cause du reorder..?
+	//rendu du portail alors qu'il est hors vision
 
 	double			percent_open;
 	double			percent_local;
@@ -57,11 +59,9 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 	t_vct2			px_end;
 	double			shift_txtr_tmp;
 	t_fvct2			next_tmp;
+	bool			render_portal;
 
 	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME);
-	//percent_open = 0.503229;
-	if (debug == 8)
-		printf(WGREEN"time %d percent_open %f\n"WEND, arch->timestamp, percent_open);
 	if (flag == OPEN_DOOR)
 		percent_open = 1 - percent_open;
 	if (percent_open > 1)
@@ -84,11 +84,6 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 		return ;
 	if (1 - arch->shift_txtr.x < percent_open)
 	{
-		if (debug == 8)
-		{
-			printf("arch->px base %d %d\n", arch->px.x, arch->px.y);
-		}
-
 		px_tmp = arch->px.y;
 		px_end.y = arch->px.y;
 		shift_txtr_tmp = arch->shift_txtr.y;
@@ -101,23 +96,28 @@ void				door_split(t_arch *arch, t_player *player, int flag)
 		{
 			printf("arch->px wall %d %d\n", arch->px.x, arch->px.y);
 		}
-		if (arch->shift_txtr.y > 1 - percent_open)
+		render_portal = !(arch->shift_txtr.y > 1 - percent_open);
+
+		if (!render_portal)
 			arch->shift_txtr.y = 1 - (arch->shift_txtr.y - (1 - percent_open));
 		else
 			arch->shift_txtr.y = 1;
+
 		arch->wall->status = WALL;
 		render_surface(arch, player);
-		arch->wall->status = PORTAL;
-		arch->px.x = arch->px.y;
-		arch->px.y = px_tmp;
-		arch->px = px_end;
-		if (debug == 8)
-			printf("arch->px portal %d %d\n", arch->px.x, arch->px.y);
-		arch->pillar = arch->next;
-		arch->next = next_tmp;
-		arch->shift_txtr.x = arch->shift_txtr.y;
-		arch->shift_txtr.y = shift_txtr_tmp;
-		render_surface(arch, player);
+		if (render_portal)
+		{
+			arch->wall->status = PORTAL;
+			arch->px.x = arch->px.y;
+			arch->px.y = px_tmp;
+			arch->px = px_end;
+			arch->pillar = arch->next;
+			arch->next = next_tmp;
+			arch->shift_txtr.x = arch->shift_txtr.y;
+			arch->shift_txtr.y = shift_txtr_tmp;
+			render_surface(arch, player);
+		}
+
 	}
 	else
 	{
