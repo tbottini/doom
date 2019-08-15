@@ -14,6 +14,22 @@
 #define EDITORSTEPX 100.0
 #define EDITORSTEPY -100.0
 
+void add_prop(t_game *game, t_editor *edit, t_sector *gamesec)
+{
+	int y;
+	t_prop *prop;
+	t_entity *ent;
+
+	y = 0;
+	while (y < gamesec->len_prop)
+	{
+		prop = &gamesec->props[y];
+		ent = ft_enemypushend(&edit->ennlist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game, prop->sector));
+		fill_ent(edit->sectors, game, ent, prop);
+		y++;
+	}
+}
+
 void		add_wall_prop(t_game *g, t_editor *e, t_wall *gamewall, t_mur *mur)
 {
 	int			y;
