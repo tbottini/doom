@@ -13,7 +13,6 @@ gameplay:
 segv:
 	-...?
 	-button associe a une porte qui a ete delete
-	-arch->px.x est negatif (quand il passe un portail?)
 
 
 
@@ -22,3 +21,5 @@ segv:
 
 glitch regle:
 	-porte clignote
+	-arch->px.x est negatif (rendu de la partie portail
+		de la porte hors frustum)
