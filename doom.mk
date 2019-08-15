@@ -76,7 +76,9 @@ SRCS_RENDER		:=		render.c										\
 						prop.c											\
 
 SRCS_PARSING	:=		checkfile.c										\
+						ft_super_lil_checkfile.c						\
 						intreadfiletoeditor.c							\
+						lil_checkfile.c									\
 						lil_readfile.c									\
 						lil_readfileeditor.c							\
 						lil_savefile.c									\
@@ -84,6 +86,7 @@ SRCS_PARSING	:=		checkfile.c										\
 						readfile.c										\
 						readfileeditor.c								\
 						savefile.c										\
+						super_checkfile.c								\
 						super_readfile.c								\
 						super_readfileeditor.c							\
 						super_savefile.c								\
