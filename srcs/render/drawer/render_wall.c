@@ -81,28 +81,27 @@ void			reorder(t_arch *arch)
 **		-la borne pour la recursivite arch->portal
 **		-recharge borne_tmp dans arch->portal
 */
-void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *borne_tmp)
+void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 {
    	t_fvct2		neutre;
    	t_fvct2		coef_surface;
 	double		coef_neutre;
-	int			start;
 	double		coef_distance;
 	double		dist_px;
-//	t_fvct2		s_portal;
-//	t_vct2		tmp;
 	int			i = 0;
 
-	start = arch->px.x;
-	coef_surface.x = coef_diff(pillar->x - next->x, arch->px);
-	coef_surface.y = coef_diff(pillar->y - next->y, arch->px);
+	render_stuff->px_start = arch->px.x;
+	coef_surface.x = coef_diff(render_stuff->pillar.x - render_stuff->next.x, arch->px);
+	coef_surface.y = coef_diff(render_stuff->pillar.y - render_stuff->next.y, arch->px);
 	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
-	//on sauvegarde l'inverse de la distance...
 
 	coef_distance = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
 	dist_px = arch->pillar.x;
+//	if (arch->wall->status == OPEN_DOOR
+//		|| arch->wall->status == CLOSE_DOOR)
+
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
@@ -111,28 +110,28 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 			arch->portal.b_down[arch->px.x] = arch->sdl->size.y - 1;
 		if (arch->wall->status == WALL)
 		{
-
-
-			if (z_line_buffer(arch, neutre.x, arch->px.x))
+			if (zline_wall(arch, render_stuff, neutre.x))
 			{
-				draw_column(arch, *pillar);
-				props_draw_column(arch->wall->props, arch, *pillar);
+				draw_wall(arch, render_stuff);
+				props_draw_column(arch->wall->props, arch, render_stuff->pillar);
 			}
 		}
 		else if (arch->wall->status == PORTAL)
 		{
-			if (zline_portal(arch, borne_tmp->zline, neutre.x, start))
-			{
-				draw_portal(arch, *pillar, borne_tmp, start);
-			}
+			if (zline_portal(arch, render_stuff, neutre.x))
+				draw_portal(arch, render_stuff);
 		}
-		pillar->x -= coef_surface.x;
-		pillar->y -= coef_surface.y;
+		else if (arch->wall->status == OPEN_DOOR
+			|| arch->wall->status == CLOSE_DOOR)
+		{
+			draw_door(arch, render_stuff);
+		}
+		render_stuff->pillar.x -= coef_surface.x;
+		render_stuff->pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
 		i++;
-		if ((i % 5 == 0 && debug == 5)
-			|| (i % 2 == 0 && debug == 4))
+		if (i % 5 == 0 && debug == 5)
 		{
 			sdl_MultiRenderCopy(arch->sdl);
 			SDL_RenderPresent(arch->sdl->rend);
@@ -141,37 +140,33 @@ void			pillar_to_pillar(t_arch *arch, t_fvct2 *pillar, t_fvct2 *next, t_borne *b
 	}
 }
 
-void			render_surface(t_arch *arch, t_player *player)
+void				render_surface(t_arch *arch, t_player *player)
 {
-	t_fvct2		pillar_px;
-	t_fvct2		next_px;
-	t_fvct2		len_sector;
-	t_borne		borne_tmp;
-	t_sector	*sector_tmp;
-	t_vct2		px_draw;
+	t_fvct2			len_sector;
+	t_sector		*sector_tmp;
+	t_vct2			px_draw;
+	t_pil_render	pillar_render;
 
 	reorder(arch);
 	len_sector = length_sector(player, arch->sector);
-	pillar_px = surface_pillar(arch, player, len_sector, arch->pillar.x);
-	next_px = surface_pillar(arch, player, len_sector, arch->next.x);
+	pillar_render.pillar = surface_pillar(arch, player, len_sector, arch->pillar.x);
+	pillar_render.next = surface_pillar(arch, player, len_sector, arch->next.x);
 	prop_iter_v(arch->wall->props, arch->wall->nb_props, &prop_init_render, arch);
 	if (debug_screen == 2)
 	{
 		if (arch->wall->status == PORTAL)
-			draw_wall(arch, YELLOW);
+			draw_wall_debug(arch, YELLOW);
 		else if (arch->wall->status == WALL)
-			draw_wall(arch, WHITE);
+			draw_wall_debug(arch, WHITE);
 	}
-	//render_under_floor(arch, len_sector, player, (t_fvct2){pillar_px.y, next_px.y});
 	if (arch->wall->status == PORTAL)
 	{
 		if (debug == 9)
 			printf("borne_svg(%d) %d %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
-		borne_svg(arch, &borne_tmp);
+		borne_svg(arch, &pillar_render.borne_tmp);
 		px_draw = arch->px;
-		//start = arch->px.x;
 	}
-	pillar_to_pillar(arch, &pillar_px, &next_px, &borne_tmp);
+	pillar_to_pillar(arch, &pillar_render);
 	if (arch->wall->status == PORTAL)
 	{
 		arch->px.x = px_draw.x;
@@ -182,11 +177,10 @@ void			render_surface(t_arch *arch, t_player *player)
 		arch->depth_portal++;
 		if (debug == 9)
 			printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
-		//printf(WRED"arch->px %d %d\n"WEND, arch->px.x, arch->px.y);
 		sector_render(arch, player, arch->wall->link);
 		arch->depth_portal--;
 		arch->sector = sector_tmp;
-		borne_load(arch, &borne_tmp, px_draw);
+		borne_load(arch, &pillar_render.borne_tmp, px_draw);
 		if (debug == 9)
 			printf("borne_load(%d) %d %d\n\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 	}
@@ -208,13 +202,13 @@ void			render_wall(t_arch *arch, t_player *player)
 	pillar_screen_info(arch, player);
 	if (arch->depth_portal == 0 || (wall_behind_portal(arch)))
 	{
-		if (arch->wall->status == CLOSE_DOOR || arch->wall->status == OPEN_DOOR)
-		{
-			door_split(arch, player, arch->wall->status);
-			return ;
-		}
+		//if (arch->wall->status == CLOSE_DOOR || arch->wall->status == OPEN_DOOR)
+		//{
+		//	door_split(arch, player, arch->wall->status);
+		//	return ;
+		//}
 		render_surface(arch, player);
 	}
 	else if (debug_screen == 2)
-		draw_wall(arch, RED);
+		draw_wall_debug(arch, RED);
 }

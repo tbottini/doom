@@ -72,6 +72,7 @@ t_fvct2					frustum_depth_intersection(t_camera *camera, t_stat *stat, double fl
 void					pillar_screen_info(t_arch *arch, t_player *p);
 int						wall_behind_portal(t_arch *arch);
 t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
+
 /*
 **	render
 */
@@ -81,10 +82,17 @@ void					fish_eyes(double *dist, double angle);
 uint32_t				texture_interpolation2d(t_arch *arch, t_txtr *txtr);
 uint32_t				texture_prop_interpolation2d(t_arch *arch, t_txtr *txtr, t_prop *prop);
 void					render_wall(t_arch *arch, t_player *player);
-void					draw_column(t_arch *arch, t_fvct2 surface);
-void					draw_portal(t_arch *arch, t_fvct2 surface, t_borne *parent_borne, int start);
+
+/*
+**	draw_part
+*/
+void					draw_door(t_arch *arch, t_pil_render *render_stuff);
+void					draw_wall(t_arch *arch, t_pil_render *render_stuff);
+void					draw_portal(t_arch *arch, t_pil_render *render_stuff);
 int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop);
 void					render_surface(t_arch *arch, t_player *player);
+double					draw_part(t_arch *arch, t_vct2 surface, uint32_t color);
+int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr);
 
 /*
 **	bunch
@@ -103,7 +111,6 @@ void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
-int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr);
 void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);
 
 /*

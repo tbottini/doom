@@ -61,6 +61,7 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_line.c								\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
+						drawer/draw_part.c								\
 						render_enemy.c									\
 						sprite.c										\
 						prop.c											\

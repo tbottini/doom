@@ -6,6 +6,11 @@ render
 	-props secteur afficher alors qu'ils sont derriere un portail
 	-portail affichage d'une colonne en moins dans le prochain secteur
 		colonne jaune sur les bords
+	-porte fermeture lors d'une ouverture : reinitialisation
+	-porte inverse...
+	-porte portion inferieur
+		-pblm avec le texture padding
+		
 
 gameplay:
 	-ejection du secteur lors de certain passage
@@ -15,6 +20,14 @@ segv:
 	-button associe a une porte qui a ete delete
 
 
+-porte compression de la portion basse du mur
+-partie wall qui n'a pas de portion 
+
+nouveau rendu
+-on rend les bord comme le mur
+-on rend la porte
+-puis on determine la portion portail du mur
+on implemente ca dans le pillar_to_pillar
 
 
 

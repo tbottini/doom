@@ -18,6 +18,24 @@ typedef struct 			s_borne
 	t_fvct2				next;
 }						t_borne;
 
+/*
+**	structure regroupand les information de rendu
+**	a ne pas calculer plusieurs fois entre chaque colonnes
+*/
+typedef struct 			s_pil_render
+{
+	t_fvct2				pillar;
+	t_fvct2				next;
+	t_borne				borne_tmp;
+
+	//px de debug de rendu
+	int					px_start;
+	//determine le pourcentage du murret haut et bas
+	double				percent_portail;
+	t_portal_id			status;
+
+}						t_pil_render;
+
 typedef struct 			s_arch
 {
 	t_sector			*sector;
@@ -46,8 +64,8 @@ int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
 /*
 **	backface
 */
-void					zline_cut(t_arch *arch, double *zline_cut, int start);
-int						zline_portal(t_arch *arch, double *zline_tmp, double len_pillar, int start);
+int						zline_wall(t_arch *arch, t_pil_render *render_stuff, double len_pillar);
+int						zline_portal(t_arch *arch, t_pil_render *render_stuff, double len_pillar);
 int						z_line_buffer(t_arch *arch, double len_pillar, int px);
 int						zline_compare(t_arch *arch, double len_pillar, int px);
 int						clean_zline(t_arch *arch, double len_pillar, int px);

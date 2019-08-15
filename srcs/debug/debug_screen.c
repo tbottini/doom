@@ -96,7 +96,7 @@ void		draw_borne(t_arch *arch, uint32_t color)
 	fill_line_debug(arch, arch->sdl, point1, point2, color);
 }
 
-void		draw_wall(t_arch *arch, uint32_t color)
+void		draw_wall_debug(t_arch *arch, uint32_t color)
 {
 	t_vct2	point1;
 	t_vct2	point2;

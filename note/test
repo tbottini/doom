@@ -1,0 +1,7 @@
+
+wall -> wall -> door -> wall
+
+
+door				door		door
+button0 -> prop -> button1 -> button2
+|->button1			|->button2 |->button0
