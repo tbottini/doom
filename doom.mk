@@ -1,7 +1,6 @@
 SRCS_DOOM		:=		button_function.c								\
 						slider_function.c								\
 						main.c											\
-						checkfile.c										\
 						cinematri.c										\
 
 SRCS_EDITOR		:=		draw_inspect_menu.c								\
@@ -76,7 +75,9 @@ SRCS_RENDER		:=		render.c										\
 						sprite.c										\
 						prop.c											\
 
-SRCS_PARSING	:=		lil_readfile.c									\
+SRCS_PARSING	:=		checkfile.c										\
+						intreadfiletoeditor.c							\
+						lil_readfile.c									\
 						lil_readfileeditor.c							\
 						lil_savefile.c									\
 						my_readsavefile.c								\

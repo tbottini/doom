@@ -14,17 +14,19 @@
 #define EDITORSTEPX 100.0
 #define EDITORSTEPY -100.0
 
-void add_prop(t_game *game, t_editor *edit, t_sector *gamesec)
+void		add_prop(t_game *game, t_editor *edit, t_sector *gamesec)
 {
-	int y;
-	t_prop *prop;
-	t_entity *ent;
+	int			y;
+	t_prop		*prop;
+	t_entity	*ent;
 
 	y = 0;
 	while (y < gamesec->len_prop)
 	{
 		prop = &gamesec->props[y];
-		ent = ft_enemypushend(&edit->ennlist, (t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY}, prop->type, find_secteur(edit->sectors, game, prop->sector));
+		ent = ft_enemypushend(&edit->ennlist,
+			(t_vct2){prop->pos.x * EDITORSTEPX, prop->pos.y * EDITORSTEPY},
+			prop->type, find_secteur(edit->sectors, game, prop->sector));
 		fill_ent(edit->sectors, game, ent, prop);
 		y++;
 	}
@@ -98,76 +100,5 @@ int			game_to_editor(t_game *g, t_editor *e)
 		sec = sec->next;
 		x++;
 	}
-	return (0);
-}
-
-void		lil_relink_sector(t_game *g, t_editor *e, t_mur *mur, t_vct3 id)
-{
-	t_entity			*ent;
-
-	if (mur->portal_id != WALL)
-		mur->portal_ptr = find_secteur(e->sectors, g,
-			g->sectors[id.x].wall[id.y].link);
-	id.z = 0;
-	ent = mur->wproplist;
-	while (ent)
-	{
-		fill_ent(e->sectors, g, ent,
-			&g->sectors[id.x].wall[id.y].props[id.z]);
-		ent = ent->next;
-		id.z++;
-	}
-}
-
-int			relink_sector(t_game *g, t_editor *e)
-{
-	t_secteur			*secteur;
-	t_mur				*mur;
-	t_vct3				id;
-
-	id.x = 0;
-	secteur = e->sectors;
-	while (secteur)
-	{
-		id.y = 0;
-		mur = secteur->murs;
-		while (mur)
-		{
-			lil_relink_sector(g, e, mur, id);
-			mur = mur->next;
-			id.y++;
-		}
-		secteur = secteur->next;
-		id.x++;
-	}
-	return (1);
-}
-
-int			read_file_to_editor(t_editor *e, const char *file)
-{
-	t_game	g;
-	int		returncode;
-	char	path[512];
-
-	ft_strcpy(path, "ressources/map/");
-	ft_strcpy(&(path[15]), file);
-	ft_bzero(&g, sizeof(t_game));
-	if ((returncode = read_file(&g, path, true)))
-	{
-		printf("Error : %d\n", returncode);
-		return (-1);
-	}
-	if (game_to_editor(&g, e))
-	{
-		free_game(&g);
-		return (-2);
-	}
-	relink_sector(&g, e);
-	free_game(&g);
-	ft_putendl("Successfully read ressources/map/editor.map\n");
-	e->map = e->sectors;
-	if (!(e->player.stat.sector))
-		e->player.stat.sector = e->map;
-	e->status = ED_LOADED;
 	return (0);
 }

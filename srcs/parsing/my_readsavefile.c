@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-int		read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
+int			read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
 {
 	char	ctmp;
 	int		itmp;
@@ -39,7 +39,7 @@ int		read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len)
 	return (read_sec_props(fd, game, sector, len));
 }
 
-int		read_sectors(int fd, t_game *game, t_slen *len)
+int			read_sectors(int fd, t_game *game, t_slen *len)
 {
 	int x;
 	int rtn;
@@ -66,7 +66,7 @@ int		read_sectors(int fd, t_game *game, t_slen *len)
 	return (0);
 }
 
-void	write_wall_props(int fd, t_lstent props)
+void		write_wall_props(int fd, t_lstent props)
 {
 	t_lstent	tmp;
 	int			x;
@@ -87,4 +87,46 @@ void	write_wall_props(int fd, t_lstent props)
 		tmp = tmp->next;
 	}
 	write_balise(fd, "📅");
+}
+
+static void	lil_relink_sector(t_game *g, t_editor *e, t_mur *mur, t_vct3 id)
+{
+	t_entity			*ent;
+
+	if (mur->portal_id != WALL)
+		mur->portal_ptr = find_secteur(e->sectors, g,
+			g->sectors[id.x].wall[id.y].link);
+	id.z = 0;
+	ent = mur->wproplist;
+	while (ent)
+	{
+		fill_ent(e->sectors, g, ent,
+			&g->sectors[id.x].wall[id.y].props[id.z]);
+		ent = ent->next;
+		id.z++;
+	}
+}
+
+int			relink_sector(t_game *g, t_editor *e)
+{
+	t_secteur			*secteur;
+	t_mur				*mur;
+	t_vct3				id;
+
+	id.x = 0;
+	secteur = e->sectors;
+	while (secteur)
+	{
+		id.y = 0;
+		mur = secteur->murs;
+		while (mur)
+		{
+			lil_relink_sector(g, e, mur, id);
+			mur = mur->next;
+			id.y++;
+		}
+		secteur = secteur->next;
+		id.x++;
+	}
+	return (1);
 }

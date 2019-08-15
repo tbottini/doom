@@ -103,6 +103,8 @@ t_secteur				*find_secteur(t_lstsec secteurs, t_game *g, t_sector *sector);
 t_mur					*find_mur_in_secteur(t_lstsec secteurs, t_game *g, t_wall *wall);
 void					fill_ent(t_lstsec secteurs, t_game *g, t_entity *ent, t_prop *prop);
 
+int						relink_sector(t_game *g, t_editor *e);
+
 void					add_walls(t_game *g, t_editor *e, t_sector *gsec, t_secteur *sec);
 void					add_wall_prop(t_game *g, t_editor *e, t_wall *gamewall, t_mur *mur);
 t_pilier				*find_pillar_from_game(t_pillar *pillars, t_pillar *to_find, t_lstpil pillst);
@@ -110,6 +112,8 @@ void					set_txtr(t_txtr *txtr, SDL_Surface *surf, int id);
 int						read_file(t_game *game, const char *file, bool foredit);
 int						check_file(const char *file);
 void					free_game(t_game *game);
+
+int						game_to_editor(t_game *g, t_editor *e);
 
 /*
 **	debug
