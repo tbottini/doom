@@ -122,9 +122,7 @@ void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);
 void					sprite_render_list(t_sprite *sprite, t_arch *arch);
 t_sprite				*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *player, t_arch *arch);
 t_sprite				*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch);
-void					sprite_print(t_sprite *sprite);
 void					sprite_free(t_sprite *sprite);
-void					sprite_print(t_sprite *sprite);
 void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
 void					sprite_render(t_sprite *sprite, t_arch *arch);
 t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player
@@ -136,7 +134,8 @@ int						camera_proj_heigth(t_arch *arch, t_player *player
 /*
 **	render enemy
 */
-t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);t_vct2					txtr_width(t_txtr *texture, t_vct2 surface, int posx);
+t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);
+t_vct2					txtr_width(t_txtr *texture, t_vct2 surface, int posx);
 void					prop_init_render(t_prop *prop, void *arch);
 void					prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup);
 t_vct2					prop_get_screen_pixel(t_prop *prop, t_arch *arch);

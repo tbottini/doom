@@ -60,11 +60,6 @@ void				sprite_free(t_sprite *sprite)
 	}
 }
 
-void				sprite_print(t_sprite *sprite)
-{
-	printf("sprite pos .x %f .y %f\n", sprite->pos.x, sprite->pos.y);
-}
-
 void				sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*))
 {
 	while (sprite)
@@ -85,7 +80,6 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&enemy->stat.pos, player->stat.rot.y);
 		if (e_angle < 90 && e_angle > -90)
 		{
-			//enemy->sprites = &enemy->stat.sector->txtrsol;
 			sprite = sprite_new(enemy->sprites, player->stat.pos, enemy->stat.pos, e_angle);
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);

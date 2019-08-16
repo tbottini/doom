@@ -32,10 +32,6 @@ typedef struct			s_fvct3
 /*
 **	operation
 */
-//t_vct2					*vct2_value(t_vct2 *vct2, int x, int y);
-double					ft_atof(char *str);
-double					ft_catof(char *str, char c);
-unsigned int			ft_catoi_u(char *str, char c);
 char					*double_atof(char *line, t_fvct2 *fvct);
 char					*triple_atof(char *line, t_fvct3 *fvct);
 
@@ -54,16 +50,6 @@ void					fvct3_msg(char *msg, t_fvct3 vector);
 */
 double					dist(t_fvct2 vct1, t_fvct2 vct2);
 
-int				double_sup(double a, double b);
-int				double_inf(double a, double b);
-void			dbl_cmp_affect2(double *affect, double b, double c, int (*cmp)(double, double));
-void			dbl_cmp_affect(double *affect, double b, double c, int (*cmp)(double, double));
-void			fvct2_cmp_affect(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(double, double));
-void			fvct2_cmp_affect2(t_fvct2 *affect, t_fvct2 *b, t_fvct2 *c, int (*cmp)(double, double));
-
-t_fvct2			fvct2_rotation(t_fvct2 vector, double rotation);
-t_fvct2			fvct2_addition(t_fvct2 vector, t_fvct2 add);
-t_fvct2			fvct2_from_angle(double angle);
 double			fvct2_angle(t_fvct2 origin, t_fvct2 pos, double rot_origin);
 
 double			coef_vct(t_fvct2 quantity, t_vct2 step);

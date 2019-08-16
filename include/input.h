@@ -161,7 +161,6 @@ int						mouse_release(int button, int x, int y, t_doom *doom);
 int						mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 int						mouse_move(int x, int y, t_doom *doom);
 
-double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
 void					*listdel(t_list **list);
