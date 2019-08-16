@@ -14,7 +14,7 @@
 
 static int	init(void)
 {
-	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMECONTROLLER|SDL_INIT_TIMER) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0)
 	{
 		ft_printf("SDL_Init: %s\n", SDL_GetError());
 		return (0);
@@ -31,7 +31,7 @@ static int	init(void)
 	}
 	if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) < 0)
 	{
-		ft_printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+		ft_printf("SDL_mixer Error: %s\n", Mix_GetError());
 		return (0);
 	}
 	return (1);
