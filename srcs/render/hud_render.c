@@ -50,8 +50,8 @@ void				weaponhud_render(t_doom *doom)
 	pos.y = doom->sdl.size.y - pos.h - 15;
 	if (doom->game.player.hand->id != FIST)
 	{
-		sdl_int_put(doom->sdl.rend, doom->ui.fonts.s32, (t_vct2){pos.x - 70, pos.y - 10}, "", doom->game.player.hand->clip, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
-		sdl_int_put(doom->sdl.rend, doom->ui.fonts.s32, (t_vct2){pos.x - 80, pos.y + 25}, "/ ", doom->game.player.hand->ammo, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+		sdl_int_put((t_ip){doom->sdl.rend, doom->ui.fonts.s32, (t_vct2){pos.x - 70, pos.y - 10}, "", doom->game.player.hand->clip, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF}});
+		sdl_int_put((t_ip){doom->sdl.rend, doom->ui.fonts.s32, (t_vct2){pos.x - 80, pos.y + 25}, "/ ", doom->game.player.hand->ammo, (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF}});
 	}
 	SDL_RenderCopy(doom->sdl.rend, doom->ui.weaponhud[doom->game.player.hand->id], NULL, &pos);
 	pos.x += 60;

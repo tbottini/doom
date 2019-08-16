@@ -56,15 +56,15 @@ static int	display_end(t_doom *doom, Uint32 color, double filter, bool win)
 	full_screen_opacity(doom, color, filter);
 	sdl_multirendercopy(&doom->sdl);
 	if (win)
-		sdl_string_put(doom->sdl.rend, doom->ui.fonts.s128,
+		sdl_string_put((t_sp){doom->sdl.rend, doom->ui.fonts.s128,
 		(t_vct2){doom->sdl.size.x / 2 - 158,
 		doom->sdl.size.y / 2 - 100}, "YOU WIN !",
-		(SDL_Color){0, 0, 0, 255});
+		(SDL_Color){0, 0, 0, 255}});
 	else
-		sdl_string_put(doom->sdl.rend, doom->ui.fonts.s128,
+		sdl_string_put((t_sp){doom->sdl.rend, doom->ui.fonts.s128,
 		(t_vct2){doom->sdl.size.x / 2 - 174,
 		doom->sdl.size.y / 2 - 100}, "GAME OVER",
-		(SDL_Color){250, 250, 250, 255});
+		(SDL_Color){250, 250, 250, 255}});
 	SDL_RenderPresent(doom->sdl.rend);
 	cine_events(doom, &ex);
 	if (ex == 3000)

@@ -34,27 +34,27 @@ void draw_sector_menu(t_editor *editor, t_font font)
 	{
 		SDL_RenderDrawRect(editor->rend, &box);
 		if (editor->currmur && editor->currmur->portal_ptr == currsec)
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){200, 200, 150, 0xFF});
+			sdl_int_put((t_ip){editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){200, 200, 150, 0xFF}});
 		else if (editor->currstat && editor->currstat->sector == currsec)
 		{
 			if (editor->currstat == &editor->player.stat)
-				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){100, 205, 100, 0xFF});
+				sdl_int_put((t_ip){editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){100, 205, 100, 0xFF}});
 			else if (ISPROP(editor->currstat->type) || ISWALLPROP(editor->currstat->type))
-				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){100, 125, 240, 0xFF});
+				sdl_int_put((t_ip){editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){100, 125, 240, 0xFF}});
 			else
-				sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){170, 100, 205, 0xFF});
+				sdl_int_put((t_ip){editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){170, 100, 205, 0xFF}});
 		}
 		else if (currsec == editor->map)
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF});
+			sdl_int_put((t_ip){editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){0xDD, 0xDD, 0xDD, 0xFF}});
 		else
-			sdl_int_put(editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){0x88, 0xAA, 0xBB, 0xFF});
+			sdl_int_put((t_ip){editor->rend, font.s32, (t_vct2){box.x + 5, box.y + 5}, "Walls ", ft_walllen(currsec->murs), (SDL_Color){0x88, 0xAA, 0xBB, 0xFF}});
 		if (!editor->currmur && !editor->currstat)
-			sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF});
+			sdl_string_put((t_sp){editor->rend, font.s32, (t_vct2){box.x + box.w - 40, box.y + 5}, "[X]", (SDL_Color){0xFF, 0x55, 0x55, 0xFF}});
 		box.y += box.h;
 		currsec = currsec->next;
 		++x;
 	}
 	if (!editor->currmur && !editor->currstat)
-		sdl_string_put(editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF});
+		sdl_string_put((t_sp){editor->rend, font.s32, (t_vct2){box.x + box.w / 2 - 20, box.y + 5}, "(+)", (SDL_Color){0xFF, 0xFF, 0xFF, 0xFF}});
 	SDL_SetRenderDrawColor(editor->rend, 0, 0, 0, 255);
 }
