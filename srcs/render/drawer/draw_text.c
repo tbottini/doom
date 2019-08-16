@@ -14,9 +14,9 @@
 
 int				sdl_string_put(t_sp sp)
 {
-	SDL_Texture *texture;
-	SDL_Surface *surf;
-	SDL_Rect pos;
+	SDL_Texture	*texture;
+	SDL_Surface	*surf;
+	SDL_Rect	pos;
 
 	surf = TTF_RenderText_Solid(sp.font, sp.text, sp.fg);
 	SDL_GetClipRect(surf, &pos);

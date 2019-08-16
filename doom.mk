@@ -67,10 +67,12 @@ SRCS_RENDER		:=		render.c										\
 						pre_render/borne.c								\
 						pre_render/pillar_info.c						\
 						drawer/render_wall.c							\
+						drawer/render_wall2.c							\
 						drawer/textures.c								\
 						drawer/draw_line.c								\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
+						drawer/draw_column2.c							\
 						render_enemy.c									\
 						sprite.c										\
 						prop.c											\
