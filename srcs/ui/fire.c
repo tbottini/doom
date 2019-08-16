@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "doom_nukem.h"
+#include "doom_nukem.h"
 
-void fire_on_off(Uint32 *screen, t_vct2 size, int status)
+void		fire_on_off(Uint32 *screen, t_vct2 size, int status)
 {
 	int i;
 	int x;
@@ -31,7 +31,7 @@ void fire_on_off(Uint32 *screen, t_vct2 size, int status)
 	}
 }
 
-void fire_init(t_doom *doom)
+void		fire_init(t_doom *doom)
 {
 	doom->ui.fire = (t_pal){{0, 0x07070701, 0x1F070702, 0x2F0F0703, 0x470F0704,
 		0x57170705, 0x671F0706, 0x771F0707, 0x8F270708, 0x9F2F0709, 0xAF3F070A,
@@ -44,36 +44,24 @@ void fire_init(t_doom *doom)
 	fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 }
 
-//#define OPTI
-
-void fire(t_pal *fire)
+void		fire(t_pal *f)
 {
-	int i;
-	int p;
-	unsigned char pix;
+	int				i;
+	int				p;
+	unsigned char	pix;
 
-	i = fire->size->x * 2;
-#ifdef OPTI
-	while ((i += 2) < fire->size->x * fire->size->y)
-#else
-	while (i < fire->size->x * fire->size->y)
-#endif
+	i = f->size->x * 2;
+	while (i < f->size->x * f->size->y)
 	{
-		pix = fire->screen[i] & 0xFF;
+		pix = f->screen[i] & 0xFF;
 		if (pix == 0)
 		{
-			fire->screen[i - fire->size->x] = fire->pal[1];
-#ifdef OPTI
-			fire->screen[i + 1 - fire->size->x] = fire->pal[1];
-#endif
+			f->screen[i - f->size->x] = f->pal[1];
 		}
 		else
 		{
 			p = (rand()) >> 28;
-			fire->screen[i - (p & 3) + 1 - fire->size->x] = fire->pal[pix - (!p)];
-#ifdef OPTI
-			fire->screen[i + 2 - (p & 3) - fire->size->x] = fire->pal[pix - (p ? 0 : 1)];
-#endif
+			f->screen[i - (p & 3) + 1 - f->size->x] = f->pal[pix - (!p)];
 		}
 		++i;
 	}

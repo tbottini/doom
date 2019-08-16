@@ -274,7 +274,6 @@ typedef struct			s_ui
 	t_slid				*currslid;
 	t_menu_status		m_status;
 	t_btn				*curr_btn;
-	int					curr_btn_controller;
 	t_pal				fire;
 	SDL_Texture			*weaponhud[NB_WEAPON];
 	SDL_Texture			*sprites[ENDSPRITES + 1];

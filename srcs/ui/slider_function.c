@@ -12,7 +12,7 @@
 
 #include "doom_nukem.h"
 
-void update_slider_txt(t_doom *doom, t_slid *slid)
+void	update_slider_txt(t_doom *doom, t_slid *slid)
 {
 	char s[12];
 
@@ -20,18 +20,18 @@ void update_slider_txt(t_doom *doom, t_slid *slid)
 		NULL, ft_itoacpy(s, *slid->val), slid->fgcolor, slid->bgcolor});
 }
 
-void update_slider_value(t_doom *doom, t_slid *slid, int value)
+void	update_slider_value(t_doom *doom, t_slid *slid, int value)
 {
-	value = ((int)((value - slid->loc.area.x) / (double)slid->loc.area.w * (slid->max - slid->min)) + slid->min);
+	value = ((int)((value - slid->loc.area.x) / (double)slid->loc.area.w
+		* (slid->max - slid->min)) + slid->min);
 	if (slid->min <= value && value <= slid->max && *slid->val != value)
 	{
 		*slid->val = value;
 		update_slider_txt(doom, slid);
-		//draw_slid(doom, slid); //Deactivated because menu is now rendered everyframe
 	}
 }
 
-void		draw_slid(t_doom *doom, t_slid *tmp)
+void	draw_slid(t_doom *doom, t_slid *tmp)
 {
 	int size;
 

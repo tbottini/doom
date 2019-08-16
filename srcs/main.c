@@ -37,7 +37,7 @@ static int	init(void)
 	return (1);
 }
 
-int			main(int ac, char **av)
+int			main(void)
 {
 	t_doom		*doom;
 
@@ -45,15 +45,7 @@ int			main(int ac, char **av)
 		return (0);
 	if (!(doom = doom_init()))
 		return (0);
-	if (ac == 2)
-	{
-		if (!read_file(&doom->game, av[1], false))
-			sdl_set_status(doom, MENU_INGAME);
-		else
-			sdl_set_status(doom, MENU_MAIN);
-	}
-	else
-		sdl_set_status(doom, MENU_MAIN);
+	sdl_set_status(doom, MENU_MAIN);
 	event_handler(doom);
 	Mix_FadeInMusic(doom->game.sound.tab_music[0], -1, 18000);
 	cinematrique(doom);

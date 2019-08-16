@@ -37,7 +37,6 @@ int		sdl_set_status(t_doom *doom, t_menu_status status)
 	else if (status == MENU_MAIN) // mainmenu
 	{
 		doom->ui.m_status = MENU_MAIN;
-		doom->ui.curr_btn_controller = -2;
 		//doom_clear_map(doom); // TODO Add map data free;
 		fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
 		draw_menu(doom);
@@ -45,7 +44,6 @@ int		sdl_set_status(t_doom *doom, t_menu_status status)
 	else if (status == MENU_MAP) // Map selection
 	{
 		doom->ui.m_status = MENU_MAP;
-		doom->ui.curr_btn_controller = -3;
 		doom->ui.btnmap[1].loc.pos.y = 5;
 		load_map_btns(doom);
 		draw_menu(doom);
@@ -53,18 +51,15 @@ int		sdl_set_status(t_doom *doom, t_menu_status status)
 	else if (status == MENU_OPTION) // Options
 	{
 		doom->ui.m_status = MENU_OPTION;
-		doom->ui.curr_btn_controller = -1;
 		draw_menu(doom);
 	}
 	else if (status == MENU_IGMAIN) // Pause menu
 	{
 		doom->ui.m_status = MENU_IGMAIN;
-		doom->ui.curr_btn_controller = -1;
 	}
 	else if (status == MENU_IGOPTION) // Options from pause menu
 	{
 		doom->ui.m_status = MENU_IGOPTION;
-		doom->ui.curr_btn_controller = -1;
 		draw_menu(doom);
 	}
 	return (status);

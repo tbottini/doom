@@ -17,6 +17,7 @@ SRCS_EDITOR		:=		draw_inspect_menu.c								\
 
 SRCS_UI			:=		button_action.c									\
 						button_drawer.c									\
+						button_function_option.c						\
 						button_function.c								\
 						button_hover.c									\
 						button_loader.c									\
