@@ -105,6 +105,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 						play_tools.c									\
 						readfile_tools.c								\
 						savefile_tools.c								\
+						sdl_multirendercopy.c							\
 						musi.c											\
 						vector.c										\
 						editor_write_tools.c							\

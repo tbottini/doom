@@ -73,6 +73,7 @@ t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
 /*
 **	render
 */
+void					sdl_multirendercopy(t_sdl *sdl);
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
@@ -109,7 +110,6 @@ int						equal_pillar(t_wall *wall1, t_wall *wall2);
 /*
 ** drawer functions
 */
-void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);

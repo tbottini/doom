@@ -54,7 +54,7 @@ static int	display_end(t_doom *doom, Uint32 color, double filter, bool win)
 	int		ex;
 
 	full_screen_opacity(doom, color, filter);
-	sdl_MultiRenderCopy(&doom->sdl);
+	sdl_multirendercopy(&doom->sdl);
 	if (win)
 		sdl_string_put(doom->sdl.rend, doom->ui.fonts.s128,
 		(t_vct2){doom->sdl.size.x / 2 - 158,

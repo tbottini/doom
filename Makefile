@@ -18,7 +18,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g #-Ofast -fno-builtin -flto -fsanitize=address
+CFLAGS			:=		-Wall -Wextra -g -Ofast -fno-builtin -flto #-fsanitize=address
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\

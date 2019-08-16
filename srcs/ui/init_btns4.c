@@ -29,8 +29,8 @@ t_btn	add_middle_diff_button(t_doom *doom, SDL_Rect *parent)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		" MEDIUM ", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, " MEDIUM ", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }
 
@@ -47,8 +47,8 @@ t_btn	add_left_diff_button(t_doom *doom, SDL_Rect *parent)
 	tmp.loc.snapy = 4;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		" EASY ", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, " EASY ", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }
 
@@ -65,7 +65,7 @@ t_btn	add_right_diff_button(t_doom *doom, SDL_Rect *parent)
 	tmp.loc.snapy = 4;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		" HARD ", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, " HARD ", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }

@@ -25,6 +25,7 @@ static int	orientation(t_fvct3 p, t_fvct3 q, t_fvct3 r)
 /*
 ** Returns 1 if the segments [p1, q1] and [p2, q2] intersect, 0 Otherwise
 */
+
 int			vector_intersect(t_fvct3 p1, t_fvct3 q1, t_fvct3 p2, t_fvct3 q2)
 {
 	if (orientation(p1, q1, p2) != orientation(p1, q1, q2)

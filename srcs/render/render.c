@@ -96,7 +96,7 @@ int					doom_render(t_doom *doom)
 	mini = miniinit(&doom->sdl, &doom->ui);
 	minimap(&mini, &doom->game.player);
 	hud_aim(doom);
-	sdl_MultiRenderCopy(&doom->sdl);
+	sdl_multirendercopy(&doom->sdl);
 	miniinv(&mini, &doom->game.player);
 	architect_reset(&doom->game.arch);
 	return (1);

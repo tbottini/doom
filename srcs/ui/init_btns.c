@@ -28,8 +28,8 @@ t_btn	add_doom_button(t_doom *doom, const char *name)
 	tmp.loc.snapy = 0;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s128, &tmp.txture, &tmp.loc.area,
-		name, tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s128, &tmp.txture,
+	&tmp.loc.area, name, tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }
 
@@ -49,8 +49,8 @@ t_btn	add_start_button(t_doom *doom)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		" START ", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, " START ", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }
 
@@ -70,8 +70,8 @@ t_btn	add_opt_button(t_doom *doom)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		" Options ", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, " Options ", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }
 
@@ -91,7 +91,7 @@ t_btn	add_quit_button(t_doom *doom, const char *str, void *fc)
 	tmp.loc.snapy = 2;
 	tmp.fgcolor = (SDL_Color){191, 35, 44, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		str, tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, str, tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }

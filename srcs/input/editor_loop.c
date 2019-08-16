@@ -82,11 +82,11 @@ void		outgame_loop_hook(t_doom *doom)
 		doom_render(doom);
 	else if (doom->ui.m_status == MENU_IGMAIN
 		|| doom->ui.m_status == MENU_IGOPTION)
-		sdl_MultiRenderCopy(&doom->sdl);
+		sdl_multirendercopy(&doom->sdl);
 	else
 	{
 		fire(&doom->ui.fire);
-		sdl_MultiRenderCopy(&doom->sdl);
+		sdl_multirendercopy(&doom->sdl);
 	}
 	draw_menu(doom);
 }

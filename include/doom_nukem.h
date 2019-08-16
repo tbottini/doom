@@ -51,7 +51,18 @@
 /*
 **	gestion
 */
-void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_Rect *loc, const char *str, SDL_Color fg, SDL_Color bg);
+
+typedef struct	s_updatetext {
+	SDL_Renderer	*rend;
+	TTF_Font		*font;
+	SDL_Texture		**text;
+	SDL_Rect		*loc;
+	const char		*str;
+	SDL_Color		fg;
+	SDL_Color		bg;
+}				t_updatetext;
+
+void					updatetext(t_updatetext t);
 void					dropfile_event(t_doom *doom, SDL_Event e);
 
 int						load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname);
