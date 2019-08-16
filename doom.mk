@@ -1,7 +1,4 @@
-SRCS_DOOM		:=		button_function.c								\
-						slider_function.c								\
-						main.c											\
-						cinematri.c										\
+SRCS_DOOM		:=		main.c											\
 
 SRCS_EDITOR		:=		draw_inspect_menu.c								\
 						draw_sector_menu.c								\
@@ -20,8 +17,10 @@ SRCS_EDITOR		:=		draw_inspect_menu.c								\
 
 SRCS_UI			:=		button_action.c									\
 						button_drawer.c									\
+						button_function.c								\
 						button_hover.c									\
 						button_loader.c									\
+						cinematri.c										\
 						init_btns_edit.c								\
 						init_btns.c										\
 						init_btns2.c									\
@@ -30,7 +29,7 @@ SRCS_UI			:=		button_action.c									\
 						init_slids.c									\
 						init_textures.c									\
 						fire.c											\
-
+						slider_function.c								\
 
 SRCS_GAMEPLAY	:=		action.c										\
 						move.c											\
