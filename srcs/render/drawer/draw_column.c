@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/17 14:51:53 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/17 17:40:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,9 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff, int flag)
 	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	tmp = (t_vct2){mid_part.x, mid_part.y};
 	if (flag == PORTAL)
+	{
 		surf.x = draw_part(arch, tmp, ORANGE);
+	}
 	else if (flag == WALL)
 	{
 		surf.x = draw_part_decal(arch, surf.x, tmp, render_stuff);
@@ -118,4 +120,6 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff, int flag)
 	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
 	draw_part(arch, tmp, 0x272130ff);
+	if (flag == PORTAL)
+		set_borne_vertical(arch, (t_vct2){mid_part.x, mid_part.y}, arch->px.x);
 }

@@ -122,7 +122,7 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 		{
 			if ((arch->px.x > render_stuff->px_inter) ^ render_stuff->open_invert)
 			{
-				if (zline_wall(arch, render_stuff, neutre.x))
+				if (zline_portal(arch, render_stuff, neutre.x))
 					draw_door(arch, render_stuff, PORTAL);
 			}
 			else if (zline_wall(arch, render_stuff, neutre.x))
@@ -146,7 +146,6 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 void				render_surface(t_arch *arch, t_player *player)
 {
 	t_fvct2			len_sector;
-	t_sector		*sector_tmp;
 	t_vct2			px_draw;
 	t_pil_render	render_stuff;
 
@@ -166,31 +165,32 @@ void				render_surface(t_arch *arch, t_player *player)
 		else if (arch->wall->status == WALL)
 			draw_wall_debug(arch, WHITE);
 	}
-	if (arch->wall->status == PORTAL)
+	if (arch->wall->status == PORTAL
+		|| arch->wall->status == OPEN_DOOR
+		|| arch->wall->status == CLOSE_DOOR)
 	{
 		if (debug == 9)
 			printf("borne_svg(%d) %d %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
+
 		borne_svg(arch, &render_stuff.borne_tmp);
-		px_draw = arch->px;
+
+
+		//px_draw = arch->px;
+		save_pixels_portal(arch, &render_stuff, &px_draw);
+
+		//printf("pixels portal %d %d\n", px_draw.x, px_draw.y);
 	}
 	pillar_to_pillar(arch, &render_stuff);
-	if (arch->wall->status == PORTAL)
+	if (arch->wall->status == PORTAL
+		|| arch->wall->status == OPEN_DOOR
+		|| arch->wall->status == CLOSE_DOOR)
 	{
-		arch->px.x = px_draw.x;
-		set_borne_horizontal(arch);
-		arch->portal.pillar = arch->pillar;
-		arch->portal.next = arch->next;
-		sector_tmp = arch->sector;
-		arch->depth_portal++;
-		if (debug == 9)
-			printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
-		sector_render(arch, player, arch->wall->link);
-		arch->depth_portal--;
-		arch->sector = sector_tmp;
+		render_recursivite(arch, player, px_draw);
 		borne_load(arch, &render_stuff.borne_tmp, px_draw);
 		if (debug == 9)
 			printf("borne_load(%d) %d %d\n\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 	}
+
 }
 
 /*

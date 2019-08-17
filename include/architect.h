@@ -7,6 +7,13 @@
 
 /*
 **	structure principale pour la recursivite
+**
+**	-le zline va definir les profondeur localement par rapport au secteur
+**	-b_down b_up le champ libre de dessin
+**	-b_left, b_rigth les borne horizontal de rendu (on ne doit les depasser)
+**	-pillar et next sont les coordonnes du portail pour check
+**		si un pillier est derriere ou non
+**	-sector_svg permet de retablir le secteur quand on a fini la recursion
 */
 typedef struct 			s_borne
 {
@@ -17,6 +24,8 @@ typedef struct 			s_borne
 	double				b_right;
 	t_fvct2				pillar;
 	t_fvct2				next;
+	t_sector			*sector_svg;
+	t_vct2				px_svg;
 }						t_borne;
 
 /*
@@ -30,15 +39,9 @@ typedef struct 			s_pil_render
 	t_fvct2				pillar;
 	t_fvct2				next;
 	t_borne				borne_tmp;
-
-	//px de debug de rendu
 	int					px_start;
-	//determine le pourcentage du murret haut et bas
 	double				percent_portail;
 	t_portal_id			status;
-
-
-	//door info
 	t_fvct2				st_door;
 	int					px_inter;
 	t_fvct2				inter;
@@ -46,25 +49,40 @@ typedef struct 			s_pil_render
 	double				perc_open;
 }						t_pil_render;
 
+/*
+**	structure de rendu
+**		contient les information sur la surface rendu
+**	-le sector dans lequelle elle est
+**	-elle meme
+**	-la camera et la sdl pour un acce au rendu
+**	-le nombre de portail parcouru
+**	-pillar next (le pillier et le pillier next) de la surface
+**		dans le referentiel de la camera
+**	-shift_txtr le pourcentage du mur concerne par les bornes
+**	-portal: les informations liees a la limitation
+**		du champ de vision par le portail
+**	-timestamp le temps qui coule dans le torrent de la vie
+*/
 typedef struct 			s_arch
 {
 	t_sector			*sector;
 	t_wall				*wall;
 	t_camera			*cam;
 	t_sdl				*sdl;
-	SDL_Surface			**texture;
 	uint16_t			depth_portal;
 	t_fvct2				pillar;
 	t_fvct2				next;
-	t_fvct2				pillar_world;
-	t_fvct2				next_world;
 	t_vct2				px;
 	t_fvct2				shift_txtr;
 	t_borne				portal;
-	t_list				portal_list;
+	uint32_t			timestamp;
+
+	/*
+	** temporaire pour le debug
+	*/
 	Uint32				sc_debug[WIDTH * HEIGHT];
 	uint32_t			zoom;
-	uint32_t			timestamp;
+
 }						t_arch;
 
 int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);

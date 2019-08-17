@@ -6,13 +6,14 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 19:06:44 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 10:56:22 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/17 15:26:05 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 #include "render.h"
 #include "debug.h"
+
 /*
 **	on recupere les information du secteur par rapport au frustum (champs de vision du joueur)
 **	on definit un bunch contenant les mur visibles

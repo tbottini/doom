@@ -40,6 +40,7 @@ t_borne		*borne_svg(t_arch *arch, t_borne *borne)
 	borne->b_right = arch->portal.b_right;
 	borne->pillar = arch->portal.pillar;
 	borne->next = arch->portal.next;
+	borne->sector_svg = arch->sector;
 	borne_init(borne, len);
 	return (borne);
 }
@@ -55,7 +56,6 @@ void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 	i = 0;
 	arch->portal.b_left = borne->b_left;
 	arch->portal.b_right = borne->b_right;
-
 	if (debug == 9)
 	{
 		printf("borne->b_left %f borne->b_right %f\n", borne->b_left, borne->b_right);
@@ -71,5 +71,40 @@ void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 	}
 	arch->portal.pillar = borne->pillar;
 	arch->portal.next = borne->next;
+	arch->sector = borne->sector_svg;
 	borne_free(borne);
+}
+
+void		render_recursivite(t_arch *arch, t_player *player, t_vct2 pixel_portal)
+{
+	arch->px = pixel_portal;
+	set_borne_horizontal(arch);
+	arch->portal.pillar = arch->pillar;
+	arch->portal.next = arch->next;
+	arch->depth_portal++;
+	if (debug == 9)
+		printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
+	sector_render(arch, player, arch->wall->link);
+	arch->depth_portal--;
+}
+
+void		save_pixels_portal(t_arch *arch, t_pil_render *render_stuff
+	,t_vct2 *pixels)
+{
+	if (arch->wall->status == PORTAL)
+		*pixels = arch->px;
+	else if (arch->wall->status == OPEN_DOOR
+		|| arch->wall->status == CLOSE_DOOR)
+	{
+		if (!render_stuff->open_invert)
+		{
+			pixels->x = render_stuff->px_inter;
+			pixels->y = arch->px.y;
+		}
+		else
+		{
+			pixels->x = arch->px.x;
+			pixels->y = render_stuff->px_inter;
+		}
+	}
 }

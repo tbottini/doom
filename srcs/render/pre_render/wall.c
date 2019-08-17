@@ -6,6 +6,7 @@
 **	trouve l'intersection entre le mur et un angle donne
 **	renvoie le pourcentage de l'intersection par rapport au mur (debut pilier)
 */
+
 double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle)
 {
 	t_fvct2		inter;
@@ -59,7 +60,6 @@ void			door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag)
 	double			percent_local;
 
 	render_stuff->open_invert = (arch->px.x > arch->px.y);
-
 	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME);
 	if (flag == OPEN_DOOR)
 		percent_open = 1 - percent_open;
@@ -70,11 +70,10 @@ void			door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag)
 	render_stuff->perc_open = percent_open;
 	percent_local = (arch->shift_txtr.x - (1 - percent_open))
 		/ (arch->shift_txtr.x - arch->shift_txtr.y);
-
-
-
 	if (percent_local > 1)
 		render_stuff->inter = arch->next;
+	else if (percent_local < 0)
+		render_stuff->inter = arch->pillar;
 	else
 	{
 		render_stuff->inter.x = arch->pillar.x + percent_local
@@ -85,7 +84,6 @@ void			door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag)
 	if (render_stuff->inter.x < 0)
 	{
 		render_stuff->px_inter = arch->px.x;
-		printf("inter.x %f\n", render_stuff->inter.x);
 		return ;
 	}
 	render_stuff->px_inter = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (render_stuff->inter.y / render_stuff->inter.x);

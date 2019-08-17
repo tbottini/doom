@@ -59,6 +59,16 @@ typedef struct 			s_sprite
 void					pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag);
 
 /*
+**	bunch
+*/
+int						on_frustum(t_arch *arch, t_player *player, t_pillar *pillar);
+void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
+int						buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch);
+void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
+int						borne_in_wall_angle(t_arch *arch, t_wall *wall);
+int						equal_pillar(t_wall *wall1, t_wall *wall2);
+
+/*
 **	info function
 */
 t_fvct2					surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, double depth);
@@ -72,6 +82,7 @@ t_fvct2					frustum_depth_intersection(t_camera *camera, t_stat *stat, double fl
 void					pillar_screen_info(t_arch *arch, t_player *p);
 int						wall_behind_portal(t_arch *arch);
 t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
+void					door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag);
 
 /*
 **	render
@@ -83,6 +94,7 @@ double					percent_interpolation2d(t_arch *arch);
 uint32_t				texture_interpolation2d(t_arch *arch, t_txtr *txtr);
 uint32_t				texture_prop_interpolation2d(t_arch *arch, t_txtr *txtr, t_prop *prop);
 void					render_wall(t_arch *arch, t_player *player);
+void					render_recursivite(t_arch *arch, t_player *player, t_vct2 pixel_portal);
 
 /*
 **	draw_part
@@ -95,15 +107,7 @@ void					render_surface(t_arch *arch, t_player *player);
 double					draw_part(t_arch *arch, t_vct2 surface, uint32_t color);
 int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr);
 int						draw_part_decal(t_arch *arch, int numcol, t_vct2 surface, t_pil_render *render_stuff);
-/*
-**	bunch
-*/
-int						on_frustum(t_arch *arch, t_player *player, t_pillar *pillar);
-void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
-int						buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch);
-void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
-int						borne_in_wall_angle(t_arch *arch, t_wall *wall);
-int						equal_pillar(t_wall *wall1, t_wall *wall2);
+void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);
 
 /*
 ** drawer functions
@@ -112,7 +116,7 @@ void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
-void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);
+
 
 /*
 **	shape
@@ -133,7 +137,6 @@ void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
 void					sprite_render(t_sprite *sprite, t_arch *arch);
 t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
 
-
 /*
 **	render enemy
 */
@@ -144,11 +147,5 @@ t_vct2					txtr_width(t_txtr *texture, t_vct2 surface, int posx);
 void					prop_init_render(t_prop *prop, void *arch);
 void					prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup);
 t_vct2					prop_get_screen_pixel(t_prop *prop, t_arch *arch);
-
-/*
-**	sector viewing manipulation
-*/
-void					door_split(t_arch *arch, t_player *player, int flag);
-void					door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag);
 
 #endif
