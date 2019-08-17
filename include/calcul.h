@@ -28,6 +28,6 @@ double			affine_val_index(t_affine affine, double y);
 **	autres
 */
 int				opacity(int s, int c, double f);
-double					double_modulo(double num);
-
+double			double_modulo(double num);
+void			d_swap(double *a, double *b);
 #endif

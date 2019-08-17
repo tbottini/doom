@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/15 19:07:51 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/17 13:53:45 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ t_fvct2		surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child)
 
 /*
 **	on determine la surface du portail
-**	on dessine : le ciel, la liaison haute du mur, le portail, la liaison basse, le sol
-**	on prepare la recursivite avec les borne, tout en sauvegardant les actuelles configuration
+**	on dessine : le ciel, la liaison haute du mur, le portail, la liaison
+**	basse, le sol
+**	on prepare la recursivite avec les borne, tout en sauvegardant
+**	les actuelles configuration
 **		dans parent borne
 */
 void		draw_portal(t_arch *arch, t_pil_render *render_stuff)
@@ -91,10 +93,11 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff)
 	t_borne		*p_borne;
 	t_fvct2		surface;
 
+	int			pxtmp;
+	t_fvct2		tmpnext;
+
 	//le draw_part_texture remonte la texture
 	//mais pas pour les premier
-
-	render_stuff->status = WALL;
 
 	p_borne = &render_stuff->borne_tmp;
 	surface = render_stuff->pillar;
@@ -105,13 +108,11 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff)
 	tmp = (t_vct2){surface.x, mid_part.x};
 	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	tmp = (t_vct2){mid_part.x, mid_part.y};
-	if (render_stuff->status == PORTAL)
+	if ((arch->px.x > render_stuff->px_inter) ^ render_stuff->open_invert)
 		surf.x = draw_part(arch, tmp, ORANGE);
-	else if (render_stuff->status == WALL)
+	else
 	{
-		//l'index de la surface est remis a 0 est non au dessus de l'ecran
-		//printf("print tmp %d %d\n", tmp.x, tmp.y);
-		surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
+		surf.x = draw_part_decal(arch, surf.x, tmp, render_stuff);
 	}
 	tmp = (t_vct2){mid_part.y, surface.y};
 	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);

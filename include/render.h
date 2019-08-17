@@ -79,6 +79,7 @@ t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
 void					sector_render(t_arch *arch, t_player *player, t_sector *sector);
 int						fish_bowl_px(t_arch *arch, t_pillar pillar);
 void					fish_eyes(double *dist, double angle);
+double					percent_interpolation2d(t_arch *arch);
 uint32_t				texture_interpolation2d(t_arch *arch, t_txtr *txtr);
 uint32_t				texture_prop_interpolation2d(t_arch *arch, t_txtr *txtr, t_prop *prop);
 void					render_wall(t_arch *arch, t_player *player);
@@ -93,7 +94,7 @@ int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop);
 void					render_surface(t_arch *arch, t_player *player);
 double					draw_part(t_arch *arch, t_vct2 surface, uint32_t color);
 int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr);
-
+int						draw_part_decal(t_arch *arch, int numcol, t_vct2 surface, t_pil_render *render_stuff);
 /*
 **	bunch
 */
@@ -147,6 +148,7 @@ t_vct2					prop_get_screen_pixel(t_prop *prop, t_arch *arch);
 /*
 **	sector viewing manipulation
 */
-void				door_split(t_arch *arch, t_player *player, int flag);
+void					door_split(t_arch *arch, t_player *player, int flag);
+void					door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag);
 
 #endif

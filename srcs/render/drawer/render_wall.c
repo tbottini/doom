@@ -96,12 +96,8 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
-
 	coef_distance = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
 	dist_px = arch->pillar.x;
-//	if (arch->wall->status == OPEN_DOOR
-//		|| arch->wall->status == CLOSE_DOOR)
-
 	while (arch->px.x != arch->px.y)
 	{
 		if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
@@ -145,12 +141,16 @@ void				render_surface(t_arch *arch, t_player *player)
 	t_fvct2			len_sector;
 	t_sector		*sector_tmp;
 	t_vct2			px_draw;
-	t_pil_render	pillar_render;
+	t_pil_render	render_stuff;
 
+	if (arch->wall->status == OPEN_DOOR || arch->wall->status == CLOSE_DOOR)
+	{
+		door_split_info(arch, &render_stuff, arch->wall->status);
+	}
 	reorder(arch);
 	len_sector = length_sector(player, arch->sector);
-	pillar_render.pillar = surface_pillar(arch, player, len_sector, arch->pillar.x);
-	pillar_render.next = surface_pillar(arch, player, len_sector, arch->next.x);
+	render_stuff.pillar = surface_pillar(arch, player, len_sector, arch->pillar.x);
+	render_stuff.next = surface_pillar(arch, player, len_sector, arch->next.x);
 	prop_iter_v(arch->wall->props, arch->wall->nb_props, &prop_init_render, arch);
 	if (debug_screen == 2)
 	{
@@ -163,10 +163,10 @@ void				render_surface(t_arch *arch, t_player *player)
 	{
 		if (debug == 9)
 			printf("borne_svg(%d) %d %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
-		borne_svg(arch, &pillar_render.borne_tmp);
+		borne_svg(arch, &render_stuff.borne_tmp);
 		px_draw = arch->px;
 	}
-	pillar_to_pillar(arch, &pillar_render);
+	pillar_to_pillar(arch, &render_stuff);
 	if (arch->wall->status == PORTAL)
 	{
 		arch->px.x = px_draw.x;
@@ -180,7 +180,7 @@ void				render_surface(t_arch *arch, t_player *player)
 		sector_render(arch, player, arch->wall->link);
 		arch->depth_portal--;
 		arch->sector = sector_tmp;
-		borne_load(arch, &pillar_render.borne_tmp, px_draw);
+		borne_load(arch, &render_stuff.borne_tmp, px_draw);
 		if (debug == 9)
 			printf("borne_load(%d) %d %d\n\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 	}
@@ -194,19 +194,9 @@ void				render_surface(t_arch *arch, t_player *player)
 */
 void			render_wall(t_arch *arch, t_player *player)
 {
-	//if (arch->wall->status == CLOSE_DOOR || arch->wall->status == OPEN_DOOR)
-	//{
-	//	door_split(arch, player, arch->wall->status);
-	//	return ;
-	//}
 	pillar_screen_info(arch, player);
 	if (arch->depth_portal == 0 || (wall_behind_portal(arch)))
 	{
-		//if (arch->wall->status == CLOSE_DOOR || arch->wall->status == OPEN_DOOR)
-		//{
-		//	door_split(arch, player, arch->wall->status);
-		//	return ;
-		//}
 		render_surface(arch, player);
 	}
 	else if (debug_screen == 2)

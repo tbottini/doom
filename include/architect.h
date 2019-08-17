@@ -3,6 +3,7 @@
 
 #include "sector.h"
 #include "screen.h"
+#include <stdbool.h>
 
 /*
 **	structure principale pour la recursivite
@@ -21,6 +22,8 @@ typedef struct 			s_borne
 /*
 **	structure regroupand les information de rendu
 **	a ne pas calculer plusieurs fois entre chaque colonnes
+**	-perc_open pourcentage d'ouverture si c'est une porte
+**	-open_invert sens d'ouverture de la porte inverse ou non
 */
 typedef struct 			s_pil_render
 {
@@ -34,6 +37,13 @@ typedef struct 			s_pil_render
 	double				percent_portail;
 	t_portal_id			status;
 
+
+	//door info
+	t_fvct2				st_door;
+	int					px_inter;
+	t_fvct2				inter;
+	bool				open_invert;
+	double				perc_open;
 }						t_pil_render;
 
 typedef struct 			s_arch

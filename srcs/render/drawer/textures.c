@@ -6,13 +6,12 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:53:43 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 10:59:25 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/17 12:35:38 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 #include "debug.h"
-
 
 double			percent_interpolation2d(t_arch *arch)
 {
@@ -96,5 +95,4 @@ void			pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag)
 		percent_tmp = (inter.x - arch->pillar.x) / (arch->next.x - arch->pillar.x);
 	*percent = percent_tmp * (arch->shift_txtr.y - arch->shift_txtr.x) + arch->shift_txtr.x;
 	*pillar = inter;
-	//recupere le pixel de depart
 }

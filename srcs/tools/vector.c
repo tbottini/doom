@@ -91,3 +91,21 @@ double			fvct2_angle(t_fvct2 origin, t_fvct2 pos, double rot_origin)
 		angle -= 360;
 	return (angle);
 }
+
+void			fvct2_swap(t_fvct2 *a, t_fvct2 *b)
+{
+	t_fvct2		tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+void			vct2_swap(t_vct2 *a, t_vct2 *b)
+{
+	t_vct2		tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
