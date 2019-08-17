@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:32:34 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/17 14:45:04 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/17 14:59:13 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,59 +73,22 @@ int				draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop)
 **		mais inverse
 */
 
-int				draw_part_decal(t_arch *arch, int numcol, t_vct2 surface, t_pil_render *render_stuff)
+int				draw_part_decal(t_arch *arch, int numcol, t_vct2 surface
+	, t_pil_render *render_stuff)
 {
 	uint32_t	px_txtr;
 	double		percent_wall;
 	double		percent_txtr;
 
 	percent_wall = percent_interpolation2d(arch);
-
-
-
-	//garder le pourcentage d'ouverture
 	percent_txtr = 2 - percent_wall - render_stuff->perc_open;
-
+	if (percent_txtr > 1)
+		percent_txtr = 1;
+	else if (percent_txtr < 0)
+		percent_txtr = 0;
 	px_txtr = percent_txtr * arch->wall->txtr.w;
 	return (draw_txtr_column(arch, numcol, surface, &arch->wall->txtr,
 		px_txtr));
-	/*
-	si la porte n'est pas inverse [|||||||    ]
-
-	on recupere le pourcentage du mur
-	son rapport a la texture est
-	txtr = 1 - (percent_wall - open)
-
-	si la porte est inverse [  X|||||||||]
-		//open = 0.7
-		//p = 0.3
-		//txtr = 1
-
-	si la porte est [   X||||||||]
-		//open = 0.7
-		//p = 0.3
-		//txtr = 1 - open = 0.3
-
-		txtr = 1 - (o - (1 - p))
-		txtr = 1 -o + (1 - p)
-		txtr = 1 - o + 1 - p
-		txtr = 2 - o - p
-
-
-	txtr = 1 - (1 - open - wall)
-		= 1 -1 + open + wall
-	quand percent_wall = 1
-	txtr = 1 - open
-	quand percent_wall = open
-	txtr = 1
-
-	*/
-
-	//on recupere le pourcentage du mur touche
-	//on fait une equation pour recupere le pourcentage la texture touche
-		//selon la porte
-	//on multiplie par la largeur de la texture
-	//draw_txtr_colum
 }
 
 /*

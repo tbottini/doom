@@ -120,7 +120,14 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 		else if (arch->wall->status == OPEN_DOOR
 			|| arch->wall->status == CLOSE_DOOR)
 		{
-			draw_door(arch, render_stuff);
+			if ((arch->px.x > render_stuff->px_inter) ^ render_stuff->open_invert)
+			{
+				if (zline_wall(arch, render_stuff, neutre.x))
+					draw_door(arch, render_stuff, PORTAL);
+			}
+			else if (zline_wall(arch, render_stuff, neutre.x))
+				draw_door(arch, render_stuff, WALL);
+			//draw_door(arch, render_stuff);
 		}
 		render_stuff->pillar.x -= coef_surface.x;
 		render_stuff->pillar.y -= coef_surface.y;

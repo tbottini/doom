@@ -87,7 +87,7 @@ void					render_wall(t_arch *arch, t_player *player);
 /*
 **	draw_part
 */
-void					draw_door(t_arch *arch, t_pil_render *render_stuff);
+void					draw_door(t_arch *arch, t_pil_render *render_stuff, int flag);
 void					draw_wall(t_arch *arch, t_pil_render *render_stuff);
 void					draw_portal(t_arch *arch, t_pil_render *render_stuff);
 int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop);
