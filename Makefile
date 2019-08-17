@@ -163,3 +163,11 @@ doc		:
 
 doclean:
 	rm -rf html latex Doxyfile
+
+install:
+	brew install sdl2
+	brew install sdl2_ttf
+	brew install sdl2_image
+	brew install sdl2_mixer
+	brew install git-lfs
+	git lfs install
