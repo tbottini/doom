@@ -46,7 +46,7 @@ t_doom	*doom_init(void)
 	t_doom	*doom;
 
 	if (!(doom = (t_doom *)malloc(sizeof(t_doom))))
-		doom_exit(doom);
+		exit(0);
 	if (secure_doom(doom))
 		doom_exit(doom);
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
@@ -58,15 +58,14 @@ t_doom	*doom_init(void)
 	camera_init(&doom->game.camera, &doom->sdl, 90);
 	if (!arch_init(&doom->game.arch, &doom->sdl, &doom->game.camera))
 		doom_exit(doom);
-	doom->edit.ui = &doom->ui;
-	if (!editor_init(&doom->edit))
+	if (!(doom->edit.ui = &doom->ui) || !editor_init(&doom->edit))
 		doom_exit(doom);
 	if (!music_init(&doom->game.sound))
 		doom_exit(doom);
 	doom->game.player.fov = 90;
 	doom->game.ui = &doom->ui;
 	doom->game.difficulty = MEDIUM;
-	SDL_RaiseWindow(doom->sdl.win);
 	doom->timestamp = SDL_GetTicks();
+	SDL_RaiseWindow(doom->sdl.win);
 	return (doom);
 }

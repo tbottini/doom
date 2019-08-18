@@ -1,9 +1,6 @@
 #ifndef INPUT_H
 # define INPUT_H
 
-/*
-** End Button Functions
-*/
 # include "sector.h"
 # include "player.h"
 # include "editor.h"

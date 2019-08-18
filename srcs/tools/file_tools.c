@@ -26,3 +26,23 @@ unsigned int	ft_lil_super_atoi(const char *str)
 	}
 	return (*str ? 0 : ret);
 }
+
+void			free_textures_folder(SDL_Texture **txtrs, char **txtrsname)
+{
+	int tot;
+
+	tot = 0;
+	while (txtrs[tot] && tot < MAXTXTRNUMBER)
+	{
+		SDL_DestroyTexture(txtrs[tot]);
+		txtrs[tot] = NULL;
+		tot++;
+	}
+	tot = 0;
+	while (txtrsname[tot] && tot < MAXTXTRNUMBER)
+	{
+		free(txtrsname[tot]);
+		txtrsname[tot] = NULL;
+		tot++;
+	}
+}

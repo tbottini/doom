@@ -123,7 +123,10 @@ SRCS_GESTION	:=		doom_manager.c									\
 						effect_manager.c								\
 						weapon_manager.c								\
 						enemy_manager.c									\
+						prop_key.c										\
 						prop_manager.c									\
+						prop_manager2.c									\
+						prop_player.c									\
 						arch_manager.c									\
 						borne_manager.c									\
 						camera_manager.c								\

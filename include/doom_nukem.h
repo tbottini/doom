@@ -180,4 +180,23 @@ void					hud_aim(t_doom *doom);
 int						hud_render(t_doom *doom);
 int						doom_render(t_doom *doom);
 
+/*
+** Gameplay
+*/
+
+void					open_close(t_prop *prop);
+void					end_level(t_doom *doom);
+void					func_prop(t_prop *prop, int type);
+
+void					addkey1(t_inv *inv);
+void					addkey2(t_inv *inv);
+void					addkey3(t_inv *inv);
+void					addlastkey(t_inv *inv);
+
+void					heal(t_stat *stat);
+void					add_ammo(t_weapon *weapon);
+void					new_music(t_sound *sound);
+void					add_weapon(t_weapon *weapon);
+void					jetpack(t_inv *inv);
+
 #endif
