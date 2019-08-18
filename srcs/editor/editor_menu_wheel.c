@@ -14,7 +14,7 @@
 
 int			opt_menu_wheel(SDL_MouseWheelEvent e, t_editor *edit)
 {
-	e.x = (edit->mouse.y - edit->sectscroll) / SECTORBOXHEIGHT;
+	e.x = (edit->mouse.y - edit->sectscroll) / SBH;
 	if (e.x == 0 && edit->currstat)
 	{
 		if (edit->currstat == &edit->player.stat)

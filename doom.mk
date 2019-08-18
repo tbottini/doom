@@ -1,6 +1,7 @@
 SRCS_DOOM		:=		main.c											\
 
-SRCS_EDITOR		:=		draw_inspect_menu.c								\
+SRCS_EDITOR		:=		asynchronous_txtr_load.c						\
+						draw_inspect_menu.c								\
 						draw_sector_menu.c								\
 						editor_finder.c									\
 						editor_input.c									\

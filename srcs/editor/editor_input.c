@@ -50,7 +50,7 @@ t_secteur	*sector_menu_click(t_editor *edit, int pos, int cas)
 {
 	t_lstsec	sec;
 
-	pos = (pos - edit->sectscroll) / SECTORBOXHEIGHT;
+	pos = (pos - edit->sectscroll) / SBH;
 	edit->currpilier = NULL;
 	sec = edit->sectors;
 	while (pos > 0 && sec)

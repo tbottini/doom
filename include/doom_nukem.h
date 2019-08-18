@@ -42,7 +42,7 @@
 # define EDPADDING 5
 # define EDITPREC 5000
 # define DEBUG 0
-# define SECTORBOXHEIGHT 50
+# define SBH 50
 # define MAXEDITVAR 999999
 #define MINZOOM 10
 #define MAXZOOM 20000
@@ -65,7 +65,7 @@ typedef struct			s_updatetext {
 void					updatetext(t_updatetext t);
 void					dropfile_event(t_doom *doom, SDL_Event e);
 
-int						load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname);
+int						asynchronous_txtr_load(void *param);
 void					free_textures_folder(SDL_Texture **txtrs, char **txtrsname);
 void					editor_free(t_doom *doom);
 

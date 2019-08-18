@@ -34,7 +34,7 @@ static void	if_currstat_is_in_currsec(t_editor *editor, t_font font,
 static void	lil_draw_sector_menu(t_editor *editor, t_font font, SDL_Rect *box,
 	t_lstsec currsec)
 {
-	SDL_RenderDrawRect(editor->rend, &box);
+	SDL_RenderDrawRect(editor->rend, box);
 	if (editor->currmur && editor->currmur->portal_ptr == currsec)
 		sdl_int_put((t_ip){editor->rend, font.s32,
 		(t_vct2){box->x + 5, box->y + 5}, "Walls ", ft_walllen(currsec->murs),
@@ -72,7 +72,7 @@ void		draw_sector_menu(t_editor *editor, t_font font)
 		SDL_SetRenderDrawColor(editor->rend, 66, 66, 66, 255);
 	SDL_RenderFillRect(editor->rend, &box);
 	SDL_SetRenderDrawColor(editor->rend, 255, 255, 255, 255);
-	box.h = SECTORBOXHEIGHT;
+	box.h = SBH;
 	box.y += editor->sectscroll;
 	currsec = editor->sectors;
 	while (currsec)

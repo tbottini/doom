@@ -14,7 +14,7 @@
 
 static int	move_optbox(SDL_MouseMotionEvent e, t_editor *edit)
 {
-	e.x = (e.y - edit->sectscroll) / SECTORBOXHEIGHT;
+	e.x = (e.y - edit->sectscroll) / SBH;
 	if ((e.x == 0 && edit->currstat && edit->currstat == &edit->player.stat)
 	|| (2 <= e.x && e.x <= 3 && edit->map && !edit->currstat && !edit->currmur)
 		|| (e.x == 0 && edit->currstat && ISPROP(edit->currstat->type)))

@@ -13,7 +13,7 @@
 #include "doom_nukem.h"
 #include "screen.h"
 
-int editor_reset(t_editor *edit)
+int		editor_reset(t_editor *edit)
 {
 	if (edit->ennlist)
 		ft_clear_entity_list(&(edit->ennlist));
@@ -30,7 +30,7 @@ int editor_reset(t_editor *edit)
 	return (1);
 }
 
-int close_editor(t_doom *doom)
+int		close_editor(t_doom *doom)
 {
 	editor_reset(&doom->edit);
 	free_textures_folder(doom->edit.txtrgame, doom->edit.txtrname);
@@ -40,35 +40,17 @@ int close_editor(t_doom *doom)
 	return (0);
 }
 
-int	asynchronous_txtr_load(void *param)
-{
-	t_editor *edit;
-
-	edit = param;
-	load_textures_folder(edit->rend, edit->txtrgame, edit->txtrname);
-	edit->player.stat.sector = push_secteur(&edit->sectors, edit->txtrgame[0], edit->txtrgame[0]);
-	edit->player.stat.pos = (t_vct2){0, 0};
-	edit->player.stat.type = 100;
-	edit->map = edit->sectors;
-	if (!(edit->player.stat.sector))
-		edit->player.stat.sector = edit->map;
-	edit->status = ED_LOADED;
-	return (0);
-}
-
 void	open_editor(t_doom *doom)
 {
-	SDL_Thread *th;
-
 	if ((SDL_GetWindowFlags(doom->edit.win) & SDL_WINDOW_HIDDEN) != 8)
 	{
 		SDL_RaiseWindow(doom->edit.win);
 		return ;
 	}
 	doom->edit.status = ED_LOADING;
-	th = SDL_CreateThread(&asynchronous_txtr_load, "Texture Load", &doom->edit);
-	SDL_DetachThread(th);
-	doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2, 1000};
+	asynchronous_txtr_load(&doom->edit);
+	doom->edit.mappos = (t_vct3){doom->edit.size.x / 2, doom->edit.size.y / 2,
+		1000};
 	SDL_ShowWindow(doom->edit.win);
 	SDL_RaiseWindow(doom->edit.win);
 }
@@ -82,7 +64,7 @@ void	editor_free(t_doom *doom)
 		SDL_DestroyWindow(doom->edit.win);
 }
 
-void free_textures_folder(SDL_Texture **txtrs, char **txtrsname)
+void	free_textures_folder(SDL_Texture **txtrs, char **txtrsname)
 {
 	int tot;
 
@@ -102,44 +84,11 @@ void free_textures_folder(SDL_Texture **txtrs, char **txtrsname)
 	}
 }
 
-int load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname)
-{
-	DIR				*txtrfolder;
-	struct dirent	*txtrdata;
-	int				tot;
-	char			tmp[512];
-
-	if (!(txtrfolder = opendir("ressources/textures")))
-	{
-		ft_putstr_fd("Error loading folder 'textures'\n", 2);
-		return (0);
-	}
-	tot = 0;
-	ft_strcpy(tmp, "ressources/textures/");
-	while ((txtrdata = readdir(txtrfolder)) && tot < MAXTXTRNUMBER)
-	{
-		if (txtrdata->d_type == 8)
-		{
-			ft_strcpy(&(tmp[20]), txtrdata->d_name);
-			if ((txtrs[tot] = IMG_LoadTexture(rend, tmp)))
-				if (!(txtrsname[tot++] = ft_strdup(tmp)))
-				{
-					SDL_DestroyTexture(txtrs[tot]);
-					txtrs[tot] = NULL;
-					ft_putstr_fd("Error Adding texture\n", 2);
-					closedir(txtrfolder);
-					return (0);
-				}
-		}
-	}
-	closedir(txtrfolder);
-	return (1);
-}
-
 int		editor_init(t_editor *editor)
 {
 	if (!(editor->win = SDL_CreateWindow("Editor", SDL_WINDOWPOS_CENTERED,
-										 SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE)))
+										 SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
+										 SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE)))
 		return (0);
 	if (!(editor->rend = SDL_CreateRenderer(editor->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
