@@ -71,7 +71,17 @@ double			coef_diff(double diff, t_vct2 step);
 double			coef_vct2(t_fvct2 value, t_fvct2 value2);
 t_fvct2			interpolation_linear(t_affine d1, t_affine d2);
 int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *inter);
+
+
+/*
+**	affine layer
+*/
 t_affine		affine_points(t_fvct2 point1, t_fvct2 point2);
+t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2);
+int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *inter);
+t_fvct2			inter(t_fvct2 p1, t_fvct2 p2, t_fvct2 p3, t_fvct2 p4);
+t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2);
+
 t_fvct2			inter(t_fvct2 p1, t_fvct2 p2, t_fvct2 p3, t_fvct2 p4);
 double			hypothenuse(t_fvct2 vct);
 double			distance(t_fvct2 vct1, t_fvct2 vct2);

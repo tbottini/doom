@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sprite.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 13:52:28 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/18 14:22:19 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,9 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 
 	sprite_insert = *sprite_list;
 	if (!sprite_insert)
-	{
-		if (debug == 9)
-			printf("insert first node %f\n", sprite_node->pos.x);
 		*sprite_list = sprite_node;
-	}
 	else if (sprite_node->pos.x > sprite_insert->pos.x)
 	{
-		if (debug == 9)
-			printf("insert2node %f\n", sprite_node->pos.x);
 		sprite_node->next = *sprite_list;
 		*sprite_list = sprite_node;
 	}
@@ -40,8 +34,6 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 		}
 		sprite_node->next = sprite_insert->next;
 		sprite_insert->next = sprite_node;
-		if (debug == 9)
-			printf("insert node %f\n", sprite_node->pos.x);
 	}
 }
 

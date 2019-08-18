@@ -56,11 +56,6 @@ void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 	i = 0;
 	arch->portal.b_left = borne->b_left;
 	arch->portal.b_right = borne->b_right;
-	if (debug == 9)
-	{
-		printf("borne->b_left %f borne->b_right %f\n", borne->b_left, borne->b_right);
-		printf("start load start %d arch->px.y %d archmid %d\n", px_draw.x, arch->px.y, arch->sdl->size.x/2);
-	}
 	while (px_draw.x < px_draw.y)
 	{
 		arch->portal.b_up[px_draw.x] = borne->b_up[i];
@@ -82,8 +77,6 @@ void		render_recursivite(t_arch *arch, t_player *player, t_vct2 pixel_portal)
 	arch->portal.pillar = arch->pillar;
 	arch->portal.next = arch->next;
 	arch->depth_portal++;
-	if (debug == 9)
-		printf("borne(%d-->%d) %d %d\n", arch->depth_portal - 1, arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 	sector_render(arch, player, arch->wall->link);
 	arch->depth_portal--;
 }

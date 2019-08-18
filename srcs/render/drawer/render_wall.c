@@ -169,26 +169,17 @@ void				render_surface(t_arch *arch, t_player *player)
 		|| arch->wall->status == OPEN_DOOR
 		|| arch->wall->status == CLOSE_DOOR)
 	{
-		if (debug == 9)
-			printf("borne_svg(%d) %d %d\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
-
 		borne_svg(arch, &render_stuff.borne_tmp);
-
-
-		//px_draw = arch->px;
 		save_pixels_portal(arch, &render_stuff, &px_draw);
-
-		//printf("pixels portal %d %d\n", px_draw.x, px_draw.y);
 	}
 	pillar_to_pillar(arch, &render_stuff);
 	if (arch->wall->status == PORTAL
 		|| arch->wall->status == OPEN_DOOR
 		|| arch->wall->status == CLOSE_DOOR)
 	{
-		render_recursivite(arch, player, px_draw);
+		if (arch->depth_portal < PORTAL_MAX)
+			render_recursivite(arch, player, px_draw);
 		borne_load(arch, &render_stuff.borne_tmp, px_draw);
-		if (debug == 9)
-			printf("borne_load(%d) %d %d\n\n", arch->depth_portal, arch->portal.b_up[arch->sdl->size.x/2], arch->portal.b_down[arch->sdl->size.x/2]);
 	}
 
 }
@@ -203,9 +194,7 @@ void			render_wall(t_arch *arch, t_player *player)
 {
 	pillar_screen_info(arch, player);
 	if (arch->depth_portal == 0 || (wall_behind_portal(arch)))
-	{
 		render_surface(arch, player);
-	}
 	else if (debug_screen == 2)
 		draw_wall_debug(arch, RED);
 }

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/17 17:40:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/18 13:30:12 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		draw_portal(t_arch *arch, t_pil_render *render_stuff)
 	tmp = (t_vct2){surface.x, s_portal.x};
 	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	tmp = (t_vct2){s_portal.x, s_portal.y};
-	surf.x = draw_part(arch, tmp, ORANGE);
+	surf.x = draw_part(arch, tmp, BLUE_SOFT);
 	tmp = (t_vct2){s_portal.y, surface.y};
 	surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	tmp = (t_vct2){surface.y, arch->portal.b_down[arch->px.x]};
@@ -92,9 +92,6 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff, int flag)
 	t_vct2		tmp;
 	t_borne		*p_borne;
 	t_fvct2		surface;
-
-	int			pxtmp;
-	t_fvct2		tmpnext;
 
 	//le draw_part_texture remonte la texture
 	//mais pas pour les premier

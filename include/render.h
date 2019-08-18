@@ -20,6 +20,8 @@
 
 # define DEBUG_VISUAL 1
 
+# define PORTAL_MAX		50
+
 # define RASTERIZE		0
 # define ENGINE			1
 # define RENDER			ENGINE

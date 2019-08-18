@@ -21,8 +21,8 @@ typedef struct	s_affine
 **	affine fonctions
 */
 double			affine_val(t_affine affine, double x);
-t_affine		affine_def(double a, double b);
 double			affine_val_index(t_affine affine, double y);
+t_affine		affine_def(double a, double b);
 
 /*
 **	autres

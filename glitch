@@ -7,10 +7,10 @@ render
 	-portail affichage d'une colonne en moins dans le prochain secteur
 		colonne jaune sur les bords
 	-porte fermeture lors d'une ouverture : reinitialisation
-	-porte inverse...
-	-porte portion inferieur
-		-pblm avec le texture padding
-		
+	-probleme porte, zbuffer, a travers portail...
+		affichage de la porte a travers un mur qui occlu
+		porte ouverte
+
 
 gameplay:
 	-ejection du secteur lors de certain passage
@@ -18,21 +18,34 @@ gameplay:
 segv:
 	-...?
 	-button associe a une porte qui a ete delete
+	-boucle infini secteur
+		quelle situation
 
 
--porte compression de la portion basse du mur
--partie wall qui n'a pas de portion 
+-segfault boucle infini
+scenario ?
+	quand on regarde un portail parralement a lui et qu'il mene a un secteur
+	ou il y a un portail qui pointe sur le secteur du premier portail
 
-nouveau rendu
--on rend les bord comme le mur
--on rend la porte
--puis on determine la portion portail du mur
-on implemente ca dans le pillar_to_pillar
-
+	la ou le premier portail devrait pointe sur le second portail et ne devrait l'afficher
+	car plus proche il accepte la recursion
 
 
+
+le segfault viens quand on regarde un portail parralellement a lui
+-pourquoi quand le portail est tres petit voir invisible la recursion se lance
+	alors qu'un portail visible ne lance pas de recursion
+	pas besoin d'avoir un portail intermediaire pour segfault
+	pas besoin que deux portail soit liee
+	mauvais clipping de portail en portail
+	le probleme viens de wall_behind_portal
+	une resolution en checkant si a_pillar.a == a_pillar2.a
+	probleme lors des interpolation quand les affine des pillier sont trop proche
 
 glitch regle:
 	-porte clignote
 	-arch->px.x est negatif (rendu de la partie portail
 		de la porte hors frustum)
+	-porte inverse...
+	-porte portion inferieur
+	-pblm avec le texture padding
