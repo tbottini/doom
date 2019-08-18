@@ -94,15 +94,15 @@ void		draw_difficulty(t_doom *doom, t_btn *arr)
 
 void		draw_menu(t_doom *doom)
 {
-	if (doom->ui.m_status == 1)
+	if (doom->ui.m_status == MENU_MAIN)
 	{
 		draw_buttons(doom, doom->ui.btnarr);
 	}
-	else if (doom->ui.m_status == 2)
+	else if (doom->ui.m_status == MENU_MAP)
 	{
 		draw_buttons(doom, doom->ui.btnmap);
 	}
-	else if (doom->ui.m_status == 3 || doom->ui.m_status == 5)
+	else if (doom->ui.m_status == MENU_OPTION || doom->ui.m_status == 5)
 	{
 		draw_buttons(doom, doom->ui.btnopt);
 		draw_difficulty(doom, doom->ui.btnopt);
@@ -110,7 +110,7 @@ void		draw_menu(t_doom *doom)
 		draw_slid(doom, &doom->ui.slidopt[1]);
 		draw_slid(doom, &doom->ui.slidopt[2]);
 	}
-	else if (doom->ui.m_status == 4)
+	else if (doom->ui.m_status == MENU_IGMAIN)
 	{
 		draw_buttons(doom, doom->ui.btnpse);
 	}

@@ -34,7 +34,6 @@ void	add_weapon(t_weapon *weapon)
 		weapon->ammo += weapon->clip_max;
 }
 
-
 /*
 ** ============cassette=================
 */

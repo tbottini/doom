@@ -2,11 +2,11 @@
 #ifndef SCREEN_H
 # define SCREEN_H
 
-# define WIDTH 1300
-# define HEIGHT 950
+# define WIDTH 1280
+# define HEIGHT 720
 
-# define MINWIDTH 500
-# define MINHEIGHT 500
+# define MINWIDTH 1024
+# define MINHEIGHT 576
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 
