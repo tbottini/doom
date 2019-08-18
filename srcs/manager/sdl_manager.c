@@ -25,41 +25,21 @@ void	sdl_free(t_sdl *sdl)
 
 int		sdl_set_status(t_doom *doom, t_menu_status status)
 {
-	SDL_SetRelativeMouseMode(SDL_FALSE);
 	ft_nodeclean(&doom->sdl.keys);
 	doom->ui.curr_btn = NULL;
+	doom->ui.m_status = status;
 	if (status == MENU_INGAME)
-	{
-		doom->ui.m_status = MENU_INGAME;
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-		draw_menu(doom);
-	}
-	else if (status == MENU_MAIN)
+	else
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+	if (status == MENU_MAIN)
 	{
-		doom->ui.m_status = MENU_MAIN;
 		fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
-		draw_menu(doom);
 	}
 	else if (status == MENU_MAP)
 	{
-		doom->ui.m_status = MENU_MAP;
 		doom->ui.btnmap[1].loc.pos.y = 5;
 		load_map_btns(doom);
-		draw_menu(doom);
-	}
-	else if (status == MENU_OPTION)
-	{
-		doom->ui.m_status = MENU_OPTION;
-		draw_menu(doom);
-	}
-	else if (status == MENU_IGMAIN)
-	{
-		doom->ui.m_status = MENU_IGMAIN;
-	}
-	else if (status == MENU_IGOPTION)
-	{
-		doom->ui.m_status = MENU_IGOPTION;
-		draw_menu(doom);
 	}
 	return (status);
 }

@@ -138,7 +138,6 @@ typedef enum			e_menu_status {
 	MENU_IGOPTION = 5
 }						t_menu_status;
 
-
 typedef struct			s_font
 {
 	TTF_Font			*s32;
