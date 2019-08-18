@@ -35,6 +35,7 @@ int			zline_portal(t_arch *arch, t_pil_render *render_stuff, double len_pillar)
 {
 	if (len_pillar > arch->portal.zline[arch->px.x])
 	{
+		printf("px %d render_stuff %d\n", arch->px.x, render_stuff->px_start);
 		render_stuff->borne_tmp.zline[arch->px.x - render_stuff->px_start] = len_pillar;
 		arch->portal.zline[arch->px.x] = 0;
 		return (1);

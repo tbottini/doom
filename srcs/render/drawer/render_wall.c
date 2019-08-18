@@ -44,8 +44,6 @@ t_fvct2			surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, dou
 {
 	t_fvct2		wall_portion;
 
-	//b_point_debug(arch, (t_fvct2){depth, len_sector.x}, RED);
-	//b_point_debug(arch, (t_fvct2){depth, len_sector.y}, RED);
 	wall_portion.x = px_point(arch, player, len_sector.x, depth);
 	wall_portion.y = px_point(arch, player, len_sector.y, depth);
 	return (wall_portion);
@@ -90,7 +88,6 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 	double		dist_px;
 	int			i = 0;
 
-	render_stuff->px_start = arch->px.x;
 	coef_surface.x = coef_diff(render_stuff->pillar.x - render_stuff->next.x, arch->px);
 	coef_surface.y = coef_diff(render_stuff->pillar.y - render_stuff->next.y, arch->px);
 	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
@@ -120,14 +117,13 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 		else if (arch->wall->status == OPEN_DOOR
 			|| arch->wall->status == CLOSE_DOOR)
 		{
-			if ((arch->px.x > render_stuff->px_inter) ^ render_stuff->open_invert)
+		   	if ((arch->px.x >= render_stuff->px_inter) ^ render_stuff->open_invert)
 			{
 				if (zline_portal(arch, render_stuff, neutre.x))
 					draw_door(arch, render_stuff, PORTAL);
 			}
 			else if (zline_wall(arch, render_stuff, neutre.x))
 				draw_door(arch, render_stuff, WALL);
-			//draw_door(arch, render_stuff);
 		}
 		render_stuff->pillar.x -= coef_surface.x;
 		render_stuff->pillar.y -= coef_surface.y;
@@ -143,21 +139,8 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 	}
 }
 
-void				render_surface(t_arch *arch, t_player *player)
+void		debug_surface(t_arch *arch)
 {
-	t_fvct2			len_sector;
-	t_vct2			px_draw;
-	t_pil_render	render_stuff;
-
-	if (arch->wall->status == OPEN_DOOR || arch->wall->status == CLOSE_DOOR)
-	{
-		door_split_info(arch, &render_stuff, arch->wall->status);
-	}
-	reorder(arch);
-	len_sector = length_sector(player, arch->sector);
-	render_stuff.pillar = surface_pillar(arch, player, len_sector, arch->pillar.x);
-	render_stuff.next = surface_pillar(arch, player, len_sector, arch->next.x);
-	prop_iter_v(arch->wall->props, arch->wall->nb_props, &prop_init_render, arch);
 	if (debug_screen == 2)
 	{
 		if (arch->wall->status == PORTAL)
@@ -165,17 +148,49 @@ void				render_surface(t_arch *arch, t_player *player)
 		else if (arch->wall->status == WALL)
 			draw_wall_debug(arch, WHITE);
 	}
+}
+
+
+/*
+**	preparatif de rendu avant le pillar to pillar
+**	on set les bornes pour la recursivite si ya un portail
+**	on recupere les info pour les door si la surface est de ce type
+**	on recupere les info pour les props
+**	on recupere les info pour les surface pillar et next
+*/
+void				render_surface(t_arch *arch, t_player *player)
+{
+	t_fvct2			len_sector;
+	t_vct2			px_draw;
+	t_pil_render	render_stuff;
+
+	if (arch->wall->status == OPEN_DOOR || arch->wall->status == CLOSE_DOOR)
+		door_split_info(arch, &render_stuff, arch->wall->status);
+	reorder(arch);
+	len_sector = length_sector(player, arch->sector);
+	render_stuff.pillar = surface_pillar(arch, player, len_sector, arch->pillar.x);
+	render_stuff.next = surface_pillar(arch, player, len_sector, arch->next.x);
+	prop_iter_v(arch->wall->props, arch->wall->nb_props, &prop_init_render, arch);
+	debug_surface(arch);
 	if (arch->wall->status == PORTAL
 		|| arch->wall->status == OPEN_DOOR
 		|| arch->wall->status == CLOSE_DOOR)
 	{
-		borne_svg(arch, &render_stuff.borne_tmp);
 		save_pixels_portal(arch, &render_stuff, &px_draw);
+		render_stuff.px_start = px_draw.x;
+		if (debug_screen == 6)
+		{
+			fill_line_debug(arch, arch->sdl, (t_vct2){px_draw.x, arch->sdl->size.y / 2}
+				, (t_vct2){px_draw.y, arch->sdl->size.y / 2}
+				, (px_draw.x < px_draw.y) ? 0xffffffff : 0xff0000ff);
+		}
+		borne_svg(arch, &render_stuff.borne_tmp, px_draw);
 	}
 	pillar_to_pillar(arch, &render_stuff);
-	if (arch->wall->status == PORTAL
+	if ((arch->wall->status == PORTAL
 		|| arch->wall->status == OPEN_DOOR
 		|| arch->wall->status == CLOSE_DOOR)
+		&& (px_draw.x < px_draw.y))
 	{
 		if (arch->depth_portal < PORTAL_MAX)
 			render_recursivite(arch, player, px_draw);

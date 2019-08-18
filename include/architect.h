@@ -108,7 +108,7 @@ void					architect_reset(t_arch *arch);
 **	borne
 */
 t_borne					*borne_init(t_borne *borne, int len);
-t_borne					*borne_svg(t_arch *arch, t_borne *borne);
+t_borne					*borne_svg(t_arch *arch, t_borne *borne, t_vct2 px);
 void					borne_free(t_borne *borne);
 void					borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw);
 void					borne_reset(t_arch *arch);

@@ -1,31 +1,46 @@
 render
 	-props afficher a l'infini
 	-props afficher a l'inverse de leurs position
-	-bug porte avec les porte a l'envers
-	-la partie mur n'a pas de bordure vertical comme l'a la partie portail
+	-props bug a travers portal depassement b_up
 	-props secteur afficher alors qu'ils sont derriere un portail
-	-portail affichage d'une colonne en moins dans le prochain secteur
-		colonne jaune sur les bords
-	-porte fermeture lors d'une ouverture : reinitialisation
+
 	-probleme porte, zbuffer, a travers portail...
 		affichage de la porte a travers un mur qui occlu
 		porte ouverte
+	-porte bug a travers portal depassement b_up
 
+	-portail affichage d'une colonne en moins dans le prochain secteur
+		colonne jaune sur les bords
 
 gameplay:
+	-porte fermeture lors d'une ouverture
+		: reinitialisation (action_button action.c)
 	-ejection du secteur lors de certain passage
+	-mauvaise gestion des level (gerer dans la version norme)
+
+editor:
+	-suppresion des liens porte boutton lors d'un recharge de la map
+	-mauvais deplacement lors du zoom
 
 segv:
 	-...?
-	-button associe a une porte qui a ete delete
-	-segv portail ? (demo tech)
+	-button associe a une porte qui a ete delete(regle version norm)
+
+porte zbuffer
+-bug avec la partie portal de la porte
+-le px_portal est bon
+-bug que quand la porte est avant dans la chaine de rendu
+
+-comment remettre en place le zbuffer pour les porte
 
 
 glitch regle:
 	-porte clignote
+	-bug porte avec les porte a l'envers
 	-arch->px.x est negatif (rendu de la partie portail
 		de la porte hors frustum)
 	-porte inverse...
 	-porte portion inferieur
 	-pblm avec le texture padding (porte padding par rapport au sol et au plafond)
 	-segv recursion infini portail (portail trop petit dans le champ de vision)
+	-segv portail pointe sur lui meme

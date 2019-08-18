@@ -30,24 +30,29 @@ void		set_borne_horizontal(t_arch *arch)
 /*
 **	sauvegarde toute les configuration de borne dans une structure
 **	dans une zone (la zone est les limite de px)
+**	la sauvegarde de la profondeur avec le zline se fera au
+**	fur et a mesure dans le pillar_to_pillar
 */
-t_borne		*borne_svg(t_arch *arch, t_borne *borne)
+t_borne		*borne_svg(t_arch *arch, t_borne *borne, t_vct2 px)
 {
 	int		len;
 
-	len = arch->px.y - arch->px.x;
+	//len = arch->px.y - arch->px.x;
+	len = px.y - px.x;
+	//ne segv plus quand arch mais quand px
 	borne->b_left = arch->portal.b_left;
 	borne->b_right = arch->portal.b_right;
 	borne->pillar = arch->portal.pillar;
 	borne->next = arch->portal.next;
 	borne->sector_svg = arch->sector;
-	borne_init(borne, len);
+	if (len > 0)
+		borne_init(borne, len);
 	return (borne);
 }
 
 /*
 **	recharge une borne dans la borne arch
-*	(une borne anciennement sauvegarde...)
+**	(une borne anciennement sauvegarde...)
 */
 void		borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
 {
