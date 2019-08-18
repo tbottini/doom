@@ -6,13 +6,25 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 19:06:44 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/18 16:09:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/18 16:38:06 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 #include "render.h"
 #include "debug.h"
+
+/*
+**	va checker si le mur est un portail qui est lie a lui meme
+*/
+int					portal_link_self(t_wall *wall, t_sector *sector)
+{
+	if (wall->status == PORTAL)
+	{
+		return (wall->link == sector);
+	}
+	return (0);
+}
 
 /*
 **	on recupere les information du secteur par rapport au frustum (champs de vision du joueur)
@@ -41,7 +53,8 @@ void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 		on_frustum(arch, player, wall[i].next);
 		if (((wall[i].pillar->frust || wall[i].next->frust)
 			||	borne_in_wall_angle(arch, &wall[i]))
-				&& equal_pillar(&wall[i], arch->wall))
+			&& equal_pillar(&wall[i], arch->wall)
+			&& !portal_link_self(&wall[i], sector))
 		{
 			portal_tmp = arch->wall;
 			arch->wall = &wall[i];
