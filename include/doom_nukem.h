@@ -39,6 +39,8 @@
 /*
 ** Editor Stuff
 */
+# define NBTXTRBYLINE 5
+# define TXTRSIZE 125
 # define EDPADDING 5
 # define EDITPREC 5000
 # define DEBUG 0

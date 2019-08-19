@@ -86,7 +86,7 @@ int			editor_init(t_editor *editor)
 	editor->mappos = (t_vct3){editor->size.x / 2, editor->size.y / 2, 1000};
 	editor->sectbox = (SDL_Rect){-1, -1, 160, 100};
 	editor->optbox.w = 200;
-	editor->txtrbox.w = 620;
+	editor->txtrbox.w = TXTRSIZE * NBTXTRBYLINE + (NBTXTRBYLINE - 1) * 5 + 10;
 	editor->txtrbox.h = MINHEIGHT - 20;
 	if (!(load_sprites(editor)))
 		return (0);

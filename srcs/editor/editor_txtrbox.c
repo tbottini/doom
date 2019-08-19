@@ -19,8 +19,8 @@ SDL_Texture	*txtr_menu_click(t_editor *editor, int x, int y, int max)
 
 	tmp.x = editor->txtrbox.x + EDPADDING;
 	tmp.y = editor->txtrbox.y + EDPADDING + editor->txtrscroll;
-	tmp.w = 200;
-	tmp.h = 200;
+	tmp.w = TXTRSIZE;
+	tmp.h = TXTRSIZE;
 	i = 0;
 	while (i < max && editor->txtrgame[i])
 	{
@@ -44,8 +44,8 @@ int			txtr_menu_click_int(t_editor *editor, t_vct2 m, int pos, int max)
 
 	tmp.x = editor->txtrbox.x + EDPADDING;
 	tmp.y = editor->txtrbox.y + EDPADDING + editor->txtrscroll;
-	tmp.w = 200;
-	tmp.h = 200;
+	tmp.w = TXTRSIZE;
+	tmp.h = TXTRSIZE;
 	i = 0;
 	while (i < max)
 	{

@@ -67,8 +67,8 @@ static void	draw_txtrselector(t_editor *editor, int max, SDL_Texture **txtrs)
 	x = 0;
 	tmp.x = editor->txtrbox.x + EDPADDING;
 	tmp.y = editor->txtrbox.y + EDPADDING + editor->txtrscroll;
-	tmp.w = 200;
-	tmp.h = 200;
+	tmp.w = TXTRSIZE;
+	tmp.h = TXTRSIZE;
 	SDL_SetRenderDrawColor(editor->rend, 255, 200, 200, 255);
 	while (x < max && txtrs[x])
 	{
