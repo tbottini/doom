@@ -6,13 +6,17 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 23:19:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/19 18:07:55 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 #include "debug.h"
 
+/*
+**	on determine la position gauche et droite du props sur le mur
+**	et puis on le convertie en pourcentage
+*/
 void				prop_init(t_prop *prop, t_wall *wall)
 {
 	double			hyp;
@@ -25,9 +29,13 @@ void				prop_init(t_prop *prop, t_wall *wall)
 	diff.x = prop->pos.x - wall->pillar->p.x;
 	diff.y = prop->pos.y - wall->pillar->p.y;
 	hyp_pos = sqrt(diff.x * diff.x + diff.y * diff.y);
-	prop->percent.x = (hyp_pos - 0.5) / (hyp);
-	prop->percent.y = (hyp_pos + 0.5) / (hyp);
+	prop->percent.x = 1 - (hyp_pos - 0.5) / (hyp);
+	prop->percent.y = 1 - (hyp_pos + 0.5) / (hyp);
 }
+
+/*
+**	va iterer sur tout les props d'un tableauå
+*/
 
 void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
 {
@@ -40,6 +48,10 @@ void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
 		i++;
 	}
 }
+
+/*
+**	va iterer sur tous les props d'un tableau avec une fonction acceptant une structure quelconque
+*/
 
 void				prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup)
 {
@@ -69,8 +81,8 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 	t_fvct2			prop_rigth_pos;
 	t_vct2			px_props;
 
-	percent_wall.x = (prop->percent.x - (arch->shift_txtr.x)) / (arch->shift_txtr.y - arch->shift_txtr.x);
-	percent_wall.y = (prop->percent.y - (arch->shift_txtr.x)) / (arch->shift_txtr.y - arch->shift_txtr.x);
+	percent_wall.x = (prop->percent.x - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
+	percent_wall.y = (prop->percent.y - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
 	delta_wall.x = arch->next.x - arch->pillar.x;
 	delta_wall.y = arch->next.y - arch->pillar.y;
 	prop_left_pos.x = delta_wall.x * percent_wall.x + arch->pillar.x;
