@@ -21,6 +21,10 @@ segv:
 	-...?
 	-button associe a une porte qui a ete delete(regle version norm)
 
+
+props infini:
+
+
 glitch modifie:
 	-portail trop haut: bas du portail affichage non reajuste au depassement
 
