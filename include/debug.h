@@ -48,6 +48,8 @@ void		draw_frustum(t_arch *arch, int flag);
 void		debug_pillar(t_arch *arch, int flag);
 void		debug_pillar_ver(t_arch *arch, t_fvct2 surface_pillar);
 
+void		debug_repr(t_arch *arch, int x, int y, uint32_t color);
+
 /*
 **	debug txt
 */

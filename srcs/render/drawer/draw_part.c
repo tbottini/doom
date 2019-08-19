@@ -6,13 +6,20 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:32:34 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/17 14:59:13 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/19 15:50:36 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-int				draw_txtr_column(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr, uint32_t px)
+/*
+**	rend une colonne de texture
+**	-numcol le numero de la colonne
+**	-surface la taille de la surface a rendre le debut et la fin
+**	-txtr la texture a rendre
+**	-txtr_col la colonne de pixels dans la texture
+*/
+int				draw_txtr_column(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr, uint32_t txtr_col)
 {
 	double		coef;
 	double		buff;
@@ -20,26 +27,26 @@ int				draw_txtr_column(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr, 
 	buff = 0;
 	coef = (double)txtr->h / (surface.y - surface.x);
 	if (surface.y < (int)arch->portal.b_up[arch->px.x])
-		return (arch->px.x);
+		return (arch->px.x + arch->portal.b_up[arch->px.x] * arch->sdl->size.x);
 	if (surface.x < (int)arch->portal.b_up[arch->px.x])
 	{
 		buff = (-surface.x + arch->portal.b_up[arch->px.x]) * coef;
 		if (buff > 1.0)
 		{
-			px += (int)buff * txtr->w;
+			txtr_col += (int)buff * txtr->w;
 			buff = buff - (int)buff;
 		}
 		surface.x = arch->portal.b_up[arch->px.x];
 	}
 	while (surface.x < surface.y && surface.x < (int)arch->portal.b_down[arch->px.x])
 	{
-		arch->sdl->screen[numcol] = txtr->pixels[px];
+		arch->sdl->screen[numcol] = txtr->pixels[txtr_col];
 		surface.x++;
 		numcol += arch->sdl->size.x;
 		buff += coef;
 		if (buff > 1.0)
 		{
-			px += (int)buff * txtr->w;
+			txtr_col += (int)buff * txtr->w;
 			buff = buff - (int)buff;
 		}
 	}
@@ -49,7 +56,6 @@ int				draw_txtr_column(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr, 
 int				draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr)
 {
 	uint32_t 	px;
-
 	px = texture_interpolation2d(arch, txtr);
 	return (draw_txtr_column(arch, numcol, surface, txtr, px));
 }
@@ -97,8 +103,11 @@ int				draw_part_decal(t_arch *arch, int numcol, t_vct2 surface
 **	on la trunc
 */
 
-double			draw_part(t_arch *arch, t_vct2 surface, uint32_t color)
+double			draw_part(t_arch *arch, int start, int end, uint32_t color)
 {
+	t_vct2		surface;
+
+	surface = (t_vct2){start, end};
 	if (surface.x >= (int)arch->portal.b_down[arch->px.x]
 		|| surface.x > arch->sdl->size.y)
 	{

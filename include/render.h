@@ -106,7 +106,7 @@ void					draw_wall(t_arch *arch, t_pil_render *render_stuff);
 void					draw_portal(t_arch *arch, t_pil_render *render_stuff);
 int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_prop *prop);
 void					render_surface(t_arch *arch, t_player *player);
-double					draw_part(t_arch *arch, t_vct2 surface, uint32_t color);
+double					draw_part(t_arch *arch, int start, int end, uint32_t color);
 int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr);
 int						draw_part_decal(t_arch *arch, int numcol, t_vct2 surface, t_pil_render *render_stuff);
 void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);

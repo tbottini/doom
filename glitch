@@ -3,11 +3,7 @@ render
 	-props afficher a l'inverse de leurs position
 	-props bug a travers portal depassement b_up
 	-props secteur afficher alors qu'ils sont derriere un portail
-
-	-probleme porte, zbuffer, a travers portail...
-		affichage de la porte a travers un mur qui occlu
-		porte ouverte
-	-porte bug a travers portal depassement b_up
+	-props se sureleve avec la hauteur du secteur
 
 	-portail affichage d'une colonne en moins dans le prochain secteur
 		colonne jaune sur les bords
@@ -17,7 +13,7 @@ gameplay:
 		: reinitialisation (action_button action.c)
 	-ejection du secteur lors de certain passage
 	-mauvaise gestion des level (gerer dans la version norme)
-
+	-coincer dans les murs dans certain cas
 editor:
 	-suppresion des liens porte boutton lors d'un recharge de la map
 	-mauvais deplacement lors du zoom
@@ -26,13 +22,8 @@ segv:
 	-...?
 	-button associe a une porte qui a ete delete(regle version norm)
 
-porte zbuffer
--bug avec la partie portal de la porte
--le px_portal est bon
--bug que quand la porte est avant dans la chaine de rendu
-
--comment remettre en place le zbuffer pour les porte
-
+glitch modifie
+	-portail trop haut: bas du portail affichage non reajuste au depassement
 
 glitch regle:
 	-porte clignote
@@ -44,3 +35,7 @@ glitch regle:
 	-pblm avec le texture padding (porte padding par rapport au sol et au plafond)
 	-segv recursion infini portail (portail trop petit dans le champ de vision)
 	-segv portail pointe sur lui meme
+	-pblm door zbuffer oublie d'ajouter les changement au zbuffer temporaires
+	-segv portail trop haut
+	-glitch partie porte a travers portail s'affiche a l'index 0 plutot que b_up
+		-mauvais return de draw_txtr_column

@@ -2,6 +2,12 @@
 #include "calcul.h"
 #include "debug.h"
 
+int				is_door(t_arch *arch)
+{
+	return (arch->wall->status == OPEN_DOOR || arch->wall->status == CLOSE_DOOR);
+}
+
+
 /*
 **	trouve l'intersection entre le mur et un angle donne
 **	renvoie le pourcentage de l'intersection par rapport au mur (debut pilier)

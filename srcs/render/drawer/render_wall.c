@@ -117,10 +117,14 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 		else if (arch->wall->status == OPEN_DOOR
 			|| arch->wall->status == CLOSE_DOOR)
 		{
+			//si c'est la partie portail
+			//quelle difference avec le status portail ???
 		   	if ((arch->px.x >= render_stuff->px_inter) ^ render_stuff->open_invert)
 			{
+				debug_repr(arch, arch->px.x, 5, RED);
 				if (zline_portal(arch, render_stuff, neutre.x))
 					draw_door(arch, render_stuff, PORTAL);
+
 			}
 			else if (zline_wall(arch, render_stuff, neutre.x))
 				draw_door(arch, render_stuff, WALL);

@@ -269,12 +269,6 @@ void		debug_sector_box(t_arch *arch, t_box_txtr *box, uint32_t color)
 	square[1] = (t_fvct2){box->start.x, box->start.y + box->length.y};
 	square[2] = (t_fvct2){box->start.x + box->length.x, box->start.y + box->length.y};
 	square[3] = (t_fvct2){box->start.x + box->length.x, box->start.y};
-
-	if (debug == 3)
-	{
-		printf("box .start %f %f .length %f %f\n", box->start.x, box->start.y, box->length.y, box->length.y);
-	}
-
 	debug_segment(arch, square[0], square[1], color, color);
 	debug_segment(arch, square[1], square[2], color, color);
 	debug_segment(arch, square[2], square[3], color, color);
@@ -287,4 +281,12 @@ void		sdl_line(t_sdl *sdl, t_vct2 a, t_vct2 b, uint32_t color)
 
 	screen_tmp = (t_screen){sdl->screen, sdl->size.x, sdl->size.y};
 	trait(&screen_tmp, a, b, color);
+}
+
+void		debug_repr(t_arch *arch, int x, int y, uint32_t color)
+{
+	if (y > arch->sdl->size.y)
+		printf("overwritting debug repr\n");
+	else
+		arch->sc_debug[x + arch->sdl->size.x * (arch->sdl->size.y / 2 + y)] = color;
 }

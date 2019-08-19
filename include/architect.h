@@ -87,7 +87,7 @@ typedef struct 			s_arch
 
 int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);
 int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
-
+int						is_door(t_arch *arch);
 
 /*
 **	backface
