@@ -1,9 +1,13 @@
 render
-	-props bug a travers portal depassement b_up
-	-props se sureleve avec la hauteur du secteur
+	-sprite bug a travers portal depassement b_up
+
+
+	-props mur vers le bas depasse le sol
 
 	-portail affichage d'une colonne en moins dans le prochain secteur
 		colonne jaune sur les bords
+
+	-segv iter sprite (-fsanitize)
 
 gameplay:
 	-porte fermeture lors d'une ouverture
@@ -56,3 +60,5 @@ glitch regle:
 	-props afficher a l'inverse de leurs position (st.x commence par 1 et st.y commence par 0)
 	-props afficher a l'infini: position du props derriere le joueur
 	-props secteur afficher alors qu'ils sont derriere un portail
+	-props mur se sureleve avec la hauteur du secteur : la hauteur du props est general et
+		non locale au secteur

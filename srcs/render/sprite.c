@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/19 19:47:15 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/20 16:31:26 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 	else
 	{
 		while (sprite_insert->next && sprite_node->pos.x < sprite_insert->next->pos.x)
-		{
 			sprite_insert= sprite_insert->next;
-		}
 		sprite_node->next = sprite_insert->next;
 		sprite_insert->next = sprite_node;
 	}

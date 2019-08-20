@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/19 18:39:35 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/20 16:53:43 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ void				prop_init_render(t_prop *prop, void *arch)
 	px = prop_get_screen_pixel(prop, arc);
 }
 
+
+
 void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 {
 	int				i;
@@ -158,8 +160,8 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 	{
 		if (arch->px.x > props[i].px.x && arch->px.x < props[i].px.y && props[i].pos.z + 1.0 > 0 && props[i].pos.z < arch->sector->h_ceil)
 		{
-			heigth_percent.x = (arch->sector->h_ceil - 1 - props[i].pos.z) / arch->sector->h_ceil;
-			heigth_percent.y = props[i].pos.z / arch->sector->h_ceil;
+			heigth_percent.x = (arch->sector->h_ceil - 1 - (props[i].pos.z - arch->sector->h_floor)) / arch->sector->h_ceil;
+			heigth_percent.y = (props[i].pos.z - arch->sector->h_floor) / arch->sector->h_ceil;
 			padding_render = (surface.y - surface.x) * heigth_percent.x;
 			surface_tmp.x = surface.x + padding_render;
 			surface_tmp.y = surface.y - padding_render;
