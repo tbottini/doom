@@ -40,7 +40,8 @@ int				draw_txtr_column(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr, 
 	}
 	while (surface.x < surface.y && surface.x < (int)arch->portal.b_down[arch->px.x])
 	{
-		arch->sdl->screen[numcol] = txtr->pixels[txtr_col];
+		if (numcol < arch->sdl->size.x * arch->sdl->size.y && txtr_col < txtr->w * txtr->h)
+			arch->sdl->screen[numcol] = txtr->pixels[txtr_col];
 		surface.x++;
 		numcol += arch->sdl->size.x;
 		buff += coef;

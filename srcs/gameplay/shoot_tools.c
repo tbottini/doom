@@ -119,10 +119,10 @@ static int		bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 	double		toto;
 	t_fvct3		mo;
 	t_fvct3		coord;
-	t_sector	next;
+	t_sector	*next;
 
-	next = *sector->wall[i].link;
-	if (sector->wall[i].status >= OPEN_DOOR)
+	next = sector->wall[i].link;
+	if (next && sector->wall[i].status >= OPEN_DOOR)
 	{
 		toto = cos((stat->rot.x - 90.0) * PI180);
 		toto = wall_bullet_clipping(*sector->wall[i].pillar, *sector->wall[i].next, stat) / (toto < G_EPSILON ? 1 : toto);
@@ -131,7 +131,7 @@ static int		bullet_can_pass(t_stat *stat, int i, t_sector *sector, t_fvct3 ori)
 		mo.z = ori.y - stat->pos.z;
 		coord = real_coord(stat->pos, toto, ori, stat->height, stat->rot.x);
 		//coord = real_coord(stat->pos, toto, mo, stat->height / 2);
-		if ((coord.z < next.h_floor + next.h_ceil) && (next.h_floor < coord.z))
+		if ((coord.z < next->h_floor + next->h_ceil) && (next->h_floor < coord.z))
 			return (1);
 	}
 	return (0);
