@@ -83,6 +83,7 @@ t_fvct2					frustum_floor_intersection(t_fvct2 *pillar_pos, t_camera *camera, t_
 t_fvct2					frustum_depth_intersection(t_camera *camera, t_stat *stat, double floor_diff);
 void					pillar_screen_info(t_arch *arch, t_player *p);
 int						wall_behind_portal(t_arch *arch);
+int						point_behind_portal(t_arch *arch, t_player *player, t_fvct2 pos);
 t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
 void					door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag);
 

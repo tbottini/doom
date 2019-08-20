@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/19 18:28:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/19 18:39:35 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 
 	percent_wall.x = (prop->percent.x - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
 	percent_wall.y = (prop->percent.y - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
-	if (debug_screen == 8)
-		printf("percent wall %f %f\n", percent_wall.x, percent_wall.y);
 	delta_wall.x = arch->next.x - arch->pillar.x;
 	delta_wall.y = arch->next.y - arch->pillar.y;
 	//on recupere les distance des pillier
@@ -94,9 +92,11 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 	prop_rigth_pos.x = delta_wall.x * percent_wall.y + arch->pillar.x;
 	prop_rigth_pos.y = delta_wall.y * percent_wall.y + arch->pillar.y;
 	//printf("arch px %d %d\n", arch->px.x, arch->px.y);
-	b_point_debug(prop_rigth_pos, GREEN);
-	b_point_debug(prop_left_pos, GREEN);
-
+	if (debug_screen == 2)
+	{
+		b_point_debug(prop_rigth_pos, GREEN);
+		b_point_debug(prop_left_pos, GREEN);
+	}
 	if (prop_rigth_pos.x < 0 && prop_left_pos.x < 0)
 	{
 		px_props = (t_vct2){0, 0};
@@ -116,11 +116,6 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 		px_props.x = arch->sdl->size.x / 2 - ((prop_left_pos.y / prop_left_pos.x) * (arch->sdl->size.x / 2));
 		px_props.y = arch->sdl->size.x / 2 - ((prop_rigth_pos.y / prop_rigth_pos.x) * (arch->sdl->size.x / 2));
 	}
-
-
-
-
-
 	if (px_props.x > px_props.y)
 	{
 		prop->px.x = px_props.y;
@@ -168,7 +163,6 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 			padding_render = (surface.y - surface.x) * heigth_percent.x;
 			surface_tmp.x = surface.x + padding_render;
 			surface_tmp.y = surface.y - padding_render;
-
 			surface_tmp.x = surface.x + (surface.y - surface.x) * heigth_percent.x;
 			surface_tmp.y = surface.y - (surface.y - surface.x) * heigth_percent.y;
 			cursor = arch->px.x + surface_tmp.x * arch->sdl->size.x;

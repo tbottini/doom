@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/18 14:22:19 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/19 19:47:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,16 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 			sprite = sprite_new(props[i].tex, player->stat.pos, props[i].pos, e_angle);
 			if (!sprite)
 				sprite_iter(*sprite_list, &sprite_free);
-			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
+			if (point_behind_portal(arch, player, sprite->pos))
+			{
+				posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
 
-			//sprite->heigth =
-			sprite->heigth = player_prop_heigth_surface(arch, player, &props[i], sprite->pos.x);
-			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
-			sprite_insert(sprite_list, sprite);
+				sprite->heigth = player_prop_heigth_surface(arch, player, &props[i], sprite->pos.x);
+				sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
+				sprite_insert(sprite_list, sprite);
+			}
+			else
+				free(sprite);
 		}
 		i++;
 	}

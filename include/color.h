@@ -36,4 +36,6 @@
 # define RED_SOFT	0x831a1aff
 # define GREEN_SOFT	0x548528ff
 
+# define PURPLE_SOFT 0x910d8eff
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/19 15:49:43 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/19 22:03:11 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,10 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff, int flag)
 	surface = render_stuff->pillar;
 	mid_part = surface_portal(surface, arch->sector, arch->wall->link);
 	surf.x = draw_part(arch, arch->portal.b_up[arch->px.x], surface.x, 0);
-	if (arch->px.x == arch->sdl->size.x / 2)
-		printf("surf.x %d\n", surf.x);
 	if (surface.y < surface.x)
 	{
 		tmp = (t_vct2){surface.x, surface.y};
 		surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
-		printf("secteur trop haut\n");
 	}
 	else
 	{

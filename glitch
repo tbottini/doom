@@ -1,8 +1,7 @@
 render
-	-props afficher a l'infini
 	-props bug a travers portal depassement b_up
-	-props secteur afficher alors qu'ils sont derriere un portail
 	-props se sureleve avec la hauteur du secteur
+
 	-portail affichage d'une colonne en moins dans le prochain secteur
 		colonne jaune sur les bords
 
@@ -12,6 +11,7 @@ gameplay:
 	-ejection du secteur lors de certain passage
 	-mauvaise gestion des level (gerer dans la version norme)
 	-coincer dans les murs dans certain cas
+	-props fin de niveau
 
 editor:
 	-suppresion des liens porte boutton lors d'un recharge de la map
@@ -20,9 +20,20 @@ editor:
 segv:
 	-...?
 	-button associe a une porte qui a ete delete(regle version norm)
+	segv ? scenario ?
 
 
-props infini:
+props a travers protail:
+
+	meme systeme que les surface
+	si le props a une profondeur positive par rapport au joueur
+		on trace une droite
+		on projete l'intersection sur le portail sur lequel il est
+		si l'intersection est plus profonde que le props
+		alors
+			on l'affiche sinon
+		sinon rien
+
 
 
 glitch modifie:
@@ -43,3 +54,5 @@ glitch regle:
 	-glitch partie porte a travers portail s'affiche a l'index 0 plutot que b_up
 		-mauvais return de draw_txtr_column
 	-props afficher a l'inverse de leurs position (st.x commence par 1 et st.y commence par 0)
+	-props afficher a l'infini: position du props derriere le joueur
+	-props secteur afficher alors qu'ils sont derriere un portail
