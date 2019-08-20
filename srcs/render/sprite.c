@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/20 16:31:26 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/20 17:55:27 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 {
 	double		p_buff_h;
 	double		p_buff_w;
-	double		start_txtr_heigth;
 	double		buffer_h;
 	double		buffer_w;
 	int			i_heigth;
@@ -148,15 +147,6 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 	p_buff_h = (double)sprite->texture.h / (double)(sprite->heigth.y - sprite->heigth.x);
 	p_buff_w = sprite->texture.w / (double)(sprite->width.y - sprite->width.x);
 	neutral_distance = (double)(arch->sdl->size.y) / sprite->pos.x;
-	if (sprite->heigth.x < 0)
-	{
-		sprite->heigth.x = 0;
-		start_txtr_heigth = -sprite->heigth.x * p_buff_h;
-	}
-	else
-	{
-		start_txtr_heigth = 0;
-	}
 	if (sprite->width.x < 0)
 	{
 		buffer_w = -sprite->width.x * p_buff_w;

@@ -1,7 +1,4 @@
 render
-	-sprite bug a travers portal depassement b_up
-
-
 	-props mur vers le bas depasse le sol
 
 	-portail affichage d'une colonne en moins dans le prochain secteur
@@ -26,17 +23,7 @@ segv:
 	-button associe a une porte qui a ete delete(regle version norm)
 	segv ? scenario ?
 
-
-props a travers protail:
-
-	meme systeme que les surface
-	si le props a une profondeur positive par rapport au joueur
-		on trace une droite
-		on projete l'intersection sur le portail sur lequel il est
-		si l'intersection est plus profonde que le props
-		alors
-			on l'affiche sinon
-		sinon rien
+props secteur bug avec b_up
 
 
 
@@ -62,3 +49,4 @@ glitch regle:
 	-props secteur afficher alors qu'ils sont derriere un portail
 	-props mur se sureleve avec la hauteur du secteur : la hauteur du props est general et
 		non locale au secteur
+	-sprite bug a travers portal depassement b_up
