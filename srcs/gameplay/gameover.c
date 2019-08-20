@@ -30,6 +30,20 @@ int					opacity(int s, int c, double f)
 	+ 255);
 }
 
+int			opacity_from_color(Uint32 s, Uint32 c)
+{
+	const double f = 1.0 - (s & 255) / 255.0;
+	
+	if (f == 1)
+		return (s);
+	else if (!f)
+		return (c);
+	return (((int)((c >> 8 & 255) + f * ((s >> 8 & 255) - (c >> 8 & 255))) << 8)
+	+ ((int)((c >> 16 & 255) + f * ((s >> 16 & 255) - (c >> 16 & 255))) << 16)
+	+ ((int)((c >> 24 & 255) + f * ((s >> 24 & 255) - (c >> 24 & 255))) << 24)
+	+ 255);
+}
+
 void		full_screen_opacity(t_doom *doom, Uint32 color, double blood)
 {
 	int i;
