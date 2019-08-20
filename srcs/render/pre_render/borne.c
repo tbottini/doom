@@ -21,6 +21,7 @@ void		set_borne_vertical(t_arch *arch, t_vct2 surface, int i)
 
 void		set_borne_horizontal(t_arch *arch)
 {
+	//ajouter la difference si jamais sdl->size est impair
 	arch->portal.b_left = atan2((arch->sdl->size.x / 2) - arch->px.x, arch->cam->d_screen);
 	arch->portal.b_right = atan2((arch->sdl->size.x / 2) - arch->px.y, arch->cam->d_screen);
 	arch->portal.b_left *= TOANGLE;

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/20 17:55:27 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/20 18:31:11 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 	else
 	{
 		while (sprite_insert->next && sprite_node->pos.x < sprite_insert->next->pos.x)
-			sprite_insert= sprite_insert->next;
+			sprite_insert = sprite_insert->next;
 		sprite_node->next = sprite_insert->next;
 		sprite_insert->next = sprite_node;
 	}
@@ -66,10 +66,13 @@ void				sprite_print(t_sprite *sprite)
 
 void				sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*))
 {
+	t_sprite 		*tmp;
+
 	while (sprite)
 	{
+		tmp = sprite->next;
 		effector(sprite);
-		sprite = sprite->next;
+		sprite = tmp;
 	}
 }
 
@@ -84,10 +87,12 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos, *(t_fvct2*)&enemy->stat.pos, player->stat.rot.y);
 		if (e_angle < 90 && e_angle > -90)
 		{
-			//enemy->sprites = &enemy->stat.sector->txtrsol;
 			sprite = sprite_new(enemy->sprites, player->stat.pos, enemy->stat.pos, e_angle);
 			if (!sprite)
+			{
 				sprite_iter(*sprite_list, &sprite_free);
+				*sprite_list = NULL;
+			}
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
 			sprite->heigth = cam_get_enemy_surface(arch->cam, arch->sdl, enemy, player, sprite->pos.x);
 			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
@@ -114,7 +119,10 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 		{
 			sprite = sprite_new(props[i].tex, player->stat.pos, props[i].pos, e_angle);
 			if (!sprite)
+			{
 				sprite_iter(*sprite_list, &sprite_free);
+				*sprite_list = NULL;
+			}
 			if (point_behind_portal(arch, player, sprite->pos))
 			{
 				posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;

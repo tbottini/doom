@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/20 16:53:43 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/20 19:29:28 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,10 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 	percent_wall.y = (prop->percent.y - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
 	delta_wall.x = arch->next.x - arch->pillar.x;
 	delta_wall.y = arch->next.y - arch->pillar.y;
-	//on recupere les distance des pillier
 	prop_left_pos.x = delta_wall.x * percent_wall.x + arch->pillar.x;
 	prop_left_pos.y = delta_wall.y * percent_wall.x + arch->pillar.y;
 	prop_rigth_pos.x = delta_wall.x * percent_wall.y + arch->pillar.x;
 	prop_rigth_pos.y = delta_wall.y * percent_wall.y + arch->pillar.y;
-	//printf("arch px %d %d\n", arch->px.x, arch->px.y);
 	if (debug_screen == 2)
 	{
 		b_point_debug(prop_rigth_pos, GREEN);
@@ -143,8 +141,6 @@ void				prop_init_render(t_prop *prop, void *arch)
 	px = prop_get_screen_pixel(prop, arc);
 }
 
-
-
 void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 {
 	int				i;
@@ -163,14 +159,16 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 			heigth_percent.x = (arch->sector->h_ceil - 1 - (props[i].pos.z - arch->sector->h_floor)) / arch->sector->h_ceil;
 			heigth_percent.y = (props[i].pos.z - arch->sector->h_floor) / arch->sector->h_ceil;
 			padding_render = (surface.y - surface.x) * heigth_percent.x;
-			surface_tmp.x = surface.x + padding_render;
-			surface_tmp.y = surface.y - padding_render;
+			//surface_tmp.x = surface.x + padding_render;
+			//surface_tmp.y = surface.y - padding_render;
 			surface_tmp.x = surface.x + (surface.y - surface.x) * heigth_percent.x;
 			surface_tmp.y = surface.y - (surface.y - surface.x) * heigth_percent.y;
 			cursor = arch->px.x + surface_tmp.x * arch->sdl->size.x;
-			if (cursor < 0)
-				cursor = arch->px.x;
-			draw_part_prop(arch, cursor, surface_tmp, &props[i]);
+			//if (surface_tmp.x < surface.x)
+			//	cursor = arch->px.x + (surface.x) * arch->sdl->size.x;
+			//if (cursor < (int)arch->portal.b_up[arch->px.x])
+			///	cursor = arch->px.x + (arch->portal.b_up[arch->px.x] - 1) * arch->sdl->size.x;
+			draw_part_prop(arch, cursor, surface_tmp, (t_vct2){surface.x, surface.y}, &props[i]);
 			col_print = true;
 		}
 		i++;

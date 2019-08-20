@@ -1,9 +1,5 @@
 render
 	-props mur vers le bas depasse le sol
-
-	-portail affichage d'une colonne en moins dans le prochain secteur
-		colonne jaune sur les bords
-
 	-segv iter sprite (-fsanitize)
 
 gameplay:
@@ -29,7 +25,9 @@ props secteur bug avec b_up
 
 glitch modifie:
 	-portail trop haut: bas du portail affichage non reajuste au depassement
-
+	-portail affichage d'une colonne en moins dans le prochain secteur
+		colonne jaune sur les bords
+		-->affichage en noir
 glitch regle:
 	-porte clignote
 	-bug porte avec les porte a l'envers

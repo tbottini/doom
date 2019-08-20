@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/19 22:03:11 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/20 18:46:42 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void		draw_portal(t_arch *arch, t_pil_render *render_stuff)
 	{
 		tmp = (t_vct2){surface.x, s_portal.x};
 		surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
-		surf.x = draw_part(arch, s_portal.x, s_portal.y, BLUE_SOFT);
+		surf.x = draw_part(arch, s_portal.x, s_portal.y, 0);
 		tmp = (t_vct2){s_portal.y, surface.y};
 		surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
 	}
@@ -117,7 +117,7 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff, int flag)
 			printf("surf.x out txtr %d\n", surf.x);
 		tmp = (t_vct2){mid_part.x, mid_part.y};
 		if (flag == PORTAL)
-			surf.x = draw_part(arch, tmp.x, tmp.y, ORANGE);
+			surf.x = draw_part(arch, tmp.x, tmp.y, 0);
 		else if (flag == WALL)
 			surf.x = draw_part_decal(arch, surf.x, tmp, render_stuff);
 		tmp = (t_vct2){mid_part.y, surface.y};

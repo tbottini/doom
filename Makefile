@@ -152,13 +152,17 @@ doc		:
 	sed -ie "s/RECURSIVE              = NO/RECURSIVE              = YES/g" Doxyfile
 	sed -ie "s/DOT_CLEANUP            = YES/DOT_CLEANUP            = NO/g" Doxyfile
 	doxygen Doxyfile
-	@#$(eval DOT_FILE = $(wildcard latex/*.dot))
-	@#$(eval PNG_FILE = $(DOT_FILE:.dot=.png))
-	@#make convert_dot
-	@#mv $(PNG_FILE) html/
+	@$(eval DOT_FILE = $(wildcard latex/*.dot))
+	@$(eval PNG_FILE = $(DOT_FILE:.dot=.png))
+	@make convert_dot
+	@mv $(PNG_FILE) html/
 	rm -f Doxyfilee
 	rm -f Doxyfile.bak
 	open html/index.html
+
+docinstall:
+	brew install doxygen
+	brew install graphziv
 
 
 doclean:

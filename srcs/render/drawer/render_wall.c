@@ -95,7 +95,7 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 	coef_neutre = coef_vct(neutre, arch->px);
 	coef_distance = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
 	dist_px = arch->pillar.x;
-	while (arch->px.x != arch->px.y)
+	while (arch->px.x < arch->px.y)
 	{
 		if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
 			arch->portal.b_up[arch->px.x] = arch->sdl->size.y - 1;
@@ -117,8 +117,6 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 		else if (arch->wall->status == OPEN_DOOR
 			|| arch->wall->status == CLOSE_DOOR)
 		{
-			//si c'est la partie portail
-			//quelle difference avec le status portail ???
 		   	if ((arch->px.x >= render_stuff->px_inter) ^ render_stuff->open_invert)
 			{
 				debug_repr(arch, arch->px.x, 5, RED);
@@ -182,12 +180,6 @@ void				render_surface(t_arch *arch, t_player *player)
 	{
 		save_pixels_portal(arch, &render_stuff, &px_draw);
 		render_stuff.px_start = px_draw.x;
-		if (debug_screen == 6)
-		{
-			fill_line_debug(arch, arch->sdl, (t_vct2){px_draw.x, arch->sdl->size.y / 2}
-				, (t_vct2){px_draw.y, arch->sdl->size.y / 2}
-				, (px_draw.x < px_draw.y) ? 0xffffffff : 0xff0000ff);
-		}
 		borne_svg(arch, &render_stuff.borne_tmp, px_draw);
 	}
 	pillar_to_pillar(arch, &render_stuff);

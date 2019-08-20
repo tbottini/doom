@@ -121,8 +121,3 @@ void		d_swap(double *a, double *b)
 	*a = *b;
 	*b = tmp;
 }
-
-//double		coeficient(t_fvct2 diff1, t_fvct2 diff2)
-//{
-//	return ((diff1.y - diff1.x) / (diff2.y - diff2.x));
-//}
