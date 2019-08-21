@@ -107,6 +107,7 @@ SRCS_TOOLS		:=		list_tools.c									\
 						secteur_tools.c									\
 						play_tools.c									\
 						readfile_tools.c								\
+						remove_ptr_from_map.c							\
 						savefile_tools.c								\
 						sdl_multirendercopy.c							\
 						musi.c											\

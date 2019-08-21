@@ -30,7 +30,7 @@ static t_lstmur	ft_newwall(t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr)
 	return (t);
 }
 
-void			ft_removewall(t_lstmur *start, t_mur **mur)
+void			ft_removewall(t_editor *edit, t_lstmur *start, t_mur **mur)
 {
 	if (!mur || !(*mur))
 		return ;
@@ -41,11 +41,14 @@ void			ft_removewall(t_lstmur *start, t_mur **mur)
 	if ((*mur)->prvs)
 		(*mur)->prvs->next = (*mur)->next;
 	ft_clear_entity_list(&((*mur)->wproplist));
+	if (edit)
+		remove_ptr_from_map(edit->sectors, edit->ennlist, *mur);
 	free(*mur);
 	*mur = NULL;
 }
 
-void			ft_remove_walls_with_pillar(t_lstmur *start, t_pilier *pil)
+void			ft_remove_walls_with_pillar(t_editor *edit, t_lstmur *start,
+	t_pilier *pil)
 {
 	t_lstmur t;
 	t_lstmur tmp;
@@ -59,7 +62,7 @@ void			ft_remove_walls_with_pillar(t_lstmur *start, t_pilier *pil)
 		if (t->pil1 == pil || t->pil2 == pil)
 		{
 			tmp = t->next;
-			ft_removewall(start, &t);
+			ft_removewall(edit, start, &t);
 			t = tmp;
 		}
 		else

@@ -55,7 +55,7 @@ static void	lil_editor_mouse_move(SDL_MouseMotionEvent e, t_editor *edit)
 		if (e.state == SDL_BUTTON_RMASK
 			&& edit->hoverpilier && !edit->currpilier)
 		{
-			ft_remove_pillar_from_sector(edit->sectors, &edit->pillist,
+			ft_remove_pillar_from_sector(edit, edit->sectors, &edit->pillist,
 				&edit->hoverpilier);
 			edit->hovermur = NULL;
 		}
