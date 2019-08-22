@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_enemy.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:57:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/12 16:13:01 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/21 16:01:50 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,21 +98,15 @@ void			draw_enemy_box(t_arch *arch, t_enemy *enemy, t_vct2 width, t_vct2 heigth,
 {
 	double		p_buff_h;
 	double		p_buff_w;
-
 	double		start_txtr_heigth;
-
 	double		buffer_h;
 	double		buffer_w;
-
 	int			i_heigth;
 	int			limit_h;
 	int			cursor_screen;
 
 	p_buff_h = (double)enemy->sprites.h / (double)(heigth.y - heigth.x);
 	p_buff_w = enemy->sprites.w / (double)(width.y - width.x);
-
-	//printf("prinp_buff_h %f\n", p_buff_h);
-
 	if (heigth.x < 0)
 	{
 		heigth.x = 0;
@@ -183,10 +177,6 @@ void			render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player)
 	double		neutral_distance;
 
 	enemy_node = sector->enemys;
-
-
-	if (!enemy_node && debug == 8)
-		printf("no enemy\n");
 	while (enemy_node)
 	{
 		//printf("pos %f %f\n", enemy_node->stat.pos.x, enemy_node->stat.pos.y);

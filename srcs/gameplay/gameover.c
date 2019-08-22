@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/09 16:09:54 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/21 14:29:14 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,25 @@ int					opacity(int s, int c, double f)
 	+ 255);
 }
 
-int			opacity_from_color(Uint32 s, Uint32 c)
+/*
+**	s : additive
+**	c : basique
+*/
+
+int			opacity_from_color(Uint32 add, Uint32 basique)
 {
-	const double f = 1.0 - (s & 255) / 255.0;
-	
-	if (f == 1)
-		return (s);
-	else if (!f)
-		return (c);
-	return (((int)((c >> 8 & 255) + f * ((s >> 8 & 255) - (c >> 8 & 255))) << 8)
-	+ ((int)((c >> 16 & 255) + f * ((s >> 16 & 255) - (c >> 16 & 255))) << 16)
-	+ ((int)((c >> 24 & 255) + f * ((s >> 24 & 255) - (c >> 24 & 255))) << 24)
+	const double factor = (add & 255) / 255.0;
+
+	if (factor == 1)
+		return (add);
+	else if (!factor)
+		return (basique);
+	return (((int)((basique >> 8 & 255)
+			+ factor * ((add >> 8 & 255) - (basique >> 8 & 255))) << 8)
+		+ ((int)((basique >> 16 & 255)
+			+ factor * ((add >> 16 & 255) - (basique >> 16 & 255))) << 16)
+		+ ((int)((basique >> 24 & 255)
+			+ factor * ((add >> 24 & 255) - (basique >> 24 & 255))) << 24)
 	+ 255);
 }
 

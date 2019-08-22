@@ -127,6 +127,11 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 			else if (zline_wall(arch, render_stuff, neutre.x))
 				draw_door(arch, render_stuff, WALL);
 		}
+		else if (arch->wall->status == WINDOW)
+		{
+			//if (zline_compare(arch, neutre.x, arch->px.x))
+				draw_window(arch, render_stuff);
+		}
 		render_stuff->pillar.x -= coef_surface.x;
 		render_stuff->pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
@@ -203,9 +208,36 @@ void				render_surface(t_arch *arch, t_player *player)
 */
 void			render_wall(t_arch *arch, t_player *player)
 {
+	t_fvct2		pillar;
+	t_fvct2		next;
+	t_vct2		px;
+	t_fvct2		st;
+	t_txtr		tmp;
+
+
 	pillar_screen_info(arch, player);
 	if (arch->depth_portal == 0 || (wall_behind_portal(arch)))
+	{
+		if (arch->wall->status == WINDOW)
+		{
+			pillar = arch->pillar;
+			px = arch->px;
+			next = arch->next;
+			st = arch->shift_txtr;
+			tmp = arch->wall->txtr;
+			arch->wall->txtr = arch->sector->txtrsol;
+			arch->wall->status = PORTAL;
+			render_surface(arch, player);
+			arch->wall->txtr = tmp;
+			arch->wall->status = WINDOW;
+			arch->px = px;
+			arch->pillar = pillar;
+			arch->next = next;
+			arch->shift_txtr = st;
+			//pillar_screen_info(arch, player);
+		}
 		render_surface(arch, player);
+	}
 	else if (debug_screen == 2)
 		draw_wall_debug(arch, RED);
 }

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/20 18:46:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/21 19:05:58 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff, int flag)
 	{
 		tmp = (t_vct2){surface.x, mid_part.x};
 		surf.x = draw_part_texture(arch, surf.x, tmp, &arch->wall->txtr);
-		if (arch->px.x == arch->sdl->size.x / 2)
-			printf("surf.x out txtr %d\n", surf.x);
 		tmp = (t_vct2){mid_part.x, mid_part.y};
 		if (flag == PORTAL)
 			surf.x = draw_part(arch, tmp.x, tmp.y, 0);
@@ -131,4 +129,21 @@ void		draw_door(t_arch *arch, t_pil_render *render_stuff, int flag)
 		tmp = (t_vct2){mid_part.x, mid_part.y};
 		set_borne_vertical(arch, tmp, arch->px.x);
 	}
+}
+
+void			draw_window(t_arch *arch, t_pil_render *render_stuff)
+{
+	t_fvct2		mid_part;
+	t_vct2		surface_tmp;
+	int			cursor;
+
+	mid_part = surface_portal(render_stuff->pillar, arch->sector, arch->wall->link);
+	if (mid_part.x < arch->portal.b_up[arch->px.x])
+		cursor = arch->px.x + arch->portal.b_up[arch->px.x] * arch->sdl->size.x;
+	else if (mid_part.x > arch->portal.b_down[arch->px.x])
+		return ;
+	else
+		cursor = arch->px.x + (int)mid_part.x * arch->sdl->size.x;
+	surface_tmp = (t_vct2){mid_part.x, mid_part.y};
+	draw_part_opacity(arch, cursor, surface_tmp, &arch->wall->txtr);
 }

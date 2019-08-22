@@ -100,7 +100,6 @@ struct					s_doom
 void					doom_exit(t_doom *doom);
 t_doom					*doom_init();
 
-
 int						parsing(t_doom *doom, char *filename);
 
 void					fire_init(t_doom *doom);

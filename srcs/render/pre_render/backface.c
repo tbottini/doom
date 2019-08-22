@@ -55,5 +55,6 @@ int			clean_zline(t_arch *arch, double len_pillar, int px)
 
 int			zline_compare(t_arch *arch, double len_pillar, int px)
 {
-	return (len_pillar > arch->portal.zline[px]);
+	printf("len_pillar %f arch->portal.zline[px] %f\n", len_pillar, arch->portal.zline[px]);
+	return (len_pillar >= arch->portal.zline[px]);
 }

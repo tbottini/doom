@@ -5,21 +5,41 @@ void	ui_free(t_ui *ui)
 	int i;
 
 	i = -1;
-	//while (ui->btnarr[++i].txture)
-	//	SDL_DestroyTexture(ui->btnarr[i].txture);
-	i = -1;
-	//while (ui->btnmap[++i].txture)
-	//{
-	//	SDL_DestroyTexture(ui->btnmap[i].txture);
-		if (i > 1)
-			free(ui->btnmap[i].data);
-	//}
+	if (i > 1)
+		free(ui->btnmap[i].data);
+
 	if (ui->fonts.s64)
 		TTF_CloseFont(ui->fonts.s64);
 	if (ui->fonts.s32)
 		TTF_CloseFont(ui->fonts.s32);
 	if (ui->fonts.s128)
 		TTF_CloseFont(ui->fonts.s128);
+
+	//free weaponhud sprites, props, propssurf enemy
+	i = 0;
+	while (i <= 20)
+	{
+		SDL_FreeSurface(ui->propssurf[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 18)
+	{
+		SDL_DestroyTexture(ui->props[i]);
+		i++;
+	}
+	i = 0;
+	while (i < ENDSPRITES)
+	{
+		SDL_DestroyTexture(ui->sprites[i]);
+		i++;
+	}
+	i = 0;
+	while (i < ENEMYTXTRTOTAL)
+	{
+		SDL_FreeSurface(ui->enemy[i]);
+		i++;
+	}
 }
 
 int		load_weapons(t_doom *doom, t_ui *ui)

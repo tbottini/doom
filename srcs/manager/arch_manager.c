@@ -36,28 +36,22 @@ void				architect_reset(t_arch *arch)
 	zline_reset(arch);
 }
 
-int 				arch_free(t_arch *arch)
+void 				arch_free(t_arch *arch)
 {
-	free(arch->portal.zline);
-	return (1);
+	borne_free(&arch->portal);
 }
 
 int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 {
 	size_t	curseur;
 
-	arch->portal.zline = (double*)malloc(sizeof(double) * sdl->size.x);
-	if (!arch->portal.zline)
+
+	if (!borne_init(&arch->portal, sdl->size.x))
 		return (0);
 	curseur = sdl->size.x * (sdl->size.y - 1);
 	arch->sdl = sdl;
 	arch->cam = cam;
-	arch->portal.b_down = (uint32_t*)malloc(sizeof(uint32_t) * sdl->size.x);
-	if (!arch->portal.b_down)
-		return (0);
-	arch->portal.b_up = (uint32_t*)malloc(sizeof(uint32_t) * sdl->size.x);
-	if (!arch->portal.b_up)
-		return (0);
+
 	arch->wall = NULL;
 	arch->depth_portal = 0;
 	arch->zoom = 10;

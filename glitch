@@ -18,6 +18,7 @@ segv:
 	-...?
 	-button associe a une porte qui a ete delete(regle version norm)
 	segv ? scenario ?
+	-pblm de secteur pas set pour le joueur
 
 props secteur bug avec b_up
 

@@ -16,15 +16,39 @@ int		secure_doom(t_doom *doom)
 
 void	doom_exit(t_doom *doom)
 {
+	printf("doom exit\n");
 	ui_free(&doom->ui);
 	editor_free(doom);
 	sdl_free(&doom->sdl);
 	music_free(&doom->game.sound);
 	effect_free(&doom->game.sound);
+
+	doom->game.ui = NULL;
+
+	//on free la borne de l'architecte
+	borne_free(&doom->game.arch.portal);
+
+	//on free les secteurs les pillier et les gamesurface et surfpath
+	free_game(&doom->game);
+
+	doom->game.sectors = 0;
+	doom->game.pillars = 0;
+	doom->game.gamesurf = 0;
+	doom->game.surfpath = 0;
+	doom->game.ui = 0;
+
+
 	Mix_Quit();
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+	//game leaks
+	ft_bzero(&doom->game, sizeof(t_game));
+	ft_bzero(&doom->sdl, sizeof(t_sdl));
+	ft_bzero(&doom->edit, sizeof(t_editor));
+	ft_bzero(&doom->controller, sizeof(SDL_GameController*));
+	ft_bzero(&doom->ui, sizeof(t_ui));
+	ft_bzero(doom, sizeof(t_doom));
 	free(doom);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:32:34 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/20 19:31:28 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/21 14:27:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,44 @@ int				draw_txtr_column_l(t_arch *arch, int numcol, t_vct2 surface, t_vct2 limit
 	return (numcol);
 }
 
+int				draw_txtr_opacity(t_arch *arch, int cursor, t_vct2 surface, t_txtr *txtr, uint32_t txtr_col)
+{
+	double		coef;
+	double		buff;
+
+	buff = 0;
+	coef = (double)txtr->h / (surface.y - surface.x);
+	if (surface.y < (int)arch->portal.b_up[arch->px.x])
+		return (arch->px.x + arch->portal.b_up[arch->px.x] * arch->sdl->size.x);
+	if (surface.x < (int)arch->portal.b_up[arch->px.x])
+	{
+		buff = (-surface.x + arch->portal.b_up[arch->px.x]) * coef;
+		if (buff > 1.0)
+		{
+			txtr_col += (int)buff * txtr->w;
+			buff = buff - (int)buff;
+		}
+		surface.x = arch->portal.b_up[arch->px.x];
+	}
+	while (surface.x < surface.y && surface.x < (int)arch->portal.b_down[arch->px.x])
+	{
+		if (cursor < arch->sdl->size.x * arch->sdl->size.y && txtr_col < txtr->w * txtr->h)
+		{
+			arch->sdl->screen[cursor] =
+				opacity_from_color(txtr->pixels[txtr_col], arch->sdl->screen[cursor]);
+		}
+		surface.x++;
+		cursor += arch->sdl->size.x;
+		buff += coef;
+		if (buff > 1.0)
+		{
+			txtr_col += (int)buff * txtr->w;
+			buff = buff - (int)buff;
+		}
+	}
+	return (cursor);
+}
+
 int				draw_part_texture(t_arch *arch, int numcol, t_vct2 surface, t_txtr *txtr)
 {
 	uint32_t 	px;
@@ -116,6 +154,14 @@ int				draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_vct2 limit, t_
 
 	px = texture_prop_interpolation2d(arch, &prop->tex, prop);
 	return (draw_txtr_column_l(arch, numcol, surface, limit, &prop->tex, px));
+}
+
+int				draw_part_opacity(t_arch *arch, int cursor, t_vct2 surface, t_txtr *txtr)
+{
+	uint32_t	px;
+
+	px = texture_interpolation2d(arch, txtr);
+	return (draw_txtr_opacity(arch, cursor, surface, txtr, px));
 }
 
 /*

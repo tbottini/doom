@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 00:18:50 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/04 11:45:06 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/22 14:39:36 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,7 @@ int			main(int ac, char **av)
 		return (0);
 	if (!(doom = doom_init()))
 		return (0);
-	if (ac == 2)
-	{
-		if (!read_file(&doom->game, av[1], false))
-			sdl_set_status(doom, MENU_INGAME);
-		else
-			sdl_set_status(doom, MENU_MAIN);
-	}
-	else
-		sdl_set_status(doom, MENU_MAIN);
+	sdl_set_status(doom, MENU_MAIN);
 	event_handler(doom);
 	Mix_FadeInMusic(doom->game.sound.tab_music[0], -1, 18000);
 	cinematrique(doom);

@@ -1,0 +1,48 @@
+
+
+malloc:
+	init()
+		~SDL_INIT
+		~TTF_INIT
+		~IMG_INIT
+		~Mix_OpenAudio
+
+	doom_init()
+		doom<-malloc
+
+		sdl_init()
+			~CreateWindow
+			~CreateRenderer
+			~SDL_CreateTexture
+			~SDL_LockTexture
+
+		ui_init()
+			~TTF_OpenFont * 3
+
+		ui_by_sdl()
+			add_button()
+				update_text()
+					~DestroyTexture
+					~TTF_RenderText_shade
+					~SDL_CreateTextureFromSurface
+			~add_fist()
+			~add_handgun()
+			~add_shotgun()
+			~load_weapons()
+			~load_props()
+			~load_enemies()
+
+		arch_init()
+			borne_init()
+
+		editor_init()
+			SDL_CreateWindow
+			IMG_LoadTexture > 20
+			SDL_CreateRenderer
+
+		music_init()
+			load_mus()
+				Mix_LoadMUS()
+				effect_init(sound)
+				Mix_VolumeMusic()
+

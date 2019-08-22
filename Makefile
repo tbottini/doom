@@ -18,7 +18,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g -Ofast -fno-builtin -flto#-fsanitize=address-Ofast -fno-builtin -flto
+CFLAGS			:=		-Wall -Wextra -g#-fsanitize=address-Ofast -fno-builtin -flto
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -82,7 +82,7 @@ all				:		$(FOLDER) $(NAME)
 $(FOLDER)		:
 	@mkdir -p $(FOLDER)
 
-$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(HEADERS)
+$(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(HEADERS) Makefile
 	@printf '\rCompilation $(NAME)\n' \
 	&& printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#' \
 	&& printf '%*s\e[0m] \e[94m $<\e[0m\n' $(INV_FILL_BAR) \

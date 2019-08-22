@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ia.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:46:33 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 19:10:14 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/21 15:07:12 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		update_enemy_rotation(t_enemy *enemy, t_fvct3 pos)
 	enemy->e1.x = enemy->stat.pos.x + sin(enemy->stat.rot.y - (90.0 * PI180)) * enemy->stat.height / 4;
 	enemy->e1.y = enemy->stat.pos.y + cos(enemy->stat.rot.y - (90.0 * PI180)) * enemy->stat.height / 4;
 	enemy->e2.x = enemy->stat.pos.x + sin(enemy->stat.rot.y + (90.0 * PI180)) * enemy->stat.height / 4;
-	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + (90.0 * PI180)) * enemy->stat.height / 4;	
+	enemy->e2.y = enemy->stat.pos.y + cos(enemy->stat.rot.y + (90.0 * PI180)) * enemy->stat.height / 4;
 }
 
 /*
@@ -155,6 +155,7 @@ int		is_around(t_doom *doom, t_sector *sector, t_sector **passed, int *index)
 	double		nposz;
 	int			i;
 
+	//segv sector->enemys pas d'enemys
 	tmp = sector->enemys;
 	while (tmp)
 	{

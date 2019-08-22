@@ -40,13 +40,15 @@ typedef struct 			s_pil_render
 	t_fvct2				next;
 	t_borne				borne_tmp;
 	int					px_start;
-	double				percent_portail;
-	t_portal_id			status;
+
+	//door information
 	t_fvct2				st_door;
 	int					px_inter;
 	t_fvct2				inter;
 	bool				open_invert;
 	double				perc_open;
+
+	//
 }						t_pil_render;
 
 /*
@@ -87,6 +89,7 @@ typedef struct 			s_arch
 
 int						designer_init(t_arch *designer, t_sdl *sdl, t_camera *cam);
 int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
+void 					arch_free(t_arch *arch);
 int						is_door(t_arch *arch);
 
 /*

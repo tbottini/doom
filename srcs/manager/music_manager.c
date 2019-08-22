@@ -6,11 +6,12 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 04:07:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/06/16 14:49:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/22 16:00:59 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "doom_nukem.h"
+# include "color.h"
 
 void				music_free(t_sound *sound)
 {

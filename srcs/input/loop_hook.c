@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 20:45:19 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/12 21:28:23 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/21 15:01:43 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,10 @@ static void delaypcmasterrace(t_doom *doom)
 	doom->game.arch.timestamp = doom->timestamp;
 }
 
+/*
+**	game loop for each frame
+*/
+
 static void game_loop_hook(t_doom *doom)
 {
 	t_tab pos;
@@ -140,7 +144,6 @@ static void game_loop_hook(t_doom *doom)
 			input_loop(doom, pos->data);
 			pos = pos->next;
 		}
-		/// Place here functions that need to be launch every frame while the game is running
 		effect_volume(&doom->game.sound);
 		move(&doom->game.player.stat, &doom->game.player.inv);
 		pickup_prop(doom);
