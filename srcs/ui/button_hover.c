@@ -30,20 +30,21 @@ static t_btn	*on_menu(t_btn *btnarr, int x, int y)
 	return (NULL);
 }
 
-t_btn		*btn_hover(t_doom *doom, int x, int y)
+t_btn			*btn_hover(t_doom *doom, int x, int y)
 {
 	if (doom->ui.m_status == MENU_MAIN)
 		return (on_menu(doom->ui.btnarr, x, y));
 	else if (doom->ui.m_status == MENU_MAP)
-		return(on_menu(doom->ui.btnmap, x, y));
-	else if (doom->ui.m_status == MENU_OPTION || doom->ui.m_status == MENU_IGOPTION)
-		return(on_menu(doom->ui.btnopt, x, y));
+		return (on_menu(doom->ui.btnmap, x, y));
+	else if (doom->ui.m_status == MENU_OPTION
+			|| doom->ui.m_status == MENU_IGOPTION)
+		return (on_menu(doom->ui.btnopt, x, y));
 	else if (doom->ui.m_status == MENU_IGMAIN)
-		return(on_menu(doom->ui.btnpse, x, y));
-	return(NULL);
+		return (on_menu(doom->ui.btnpse, x, y));
+	return (NULL);
 }
 
-void		draw_hover(t_doom *doom, t_btn *new, t_btn *old)
+void			draw_hover(t_doom *doom, t_btn *new, t_btn *old)
 {
 	SDL_Rect rect;
 
@@ -65,7 +66,6 @@ void		draw_hover(t_doom *doom, t_btn *new, t_btn *old)
 		rect.h += 6;
 		SDL_SetRenderDrawColor(doom->sdl.rend, 255, 255, 255, 255);
 		SDL_RenderCopy(doom->sdl.rend, new->txture, NULL, &(rect));
-		//SDL_RenderDrawRect(doom->sdl.rend, &rect);
 		SDL_SetRenderDrawColor(doom->sdl.rend, 0, 0, 0, 255);
 	}
 }

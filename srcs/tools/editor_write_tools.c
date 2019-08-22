@@ -39,25 +39,25 @@ int		sdl_draw_filename(t_editor *edit, const char *text)
 void	draw_writer(t_editor *edit)
 {
 	if (edit->status == ED_WRITING)
-		sdl_string_put(edit->rend, edit->ui->fonts.s64,
+		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
 			(t_vct2){edit->size.x / 2 - 50, 20}, "HEIGHT",
-			(SDL_Color){250, 250, 250, 255});
+			(SDL_Color){250, 250, 250, 255}});
 	else if (edit->status == ED_SAVING)
-		sdl_string_put(edit->rend, edit->ui->fonts.s64,
+		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
 			(t_vct2){edit->size.x / 2 - 50, 20}, "Saving",
-			(SDL_Color){250, 250, 250, 255});
+			(SDL_Color){250, 250, 250, 255}});
 	else if (edit->status == ED_OPEN)
-		sdl_string_put(edit->rend, edit->ui->fonts.s64,
+		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
 			(t_vct2){edit->size.x / 2 - 50, 20}, "Open",
-			(SDL_Color){250, 250, 250, 255});
+			(SDL_Color){250, 250, 250, 255}});
 	sdl_draw_filename(edit, edit->filename);
 }
 
 /*
 **	else if (edit->status == ED_FORME)
-**		sdl_string_put(edit->rend, edit->ui->fonts.s64,
+**		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
 **			(t_vct2){edit->size.x / 2 - 120, 20}, "Number of points",
-**			(SDL_Color){250, 250, 250, 255});
+**			(SDL_Color){250, 250, 250, 255}});
 */
 
 void	push_char(char *str, char c)

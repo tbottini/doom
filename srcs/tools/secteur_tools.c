@@ -46,12 +46,12 @@ t_lstsec	push_secteur(t_lstsec *node, SDL_Texture *top, SDL_Texture *sol)
 	return (tmp->next);
 }
 
-void		ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start,
-	t_pilier **pil)
+void		ft_remove_pillar_from_sector(t_editor *edit, t_lstsec sectors,
+	t_lstpil *start, t_pilier **pil)
 {
 	while (sectors)
 	{
-		ft_remove_walls_with_pillar(&sectors->murs, *pil);
+		ft_remove_walls_with_pillar(edit, &sectors->murs, *pil);
 		sectors = sectors->next;
 	}
 	ft_removepillar(start, pil);

@@ -65,6 +65,7 @@ void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 			pos0.y += decal.y;
 	}
 }
+<<<<<<< HEAD
 
 void	fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0
 	, t_vct2 pos1, Uint32 color)
@@ -92,3 +93,5 @@ void	fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0
 			pos0.y += decal.y;
 	}
 }
+=======
+>>>>>>> f2db07094eb0bab59b6c08a79ed8988d3e99b7bc

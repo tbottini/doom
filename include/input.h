@@ -1,9 +1,6 @@
 #ifndef INPUT_H
 # define INPUT_H
 
-/*
-** End Button Functions
-*/
 # include "sector.h"
 # include "player.h"
 # include "editor.h"
@@ -117,9 +114,9 @@ t_btn					add_left_music_button(t_doom *doom, SDL_Rect *parent);
 t_btn					add_middle_music_button(t_doom *doom);
 t_btn					add_right_music_button(t_doom *doom, SDL_Rect *parent);
 
-t_btn					add_left_difficulty_button(t_doom *doom, SDL_Rect *parent);
-t_btn					add_middle_difficulty_button(t_doom *doom, SDL_Rect *parent);
-t_btn					add_right_difficulty_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_left_diff_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_middle_diff_button(t_doom *doom, SDL_Rect *parent);
+t_btn					add_right_diff_button(t_doom *doom, SDL_Rect *parent);
 
 SDL_Texture				*add_fist(t_doom *doom);
 SDL_Texture				*add_handgun(t_doom *doom);
@@ -161,7 +158,6 @@ int						mouse_release(int button, int x, int y, t_doom *doom);
 int						mouse_wheel(SDL_MouseWheelEvent e, t_doom *doom);
 int						mouse_move(int x, int y, t_doom *doom);
 
-double					angle_adaptater(double angle);
 void					print_image(SDL_Surface *png);
 unsigned int			color_rgb(uint8_t r, uint8_t g, uint8_t b);
 void					*listdel(t_list **list);

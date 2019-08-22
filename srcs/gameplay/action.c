@@ -43,11 +43,11 @@ static void		action_button(t_doom *doom, t_wall *wallhit, t_inv *inv, int x)
 			if (has_key(inv, wallhit->props[x].wall->level))
 			{
 				wallhit->props[x].func(&wallhit->props[x]);
+				wallhit->props[x].wall->ots = doom->timestamp;
 				Mix_PlayChannel(3, doom->game.sound.tab_effect[3], 0);
 			}
 			else
 				Mix_PlayChannel(3, doom->game.sound.tab_effect[5], 0);
-			wallhit->props[x].wall->ots = doom->timestamp;
 		}
 		else
 			wallhit->props[x].func(&wallhit->props[x]);

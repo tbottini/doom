@@ -25,7 +25,7 @@ t_btn	add_test_button(t_editor *edit, SDL_Rect *parent)
 	tmp.loc.snapy = 4;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	updateText(edit->rend, edit->ui->fonts.s32, &tmp.txture, &tmp.loc.area,
-		"truc", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){edit->rend, edit->ui->fonts.s32, &tmp.txture,
+		&tmp.loc.area, "truc", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }

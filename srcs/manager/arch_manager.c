@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   arch_manager.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 03:07:09 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/13 08:01:13 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-t_arch *arch_debug_extern;
-
 void		borne_reset(t_arch *arch)
 {
-	int			i;
+	int	i;
 
 	i = 0;
 	while (i < arch->sdl->size.x)
@@ -29,9 +27,9 @@ void		borne_reset(t_arch *arch)
 	arch->portal.b_right = -arch->cam->fov / 2.0;
 }
 
-void				zline_reset(t_arch *arch)
+void		zline_reset(t_arch *arch)
 {
-	int				i;
+	int	i;
 
 	i = 0;
 	while (i < arch->sdl->size.x)
@@ -41,13 +39,13 @@ void				zline_reset(t_arch *arch)
 	}
 }
 
-void				architect_reset(t_arch *arch)
+void		architect_reset(t_arch *arch)
 {
 	borne_reset(arch);
 	zline_reset(arch);
 }
 
-int 				arch_free(t_arch *arch)
+int			arch_free(t_arch *arch)
 {
 	free(arch->portal.zline);
 	return (1);
@@ -73,6 +71,5 @@ int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 	arch->depth_portal = 0;
 	arch->zoom = 25;
 	zline_reset(arch);
-	arch_debug_extern = arch;
 	return (1);
 }

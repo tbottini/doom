@@ -68,10 +68,10 @@ void		editor_loop_hook(t_doom *doom)
 		draw_inspect_menu(&doom->edit);
 	if (ISWRITING(doom->edit.status))
 		draw_writer(&doom->edit);
-	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10},
-		"x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255});
-	sdl_int_put(doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40},
-		"y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255});
+	sdl_int_put((t_ip){doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 10},
+		"x: ", doom->edit.mapmouse.x, (SDL_Color){250, 50, 50, 255}});
+	sdl_int_put((t_ip){doom->edit.rend, doom->ui.fonts.s32, (t_vct2){180, 40},
+		"y: ", doom->edit.mapmouse.y, (SDL_Color){250, 50, 50, 255}});
 	SDL_RenderPresent(doom->edit.rend);
 }
 
@@ -82,11 +82,11 @@ void		outgame_loop_hook(t_doom *doom)
 		doom_render(doom);
 	else if (doom->ui.m_status == MENU_IGMAIN
 		|| doom->ui.m_status == MENU_IGOPTION)
-		sdl_MultiRenderCopy(&doom->sdl);
+		sdl_multirendercopy(&doom->sdl);
 	else
 	{
 		fire(&doom->ui.fire);
-		sdl_MultiRenderCopy(&doom->sdl);
+		sdl_multirendercopy(&doom->sdl);
 	}
 	draw_menu(doom);
 }

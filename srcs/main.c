@@ -14,7 +14,7 @@
 
 static int	init(void)
 {
-	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_GAMECONTROLLER|SDL_INIT_TIMER) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0)
 	{
 		ft_printf("SDL_Init: %s\n", SDL_GetError());
 		return (0);
@@ -31,13 +31,13 @@ static int	init(void)
 	}
 	if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) < 0)
 	{
-		ft_printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+		ft_printf("SDL_mixer Error: %s\n", Mix_GetError());
 		return (0);
 	}
 	return (1);
 }
 
-int			main(int ac, char **av)
+int			main(void)
 {
 	t_doom		*doom;
 
@@ -45,15 +45,7 @@ int			main(int ac, char **av)
 		return (0);
 	if (!(doom = doom_init()))
 		return (0);
-	if (ac == 2)
-	{
-		if (!read_file(&doom->game, av[1], false))
-			sdl_set_status(doom, MENU_INGAME);
-		else
-			sdl_set_status(doom, MENU_MAIN);
-	}
-	else
-		sdl_set_status(doom, MENU_MAIN);
+	sdl_set_status(doom, MENU_MAIN);
 	event_handler(doom);
 	Mix_FadeInMusic(doom->game.sound.tab_music[0], -1, 18000);
 	cinematrique(doom);

@@ -89,7 +89,7 @@ static void	action_at_pos(t_editor *edit, t_portal_id newtype, int *towrite)
 
 int			opt_menu_click(t_editor *edit, int pos)
 {
-	pos = pos / SECTORBOXHEIGHT;
+	pos = pos / SBH;
 	if (pos == 0)
 		if_pos_zero(edit);
 	else if (pos == 1)

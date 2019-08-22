@@ -12,18 +12,20 @@
 
 #include "doom_nukem.h"
 
-void cine_events(t_doom *doom, int *i)
+void		cine_events(t_doom *doom, int *i)
 {
 	SDL_Event e;
 
 	while (SDL_PollEvent(&e))
 	{
-		if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
+		if (e.type == SDL_QUIT
+				|| (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE))
 			doom_exit(doom);
-		else if ((e.type == SDL_KEYDOWN && (e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_RETURN)))
+		else if ((e.type == SDL_KEYDOWN
+		&& (e.key.keysym.sym == SDLK_SPACE || e.key.keysym.sym == SDLK_RETURN)))
 			*i = 3000;
 		else if (e.type == SDL_DROPFILE)
-				dropfile_event(doom, e);
+			dropfile_event(doom, e);
 		else if (e.window.windowID == 1)
 		{
 			if (e.type == SDL_WINDOWEVENT)
@@ -34,15 +36,6 @@ void cine_events(t_doom *doom, int *i)
 			if (e.type == SDL_WINDOWEVENT)
 				event_handler_editor(doom, e);
 		}
-		else if (e.type == SDL_CONTROLLERDEVICEADDED)
-		{
-			ft_printf("Controller Added\n");
-			doom->controller = SDL_GameControllerOpen(0);
-		}
-		else if (e.type == SDL_CONTROLLERDEVICEREMOVED)
-		{
-			ft_printf("Controller Removed\n");
-		}
 	}
 }
 
@@ -51,13 +44,13 @@ static void	cine_delay(t_doom *doom, int *i)
 	int wait;
 
 	cine_events(doom, i);
-	wait = SDL_GetTicks() - doom->timestamp - 39; // Nombre de ms entre chaque frames
+	wait = SDL_GetTicks() - doom->timestamp - 39;
 	if (wait < 0)
 		SDL_Delay(-wait);
 	doom->timestamp = SDL_GetTicks();
 }
 
-void	concat_atoi(char *str, int i)
+void		concat_atoi(char *str, int i)
 {
 	str[0] = i / 1000 + '0';
 	i %= 1000;
@@ -68,7 +61,8 @@ void	concat_atoi(char *str, int i)
 	str[3] = i + '0';
 }
 
-static void	super_cinematrique(t_doom *doom, SDL_Surface *image, SDL_Texture *texture, int i)
+static void	super_cinematrique(t_doom *doom, SDL_Surface *image,
+	SDL_Texture *texture, int i)
 {
 	char		deb[36];
 	int			max;
@@ -93,7 +87,7 @@ static void	super_cinematrique(t_doom *doom, SDL_Surface *image, SDL_Texture *te
 		super_cinematrique(doom, image, texture, 200);
 }
 
-void	cinematrique(t_doom *doom)
+void		cinematrique(t_doom *doom)
 {
 	char		deb[48];
 	int			i;

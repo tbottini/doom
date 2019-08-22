@@ -2,11 +2,11 @@
 #ifndef SCREEN_H
 # define SCREEN_H
 
-# define WIDTH 1300
-# define HEIGHT 950
+# define WIDTH 1280
+# define HEIGHT 720
 
-# define MINWIDTH 500
-# define MINHEIGHT 500
+# define MINWIDTH 1024
+# define MINHEIGHT 576
 # define MAXWIDTH 1920
 # define MAXHEIGHT 1080
 
@@ -54,9 +54,30 @@ t_camera				*camera_init(t_camera *camera, t_sdl *sdl, int fov);
 
 void					fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color);
 void					trait(t_screen *screen, t_vct2 vct1, t_vct2 vct2, Uint32 col);
-void					sdl_MultiRenderCopy(t_sdl *sdl);
-int						sdl_string_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *text, SDL_Color fg);
-int						sdl_int_put(SDL_Renderer *rend, TTF_Font *font, t_vct2 loc, const char *label, const int value, SDL_Color fg);
+void					sdl_multirendercopy(t_sdl *sdl);
+
+typedef struct			s_sp
+{
+	SDL_Renderer		*rend;
+	TTF_Font			*font;
+	t_vct2				loc;
+	const char			*text;
+	SDL_Color			fg;
+}						t_sp;
+
+int						sdl_string_put(t_sp norm);
+
+typedef struct			s_ip
+{
+	SDL_Renderer		*rend;
+	TTF_Font			*font;
+	t_vct2				loc;
+	const char			*label;
+	const int			value;
+	SDL_Color			fg;
+}						t_ip;
+
+int						sdl_int_put(t_ip norm);
 void					sdl_line(t_sdl *sdl, t_vct2 a, t_vct2 b, uint32_t color);
 
 #endif

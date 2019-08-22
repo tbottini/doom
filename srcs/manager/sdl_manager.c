@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sdl_manager.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/13 08:12:34 by akrache           #+#    #+#             */
+/*   Updated: 2019/08/13 08:12:35 by akrache          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom_nukem.h"
 #include "render.h"
 
@@ -13,47 +25,21 @@ void	sdl_free(t_sdl *sdl)
 
 int		sdl_set_status(t_doom *doom, t_menu_status status)
 {
-	SDL_SetRelativeMouseMode(SDL_FALSE);
 	ft_nodeclean(&doom->sdl.keys);
 	doom->ui.curr_btn = NULL;
-	if (status == MENU_INGAME) // gamemode
-	{
-		doom->ui.m_status = MENU_INGAME;
+	doom->ui.m_status = status;
+	if (status == MENU_INGAME)
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-		draw_menu(doom);
-	}
-	else if (status == MENU_MAIN) // mainmenu
+	else
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+	if (status == MENU_MAIN)
 	{
-		doom->ui.m_status = MENU_MAIN;
-		doom->ui.curr_btn_controller = -2;
-		//doom_clear_map(doom); // TODO Add map data free;
 		fire_on_off(doom->sdl.screen, doom->sdl.size, 1);
-		draw_menu(doom);
 	}
-	else if (status == MENU_MAP) // Map selection
+	else if (status == MENU_MAP)
 	{
-		doom->ui.m_status = MENU_MAP;
-		doom->ui.curr_btn_controller = -3;
 		doom->ui.btnmap[1].loc.pos.y = 5;
 		load_map_btns(doom);
-		draw_menu(doom);
-	}
-	else if (status == MENU_OPTION) // Options
-	{
-		doom->ui.m_status = MENU_OPTION;
-		doom->ui.curr_btn_controller = -1;
-		draw_menu(doom);
-	}
-	else if (status == MENU_IGMAIN) // Pause menu
-	{
-		doom->ui.m_status = MENU_IGMAIN;
-		doom->ui.curr_btn_controller = -1;
-	}
-	else if (status == MENU_IGOPTION) // Options from pause menu
-	{
-		doom->ui.m_status = MENU_IGOPTION;
-		doom->ui.curr_btn_controller = -1;
-		draw_menu(doom);
 	}
 	return (status);
 }

@@ -11,30 +11,7 @@
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
-/*
-static void		map_btn_click(t_doom *doom, int x, int y)
-{
-	t_btn	tmp;
-	int		i;
 
-	i = -1;
-	while (doom->ui.btnmap[++i].txture)
-	{
-		tmp = doom->ui.btnmap[i];
-		if (tmp.loc.area.x <= x && x <= tmp.loc.area.x + tmp.loc.area.w
-			&& tmp.loc.area.y <= y && y <= tmp.loc.area.y + tmp.loc.area.h)
-		{
-			if (i > 1)
-			{
-				if (parsing(doom, tmp.data))
-					sdl_set_status(doom, MENU_INGAME);
-				else
-					ft_printf("Error reading file\n");
-			}
-		}
-	}
-}
-*/
 static void		use_slider(t_doom *doom, int x, int y)
 {
 	t_slid	stmp;
@@ -52,9 +29,6 @@ static void		use_slider(t_doom *doom, int x, int y)
 
 void			btn_click(t_doom *doom, int x, int y)
 {
-	/*
-	if (doom->ui.m_status == MENU_MAP)
-		map_btn_click(doom, x, y);
-	else */if (doom->ui.m_status == MENU_OPTION || doom->ui.m_status == MENU_IGOPTION)
+	if (doom->ui.m_status == MENU_OPTION || doom->ui.m_status == MENU_IGOPTION)
 		use_slider(doom, x, y);
 }

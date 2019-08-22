@@ -71,6 +71,23 @@
 ** }
 */
 
+int			editor_reset(t_editor *edit)
+{
+	if (edit->ennlist)
+		ft_clear_entity_list(&(edit->ennlist));
+	if (edit->sectors)
+		ft_clear_secteur_list(&(edit->sectors));
+	if (edit->pillist)
+		ft_clear_pillar_list(&(edit->pillist));
+	edit->txtrscroll = 0;
+	ft_bzero(edit->txtrreal, sizeof(SDL_Texture *) * MAXTXTRNUMBER);
+	edit->map = NULL;
+	edit->currmur = NULL;
+	edit->currstat = NULL;
+	edit->currpilier = NULL;
+	return (1);
+}
+
 static void	on_writing(t_doom *doom, char *str)
 {
 	unsigned int x;

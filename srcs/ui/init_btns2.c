@@ -29,8 +29,8 @@ t_btn	add_map_button(t_doom *doom, const char *str)
 	tmp.loc.pos.y = 5;
 	tmp.loc.snapx = 1;
 	tmp.loc.snapy = 3;
-	updateText(doom->sdl.rend, doom->ui.fonts.s32, &tmp.txture, &rect,
-		str, tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s32, &tmp.txture,
+	&rect, str, tmp.fgcolor, tmp.bgcolor});
 	tmp.loc.area.w = rect.w;
 	tmp.loc.area.h = rect.h;
 	return (tmp);
@@ -51,8 +51,8 @@ t_btn	add_mapmenu_button(t_doom *doom)
 	tmp.loc.snapy = 0;
 	tmp.fgcolor = (SDL_Color){255, 255, 255, 0};
 	tmp.bgcolor = (SDL_Color){191, 35, 44, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		" Maps ", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, " Maps ", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }
 
@@ -72,7 +72,7 @@ t_btn	add_editor_button(t_doom *doom)
 	tmp.loc.snapy = 3;
 	tmp.fgcolor = (SDL_Color){150, 150, 150, 0};
 	tmp.bgcolor = (SDL_Color){255, 255, 255, 0};
-	updateText(doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture, &tmp.loc.area,
-		" Editor ", tmp.fgcolor, tmp.bgcolor);
+	updatetext((t_updatetext){doom->sdl.rend, doom->ui.fonts.s64, &tmp.txture,
+	&tmp.loc.area, " Editor ", tmp.fgcolor, tmp.bgcolor});
 	return (tmp);
 }

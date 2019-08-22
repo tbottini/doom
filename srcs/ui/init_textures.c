@@ -17,7 +17,6 @@ SDL_Texture		*add_fist(t_doom *doom)
 	t_html tmp;
 
 	tmp.txtr = IMG_LoadTexture(doom->sdl.rend, HANDHOLLOWPATH);
-
 	return (tmp.txtr);
 }
 
@@ -26,7 +25,6 @@ SDL_Texture		*add_handgun(t_doom *doom)
 	t_html tmp;
 
 	tmp.txtr = IMG_LoadTexture(doom->sdl.rend, GUNHOLLOWPATH);
-
 	return (tmp.txtr);
 }
 
@@ -35,7 +33,6 @@ SDL_Texture		*add_shotgun(t_doom *doom)
 	t_html tmp;
 
 	tmp.txtr = IMG_LoadTexture(doom->sdl.rend, SHOTGUNHOLLOWPATH);
-
 	return (tmp.txtr);
 }
 
@@ -44,6 +41,5 @@ SDL_Texture		*add_rifle(t_doom *doom)
 	t_html tmp;
 
 	tmp.txtr = IMG_LoadTexture(doom->sdl.rend, RIFLEHOLLOWPATH);
-
 	return (tmp.txtr);
 }

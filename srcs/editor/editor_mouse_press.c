@@ -39,10 +39,9 @@ static void	editor_mouse_left(SDL_MouseButtonEvent e, t_editor *edit)
 		{
 			pil[1] = edit->currmur->pil1;
 			pil[2] = edit->currmur->pil2;
-			ft_removewall(&edit->map->murs, &edit->currmur);
+			ft_removewall(edit, &edit->map->murs, &edit->currmur);
 			ft_wallpushend(&edit->map->murs, pil[0], pil[1], edit->txtrgame[0]);
 			ft_wallpushend(&edit->map->murs, pil[0], pil[2], edit->txtrgame[0]);
-			edit->currmur = NULL;
 			edit->hovermur = NULL;
 		}
 	}
@@ -80,11 +79,11 @@ static void	editor_mouse_right(SDL_MouseButtonEvent e, t_editor *edit)
 			(edit->currpilier = edit->hoverpilier), edit->txtrgame[0]);
 	else if (e.clicks == 2)
 	{
-		ft_remove_pillar_from_sector(edit->sectors, &edit->pillist,
+		ft_remove_pillar_from_sector(edit, edit->sectors, &edit->pillist,
 			&edit->hoverpilier);
 		if (edit->currmur == edit->hovermur)
 			edit->currmur = NULL;
-		ft_removewall(&edit->map->murs, &edit->hovermur);
+		ft_removewall(edit, &edit->map->murs, &edit->hovermur);
 	}
 	else
 		lil_editor_mouse_right(e, edit);

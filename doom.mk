@@ -1,10 +1,7 @@
-SRCS_DOOM		:=		button_function.c								\
-						slider_function.c								\
-						main.c											\
-						checkfile.c										\
-						cinematri.c										\
+SRCS_DOOM		:=		main.c											\
 
-SRCS_EDITOR		:=		draw_inspect_menu.c								\
+SRCS_EDITOR		:=		asynchronous_txtr_load.c						\
+						draw_inspect_menu.c								\
 						draw_sector_menu.c								\
 						editor_finder.c									\
 						editor_input.c									\
@@ -21,8 +18,11 @@ SRCS_EDITOR		:=		draw_inspect_menu.c								\
 
 SRCS_UI			:=		button_action.c									\
 						button_drawer.c									\
+						button_function_option.c						\
+						button_function.c								\
 						button_hover.c									\
 						button_loader.c									\
+						cinematri.c										\
 						init_btns_edit.c								\
 						init_btns.c										\
 						init_btns2.c									\
@@ -31,7 +31,7 @@ SRCS_UI			:=		button_action.c									\
 						init_slids.c									\
 						init_textures.c									\
 						fire.c											\
-
+						slider_function.c								\
 
 SRCS_GAMEPLAY	:=		action.c										\
 						move.c											\
@@ -68,25 +68,35 @@ SRCS_RENDER		:=		render.c										\
 						pre_render/borne.c								\
 						pre_render/pillar_info.c						\
 						drawer/render_wall.c							\
+						drawer/render_wall2.c							\
 						drawer/textures.c								\
 						drawer/draw_line.c								\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
+						drawer/draw_column2.c							\
 						render_enemy.c									\
 						sprite.c										\
 						prop.c											\
 
-SRCS_PARSING	:=		lil_readfile.c									\
+SRCS_PARSING	:=		checkfile.c										\
+						ft_super_lil_checkfile.c						\
+						intreadfiletoeditor.c							\
+						lil_checkfile.c									\
+						lil_readfile.c									\
+						lil_readfileeditor.c							\
 						lil_savefile.c									\
 						my_readsavefile.c								\
 						readfile.c										\
 						readfileeditor.c								\
 						savefile.c										\
+						super_checkfile.c								\
 						super_readfile.c								\
+						super_readfileeditor.c							\
 						super_savefile.c								\
 
 SRCS_TOOLS		:=		list_tools.c									\
 						editor_tools.c									\
+						enemy_tools.c									\
 						entity_tools.c									\
 						file_tools.c									\
 						mur_tools.c										\
@@ -97,7 +107,9 @@ SRCS_TOOLS		:=		list_tools.c									\
 						secteur_tools.c									\
 						play_tools.c									\
 						readfile_tools.c								\
+						remove_ptr_from_map.c							\
 						savefile_tools.c								\
+						sdl_multirendercopy.c							\
 						musi.c											\
 						vector.c										\
 						editor_write_tools.c							\
@@ -105,13 +117,17 @@ SRCS_TOOLS		:=		list_tools.c									\
 SRCS_GESTION	:=		doom_manager.c									\
 						sdl_manager.c									\
 						ui_manager.c									\
+						ui_manager2.c									\
 						player_manager.c								\
 						editor_manager.c								\
 						music_manager.c									\
 						effect_manager.c								\
 						weapon_manager.c								\
 						enemy_manager.c									\
+						prop_key.c										\
 						prop_manager.c									\
+						prop_manager2.c									\
+						prop_player.c									\
 						arch_manager.c									\
 						borne_manager.c									\
 						camera_manager.c								\

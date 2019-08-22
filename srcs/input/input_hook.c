@@ -25,9 +25,7 @@ void		save_png(t_sdl *sdl)
 
 int			game_key_press(int k, t_doom *d)
 {
-	if (d->ui.curr_btn_controller > 0)
-		d->ui.curr_btn_controller = -d->ui.curr_btn_controller;
-	else if (k == SDLK_RETURN || k == SDLK_BACKQUOTE)
+	if (k == SDLK_RETURN || k == SDLK_BACKQUOTE)
 		sdl_set_status(d, MENU_IGMAIN);
 	else if (k == SDLK_LGUI && d->game.player.inv.jetpack)
 		crouch(&d->game.player);
@@ -62,9 +60,7 @@ int			game_key_press(int k, t_doom *d)
 
 void		key_press(int key, t_doom *doom)
 {
-	if (doom->ui.curr_btn_controller > 0)
-		doom->ui.curr_btn_controller = -doom->ui.curr_btn_controller;
-	else if ((key == SDLK_RETURN || key == SDLK_BACKQUOTE)
+	if ((key == SDLK_RETURN || key == SDLK_BACKQUOTE)
 		&& doom->ui.m_status == MENU_IGMAIN)
 		sdl_set_status(doom, MENU_INGAME);
 	else if (key == SDLK_PERIOD)

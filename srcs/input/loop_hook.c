@@ -69,6 +69,8 @@ static void	delaypcmasterrace(t_doom *doom)
 	wait = SDL_GetTicks() - doom->timestamp - 16;
 	if (wait < 0)
 		SDL_Delay(-wait);
+	else
+		printf("too slow %d\n", wait);
 	doom->timestamp = SDL_GetTicks();
 	doom->game.arch.timestamp = doom->timestamp;
 }

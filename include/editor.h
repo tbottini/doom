@@ -138,7 +138,6 @@ typedef enum			e_menu_status {
 	MENU_IGOPTION = 5
 }						t_menu_status;
 
-
 typedef struct			s_font
 {
 	TTF_Font			*s32;
@@ -274,7 +273,6 @@ typedef struct			s_ui
 	t_slid				*currslid;
 	t_menu_status		m_status;
 	t_btn				*curr_btn;
-	int					curr_btn_controller;
 	t_pal				fire;
 	SDL_Texture			*weaponhud[NB_WEAPON];
 	SDL_Texture			*sprites[ENDSPRITES + 1];
@@ -373,10 +371,12 @@ void					draw_map(t_editor *editor);
 void					draw_sector_menu(t_editor *editor, t_font font);
 void					draw_inspect_menu(t_editor *editor);
 
+void					remove_ptr_from_map(t_lstsec lstsec, t_lstent lstent, void *ptr);
+
 void					sector_menu(t_editor *edit, int pos, int del);
 int						ft_walllen(t_lstmur start);
-void					ft_remove_walls_with_pillar(t_lstmur *start, t_pilier *pil);
-void					ft_removewall(t_lstmur *start, t_mur **mur);
+void					ft_remove_walls_with_pillar(t_editor *edit, t_lstmur *start, t_pilier *pil);
+void					ft_removewall(t_editor *edit, t_lstmur *start, t_mur **mur);
 void					ft_movewall(t_mur *wall, int addx, int addy, int zoom);
 t_lstmur 				ft_wallpushend(t_lstmur *start, t_pilier *pil1, t_pilier *pil2, SDL_Texture *txtr);
 void					ft_clear_wall_list(t_lstmur *start);
@@ -401,7 +401,7 @@ int						add_pillar(t_editor *edit, int x, int y);
 
 t_lstsec				ft_newsector(SDL_Texture *top, SDL_Texture *sol);
 t_lstsec				push_secteur(t_lstsec *node, SDL_Texture *top, SDL_Texture *sol);
-void					ft_remove_pillar_from_sector(t_lstsec sectors, t_lstpil *start, t_lstpil *pil);
+void					ft_remove_pillar_from_sector(t_editor *edit, t_lstsec sectors, t_lstpil *start, t_lstpil *pil);
 void					ft_clear_secteur(t_lstsec *sec);
 void					ft_clear_secteur_list(t_lstsec *start);
 
@@ -430,6 +430,8 @@ int						read_file_to_editor(t_editor *edit, const char *file);
 */
 int						editor_reset(t_editor *editor);
 void					ui_free(t_ui *ui);
+int						load_weapons(t_doom *doom, t_ui *ui);
+int						link_txtr(t_doom *doom, t_ui *ui);
 int						ui_init(t_ui *ui);
 
 #endif

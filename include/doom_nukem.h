@@ -39,10 +39,12 @@
 /*
 ** Editor Stuff
 */
+# define NBTXTRBYLINE 5
+# define TXTRSIZE 125
 # define EDPADDING 5
 # define EDITPREC 5000
 # define DEBUG 0
-# define SECTORBOXHEIGHT 50
+# define SBH 50
 # define MAXEDITVAR 999999
 #define MINZOOM 10
 #define MAXZOOM 20000
@@ -51,10 +53,21 @@
 /*
 **	gestion
 */
-void					updateText(SDL_Renderer *rend, TTF_Font *font, SDL_Texture **text, SDL_Rect *loc, const char *str, SDL_Color fg, SDL_Color bg);
+
+typedef struct			s_updatetext {
+	SDL_Renderer		*rend;
+	TTF_Font			*font;
+	SDL_Texture			**text;
+	SDL_Rect			*loc;
+	const char			*str;
+	SDL_Color			fg;
+	SDL_Color			bg;
+}						t_updatetext;
+
+void					updatetext(t_updatetext t);
 void					dropfile_event(t_doom *doom, SDL_Event e);
 
-int						load_textures_folder(SDL_Renderer *rend, SDL_Texture **txtrs, char **txtrsname);
+int						asynchronous_txtr_load(void *param);
 void					free_textures_folder(SDL_Texture **txtrs, char **txtrsname);
 void					editor_free(t_doom *doom);
 
@@ -98,10 +111,30 @@ int						read_balise(int fd, char *balise, int ret);
 int						read_one_sector(int fd, t_game *game, t_sector *sector, t_slen *len);
 int						read_sectors(int fd, t_game *game, t_slen *len);
 
+SDL_Texture				*find_texture(SDL_Texture **txtrs, char **edpath, char *surfpath);
+t_secteur				*find_secteur(t_lstsec secteurs, t_game *g, t_sector *sector);
+t_mur					*find_mur_in_secteur(t_lstsec secteurs, t_game *g, t_wall *wall);
+void					fill_ent(t_lstsec secteurs, t_game *g, t_entity *ent, t_prop *prop);
+
+int						relink_sector(t_game *g, t_editor *e);
+
+void					add_walls(t_game *g, t_editor *e, t_sector *gsec, t_secteur *sec);
+void					add_wall_prop(t_game *g, t_editor *e, t_wall *gamewall, t_mur *mur);
+t_pilier				*find_pillar_from_game(t_pillar *pillars, t_pillar *to_find, t_lstpil pillst);
 void					set_txtr(t_txtr *txtr, SDL_Surface *surf, int id);
 int						read_file(t_game *game, const char *file, bool foredit);
+
+int						check_balise(int fd, char *balise, int ret);
+int						check_pillars(int fd, t_slen *len);
+int						check_sec_props(int fd);
+int						check_sec_walls(int fd, t_slen *len);
+int						check_sectors(int fd, t_slen *len);
+int						check_enemies(int fd);
 int						check_file(const char *file);
+
 void					free_game(t_game *game);
+
+int						game_to_editor(t_game *g, t_editor *e);
 
 /*
 **	debug
@@ -148,5 +181,24 @@ void					minifill(t_minimap *m, int h, t_power p);
 void					hud_aim(t_doom *doom);
 int						hud_render(t_doom *doom);
 int						doom_render(t_doom *doom);
+
+/*
+** Gameplay
+*/
+
+void					open_close(t_prop *prop);
+void					end_level(t_doom *doom);
+void					func_prop(t_prop *prop, int type);
+
+void					addkey1(t_inv *inv);
+void					addkey2(t_inv *inv);
+void					addkey3(t_inv *inv);
+void					addlastkey(t_inv *inv);
+
+void					heal(t_stat *stat);
+void					add_ammo(t_weapon *weapon);
+void					new_music(t_sound *sound);
+void					add_weapon(t_weapon *weapon);
+void					jetpack(t_inv *inv);
 
 #endif
