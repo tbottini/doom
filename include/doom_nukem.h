@@ -76,6 +76,18 @@ int						try_save(t_doom *doom, SDL_KeyboardEvent e);
 void					push_char(char *str, char c);
 
 /*
+** Editor render
+*/
+void					map_draw_line(t_editor *editor, t_vct2 pos0, t_vct2 pos1, SDL_Color c);
+void					draw_grid(t_editor *editor, t_vct2 center, int dist, int master);
+void					draw_player(t_editor *editor);
+void					draw_props(t_editor *editor, t_entity *curr, SDL_Texture **sprites, int proppos);
+void					draw_enemies(t_editor *editor, t_entity *curr);
+void					draw_objs(t_editor *editor, t_entity *start);
+void					draw_one_wall(t_editor *editor, t_lstmur currwall);
+void					norm_draw_walls(t_editor *editor, t_lstsec currsec);
+
+/*
 **	parsing
 */
 void					write_balise(int fd, char *balise);
