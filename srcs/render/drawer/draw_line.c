@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 15:30:27 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 08:24:59 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/22 17:09:45 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,33 +65,3 @@ void	fill_line(t_sdl *sdl, t_vct2 pos0, t_vct2 pos1, Uint32 color)
 			pos0.y += decal.y;
 	}
 }
-<<<<<<< HEAD
-
-void	fill_line_debug(t_arch *arch, t_sdl *sdl, t_vct2 pos0
-	, t_vct2 pos1, Uint32 color)
-{
-	t_vct3	decal;
-	t_vct2	orig;
-	int		err;
-	int		e2;
-	Uint32	*screen;
-
-	screen = arch->sc_debug;
-	orig.x = ft_abs(pos1.x - pos0.x);
-	orig.y = ft_abs(pos1.y - pos0.y);
-	decal.x = (pos0.x < pos1.x ? 1 : -1);
-	decal.y = (pos0.y < pos1.y ? 1 : -1);
-	err = (orig.x > orig.y ? orig.x : -orig.y) / 2;
-	fill_pixel(screen, sdl->size, pos0, color);
-	while ((pos0.x != pos1.x || pos0.y != pos1.y)
-		&& fill_pixel(screen, sdl->size, pos0, color))
-	{
-		e2 = err;
-		if (e2 > -orig.x && ((err -= orig.y) || 1))
-			pos0.x += decal.x;
-		if (e2 < orig.y && ((err += orig.x) || 1))
-			pos0.y += decal.y;
-	}
-}
-=======
->>>>>>> f2db07094eb0bab59b6c08a79ed8988d3e99b7bc

@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sector.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/12 22:38:41 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 08:20:27 by tbottini         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "sector.h"
 
-t_sector		*sector_new(void)
+t_sector		*sector_new()
 {
 	t_sector	*new;
 
@@ -26,6 +14,13 @@ t_sector		*sector_new(void)
 	return (new);
 }
 
+void			sector_props_init(t_sector *sector)
+{
+	//prop_iter(sector->props, sector->len_prop, &prop_init);
+	(void)sector;
+}
+
+
 void			sector_wall_props_init(t_sector *sector)
 {
 	int			i;
@@ -35,18 +30,22 @@ void			sector_wall_props_init(t_sector *sector)
 	j = 0;
 	while (i < sector->len)
 	{
+		//printf("wall %d %f %f %f %f\n", i, sector->wall[i].next->p.x, sector->wall[i].next->p.y,
+		//	sector->wall[i].pillar->p.x, sector->wall[i].pillar->p.y);
 		while (j <= sector->wall[i].nb_props)
 		{
+			//printf("\twall %d %f %f %f %f\n", i, sector->wall[i].next->p.x, sector->wall[i].next->p.y,
+			//sector->wall[i].pillar->p.x, sector->wall[i].pillar->p.y);
 			prop_init(&sector->wall[i].props[j], &sector->wall[i]);
 			j++;
 		}
 		j = 0;
+		//prop_iter(sector->wall[i].props, sector->wall[i].nb_props, &prop_init);
 		i++;
 	}
 }
 
-void			sector_iter(t_sector *sector, int len
-	, void (sector_effector)(t_sector*))
+void			sector_iter(t_sector *sector, int len, void (sector_effector)(t_sector*))
 {
 	int			i;
 

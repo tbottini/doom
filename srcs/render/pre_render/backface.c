@@ -1,16 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   backface.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 07:00:46 by tbottini         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "render.h"
+
+/*
+**	on normalise les fonction de zline pour utiliser differente methode durant
+**		le rendu des colonne
+**	function(t_arch *arch, t_pil_render, double len_pillar)
+*/
 
 /*
 **	on recupere la distance brut
@@ -20,14 +14,32 @@
 **		calculer et afficher la colomne
 **	tout est inverse car on ne recoit pas la distance mais la taille du pillier
 */
-
-int			z_line_buffer(t_arch *arch, double len_pillar, int px)
+int			zline_wall(t_arch *arch, t_pil_render *render_stuff, double len_pillar)
 {
-	if (len_pillar > arch->portal.zline[px])
+	(void)render_stuff;
+	if (len_pillar > arch->portal.zline[arch->px.x])
 	{
-		arch->portal.zline[px] = len_pillar;
+		arch->portal.zline[arch->px.x] = len_pillar;
 		return (1);
 	}
+	return (0);
+}
+
+/*
+**	prepare le zline buffer pour une recursivite
+**		met toute les colonnes de portail a 0
+**	stocke la plus grande valeur dans le zline tmp qui sera reaffecter
+**		apres la recursivite
+*/
+int			zline_portal(t_arch *arch, t_pil_render *render_stuff, double len_pillar)
+{
+	if (len_pillar > arch->portal.zline[arch->px.x])
+	{
+		render_stuff->borne_tmp.zline[arch->px.x - render_stuff->px_start] = len_pillar;
+		arch->portal.zline[arch->px.x] = 0;
+		return (1);
+	}
+	render_stuff->borne_tmp.zline[arch->px.x - render_stuff->px_start] = arch->portal.zline[arch->px.x];
 	return (0);
 }
 
@@ -41,47 +53,7 @@ int			clean_zline(t_arch *arch, double len_pillar, int px)
 	return (0);
 }
 
-/*
-**	prepare le zline buffer pour une recursivite
-**		met toute les colonnes de portail a 0
-**	stocke la plus grande valeur dans le zline tmp qui sera reaffecter
-**		apres la recursivite
-*/
-
-int			zline_portal(t_arch *arch, double *zline_tmp, double len_pillar,
-	int start)
-{
-	if (len_pillar > arch->portal.zline[arch->px.x])
-	{
-		zline_tmp[arch->px.x - start] = len_pillar;
-		arch->portal.zline[arch->px.x] = 0;
-		return (1);
-	}
-	zline_tmp[arch->px.x - start] = arch->portal.zline[arch->px.x];
-	return (0);
-}
-
-/*
-**	recupere l'index de depart (ancien px perdu avec le parcours)
-**	copy et delete le zline_tmp dans le zline_buffer
-*/
-
-void		zline_cut(t_arch *arch, double *zline_cut, int start)
-{
-	int		i;
-
-	i = 0;
-	if (!zline_cut)
-		return ;
-	while (start < arch->px.y)
-	{
-		arch->portal.zline[start] = zline_cut[i];
-		i++;
-		start++;
-	}
-}
-
 int			zline_compare(t_arch *arch, double len_pillar, int px)
 {
-	return (len_pillar > arch->portal.zline[px]);
+	return (len_pillar >= arch->portal.zline[px]);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arch_manager.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 08:01:13 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/22 17:55:58 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@ void		architect_reset(t_arch *arch)
 	zline_reset(arch);
 }
 
-int			arch_free(t_arch *arch)
+void		arch_free(t_arch *arch)
 {
 	free(arch->portal.zline);
-	return (1);
 }
 
 int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
@@ -69,7 +68,6 @@ int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 		return (0);
 	arch->wall = NULL;
 	arch->depth_portal = 0;
-	arch->zoom = 25;
 	zline_reset(arch);
 	return (1);
 }

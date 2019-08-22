@@ -6,12 +6,16 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 03:05:20 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/22 17:12:11 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
+/*
+**	on determine la position gauche et droite du props sur le mur
+**	et puis on le convertie en pourcentage
+*/
 void				prop_init(t_prop *prop, t_wall *wall)
 {
 	double			hyp;
@@ -24,9 +28,13 @@ void				prop_init(t_prop *prop, t_wall *wall)
 	diff.x = prop->pos.x - wall->pillar->p.x;
 	diff.y = prop->pos.y - wall->pillar->p.y;
 	hyp_pos = sqrt(diff.x * diff.x + diff.y * diff.y);
-	prop->percent.x = (hyp_pos - 0.5) / (hyp);
-	prop->percent.y = (hyp_pos + 0.5) / (hyp);
+	prop->percent.x = 1 - (hyp_pos - 0.5) / (hyp);
+	prop->percent.y = 1 - (hyp_pos + 0.5) / (hyp);
 }
+
+/*
+**	va iterer sur tout les props d'un tableauå
+*/
 
 void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
 {
@@ -39,6 +47,10 @@ void				prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*))
 		i++;
 	}
 }
+
+/*
+**	va iterer sur tous les props d'un tableau avec une fonction acceptant une structure quelconque
+*/
 
 void				prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup)
 {
@@ -68,16 +80,34 @@ t_vct2				prop_get_screen_pixel(t_prop *prop, t_arch *arch)
 	t_fvct2			prop_rigth_pos;
 	t_vct2			px_props;
 
-	percent_wall.x = (prop->percent.x - (arch->shift_txtr.x)) / (arch->shift_txtr.y - arch->shift_txtr.x);
-	percent_wall.y = (prop->percent.y - (arch->shift_txtr.x)) / (arch->shift_txtr.y - arch->shift_txtr.x);
+
+	percent_wall.x = (prop->percent.x - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
+	percent_wall.y = (prop->percent.y - arch->shift_txtr.x) / (arch->shift_txtr.y - arch->shift_txtr.x);
 	delta_wall.x = arch->next.x - arch->pillar.x;
 	delta_wall.y = arch->next.y - arch->pillar.y;
 	prop_left_pos.x = delta_wall.x * percent_wall.x + arch->pillar.x;
 	prop_left_pos.y = delta_wall.y * percent_wall.x + arch->pillar.y;
 	prop_rigth_pos.x = delta_wall.x * percent_wall.y + arch->pillar.x;
 	prop_rigth_pos.y = delta_wall.y * percent_wall.y + arch->pillar.y;
-	px_props.y = arch->sdl->size.x / 2 - ((prop_rigth_pos.y / prop_rigth_pos.x) * (arch->sdl->size.x / 2));
-	px_props.x = arch->sdl->size.x / 2 - ((prop_left_pos.y / prop_left_pos.x) * (arch->sdl->size.x / 2));
+	if (prop_rigth_pos.x < 0 && prop_left_pos.x < 0)
+	{
+		px_props = (t_vct2){0, 0};
+	}
+	else if (prop_rigth_pos.x < 0)
+	{
+		px_props.x = arch->sdl->size.x / 2 - ((prop_left_pos.y / prop_left_pos.x) * (arch->sdl->size.x / 2));
+		px_props.y = (prop_rigth_pos.y < 0) ? arch->sdl->size.x - 1 : 0;
+	}
+	else if (prop_left_pos.x < 0)
+	{
+		px_props.y = arch->sdl->size.x / 2 - ((prop_rigth_pos.y / prop_rigth_pos.x) * (arch->sdl->size.x / 2));
+		px_props.x = (prop_left_pos.y < 0) ? arch->sdl->size.x - 1 : 0;
+	}
+	else
+	{
+		px_props.x = arch->sdl->size.x / 2 - ((prop_left_pos.y / prop_left_pos.x) * (arch->sdl->size.x / 2));
+		px_props.y = arch->sdl->size.x / 2 - ((prop_rigth_pos.y / prop_rigth_pos.x) * (arch->sdl->size.x / 2));
+	}
 	if (px_props.x > px_props.y)
 	{
 		prop->px.x = px_props.y;
@@ -115,18 +145,19 @@ void				props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface)
 	{
 		if (arch->px.x > props[i].px.x && arch->px.x < props[i].px.y && props[i].pos.z + 1.0 > 0 && props[i].pos.z < arch->sector->h_ceil)
 		{
-			heigth_percent.x = (arch->sector->h_ceil - 1 - props[i].pos.z) / arch->sector->h_ceil;
-			heigth_percent.y = props[i].pos.z / arch->sector->h_ceil;
+			heigth_percent.x = (arch->sector->h_ceil - 1 - (props[i].pos.z - arch->sector->h_floor)) / arch->sector->h_ceil;
+			heigth_percent.y = (props[i].pos.z - arch->sector->h_floor) / arch->sector->h_ceil;
 			padding_render = (surface.y - surface.x) * heigth_percent.x;
-			surface_tmp.x = surface.x + padding_render;
-			surface_tmp.y = surface.y - padding_render;
-
+			//surface_tmp.x = surface.x + padding_render;
+			//surface_tmp.y = surface.y - padding_render;
 			surface_tmp.x = surface.x + (surface.y - surface.x) * heigth_percent.x;
 			surface_tmp.y = surface.y - (surface.y - surface.x) * heigth_percent.y;
 			cursor = arch->px.x + surface_tmp.x * arch->sdl->size.x;
-			if (cursor < 0)
-				cursor = arch->px.x;
-			draw_part_prop(arch, cursor, surface_tmp, &props[i]);
+			//if (surface_tmp.x < surface.x)
+			//	cursor = arch->px.x + (surface.x) * arch->sdl->size.x;
+			//if (cursor < (int)arch->portal.b_up[arch->px.x])
+			///	cursor = arch->px.x + (arch->portal.b_up[arch->px.x] - 1) * arch->sdl->size.x;
+			draw_part_prop(arch, cursor, surface_tmp, (t_vct2){surface.x, surface.y}, &props[i]);
 			col_print = true;
 		}
 		i++;

@@ -6,38 +6,36 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 19:06:44 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/13 08:24:14 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/22 18:16:27 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 #include "render.h"
 
-void				sprites_list_render(t_arch *arch, t_player *player
-	, t_sector *sector)
+/*
+**	va checker si le mur est un portail qui est lie a lui meme
+*/
+int					portal_link_self(t_wall *wall, t_sector *sector)
 {
-	t_sprite		*sprite;
-
-	sprite = NULL;
-	sprite_from_enemy(&sprite, sector->enemys, player, arch);
-	sprite_from_props(&sprite, sector->props, player, sector->len_prop, arch);
-	sprite_render_list(sprite, arch);
-	sprite_iter(sprite, &sprite_free);
+	if (wall->status == PORTAL)
+	{
+		return (wall->link == sector);
+	}
+	return (0);
 }
 
 /*
-**	on recupere les information du secteur par rapport
-**		au frustum (champs de vision du joueur)
+**	on recupere les information du secteur par rapport au frustum (champs de vision du joueur)
 **	on definit un bunch contenant les mur visibles
 **	on affiche ce bunch
 */
-
-void				sector_render(t_arch *arch, t_player *player
-	, t_sector *sector)
+void				sector_render(t_arch *arch, t_player *player, t_sector *sector)
 {
 	t_wall			*wall;
 	int				i;
 	t_wall			*portal_tmp;
+	t_sprite		*sprite;
 
 	i = 0;
 	wall = sector->wall;
@@ -49,8 +47,9 @@ void				sector_render(t_arch *arch, t_player *player
 		on_frustum(arch, player, wall[i].pillar);
 		on_frustum(arch, player, wall[i].next);
 		if (((wall[i].pillar->frust || wall[i].next->frust)
-			|| borne_in_wall_angle(arch, &wall[i]))
-				&& equal_pillar(&wall[i], arch->wall))
+			||	borne_in_wall_angle(arch, &wall[i]))
+			&& equal_pillar(&wall[i], arch->wall)
+			&& !portal_link_self(&wall[i], sector))
 		{
 			portal_tmp = arch->wall;
 			arch->wall = &wall[i];
@@ -59,7 +58,11 @@ void				sector_render(t_arch *arch, t_player *player
 		}
 		i++;
 	}
-	sprites_list_render(arch, player, sector);
+	sprite = NULL;
+	sprite_from_enemy(&sprite, sector->enemys, player, arch);
+	sprite_from_props(&sprite, sector->props, player, sector->len_prop, arch);
+	sprite_render_list(sprite, arch);
+	sprite_iter(sprite, &sprite_free);
 }
 
 void				clear_screen(t_sdl *sdl)
@@ -79,8 +82,7 @@ void				clear_screen(t_sdl *sdl)
 **	on initialise arch wall a null
 **	(NULL est un signal pour indiquer que le rendu du secteur ne se fait
 **		pas a travers un portail)
-**	doom_render fait le premier rendu de secteur
-**		(celui dans lequel le joueur se trouve)
+**	doom_render fait le premier rendu de secteur (celui dans lequel le joueur se trouve)
 */
 
 int					doom_render(t_doom *doom)
@@ -91,8 +93,7 @@ int					doom_render(t_doom *doom)
 	i = 0;
 	doom->game.arch.depth_portal = 0;
 	doom->game.arch.wall = NULL;
-	sector_render(&doom->game.arch, &doom->game.player
-		, doom->game.player.stat.sector);
+	sector_render(&doom->game.arch, &doom->game.player, doom->game.player.stat.sector);
 	mini = miniinit(&doom->sdl, &doom->ui);
 	minimap(&mini, &doom->game.player);
 	hud_aim(doom);

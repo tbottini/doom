@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/14 14:39:55 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/22 17:13:23 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ void				sprite_insert(t_sprite **sprite_list, t_sprite *sprite_node)
 	else
 	{
 		while (sprite_insert->next && sprite_node->pos.x < sprite_insert->next->pos.x)
-		{
-			sprite_insert= sprite_insert->next;
-		}
+			sprite_insert = sprite_insert->next;
 		sprite_node->next = sprite_insert->next;
 		sprite_insert->next = sprite_node;
 	}
@@ -60,12 +58,20 @@ void				sprite_free(t_sprite *sprite)
 	}
 }
 
+void				sprite_print(t_sprite *sprite)
+{
+	printf("sprite pos .x %f .y %f\n", sprite->pos.x, sprite->pos.y);
+}
+
 void				sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*))
 {
+	t_sprite 		*tmp;
+
 	while (sprite)
 	{
+		tmp = sprite->next;
 		effector(sprite);
-		sprite = sprite->next;
+		sprite = tmp;
 	}
 }
 
@@ -82,9 +88,12 @@ t_sprite			*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *
 		{
 			sprite = sprite_new(enemy->sprites, player->stat.pos, enemy->stat.pos, e_angle);
 			if (!sprite)
+			{
 				sprite_iter(*sprite_list, &sprite_free);
+				*sprite_list = NULL;
+			}
 			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
-			sprite->heigth = cam_get_enemy_surface(arch, enemy, player, sprite->pos.x);
+			sprite->heigth = cam_get_enemy_surface(arch->cam, arch->sdl, enemy, player, sprite->pos.x);
 			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
 			sprite_insert(sprite_list, sprite);
 		}
@@ -109,11 +118,20 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 		{
 			sprite = sprite_new(props[i].tex, player->stat.pos, props[i].pos, e_angle);
 			if (!sprite)
+			{
 				sprite_iter(*sprite_list, &sprite_free);
-			posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
-			sprite->heigth = player_prop_heigth_surface(arch, player, &props[i], sprite->pos.x);
-			sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
-			sprite_insert(sprite_list, sprite);
+				*sprite_list = NULL;
+			}
+			if (point_behind_portal(arch, player, sprite->pos))
+			{
+				posx = arch->sdl->size.x / 2 - sprite->pos.y / sprite->pos.x * arch->cam->d_screen;
+
+				sprite->heigth = player_prop_heigth_surface(arch, player, &props[i], sprite->pos.x);
+				sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
+				sprite_insert(sprite_list, sprite);
+			}
+			else
+				free(sprite);
 		}
 		i++;
 	}
@@ -122,42 +140,35 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *p
 
 void				sprite_render(t_sprite *sprite, t_arch *arch)
 {
-	double			p_buff_h;
-	double			p_buff_w;
-	double			start_txtr_heigth;
-	double			buffer_h;
-	double			buffer_w;
-	int				i_heigth;
-	unsigned int 	limit_h;
-	unsigned int 	cursor_screen;
-	double			neutral_distance;
+	double		p_buff_h;
+	double		p_buff_w;
+	double		buffer_h;
+	double		buffer_w;
+	int			i_heigth;
+	unsigned int limit_h;
+	unsigned int cursor_screen;
+	double		neutral_distance;
 
 	if (!(sprite->texture.pixels))
 		return ;
 	p_buff_h = (double)sprite->texture.h / (double)(sprite->heigth.y - sprite->heigth.x);
 	p_buff_w = sprite->texture.w / (double)(sprite->width.y - sprite->width.x);
 	neutral_distance = (double)(arch->sdl->size.y) / sprite->pos.x;
-	if (sprite->heigth.x < 0)
-	{
-		sprite->heigth.x = 0;
-		start_txtr_heigth = -sprite->heigth.x * p_buff_h;
-	}
-	else
-		start_txtr_heigth = 0;
 	if (sprite->width.x < 0)
 	{
 		buffer_w = -sprite->width.x * p_buff_w;
 		sprite->width.x = 0;
 	}
 	else
+	{
 		buffer_w = 0;
+	}
 	if (sprite->width.y > arch->sdl->size.x)
 		sprite->width.y = arch->sdl->size.x;
 	if (sprite->heigth.y > arch->sdl->size.y)
 		sprite->heigth.y = arch->sdl->size.y - 1;
 	while (sprite->width.x < sprite->width.y && buffer_w < sprite->texture.w)
 	{
-
 		if (zline_compare(arch, neutral_distance, sprite->width.x))
 		{
 			if (sprite->heigth.x < (int)arch->portal.b_up[sprite->width.x])
@@ -178,9 +189,7 @@ void				sprite_render(t_sprite *sprite, t_arch *arch)
 
 			while (cursor_screen < limit_h && buffer_h < sprite->texture.h)
 			{
-				if ((int)buffer_w + (int)buffer_h * sprite->texture.w < sprite->texture.w * sprite->texture.h
-					&& cursor_screen < arch->sdl->size.x * arch->sdl->size.y)
-					arch->sdl->screen[cursor_screen] =
+				arch->sdl->screen[cursor_screen] =
 					opacity(arch->sdl->screen[cursor_screen],
 					sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w],
 					1 - (unsigned char)(sprite->texture.pixels[(int)buffer_w + (int)buffer_h * sprite->texture.w]) / 255.0);

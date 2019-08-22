@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gameover.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 02:33:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/22 18:04:46 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,28 @@ int			opacity(int s, int c, double f)
 	return (((int)((c >> 8 & 255) + f * ((s >> 8 & 255) - (c >> 8 & 255))) << 8)
 	+ ((int)((c >> 16 & 255) + f * ((s >> 16 & 255) - (c >> 16 & 255))) << 16)
 	+ ((int)((c >> 24 & 255) + f * ((s >> 24 & 255) - (c >> 24 & 255))) << 24)
+	+ 255);
+}
+
+/*
+**	s : additive
+**	c : basique
+*/
+
+int			opacity_from_color(Uint32 add, Uint32 basique)
+{
+	const double factor = (add & 255) / 255.0;
+
+	if (factor == 1)
+		return (add);
+	else if (!factor)
+		return (basique);
+	return (((int)((basique >> 8 & 255)
+			+ factor * ((add >> 8 & 255) - (basique >> 8 & 255))) << 8)
+		+ ((int)((basique >> 16 & 255)
+			+ factor * ((add >> 16 & 255) - (basique >> 16 & 255))) << 16)
+		+ ((int)((basique >> 24 & 255)
+			+ factor * ((add >> 24 & 255) - (basique >> 24 & 255))) << 24)
 	+ 255);
 }
 
