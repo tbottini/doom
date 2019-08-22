@@ -16,7 +16,6 @@ int		secure_doom(t_doom *doom)
 
 void	doom_exit(t_doom *doom)
 {
-	printf("doom exit\n");
 	ui_free(&doom->ui);
 	editor_free(doom);
 	sdl_free(&doom->sdl);
@@ -42,13 +41,6 @@ void	doom_exit(t_doom *doom)
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
-	//game leaks
-	ft_bzero(&doom->game, sizeof(t_game));
-	ft_bzero(&doom->sdl, sizeof(t_sdl));
-	ft_bzero(&doom->edit, sizeof(t_editor));
-	ft_bzero(&doom->controller, sizeof(SDL_GameController*));
-	ft_bzero(&doom->ui, sizeof(t_ui));
-	while (1);
 	ft_bzero(doom, sizeof(t_doom));
 
 	free(doom);
