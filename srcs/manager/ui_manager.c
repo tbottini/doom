@@ -40,6 +40,12 @@ void	ui_free(t_ui *ui)
 		SDL_FreeSurface(ui->enemy[i]);
 		i++;
 	}
+	i = 0;
+	while (i <= 100)
+	{
+		free(ui->btnmap[i].data);
+		i++;
+	}
 }
 
 int		load_weapons(t_doom *doom, t_ui *ui)

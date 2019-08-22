@@ -48,7 +48,9 @@ void	doom_exit(t_doom *doom)
 	ft_bzero(&doom->edit, sizeof(t_editor));
 	ft_bzero(&doom->controller, sizeof(SDL_GameController*));
 	ft_bzero(&doom->ui, sizeof(t_ui));
+	while (1);
 	ft_bzero(doom, sizeof(t_doom));
+
 	free(doom);
 	exit(0);
 }
