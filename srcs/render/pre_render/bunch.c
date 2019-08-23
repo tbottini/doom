@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bunch.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/23 01:52:58 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/23 05:33:18 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
 #include "input.h"
 
@@ -6,9 +18,8 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	t_fvct2	dist;
 	double	angle;
 
-	//si on est dans un portail on et que le pillier appartient au portail alors on ne le calcul pas
-
-	if (arch->wall && (pillar == arch->wall->pillar || pillar == arch->wall->next))
+	if (arch->wall && (pillar == arch->wall->pillar
+		|| pillar == arch->wall->next))
 		return (0);
 	dist.x = pillar->p.x - player->stat.pos.x;
 	dist.y = pillar->p.y - player->stat.pos.y;
@@ -44,6 +55,7 @@ void		sector_frustum(t_arch *arch, t_sector *sector, t_player *player)
 /*
 **	renvoie l'angle entre un pillier -> joueur -> pillier_next
 */
+
 double		wall_angle_pers(t_arch *arch, t_wall wall)
 {
 	double	field;
@@ -53,8 +65,6 @@ double		wall_angle_pers(t_arch *arch, t_wall wall)
 		return (0);
 	angles.x = wall.pillar->angle;
 	angles.y = wall.next->angle;
-
-
 	if (wall.pillar->angle < 0)
 		angles.x += 360;
 	if (wall.next->angle < 0)
@@ -68,6 +78,7 @@ double		wall_angle_pers(t_arch *arch, t_wall wall)
 **	la reference est la rotation du joueur ce qui est a gauche + a droite -
 **	ca sera utilise pour les borne de la fenetre
 */
+
 double		local_angle(double borne, double angle)
 {
 	angle = angle - borne;
@@ -76,11 +87,12 @@ double		local_angle(double borne, double angle)
 	return (angle);
 }
 
-
 /*
-**	fonction a utiliser pour les bornes si il n'y a aucun pillier dans le frustum
+**	fonction a utiliser pour les bornes si il n'y a
+**		aucun pillier dans le frustum
 **	determine si les bornes sont entre les angles des mur
 */
+
 int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 {
 	t_fvct2	angles;
@@ -93,16 +105,10 @@ int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
 int			equal_pillar(t_wall *wall1, t_wall *wall2)
 {
 	if (!wall1 || !wall2)
-	{
-		//printf("wall == NULL\n");
 		return (1);
-	}
 	if (wall1->pillar == wall2->pillar && wall1->next == wall2->next)
 		return (0);
 	if (wall1->pillar == wall2->next && wall1->next == wall2->pillar)
 		return (0);
-	//printf("wall != NULL\n");
-
-	//futur check de profondeur
 	return (1);
 }

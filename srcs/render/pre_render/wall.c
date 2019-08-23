@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wall.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/23 04:35:20 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/23 05:35:29 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
 #include "calcul.h"
 
-extern inline int				is_door(t_arch *arch)
+extern inline int		is_door(t_arch *arch)
 {
 	return (arch->wall->status == OPEN_DOOR
 		|| arch->wall->status == CLOSE_DOOR);
 }
-
 
 /*
 **	trouve l'intersection entre le mur et un angle donne
 **	renvoie le pourcentage de l'intersection par rapport au mur (debut pilier)
 */
 
-double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double angle)
+double					wall_clipping(t_arch *arch, t_player *p
+	, t_fvct2 *inter_local, double angle)
 {
 	t_fvct2		inter;
 	t_fvct2		diff;
@@ -60,7 +72,8 @@ double			wall_clipping(t_arch *arch, t_player *p, t_fvct2 *inter_local, double a
 **	mur ou une partie portail
 */
 
-void			door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag)
+void			door_split_info(t_arch *arch, t_pil_render *render_stuff
+	, int flag)
 {
 	double			percent_open;
 	double			percent_local;
@@ -92,7 +105,8 @@ void			door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag)
 		render_stuff->px_inter = arch->px.x;
 		return ;
 	}
-	render_stuff->px_inter = arch->sdl->size.x / 2 - arch->sdl->size.x / 2 * (render_stuff->inter.y / render_stuff->inter.x);
+	render_stuff->px_inter = arch->sdl->size.x / 2 - arch->sdl->size.x / 2
+		* (render_stuff->inter.y / render_stuff->inter.x);
 	render_stuff->st_door.x = 1 - percent_open + (1 - arch->shift_txtr.x);
 	if (arch->shift_txtr.y > 1 - percent_open)
 		render_stuff->st_door.y = 1 - (arch->shift_txtr.y - (1 - percent_open));

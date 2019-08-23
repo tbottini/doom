@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/22 17:14:53 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/23 05:34:29 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,6 @@ int				portal_clipping(t_arch *arch, int flag, t_affine a_wall
 	return (1);
 }
 
-
 /*
 **	renvoie la position du mur par rapport au portail de rendu
 **		0 si le portail est devant le portail
@@ -174,6 +173,7 @@ int				portal_clipping(t_arch *arch, int flag, t_affine a_wall
 **	si les intersections sont plus proche que les point alors
 **	les points sont derriere le portail
 */
+
 int				wall_behind_portal(t_arch *arch)
 {
 	t_affine	a_wall;
@@ -184,7 +184,6 @@ int				wall_behind_portal(t_arch *arch)
 
 	a_pillar = (t_affine){arch->pillar.y / arch->pillar.x, 0, 0};
 	a_pillar2 = (t_affine){arch->next.y / arch->next.x, 0, 0};
-
 	a_portal = affine_points_secur(arch->portal.pillar, arch->portal.next);
 	if (fabs(a_pillar.a - a_pillar2.a) < 0.001)
 		return (0);
@@ -217,7 +216,6 @@ int				point_behind_portal(t_arch *arch, t_player *player, t_fvct2 pos)
 	t_affine	a_point;
 	t_affine	a_portal;
 	t_fvct2		inter;
-
 
 	if (arch->depth_portal == 0)
 		return (1);
