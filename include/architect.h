@@ -64,6 +64,8 @@ typedef struct 			s_pil_render
 **	-portal: les informations liees a la limitation
 **		du champ de vision par le portail
 **	-timestamp le temps qui coule dans le torrent de la vie
+**	-render_method les differente methode de rendu de pillier
+**		selon le status de la surface concerne
 */
 typedef struct 			s_arch
 {
@@ -78,6 +80,7 @@ typedef struct 			s_arch
 	t_fvct2				shift_txtr;
 	t_borne				portal;
 	uint32_t			timestamp;
+	void				(*render_method[5])(struct s_arch*, t_pil_render*, double);
 }						t_arch;
 
 int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
@@ -98,6 +101,7 @@ int						clean_zline(t_arch *arch, double len_pillar, int px);
 **	manager
 */
 void					architect_reset(t_arch *arch);
+void					arch_set_method(t_arch *arch);
 
 /*
 **	borne
@@ -109,6 +113,6 @@ void					borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw);
 void					borne_reset(t_arch *arch);
 void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
 void					set_borne_horizontal(t_arch *arch);
-
+extern inline void		borne_secur(t_arch *arch);
 #endif
 

@@ -1,14 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_wall.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/23 01:52:58 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/23 05:20:20 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "render.h"
 
 /*
 **	renvoie la position en pixel d'un point
 **	wall_angle est l'angle du point par rapport au joueur
 */
-int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
+
+int					px_point(t_arch *arch, t_player *player, double h_diff
+	, double depth)
 {
-	double	wall_angle;
-	int		px;
-	double	player_angle;
+	double			wall_angle;
+	int				px;
+	double			player_angle;
 
 	player_angle = (player->stat.rot.x - 90) * PI180;
 	wall_angle = atan2(h_diff, depth);
@@ -22,9 +36,10 @@ int			px_point(t_arch *arch, t_player *player, double h_diff, double depth)
 **	length.x = up
 **	length.y = down
 */
-t_fvct2		length_sector(t_player *player, t_sector *sector)
+
+t_fvct2				length_sector(t_player *player, t_sector *sector)
 {
-	t_fvct2	length;
+	t_fvct2			length;
 
 	length.y = -player->stat.height - (player->stat.pos.z - sector->h_floor);
 	length.x = length.y + sector->h_ceil;
@@ -39,9 +54,11 @@ t_fvct2		length_sector(t_player *player, t_sector *sector)
 **	up est la difference entre le point de vue de la camera
 **		et le haut du mur
 */
-t_fvct2			surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, double depth)
+
+t_fvct2				surface_pillar(t_arch *arch, t_player *player
+	, t_fvct2 len_sector, double depth)
 {
-	t_fvct2		wall_portion;
+	t_fvct2			wall_portion;
 
 	wall_portion.x = px_point(arch, player, len_sector.x, depth);
 	wall_portion.y = px_point(arch, player, len_sector.y, depth);
@@ -51,11 +68,12 @@ t_fvct2			surface_pillar(t_arch *arch, t_player *player, t_fvct2 len_sector, dou
 /*
 **	rearrange les parametre pour que l'on rende les colonnes de gauche a droite
 */
-void			reorder(t_arch *arch)
+
+void				reorder(t_arch *arch)
 {
-	double		tmp;
-	int			tmpint;
-	t_fvct2		pillar_tmp;
+	double			tmp;
+	int				tmpint;
+	t_fvct2			pillar_tmp;
 
 	if (arch->px.x > arch->px.y)
 	{
@@ -77,56 +95,32 @@ void			reorder(t_arch *arch)
 **		-sauvegarde la borne actuel dans borne_tmp
 **		-la borne pour la recursivite arch->portal
 **		-recharge borne_tmp dans arch->portal
+**	on rend le pillier avec la method de rendu associe au status
+**		de la surface
 */
-void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
-{
-   	t_fvct2		neutre;
-   	t_fvct2		coef_surface;
-	double		coef_neutre;
-	double		coef_distance;
-	double		dist_px;
 
-	coef_surface.x = coef_diff(render_stuff->pillar.x - render_stuff->next.x, arch->px);
-	coef_surface.y = coef_diff(render_stuff->pillar.y - render_stuff->next.y, arch->px);
+void				pillar_to_pillar(t_arch *arch, t_pil_render *stuff)
+{
+	t_fvct2			neutre;
+	t_fvct2			coef_surface;
+	double			coef_neutre;
+	double			coef_distance;
+	double			dist_px;
+
+	coef_surface.x = coef_diff(stuff->pillar.x - stuff->next.x, arch->px);
+	coef_surface.y = coef_diff(stuff->pillar.y - stuff->next.y, arch->px);
 	neutre.x = (double)(arch->sdl->size.y) / arch->pillar.x;
 	neutre.y = (double)(arch->sdl->size.y) / arch->next.x;
 	coef_neutre = coef_vct(neutre, arch->px);
-	coef_distance = (arch->next.x - arch->pillar.x) / (arch->px.y - arch->px.x);
+	coef_distance = (arch->next.x - arch->pillar.x)
+		/ (arch->px.y - arch->px.x);
 	dist_px = arch->pillar.x;
 	while (arch->px.x < arch->px.y)
 	{
-		if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
-			arch->portal.b_up[arch->px.x] = arch->sdl->size.y - 1;
-		if (arch->portal.b_down[arch->px.x] > (uint32_t)arch->sdl->size.y)
-			arch->portal.b_down[arch->px.x] = arch->sdl->size.y - 1;
-		if (arch->wall->status == WALL)
-		{
-			if (zline_wall(arch, render_stuff, neutre.x))
-			{
-				draw_wall(arch, render_stuff);
-				props_draw_column(arch->wall->props, arch, render_stuff->pillar);
-			}
-		}
-		else if (arch->wall->status == PORTAL)
-		{
-			if (zline_portal(arch, render_stuff, neutre.x))
-				draw_portal(arch, render_stuff);
-		}
-		else if (arch->wall->status == OPEN_DOOR
-			|| arch->wall->status == CLOSE_DOOR)
-		{
-		   	if ((arch->px.x >= render_stuff->px_inter) ^ render_stuff->open_invert)
-			{
-				if (zline_portal(arch, render_stuff, neutre.x))
-					draw_door(arch, render_stuff, PORTAL);
-			}
-			else if (zline_wall(arch, render_stuff, neutre.x))
-				draw_door(arch, render_stuff, WALL);
-		}
-		else if (arch->wall->status == WINDOW)
-				draw_window(arch, render_stuff);
-		render_stuff->pillar.x -= coef_surface.x;
-		render_stuff->pillar.y -= coef_surface.y;
+		borne_secur(arch);
+		arch->render_method[arch->wall->status](arch, stuff, neutre.x);
+		stuff->pillar.x -= coef_surface.x;
+		stuff->pillar.y -= coef_surface.y;
 		neutre.x += coef_neutre;
 		arch->px.x++;
 		dist_px += coef_distance;
@@ -140,38 +134,43 @@ void			pillar_to_pillar(t_arch *arch, t_pil_render *render_stuff)
 **	on recupere les info pour les props
 **	on recupere les info pour les surface pillar et next
 */
-void				render_surface(t_arch *arch, t_player *player)
+
+void				render_surface(t_arch *a, t_player *player)
 {
 	t_fvct2			len_sector;
 	t_vct2			px_draw;
-	t_pil_render	render_stuff;
+	t_pil_render	stuff;
 
-	if (arch->wall->status == OPEN_DOOR || arch->wall->status == CLOSE_DOOR)
-		door_split_info(arch, &render_stuff, arch->wall->status);
-	reorder(arch);
-	len_sector = length_sector(player, arch->sector);
-	render_stuff.pillar = surface_pillar(arch, player, len_sector, arch->pillar.x);
-	render_stuff.next = surface_pillar(arch, player, len_sector, arch->next.x);
-	prop_iter_v(arch->wall->props, arch->wall->nb_props, &prop_init_render, arch);
-	if (arch->wall->status == PORTAL
-		|| arch->wall->status == OPEN_DOOR
-		|| arch->wall->status == CLOSE_DOOR)
+	if (is_door(a))
+		door_split_info(a, &stuff, a->wall->status);
+	reorder(a);
+	len_sector = length_sector(player, a->sector);
+	stuff.pillar = surface_pillar(a, player, len_sector, a->pillar.x);
+	stuff.next = surface_pillar(a, player, len_sector, a->next.x);
+	prop_iter_v(a->wall->props, a->wall->nb_props, &prop_init_render, a);
+	if (a->wall->status == PORTAL || is_door(a))
 	{
-		save_pixels_portal(arch, &render_stuff, &px_draw);
-		render_stuff.px_start = px_draw.x;
-		borne_svg(arch, &render_stuff.borne_tmp, px_draw);
+		save_pixels_portal(a, &stuff, &px_draw);
+		stuff.px_start = px_draw.x;
+		borne_svg(a, &stuff.borne_tmp, px_draw);
 	}
-	pillar_to_pillar(arch, &render_stuff);
-	if ((arch->wall->status == PORTAL
-		|| arch->wall->status == OPEN_DOOR
-		|| arch->wall->status == CLOSE_DOOR)
+	pillar_to_pillar(a, &stuff);
+	if ((a->wall->status == PORTAL || is_door(a))
 		&& (px_draw.x < px_draw.y))
 	{
-		if (arch->depth_portal < PORTAL_MAX)
-			render_recursivite(arch, player, px_draw);
-		borne_load(arch, &render_stuff.borne_tmp, px_draw);
+		if (a->depth_portal < PORTAL_MAX)
+			render_recursivite(a, player, px_draw);
+		borne_load(a, &stuff.borne_tmp, px_draw);
 	}
+}
 
+void				arch_window_info_load(t_arch *arch, t_fvct2 *info
+	, t_vct2 px)
+{
+	arch->px = px;
+	arch->pillar = info[0];
+	arch->next = info[1];
+	arch->shift_txtr = info[2];
 }
 
 /*
@@ -180,34 +179,29 @@ void				render_surface(t_arch *arch, t_player *player)
 **	on reorder les info du portail
 **	on rend la surface
 */
-void			render_wall(t_arch *arch, t_player *player)
+
+void				render_wall(t_arch *arch, t_player *player)
 {
-	t_fvct2		pillar;
-	t_fvct2		next;
-	t_vct2		px;
-	t_fvct2		st;
-	t_txtr		tmp;
+	t_fvct2			info[3];
+	t_vct2			px;
+	t_txtr			tmp;
 
 	pillar_screen_info(arch, player);
 	if (arch->depth_portal == 0 || (wall_behind_portal(arch)))
 	{
 		if (arch->wall->status == WINDOW)
 		{
-			pillar = arch->pillar;
+			info[0] = arch->pillar;
+			info[1] = arch->next;
+			info[2] = arch->shift_txtr;
 			px = arch->px;
-			next = arch->next;
-			st = arch->shift_txtr;
 			tmp = arch->wall->txtr;
 			arch->wall->txtr = arch->sector->txtrsol;
 			arch->wall->status = PORTAL;
 			render_surface(arch, player);
 			arch->wall->txtr = tmp;
 			arch->wall->status = WINDOW;
-			arch->px = px;
-			arch->pillar = pillar;
-			arch->next = next;
-			arch->shift_txtr = st;
-			//pillar_screen_info(arch, player);
+			arch_window_info_load(arch, info, px);
 		}
 		render_surface(arch, player);
 	}

@@ -1,9 +1,10 @@
 #include "render.h"
 #include "calcul.h"
 
-int				is_door(t_arch *arch)
+extern inline int				is_door(t_arch *arch)
 {
-	return (arch->wall->status == OPEN_DOOR || arch->wall->status == CLOSE_DOOR);
+	return (arch->wall->status == OPEN_DOOR
+		|| arch->wall->status == CLOSE_DOOR);
 }
 
 

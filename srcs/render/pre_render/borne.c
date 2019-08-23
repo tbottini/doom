@@ -27,6 +27,14 @@ void		set_borne_horizontal(t_arch *arch)
 	arch->portal.b_right *= TOANGLE;
 }
 
+extern inline void borne_secur(t_arch *arch)
+{
+	if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
+		arch->portal.b_up[arch->px.x] = arch->sdl->size.y - 1;
+	if (arch->portal.b_down[arch->px.x] > (uint32_t)arch->sdl->size.y)
+		arch->portal.b_down[arch->px.x] = arch->sdl->size.y - 1;
+}
+
 /*
 **	sauvegarde toute les configuration de borne dans une structure
 **	dans une zone (la zone est les limite de px)

@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/22 17:55:58 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/23 04:18:03 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int			arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam)
 		return (0);
 	arch->wall = NULL;
 	arch->depth_portal = 0;
+	arch_set_method(arch);
 	zline_reset(arch);
 	return (1);
 }
