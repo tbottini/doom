@@ -30,21 +30,15 @@
 **	disfonctionnement si l'ordre n'est pas respecte
 **	pour un carre a(up left) b(bottom left) c(up right) d(bot right)
 */
-typedef struct 			s_shape
+typedef struct	s_needle
 {
-	t_fvct2				up;
-	t_fvct2				left;
-	t_fvct2				right;
-	t_fvct2				bot;
-}						t_shape;
-
-typedef struct 			s_shap
-{
-	t_fvct2				ul;
-	t_fvct2				ur;
-	t_fvct2				bl;
-	t_fvct2				br;
-}						t_shap;
+	int			numcol;
+	t_vct2		surface;
+	t_txtr		*txtr;
+	uint32_t	txtr_col;
+	double		coef;
+	double		buff;
+}				t_needle;
 
 typedef struct 			s_sprite
 {
@@ -121,12 +115,8 @@ void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
 
+int						opacity_from_color(Uint32 add, Uint32 basique);
 
-/*
-**	shape
-*/
-void					draw_part_line(t_sdl *sdl, t_shape *shape, uint32_t color);
-t_shape					shape_reajust(t_shape shape);
 
 /*
 **	sprites
@@ -152,4 +142,19 @@ void					prop_init_render(t_prop *prop, void *arch);
 void					prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup);
 t_vct2					prop_get_screen_pixel(t_prop *prop, t_arch *arch);
 
+
+/*
+**	needle function
+*/
+void						needle_buff_affect(t_needle *needle);
+t_needle					needle_prepare(int numcol, t_txtr *txtr, uint32_t txtr_col
+	, t_vct2 surface);
+void						needle_reajust2(t_needle *needle, int limit);
+extern inline uint32_t		pixel_opacity(t_arch *arch, t_needle *needle);
+extern inline uint32_t		pixel_txtr(t_arch *arch, t_needle *needle);
+void						needle_reajust(t_arch *arch, t_needle *needle, int limit);
+void						needle_indent_down(t_needle *needle, t_arch *arch);
+
+int							draw_txtr_column(t_arch *a, t_needle *ne, uint32_t (*pixel_effector)(t_arch*, t_needle*));
+int							draw_txtr_column_prop(t_arch *a, t_needle *n, t_vct2 limit);
 #endif

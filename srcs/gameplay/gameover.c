@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/22 18:04:46 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/23 02:28:21 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** f must be between 0 and 1, 1 returning the color s, 0 the color c.
 */
 
-int			opacity(int s, int c, double f)
+extern inline int			opacity(int s, int c, double f)
 {
 	if (f == 1)
 		return (s);
@@ -36,7 +36,7 @@ int			opacity(int s, int c, double f)
 **	c : basique
 */
 
-int			opacity_from_color(Uint32 add, Uint32 basique)
+extern inline int			opacity_from_color(Uint32 add, Uint32 basique)
 {
 	const double factor = (add & 255) / 255.0;
 

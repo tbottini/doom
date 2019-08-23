@@ -73,6 +73,8 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_text.c								\
 						drawer/draw_column.c							\
 						drawer/draw_part.c								\
+						drawer/draw_texture.c							\
+						drawer/needle.c									\
 						render_enemy.c									\
 						sprite.c										\
 						prop.c											\
