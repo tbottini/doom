@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:03:08 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/22 22:30:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/25 16:52:46 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void			draw_portal(t_arch *arch, t_pil_render *rendr)
 	{
 		cur = draw_part_texture(arch, cur, (t_vct2){surface.x, portal.x});
 		cur = draw_part(arch, portal.x, portal.y, 0);
-		cur = draw_part_texture(arch, cur, (t_vct2){portal.x, surface.y});
+		cur = draw_part_texture(arch, cur, (t_vct2){portal.y, surface.y});
 	}
 	draw_part(arch, surface.y, arch->portal.b_down[arch->px.x], 0x272130ff);
 	borne_svg_vertical(arch, rendr, portal);
