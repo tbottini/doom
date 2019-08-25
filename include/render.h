@@ -129,14 +129,15 @@ void					sprite_free(t_sprite *sprite);
 void					sprite_print(t_sprite *sprite);
 void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
 void					sprite_render(t_sprite *sprite, t_arch *arch);
-t_vct2					player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
+
+t_vct2			player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
+t_vct2			cam_get_enemy_surface(t_arch *arch, t_enemy *enemy, t_player *player, double depth);
 
 /*
 **	render enemy
 */
 t_fvct2					player_enemy_diff_heigth(t_player *player, t_enemy *enemy);
-int						camera_proj_heigth(t_camera *camera, t_sdl *sdl, t_player *player, double h_diff, double depth);
-t_vct2					cam_get_enemy_surface(t_camera *camera, t_sdl *sdl, t_enemy *enemy, t_player *player, double depth);
+int						camera_proj_heigth(t_arch *arch, t_player *player, double h_diff, double depth);
 t_vct2					txtr_width(t_txtr *texture, t_vct2 surface, int posx);
 void					prop_init_render(t_prop *prop, void *arch);
 void					prop_iter_v(t_prop *prop, int len, void(*prop_iter)(t_prop*, void*), void *sup);

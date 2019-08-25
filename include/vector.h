@@ -29,6 +29,12 @@ typedef struct			s_fvct3
 	double				z;
 }						t_fvct3;
 
+typedef union			u_fvct
+{
+	t_fvct3				vct3;
+	t_fvct2				vct2;
+}						t_fvct;
+
 /*
 **	operation
 */
