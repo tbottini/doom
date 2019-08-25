@@ -34,6 +34,8 @@ typedef struct			s_fvct3
 */
 char					*double_atof(char *line, t_fvct2 *fvct);
 char					*triple_atof(char *line, t_fvct3 *fvct);
+extern inline t_fvct2			fvct2_sub(t_fvct2 vct1, t_fvct2 vct2);
+extern inline t_fvct2			fvct2_angle_dist(double dist, double angle);
 
 /*
 **	debug

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magrab <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/16 11:30:57 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/16 11:30:57 by magrab           ###   ########.fr       */
+/*   Updated: 2019/08/25 17:27:24 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,22 @@ double			fvct2_angle(t_fvct2 origin, t_fvct2 pos, double rot_origin)
 	else if (angle > 180)
 		angle -= 360;
 	return (angle);
+}
+
+extern inline t_fvct2			fvct2_sub(t_fvct2 vct1, t_fvct2 vct2)
+{
+	return ((t_fvct2)
+	{
+		vct1.x - vct2.x,
+		vct1.y - vct2.y
+	});
+}
+
+extern inline t_fvct2			fvct2_angle_dist(double dist, double angle)
+{
+	t_fvct2		new_pos;
+
+	new_pos.x = cos((angle) * PI180) * dist;
+	new_pos.y = sin((angle) * PI180) * dist;
+	return (new_pos);
 }

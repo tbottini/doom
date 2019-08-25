@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 19:36:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/16 11:25:31 by magrab           ###   ########.fr       */
+/*   Updated: 2019/08/25 17:28:11 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,19 @@ double		distance(t_fvct2 vct1, t_fvct2 vct2)
 double		hypothenuse(t_fvct2 vct)
 {
 	return (sqrt(vct.x * vct.x + vct.y * vct.y));
+}
+
+/*
+**	on recupere la position local de la position par rapport au joueur
+**	avec la position est l'angle de cette position par rapport au joueur
+*/
+
+extern inline t_fvct2			player_local_pos(t_player *player, t_fvct2 pos
+	, double angle_pos)
+{
+	double		dist;
+
+	dist = hypothenuse(pos);
+	pos = fvct2_angle_dist(dist, angle_pos - player->stat.rot.y);
+	return (pos);
 }

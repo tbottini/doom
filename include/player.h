@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 04:51:45 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/25 17:24:04 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,5 +200,6 @@ void					describe_player(t_player player);
 **	calcul
 */
 t_fvct2					player_diff_heigth(t_player *player, double sector_floor, double obj_heigth);
-
+extern inline t_fvct2	player_local_pos(t_player *player, t_fvct2 pos
+	, double angle_pos);
 #endif

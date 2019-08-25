@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 04:35:20 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/23 05:35:29 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/25 17:40:08 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,89 +27,104 @@ extern inline int		is_door(t_arch *arch)
 double					wall_clipping(t_arch *arch, t_player *p
 	, t_fvct2 *inter_local, double angle)
 {
-	t_fvct2		inter;
-	t_fvct2		diff;
-	t_fvct2		diff2;
-	double		coef_ang;
-	double		coef_wall;
-	double		b;
-	double		percent;
+	t_fvct2				inter;
+	t_fvct2				diff[2];
+	t_affine			a_wall;
+	t_affine			a_view;
+	double				percent;
 
-	diff.x = arch->wall->pillar->p.x - p->stat.pos.x;
-	diff.y = arch->wall->pillar->p.y - p->stat.pos.y;
-	diff2.x = arch->wall->next->p.x - p->stat.pos.x;
-	diff2.y = arch->wall->next->p.y - p->stat.pos.y;
-	coef_ang = tan(angle * PI180);
-	if (diff2.x == diff.x && diff2.x == diff.x)
+	diff[0] = fvct2_sub(arch->wall->pillar->p, *(t_fvct2*)&p->stat.pos);
+	diff[1] = fvct2_sub(arch->wall->next->p, *(t_fvct2*)&p->stat.pos);
+	a_view = (t_affine){tan(angle * PI180), 0, 0};
+	if (diff[1].x == diff[0].x && diff[1].x == diff[0].x)
 	{
-		inter.x = diff.x;
-		inter.y = diff.x * coef_ang;
-		percent = (diff2.y - inter.y) / (diff2.y - diff.y);
+		inter.x = diff[0].x;
+		inter.y = diff[0].x * a_view.a;
+		percent = (diff[1].y - inter.y) / (diff[1].y - diff[0].y);
 	}
 	else
 	{
-		coef_wall = (diff2.y - diff.y) / (diff2.x - diff.x);
-		b = diff.y - diff.x * coef_wall;
-		inter.x = b / (coef_ang - coef_wall);
-		inter.y = coef_wall * inter.x + b;
-		percent = (diff2.x - inter.x) / (diff2.x - diff.x);
+		a_wall = affine_points(diff[0], diff[1]);
+		inter = interpolation_linear(a_wall, a_view);
+		percent = (diff[1].x - inter.x) / (diff[1].x - diff[0].x);
 	}
-	inter_local->y = hypothenuse(inter);
-	inter_local->x = cos((angle - p->stat.rot.y) * PI180) * inter_local->y;
-	inter_local->y = sin((angle - p->stat.rot.y) * PI180) * inter_local->y;
+	*inter_local = player_local_pos(p, inter, angle);
 	return (percent);
 }
 
-/*
-**	compare a door_split
-**	door_split info ne rend pas le mur mais prepare les info pour le rendu avec
-**		pillar_to_pillar
-**	on determine le taux d'ouverture de la porte
-**	la position du bout de la porte, son px, les nouveau shift_txtr de la
-**		texture pour la porte
-**	il y aura une fonction en aval qui determinera si la colonne rendu est une
-**		partie
-**	mur ou une partie portail
-*/
-
-void			door_split_info(t_arch *arch, t_pil_render *render_stuff
-	, int flag)
+double					door_open_percent(t_arch *arch, int flag)
 {
-	double			percent_open;
-	double			percent_local;
+	double				percent_open;
 
-	render_stuff->open_invert = (arch->px.x > arch->px.y);
-	percent_open = (arch->timestamp - arch->wall->ots) / ((double)DOOR_OPEN_TIME);
+	percent_open = (arch->timestamp - arch->wall->ots)
+		/ ((double)DOOR_OPEN_TIME);
 	if (flag == OPEN_DOOR)
 		percent_open = 1 - percent_open;
 	if (percent_open > 1)
 		percent_open = 1;
 	if (percent_open < 0)
 		percent_open = 0;
-	render_stuff->perc_open = percent_open;
-	percent_local = (arch->shift_txtr.x - (1 - percent_open))
+	return (percent_open);
+}
+
+t_fvct2					door_get_inter_pos(t_arch *arch
+	, t_pil_render *render_stuff)
+{
+	double	percent_local;
+	t_fvct2	inter;
+
+	percent_local = (arch->shift_txtr.x - (1 - render_stuff->perc_open))
 		/ (arch->shift_txtr.x - arch->shift_txtr.y);
 	if (percent_local > 1)
-		render_stuff->inter = arch->next;
+		inter = arch->next;
 	else if (percent_local < 0)
-		render_stuff->inter = arch->pillar;
+		inter = arch->pillar;
 	else
 	{
-		render_stuff->inter.x = arch->pillar.x + percent_local
+		inter.x = arch->pillar.x + percent_local
 			* (arch->next.x - arch->pillar.x);
-		render_stuff->inter.y = arch->pillar.y + percent_local
+		inter.y = arch->pillar.y + percent_local
 			* (arch->next.y - arch->pillar.y);
 	}
+	return (inter);
+}
+
+int						door_get_px_inter(t_arch *arch
+	, t_pil_render *render_stuff)
+{
+	return (arch->sdl->size.x / 2 - arch->sdl->size.x / 2
+		* (render_stuff->inter.y / render_stuff->inter.x));
+}
+
+/*
+**	door_split determine les info pour le rendu avec pillar_to_pillar
+**	on determine :
+**	-le taux d'ouverture de la porte
+**	-la position du bout de la porte
+**	-son px, les nouveau shift_txtr de la texture pour la porte
+*/
+
+void					door_split_info(t_arch *arch, t_pil_render *render_stuff
+	, int flag)
+{
+	render_stuff->open_invert = (arch->px.x > arch->px.y);
+	render_stuff->perc_open = door_open_percent(arch, flag);
+	render_stuff->inter = door_get_inter_pos(arch, render_stuff);
 	if (render_stuff->inter.x < 0)
 	{
 		render_stuff->px_inter = arch->px.x;
 		return ;
 	}
-	render_stuff->px_inter = arch->sdl->size.x / 2 - arch->sdl->size.x / 2
-		* (render_stuff->inter.y / render_stuff->inter.x);
-	render_stuff->st_door.x = 1 - percent_open + (1 - arch->shift_txtr.x);
-	if (arch->shift_txtr.y > 1 - percent_open)
-		render_stuff->st_door.y = 1 - (arch->shift_txtr.y - (1 - percent_open));
+	render_stuff->px_inter = door_get_px_inter(arch, render_stuff);
+	render_stuff->st_door.x = 1 - render_stuff->perc_open
+		+ (1 - arch->shift_txtr.x);
+	if (arch->shift_txtr.y > 1 - render_stuff->perc_open)
+	{
+		render_stuff->st_door.y = 1 - (arch->shift_txtr.y
+			- (1 - render_stuff->perc_open));
+	}
 	else
+	{
 		render_stuff->st_door.y = 1;
+	}
 }
