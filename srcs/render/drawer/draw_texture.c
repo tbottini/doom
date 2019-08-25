@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 03:39:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/23 03:47:16 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/25 16:35:44 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int						draw_txtr_column_prop(t_arch *a, t_needle *n
 		needle_reajust(a, n, a->portal.b_up[a->px.x]);
 	while (n->surface.x < n->surface.y
 		&& n->surface.x < (int)a->portal.b_down[a->px.x]
-		&& n->surface.x < limit.x)
+		&& n->surface.x < limit.y)
 	{
 		if (n->numcol < a->sdl->size.x * a->sdl->size.y
 			&& n->txtr_col < n->txtr->w * n->txtr->h)
