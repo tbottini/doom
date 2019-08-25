@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 01:52:58 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/23 05:33:18 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/25 21:12:03 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,10 @@ int			on_frustum(t_arch *arch, t_player *player, t_pillar *pillar)
 	return (pillar->frust);
 }
 
-void		sector_frustum(t_arch *arch, t_sector *sector, t_player *player)
+void		wall_frustum(t_arch *arch, t_player *player, t_wall *wall)
 {
-	int		i;
-
-	i = 0;
-	while (i < sector->len)
-	{
-		on_frustum(arch, player, sector->wall[i].pillar);
-		on_frustum(arch, player, sector->wall[i].next);
-		i++;
-	}
+	on_frustum(arch, player, wall->pillar);
+	on_frustum(arch, player, wall->next);
 }
 
 /*

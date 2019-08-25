@@ -121,6 +121,7 @@ int						opacity_from_color(Uint32 add, Uint32 basique);
 /*
 **	sprites
 */
+void					sprite_render_sector(t_arch *arch, t_sector *sector, t_player *player);
 void					sprite_render_list(t_sprite *sprite, t_arch *arch);
 t_sprite				*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *player, t_arch *arch);
 t_sprite				*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch);
@@ -128,7 +129,7 @@ void					sprite_print(t_sprite *sprite);
 void					sprite_free(t_sprite *sprite);
 void					sprite_print(t_sprite *sprite);
 void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
-void					sprite_render(t_sprite *sprite, t_arch *arch);
+void					sprite_draw(t_sprite *sprite, t_arch *arch);
 
 t_vct2			player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
 t_vct2			cam_get_enemy_surface(t_arch *arch, t_enemy *enemy, t_player *player, double depth);

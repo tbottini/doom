@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 19:05:45 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/25 19:06:54 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/25 21:16:08 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ extern inline void	sprite_draw_column(t_arch *arch, t_needle *nd
 	}
 }
 
-void				sprite_render(t_sprite *spri, t_arch *arch)
+void				sprite_draw(t_sprite *spri, t_arch *arch)
 {
 	double			p_buff_w;
 	double			buff_w;
@@ -105,7 +105,18 @@ void			sprite_render_list(t_sprite *sprite, t_arch *arch)
 {
 	while (sprite)
 	{
-		sprite_render(sprite, arch);
+		sprite_draw(sprite, arch);
 		sprite = sprite->next;
 	}
+}
+
+void			sprite_render_sector(t_arch *arch, t_sector *sector, t_player *player)
+{
+	t_sprite	*sprite;
+
+	sprite = NULL;
+	sprite_from_enemy(&sprite, sector->enemys, player, arch);
+	sprite_from_props(&sprite, sector->props, player, sector->len_prop, arch);
+	sprite_render_list(sprite, arch);
+	sprite_iter(sprite, &sprite_free);
 }

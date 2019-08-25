@@ -6,13 +6,13 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 16:39:00 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/25 20:27:23 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/25 21:08:34 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sector.h"
 
-t_sector		*sector_new()
+t_sector		*sector_new(void)
 {
 	t_sector	*new;
 
