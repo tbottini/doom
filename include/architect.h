@@ -15,6 +15,7 @@
 **		si un pillier est derriere ou non
 **	-sector_svg permet de retablir le secteur quand on a fini la recursion
 */
+
 typedef struct 			s_borne
 {
 	double				*zline;
@@ -40,15 +41,11 @@ typedef struct 			s_pil_render
 	t_fvct2				next;
 	t_borne				borne_tmp;
 	int					px_start;
-
-	//door information
 	t_fvct2				st_door;
 	int					px_inter;
 	t_fvct2				inter;
 	bool				open_invert;
 	double				perc_open;
-
-	//
 }						t_pil_render;
 
 /*
@@ -67,6 +64,7 @@ typedef struct 			s_pil_render
 **	-render_method les differente methode de rendu de pillier
 **		selon le status de la surface concerne
 */
+
 typedef struct 			s_arch
 {
 	t_sector			*sector;
@@ -80,7 +78,8 @@ typedef struct 			s_arch
 	t_fvct2				shift_txtr;
 	t_borne				portal;
 	uint32_t			timestamp;
-	void				(*render_method[5])(struct s_arch*, t_pil_render*, double);
+	void				(*render_method[5])(struct s_arch*
+		, t_pil_render*, double);
 }						t_arch;
 
 int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
@@ -90,6 +89,7 @@ int						is_door(t_arch *arch);
 /*
 **	backface
 */
+
 int						zline_wall(t_arch *arch, t_pil_render *render_stuff, double len_pillar);
 int						zline_portal(t_arch *arch, t_pil_render *render_stuff, double len_pillar);
 int						z_line_buffer(t_arch *arch, double len_pillar, int px);
@@ -100,12 +100,14 @@ int						clean_zline(t_arch *arch, double len_pillar, int px);
 /*
 **	manager
 */
+
 void					architect_reset(t_arch *arch);
 void					arch_set_method(t_arch *arch);
 
 /*
 **	borne
 */
+
 t_borne					*borne_init(t_borne *borne, int len);
 t_borne					*borne_svg(t_arch *arch, t_borne *borne, t_vct2 px);
 void					borne_free(t_borne *borne);
