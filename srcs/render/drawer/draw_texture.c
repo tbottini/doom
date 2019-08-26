@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 03:39:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 15:28:54 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:33:51 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int						draw_txtr_column_prop(t_arch *a, t_needle *n
 **	on ajoute sa position x, colonne du millieu de texture
 */
 
-t_vct2			txtr_width(t_txtr *texture, t_vct2 surface, int posx)
+t_vct2					txtr_width(t_txtr *texture, t_vct2 surface, int posx)
 {
 	t_vct2		width;
 

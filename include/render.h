@@ -101,12 +101,13 @@ void					render_recursivite(t_arch *arch, t_player *player, t_vct2 pixel_portal)
 void					draw_door(t_arch *arch, t_pil_render *render_stuff, int flag);
 void					draw_wall(t_arch *arch, t_pil_render *render_stuff);
 void					draw_portal(t_arch *arch, t_pil_render *render_stuff);
-int						draw_part_prop(t_arch *arch, int numcol, t_vct2 surface, t_vct2 limit, t_prop *prop);
+int						draw_part_prop(t_arch *arch, t_needle *needle, t_vct2 limit, t_prop *prop);
 void					render_surface(t_arch *arch, t_player *player);
 double					draw_part(t_arch *arch, int start, int end, uint32_t color);
 int						draw_part_texture(t_arch *arch, int numcol, t_vct2 surface);
 int						draw_part_decal(t_arch *arch, int numcol, t_vct2 surface, t_pil_render *render_stuff);
-int						draw_part_opacity(t_arch *arch, int cursor, t_vct2 surface, t_txtr *txtr);
+int						draw_part_opacity(t_arch *arch, int cursor, t_vct2 surface
+	, t_txtr *txtr);
 void					props_draw_column(t_prop *props, t_arch *arch, t_fvct2 surface);
 
 /*
@@ -126,7 +127,8 @@ int						opacity_from_color(Uint32 add, Uint32 basique);
 void					sprite_render_sector(t_arch *arch, t_sector *sector, t_player *player);
 void					sprite_render_list(t_sprite *sprite, t_arch *arch);
 t_sprite				*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *player, t_arch *arch);
-t_sprite				*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch);
+t_sprite			*sprite_from_props(t_sprite **sprite_list, t_sector *s
+	, t_player *player, t_arch *arch);
 void					sprite_print(t_sprite *sprite);
 void					sprite_print(t_sprite *sprite);
 void					sprite_draw(t_sprite *sprite, t_arch *arch);

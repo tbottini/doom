@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 21:02:06 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 14:03:57 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:43:01 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@ void				props_draw_column(t_prop *props, t_arch *a
 	, t_fvct2 s)
 {
 	int				i;
-	int				cursor;
-	t_vct2			tmp;
 	t_fvct2			hei;
 	int				padding_render;
+	t_needle		needle;
 
 	i = 0;
 	while (i <= a->wall->nb_props)
@@ -38,10 +37,10 @@ void				props_draw_column(t_prop *props, t_arch *a
 				- a->sector->h_floor)) / a->sector->h_ceil;
 			hei.y = (props[i].pos.z - a->sector->h_floor) / a->sector->h_ceil;
 			padding_render = (s.y - s.x) * hei.x;
-			tmp.x = s.x + (s.y - s.x) * hei.x;
-			tmp.y = s.y - (s.y - s.x) * hei.y;
-			cursor = a->px.x + tmp.x * a->sdl->size.x;
-			draw_part_prop(a, cursor, tmp, (t_vct2){s.x, s.y}, &props[i]);
+			needle.surface.x = s.x + (s.y - s.x) * hei.x;
+			needle.surface.y = s.y - (s.y - s.x) * hei.y;
+			needle.numcol = a->px.x + needle.surface.x * a->sdl->size.x;
+			draw_part_prop(a, &needle, (t_vct2){s.x, s.y}, &props[i]);
 			break ;
 		}
 		i++;

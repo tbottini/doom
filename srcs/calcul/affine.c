@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/25 20:45:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 14:01:12 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:34:29 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2)
 	return (inter);
 }
 
-
-
 t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2)
 {
 	t_affine 	fct;
@@ -49,7 +47,6 @@ t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2)
 	}
 	return (fct);
 }
-
 
 /*
 **	interpolation lineaire avec gestion des affine lock

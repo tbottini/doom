@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 14:36:18 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:56:57 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,25 @@ void				sprite_info_props(t_sprite *sprite, t_arch *arch
 	sprite->width = txtr_width(&sprite->texture, sprite->heigth, posx);
 }
 
-t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props
-	, t_player *player, int len, t_arch *arch)
+t_sprite			*sprite_from_props(t_sprite **sprite_list, t_sector *s
+	, t_player *player, t_arch *arch)
 {
 	t_sprite		*sprite;
 	double			e_angle;
 	int				i;
 
 	i = -1;
-	while (++i < len)
+	while (++i < s->len_prop)
 	{
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos
-			, *(t_fvct2*)&props[i].pos, player->stat.rot.y);
-		if (e_angle < 90 && e_angle > -90 && props[i].hitbox.h >= 0)
+			, *(t_fvct2*)&s->props[i].pos, player->stat.rot.y);
+		if (e_angle < 90 && e_angle > -90 && s->props[i].hitbox.h >= 0)
 		{
-			sprite = sprite_new(props[i].tex, player->stat.pos
-				, props[i].pos, e_angle);
+			sprite = sprite_new(s->props[i].tex, player->stat.pos
+				, s->props[i].pos, e_angle);
 			if (!sprite)
 				return (sprite_list_free(sprite_list));
-			sprite_info_props(sprite, arch, player, &props[i]);
+			sprite_info_props(sprite, arch, player, &s->props[i]);
 			if (point_behind_portal(arch, player, sprite->pos))
 				sprite_insert(sprite_list, sprite);
 			else

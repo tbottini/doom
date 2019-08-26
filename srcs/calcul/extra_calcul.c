@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extra_calcul.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/26 15:34:18 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
 #include <math.h>
 
@@ -11,9 +23,9 @@ double			coef_diff(double diff, t_vct2 step)
 	return (diff / (step.y - step.x));
 }
 
-double		coef_vct2(t_fvct2 value, t_fvct2 value2)
+double			coef_vct2(t_fvct2 value, t_fvct2 value2)
 {
-	double	res;
+	double		res;
 
 	res = ((value2.x - value.x) / (value2.y - value.y));
 	return ((res == INFINITY) ? 0.0 : res);

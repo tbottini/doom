@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 17:32:34 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 14:41:25 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:43:40 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,13 @@ int				draw_part_texture(t_arch *arch, int numcol, t_vct2 surface)
 	return (draw_txtr_column(arch, &needle, &pixel_txtr));
 }
 
-int				draw_part_prop(t_arch *arch, int numcol, t_vct2 surface
+int				draw_part_prop(t_arch *arch, t_needle *needle
 	, t_vct2 limit, t_prop *prop)
 {
-	t_needle	needle;
-
-	needle = needle_prepare(numcol, &prop->tex
-		, texture_prop_interpolation2d(arch, &prop->tex, prop), surface);
-	return (draw_txtr_column_prop(arch, &needle, limit));
+	*needle = needle_prepare(needle->numcol, &prop->tex
+		, texture_prop_interpolation2d(arch, &prop->tex, prop)
+		, needle->surface);
+	return (draw_txtr_column_prop(arch, needle, limit));
 }
 
 int				draw_part_opacity(t_arch *arch, int cursor, t_vct2 surface
