@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_manager.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 08:02:36 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 09:05:50 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 17:01:47 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	doom_exit(t_doom *doom)
 	ui_free(&doom->ui);
 	editor_free(doom);
 	sdl_free(&doom->sdl);
+	borne_free(&doom->game.arch.portal);
+	free_game(&doom->game);
 	music_free(&doom->game.sound);
 	effect_free(&doom->game.sound);
 	Mix_Quit();

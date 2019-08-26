@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   effect_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 01:18:06 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 08:25:02 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:44:18 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void				effect_free(t_sound *sound)
 	int i;
 
 	i = 0;
-	while (i < 9 && sound->tab_effect[i])
+	while (i < 14 && sound->tab_effect[i])
 	{
 		Mix_FreeChunk(sound->tab_effect[i]);
 		sound->tab_effect[i] = NULL;

@@ -3,18 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   ui_manager2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 08:26:10 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 08:26:37 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 17:00:39 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
+void		ui_texture_free(t_ui *ui)
+{
+	int		i;
+
+	i = 0;
+	while (i <= 20)
+	{
+		SDL_FreeSurface(ui->propssurf[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 18)
+	{
+		SDL_DestroyTexture(ui->props[i]);
+		i++;
+	}
+	i = 0;
+	while (i < ENDSPRITES)
+	{
+		SDL_DestroyTexture(ui->sprites[i]);
+		i++;
+	}
+}
+
+void		ui_surface_free(t_ui *ui)
+{
+	int		i;
+
+	i = 0;
+	while (i < ENEMYTXTRTOTAL)
+	{
+		SDL_FreeSurface(ui->enemy[i]);
+		i++;
+	}
+}
+
 void		ui_free(t_ui *ui)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (i > 1)
@@ -25,6 +61,14 @@ void		ui_free(t_ui *ui)
 		TTF_CloseFont(ui->fonts.s32);
 	if (ui->fonts.s128)
 		TTF_CloseFont(ui->fonts.s128);
+	ui_texture_free(ui);
+	ui_surface_free(ui);
+	i = 0;
+	while (i <= 100)
+	{
+		free(ui->btnmap[i].data);
+		i++;
+	}
 }
 
 int			load_weapons(t_doom *doom, t_ui *ui)
