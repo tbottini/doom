@@ -6,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/08/26 20:56:02 by tbottini         ###   ########.fr        #
+#    Updated: 2019/08/26 16:12:04 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g -fsanitize=address
+CFLAGS			:=		-Wall -Wextra -g -Ofast -fno-builtin -flto #-fsanitize=address
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\

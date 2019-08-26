@@ -13,8 +13,8 @@
 #ifndef SCREEN_H
 # define SCREEN_H
 
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 1600
+# define HEIGHT 900
 
 # define MINWIDTH 1024
 # define MINHEIGHT 576
@@ -35,7 +35,6 @@ typedef struct			s_sdl
 	SDL_Texture			*txture;
 	Uint32				*screen;
 	t_tab				keys;
-	Uint32				timp;
 	int					fps;
 }						t_sdl;
 
