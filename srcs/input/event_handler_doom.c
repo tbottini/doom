@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_handler_doom.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 19:33:51 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/13 06:07:16 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:20:41 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void		resize_event(t_doom *doom)
 {
+	//ok frero
 	doom->game.camera.d_screen = (doom->sdl.size.x / 2.0)
 	/ tan(doom->game.player.fov / 2.0 * PI180);
 	fire_init(doom);

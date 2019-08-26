@@ -113,6 +113,9 @@ void					borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw);
 void					borne_reset(t_arch *arch);
 void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
 void					set_borne_horizontal(t_arch *arch);
-void		borne_secur(t_arch *arch);
+void					borne_svg_vertical(t_arch *arch, t_pil_render *render_stuff
+	, t_fvct2 portal_part);
+void					borne_secur(t_arch *arch);
+
 #endif
 

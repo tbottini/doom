@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 18:30:40 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/25 18:08:10 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 16:18:45 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** f must be between 0 and 1, 1 returning the color s, 0 the color c.
 */
 
-extern inline int			opacity(int s, int c, double f)
+extern inline int	opacity(int s, int c, double f)
 {
 	if (f == 1)
 		return (s);
@@ -36,9 +36,9 @@ extern inline int			opacity(int s, int c, double f)
 **	c : basique
 */
 
-extern inline int			opacity_from_color(Uint32 add, Uint32 basique)
+extern inline int	opacity_from_color(Uint32 add, Uint32 basique)
 {
-	const double factor = (add & 255) / 255.0;
+	const double	factor = (add & 255) / 255.0;
 
 	if (factor == 1)
 		return (add);
@@ -53,10 +53,10 @@ extern inline int			opacity_from_color(Uint32 add, Uint32 basique)
 	+ 255);
 }
 
-static void	full_screen_opacity(t_doom *doom, Uint32 color, double bl)
+static void			full_screen_opacity(t_doom *doom, Uint32 color, double bl)
 {
-	int i;
-	int j;
+	int				i;
+	int				j;
 
 	i = -1;
 	while (++i < doom->sdl.size.x)
@@ -70,10 +70,11 @@ static void	full_screen_opacity(t_doom *doom, Uint32 color, double bl)
 	}
 }
 
-static int	display_end(t_doom *doom, Uint32 color, double filter, bool win)
+static int			display_end(t_doom *doom, Uint32 color, double filter
+	, bool win)
 {
-	int		wait;
-	int		ex;
+	int				wait;
+	int				ex;
 
 	full_screen_opacity(doom, color, filter);
 	sdl_multirendercopy(&doom->sdl);
@@ -98,7 +99,7 @@ static int	display_end(t_doom *doom, Uint32 color, double filter, bool win)
 	return (0);
 }
 
-void		game_over(t_doom *doom, bool win)
+void				game_over(t_doom *doom, bool win)
 {
 	SDL_Texture		*gameover;
 	double			filter;

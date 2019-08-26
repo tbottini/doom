@@ -83,7 +83,9 @@ t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
 void					door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag);
 void					save_pixels_portal(t_arch *arch, t_pil_render *render_stuff
 	, t_vct2 *pixels);
-t_fvct2				length_sector(t_player *player, t_sector *sector);
+t_fvct2					length_sector(t_player *player, t_sector *sector);
+void					pil_screen_info(t_arch *a, t_player *p);
+void					next_screen_info(t_arch *a, t_player *p);
 
 /*
 **	render
@@ -103,6 +105,7 @@ void					render_recursivite(t_arch *arch, t_player *player, t_vct2 pixel_portal)
 void					draw_door(t_arch *arch, t_pil_render *render_stuff, int flag);
 void					draw_wall(t_arch *arch, t_pil_render *render_stuff);
 void					draw_portal(t_arch *arch, t_pil_render *render_stuff);
+void					draw_window(t_arch *arch, t_pil_render *rendr);
 int						draw_part_prop(t_arch *arch, t_needle *needle, t_vct2 limit, t_prop *prop);
 void					render_surface(t_arch *arch, t_player *player);
 double					draw_part(t_arch *arch, int start, int end, uint32_t color);
@@ -173,4 +176,5 @@ void						needle_indent_down(t_needle *needle, t_arch *arch);
 
 int							draw_txtr_column(t_arch *a, t_needle *ne, uint32_t (*pixel_effector)(t_arch*, t_needle*));
 int							draw_txtr_column_prop(t_arch *a, t_needle *n, t_vct2 limit);
+
 #endif

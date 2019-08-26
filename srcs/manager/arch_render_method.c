@@ -6,15 +6,15 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 04:11:23 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/23 04:18:42 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 16:17:23 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-extern inline void	wall_pillar_render(t_arch *arch, t_pil_render *render_stuff, double len_pillar)
+extern inline void	wall_pillar_render(t_arch *arch, t_pil_render *render_stuff
+	, double len_pillar)
 {
-
 	if (zline_wall(arch, render_stuff, len_pillar))
 	{
 		draw_wall(arch, render_stuff);
@@ -22,7 +22,8 @@ extern inline void	wall_pillar_render(t_arch *arch, t_pil_render *render_stuff, 
 	}
 }
 
-extern inline void 	door_pillar_render(t_arch *arch, t_pil_render *render_stuff, double len_pillar)
+extern inline void	door_pillar_render(t_arch *arch, t_pil_render *render_stuff
+	, double len_pillar)
 {
 	if ((arch->px.x >= render_stuff->px_inter) ^ render_stuff->open_invert)
 	{
@@ -33,13 +34,17 @@ extern inline void 	door_pillar_render(t_arch *arch, t_pil_render *render_stuff,
 		draw_door(arch, render_stuff, WALL);
 }
 
-extern inline void 	window_pillar_render(t_arch *arch, t_pil_render *render_stuff, double len_pillar)
+extern inline void	window_pillar_render(t_arch *arch
+	, t_pil_render *render_stuff
+	, double len_pillar)
 {
 	(void)len_pillar;
 	draw_window(arch, render_stuff);
 }
 
-extern inline void 	portal_pillar_render(t_arch *arch, t_pil_render *render_stuff, double len_pillar)
+extern inline void	portal_pillar_render(t_arch *arch
+	, t_pil_render *render_stuff
+	, double len_pillar)
 {
 	if (zline_portal(arch, render_stuff, len_pillar))
 		draw_portal(arch, render_stuff);
@@ -48,6 +53,7 @@ extern inline void 	portal_pillar_render(t_arch *arch, t_pil_render *render_stuf
 /*
 **	on affecte a l'arch ses methodes de rendu
 */
+
 void				arch_set_method(t_arch *arch)
 {
 	arch->render_method[WALL] = &wall_pillar_render;

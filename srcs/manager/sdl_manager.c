@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sdl_manager.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 08:12:34 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 08:12:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:14:19 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int		sdl_init(t_sdl *sdl, const char *title)
 	if (!(sdl->rend = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
 	SDL_SetWindowMinimumSize(sdl->win, MINWIDTH, MINHEIGHT);
-	//SDL_SetWindowMaximumSize(sdl->win, MAXWIDTH, MAXHEIGHT);
 	sdl->txture = SDL_CreateTexture(sdl->rend,
 		SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT);
 	if (SDL_LockTexture(sdl->txture, NULL, &tmp, &pitch))

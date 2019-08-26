@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 17:28:11 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 15:34:18 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 16:12:56 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void			fvct3_rotation(t_fvct3 *point, t_fvct2 rot)
 
 	rot.x = (rot.x - 90) * (M_PI / 180);
 	rot.y = -rot.y * (M_PI / 180);
-
 	tmp = *point;
 	point->x = tmp.x * cos(rot.y) + tmp.y * sin(rot.y);
 	point->y = tmp.x * -sin(rot.y) + tmp.y * cos(rot.y);
