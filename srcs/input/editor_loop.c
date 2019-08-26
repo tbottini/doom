@@ -77,10 +77,7 @@ void		editor_loop_hook(t_doom *doom)
 
 void		outgame_loop_hook(t_doom *doom)
 {
-	if (doom->ui.m_status == MENU_IGOPTION
-		&& doom->ui.currslid == &(doom->ui.slidopt[0]))
-		doom_render(doom);
-	else if (doom->ui.m_status == MENU_IGMAIN
+	if (doom->ui.m_status == MENU_IGMAIN
 		|| doom->ui.m_status == MENU_IGOPTION)
 		sdl_multirendercopy(&doom->sdl);
 	else

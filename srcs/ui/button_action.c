@@ -17,7 +17,7 @@ static void		use_slider(t_doom *doom, int x, int y)
 	t_slid	stmp;
 	int		i;
 
-	i = -1;
+	i = 0;
 	while (doom->ui.slidopt[++i].txture)
 	{
 		stmp = doom->ui.slidopt[i];

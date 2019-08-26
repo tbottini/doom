@@ -51,6 +51,7 @@ t_doom	*doom_init(void)
 		exit(0);
 	if (secure_doom(doom))
 		doom_exit(doom);
+	doom->game.player.fov = 90;
 	if (!sdl_init(&doom->sdl, "Doom-Nukem"))
 		doom_exit(doom);
 	if (!ui_init(&doom->ui))
@@ -64,7 +65,6 @@ t_doom	*doom_init(void)
 		doom_exit(doom);
 	if (!music_init(&doom->game.sound))
 		doom_exit(doom);
-	doom->game.player.fov = 90;
 	doom->game.ui = &doom->ui;
 	doom->game.difficulty = MEDIUM;
 	doom->timestamp = SDL_GetTicks();

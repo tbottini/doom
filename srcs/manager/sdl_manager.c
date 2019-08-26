@@ -51,7 +51,7 @@ int		sdl_init(t_sdl *sdl, const char *title)
 
 	sdl->size.x = WIDTH;
 	sdl->size.y = HEIGHT;
-	if (!(sdl->win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, 32)))
+	if (!(sdl->win = SDL_CreateWindow(title, 0, 0, WIDTH, HEIGHT, 0)))
 		return (0);
 	if (!(sdl->rend = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_SOFTWARE)))
 		return (0);
