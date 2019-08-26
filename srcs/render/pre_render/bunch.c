@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 01:52:58 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/25 21:12:03 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:34:15 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,6 @@ double		local_angle(double borne, double angle)
 	if (angle < 0)
 		angle += 360;
 	return (angle);
-}
-
-/*
-**	fonction a utiliser pour les bornes si il n'y a
-**		aucun pillier dans le frustum
-**	determine si les bornes sont entre les angles des mur
-*/
-
-int			borne_in_wall_angle(t_arch *arch, t_wall *wall)
-{
-	t_fvct2	angles;
-
-	angles.x = local_angle(arch->portal.b_left, wall->pillar->angle);
-	angles.y = local_angle(arch->portal.b_left, wall->next->angle);
-	return ((fabs(angles.y - angles.x) > 180.0));
 }
 
 int			equal_pillar(t_wall *wall1, t_wall *wall2)

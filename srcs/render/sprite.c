@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:59:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 14:09:08 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:36:18 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_sprite			*sprite_from_props(t_sprite **sprite_list, t_prop *props
 	{
 		e_angle = fvct2_angle(*(t_fvct2*)&player->stat.pos
 			, *(t_fvct2*)&props[i].pos, player->stat.rot.y);
-		if (e_angle < 90 && e_angle > -90)
+		if (e_angle < 90 && e_angle > -90 && props[i].hitbox.h >= 0)
 		{
 			sprite = sprite_new(props[i].tex, player->stat.pos
 				, props[i].pos, e_angle);

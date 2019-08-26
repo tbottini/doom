@@ -68,6 +68,9 @@ SRCS_RENDER		:=		render.c										\
 						pre_render/borne.c								\
 						pre_render/borne_method.c						\
 						pre_render/pillar_info.c						\
+						pre_render/wall_info.c							\
+						pre_render/door.c								\
+						pre_render/portal.c								\
 						drawer/render_wall.c							\
 						drawer/textures.c								\
 						drawer/draw_line.c								\
@@ -77,12 +80,15 @@ SRCS_RENDER		:=		render.c										\
 						drawer/draw_texture.c							\
 						drawer/needle.c									\
 						drawer/sprite_render.c							\
+						drawer/sprite_drawer.c							\
+						drawer/surface_info.c							\
 						render_enemy.c									\
 						sprite.c										\
 						sprite_man.c									\
 						prop.c											\
 						prop_man.c										\
 						prop_info.c										\
+
 
 SRCS_PARSING	:=		checkfile.c										\
 						ft_super_lil_checkfile.c						\

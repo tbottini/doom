@@ -81,6 +81,8 @@ t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
 void					door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag);
 void					save_pixels_portal(t_arch *arch, t_pil_render *render_stuff
 	, t_vct2 *pixels);
+t_fvct2				length_sector(t_player *player, t_sector *sector);
+
 /*
 **	render
 */

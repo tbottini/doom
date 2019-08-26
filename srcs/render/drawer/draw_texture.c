@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 03:39:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 14:21:47 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 15:28:54 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ int						draw_txtr_column_prop(t_arch *a, t_needle *n
 	{
 		if (n->numcol < a->sdl->size.x * a->sdl->size.y
 			&& n->txtr_col < n->txtr->w * n->txtr->h)
-			a->sdl->screen[n->numcol] = n->txtr->pixels[n->txtr_col];
+			a->sdl->screen[n->numcol] = opacity(a->sdl->screen[n->numcol],
+				n->txtr->pixels[n->txtr_col],
+				1 - (unsigned char)(n->txtr->pixels[n->txtr_col]) / 255.0);
 		needle_indent_down(n, a);
 		needle_buff_affect(n);
 	}
