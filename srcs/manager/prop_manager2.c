@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 07:45:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 14:33:20 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ void		pickup_prop(t_doom *doom)
 			doom->game.player.stat.pos, 0))
 		{
 			activate_prop(doom, &doom->game.player.stat.sector->props[i]);
-			if (doom->game.player.stat.sector->props[i].type < MAXPROPSNUMBER)
-				doom->game.player.stat.sector->props[i].tex.pixels = NULL;
+			doom->game.player.stat.sector->props[i].hitbox.h = -10000;
 			break ;
 		}
 		i++;

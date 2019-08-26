@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/10 22:08:13 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/13 08:11:58 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 10:50:39 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int		player_init(t_player *player)
 	player->inv.key1 = false;
 	player->inv.key2 = false;
 	player->inv.key3 = false;
+	player->inv.last_key = false;
 	player->stat.height = H_NORMAL;
 	player->stat.crouch = false;
 	player->stat.rot.x = 90;

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/03 14:35:37 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 07:45:35 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 12:24:02 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@
 
 static void	supersmol(t_player *player)
 {
-	if (!player->power)
+	if (!player->power && player->stat.height == H_NORMAL)
 	{
-		if (player->stat.height == H_NORMAL)
-			player->stat.height = H_SMOL;
-		player->boost = SDL_GetTicks() + 30000;
+		player->stat.height = H_SMOL;
+		player->boost = SDL_GetTicks() + 25000;
 		player->power = SMOL;
 	}
 }

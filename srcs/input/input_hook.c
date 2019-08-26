@@ -6,11 +6,21 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 18:18:09 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/13 07:16:55 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 14:30:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+void		unblock(t_stat *s)
+{
+	t_fvct2	d;
+
+	d.x = sin(s->rot.y * PI180) / 10.0;
+	d.y = cos(s->rot.y * PI180) / 10.0;
+	s->pos.x += d.y * 0.5;
+	s->pos.y += d.x * 0.5;
+}
 
 void		save_png(t_sdl *sdl)
 {
@@ -33,6 +43,8 @@ int			game_key_press(int k, t_doom *d)
 		jetpack_on_off(&d->game.player);
 	else if (k == SDLK_b)
 		save_png(&d->sdl);
+	else if (k == SDLK_m)
+		unblock(&d->game.player.stat);
 	else if (d->timestamp > d->game.player.occupied)
 	{
 		if (k == SDLK_e)
