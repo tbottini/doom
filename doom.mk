@@ -56,11 +56,12 @@ SRCS_INPUT		:=		event_handler.c									\
 
 SRCS_RENDER		:=		render.c										\
 						sector.c										\
-						hud_render.c									\
+						hud/hud_render.c								\
 						hud/minimap.c									\
 						hud/mini_minimap.c								\
 						hud/minimap_drawer.c							\
 						hud/minimap_tools.c								\
+						hud/weapon_render.c								\
 						pre_render/backface.c							\
 						pre_render/render_effect.c						\
 						pre_render/bunch.c								\
