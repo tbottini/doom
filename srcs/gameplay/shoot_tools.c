@@ -83,7 +83,8 @@ static int		bullet_can_pass(t_stat *stat, int i, t_sector *s, t_fvct3 ori)
 		mo.y = ori.y - stat->pos.y;
 		mo.z = ori.y - stat->pos.z;
 		coord = real_coord(stat->pos, toto, ori, stat);
-		if ((coord.z < next->h_floor + next->h_ceil) && (next->h_floor < coord.z))
+		if ((coord.z < next->h_floor + next->h_ceil)
+				&& (next->h_floor < coord.z))
 			return (1);
 	}
 	return (0);
