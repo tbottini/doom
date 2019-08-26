@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/02 13:05:13 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 04:54:29 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 21:46:56 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ static int		bullet_can_pass(t_stat *stat, int i, t_sector *s, t_fvct3 ori)
 	double		toto;
 	t_fvct3		mo;
 	t_fvct3		coord;
-	t_sector	next;
+	t_sector	*next;
 
-	next = *s->wall[i].link;
-	if (s->wall[i].status >= OPEN_DOOR)
+	next = s->wall[i].link;
+	if (next && s->wall[i].status >= OPEN_DOOR)
 	{
 		toto = cos((stat->rot.x - 90.0) * PI180);
 		toto = wall_bullet_clipping(*s->wall[i].pillar,
@@ -83,7 +83,7 @@ static int		bullet_can_pass(t_stat *stat, int i, t_sector *s, t_fvct3 ori)
 		mo.y = ori.y - stat->pos.y;
 		mo.z = ori.y - stat->pos.z;
 		coord = real_coord(stat->pos, toto, ori, stat);
-		if ((coord.z < next.h_floor + next.h_ceil) && (next.h_floor < coord.z))
+		if ((coord.z < next->h_floor + next->h_ceil) && (next->h_floor < coord.z))
 			return (1);
 	}
 	return (0);
