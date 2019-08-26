@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sprite_drawer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:29:54 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/26 14:32:20 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 22:17:05 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,15 @@ int						needle_get_cursor(t_arch *arch, t_needle *needle
 extern	inline uint32_t	horror_pixel(t_arch *arch, t_needle *nd
 	, double buffer_w)
 {
-	return (opacity(arch->sdl->screen[nd->numcol],
-		nd->txtr->pixels[(int)buffer_w + (int)nd->buff * nd->txtr->w],
-			1 - (unsigned char)(nd->txtr->pixels[(int)buffer_w
-				+ (int)nd->buff * nd->txtr->w]) / 255.0));
+	if (nd->numcol >= 0 && nd->numcol < arch->sdl->size.x * arch->sdl->size.y
+	&& (int)buffer_w + (int)nd->buff * nd->txtr->w < nd->txtr->h * nd->txtr->w)
+	{
+		return (opacity(arch->sdl->screen[nd->numcol],
+			nd->txtr->pixels[(int)buffer_w + (int)nd->buff * nd->txtr->w],
+				1 - (unsigned char)(nd->txtr->pixels[(int)buffer_w
+					+ (int)nd->buff * nd->txtr->w]) / 255.0));
+	}
+	return (0);
 }
 
 void					secur_start(t_arch *arch, t_sprite *sprite
@@ -67,7 +72,9 @@ extern inline void		sprite_draw_column(t_arch *arch, t_needle *nd
 		nd->surface.y = arch->portal.b_down[nd->txtr_col] * arch->sdl->size.x;
 	else
 		nd->surface.y = sprite->heigth.y * arch->sdl->size.x;
-	while (nd->numcol < (int)nd->surface.y && nd->buff < nd->txtr->h)
+	while (nd->numcol < (int)nd->surface.y
+	&& nd->numcol < arch->sdl->size.x * arch->sdl->size.y
+	&& nd->numcol > 0 && nd->buff < nd->txtr->h)
 	{
 		arch->sdl->screen[nd->numcol] = horror_pixel(arch, nd, buff_w);
 		needle_indent_down(nd, arch);

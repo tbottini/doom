@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/06 15:35:25 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 02:24:48 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 23:04:54 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ void			action(t_doom *doom, t_stat *s, t_inv *inv)
 	while (++x < wallhit->nb_props)
 	{
 		if (in_hitbox(&wallhit->props[x].hitbox, s->pos, s->height / 2))
+		{
 			action_button(doom, wallhit, inv, x);
+			break ;
+		}
 	}
 }
 

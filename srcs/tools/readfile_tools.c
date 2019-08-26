@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readfile_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 05:51:49 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/26 20:53:28 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 23:02:37 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,7 @@ void		free_game(t_game *game)
 	}
 	if (game->sectors)
 		free_sectors(&game->sectors, game->len.nb_sects);
+	game->len.nb_sects = 0;
+	game->len.nb_pills = 0;
+	game->len.nb_txtrs = 0;
 }
