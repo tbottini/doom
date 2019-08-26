@@ -6,20 +6,11 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 05:21:56 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/23 05:30:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:19:43 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-
-int					trunc_int(int value, int min, int max)
-{
-	if (value < min)
-		return (min);
-	else if (value > max)
-		return (max);
-	return (value);
-}
 
 void				set_borne_vertical(t_arch *arch, t_vct2 surface, int i)
 {
@@ -43,72 +34,12 @@ void				set_borne_horizontal(t_arch *arch)
 	arch->portal.b_right *= TOANGLE;
 }
 
-extern inline void	borne_secur(t_arch *arch)
+void				borne_secur(t_arch *arch)
 {
 	if (arch->portal.b_up[arch->px.x] > (uint32_t)arch->sdl->size.y)
 		arch->portal.b_up[arch->px.x] = arch->sdl->size.y - 1;
 	if (arch->portal.b_down[arch->px.x] > (uint32_t)arch->sdl->size.y)
 		arch->portal.b_down[arch->px.x] = arch->sdl->size.y - 1;
-}
-
-/*
-**	sauvegarde toute les configuration de borne dans une structure
-**	dans une zone (la zone est les limite de px)
-**	la sauvegarde de la profondeur avec le zline se fera au
-**	fur et a mesure dans le pillar_to_pillar
-*/
-
-t_borne				*borne_svg(t_arch *arch, t_borne *borne, t_vct2 px)
-{
-	int		len;
-
-	len = px.y - px.x;
-	borne->b_left = arch->portal.b_left;
-	borne->b_right = arch->portal.b_right;
-	borne->pillar = arch->portal.pillar;
-	borne->next = arch->portal.next;
-	borne->sector_svg = arch->sector;
-	if (len > 0)
-		borne_init(borne, len);
-	return (borne);
-}
-
-/*
-**	recharge une borne dans la borne arch
-**	(une borne anciennement sauvegarde...)
-*/
-
-void				borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw)
-{
-	int				i;
-
-	i = 0;
-	arch->portal.b_left = borne->b_left;
-	arch->portal.b_right = borne->b_right;
-	while (px_draw.x < px_draw.y)
-	{
-		arch->portal.b_up[px_draw.x] = borne->b_up[i];
-		arch->portal.b_down[px_draw.x] = borne->b_down[i];
-		arch->portal.zline[px_draw.x] = borne->zline[i];
-		px_draw.x++;
-		i++;
-	}
-	arch->portal.pillar = borne->pillar;
-	arch->portal.next = borne->next;
-	arch->sector = borne->sector_svg;
-	borne_free(borne);
-}
-
-void				render_recursivite(t_arch *arch, t_player *player
-	, t_vct2 pixel_portal)
-{
-	arch->px = pixel_portal;
-	set_borne_horizontal(arch);
-	arch->portal.pillar = arch->pillar;
-	arch->portal.next = arch->next;
-	arch->depth_portal++;
-	sector_render(arch, player, arch->wall->link);
-	arch->depth_portal--;
 }
 
 void				save_pixels_portal(t_arch *arch, t_pil_render *render_stuff

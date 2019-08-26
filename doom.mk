@@ -66,6 +66,7 @@ SRCS_RENDER		:=		render.c										\
 						pre_render/bunch.c								\
 						pre_render/wall.c								\
 						pre_render/borne.c								\
+						pre_render/borne_method.c						\
 						pre_render/pillar_info.c						\
 						drawer/render_wall.c							\
 						drawer/textures.c								\
@@ -78,7 +79,10 @@ SRCS_RENDER		:=		render.c										\
 						drawer/sprite_render.c							\
 						render_enemy.c									\
 						sprite.c										\
+						sprite_man.c									\
 						prop.c											\
+						prop_man.c										\
+						prop_info.c										\
 
 SRCS_PARSING	:=		checkfile.c										\
 						ft_super_lil_checkfile.c						\
@@ -136,6 +140,7 @@ SRCS_GESTION	:=		doom_manager.c									\
 						arch_render_method.c							\
 
 SRCS_CALCUL		:=		affine.c										\
+						affine_man.c									\
 						extra_calcul.c									\
 
 OBJS			:=		$(patsubst %.c,objs/%.o,$(SRCS_DOOM))			\

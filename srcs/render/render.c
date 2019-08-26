@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/11 19:06:44 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/25 21:18:43 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:10:41 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,18 @@ void				sector_render(t_arch *arch, t_player *player
 		i++;
 	}
 	sprite_render_sector(arch, sector, player);
+}
+
+void				render_recursivite(t_arch *arch, t_player *player
+	, t_vct2 pixel_portal)
+{
+	arch->px = pixel_portal;
+	set_borne_horizontal(arch);
+	arch->portal.pillar = arch->pillar;
+	arch->portal.next = arch->next;
+	arch->depth_portal++;
+	sector_render(arch, player, arch->wall->link);
+	arch->depth_portal--;
 }
 
 /*

@@ -6,20 +6,21 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/23 03:39:30 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/25 16:35:44 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:21:47 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-extern inline uint32_t	pixel_opacity(t_arch *arch, t_needle *needle)
+uint32_t				pixel_opacity(t_arch *arch, t_needle *needle)
 {
 	return (opacity_from_color(needle->txtr->pixels[needle->txtr_col]
 		, arch->sdl->screen[needle->numcol]));
 }
 
-extern inline uint32_t	pixel_txtr(t_arch *arch, t_needle *needle)
+uint32_t				pixel_txtr(t_arch *arch, t_needle *needle)
 {
+	(void)arch;
 	return (needle->txtr->pixels[needle->txtr_col]);
 }
 
@@ -70,4 +71,21 @@ int						draw_txtr_column_prop(t_arch *a, t_needle *n
 		needle_buff_affect(n);
 	}
 	return (n->numcol);
+}
+
+/*
+**	on recupere la largeur de la texture a l'ecran a partir
+**		de ses dimensions de base et de
+**	sa hauteur a l'ecran
+**	on ajoute sa position x, colonne du millieu de texture
+*/
+
+t_vct2			txtr_width(t_txtr *texture, t_vct2 surface, int posx)
+{
+	t_vct2		width;
+
+	width.x = (((surface.y - surface.x) / (double)texture->h) * texture->w) / 2;
+	width.y = posx + width.x;
+	width.x = posx - width.x;
+	return (width);
 }

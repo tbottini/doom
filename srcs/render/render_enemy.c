@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 10:57:07 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/25 20:59:41 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:07:31 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,4 @@ t_vct2			cam_get_enemy_surface(t_arch *arch, t_enemy *enemy
 	surface.x = camera_proj_heigth(arch, player, len.x, depth);
 	surface.y = camera_proj_heigth(arch, player, len.y, depth);
 	return (surface);
-}
-
-/*
-**	on recupere la largeur de la texture a l'ecran a partir
-**		de ses dimensions de base et de
-**	sa hauteur a l'ecran
-**	on ajoute sa position x, colonne du millieu de texture
-*/
-
-t_vct2			txtr_width(t_txtr *texture, t_vct2 surface, int posx)
-{
-	t_vct2		width;
-
-	width.x = (((surface.y - surface.x) / (double)texture->h) * texture->w) / 2;
-	width.y = posx + width.x;
-	width.x = posx - width.x;
-	return (width);
 }

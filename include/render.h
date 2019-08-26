@@ -57,8 +57,7 @@ void					pillar_virtual_move(t_arch *arch, t_fvct2 inter, int flag);
 /*
 **	bunch
 */
-int						on_frustum(t_arch *arch, t_player *player, t_pillar *pillar);
-void					sector_frustum(t_arch *arch, t_sector *sector, t_player *player);
+void					wall_frustum(t_arch *arch, t_player *player, t_wall *wall);
 int						buncherisation(t_arch *arch, t_sector *sector, t_wall **bunch);
 void					bunch_comsuption(t_arch *arch, t_player *player, t_wall **bunch, t_sector *sector);
 int						borne_in_wall_angle(t_arch *arch, t_wall *wall);
@@ -80,7 +79,8 @@ int						wall_behind_portal(t_arch *arch);
 int						point_behind_portal(t_arch *arch, t_player *player, t_fvct2 pos);
 t_fvct2					surface_portal(t_fvct2 surface, t_sector *parent, t_sector *child);
 void					door_split_info(t_arch *arch, t_pil_render *render_stuff, int flag);
-
+void					save_pixels_portal(t_arch *arch, t_pil_render *render_stuff
+	, t_vct2 *pixels);
 /*
 **	render
 */
@@ -126,10 +126,18 @@ void					sprite_render_list(t_sprite *sprite, t_arch *arch);
 t_sprite				*sprite_from_enemy(t_sprite **sprite_list, t_enemy *enemy, t_player *player, t_arch *arch);
 t_sprite				*sprite_from_props(t_sprite **sprite_list, t_prop *props, t_player *player, int len, t_arch *arch);
 void					sprite_print(t_sprite *sprite);
-void					sprite_free(t_sprite *sprite);
 void					sprite_print(t_sprite *sprite);
-void					sprite_iter(t_sprite *sprite, void(*effector)(t_sprite*));
 void					sprite_draw(t_sprite *sprite, t_arch *arch);
+
+t_sprite				*sprite_new(t_txtr texture, t_fvct3 origin
+	, t_fvct3 dist, double angle);
+void					sprite_free(t_sprite *sprite);
+void					sprite_iter(t_sprite *sprite, void (*effector)(t_sprite*));
+t_sprite				*sprite_list_free(t_sprite **sprite_list);
+void					sprite_insert(t_sprite **sprite_list
+	, t_sprite *sprite_node);
+
+
 
 t_vct2			player_prop_heigth_surface(t_arch *arch, t_player *player, t_prop *prop, double depth);
 t_vct2			cam_get_enemy_surface(t_arch *arch, t_enemy *enemy, t_player *player, double depth);
@@ -152,8 +160,8 @@ void						needle_buff_affect(t_needle *needle);
 t_needle					needle_prepare(int numcol, t_txtr *txtr, uint32_t txtr_col
 	, t_vct2 surface);
 void						needle_reajust2(t_needle *needle, int limit);
-extern inline uint32_t		pixel_opacity(t_arch *arch, t_needle *needle);
-extern inline uint32_t		pixel_txtr(t_arch *arch, t_needle *needle);
+uint32_t				pixel_opacity(t_arch *arch, t_needle *needle);
+uint32_t				pixel_txtr(t_arch *arch, t_needle *needle);
 void						needle_reajust(t_arch *arch, t_needle *needle, int limit);
 void						needle_indent_down(t_needle *needle, t_arch *arch);
 

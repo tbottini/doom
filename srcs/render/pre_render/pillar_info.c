@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 21:55:18 by tbottini          #+#    #+#             */
-/*   Updated: 2019/08/23 05:34:29 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 14:20:16 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ int				point_behind_portal(t_arch *arch, t_player *player, t_fvct2 pos)
 	t_affine	a_portal;
 	t_fvct2		inter;
 
+	(void)player;
 	if (arch->depth_portal == 0)
 		return (1);
 	else if (pos.x > arch->portal.pillar.x && pos.x > arch->portal.next.x)

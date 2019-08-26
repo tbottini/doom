@@ -1,19 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   affine.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/25 20:45:30 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/26 14:01:12 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vector.h"
-
-double			affine_val(t_affine affine, double x)
-{
-	return (affine.a * x + affine.b);
-}
-
-double			affine_val_index(t_affine affine, double y)
-{
-	return ((y - affine.b) / affine.a);
-}
 
 /*
 **	renvoie l'intersection des deux droite affine
 **	si .a == -1 alors la fonction verticale
 */
+
 t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2)
 {
 	t_fvct2		inter;
@@ -27,14 +30,7 @@ t_fvct2			interpolation_linear(t_affine fct1, t_affine fct2)
 	return (inter);
 }
 
-t_affine		affine_points(t_fvct2 point1, t_fvct2 point2)
-{
-	t_affine	fct;
 
-	fct.a = (point2.y - point1.y) / (point2.x - point1.x);
-	fct.b = point1.y - fct.a * point1.x;
-	return (fct);
-}
 
 t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2)
 {
@@ -54,15 +50,13 @@ t_affine		affine_points_secur(t_fvct2 point1, t_fvct2 point2)
 	return (fct);
 }
 
-t_affine		affine_def(double a, double b)
-{
-	return ((t_affine){a, b, 0});
-}
 
 /*
 **	interpolation lineaire avec gestion des affine lock
 */
-int				interpolation_linear_secur(t_affine affine1, t_affine affine2, t_fvct2 *inter)
+
+int				interpolation_linear_secur(t_affine affine1, t_affine affine2
+	, t_fvct2 *inter)
 {
 	if (affine1.lock && affine2.lock)
 		return (0);

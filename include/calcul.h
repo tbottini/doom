@@ -27,6 +27,7 @@ t_affine		affine_def(double a, double b);
 **	autres
 */
 int				opacity(int s, int c, double f);
-double					double_modulo(double num);
+double			double_modulo(double num);
+int				trunc_int(int value, int min, int max);
 
 #endif
