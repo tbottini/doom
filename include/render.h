@@ -26,6 +26,8 @@
 # define ENGINE			1
 # define RENDER			ENGINE
 
+typedef struct s_doom t_doom;
+
 /*
 **	disfonctionnement si l'ordre n'est pas respecte
 **	pour un carre a(up left) b(bottom left) c(up right) d(bot right)
@@ -117,7 +119,7 @@ void					sdl_cleartexture(Uint32 *screen, t_vct2 size);
 void					big_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 int						fill_pixel(Uint32 *screen, t_vct2 size, t_vct2 pos, Uint32 color);
 void					render_sector_enemy(t_arch *arch, t_sector *sector, t_player *player);
-
+void					weapon_render(t_doom *d);
 int						opacity_from_color(Uint32 add, Uint32 basique);
 
 

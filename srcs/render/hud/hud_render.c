@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 16:24:04 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/26 15:47:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:16:30 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static void			weapon_hollow(t_doom *d, SDL_Rect pos)
 void				weaponhud_render(t_doom *d)
 {
 	SDL_Rect	pos;
-	int			x;
 
 	pos = (SDL_Rect){d->sdl.size.x - 215, d->sdl.size.y - 75, 200, 60};
 	if (d->game.player.hand->id != FIST)
@@ -79,19 +78,6 @@ void				weaponhud_render(t_doom *d)
 		NULL, &pos);
 	pos.x += 60;
 	weapon_hollow(d, pos);
-}
-
-void				action_render(t_doom *d, int start, int len)
-{
-	int			img;
-	SDL_Rect	rect;
-
-	rect = (SDL_Rect){0, d->sdl.size.y / 2, d->sdl.size.x, d->sdl.size.y / 2};
-	img = ((double)d->timestamp - (double)d->game.player.occupied)
-		/ ((double)d->game.player.occupied - (double)d->game.player.timeact)
-		* (double)len + len;
-	if (img < len)
-		SDL_RenderCopy(d->sdl.rend, d->ui.sprites[start + img], NULL, &rect);
 }
 
 int					hud_render(t_doom *d)

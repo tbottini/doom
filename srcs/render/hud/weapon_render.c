@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 15:44:55 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/26 15:56:22 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:14:28 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@ static void			reload_anim(t_doom *d, SDL_Rect rect)
 		SDL_RenderCopy(d->sdl.rend, d->ui.sprites[SHOTGUNSTART], NULL, &rect);
 	else if (d->game.player.hand->id == RIFLE)
 		SDL_RenderCopy(d->sdl.rend, d->ui.sprites[RIFLESTART], NULL, &rect);
+}
+
+void				action_render(t_doom *d, int start, int len)
+{
+	int			img;
+	SDL_Rect	rect;
+
+	rect = (SDL_Rect){0, d->sdl.size.y / 2, d->sdl.size.x, d->sdl.size.y / 2};
+	img = ((double)d->timestamp - (double)d->game.player.occupied)
+		/ ((double)d->game.player.occupied - (double)d->game.player.timeact)
+		* (double)len + len;
+	if (img < len)
+		SDL_RenderCopy(d->sdl.rend, d->ui.sprites[start + img], NULL, &rect);
 }
 
 void				weapon_render(t_doom *d)

@@ -6,7 +6,7 @@
 /*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:57:52 by magrab            #+#    #+#             */
-/*   Updated: 2019/08/26 15:47:10 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 16:15:25 by akrache          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,6 @@ void					minifill(t_minimap *m, int h, t_power p);
 ** HUD
 */
 void					hud_aim(t_doom *doom);
-void					weapon_render(t_doom *d);
 int						hud_render(t_doom *doom);
 int						doom_render(t_doom *doom);
 
