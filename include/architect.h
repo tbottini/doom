@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   architect.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/26 16:39:33 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/26 17:05:08 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ARCHITECT_H
 # define ARCHITECT_H
 
-#include "sector.h"
-#include "screen.h"
-#include <stdbool.h>
+# include "sector.h"
+# include "screen.h"
+# include <stdbool.h>
 
 /*
 **	structure principale pour la recursivite
@@ -16,7 +28,7 @@
 **	-sector_svg permet de retablir le secteur quand on a fini la recursion
 */
 
-typedef struct 			s_borne
+typedef struct			s_borne
 {
 	double				*zline;
 	uint32_t			*b_down;
@@ -35,7 +47,7 @@ typedef struct 			s_borne
 **	-perc_open pourcentage d'ouverture si c'est une porte
 **	-open_invert sens d'ouverture de la porte inverse ou non
 */
-typedef struct 			s_pil_render
+typedef struct			s_pil_render
 {
 	t_fvct2				pillar;
 	t_fvct2				next;
@@ -65,7 +77,7 @@ typedef struct 			s_pil_render
 **		selon le status de la surface concerne
 */
 
-typedef struct 			s_arch
+typedef struct			s_arch
 {
 	t_sector			*sector;
 	t_wall				*wall;
@@ -83,19 +95,20 @@ typedef struct 			s_arch
 }						t_arch;
 
 int						arch_init(t_arch *arch, t_sdl *sdl, t_camera *cam);
-void 					arch_free(t_arch *arch);
+void					arch_free(t_arch *arch);
 int						is_door(t_arch *arch);
 
 /*
 **	backface
 */
 
-int						zline_wall(t_arch *arch, t_pil_render *render_stuff, double len_pillar);
-int						zline_portal(t_arch *arch, t_pil_render *render_stuff, double len_pillar);
+int						zline_wall(t_arch *arch, t_pil_render *render_stuff
+	, double len_pillar);
+int						zline_portal(t_arch *arch, t_pil_render *render_stuff
+	, double len_pillar);
 int						z_line_buffer(t_arch *arch, double len_pillar, int px);
 int						zline_compare(t_arch *arch, double len_pillar, int px);
 int						clean_zline(t_arch *arch, double len_pillar, int px);
-
 
 /*
 **	manager
@@ -111,13 +124,14 @@ void					arch_set_method(t_arch *arch);
 t_borne					*borne_init(t_borne *borne, int len);
 t_borne					*borne_svg(t_arch *arch, t_borne *borne, t_vct2 px);
 void					borne_free(t_borne *borne);
-void					borne_load(t_arch *arch, t_borne *borne, t_vct2 px_draw);
+void					borne_load(t_arch *arch, t_borne *borne
+	, t_vct2 px_draw);
 void					borne_reset(t_arch *arch);
-void					set_borne_vertical(t_arch *arch, t_vct2 surface, int i);
+void					set_borne_vertical(t_arch *arch, t_vct2 surface
+	, int i);
 void					set_borne_horizontal(t_arch *arch);
-void					borne_svg_vertical(t_arch *arch, t_pil_render *render_stuff
-	, t_fvct2 portal_part);
+void					borne_svg_vertical(t_arch *arch
+	, t_pil_render *render_stuff, t_fvct2 portal_part);
 void					borne_secur(t_arch *arch);
 
 #endif
-
