@@ -1,0 +1,100 @@
+srcs/editor/draw_inspect_menu.c:95:	sdl_string_put((t_sp){editor->rend, editor->ui->fonts.s32, (t_vct2){b.x + 5,
+srcs/editor/draw_inspect_menu.c:99:	sdl_string_put((t_sp){editor->rend, editor->ui->fonts.s32, (t_vct2){b.x + 5,
+srcs/editor/draw_inspect_menu.c:103:	sdl_int_put((t_ip){editor->rend, editor->ui->fonts.s32, (t_vct2){b.x + 5,
+srcs/editor/draw_inspect_menu.c:106:	sdl_int_put((t_ip){editor->rend, editor->ui->fonts.s32, (t_vct2){b.x + 5,
+srcs/editor/draw_inspect_menu.c:110:		sdl_string_put((t_sp){editor->rend, editor->ui->fonts.s32, (t_vct2){b.x
+srcs/editor/draw_inspect_menu.c:114:		sdl_string_put((t_sp){editor->rend, editor->ui->fonts.s32, (t_vct2){b.x
+srcs/editor/draw_inspect_menu.c:125:		if_character(editor, editor->rend, editor->ui->fonts.s32,
+srcs/editor/draw_inspect_menu.c:130:		if_mur(editor->rend, editor->ui->fonts.s32, editor->currmur,
+srcs/gameplay/ia_action.c:49:		set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6], 0);
+srcs/gameplay/ia_action.c:55:			ui->enemy[(enemy->type - 1) * 6 + anim + 2], 0);
+srcs/gameplay/ia_action.c:58:		set_txtr(&enemy->sprites, ui->enemy[(enemy->type - 1) * 6 + 1], 0);
+srcs/gameplay/ia_action.c:65:			set_txtr(&enemy->sprites, ui->enemy[ENEMYDEATHSTART + anim], 0);
+srcs/gameplay/ia_action.c:67:			set_txtr(&enemy->sprites, ui->enemy[BOSSDEATHSTART + anim], 0);
+srcs/gameplay/ia_tools.c:101:			set_txtr(&t->sprites, d->game.ui->enemy[(t->type - 1) * 6], 0);
+srcs/manager/ui_manager.c:17:	if (!(ui->propssurf[0] = IMG_Load(PROPHEALTH))
+srcs/manager/ui_manager.c:18:		|| !(ui->propssurf[1] = IMG_Load(PROPCASS))
+srcs/manager/ui_manager.c:19:		|| !(ui->propssurf[2] = IMG_Load(PROPMUN))
+srcs/manager/ui_manager.c:20:		|| !(ui->propssurf[3] = IMG_Load(PROPRPILL))
+srcs/manager/ui_manager.c:21:		|| !(ui->propssurf[4] = IMG_Load(PROPGPILL))
+srcs/manager/ui_manager.c:22:		|| !(ui->propssurf[5] = IMG_Load(PROPBPILL))
+srcs/manager/ui_manager.c:23:		|| !(ui->propssurf[6] = IMG_Load(PROPJETPACK))
+srcs/manager/ui_manager.c:24:		|| !(ui->propssurf[7] = IMG_Load(PROPGUN))
+srcs/manager/ui_manager.c:25:		|| !(ui->propssurf[8] = IMG_Load(PROPSHOTGUN))
+srcs/manager/ui_manager.c:26:		|| !(ui->propssurf[9] = IMG_Load(PROPRIFLE))
+srcs/manager/ui_manager.c:27:		|| !(ui->propssurf[10] = IMG_Load(PROPKEY1))
+srcs/manager/ui_manager.c:28:		|| !(ui->propssurf[11] = IMG_Load(PROPKEY2))
+srcs/manager/ui_manager.c:29:		|| !(ui->propssurf[12] = IMG_Load(PROPKEY3))
+srcs/manager/ui_manager.c:30:		|| !(ui->propssurf[13] = IMG_Load(PROPCORE))
+srcs/manager/ui_manager.c:31:		|| !(ui->propssurf[14] = IMG_Load(PROPBTN))
+srcs/manager/ui_manager.c:32:		|| !(ui->propssurf[15] = IMG_Load(PROPWINBTN))
+srcs/manager/ui_manager.c:33:		|| !(ui->propssurf[16] = IMG_Load(PROPIMPACT))
+srcs/manager/ui_manager.c:34:		|| !(ui->propssurf[17] = IMG_Load(PROPARROW))
+srcs/manager/ui_manager.c:35:		|| !(ui->propssurf[18] = IMG_Load(PROPCROSS))
+srcs/manager/ui_manager.c:36:		|| !(ui->propssurf[19] = IMG_Load(PROPEXIT))
+srcs/manager/ui_manager.c:37:		|| !(ui->propssurf[20] = IMG_Load(PROPBTNOPEN)))
+srcs/manager/ui_manager.c:56:		ui->enemy[x] =
+srcs/manager/ui_manager.c:66:	ui->btnpse[0] = add_pause_button(doom);
+srcs/manager/ui_manager.c:67:	ui->btnpse[1] = add_resume_button(doom);
+srcs/manager/ui_manager.c:68:	ui->btnpse[2] = add_middle_music_button(doom);
+srcs/manager/ui_manager.c:69:	ui->btnpse[3] = add_left_music_button(doom, &(ui->btnpse[2].loc.area));
+srcs/manager/ui_manager.c:70:	ui->btnpse[4] = add_right_music_button(doom, &(ui->btnpse[2].loc.area));
+srcs/manager/ui_manager.c:71:	ui->btnpse[5] = add_ing_opt_button(doom);
+srcs/manager/ui_manager.c:72:	ui->btnpse[6] = add_main_menu_button(doom);
+srcs/manager/ui_manager.c:73:	if (!(ui->weaponhud[FIST] = add_fist(doom))
+srcs/manager/ui_manager.c:74:		|| !(ui->weaponhud[GUN] = add_handgun(doom))
+srcs/manager/ui_manager.c:75:		|| !(ui->weaponhud[SHOTGUN] = add_shotgun(doom))
+srcs/manager/ui_manager.c:76:		|| !(ui->weaponhud[RIFLE] = add_rifle(doom)))
+srcs/manager/ui_manager.c:89:	ui->btnarr[0] = add_doom_button(doom, " Doom-Nukem ");
+srcs/manager/ui_manager.c:90:	ui->btnarr[1] = add_start_button(doom);
+srcs/manager/ui_manager.c:91:	ui->btnarr[2] = add_opt_button(doom);
+srcs/manager/ui_manager.c:92:	ui->btnarr[3] = add_editor_button(doom);
+srcs/manager/ui_manager.c:93:	ui->btnarr[4] = add_quit_button(doom, " Quit ", &doom_exit);
+srcs/manager/ui_manager.c:94:	ui->btnmap[0] = add_quit_button(doom, " Return ", &return_button);
+srcs/manager/ui_manager.c:95:	ui->btnmap[1] = add_mapmenu_button(doom);
+srcs/manager/ui_manager.c:96:	ui->btnopt[0] = ui->btnmap[0];
+srcs/manager/ui_manager.c:97:	ui->btnopt[1] = add_doom_button(doom, " Options ");
+srcs/manager/ui_manager.c:98:	ui->btnopt[2] = add_middle_diff_button(doom, &(ui->btnopt[1].loc.area));
+srcs/manager/ui_manager.c:99:	ui->btnopt[3] = add_left_diff_button(doom, &(ui->btnopt[2].loc.area));
+srcs/manager/ui_manager.c:100:	ui->btnopt[4] = add_right_diff_button(doom, &(ui->btnopt[2].loc.area));
+srcs/manager/ui_manager.c:101:	ui->slidopt[0] = add_fov_slider(doom);
+srcs/manager/ui_manager.c:102:	ui->slidopt[0].loc.parent = &(ui->btnopt[1].loc.area);
+srcs/manager/ui_manager.c:103:	ui->slidopt[1] = add_music_slider(doom);
+srcs/manager/ui_manager.c:104:	ui->slidopt[1].loc.parent = &(ui->slidopt[0].loc.area);
+srcs/manager/ui_manager.c:105:	ui->slidopt[2] = add_effect_slider(doom);
+srcs/manager/ui_manager.c:106:	ui->slidopt[2].loc.parent = &(ui->slidopt[1].loc.area);
+srcs/manager/ui_manager.c:112:	ui->m_status = MENU_MAIN;
+srcs/manager/ui_manager.c:113:	if (!(ui->fonts.s64 = TTF_OpenFont(TTFWOLF, 64)))
+srcs/manager/ui_manager.c:115:	if (!(ui->fonts.s128 = TTF_OpenFont(TTFWOLF, 128)))
+srcs/manager/ui_manager.c:117:	if (!(ui->fonts.s32 = TTF_OpenFont(TTFIMPACT, 32)))
+srcs/manager/ui_manager2.c:22:		SDL_FreeSurface(ui->propssurf[i]);
+srcs/manager/ui_manager2.c:28:		SDL_DestroyTexture(ui->props[i]);
+srcs/manager/ui_manager2.c:34:		SDL_DestroyTexture(ui->sprites[i]);
+srcs/manager/ui_manager2.c:46:		SDL_FreeSurface(ui->enemy[i]);
+srcs/manager/ui_manager2.c:57:		free(ui->btnmap[i].data);
+srcs/manager/ui_manager2.c:58:	if (ui->fonts.s64)
+srcs/manager/ui_manager2.c:59:		TTF_CloseFont(ui->fonts.s64);
+srcs/manager/ui_manager2.c:60:	if (ui->fonts.s32)
+srcs/manager/ui_manager2.c:61:		TTF_CloseFont(ui->fonts.s32);
+srcs/manager/ui_manager2.c:62:	if (ui->fonts.s128)
+srcs/manager/ui_manager2.c:63:		TTF_CloseFont(ui->fonts.s128);
+srcs/manager/ui_manager2.c:69:		free(ui->btnmap[i].data);
+srcs/manager/ui_manager2.c:84:		if (!(ui->sprites[x] = IMG_LoadTexture(doom->sdl.rend, path)))
+srcs/manager/ui_manager2.c:99:		if (!(ui->props[x] =
+srcs/manager/ui_manager2.c:100:		SDL_CreateTextureFromSurface(doom->sdl.rend, ui->propssurf[x])))
+srcs/manager/ui_manager2.c:102:		tmp = ui->propssurf[x];
+srcs/manager/ui_manager2.c:103:		ui->propssurf[x] =
+srcs/parsing/super_readfile.c:23:		set_txtr(&prop->tex, game->ui->propssurf[prop->type - MINPROPSPOS], 0);
+srcs/parsing/super_readfile.c:26:			game->ui->propssurf[prop->type - MINWPROPSPOS + 14], 0);
+srcs/parsing/super_readfile.c:79:		set_txtr(&wall->props[nbp].tex, game->ui->propssurf[16], 0);
+srcs/render/hud/mini_minimap.c:71:		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[10], NULL, &rect);
+srcs/render/hud/mini_minimap.c:74:		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[11], NULL, &rect);
+srcs/render/hud/mini_minimap.c:77:		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[12], NULL, &rect);
+srcs/render/hud/mini_minimap.c:80:		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[13], NULL, &rect);
+srcs/render/hud/mini_minimap.c:92:		SDL_RenderCopy(mini->sdl->rend, mini->ui->props[6], NULL, &rect);
+srcs/tools/editor_write_tools.c:25:	surf = TTF_RenderText_Shaded(edit->ui->fonts.s32, text,
+srcs/tools/editor_write_tools.c:42:		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
+srcs/tools/editor_write_tools.c:46:		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
+srcs/tools/editor_write_tools.c:50:		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
+srcs/tools/editor_write_tools.c:58:**		sdl_string_put((t_sp){edit->rend, edit->ui->fonts.s64,
+srcs/ui/init_btns_edit.c:28:	updatetext((t_updatetext){edit->rend, edit->ui->fonts.s32, &tmp.txture,

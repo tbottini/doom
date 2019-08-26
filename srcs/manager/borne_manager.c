@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   borne_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akrache <akrache@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 08:01:26 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/13 08:01:27 by akrache          ###   ########.fr       */
+/*   Updated: 2019/08/26 20:52:52 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,16 @@ t_borne		*borne_init(t_borne *borne, int len)
 
 void		borne_free(t_borne *borne)
 {
-	free(borne->b_down);
-	free(borne->b_up);
-	free(borne->zline);
+	if (borne)
+	{
+		if (borne->b_down)
+			free(borne->b_down);
+		if (borne->b_up)
+			free(borne->b_up);
+		if (borne->zline)
+			free(borne->zline);
+		borne->b_down = NULL;
+		borne->b_up = NULL;
+		borne->zline = NULL;
+	}
 }
