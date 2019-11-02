@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/26 16:39:33 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/26 17:05:48 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef COLOR_H
 # define COLOR_H
 
@@ -30,7 +42,6 @@
 # define CPORT 		0xE6E678FF
 # define DEEPBLUE 	0x0000FFFF
 # define CENEMY 	0x8E24AAFF
-
 
 # define BLUE_SOFT	0x138fa2ff
 # define RED_SOFT	0x831a1aff

@@ -1,4 +1,3 @@
-
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -7,7 +6,7 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/08/01 15:34:28 by akrache          ###   ########.fr        #
+#    Updated: 2019/08/26 16:12:04 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +17,7 @@ NAME			:=		doom-nukem
 
 CC				:=		gcc
 
-CFLAGS			:=		-Wall -Wextra -g#-fsanitize=address-Ofast -fno-builtin -flto
+CFLAGS			:=		-Wall -Wextra -Werror -g -Ofast -fno-builtin -flto
 
 LIB				:=		-L libft/ -lft							\
 						-L ~/.brew/lib -lSDL2					\
@@ -33,7 +32,6 @@ INCLUDE			:=		-I ./include							\
 HEADERS			:=		libft/libft.h							\
 						include/doom_nukem.h					\
 						include/calcul.h						\
-						include/debug.h							\
 						include/editor.h						\
 						include/vector.h						\
 						include/render.h						\
@@ -42,8 +40,6 @@ HEADERS			:=		libft/libft.h							\
 						include/sector.h						\
 						include/screen.h						\
 						include/architect.h						\
-						include/color.h							\
-
 
 FOLDER			:=		objs									\
 						objs/render								\
@@ -83,11 +79,7 @@ $(FOLDER)		:
 	@mkdir -p $(FOLDER)
 
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(HEADERS)
-	@printf '\rCompilation $(NAME)\n' \
-	&& printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#' \
-	&& printf '%*s\e[0m] \e[94m $<\e[0m\n' $(INV_FILL_BAR) \
-	&& $(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $< #\
-	&& printf '\033[A\033[M\033[A'
+	$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 
 $(NAME)			:		$(OBJS) $(SRCS_LIBFT)
 	@make -C libft/
@@ -97,7 +89,6 @@ $(NAME)			:		$(OBJS) $(SRCS_LIBFT)
 	@rez -append tmpicns.rsrc -o $(NAME)
 	@setfile -a C $(NAME)
 	@rm tmpicns.rsrc
-	@printf "\e[M\e[A\n\e[94m[--------$(NAME)--------]\n\e[0m"
 
 clean			:
 	@make clean -C ./libft

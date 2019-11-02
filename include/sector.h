@@ -6,7 +6,7 @@
 /*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/01 16:16:50 by akrache           #+#    #+#             */
-/*   Updated: 2019/08/12 21:52:00 by tbottini         ###   ########.fr       */
+/*   Updated: 2019/08/26 17:26:11 by tbottini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct			s_pillar
 **	si le mur est un portail defini dans status
 **	link donne le lien du portail si il est distant
 */
+
 typedef struct			s_wall
 {
 	t_pillar			*pillar;
@@ -68,7 +69,7 @@ typedef struct			s_wall
 	double				percent;
 	Uint32				ots;
 	int					nb_props;
-	int					level; //A ajouter dans l'editeur et l'ecriteur
+	int					level;
 }						t_wall;
 
 typedef struct			s_hitbox
@@ -94,7 +95,7 @@ struct					s_prop
 	t_vct2				px;
 };
 
-typedef struct 			s_box_txtr
+typedef struct			s_box_txtr
 {
 	t_fvct2				start;
 	t_fvct2				length;
@@ -106,16 +107,13 @@ struct					s_sector
 	t_wall				*wall;
 	t_prop				*props;
 	t_enemy				*enemys;
-	int					len_prop; // Nb de props dans le sector
+	int					len_prop;
 	double				h_floor;
 	double				h_ceil;
 	int					len;
 	t_txtr				txtrtop;
 	t_txtr				txtrsol;
-
 	t_box_txtr			box;
-	//sector effector *fonction
-	//list things (shapes, objets, deco, enemis)
 };
 
 t_sector				*sector_new();
@@ -128,20 +126,22 @@ void					describe_sector_recursif(t_sector sector);
 void					describe_bunch(t_wall **bunch);
 void					describe_sector(t_sector sector);
 void					describe_wall(t_wall wall);
-
 t_vct2					sector_get_floor_texel(t_sector *sector, t_fvct2 pos);
 void					init_prop(t_prop *prop, double height);
-int						is_in_hitbox(t_hitbox *hitbox, t_fvct3 pos, double hheight);
+int						in_hitbox(t_hitbox *hitbox, t_fvct3 pos
+	, double hheight);
 
 void					sector_init_prop(t_sector *sector);
-void					sector_iter(t_sector *sector, int len, void (sector_effector)(t_sector*));
+void					sector_iter(t_sector *sector, int len
+	, void (sector_effector)(t_sector*));
 void					sector_wall_props_init(t_sector *sector);
 
 /*
 **	prop
 */
-void					prop_init(t_prop *prop, t_wall *wall);
-void					prop_iter(t_prop *prop, int len, void(*prop_iter)(t_prop*));
 
+void					prop_init(t_prop *prop, t_wall *wall);
+void					prop_iter(t_prop *prop, int len
+	, void(*prop_iter)(t_prop*));
 
 #endif

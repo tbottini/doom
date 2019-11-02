@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   calcul.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/26 16:39:33 by tbottini          #+#    #+#             */
+/*   Updated: 2019/08/26 20:43:37 by tbottini         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef CALCUL_H
 # define CALCUL_H
@@ -10,6 +21,7 @@
 /*
 **	lock == 1 si la droite affine est constante sur l'absice (x)
 */
+
 typedef struct	s_affine
 {
 	double		a;
@@ -20,14 +32,16 @@ typedef struct	s_affine
 /*
 **	affine fonctions
 */
+
 double			affine_val(t_affine affine, double x);
 t_affine		affine_def(double a, double b);
-double			affine_val_index(t_affine affine, double y);
 
 /*
 **	autres
 */
+
 int				opacity(int s, int c, double f);
-double					double_modulo(double num);
+double			double_modulo(double num);
+int				trunc_int(int value, int min, int max);
 
 #endif
