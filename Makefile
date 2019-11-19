@@ -10,8 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
--include libft/include.mk
 include doom.mk
+
+-include libft/libft.mk
 
 NAME			:=		doom-nukem
 
@@ -79,13 +80,13 @@ INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
 SUBMODULE		:=		libft
 
-all				:		$(HDEP) $(SUBMODULE) $(FOLDER) $(NAME)
+all				:		$(FOLDER) $(HDEP) $(SUBMODULE) $(NAME)
 
 $(FOLDER)		:
 	@mkdir -p $(FOLDER)
 
 $(SUBMODULE)		:
-	@echo download intern link (libft)...
+	echo download intern link libft...
 	@git submodule update --recursive --init
 
 $(HDEP)			:
