@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-include libft/include.mk
+-include libft/include.mk
 include doom.mk
 
 NAME			:=		doom-nukem
@@ -19,15 +19,19 @@ CC				:=		gcc
 
 CFLAGS			:=		-Wall -Wextra -Werror -g -Ofast -fno-builtin -flto
 
+BREWPATH			:=		/usr/local
+
+HDEP				:=		$(BREWPATH)/include/SDL2
+
 LIB				:=		-L libft/ -lft							\
-						-L ~/.brew/lib -lSDL2					\
+						-L $(BREWPATH)/lib -lSDL2					\
 						-lSDL2_ttf								\
 						-lSDL2_image							\
 						-lSDL2_mixer							\
 
 INCLUDE			:=		-I ./include							\
 						-I ./libft								\
-						-I ~/.brew/include/SDL2					\
+						-I $(BREWPATH)/include/SDL2					\
 
 HEADERS			:=		libft/libft.h							\
 						include/doom_nukem.h					\
@@ -73,10 +77,20 @@ FILL_BAR		=		$$(( $(NB_OBJS) + 1 * $(MAX_FILL) / $(NB_SRCS)))
 
 INV_FILL_BAR	=		$$(( $(MAX_FILL) - $(FILL_BAR)))
 
-all				:		$(FOLDER) $(NAME)
+SUBMODULE		:=		libft
+
+all				:		$(HDEP) $(SUBMODULE) $(FOLDER) $(NAME)
 
 $(FOLDER)		:
 	@mkdir -p $(FOLDER)
+
+$(SUBMODULE)		:
+	@echo download intern link (libft)...
+	@git submodule update --recursive --init
+
+$(HDEP)			:
+	@echo installation of extern library...
+	@brew install sdl2 sdl2_ttf sdl2_mixer sdl2_image
 
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
